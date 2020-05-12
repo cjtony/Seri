@@ -219,7 +219,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataListEmpleado(int iIdEmpresa)
         {
-            List<EmpleadosBean> ListEmple = new List<EmpleadosBean>();
+            List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             ListEmple = Dao.sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(iIdEmpresa);
             return Json(ListEmple);
@@ -238,53 +238,71 @@ namespace Payroll.Controllers
             return Json(ListDatEmisor);
         }
 
-        public JsonResult ListDatPeriodo(int iIdEmpresesas, int ianio, int iTipoPeriodo, int iPeriodo)
-        {
-            List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
-            ListEmpleadosDao dao = new ListEmpleadosDao();
-            LPe = dao.sp_DatosPerido_Retrieve_DatosPerido(iIdEmpresesas, ianio, iTipoPeriodo, iPeriodo);
-            return Json(LPe);
+        //public JsonResult ListDatPeriodo(int iIdEmpresesas, int ianio, int iTipoPeriodo, int iPeriodo)
+        //{
+        //    List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
+        //    ListEmpleadosDao dao = new ListEmpleadosDao();
+        //    LPe = dao.sp_DatosPerido_Retrieve_DatosPerido(iIdEmpresesas, ianio, iTipoPeriodo, iPeriodo);
+        //    return Json(LPe);
 
-        }
+        //}
 
         [HttpPost]
 
         public JsonResult ReciboNomina(int iIdEmpresa, int iIdEmpleado, int iPeriodo)
         {
+
             List<ReciboNominaBean> LCRecibo = new List<ReciboNominaBean>();
             List<TablaNominaBean> LsTabla = new List<TablaNominaBean>();
             FuncionesNomina dao = new FuncionesNomina();
             LCRecibo = dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(iIdEmpresa, iIdEmpleado, iPeriodo);
 
-            if (LCRecibo.Count > 0)
+            if (LCRecibo != null)
             {
-                for (int i = 0; i < LCRecibo.Count; i++)
+                if (LCRecibo.Count > 0)
                 {
-                    TablaNominaBean ls = new TablaNominaBean();
+                    for (int i = 0; i < LCRecibo.Count; i++)
                     {
-                        ls.sConcepto = LCRecibo[i].sNombre_Renglon;
-
-                        if (LCRecibo[i].iElementoNomina == 39)
+                        TablaNominaBean ls = new TablaNominaBean();
                         {
-                            ls.dPercepciones = LCRecibo[i].dSaldo.ToString("#.##");                 
-                            ls.dDeducciones = "0";
+                            ls.sConcepto = LCRecibo[i].sNombre_Renglon;
+
+                            if (LCRecibo[i].iElementoNomina == 39)
+                            {
+                                ls.dPercepciones = LCRecibo[i].dSaldo.ToString("#.##");
+                                ls.dDeducciones = "0";
+                            }
+                            if (LCRecibo[i].iElementoNomina == 40)
+                            {
+                                ls.dPercepciones = "0";
+                                ls.dDeducciones = LCRecibo[i].dSaldo.ToString();
+                            }
+
                         }
-                        if (LCRecibo[i].iElementoNomina == 40) {
-                            ls.dPercepciones = "0";
-                            ls.dDeducciones = LCRecibo[i].dSaldo.ToString();
-                        }
-                       
+                        ls.dSaldos = "0";
+                        ls.dInformativos = "0";
+                        LsTabla.Add(ls);
+
                     }
-                    ls.dSaldos = "0";
-                    ls.dInformativos = "0";
-                    LsTabla.Add(ls);            
-                
+
                 }
-                 
             }
-           
             return Json(LsTabla);
 
+        }
+
+        [HttpPost]
+
+        public JsonResult XMLNomina(int IdEmpresa, string sNombreComple, int Periodo, int anios, int Tipodeperido)
+        {
+           
+              List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();            
+              ListEmpleadosDao Dao = new ListEmpleadosDao();
+              string path = Server.MapPath("Archivos\\certificados\\");
+              path = path.Replace("\\Empleados", "");
+              ListDatEmisor = Dao.GXMLNOM (IdEmpresa, sNombreComple, path,Periodo, anios, Tipodeperido);
+     
+            return Json(ListDatEmisor);
         }
 
     }

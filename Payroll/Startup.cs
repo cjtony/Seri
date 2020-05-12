@@ -15,8 +15,10 @@ using System.Collections.Generic;
 
 namespace Payroll 
 {
+   
     public class Startup : Conexion
     {
+        
         /// <summary>
         ///  configuracion del hangfire 
         /// </summary>
@@ -36,7 +38,7 @@ namespace Payroll
             string FechaProceso = Fecha();
             // realiza la tarea 
             BackgroundJob.Enqueue(() => Proceso(op, iIdjobs, iIdTarea, FechaProceso));
-
+          
             // guarda en la BD el proceso 
             List<HangfireJobs> id = new List<HangfireJobs>();
             FuncionesNomina Dao = new FuncionesNomina();
@@ -99,7 +101,7 @@ namespace Payroll
             FuncionesNomina Dao = new FuncionesNomina();
             LE =Dao.sp_TPProcesosJobs_Retrieve_TPProcesosJobs(op1, op2, op3, iIdjobs, iIdTarea);
             return LE;
-         
+           
         }
         // Proceso, Actualiza BD Tp CalculosHd Ln
         public void Actu(int iNominaCerrada,int idNum, string fecha )
@@ -156,25 +158,21 @@ namespace Payroll
             return fechajobs;
         }
 
-        public void  Proceso( string NomProceso)
+        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo)
         {
             string FechaProceso = Fecha();
 
             if (NomProceso == "CNomina")
             {
-             
-                int anio = 2020;
-                int TipoPeriodo = 3;
-                int Periodo = 3;
-                int IdDefinicion = 1;
-                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, Periodo, IdDefinicion, FechaProceso));
+                          
+                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, FechaProceso));
                  List<HangfireJobs> id = new List<HangfireJobs>();
                  FuncionesNomina Dao = new FuncionesNomina();
                  id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
                 int Idjobs = Convert.ToInt16(id[0].iId.ToString());
                 string StatusJobs = "En Cola";
                 string Nombrejobs = "CNomina1";
-                string Parametros = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + FechaProceso;
+                string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + "," + FechaProceso;
                 Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros);
 
             }

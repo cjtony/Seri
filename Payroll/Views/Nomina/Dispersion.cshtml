@@ -1,0 +1,284 @@
+﻿
+<div class="container-fluid mb-5">
+    <div class="row">
+        <div class="col-sm-10 offset-1">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+                    <a class="nav-item nav-link active font-navs" id="nav-dispersion-tab" data-toggle="tab" href="#nav-dispersion" role="tab" aria-controls="nav-dispersion" aria-selected="true">
+                        <i class="fas fa-book mr-2"></i> Dispersiones
+                    </a>
+
+                </div>
+            </nav>
+            <div class="tab-content bg-white" id="nav-tabContent">
+                <div class="tab-pane fade show active p-3" id="nav-dispersion" role="tabpanel" aria-labelledby="nav-empleado-tab">
+                    @*<nav>
+                            <a class="nav-item nav-link active font-navs" id="nav-datagen-tab" data-toggle="tab" href="#nav-dispersion" role="tab" aria-controls="nav-dispersion" aria-selected="true">
+                                <i class="fas fa-play col-ico mr-ico-05"></i> Completa los datos
+                            </a>
+                        </nav>*@
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active p-3" id="nav-dispersion" role="tabpanel" aria-labelledby="nav-dispersion-tab">
+                            <div class="row mt-4">
+                                <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="text-left">
+                                        <h6 class="col-ico font-nav-child">
+                                            <b> <i class="fas fa-circle fa-sm mr-ico-05"></i>  Completa el formulario </b>
+                                        </h6>
+                                        <hr />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group text-center rounded shadow">
+                                        <label class="col-form-label" style="font-size: 14px;">
+                                            <i class="fas fa-pallet mr-2 col-ico"></i>
+                                            Tipo periodo: <span id="typeperactnomemp" class="font-weight-bold"></span>
+                                        </label>
+                                        <label class="col-form-label ml-2" style="font-size: 14px;">
+                                            <i class="fas fa-pager mr-2 col-ico"></i>
+                                            Periodo: <span id="peractnomemp" class="font-weight-bold"></span>
+                                        </label>
+                                        <label class="col-form-label ml-2" style="font-size: 14px;">
+                                            <i class="fas fa-calendar mr-2 col-ico"></i>
+                                            Fechas: <span id="fechaspernomemp" class="font-weight-bold"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="form-group">
+                                        <button id="btn-tab-ret-nomina-employe" class="btn btn-outline-info btn-sm rounded shadow btn-block" data-target="#tabnominaemployeret" data-toggle="modal">
+                                            <i class="fas fa-users mr-2"></i> Nominas retenida
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-right">
+                                    <div class="form-group">
+                                        <button id="btn-ret-nomina-employe" class="btn btn-outline-danger btn-sm rounded shadow btn-block" data-target="#retnominaemploye" data-toggle="modal">
+                                            <i class="fas fa-user-times mr-2"></i> Retener nomina
+                                        </button>
+                                    </div>
+                                    <br />
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"> Año </label>
+                                        <input type="text" class="form-control-sm form-control" id="yeardis" placeholder="Año" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"> Periodo </label>
+                                        <input type="text" class="form-control-sm form-control" id="periodis" placeholder="Periodo" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"> Fecha </label>
+                                        <input type="date" class="form-control-sm form-control" id="datedis" placeholder="Fecha" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"></label>
+                                        <button id="btn-desplegar-tab" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                                            <i class="fas fa-play-circle mr-2"></i> Desplegar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 offset-md-1 mt-3" id="container-data-deploy">
+                                    <table class="table table-bordered table-hover table-sm" id="table-data-deposits">
+                                    </table>
+                                </div>
+                                <div class="col-md-3 mt-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"></label>
+                                        <button id="btn-sim-desple" class="btn btn-outline-danger btn-sm btn-block rounded shadow">
+                                            <i class="fas fa-play mr-2"></i> Simular
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mt-3">
+                                    <div class="form-group d-none" id="divbtndownzip">
+                                        <label class="col-form-label font-labels"></label>
+                                        <a id="btn-down-txt" class="btn btn-outline-info btn-sm btn-block rounded shadow">
+                                            <i class="fas fa-download mr-2"></i> Descargar zip
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-3">
+                                    <div class="form-group d-none" id="divmsgresult">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL QUE MUESTRA LOS EMPLEADOS CON LA NOMINA RETENIDA -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="tabnominaemployeret" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchemployelabel"> <i class="fas fa-users text-danger mr-2 col-ico"></i> Empleados con nominas retenidas</h5>
+                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-nomrettab-btn">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table display" id="table-nom-retenidas" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Empleado</th>
+                                            <th>Observacion</th>
+                                            <th class="text-center">Accion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-nomrettab-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL EMPLEADOS NOMINA RETENIDA -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="retnominaemploye" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchemployelabel"> <i class="fas fa-search mr-2 col-ico"></i> Buscar empleados</h5>
+                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-searchemployesnom-btn">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row mb-4">
+                                <div class="col-md-6 text-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="filtroempretnom" id="filtronumbernom" value="numero" />
+                                        <label class="form-check-label h6" for="filtronumberretnom"> <small>Buscar por numero de empleado.</small> </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="filtroempretnom" id="filtronamenom" value="nombre" checked />
+                                        <label class="form-check-label" for="filtroname"><small>Buscar por nombre del empleado.</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="offset-1 col-md-10 mt-2">
+                            <div class="form-group row">
+                                <label for="searchemployekey" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i>
+                                    <span id="labsearchempnom">Empleado</span>
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchemployekeynom" placeholder="EMPLEADO" onkeypress="return check(event)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultemployekeynom">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-searchemployesnom-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL QUE CONFIGURA LOS PARAMETROS DE LA NOMINA RETENIDA -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="retnominaemployeconfig" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchemployelabel"> <i class="fas fa-user-times text-danger mr-2 col-ico"></i> Configuracion de nomina retenida</h5>
+                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-nomretconf-btn">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8 offset-2">
+                            <div class="form-group">
+                                <label class="col-form-label"> Empleado a retener nomina </label>
+                                <input id="nameempret" readonly class="form-control form-control-sm" type="text" />
+                                <input id="clvempretn" readonly class="form-control form-control-sm" type="hidden" />
+                                <input id="tipperretn" readonly class="form-control form-control-sm" type="hidden" />
+                            </div>
+                        </div>
+                        <div class="offset-2 col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label font-labels">
+                                    Periodo
+                                </label>
+                                <input id="perretnom" type="number" class="form-control form-control-sm" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label font-labels">
+                                    Año
+                                </label>
+                                <input id="yearretnom" type="text" class="form-control form-control-sm" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-8 offset-2">
+                            <div class="form-group">
+                                <label class="col-form-label font-labels">
+                                    Descripcion
+                                </label>
+                                <textarea class="form-control form-control-sm" id="descretnom" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-success" data-dismiss="modal" id="btn-regiser-retnomina"> <i class="fas fa-check-circle mr-2"></i> Guardar</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-nomretconf-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js"></script>
+<script type="text/javascript">
+    function check(e) {
+        tecla = (document.all) ? e.keyCode : e.which;
+        if (tecla == 8) {
+            return true;
+        }
+        patron = /[A-Za-z0-9 ]/;
+        tecla_final = String.fromCharCode(tecla);
+        return patron.test(tecla_final);
+    }
+</script>

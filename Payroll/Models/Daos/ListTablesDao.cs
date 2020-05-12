@@ -7,6 +7,14 @@ using Payroll.Models.Utilerias;
 using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Configuration;
+using System.Media;
+using System.Xml;
+using System.IO.Compression;
+using System.Drawing;
+using System.Web.UI.WebControls;
 
 namespace Payroll.Models.Daos
 {
@@ -55,24 +63,30 @@ namespace Payroll.Models.Daos
         public List<EmpleadosBean> sp_Empleados_Retrieve_Empleados(int keyemp)
         {
             List<EmpleadosBean> listEmpleadosBean = new List<EmpleadosBean>();
-            try {
+            try
+            {
                 this.Conectar();
-                SqlCommand cmd = new SqlCommand("sp_Empleados_Retrieve_Empleados", this.conexion) {
+                SqlCommand cmd = new SqlCommand("sp_Empleados_Retrieve_Empleados", this.conexion)
+                {
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyemp));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows) {
-                    while (data.Read()) {
-                        EmpleadosBean empleadoBean   = new EmpleadosBean();
-                        empleadoBean.iIdEmpleado     = Convert.ToInt32(data["IdEmpleado"].ToString());
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmpleadosBean empleadoBean = new EmpleadosBean();
+                        empleadoBean.iIdEmpleado = Convert.ToInt32(data["IdEmpleado"].ToString());
                         empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["NombreEmpleado"].ToString() + " " + data["ApellidoPaternoEmpleado"].ToString() + " " + data["ApellidoMaternoEmpleado"].ToString());
-                        empleadoBean.iNumeroNomina   = Convert.ToInt32(data["NumeroNomina"].ToString());
+                        empleadoBean.iNumeroNomina = Convert.ToInt32(data["NumeroNomina"].ToString());
                         listEmpleadosBean.Add(empleadoBean);
                     }
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 string origenerror = "ListTablesdao";
                 string mensajeerror = exc.ToString();
                 CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
@@ -399,9 +413,9 @@ namespace Payroll.Models.Daos
             }
             return posicionBean;
         }
-        public List<EmpleadosBean> sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(int CtrliIdEmpresa)
+        public List<EmpleadosEmpresaBean> sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(int CtrliIdEmpresa)
         {
-            List<EmpleadosBean> list = new List<EmpleadosBean>();
+            List<EmpleadosEmpresaBean> list = new List<EmpleadosEmpresaBean>();
             try
             {
                 this.Conectar();
@@ -417,10 +431,10 @@ namespace Payroll.Models.Daos
                 {
                     while (data.Read())
                     {
-                        EmpleadosBean ls = new EmpleadosBean();
+                        EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
 
                         ls.iIdEmpleado = int.Parse(data["IdEmpleado"].ToString());
-                        ls.sNombreEmpleado = data["NombreCompleto"].ToString();
+                        ls.sNombreCompleto = data["NombreCompleto"].ToString();
                         list.Add(ls);
                     }
                 }
@@ -473,10 +487,10 @@ namespace Payroll.Models.Daos
                         ls.dSalarioMensual = decimal.Parse(data["SalarioMensual"].ToString());
                         ls.sRegistroImss = data["RegistroImss"].ToString();
                         ls.sCURP = data["CURP"].ToString();
-                        ls.sDescripcion = data[""].ToString();
-                        ls.iCtaCheques = int.Parse(data[""].ToString());
-                        ls.iRegimenFiscal = int.Parse(data[""].ToString());
-
+                        ls.sDescripcion = data["Descripcion"].ToString();
+                        ls.sCtaCheques = data["Cta_Cheques"].ToString();
+                        ls.iRegimenFiscal = int.Parse(data["Regimen_Fiscal_id"].ToString());
+                        
                         list.Add(ls);
                     }
                 }
@@ -493,7 +507,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public List<CInicioFechasPeriodoBean> sp_DatosPerido_Retrieve_DatosPerido(int CtrliIdEmpresa, int CtrliAnio, int CtrliTipoPereriodo, int CtrliPeriodo)
+        public List<CInicioFechasPeriodoBean> sp_DatosPerido_Retrieve_DatosPerido(int CtrliIdPeriodo)
         {
             List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
             try
@@ -503,10 +517,10 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
-                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
-                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPereriodo", CtrliTipoPereriodo));
-                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdPeriodo", CtrliIdPeriodo));
+                //cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                //cmd.Parameters.Add(new SqlParameter("@CtrliTipoPereriodo", CtrliTipoPereriodo));
+                //cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -522,7 +536,7 @@ namespace Payroll.Models.Daos
                             LP.sFechaProceso = data["Fecha_Proceso"].ToString();
                             LP.sFechaPago = data["Fecha_Pago"].ToString();
                             LP.iDiasEfectivos = int.Parse(data["Dias_Efectivos"].ToString());
-
+                            LP.iPeriodo = int.Parse(data["Periodo"].ToString());
                         };
 
                         list.Add(LP);
@@ -539,10 +553,548 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+
             return list;
 
         }
 
+        public List<XMLBean> sp_FileCer_Retrieve_CCertificados(string CtrlsRFC)
+        {
+            List<XMLBean> list = new List<XMLBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_FileCer_Retrieve_CCertificados", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrlsRFC", CtrlsRFC));
 
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        XMLBean Lxml = new XMLBean();
+                        {
+                            Lxml.sfilecer = data["file_cer"].ToString();
+                            Lxml.sfilekey = data["file_key"].ToString();
+                            Lxml.stransitorio = data["transitorio"].ToString();
+                           
+                        };
+
+                        list.Add(Lxml);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return list;
+
+        }
+
+        public List<XMLBean> sp_ObtenFolioCCertificados_RetrieveUpdate_Ccertificados(string rfc)
+        {
+            List<XMLBean> list = new List<XMLBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ObtenFolioCCertificados_RetrieveUpdate_Ccertificados", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@rfc", rfc));
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        XMLBean Lxml = new XMLBean();
+                        {
+                            Lxml.ifolio = int.Parse(data["regresa"].ToString());
+        
+                        };
+
+                        list.Add(Lxml);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return list;
+
+        }
+
+        public List<ReciboNominaBean> sp_SaldosTotales_Retrieve_TPlantillasCalculos(int CtrlIdEmpresa, int CtrlIdEmpleado, int CtrlPeriodo)
+        {
+            List<ReciboNominaBean> list = new List<ReciboNominaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_SaldosTotales_Retrieve_TPlantillasCalculos", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrlIdEmpresa", CtrlIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrlIdEmpleado", CtrlIdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrlPeriodo", CtrlPeriodo));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        ReciboNominaBean ls = new ReciboNominaBean();
+                        {
+                            ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
+                            ls.dSaldo = decimal.Parse(data["Saldo"].ToString());                       
+                        }
+
+                        list.Add(ls);
+                    }
+
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+        public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido)
+        {
+            string[] Nombre = sNombreComple.Split(' ');
+            string Idempleado = Nombre[0].ToString();
+            int NumEmpleado = Convert.ToInt32(Idempleado.ToString());
+            int id = int.Parse(Idempleado);
+            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
+            ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
+            List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            
+            string Prefijo = "cfdi";
+            string Prefijo2 = "nomina12";
+            string parametro1 = "http://www.w3.org/2001/XMLSchema-instance";
+            string EspacioDeNombreNomina = "http://www.sat.gob.mx/nomina12";
+            string parametro3 = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd http://www.sat.gob.mx/nomina12 http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd";
+            string EspacioDeNombre = "http://www.sat.gob.mx/cfd/3";
+            string s_certificadoKey = ""; string s_certificadoCer = ""; string ArchivoXmlFile; string s_transitorio = "";
+
+            int nRfcEmisor = 0;
+            int nImporte = 1;
+            int nCurpReceptor = 2;
+            int nRfcReceptor = 3;
+            int nFechaInicialPago = 4;
+            int nFechaFinalPago = 5;
+            int nFechaPago = 6;
+
+            string Emisor;
+            string EmisorRFC;
+            string ReceptorCurp;
+            string ReceptorRFC;
+            string FileCadenaXslt;
+            string sUsoCFDI;
+
+            string sFechaInicialPago;
+            string sFechaFinalPago;
+            string sFechaPago;
+            string sDiasEfectivos;
+
+            if (ListDatEmisor.Count > 0)
+            {
+                Emisor = ListDatEmisor[0].sNombreEmpresa;
+                EmisorRFC = ListDatEmisor[0].sRFC;
+                ReceptorCurp = ListDatEmisor[0].sCURP;
+                ReceptorRFC = ListDatEmisor[0].sRFCEmpleado;
+                ArchivoXmlFile = path + EmisorRFC + "_" + ReceptorRFC + "_" + "001";
+                FileCadenaXslt = path + "cadenaoriginal_3_3.xslt";
+                sUsoCFDI = "P01";
+                var culture = CultureInfo.CreateSpecificCulture("es-MX");
+                var styles = DateTimeStyles.None;
+                DateTime dt1 = DateTime.Now;
+                DateTime dt2 = dt1;
+                DateTime dt3 = dt1;
+                string folio = "";
+                List<CInicioFechasPeriodoBean> LFechaPerido = new List<CInicioFechasPeriodoBean>();
+                LFechaPerido = sp_DatosPerido_Retrieve_DatosPerido(Periodo);
+                if (LFechaPerido[0].sMensaje == null)
+                {
+
+                    bool fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaInicio, culture, styles, out dt1);
+                    fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaFinal, culture, styles, out dt2);
+                    fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaPago, culture, styles, out dt3);
+
+                    sFechaInicialPago = String.Format("{0:yyyy-MM-dd}", dt1);
+                    sFechaFinalPago = String.Format("{0:yyyy-MM-dd}", dt2);
+                    sFechaPago = String.Format("{0:yyyy-MM-dd}", dt3);
+
+
+                    List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
+                    ListTotales = sp_SaldosTotales_Retrieve_TPlantillasCalculos(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo);
+                    LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id,LFechaPerido[0].iPeriodo);
+                    //Partidas
+
+                    string TotalPercepciones = " ";
+                    string totalDeduciones = " ";
+                    string totalRecibo = " ";
+                    string SueldoDiario = " ";
+                    string SuedoAgravado = " ";
+                    if (ListTotales.Count > 0)
+                    {
+                        for (int i = 0; i < ListTotales.Count; i++) 
+                        {
+                            if (ListTotales[i].iIdRenglon == 990) { TotalPercepciones = string.Format("{0:N2}", ListTotales[i].dSaldo); }
+                            if (ListTotales[i].iIdRenglon == 1990) { totalDeduciones = string.Format( "{0:N2}",ListTotales[i].dSaldo); }
+                            if (ListTotales[i].iIdRenglon == 9999) { totalRecibo = string.Format("{0:N2}", ListTotales[i].dSaldo); }
+                            if (ListTotales[i].iIdRenglon == 9992) { SueldoDiario = string.Format("{0:N2}", ListTotales[i].dSaldo); }
+                            if (ListTotales[i].iIdRenglon == 9993) { SuedoAgravado = string.Format("{0:N2}", ListTotales[i].dSaldo); }
+                        }
+                        TotalPercepciones = TotalPercepciones.Replace(",", "");
+                        totalDeduciones = totalDeduciones.Replace(",", "");
+                        totalRecibo = totalRecibo.Replace(",", "");
+                    }
+
+                    //Antiguedad 
+                    string sAntiguedad = "";
+                    List<XMLBean> LisCer = new List<XMLBean>();
+                    LisCer = sp_FileCer_Retrieve_CCertificados(EmisorRFC);
+
+                    s_certificadoKey = path + LisCer[0].sfilekey;
+                    s_certificadoCer = path + LisCer[0].sfilecer;
+                    s_transitorio = LisCer[0].stransitorio;
+
+
+                    System.Security.Cryptography.X509Certificates.X509Certificate CerSAT;
+                    CerSAT = System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromCertFile(s_certificadoCer);
+                    byte[] bcert = CerSAT.GetSerialNumber();
+                    string CerNo = LibreriasFacturas.StrReverse((string)Encoding.UTF8.GetString(bcert));
+                    byte[] CERT_SIS = CerSAT.GetRawCertData();
+
+                    List<XMLBean> LFolio = new List<XMLBean>();
+                    LFolio = sp_ObtenFolioCCertificados_RetrieveUpdate_Ccertificados(EmisorRFC);
+
+                    if (LFolio != null) folio = LFolio[0].ifolio.ToString();
+                    else ListDatEmisor[0].sMensaje = "Erro en Genera el folio Contacte a sistemas";
+                    string sNombre = Nombre[1]+ " "+Nombre[2]+" "+Nombre[3];
+                    string sRegistroPatronal = ListDatEmisor[0].sAfiliacionIMSS;
+                    string sNumSeguridadSocial = ListDatEmisor[0].sRegistroImss;
+                    fechaValida = DateTime.TryParse(ListDatEmisor[0].sFechaIngreso, culture, styles, out dt3);
+                    string sFechaInicioRelLaboral = String.Format("{0:yyyy-MM-dd}", dt3); ;
+                    string ticontrato ="0"+ ListDatEmisor[0].sTipoContrato;
+                    string[] contrato = ticontrato.Split(' ');
+                    string scontrato = contrato[0].ToString();
+                    string sTipoContrato = scontrato;
+                    string sNumEmpleado = Convert.ToString(ListDatEmisor[0].iIdEmpleado);
+                    string sDepartamento = ListDatEmisor[0].sDescripcionDepartamento;
+                    string sPuesto = ListDatEmisor[0].sNombrePuesto;
+                    string sBanco = ListDatEmisor[0].sDescripcion;
+                    string sCuentaBancaria = ListDatEmisor[0].sCtaCheques;
+                    string sSalarioDiarioIntegrado = SueldoDiario;
+                    string sNombreEmisor = ListDatEmisor[0].sNombreEmpresa;
+                    string sRegimenFiscal = Convert.ToString(ListDatEmisor[0].iRegimenFiscal);
+
+                    //Antiguedad
+
+                    DateTime f1 = DateTime.Parse(sFechaInicioRelLaboral);
+                    DateTime f2 = DateTime.Parse(sFechaFinalPago);
+                    TimeSpan diferencia = f2.Subtract(f1);
+                    sAntiguedad = "P" + ((int)(diferencia.Days / 7)).ToString() + "W";
+                    StreamWriter writer;
+                    XmlTextWriter xmlWriter;
+
+                    ArchivoXmlFile = "F";
+
+
+                    //Crear archivo XML
+                    writer = File.CreateText(ArchivoXmlFile);
+                    writer.Close();
+
+                    //Preparar archivo
+                    xmlWriter = new XmlTextWriter(ArchivoXmlFile, System.Text.Encoding.UTF8);
+                    xmlWriter.Formatting = Formatting.Indented;
+                    xmlWriter.WriteStartDocument();
+
+                    //Insertar elementos
+                    xmlWriter.WriteStartElement(Prefijo, "Comprobante", EspacioDeNombre);
+                    xmlWriter.WriteAttributeString("xmlns", "xsi", null, parametro1);
+                    xmlWriter.WriteAttributeString("xmlns", Prefijo2, null, EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("xsi", "schemaLocation", null, parametro3);
+                    xmlWriter.WriteAttributeString("xmlns", Prefijo, null, EspacioDeNombre);
+                    xmlWriter.WriteAttributeString("Version", "3.3");
+                    xmlWriter.WriteAttributeString("Serie", "NOM");
+                    xmlWriter.WriteAttributeString("Folio", folio);
+                    string FechaEmision = DateTime.Now.ToString("s");
+                    xmlWriter.WriteAttributeString("Fecha", FechaEmision);
+                    xmlWriter.WriteAttributeString("Sello", "");
+                    xmlWriter.WriteAttributeString("FormaPago", "99");
+                    xmlWriter.WriteAttributeString("NoCertificado", CerNo);
+                    string sCertificado = Convert.ToBase64String(CERT_SIS);
+                    xmlWriter.WriteAttributeString("Certificado", sCertificado);
+                    xmlWriter.WriteAttributeString("SubTotal", TotalPercepciones.ToString());
+                    xmlWriter.WriteAttributeString("Descuento", totalDeduciones.ToString());
+                    xmlWriter.WriteAttributeString("Moneda", "MXN");
+                    xmlWriter.WriteAttributeString("Total", totalRecibo.ToString());
+                    xmlWriter.WriteAttributeString("TipoDeComprobante", "N");
+                    xmlWriter.WriteAttributeString("MetodoPago", "PUE");
+                    xmlWriter.WriteAttributeString("LugarExpedicion", "04600");
+
+                    xmlWriter.WriteStartElement(Prefijo, "Emisor", EspacioDeNombre);
+                    xmlWriter.WriteAttributeString("Rfc", EmisorRFC);
+                    xmlWriter.WriteAttributeString("Nombre", sNombreEmisor);
+                    xmlWriter.WriteAttributeString("RegimenFiscal", sRegimenFiscal);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement(Prefijo, "Receptor", EspacioDeNombre);
+                    xmlWriter.WriteAttributeString("Rfc", ReceptorRFC);
+                    xmlWriter.WriteAttributeString("Nombre", sNombre);
+                    xmlWriter.WriteAttributeString("UsoCFDI", sUsoCFDI);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement(Prefijo, "Conceptos", EspacioDeNombre);
+                    xmlWriter.WriteStartElement(Prefijo, "Concepto", EspacioDeNombre);
+                    xmlWriter.WriteAttributeString("ClaveProdServ", "84111505");
+                    xmlWriter.WriteAttributeString("Cantidad", "1");
+                    xmlWriter.WriteAttributeString("ClaveUnidad", "ACT");
+                    xmlWriter.WriteAttributeString("Descripcion", "Pago de nómina");
+                    xmlWriter.WriteAttributeString("Descuento", totalDeduciones.ToString());
+                    xmlWriter.WriteAttributeString("ValorUnitario", TotalPercepciones.ToString());
+                    xmlWriter.WriteAttributeString("Importe", TotalPercepciones.ToString());
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement(Prefijo, "Complemento", EspacioDeNombre);
+                    xmlWriter.WriteStartElement(Prefijo2, "Nomina", EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("Version", "1.2");
+                    xmlWriter.WriteAttributeString("TipoNomina", "O");
+                    xmlWriter.WriteAttributeString("FechaPago", sFechaPago);
+                    xmlWriter.WriteAttributeString("FechaInicialPago", sFechaInicialPago);
+                    xmlWriter.WriteAttributeString("FechaFinalPago", sFechaFinalPago);
+                    // dias Efectivos 
+                    decimal iTdias = LFechaPerido[0].iDiasEfectivos;
+                    int TDias = 0;
+                    string Dias = LisTRecibo[0].sNombre_Renglon;
+                    sDiasEfectivos = Convert.ToString(iTdias);
+                    if (Dias.Length > 7)
+                    {
+                        string[] dias = Dias.Split(':');
+                        Dias = dias[1].ToString();
+                        Dias = Dias.Replace("}", "");
+                        decimal DiasNo = Convert.ToDecimal(Dias);
+                        iTdias = iTdias - DiasNo;
+                        TDias = Convert.ToInt16(iTdias);
+                        sDiasEfectivos = Convert.ToString(TDias);
+                 
+                    }
+                    xmlWriter.WriteAttributeString("NumDiasPagados", sDiasEfectivos.ToString());
+                    xmlWriter.WriteAttributeString("TotalPercepciones", TotalPercepciones.ToString());
+                    xmlWriter.WriteAttributeString("TotalDeducciones", totalDeduciones.ToString());
+                    xmlWriter.WriteAttributeString("TotalOtrosPagos", "0.00");
+                    xmlWriter.WriteAttributeString("xmlns", Prefijo2, null, EspacioDeNombreNomina);
+
+                    xmlWriter.WriteStartElement(Prefijo2, "Emisor", EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("RfcPatronOrigen", EmisorRFC);
+                    xmlWriter.WriteAttributeString("RegistroPatronal", sRegistroPatronal);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement(Prefijo2, "Receptor", EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("Curp", ReceptorCurp);
+                    xmlWriter.WriteAttributeString("NumSeguridadSocial", sNumSeguridadSocial);
+                    xmlWriter.WriteAttributeString("FechaInicioRelLaboral", sFechaInicioRelLaboral);
+                    xmlWriter.WriteAttributeString("Antigüedad", sAntiguedad);
+                    xmlWriter.WriteAttributeString("TipoContrato", sTipoContrato);
+                    xmlWriter.WriteAttributeString("Sindicalizado", "No");
+                    xmlWriter.WriteAttributeString("TipoJornada", "06");
+                    xmlWriter.WriteAttributeString("TipoRegimen", "02");
+                    xmlWriter.WriteAttributeString("NumEmpleado", sNumEmpleado);
+                    xmlWriter.WriteAttributeString("Departamento", sDepartamento);
+                    xmlWriter.WriteAttributeString("Puesto", sPuesto);
+                    xmlWriter.WriteAttributeString("RiesgoPuesto", "1");
+                    xmlWriter.WriteAttributeString("PeriodicidadPago", "04");
+                    if ((sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18) && sBanco.Length > 0)
+                    {
+                        xmlWriter.WriteAttributeString("Banco", sBanco);
+                        xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
+                    }
+                    else
+                    if ((sCuentaBancaria.Length == 18))
+                    {
+                       
+                        xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
+                    }
+                    xmlWriter.WriteAttributeString("SalarioBaseCotApor", SueldoDiario);
+                    xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SuedoAgravado);
+                    xmlWriter.WriteAttributeString("ClaveEntFed", "DIF");
+                    xmlWriter.WriteEndElement();
+
+                    // Percepciones
+                    xmlWriter.WriteStartElement(Prefijo2, "Percepciones", EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("TotalExento", "0.00");
+                    xmlWriter.WriteAttributeString("TotalGravado", TotalPercepciones.ToString());
+                    xmlWriter.WriteAttributeString("TotalSueldos", TotalPercepciones.ToString());
+                    decimal Isr=0;
+              
+                    if (LisTRecibo.Count > 0)
+                    {
+                        for (int i = 0; i < LisTRecibo.Count; i++)
+                        {
+                            if (LisTRecibo[i].iElementoNomina == 39) {
+                                string lengRenglon = "";
+                                string ImporGra = string.Format("{0:N2}", LisTRecibo[i].dSaldo);
+                                ImporGra = ImporGra.Replace(",", "");
+                                string IdRenglon = Convert.ToString(LisTRecibo[i].iIdRenglon);
+                                string concepto = LisTRecibo[i].sNombre_Renglon;
+                                if (IdRenglon == "1") {
+                                  concepto = "Sueldo {" + sDiasEfectivos+" Dias}";
+                                    lengRenglon = "001";
+                                }
+                                lengRenglon = "010";
+                                int idReglontama = IdRenglon.Length;
+                                if (idReglontama == 1) { IdRenglon = "00" + IdRenglon;  };
+                                if (idReglontama == 2) { IdRenglon = "0" + IdRenglon;  };
+                              
+                               
+                
+                                xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
+                                xmlWriter.WriteAttributeString("ImporteExento", "0.00");
+                                xmlWriter.WriteAttributeString("TipoPercepcion", lengRenglon);
+                                xmlWriter.WriteAttributeString("Clave", IdRenglon);
+                                xmlWriter.WriteAttributeString("Concepto", concepto.ToString());
+                                xmlWriter.WriteAttributeString("ImporteGravado", ImporGra.ToString());
+                                xmlWriter.WriteEndElement();
+
+                            }
+                            if (LisTRecibo[i].iElementoNomina == 40) {
+                                string IdRenglon = Convert.ToString(LisTRecibo[i].iIdRenglon);
+                                if (IdRenglon == "1001") { Isr = LisTRecibo[i].dSaldo; }     
+                            }
+                        }
+                    
+                    }
+                    xmlWriter.WriteEndElement();
+                  
+                    decimal Deduciones = Convert.ToDecimal(totalDeduciones.ToString());
+                    string deduciones = string.Format("{0:N2}", Deduciones - Isr);
+                    string isr = string.Format("{0:N2}", Isr);
+                    isr = isr.Replace(",", "");
+                    // Deducciones
+                    xmlWriter.WriteStartElement(Prefijo2, "Deducciones", EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("TotalImpuestosRetenidos", isr);
+                    xmlWriter.WriteAttributeString("TotalOtrasDeducciones", deduciones);
+                    if (LisTRecibo.Count > 0)
+                    {
+                        for (int i = 0; i < LisTRecibo.Count; i++)
+                        {
+                            if (LisTRecibo[i].iElementoNomina == 40)
+                            {
+                                string lengRenglon = "";
+                                string ImporGra = string.Format("{0:N2}", LisTRecibo[i].dSaldo);
+                                ImporGra = ImporGra.Replace(",", "");
+                                string IdRenglon = Convert.ToString(LisTRecibo[i].iIdRenglon);
+                                string concepto = LisTRecibo[i].sNombre_Renglon;
+                              
+                               
+                                lengRenglon = "010";
+                                int idReglontama = IdRenglon.Length;
+                                if (idReglontama == 1) { IdRenglon = "00" + IdRenglon;  };
+                                if (idReglontama == 2) { IdRenglon = "0" + IdRenglon;  };
+                                if (idReglontama == 3) { lengRenglon = "100"; };
+                                if (IdRenglon == "1001") { lengRenglon = "002"; }
+
+                                xmlWriter.WriteStartElement(Prefijo2, "Deduccion", EspacioDeNombreNomina);
+                                xmlWriter.WriteAttributeString("Importe", ImporGra.ToString());
+                                xmlWriter.WriteAttributeString("TipoDeduccion", lengRenglon);
+                                xmlWriter.WriteAttributeString("Clave", IdRenglon);
+                                xmlWriter.WriteAttributeString("Concepto", concepto.ToString());
+                                xmlWriter.WriteEndElement();
+
+                            }
+
+                        }
+
+                    }
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
+                    xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("TipoOtroPago", "002");
+                    xmlWriter.WriteAttributeString("Clave", "198");
+                    xmlWriter.WriteAttributeString("Concepto", "Subsidio al Empleado");
+                    xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", 0));
+                    xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
+                    xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", 0));
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
+
+           
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
+                    //xmlWriter.WriteEndElement();
+                    //Cerrar
+                    xmlWriter.Flush();
+                    xmlWriter.Close();
+                    //string FileCadenaXslt = path + "cadenaoriginal_3_3.xslt";
+                    string Cadena = LibreriasFacturas.GetCadenaOriginal(ArchivoXmlFile, FileCadenaXslt, path);
+                    string selloDigitalOriginal = LibreriasFacturas.ObtenerSelloDigital(Cadena, s_certificadoKey, s_transitorio);
+                    LibreriasFacturas.AplicarSelloDigital(selloDigitalOriginal, ArchivoXmlFile);
+                    // Quitar el BOM
+                    string line;
+                    StreamReader sr = new StreamReader(ArchivoXmlFile);
+                    StreamWriter sw = new StreamWriter(path + EmisorRFC + "_" + ReceptorRFC + "_" + "001" + ".xml", false, new UTF8Encoding(false));
+
+                    //Read the first line of text
+                    line = sr.ReadLine();
+
+                    //Continue to read until you reach end of file
+                    while (line != null)
+                    {
+                        //write the line
+                        //line = line.Replace("xmlns_nomina", "xmlns:nomina");
+                        line = line.Replace("utf-8", "UTF-8");
+                        sw.WriteLine(line);                //Read the next line
+                        line = sr.ReadLine();
+                    }
+
+                    //close the file
+                    sr.Close();
+                    sw.Close();
+                    File.Delete(ArchivoXmlFile); //Borra archivo temporal
+
+
+                }
+
+
+            }
+
+            return ListDatEmisor;
+        }
     }
 }

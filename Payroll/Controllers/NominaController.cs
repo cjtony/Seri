@@ -31,6 +31,11 @@ namespace Payroll.Controllers
 
         }
 
+        public PartialViewResult Dispersion()
+        {
+            return PartialView();
+        }
+
 
         //Guarda los datos de la Definicion
         [HttpPost]
@@ -63,9 +68,7 @@ namespace Payroll.Controllers
         // regresa el listado del periodo
         [HttpPost]
         public JsonResult LisTipPeriodo(int IdEmpresa)
-        {
-          
-            
+        {          
             List<CTipoPeriodoBean> LTP = new List<CTipoPeriodoBean>();
             FuncionesNomina Dao = new FuncionesNomina();
             LTP = Dao.sp_CTipoPeriod_Retrieve_TiposPeriodos(IdEmpresa);
@@ -120,14 +123,14 @@ namespace Payroll.Controllers
         }
         // Regresa el listado de periodo
         [HttpPost]
-        public JsonResult ListPeriodo(int iIdEmpresesas, int ianio, int iTipoPeriodo)
+        public JsonResult ListPeriodo(int iIdEmpresesas, int ianio, int iTipoPeriodo)   
         {
             List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
             LPe = dao.sp_Cperiodo_Retrieve_Cperiodo(iIdEmpresesas, ianio, iTipoPeriodo);
             return Json(LPe);
 
-        }
+         }
         // llena datos de la tabla de Percepciones
         [HttpPost]
         public JsonResult listdatosPercesiones(int iIdDefinicionln)
@@ -347,9 +350,6 @@ namespace Payroll.Controllers
             return Json(bean);
         }
         
-
-
-
         [HttpPost]
         public JsonResult TpDefinicionnl()
         {
@@ -443,15 +443,13 @@ namespace Payroll.Controllers
             return Json(bean);
         }
 
-
-
         [HttpPost]
-        public JsonResult ListTpCalculoln(int iIdEmpresa)
+        public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo)
         {
-            List<TpCalculosLn> Dta = new List<TpCalculosLn>();
+                List<TpCalculosLn> Dta = new List<TpCalculosLn>();
             //List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            Dta = dao.sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(iIdEmpresa);
+            Dta = dao.sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(iIdCalculosHd, iTipoPeriodo, iPeriodo);
             //if (Dta != null)
             //{
             //    for (int i = 0; i < Dta.Count; i++)
@@ -530,16 +528,40 @@ namespace Payroll.Controllers
             return Json(LTbProc);
         }
 
-        public JsonResult ProcesosPots()
+        public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo)
         {
             Startup obj = new Startup();
             string NomProceso = "CNomina";
-            obj.Proceso(NomProceso);
+            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo);
 
             return null;
         }
+        [HttpPost]
+        public JsonResult TipoPeriodo(int IdDefinicionHD)
+        {
 
+            List<CTipoPeriodoBean> LTP = new List<CTipoPeriodoBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LTP = Dao.sp_TipoPeridoTpDefinicionNomina_Retrieve_TpDefinicionNomina(IdDefinicionHD);
+            return Json(LTP);
+        }
+        [HttpPost]
+        public JsonResult ListPeriodoEmpresa(int IdDefinicionHD, int iperiodo)
+        {
+            List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LPe = dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(IdDefinicionHD, iperiodo);
+            return Json(LPe);
 
+        }
+
+        public JsonResult UpdateCInicioFechasPeriodo(int iIdDefinicionHd, int iPerido, int iNominaCerrada)
+        {
+            CInicioFechasPeriodoBean bean = new CInicioFechasPeriodoBean();
+            FuncionesNomina dao = new FuncionesNomina();
+            bean = dao.sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(iIdDefinicionHd, iPerido, iNominaCerrada);
+            return Json(bean);
+        }
 
     }
 }

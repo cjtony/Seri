@@ -97,7 +97,7 @@
 
         $("#nav-Deduccion-tab").click();
 
-    }
+    };
 
     btnContDeducciones.addEventListener('click', Fdirde);
 
@@ -261,10 +261,10 @@
            
             }
 
-            $("#nav-Percepciones-tab").removeClass("active");
-            $("#nav-Deduccion-tab").removeClass("active");
-            btnGuardarDefinicion.style.visibility = 'hidden';
-            btnGuardarDefinicion.value = "2";
+            //$("#nav-Percepciones-tab").removeClass("active");
+            //$("#nav-Deduccion-tab").removeClass("active");
+            //btnGuardarDefinicion.style.visibility = 'hidden';
+            //btnGuardarDefinicion.value = "2";
        
        
         };
@@ -277,13 +277,13 @@
     FAsignaBotonesDh = () => {
 
         $("#btnFloGuardar").attr("value", "1");
-        console.log(btnFloGuardar.value)
+        console.log(btnFloGuardar.value);
         $("#btnlimpDefinicion").attr("value", "1");
-       
 
-    }
 
-    navDefiniciontab.addEventListener('click', FAsignaBotonesDh)
+    };
+
+    navDefiniciontab.addEventListener('click', FAsignaBotonesDh);
 
      // asigna los botones flotantes a la pantlla del Precepcion
 
@@ -292,9 +292,9 @@
         $("#btnFloGuardar").attr("value", "2");
         console.log(btnFloGuardar.value)
         $("#btnlimpDefinicion").attr("value", "2");
-    }
+    };
 
-    navPercepcionestab.addEventListener('click', FAsignaBotonesDPre)
+    navPercepcionestab.addEventListener('click', FAsignaBotonesDPre);
 
      // asigna los botones flotantes a la pantlla del Deduccion
 
@@ -561,7 +561,7 @@
                                 iEsespejo: ispejo, iIdAcumulado: idAcumulado
                             };
 
-                            console.log(dataSend2)
+                            console.log(dataSend2);
 
                             $.ajax({
                                 url: "../Nomina/insertDefinicioNl",
@@ -836,8 +836,8 @@
                             success: (data) => {
 
                                 console.log(data);
-                                intpe = data.length - 1
-                                $('#RegPeridoDe').append(`<option value=" ${data[intpe].iId} " selected="selected">${data[intpe].iPeriodo}</option>`)
+                                intpe = data.length - 1;
+                                $('#RegPeridoDe').append(`<option value=" ${data[intpe].iId} " selected="selected">${data[intpe].iPeriodo}</option>`);
 
                                 //for (i = 0; i < data.length; i++) {
                                 //    document.getElementById("RegPeridoDe").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo}</option>`;

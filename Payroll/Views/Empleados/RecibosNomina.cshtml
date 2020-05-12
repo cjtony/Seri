@@ -25,7 +25,7 @@
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="form-group row" style="margin-left:2%">
-                    <label for="EmpresaNom" class="col-sm-2 col-form-label font-labels">
+                    <label for="EmpresaNom" class="col-sm-3 col-form-label font-labels">
                         Empresa:
                     </label>
                     <div class="col-sm-4">
@@ -34,13 +34,22 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group row" style="margin-left:2%">
-                    <label for="anoNom" class="col-sm-2 col-form-label font-labels">
+                    <label for="anoNom" class="col-sm-3 col-form-label font-labels">
                         Año:
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="anoNom" class="form-control form-control-sm text-capitalize" />
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-left:2%">
+                    <label for="TipoPerido" class="col-sm-3 col-form-label font-labels">
+                        Tipo de Periodo:
+                    </label>
+                    <div class="col-sm-4">
+                        <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="TipodePerdioRec">
+                            <option value="0">Selecciona</option>
+                        </select>
                     </div>
                 </div>
 
@@ -60,7 +69,7 @@
                     <label for="peridoNom" class="col-sm-2 col-form-label font-labels">
                         Perido:
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-8">
                         <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="PeridoNom">
                             <option value="0">Selecciona</option>
                         </select>
@@ -90,7 +99,7 @@
                                    Empleado: 
                                 </b>
                             </label>
-                            <label for="Emisor" class="col-sm-8 col-form-label font-labels " style="font-size:12px" id="Emisor"></label>
+                            <label for="Emisor" class="col-sm-11 col-form-label font-labels " style="font-size:12px" id="Emisor"></label>
                         </div>
                                         
                                     <div class="table-responsive">
@@ -100,7 +109,7 @@
                 </div>
                 <div class="modal-footer">
                     <button data-toggle="modal" data-target="#GeneraPDF" type="button" class="btn btn-outline-success btn-sm" id="BtbGeneraPDF" style="visibility:visible"> <i class="far fa-file-pdf mr-2"></i>Generar PDF</button>
-                    <button data-toggle="modal" data-target="#GeneraXML" type="button" class="btn btn-outline-success btn-sm" id="BtbGeneraXML" style="visibility:visible"> <i class="<i class="far fa-file-code "></i>Generar XML</button>
+                    <button data-toggle="modal" data-target="#GeneraXML" type="button" class="btn btn-outline-success btn-sm" id="BtbGeneraXML" style="visibility:visible"> <i class="far fa-file-code "></i>Generar XML</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierraRecibio"> <i class="fas fa-times mr-2"></i> Cerrar</button>
                 </div>  
             </div>

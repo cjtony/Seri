@@ -48,9 +48,15 @@ C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\roslyn\vbc.rsp
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\roslyn\VBCSCompiler.exe
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Antlr3.Runtime.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Hangfire.Console.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Hangfire.Core.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Hangfire.SqlServer.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Microsoft.Owin.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Microsoft.Owin.Host.SystemWeb.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Newtonsoft.Json.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Owin.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.Helpers.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.Mvc.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.Optimization.dll
@@ -59,6 +65,11 @@ C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.WebPages.Deploymen
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.WebPages.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.WebPages.Razor.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\WebGrease.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Hangfire.Console.xml
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Hangfire.Core.xml
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Hangfire.SqlServer.xml
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Microsoft.Owin.xml
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Microsoft.Owin.Host.SystemWeb.xml
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.Helpers.xml
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.Mvc.xml
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.Optimization.xml
@@ -69,6 +80,11 @@ C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\System.Web.WebPages.Razor.xml
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Newtonsoft.Json.xml
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Antlr3.Runtime.pdb
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\Hangfire.Core.resources.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\nl\Hangfire.Core.resources.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\pt-BR\Hangfire.Core.resources.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\zh\Hangfire.Core.resources.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\zh-TW\Hangfire.Core.resources.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\System.Web.Helpers.resources.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\System.Web.Mvc.resources.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\System.Web.Optimization.resources.dll
@@ -76,289 +92,7 @@ C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\System.Web.Razor.resources
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\System.Web.WebPages.resources.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\bin\es\System.Web.WebPages.Razor.resources.dll
+C:\Users\Marco Carranza\Documents\Seri\Payroll\obj\Debug\Payroll.csprojAssemblyReference.cache
 C:\Users\Marco Carranza\Documents\Seri\Payroll\obj\Debug\Payroll.csproj.CopyComplete
 C:\Users\Marco Carranza\Documents\Seri\Payroll\obj\Debug\Payroll.dll
 C:\Users\Marco Carranza\Documents\Seri\Payroll\obj\Debug\Payroll.pdb
-<<<<<<< HEAD
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Payroll.dll.config
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Payroll.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Payroll.pdb
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\csc.exe
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\csc.exe.config
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\csc.rsp
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\csi.exe
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\csi.exe.config
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\csi.rsp
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.CodeAnalysis.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.Managed.Core.targets
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\Microsoft.VisualBasic.Core.targets
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.AppContext.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Collections.Immutable.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Console.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Diagnostics.StackTrace.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.IO.Compression.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.IO.FileSystem.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.IO.FileSystem.Primitives.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.IO.Pipes.AccessControl.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.IO.Pipes.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Reflection.Metadata.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Security.AccessControl.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Security.Claims.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Security.Cryptography.Algorithms.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Security.Cryptography.Encoding.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Security.Cryptography.Primitives.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Security.Principal.Windows.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Text.Encoding.CodePages.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.ValueTuple.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Xml.ReaderWriter.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Xml.XmlDocument.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Xml.XPath.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\System.Xml.XPath.XDocument.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\vbc.exe
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\vbc.exe.config
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\vbc.rsp
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\VBCSCompiler.exe
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Antlr3.Runtime.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Microsoft.Web.Infrastructure.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Newtonsoft.Json.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Helpers.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Mvc.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Optimization.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Razor.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.WebPages.Deployment.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.WebPages.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.WebPages.Razor.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\WebGrease.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Helpers.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Mvc.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Optimization.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.Razor.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.WebPages.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.WebPages.Deployment.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\System.Web.WebPages.Razor.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Newtonsoft.Json.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Antlr3.Runtime.pdb
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\System.Web.Helpers.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\System.Web.Mvc.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\System.Web.Optimization.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\System.Web.Razor.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\System.Web.WebPages.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\System.Web.WebPages.Deployment.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\System.Web.WebPages.Razor.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\obj\Debug\Payroll.csprojAssemblyReference.cache
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\obj\Debug\Payroll.csproj.CopyComplete
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\obj\Debug\Payroll.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\obj\Debug\Payroll.pdb
-=======
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Payroll.dll.config
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Payroll.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Payroll.pdb
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\csc.exe
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\csc.exe.config
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\csc.rsp
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\csi.exe
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\csi.exe.config
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\csi.rsp
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.CSharp.Core.targets
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.Managed.Core.targets
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\Microsoft.VisualBasic.Core.targets
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.AppContext.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Collections.Immutable.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Console.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Diagnostics.StackTrace.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.IO.Compression.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.IO.FileSystem.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.IO.FileSystem.Primitives.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.IO.Pipes.AccessControl.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.IO.Pipes.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Reflection.Metadata.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Security.AccessControl.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Security.Claims.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Security.Cryptography.Algorithms.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Security.Cryptography.Encoding.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Security.Cryptography.Primitives.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Security.Principal.Windows.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Text.Encoding.CodePages.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.ValueTuple.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Xml.ReaderWriter.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Xml.XmlDocument.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Xml.XPath.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\System.Xml.XPath.XDocument.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\vbc.exe
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\vbc.exe.config
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\vbc.rsp
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\VBCSCompiler.exe
-D:\IPSNet\Repositorio\Seri\Payroll\bin\roslyn\VBCSCompiler.exe.config
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Antlr3.Runtime.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Microsoft.Web.Infrastructure.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Newtonsoft.Json.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Helpers.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Mvc.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Optimization.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Razor.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.WebPages.Deployment.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.WebPages.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.WebPages.Razor.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\WebGrease.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Helpers.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Mvc.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Optimization.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.Razor.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.WebPages.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.WebPages.Deployment.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\System.Web.WebPages.Razor.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Newtonsoft.Json.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Antlr3.Runtime.pdb
-D:\IPSNet\Repositorio\Seri\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\IPSNet\Repositorio\Seri\Payroll\bin\es\System.Web.Helpers.resources.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\es\System.Web.Mvc.resources.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\es\System.Web.Optimization.resources.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\es\System.Web.Razor.resources.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\es\System.Web.WebPages.resources.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\es\System.Web.WebPages.Deployment.resources.dll
-D:\IPSNet\Repositorio\Seri\Payroll\bin\es\System.Web.WebPages.Razor.resources.dll
-D:\IPSNet\Repositorio\Seri\Payroll\obj\Debug\Payroll.csproj.CoreCompileInputs.cache
-D:\IPSNet\Repositorio\Seri\Payroll\obj\Debug\Payroll.csproj.CopyComplete
-D:\IPSNet\Repositorio\Seri\Payroll\obj\Debug\Payroll.dll
-D:\IPSNet\Repositorio\Seri\Payroll\obj\Debug\Payroll.pdb
->>>>>>> fac0d1616a67d47ec7487f812a5531e58f800ad5
-D:\IPSNet\Repositorio\Seri\Payroll\obj\Debug\Payroll.csprojAssemblyReference.cache
->>>>>>> 8bf59b4378fb2f694211b18cb2e018a49335160d
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Payroll.dll.config
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Payroll.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Payroll.pdb
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\csc.exe
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\csc.exe.config
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\csc.rsp
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\csi.exe
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\csi.exe.config
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\csi.rsp
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.Managed.Core.targets
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\Microsoft.VisualBasic.Core.targets
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.AppContext.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Collections.Immutable.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Console.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Diagnostics.StackTrace.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.IO.Compression.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.IO.FileSystem.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.IO.FileSystem.Primitives.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.IO.Pipes.AccessControl.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.IO.Pipes.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Reflection.Metadata.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Security.AccessControl.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Security.Claims.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Security.Cryptography.Algorithms.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Security.Cryptography.Encoding.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Security.Cryptography.Primitives.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Security.Principal.Windows.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Text.Encoding.CodePages.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.ValueTuple.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Xml.ReaderWriter.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Xml.XmlDocument.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Xml.XPath.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\System.Xml.XPath.XDocument.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\vbc.exe
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\vbc.exe.config
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\vbc.rsp
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\VBCSCompiler.exe
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Antlr3.Runtime.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Microsoft.Web.Infrastructure.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Newtonsoft.Json.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Helpers.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Mvc.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Optimization.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Razor.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.WebPages.Deployment.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.WebPages.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.WebPages.Razor.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\WebGrease.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Helpers.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Mvc.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Optimization.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.Razor.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.WebPages.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.WebPages.Deployment.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\System.Web.WebPages.Razor.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Newtonsoft.Json.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Antlr3.Runtime.pdb
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\System.Web.Helpers.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\System.Web.Mvc.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\System.Web.Optimization.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\System.Web.Razor.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\System.Web.WebPages.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\System.Web.WebPages.Deployment.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\System.Web.WebPages.Razor.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\obj\Debug\Payroll.csprojAssemblyReference.cache
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\obj\Debug\Payroll.csproj.CopyComplete
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\obj\Debug\Payroll.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\obj\Debug\Payroll.pdb
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Hangfire.Console.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Hangfire.Core.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Hangfire.SqlServer.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Microsoft.Owin.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Microsoft.Owin.Host.SystemWeb.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Owin.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Hangfire.Console.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Hangfire.Core.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Hangfire.SqlServer.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Microsoft.Owin.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\Microsoft.Owin.Host.SystemWeb.xml
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\es\Hangfire.Core.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\nl\Hangfire.Core.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\pt-BR\Hangfire.Core.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\zh\Hangfire.Core.resources.dll
-C:\Users\DELL\Desktop\gitproyecto\Rep\Seri\Payroll\bin\zh-TW\Hangfire.Core.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Hangfire.Console.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Hangfire.Core.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Hangfire.SqlServer.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Microsoft.Owin.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Microsoft.Owin.Host.SystemWeb.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Owin.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Hangfire.Console.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Hangfire.Core.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Hangfire.SqlServer.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Microsoft.Owin.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\Microsoft.Owin.Host.SystemWeb.xml
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\es\Hangfire.Core.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\nl\Hangfire.Core.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\pt-BR\Hangfire.Core.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\zh\Hangfire.Core.resources.dll
-C:\Users\Juan Flores Torres\Desktop\Server\Payroll\Payroll\bin\zh-TW\Hangfire.Core.resources.dll
