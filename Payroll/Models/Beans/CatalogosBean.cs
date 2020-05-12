@@ -533,7 +533,7 @@ namespace Payroll.Models.Beans
         public int TipoEmpleado_id { get; set; }
     }
 
-    public class IncidenciaBean
+    public class IncidenciasBean
     {
         public int IdTRegistro_Incidencia { get; set; }
         public int Renglon { get; set; }
@@ -548,5 +548,24 @@ namespace Payroll.Models.Beans
         public int Ren_incid_id { get; set; }
         public string Descripcion {get;set;}
     }
-
+    public class IncidenciasProgramadasBean
+    {
+        public int IdTRegistro_Incidencia { get; set; }
+        public int Renglon { get; set; }
+        public int Cantidad { get; set; }
+        public int Plazos { get; set; }
+        public string Descripcion { get; set; }
+        public string Referencia { get; set; }
+        public string Fecha_Aplicacion { get; set; }
+    }
+    public class TabIncidenciasBean
+    {
+        public int IdTRegistro_Incidencia { get; set; }
+        public int Renglon { get; set; }
+        public int Cantidad { get; set; }
+        public int Plazos { get; set; }
+        public string Descripcion { get; set; }
+        public string Referencia { get; set; }
+        public string Fecha_Aplicacion { get; set; }
+    }
 }
