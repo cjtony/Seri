@@ -8,6 +8,9 @@
                     <a class="nav-item nav-link active font-navs" id="nav-dispersion-tab" data-toggle="tab" href="#nav-dispersion" role="tab" aria-controls="nav-dispersion" aria-selected="true">
                         <i class="fas fa-book mr-2"></i> Dispersiones
                     </a>
+                    <a class="nav-item nav-link font-navs" id="nav-config-data-bank-tab" data-toggle="tab" href="#nav-config-data-bank" role="tab" aria-controls="nav-config-data-bank" aria-selected="true">
+                        <i class="fas fa-cogs mr-2"></i> Configuracion datos bancarios
+                    </a>
 
                 </div>
             </nav>
@@ -20,12 +23,12 @@
                         </nav>*@
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active p-3" id="nav-dispersion" role="tabpanel" aria-labelledby="nav-dispersion-tab">
-                            <div class="row mt-4">
+                            <div class="row mt-2">
                                 <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
                                 <div class="col-md-12 mb-4">
                                     <div class="text-left">
-                                        <h6 class="col-ico font-nav-child">
-                                            <b> <i class="fas fa-circle fa-sm mr-ico-05"></i>  Completa el formulario </b>
+                                        <h6 class="col-ico font-navs">
+                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i>  Completa el formulario </b>
                                         </h6>
                                         <hr />
                                     </div>
@@ -110,6 +113,38 @@
                                 <div class="col-md-6 mt-3">
                                     <div class="form-group d-none" id="divmsgresult">
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade p-3" id="nav-config-data-bank" role="tabpanel" aria-labelledby="nav-config-data-bank">
+                    <div class="tab-pane fade show active p-3" id="config-data-bank" role="tabpanel" aria-labelledby="config-data-bank">
+                        <div class="row mt-2">
+                            <div class="col-md-12 mb-4">
+                                <div class="text-left">
+                                    <h6 class="col-ico font-navs">
+                                        <b> <i class="fas fa-cog fa-sm mr-ico-05"></i>  Configuración </b>
+                                    </h6>
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table" id="table-test">
+                                        <thead>
+                                            <tr>
+                                                <th>No. Banco</th>
+                                                <th>Nombre Banco</th>
+                                                <th>No. Cliente</th>
+                                                <th>No. Cuenta</th>
+                                                <th>No. Plaza</th>
+                                                <th class="text-center">Interface</th>
+                                                <th class="text-center">Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-data-bank"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -270,7 +305,68 @@
     </div>
 </div>
 
+<!-- VENTANA MODAL QUE CONFIGURA LOS DETALLES DE LOS BANCOS -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="details-config-bank" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchemployelabel"> <i class="fas fa-cog text-danger mr-2 col-ico"></i> Configuracion del banco <span id="name-bank-config"></span></h5>
+                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-config-bank">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="key-bank" readonly type="hidden" />
+                                <label class="col-form-label font-labels" for="num-client-bank">No. Cliente</label>
+                                <input type="number" class="form-control form-control-sm" id="num-client-bank" placeholder="Numero de cliente" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label font-labels" for="num-square-bank">No. Plaza</label>
+                                <input type="number" class="form-control form-control-sm" id="num-square-bank" placeholder="Numero de plaza" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label font-labels" for="num-code-bank">Código</label>
+                                <input type="number" class="form-control form-control-sm" id="num-code-bank" placeholder="Codigo" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label font-labels" for="num-bill-bank">No. Cuenta</label>
+                                <input type="number" class="form-control form-control-sm" id="num-bill-bank" placeholder="Numero de cuenta" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label font-labels" for="num-clabe-bank">Clabe</label>
+                                <input type="number" class="form-control form-control-sm" id="num-clabe-bank" placeholder="Clabe" />
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="radio" name="optionbank" id="deposits-interbank" value="0">
+                                    <label class="form-check-label" for="inlineRadio1">Generar depositos interbancarios</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="optionbank" id="deposits-bank" value="1">
+                                    <label class="form-check-label" for="inlineRadio2">Generar interface para los depositos</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-success" id="btn-save-config-bank"> <i class="fas fa-check-circle mr-2"></i> Guardar</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-config-bank"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/main.js"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js"></script>
 <script type="text/javascript">
     function check(e) {
         tecla = (document.all) ? e.keyCode : e.which;
