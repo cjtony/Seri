@@ -333,7 +333,7 @@
             fechinipos.disabled = true;
             fechinipos.value = fechact;
         }
-    }
+    };
 
     fasignsdates();
 
@@ -423,7 +423,7 @@
         "timeOut": "5000", "extendedTimeOut": "1000",
         "showEasing": "swing", "hideEasing": "linear",
         "showMethod": "fadeIn", "hideMethod": "fadeOut"
-    }
+    };
 
 
     gotoppage = (element, idtab, texttoastr) => {
@@ -455,7 +455,7 @@
             else { setTimeout(() => { element.focus(); }, 1200); }
             if (element.id == "numpla") { setTimeout(() => { $("#btn-search-table-num-posicion").click(); }, 1500); }
         });
-    }
+    };
 
     btnSaveDataGen.addEventListener('click', () => {
         const arrInput = [name, apep, sex, estciv, fnaci, lnaci, title, nacion, state];

@@ -93,7 +93,7 @@ namespace Payroll.Models.Beans
         public string sFechaProceso { get; set; }
         public string sFechaPago { get; set; }
         public int iDiasEfectivos { get; set; }
-
+        public string sMensaje { get; set; }
 
     }
 
@@ -190,7 +190,6 @@ namespace Payroll.Models.Beans
 
     public class EmisorReceptorBean
     {
-
         public string sNombreEmpresa { get; set; }
         public string sCalle { get; set; }
         public string sColonia { get; set; }
@@ -208,11 +207,18 @@ namespace Payroll.Models.Beans
         public decimal dSalarioMensual { get; set; }
         public string sRegistroImss { get; set; }
         public string sCURP { get; set; }
-            public string sDescripcion { get; set; }
-            public int iCtaCheques { get; set; }   
-            public int iRegimenFiscal { get; set; }
+        public string sDescripcion { get; set; }
+        public String sCtaCheques { get; set; }   
+        public int iRegimenFiscal { get; set; }
         public string sMensaje { get; set; }
 
+    }
+
+    public class EmpleadosEmpresaBean
+    {
+        public int iIdEmpleado { get; set; }
+        public string sNombreCompleto { get; set; }
+        public string sMensaje { get; set; }
     }
 
     public class ReciboNominaBean
@@ -232,9 +238,16 @@ namespace Payroll.Models.Beans
        public string dPercepciones { get; set; }
        public string dDeducciones { get; set; }
        public string dSaldos { get; set; }
-       public string dInformativos { get; set; } 
-    
+       public string dInformativos { get; set; }
+       public string sMensaje { get; set; }
     }
 
-   
+    public class XMLBean {
+
+        public string sfilecer { get; set;}
+        public string sfilekey { get; set; }
+        public string stransitorio { get; set; }
+        public int ifolio { get; set; }
+        public string sMensaje { get; set; }
+    }
 }

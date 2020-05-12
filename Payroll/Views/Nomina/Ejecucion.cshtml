@@ -14,12 +14,6 @@
         <button class="flotante3 rounded btn btn-outline-danger" title="Ejecutar" id="btnFloEjecutar" type="button" btvisible="true" value="1" style="visibility:visible">
             <i class="far fa-caret-square-right"></i>
         </button>
-        <button class="flotante4 rounded btn btn-outline-danger" title="Cerrar Nomina" id="btnFloCerrarNom" type="button" btvisible="true" value="1" style="visibility:visible">
-            <i class="far fa-file-archive"></i>
-        </button>
-
-        
-
     </div>
 
     <div class="tab-pane fade show active p-3 row table-responsive" id="navEjecucion" role="tabpanel" aria-labelledby="nav-Ejeciciones-tab">
@@ -45,7 +39,7 @@
                             <h6 class="col-ico font-nav-child">
                                 <b>
                                     <i class="fas fa-circle fa-sm mr-ico-05"></i>
-                                    Ejecución prueba
+                                    Ejecución
                                 </b>
                             </h6>
                             <hr />
@@ -67,66 +61,56 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row">
 
-                            <label class="col-sm-4 col-form-label font-labels"><input type="checkbox" id="ChNCerrada">  Nomina cerrda</label>
-                            @*<div class="col-sm-8">
-                                <select placeholder="Ejecucion" tp-select="NomCerreada" class="form-control form-control-sm" id="EjeCerrada">
-                                    <option value="0">Falso</option>
-                                    <option value="1">Firme</option>
-                                </select>
-                            </div>*@
+                        <div class="form-group row">
+                            <label for="anoeje" class="col-sm-4 col-form-label font-labels">
+                                Año:
+                            </label>
+                            <div class="col-sm-8">
+                                <input placeholder="Año" type="text" id="TbAño" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="TipoperiodoEje" class="col-sm-4 col-form-label font-labels">
+                                Tipo de periodo:
+                            </label>
+                            <div class="col-sm-8">     
+                              <input placeholder="Tipo de periodo" type="text" id="TxbTipoPeriodo" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
+                        </div>
+
+                      
                     </div>
 
                     <div class="col-md-6">
 
                         <div class="form-group row">
-                            <label for="ano" class="col-sm-4 col-form-label font-labels">
-                                Inicio de calculo:
+                            <label for="PeridoEje" class="col-sm-4 col-form-label font-labels">
+                                Periodo:
                             </label>
                             <div class="col-sm-8">
-                                <input placeholder="Inicion de calculo" type="text" id="TxtBInicioClculo" class="form-control form-control-sm text-capitalize" readonly />
+                                <select placeholder="Periodo" tp-select="PeridoEje" class="form-control form-control-sm" id="PeridoEje">
+                                    <option value="0">Selecciona</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="DCancelado" class="col-sm-4 col-form-label font-labels">
-                                Fin de calculo
-                            </label>
-                            <div class="col-sm-8">
-                                <input placeholder="Fin de calculo" type="text" id="TxtBFinClculo" class="form-control form-control-sm text-capitalize" readonly />
-                            </div>
+
+                            <label class="col-sm-4 col-form-label font-labels"><input type="checkbox" id="ChNCerrada">  Nomina cerrada</label>
+                            @*<div class="col-sm-8">
+            <select placeholder="Ejecucion" tp-select="NomCerreada" class="form-control form-control-sm" id="EjeCerrada">
+             <option value="0">Falso</option>
+              <option value="1">Firme</option>
+            </select>
+             </div>*@
                         </div>
+
 
                     </div>
 
                 </div>
-                <!--Boton de registro -->
-                @*<div class="form-group row">
-                        <div class="col text-right">
-                            <br />
-                            <button type="submit" class="btn btn-primary mb-2 " id="btnGuardarEjecucion" value="1"><span class="fa fa-floppy-o"></span> Guardar </button>
-
-                        </div>
-                    </div>*@
-
-
-                <!--Grid Definicion-->
-                @*<div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="table-responsive" style="text-align:center">
-                                        <div id="TpDefinicion" class="table-responsive"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
-
-
-
             </div>
 
             <!-- pantalla de vista calculo tab-->
@@ -143,6 +127,34 @@
                             <hr />
                         </div>
                     </div>
+                    <div class="form-group row" style="margin-left:15px">
+                        <label for="DefinicionCal" class="col-sm-3 col-form-label font-labels">
+                            Definicion:
+                        </label>
+                        <div class="col-sm-9">
+                            <input placeholder="Definicion" type="text" id="DefinicionCal" class="form-control form-control-sm text-capitalize" readonly />
+                        </div>
+                    </div>
+
+                    <div class="form-group row" style="margin-left:15px">
+
+                        <label for="TipoPeridoCal" class="col-sm-5 col-form-label font-labels">
+                            tipo de periodo:
+                        </label>
+                        <div class="col-sm-7">
+                            <input placeholder="Tipo de periodo" type="text" id="TipoPeridoCal" class="form-control form-control-sm text-capitalize" readonly />
+                        </div>
+                    </div>
+
+                    <div class="form-group row" style="margin-left:15px">
+                        <label for="PeriodoCal" class="col-sm-4 col-form-label font-labels">
+                            Periodo:
+                        </label>
+                        <div class="col-sm-8">
+                            <input placeholder="Periodo" type="text" id="PeriodoCal" class="form-control form-control-sm text-capitalize" readonly />
+                        </div>
+                    </div>
+
 
                     <div class="modal-body col-12">
                         <div class="">
@@ -156,8 +168,8 @@
                                     </div>
                                 </div>
                                 @*<div class="table-responsive" style="text-align:center">
-                                        <div id="TbCalculos" class="table-responsive"></div>
-                                    </div>*@
+                        <div id="TbCalculos" class="table-responsive"></div>
+                    </div>*@
                             </div>
                         </div>
                     </div>

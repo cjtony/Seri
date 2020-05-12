@@ -104,7 +104,7 @@
             }
         }
     };
-    BActu.addEventListener('click', botonActu)
+    BActu.addEventListener('click', botonActu);
 
     // Eliminar Registro de Definicion de la Plantilla BD
 
@@ -200,6 +200,8 @@
 
         FRecargaGrip();
 
+        $("#TpDefinicion").jqxGrid('clearselection');
+
     });
 
     $('#DeCancelados').change(function () {
@@ -207,26 +209,31 @@
         FRecargaGrip();
     });
 
-    $("#TpDefinicion").on('rowselect', function (event) {
-        var args = event.args;
-        $("#selectrowindex").text(event.args.rowindex);
-    });
-    // display unselected row index.
-    $("#TpDefinicion").on('rowselect', function (event) {
-        var args = event.args;
-        var row = $("#TpDefinicion").jqxGrid('getrowdata', args.rowindex);
-        console.log(args);
-        $("#unselectrowindex").text(row['iIdDefinicionhd'] + row['sNombreDefinicion']);
-        dato = row['sNombreDefinicion'];
-        IdDh = row['iIdDefinicionhd'];
-        DatoNombrede = row['sNombreDefinicion'];
-        DatoDescripcion = row['sDescripcion'];
-        Datoano = row['iAno'];
-        DatoCancel = row['iCancelado'];
-        FcargaPercepciones();
-        FcargaDeducionesGrip();
-    });
+    FSelectDefinicion = () => {
+        $("#TpDefinicion").on('rowselect', function (event) {
+            var args = event.args;
+            $("#selectrowindex").text(event.args.rowindex);
+        });
+        // display unselected row index.
+        $("#TpDefinicion").on('rowselect', function (event) {
+            var args = event.args;
+            var row = $("#TpDefinicion").jqxGrid('getrowdata', args.rowindex);
+            console.log(args);
+            $("#unselectrowindex").text(row['iIdDefinicionhd'] + row['sNombreDefinicion']);
+            dato = row['sNombreDefinicion'];
+            IdDh = row['iIdDefinicionhd'];
+            DatoNombrede = row['sNombreDefinicion'];
+            DatoDescripcion = row['sDescripcion'];
+            Datoano = row['iAno'];
+            DatoCancel = row['iCancelado'];
+            FcargaPercepciones();
+            FcargaDeducionesGrip();
+        });
 
+    };
+
+  
+    FSelectDefinicion();
 
     // abre ventana del agregar 
 
