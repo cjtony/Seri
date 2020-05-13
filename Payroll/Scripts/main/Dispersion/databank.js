@@ -245,4 +245,12 @@
 
     btnSaveConfigBank.addEventListener('click', fUpdateConfigBank);
 
+    //let reloadtable = setInterval(() => {
+    //    if (tableDataBank.innerHTML == "") {
+    //        console.log('vacio')
+    //    } else {
+    //        fLoadTableDataBanks();
+    //    }
+    //}, 1000);
+
 });
