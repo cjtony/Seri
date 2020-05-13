@@ -203,6 +203,8 @@
                             }).then((acepta) => {
                                 tableDataBank.innerHTML = '';
                                 fLoadTableDataBanks();
+                                $("#details-config-bank").modal('hide');
+                                fClearFieldsConfigBank();
                             });
                         } else {
                             Swal.fire({
