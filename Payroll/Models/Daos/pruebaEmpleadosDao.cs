@@ -605,5 +605,86 @@ namespace Payroll.Models.Daos
 
             return list;
         }
+        public List<TabIncidenciasBean> sp_TIncidencias_Retrieve_Incidencias_Empleado( int Empresa_id, int Empleado_id, int Periodo)
+        {
+            List<TabIncidenciasBean> list = new List<TabIncidenciasBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TAusentismos_Retrieve_Ausentismos", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmplado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    TabIncidenciasBean lista = new TabIncidenciasBean();
+
+                    lista.IdTRegistro_Incidencia = int.Parse(data["IdAusentismo"].ToString());
+                    lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
+                    lista.Anio = int.Parse(data["Tipo_Ausentismo_id"].ToString());
+                    lista.NPeriodo = int.Parse(data["Fecha_Ausentismo"].ToString());
+                    lista.Empleado_id = int.Parse(data["Empleado_id"].ToString());
+                    lista.Renglon = int.Parse(data["Fecha_Ausentismo"].ToString());
+                    lista.Cantidad = int.Parse(data["Dias_Ausentismo"].ToString());
+                    lista.Plazos = int.Parse(data["Fecha_Ausentismo"].ToString());
+                    lista.Descripcion = data["Fecha_Ausentismo"].ToString();
+                    lista.Referencia = data["Fecha_Ausentismo"].ToString();
+                    lista.Fecha_Aplicacion = data["Fecha_Ausentismo"].ToString();
+
+                    list.Add(lista);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
+        public List<IncidenciasProgramadasBean> sp_TIncidencias_Programadas_Retrieve_Incidencias_Programadas(int Empresa_id, int Periodo)
+        {
+            List<IncidenciasProgramadasBean> list = new List<IncidenciasProgramadasBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TIncidencias_Programadas_Retrieve_Incidencias_Programadas", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    IncidenciasProgramadasBean lista = new IncidenciasProgramadasBean();
+
+                    lista.Id = int.Parse(data["id"].ToString());
+                    lista.Nombre_Empleado = data["Nombre_Empleado"].ToString();
+                    lista.Apellido_Paterno_Empleado = data["Apellido_Paterno_Empleado"].ToString();
+                    lista.Apellido_Materno_Empleado = data["Apellido_Materno_Empleado"].ToString();
+                    lista.Empleado_id = int.Parse(data["Empleado_id"].ToString());
+                    lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
+                    lista.Renglon_id = int.Parse(data["Renglon_id"].ToString());
+                    lista.Monto_aplicar = data["Monto_aplicar"].ToString();
+                    lista.Numero_dias = int.Parse(data["Numero_dias"].ToString());
+
+                    list.Add(lista);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
     }
 }
