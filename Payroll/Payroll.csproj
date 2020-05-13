@@ -928,13 +928,13 @@
     <Content Include="Views\Incidencias\Incidencias.cshtml" />
     <Content Include="Views\Incidencias\RegistrarIncidencias.cshtml" />
     <Content Include="Views\Nomina\BajasEmpleados.cshtml" />
-<<<<<<< HEAD
+
     <Content Include="Views\Incidencias\Incidencias.cshtml" />
     <Content Include="Views\Incidencias\RegistrarIncidencias.cshtml" />
-=======
+
     <Content Include="Views\Nomina\Dispersion.cshtml" />
     <Content Include="Scripts\main\Dispersion\main.js" />
->>>>>>> maguilar
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
