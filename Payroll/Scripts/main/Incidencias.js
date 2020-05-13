@@ -104,6 +104,7 @@
                         leyenda_incidencia.value = '';
                         referencia_incidencia.value = '';
                         fecha_incidencia.value = '';
+                        createTab();
                         Swal.fire({
                             icon: 'success',
                             title: 'Completado!',
@@ -115,40 +116,45 @@
             });
         }
     });
+
+
+    //Funciones
+    MostrarDatosEmpleado = (idE) => {
+        var txtIdEmpleado = { "IdEmpleado": idE };
+        $.ajax({
+            url: "../Empleados/SearchEmpleado",
+            type: "POST",
+            data: JSON.stringify(txtIdEmpleado),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                createTab();
+                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
+                $("#modalLiveSearchEmpleado").modal("hide");
+            }
+        });
+    }
+    createTab = () => {
+        $.ajax({
+            method: "POST",
+            url: "../Incidencias/LoadIncidenciasEmpleado",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (data) => {
+                document.getElementById("tabIncidenciasBody").innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    document.getElementById("tabIncidenciasBody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"] + "</td><td><div class='btn btn-danger btn-sm'><i class='far fa-check-square'></i></div></td></tr>";
+                }
+            }
+        });
+
+    }
+
 });
 
 
     
 
- //Funciones
-function MostrarDatosEmpleado(idE) {
-    var txtIdEmpleado = { "IdEmpleado": idE };
-    $.ajax({
-        url: "../Empleados/SearchEmpleado",
-        type: "POST",
-        data: JSON.stringify(txtIdEmpleado),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: (data) => {
-            document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
-            $("#modalLiveSearchEmpleado").modal("hide");   
-        } 
-    });
-}
-function createTab() {
-    $.ajax({
-        method: "POST",
-        url: "../Incidencias/LoadIncidenciasEmpleado",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: (data) => {
-            document.getElementById("tabIncidenciasBody").innerHTML = "";
-            for (var i = 0; i < data.length; i++) {
-                document.getElementById("tabIncidenciasBody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"] + "</td><td><div class='btn btn-danger btn-sm'><i class='far fa-check-square'></i></div></td></tr>";
-            }
-        }
-    });
 
-}
 
 
