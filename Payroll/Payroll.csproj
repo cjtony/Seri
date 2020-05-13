@@ -141,7 +141,9 @@
     <Compile Include="App_Start\LibreriasFacturas.cs" />
     <Compile Include="App_Start\opensslkey.cs" />
     <Compile Include="Controllers\CatalogsTablesController.cs" />
+    <Compile Include="Controllers\ConfigDataBankController.cs" />
     <Compile Include="Controllers\ControlPayrollController.cs" />
+    <Compile Include="Controllers\DispersionController.cs" />
     <Compile Include="Controllers\EditDataGeneralController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
@@ -155,6 +157,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Beans\CatalogosBean.cs" />
+    <Compile Include="Models\Beans\ConfigDataBankBean.cs" />
+    <Compile Include="Models\Beans\DispersionBean.cs" />
     <Compile Include="Models\Beans\MainMenuBean.cs" />
     <Compile Include="Models\Beans\MenuBean.cs" />
     <Compile Include="Models\Beans\NominaBean.cs" />
@@ -166,6 +170,8 @@
     <Compile Include="Models\Beans\UsuariosBean.cs" />
     <Compile Include="Models\Beans\VariablesBean.cs" />
     <Compile Include="Models\Daos\CatalogosDao.cs" />
+    <Compile Include="Models\Daos\ConfigDataBankDao.cs" />
+    <Compile Include="Models\Daos\DispersionDao.cs" />
     <Compile Include="Models\Daos\EditDataGeneralDao.cs" />
     <Compile Include="Models\Daos\ListTablesDao.cs" />
     <Compile Include="Models\Daos\MainMenuDao.cs" />
@@ -831,6 +837,7 @@
     <Content Include="Scripts\main\catalogos.js" />
     <Content Include="Scripts\main\Creditos.js" />
     <Content Include="Scripts\main\departments.js" />
+    <Content Include="Scripts\main\Dispersion\databank.js" />
     <Content Include="Scripts\main\employes.js" />
     <Content Include="Scripts\main\Empre.js" />
     <Content Include="Scripts\ferros\errajax.js" />
@@ -921,12 +928,19 @@
     <Content Include="Views\Incidencias\Incidencias.cshtml" />
     <Content Include="Views\Incidencias\RegistrarIncidencias.cshtml" />
     <Content Include="Views\Nomina\BajasEmpleados.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Incidencias\Incidencias.cshtml" />
     <Content Include="Views\Incidencias\RegistrarIncidencias.cshtml" />
+=======
+    <Content Include="Views\Nomina\Dispersion.cshtml" />
+    <Content Include="Scripts\main\Dispersion\main.js" />
+>>>>>>> maguilar
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\CatalogsTables\" />
+    <Folder Include="Views\ConfigDataBank\" />
+    <Folder Include="Views\Dispersion\" />
     <Folder Include="Views\EditDataGeneral\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\MainMenu\" />
