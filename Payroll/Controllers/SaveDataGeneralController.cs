@@ -23,7 +23,7 @@ namespace Payroll.Controllers
             PuestosBean addPuestoBean = new PuestosBean();
             SavePuestosDao savePuestoDao = new SavePuestosDao();
             // Reemplazar por la sesion de la empresa
-            int keyemp = 5;
+            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             addPuestoBean = savePuestoDao.sp_Puestos_Insert_Puestos(regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto, usuario, keyemp);
             return Json(addPuestoBean);
@@ -37,7 +37,7 @@ namespace Payroll.Controllers
             SaveDepartamentosDao saveDepartamentoDao = new SaveDepartamentosDao();
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             // Reemplazar por la sesion de la empresa
-            int keyemp  = 5;
+            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             addDepartamentoBean = saveDepartamentoDao.sp_Departamentos_Insert_Departamento(keyemp, regdepart, descdepart, nivestuc, nivsuptxt, edific, piso, ubicac, centrcost, reportaa, dgatxt, dirgentxt, direjetxt, diraretxt, dirgen, direje, dirare, usuario);
             string result = "error";
             if (addDepartamentoBean.sMensaje == "success") {
@@ -54,7 +54,7 @@ namespace Payroll.Controllers
             DatosPosicionesDao savePosicionDao = new DatosPosicionesDao();
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             // Reemplazar por la sesion de la empresa
-            int keyemp = 5;
+            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             addPosicionBean = savePosicionDao.sp_Posiciones_Insert_Posicion(codposic, depaid, puesid, regpatcla, localityr, emprepreg, reportempr, usuario, keyemp);
             var data = new { result = addPosicionBean.sMensaje };
             return Json(data);
@@ -69,7 +69,7 @@ namespace Payroll.Controllers
             EmpleadosDao empleadoDao = new EmpleadosDao();
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             // Reemplazar por la sesion de la empresa
-            int empresa = 5;
+            int empresa = int.Parse(Session["IdEmpresa"].ToString());
             addEmpleadoBean = empleadoDao.sp_Empleados_Insert_Empleado(name, apepat, apemat, sex, estciv, fnaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, usuario, empresa, tipsan, fecmat);
             var data = new { result = addEmpleadoBean.sMensaje };
             return Json(addEmpleadoBean);
@@ -83,7 +83,7 @@ namespace Payroll.Controllers
             ImssDao imssDao = new ImssDao();
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             //Sesion de la empresa
-            int keyemp = 5;
+            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             addImssBean = imssDao.sp_Imss_Insert_Imss(fecefe, regimss, rfc, curp, nivest, nivsoc, usuario, empleado, apepat, apemat, fechanaci, keyemp);
             var data = new { result = addImssBean.sMensaje };
             return Json(data);
@@ -96,7 +96,7 @@ namespace Payroll.Controllers
             DatosNominaBean addDatoNomina = new DatosNominaBean();
             DatosNominaDao datoNominaDao = new DatosNominaDao();
             //Reemplazar por la session de la empresa
-            int keyemp = 5;
+            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(fecefecnom, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, estats, usuario, empleado, apepat, apemat, fechanaci, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp);
             var data = new { result = addDatoNomina.sMensaje };
@@ -135,7 +135,7 @@ namespace Payroll.Controllers
             RegionesDao regionDao = new RegionesDao();
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             // Reemplazar por la session de la empresa
-            int keyemp = 5;
+            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             addRegionBean = regionDao.sp_Regionales_Insert_Regionales(descregion, claregion, usuario, keyemp);
             var data = new { result = addRegionBean.sMensaje };
             return Json(data);
