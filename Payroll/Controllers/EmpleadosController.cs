@@ -50,6 +50,7 @@ namespace Payroll.Controllers
             return PartialView();
         }
 
+       
         [HttpPost]
         public JsonResult LoadStates()
         {

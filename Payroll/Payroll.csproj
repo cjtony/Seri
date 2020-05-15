@@ -935,6 +935,7 @@
     <Content Include="Views\Nomina\Dispersion.cshtml" />
     <Content Include="Scripts\main\Dispersion\main.js" />
     <Content Include="Views\Incidencias\TablaIncidencias.cshtml" />
+    <Content Include="Views\Empleados\TimbradosXML.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
