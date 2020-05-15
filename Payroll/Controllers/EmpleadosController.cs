@@ -3,6 +3,23 @@ using Payroll.Models.Daos;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+using System;
+using System.Linq;
+using System.Web;
+using Payroll.Models.Utilerias;
+using System.Data.SqlClient;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Configuration;
+using System.Media;
+using System.Xml;
+using System.IO.Compression;
+
+using System.Drawing;
+using System.Web.UI.WebControls;
+
 namespace Payroll.Controllers
 {
     public class EmpleadosController : Controller
@@ -24,6 +41,11 @@ namespace Payroll.Controllers
             return PartialView();
         }
         public PartialViewResult RecibosNomina()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult TimbradosXML()
         {
             return PartialView();
         }
@@ -291,19 +313,19 @@ namespace Payroll.Controllers
 
         }
 
+        
         [HttpPost]
-
+       
         public JsonResult XMLNomina(int IdEmpresa, string sNombreComple, int Periodo, int anios, int Tipodeperido)
         {
-           
-              List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();            
+            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();            
               ListEmpleadosDao Dao = new ListEmpleadosDao();
               string path = Server.MapPath("Archivos\\certificados\\");
               path = path.Replace("\\Empleados", "");
-              ListDatEmisor = Dao.GXMLNOM (IdEmpresa, sNombreComple, path,Periodo, anios, Tipodeperido);
-     
+              ListDatEmisor = Dao.GXMLNOM (IdEmpresa, sNombreComple, path,Periodo, anios, Tipodeperido);      
             return Json(ListDatEmisor);
         }
+
 
     }
 }

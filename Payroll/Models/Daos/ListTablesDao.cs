@@ -20,8 +20,10 @@ namespace Payroll.Models.Daos
 {
     public class ListTablesDao { }
 
+ 
     public class ListEmpleadosDao : Conexion
     {
+       
         public List<EmpleadosBean> sp_Empleados_Retrieve_Search_Empleados(int keyemp, string wordsearch, string filtered)
         {
             List<EmpleadosBean> listEmpleadosBean = new List<EmpleadosBean>();
@@ -490,6 +492,7 @@ namespace Payroll.Models.Daos
                         ls.sDescripcion = data["Descripcion"].ToString();
                         ls.sCtaCheques = data["Cta_Cheques"].ToString();
                         ls.iRegimenFiscal = int.Parse(data["Regimen_Fiscal_id"].ToString());
+                        ls.iIdNomina = int.Parse(data["IdNomina"].ToString());
                         
                         list.Add(ls);
                     }
@@ -667,8 +670,12 @@ namespace Payroll.Models.Daos
                     {
                         ReciboNominaBean ls = new ReciboNominaBean();
                         {
+                            ls.iIdTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
+                            ls.iIdCalculoshd = int.Parse(data["Calculos_Hd_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
-                            ls.dSaldo = decimal.Parse(data["Saldo"].ToString());                       
+                            ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
+                            ls.sEspejo = data["es_espejo"].ToString();
+                            
                         }
 
                         list.Add(ls);
@@ -688,9 +695,10 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-
+        public HttpResponse response { get; }
         public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido)
         {
+            List<string> NomArchXML = new List<string>();
             string[] Nombre = sNombreComple.Split(' ');
             string Idempleado = Nombre[0].ToString();
             int NumEmpleado = Convert.ToInt32(Idempleado.ToString());
@@ -706,7 +714,7 @@ namespace Payroll.Models.Daos
             string EspacioDeNombreNomina = "http://www.sat.gob.mx/nomina12";
             string parametro3 = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd http://www.sat.gob.mx/nomina12 http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd";
             string EspacioDeNombre = "http://www.sat.gob.mx/cfd/3";
-            string s_certificadoKey = ""; string s_certificadoCer = ""; string ArchivoXmlFile; string s_transitorio = "";
+            string s_certificadoKey = ""; string s_certificadoCer = ""; string ArchivoXmlFile; string NomArch; string s_transitorio = "";
 
             int nRfcEmisor = 0;
             int nImporte = 1;
@@ -727,6 +735,7 @@ namespace Payroll.Models.Daos
             string sFechaFinalPago;
             string sFechaPago;
             string sDiasEfectivos;
+            string anoarchivo;
 
             if (ListDatEmisor.Count > 0)
             {
@@ -734,7 +743,8 @@ namespace Payroll.Models.Daos
                 EmisorRFC = ListDatEmisor[0].sRFC;
                 ReceptorCurp = ListDatEmisor[0].sCURP;
                 ReceptorRFC = ListDatEmisor[0].sRFCEmpleado;
-                ArchivoXmlFile = path + EmisorRFC + "_" + ReceptorRFC + "_" + "001";
+                NomArch = "F";
+                ArchivoXmlFile = path + NomArch;
                 FileCadenaXslt = path + "cadenaoriginal_3_3.xslt";
                 sUsoCFDI = "P01";
                 var culture = CultureInfo.CreateSpecificCulture("es-MX");
@@ -755,13 +765,14 @@ namespace Payroll.Models.Daos
                     sFechaInicialPago = String.Format("{0:yyyy-MM-dd}", dt1);
                     sFechaFinalPago = String.Format("{0:yyyy-MM-dd}", dt2);
                     sFechaPago = String.Format("{0:yyyy-MM-dd}", dt3);
-
+                    anoarchivo = String.Format("{0:yyyy}", dt2);
 
                     List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
                     ListTotales = sp_SaldosTotales_Retrieve_TPlantillasCalculos(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo);
-                    LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id,LFechaPerido[0].iPeriodo);
-                    //Partidas
+                    LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id, LFechaPerido[0].iPeriodo);
 
+                    //Partidas
+                    string tipoNom =" ";
                     string TotalPercepciones = " ";
                     string totalDeduciones = " ";
                     string totalRecibo = " ";
@@ -771,6 +782,8 @@ namespace Payroll.Models.Daos
                     {
                         for (int i = 0; i < ListTotales.Count; i++) 
                         {
+                            if (ListTotales[i].sEspejo == "False") { tipoNom = "0"; }
+                            if (ListTotales[i].sEspejo == "True") { tipoNom = "1"; }
                             if (ListTotales[i].iIdRenglon == 990) { TotalPercepciones = string.Format("{0:N2}", ListTotales[i].dSaldo); }
                             if (ListTotales[i].iIdRenglon == 1990) { totalDeduciones = string.Format( "{0:N2}",ListTotales[i].dSaldo); }
                             if (ListTotales[i].iIdRenglon == 9999) { totalRecibo = string.Format("{0:N2}", ListTotales[i].dSaldo); }
@@ -830,8 +843,21 @@ namespace Payroll.Models.Daos
                     StreamWriter writer;
                     XmlTextWriter xmlWriter;
 
-                    ArchivoXmlFile = "F";
 
+                    // Nombre del archivo XML
+                    int NoidCalhd = ListTotales[0].iIdCalculoshd;
+                    NomArch = NomArch + NoidCalhd + "_CFDI_E16_F" + anoarchivo;
+                    if (LFechaPerido[0].iPeriodo > 9)
+                    {
+                        NomArch = NomArch + ListTotales[0].iIdTipoPeriodo +"0" +LFechaPerido[0].iPeriodo+ tipoNom + "_N"+ ListDatEmisor[0].iIdNomina;
+                    }
+                    if (LFechaPerido[0].iPeriodo < 10)
+                    {
+                        NomArch = NomArch + ListTotales[0].iIdTipoPeriodo + "00" + LFechaPerido[0].iPeriodo+ tipoNom + "_N"+ ListDatEmisor[0].iIdNomina;
+                    }
+                   
+                    ArchivoXmlFile = ArchivoXmlFile + NomArch ;
+                    NomArchXML.Add(ArchivoXmlFile);
 
                     //Crear archivo XML
                     writer = File.CreateText(ArchivoXmlFile);
@@ -949,8 +975,8 @@ namespace Payroll.Models.Daos
                        
                         xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
                     }
-                    xmlWriter.WriteAttributeString("SalarioBaseCotApor", SueldoDiario);
-                    xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SuedoAgravado);
+                    xmlWriter.WriteAttributeString("SalarioBaseCotApor", SuedoAgravado );
+                    xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SueldoDiario);
                     xmlWriter.WriteAttributeString("ClaveEntFed", "DIF");
                     xmlWriter.WriteEndElement();
 
@@ -1068,7 +1094,7 @@ namespace Payroll.Models.Daos
                     // Quitar el BOM
                     string line;
                     StreamReader sr = new StreamReader(ArchivoXmlFile);
-                    StreamWriter sw = new StreamWriter(path + EmisorRFC + "_" + ReceptorRFC + "_" + "001" + ".xml", false, new UTF8Encoding(false));
+                    StreamWriter sw = new StreamWriter(path + NomArch + ".xml", false, new UTF8Encoding(false));
 
                     //Read the first line of text
                     line = sr.ReadLine();
@@ -1088,6 +1114,37 @@ namespace Payroll.Models.Daos
                     sw.Close();
                     File.Delete(ArchivoXmlFile); //Borra archivo temporal
 
+                 
+                    // 1 
+                    //DirectoryInfo dir = new DirectoryInfo(@"C:\reportes\");
+                    // 2 
+                    string nombreArchivoZip = "ZipXML.zip";
+                    FileStream stream = new FileStream(path + nombreArchivoZip, FileMode.OpenOrCreate);
+                    // 3 
+                    ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create);
+                    // 4 
+                    System.IO.DirectoryInfo directorio = new System.IO.DirectoryInfo(path);
+                    FileInfo[] sourceFiles = directorio.GetFiles("*" + NomArch + ".xml");
+                    foreach (FileInfo sourceFile in sourceFiles)
+                    {
+                        // 5 
+                        Stream sourceStream = sourceFile.OpenRead();
+                        // 6 
+                        ZipArchiveEntry entry = archive.CreateEntry(sourceFile.Name);
+                        // 7 
+                        Stream zipStream = entry.Open();
+                        // 8 
+                        sourceStream.CopyTo(zipStream);
+                        // 9 
+                        zipStream.Close();
+                        sourceStream.Close();
+                    }
+                    
+                    // 10 
+                    archive.Dispose();
+                    stream.Close();
+                    // descargar zip             
+            
 
                 }
 
@@ -1096,5 +1153,8 @@ namespace Payroll.Models.Daos
 
             return ListDatEmisor;
         }
+
+     
+
     }
 }
