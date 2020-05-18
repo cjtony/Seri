@@ -328,9 +328,9 @@
             fecefe.value = fechact;
             fecefecnom.disabled = true;
             fecefecnom.value = fechact;
-            fechefectpos.disabled = true;
+            fechefectpos.disabled = false;
             fechefectpos.value = fechact;
-            fechinipos.disabled = true;
+            fechinipos.disabled = false;
             fechinipos.value = fechact;
         }
     };
