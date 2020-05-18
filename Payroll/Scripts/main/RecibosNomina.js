@@ -224,12 +224,19 @@
             type: "POST",
             data: dataSend,
             success: (data) => {
+
+                var url = '\\Archivos\\certificados\\ZipXML.zip';
+                window.open(url);
           
             }
         });
 
 
+
+     
     };
+
+   
 
     BtbGeneraXML.addEventListener('click', FGenerarXML);
   

@@ -3,6 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
+using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.ComponentModel.Design.Serialization;
+using System.IO;
+using System.Security.Principal;
+using System.Web.Caching;
+using System.Web.ModelBinding;
+using System.Web.Routing;
+using System.Web.SessionState;
+using System.Web.UI;
+using System.Web.UI.Adapters;
+using System.Web.UI.HtmlControls;
+
+
+
 namespace Payroll.Models.Beans
 {
     public class NominaBean
@@ -210,6 +228,7 @@ namespace Payroll.Models.Beans
         public string sDescripcion { get; set; }
         public String sCtaCheques { get; set; }   
         public int iRegimenFiscal { get; set; }
+        public int iIdNomina { get; set; }
         public string sMensaje { get; set; }
 
     }
@@ -223,11 +242,15 @@ namespace Payroll.Models.Beans
 
     public class ReciboNominaBean
     { 
+
        public int iIdRenglon { get; set; }
+       public int iIdTipoPeriodo { get; set; }
        public string sNombre_Renglon { get; set; }
        public decimal  dSaldo { get; set; }
        public int iConsecutivo { get; set; }
+       public int iIdCalculoshd { get; set; }
        public int iElementoNomina { get; set; }
+       public string sEspejo { get; set; }
        public string sMensaje { get; set; }
 
     }
@@ -250,4 +273,5 @@ namespace Payroll.Models.Beans
         public int ifolio { get; set; }
         public string sMensaje { get; set; }
     }
+
 }
