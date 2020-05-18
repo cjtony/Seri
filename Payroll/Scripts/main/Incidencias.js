@@ -59,8 +59,16 @@
         }
     });
     //CAMBIOS EN EL SELECT Y EL RENGLON
-    $("#inConcepto_incidencia").on("change", function() {
+    $("#inConcepto_incidencia").on("change", function () {
         ren_incidencia.value = concepto_incidencia.value;
+        console.log(ren_incidencia.value);
+        if (ren_incidencia.value == '71') {
+            console.log("si");
+            $("#inCantidad").attr("placeholder","#");
+        } else {
+            console.log("no");
+            $("#inCantidad").attr("placeholder", "$ 0000.00");
+        }
     });
     //GUARDAR INCIDENCIA
     $("#btnSaveIncidencias").on("click", function () {
@@ -141,9 +149,10 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
+                console.log(data);
                 document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tabIncidenciasBody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"] + "</td><td><div class='btn btn-danger btn-sm'><i class='far fa-check-square'></i></div></td></tr>";
+                    document.getElementById("tabIncidenciasBody").innerHTML += "<tr><td>" + data[i]["Nombre_Renglon"] + "</td><td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td><td class='text-center'>" + data[i]["Cantidad"] + "</td><td class='text-center'>" + data[i]["Plazos"] + "</td><td class='text-center'>" + data[i]["Descripcion"] + "</td><td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td><td class='text-center'><div class=' badge badge-danger btn'><i class='fas fa-minus'></i></div></td></tr>";
                 }
             }
         });
