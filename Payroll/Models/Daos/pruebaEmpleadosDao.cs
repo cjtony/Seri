@@ -609,12 +609,12 @@ namespace Payroll.Models.Daos
         {
             List<TabIncidenciasBean> list = new List<TabIncidenciasBean>();
             this.Conectar();
-            SqlCommand cmd = new SqlCommand("sp_TAusentismos_Retrieve_Ausentismos", this.conexion)
+            SqlCommand cmd = new SqlCommand("sp_TIncidencias_Retrieve_Incidencias_Empleado", this.conexion)
             {
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
-            cmd.Parameters.Add(new SqlParameter("@ctrlEmplado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
@@ -624,17 +624,12 @@ namespace Payroll.Models.Daos
                 {
                     TabIncidenciasBean lista = new TabIncidenciasBean();
 
-                    lista.IdTRegistro_Incidencia = int.Parse(data["IdAusentismo"].ToString());
-                    lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
-                    lista.Anio = int.Parse(data["Tipo_Ausentismo_id"].ToString());
-                    lista.NPeriodo = int.Parse(data["Fecha_Ausentismo"].ToString());
-                    lista.Empleado_id = int.Parse(data["Empleado_id"].ToString());
-                    lista.Renglon = int.Parse(data["Fecha_Ausentismo"].ToString());
-                    lista.Cantidad = int.Parse(data["Dias_Ausentismo"].ToString());
-                    lista.Plazos = int.Parse(data["Fecha_Ausentismo"].ToString());
-                    lista.Descripcion = data["Fecha_Ausentismo"].ToString();
-                    lista.Referencia = data["Fecha_Ausentismo"].ToString();
-                    lista.Fecha_Aplicacion = data["Fecha_Ausentismo"].ToString();
+                    lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
+                    lista.VW_TipoIncidencia_id = data["VW_Tipo_Incidencia_id"].ToString();
+                    lista.Cantidad = int.Parse(data["Cantidad"].ToString());
+                    lista.Plazos = int.Parse(data["Plazos"].ToString());
+                    lista.Descripcion = data["Descripcion"].ToString();
+                    lista.Fecha_Aplicacion = data["Fecha_Aplicacion"].ToString();
 
                     list.Add(lista);
                 }
