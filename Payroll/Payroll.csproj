@@ -140,6 +140,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\LibreriasFacturas.cs" />
     <Compile Include="App_Start\opensslkey.cs" />
+    <Compile Include="Controllers\BajasEmpleadosController.cs" />
     <Compile Include="Controllers\CatalogsTablesController.cs" />
     <Compile Include="Controllers\ConfigDataBankController.cs" />
     <Compile Include="Controllers\ControlPayrollController.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Beans\BajasEmpleadosBean.cs" />
     <Compile Include="Models\Beans\CatalogosBean.cs" />
     <Compile Include="Models\Beans\ConfigDataBankBean.cs" />
     <Compile Include="Models\Beans\DispersionBean.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Models\Beans\PruebaEmpresaBean.cs" />
     <Compile Include="Models\Beans\UsuariosBean.cs" />
     <Compile Include="Models\Beans\VariablesBean.cs" />
+    <Compile Include="Models\Daos\BajasEmpleadosDaoD.cs" />
     <Compile Include="Models\Daos\CatalogosDao.cs" />
     <Compile Include="Models\Daos\ConfigDataBankDao.cs" />
     <Compile Include="Models\Daos\DispersionDao.cs" />
@@ -929,16 +932,15 @@
     <Content Include="Views\Incidencias\Incidencias.cshtml" />
     <Content Include="Views\Incidencias\RegistrarIncidencias.cshtml" />
     <Content Include="Views\Nomina\BajasEmpleados.cshtml" />
-
     <Content Include="Views\Incidencias\Incidencias.cshtml" />
     <Content Include="Views\Incidencias\RegistrarIncidencias.cshtml" />
-
     <Content Include="Views\Nomina\Dispersion.cshtml" />
     <Content Include="Scripts\main\Dispersion\main.js" />
     <Content Include="Views\Incidencias\TablaIncidencias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\BajasEmpleados\" />
     <Folder Include="Views\CatalogsTables\" />
     <Folder Include="Views\ConfigDataBank\" />
     <Folder Include="Views\Dispersion\" />

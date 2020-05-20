@@ -1380,6 +1380,7 @@ namespace Payroll.Models.Daos
                         list.Add(data["Salario_Mensual"].ToString());
                         list.Add(data["Fecha_Aumento"].ToString());
                         list.Add(data["Fecha_Antiguedad"].ToString());
+                        list.Add(data["Fecha_Ingreso"].ToString());
                         list.Add(data["Nivel_Empleado"].ToString());
                         list.Add(data["Posicion"].ToString());
                     }
