@@ -29,7 +29,6 @@ namespace Payroll.Controllers
                 int keyBusiness     = int.Parse(Session["IdEmpresa"].ToString());
                 typeDateStr         = (typeDate == 0) ? "Fecha Antiguedad" : "Fecha Ingreso";
                 typeCompensationStr = (typeCompensation == 0) ? "Sin compensacion especial" : "Con compensacion especial";
-                int daysRest        = downEmployeeDaoD.DiasRestantes();
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             }
