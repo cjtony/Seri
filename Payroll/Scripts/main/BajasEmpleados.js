@@ -90,6 +90,7 @@
                         document.getElementById("ingreso_emp").innerHTML = res[5];
                         document.getElementById("nivel_emp").innerHTML = res[6];
                         document.getElementById("posicion_emp").innerHTML = res[7];
+                        document.getElementById('dateAntiquityEmp').value = res[4];
                         dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
                         dateSendDown.innerHTML += `<option value="1">Fecha de ingreso - ${res[5]}</option>`;
                         document.getElementById('info-employee').classList.remove('d-none');
@@ -104,6 +105,8 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: (tipo) => {
+                        console.log('Tipos de baja');
+                        console.log(tipo);
                         for (var i = 0; i < tipo.length; i++) {
                             document.getElementById("inTiposBaja").innerHTML += "<option value='" + tipo[i]["IdTipo_Empleado"] + "'>" + tipo[i]["Descripcion"] + "</option>";
                         }
@@ -121,6 +124,7 @@
 
     const btnGuardaBaja = document.getElementById('btnGuardaBaja');
     const keyEmployee   = document.getElementById('keyEmployee');
+    const dateAntiquityEmp = document.getElementById('dateAntiquityEmp');
     const inTiposBaja   = document.getElementById('inTiposBaja');
     const inMotivosBaja = document.getElementById('inMotivosBaja');
     const dateDownEmp   = document.getElementById('dateDownEmp');
@@ -182,9 +186,12 @@
                             if (dateSendDown.value == "1" || dateSendDown.value == "0") {
                                 if (compSendEsp.value == "1" || compSendEsp.value == "0") {
                                     const dataSend = {
-                                        keyEmployee: pareInt(keyEmployee.value),
+                                        keyEmployee: parseInt(keyEmployee.value),
+                                        dateAntiquityEmp: (dateAntiquityEmp.value),
                                         idTypeDown: parseInt(inTiposBaja.value),
+                                        idReasonsDown: parseInt(inMotivosBaja.value),
                                         dateDownEmp: String(dateDownEmp.value),
+                                        dateReceipt: String(dateRec.value),
                                         typeDate: parseInt(dateSendDown.value),
                                         typeCompensation: parseInt(compSendEsp.value)
                                     };
@@ -194,7 +201,24 @@
                                         type: "POST",
                                         data: dataSend,
                                         success: (data) => {
-                                            console.log(data);
+                                            if (data.Bandera == true && MensajeError == "none") {
+                                                if (data.DatosFiniquito.length > 0) {
+                                                    for (let i = 0; i < data.DatosFiniquito.length; i++) {
+                                                        console.log(data.DatosFiniquito[i].iIdFiniquito);
+                                                    }
+                                                    setTimeout(() => {
+                                                        $("#window-data-down").modal("show");
+                                                    }, 1000);
+                                                } else {
+                                                    alert("No se pudo cargar la informacion");
+                                                }
+                                            } else if (data.Bandera == false && MensajeError == "ERRMOSTINFO") {
+                                                alert("Registro correcto, error al mostrar informacion");
+                                            } else if (data.Bandera == false && MensajeError == "ERRINSFINIQ") {
+                                                alert("Error al registrar la informacion");
+                                            } else {
+                                                alert("Ocurrio un error, reporte al área de TI");
+                                            }
                                         }, error: (jqXHR, exception) => {
                                             fcaptureaerrorsajax(jqXHR, exception);
                                         }

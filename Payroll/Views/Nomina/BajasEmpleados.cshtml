@@ -49,7 +49,7 @@
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <ul class="list-group shadow rounded"> 
+                    <ul class="list-group shadow rounded">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-money-check-alt mr-1 text-info"></i> Sueldo mensual</span>
                             <span class="badge badge-info" id="sueldo_emp"></span>
@@ -72,6 +72,7 @@
                 <div class="form-group row col-md-12 m-0 mt-3">
                     <div class="form-group col-md-4">
                         <input type="hidden" readonly id="keyEmployee" />
+                        <input type="hidden" readonly id="dateAntiquityEmp" />
                         <label class="">Tipo de Baja</label>
                         <select id="inTiposBaja" class=" custom-select font-labels">
                             <option value="none">Selecciona</option>
@@ -84,9 +85,9 @@
                         </select>
                     </div>
                     @*<div class="form-group col-md-4">
-                <label class="">Nota de Baja</label>
-                <input type="text" class="form-control font-labels" placeholder="Escriba un comentario acerca de la baja" />
-            </div>*@
+                            <label class="">Nota de Baja</label>
+                            <input type="text" class="form-control font-labels" placeholder="Escriba un comentario acerca de la baja" />
+                        </div>*@
                     <div class="form-group col-md-4">
                         <label>Fecha Baja</label>
                         <input type="date" class="form-control" id="dateDownEmp" />
@@ -96,21 +97,21 @@
                         <input type="date" class="form-control" id="dateRec" />
                     </div>
                     @*<div class="form-group col-md-4">
-                <label>Vacaciones Tomadas</label>
-                <input type="text" class="form-control" id="" placeholder="#" />
-            </div>
-            <div class="form-group col-md-4">
-                <label>Año actual</label>
-                <input type="text" class="form-control" id="" placeholder="#" />
-            </div>*@
+                            <label>Vacaciones Tomadas</label>
+                            <input type="text" class="form-control" id="" placeholder="#" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Año actual</label>
+                            <input type="text" class="form-control" id="" placeholder="#" />
+                        </div>*@
                     @*<div class="form-group col-md-4">
-                <label>Vacaciones Pendientes</label>
-                <input type="text" class="form-control" id="" placeholder="#" />
-            </div>
-            <div class="form-group col-md-4">
-                <label>Años anteriores</label>
-                <input type="text" class="form-control" id="" placeholder="#" />
-            </div>*@
+                            <label>Vacaciones Pendientes</label>
+                            <input type="text" class="form-control" id="" placeholder="#" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Años anteriores</label>
+                            <input type="text" class="form-control" id="" placeholder="#" />
+                        </div>*@
                     <div class="col-md-4 form-group">
                         <label>Fecha a usar</label>
                         <select class="form-control form-control-sm" id="dateSendDown">
@@ -126,27 +127,27 @@
                         </select>
                     </div>
                     @*<div class="col-md-12">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label" for="customSwitch1">Salario Diario en Indemnizaciones</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                    <label class="custom-control-label" for="customSwitch2">No volver a contratar</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                    <label class="custom-control-label" for="customSwitch3">No entregar vales de despensa </label>
-                </div>
-            </div>*@
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                <label class="custom-control-label" for="customSwitch1">Salario Diario en Indemnizaciones</label>
+                            </div>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                <label class="custom-control-label" for="customSwitch2">No volver a contratar</label>
+                            </div>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                <label class="custom-control-label" for="customSwitch3">No entregar vales de despensa </label>
+                            </div>
+                        </div>*@
                     <div class="col-md-4 text-center offset-4 p-3 mb-3 mt-4">
                         <button class="btn btn-light col-btn-login font-button btn-sm" id="btnGuardaBaja" type="button">
                             <i class="fas fa-check-circle mr-2"></i>Guardar
                         </button>
                     </div>
                     @*<div class="d-flex justify-content-end col-md-12">
-                <div class="btn btn-primary form-control btn-sm font-labels my-3">Guardar registro</div>
-            </div>*@
+                            <div class="btn btn-primary form-control btn-sm font-labels my-3">Guardar registro</div>
+                        </div>*@
                 </div>
             </div>
         </div>
@@ -188,4 +189,26 @@
         </div>
     </div>
 </div>
+
+<!-- VENTANA MODAL QUE MUESTRA LA INFORMACION DE LOS FINIQUITOS -->
+<div class="modal fade" id="window-data-down" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/main/BajasEmpleados.js"></script>

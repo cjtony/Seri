@@ -1213,7 +1213,7 @@ namespace Payroll.Models.Daos
                     {
                         TipoEmpleadoBean ls = new TipoEmpleadoBean();
                         {
-                            ls.IdTipo_Empleado = int.Parse(data["IdValor"].ToString());
+                            ls.IdTipo_Empleado = int.Parse(data["id"].ToString());
                             ls.Descripcion = data["Valor"].ToString();
                         };
                         list.Add(ls);
@@ -1301,18 +1301,18 @@ namespace Payroll.Models.Daos
                             case 21:
                             case 22:
                                 ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
-                                ls.TipoEmpleado_id = 21;
+                                ls.TipoEmpleado_id = 164;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 4:
                             case 5:
                                 ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
-                                ls.TipoEmpleado_id = 22;
+                                ls.TipoEmpleado_id = 165;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 18:
                                 ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
-                                ls.TipoEmpleado_id = 25;
+                                ls.TipoEmpleado_id = 168;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 19:
@@ -1325,7 +1325,7 @@ namespace Payroll.Models.Daos
                             case 8:
                             case 9:
                                 ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
-                                ls.TipoEmpleado_id = 29;
+                                ls.TipoEmpleado_id = 172;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 17:
