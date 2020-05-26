@@ -387,8 +387,8 @@ namespace Payroll.Models.Daos
             cmd.Dispose();
             if (data.HasRows)
             {
-                list.Add("1");
-                list.Add("Ausentismo Eliminado con éxito");
+                list.Add(data["iFlag"].ToString());
+                list.Add(data["sRespuesta"].ToString());
             }
             else
             {
@@ -398,9 +398,9 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public void sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada,int Periodo)
+        public List<string> sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada,int Periodo)
         {
-            List<string> lista = new List<string>();
+            List<string> list = new List<string>();
             this.Conectar();
             SqlCommand cmd = new SqlCommand("sp_TAusentismos_Insert_Ausentismo", this.conexion)
             {
@@ -418,11 +418,22 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
+            if (data.HasRows)
+            {
+                list.Add(data["iFlag"].ToString());
+                list.Add(data["sRespuesta"].ToString());
+            }
+            else
+            {
+                list = null;
+            }
             data.Close();
+
+            return list;
         }
-        public void sp_TAusentismos_Update_Ausentismo(int id, int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo)
+        public List<string> sp_TAusentismos_Update_Ausentismo(int id, int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo)
         {
-            List<string> lista = new List<string>();
+            List<string> list = new List<string>();
             this.Conectar();
             SqlCommand cmd = new SqlCommand("sp_TAusentismos_Update_Ausentismo", this.conexion)
             {
@@ -441,7 +452,21 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
             data.Close();
+
+            return list;
         }
         public List<string> sp_TPensiones_Alimenticias_Insert_Pensiones(int Empresa_id, int Empleado_id, string Cuota_fija, int Porcentaje, string AplicaEn, string Descontar_en_finiquito, string No_Oficio, string Fecha_Oficio, int Tipo_Calculo, string Aumentar_segun_salario_minimo_general, string Aumentar_segun_aumento_de_sueldo, string Beneficiaria, int Banco, string Sucursal, string Tarjeta_vales, string Cuenta_Cheques, string Fecha_baja)
         {
