@@ -20,3 +20,13 @@
 .cd:hover {
     color:#fff;
 }
+.bg-cat-cards {
+    background-color: #A574F5 !important;
+    color: white !important;
+    border-color: rebeccapurple !important;
+}
+.bg-cat-cards-hover {
+    background-color: #8C4CF5 !important;
+    color: white !important;
+    border-color: purple !important;
+}

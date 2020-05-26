@@ -149,6 +149,7 @@
     <Compile Include="App_Start\LibreriasFacturas.cs" />
     <Compile Include="App_Start\opensslkey.cs" />
     <Compile Include="Controllers\BajasEmpleadosController.cs" />
+    <Compile Include="Controllers\CatalogosController.cs" />
     <Compile Include="Controllers\CatalogsTablesController.cs" />
     <Compile Include="Controllers\ConfigDataBankController.cs" />
     <Compile Include="Controllers\ControlPayrollController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Models\Daos\ListTablesDao.cs" />
     <Compile Include="Models\Daos\MainMenuDao.cs" />
     <Compile Include="Models\Daos\MenuDao.cs" />
+    <Compile Include="Models\Daos\ModCatalogosDao.cs" />
     <Compile Include="Models\Daos\NominaDao.cs" />
     <Compile Include="Models\Daos\pruebaEmpleadosDao.cs" />
     <Compile Include="Models\Daos\PruebaEmpresaDao.cs" />
@@ -879,6 +881,7 @@
     <Content Include="Scripts\main\loadmenu.js" />
     <Content Include="Scripts\main\localitys.js" />
     <Content Include="Scripts\main\main.js" />
+    <Content Include="Scripts\main\ModuloCatalogos.js" />
     <Content Include="Scripts\main\PensionesAlimenticias.js" />
     <Content Include="Scripts\main\positions.js" />
     <Content Include="Scripts\main\puestos.js" />
@@ -948,6 +951,7 @@
     <Content Include="Scripts\main\Dispersion\main.js" />
     <Content Include="Views\Incidencias\TablaIncidencias.cshtml" />
     <Content Include="Views\Empleados\TimbradosXML.cshtml" />
+    <Content Include="Views\Catalogos\VistaCatalogos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

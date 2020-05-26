@@ -10,8 +10,8 @@
     var btnu = document.getElementById("btnUpdate");
     certif.disabled = true;
     coment.disabled = true;
-    btnc.classList.add("invisible");
-    btnu.classList.add("invisible");
+    //btnc.classList.add("invisible");
+    //btnu.classList.add("invisible");
     //Busqueda de empleado
     $("#inputSearchEmpleados").on("keyup", function () {
         $("#inputSearchEmpleados").empty();
@@ -174,12 +174,13 @@ function MostrarDatosEmpleado(idE) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: (data) => {
+            console.log(data[0]["Nombre_Empleado"]);
             document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
             $("#modalLiveSearchEmpleado").modal("hide");
             document.getElementById("resultSearchEmpleados").innerHTML = "";
             document.getElementById("inputSearchEmpleados").value = "";
             tabAusentismo();
-            document.getElementById("nameuser").innerHTML = "<div class='text-uppercase'>" + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "<small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small></div>";
+            //document.getElementById("nameuser").innerHTML = "<div class='text-uppercase'>" + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "<small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small></div>";
         }
     });
     //Funcion para validar solo numeros 
