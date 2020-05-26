@@ -8,7 +8,7 @@ using Payroll.Models.Utilerias;
 using System.Data.SqlClient;
 using System.Data;
 using System.Web.Mvc;
-
+using Antlr.Runtime.Tree;
 
 namespace Payroll.Models.Daos
 {
@@ -135,7 +135,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa )
+        public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa ,int ctrliElemntoNOm)
         {
             List<CRenglonesBean> list = new List<CRenglonesBean>();
             try
@@ -146,6 +146,7 @@ namespace Payroll.Models.Daos
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrliIdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@ctrliElemntoNOm", ctrliElemntoNOm));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -766,6 +767,38 @@ namespace Payroll.Models.Daos
 
         }
 
+        public NominaLnBean sp_RenglonesDefinicionNL_Update_TplantillaDefinicionNL(int CtrlIdDefinicionLn)
+        {
+            NominaLnBean bean = new NominaLnBean();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_RenglonesDefinicionNL_Update_TplantillaDefinicionNL", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrliIdDefinicionnl", CtrlIdDefinicionLn));
+           
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+
+        }
+
+
         public NominaLnBean sp_EliminarDefinicionNl_Delete_EliminarDefinicionNl(int CtrliIdDefinicionNl)
         {
             NominaLnBean bean = new NominaLnBean();
@@ -841,6 +874,7 @@ namespace Payroll.Models.Daos
 
         }
 
+            
         public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliNominaCerrada)
         {
             TpCalculosHd bean = new TpCalculosHd();
@@ -1127,6 +1161,101 @@ namespace Payroll.Models.Daos
             return list;
         }
 
+        public List<TpCalculosCarBean> sp_Caratula_Retrieve_TPlantilla_Calculos(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa)
+        {
+            List<TpCalculosCarBean> list = new List<TpCalculosCarBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Caratula_Retrieve_TPlantilla_Calculos", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicion", CtrliIdCalculoshd));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipodePerido", CrtliIdTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CrtliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", Idempresa));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TpCalculosCarBean ls = new TpCalculosCarBean();
+                        {
+                            ls.sValor = data["Valor"].ToString();
+                            ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
+                            ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
+                            ls.dTotal =decimal.Parse(data["total"].ToString());
+                            ls.sMensaje = "success";
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    TpCalculosCarBean ls = new TpCalculosCarBean();
+                    ls.sMensaje = "No hay datos";
+                    list.Add(ls);
+
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+
+        }
+
+        public List<EmpresasBean> sp_Empresa_Retrieve_TpCalculosLN(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo)
+        {
+            List<EmpresasBean> list = new List<EmpresasBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Empresa_Retrieve_TpCalculosLN", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicion", CtrliIdCalculoshd));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipodePerido", CrtliIdTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CrtliPeriodo));
+           
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmpresasBean ls = new EmpresasBean();
+                        {
+                            ls.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
+                            ls.sNombreEmpresa = data["NombreEmpresa"].ToString();
+                            
+                            ls.sMensaje = "success";
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    EmpresasBean ls = new EmpresasBean();
+                    ls.sMensaje = "No hay datos";
+                    list.Add(ls);
+
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+        }
         public List<TPProcesos> sp_EstatusJobsTbProcesos_retrieve_EstatusJobsTbProcesos()
         {
             List<TPProcesos> list = new List<TPProcesos>();
@@ -1601,6 +1730,55 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
-    }
+		public List<NominaLnBean> sp_ExitReglon_Retrieve_TpDefinicionNominaLn(int CtrliIdEmpresa,int CtrliIdrenglon, int CtrliIdDefinicion, int CtrliElemnom)
+		{
+			List<NominaLnBean> list = new List<NominaLnBean>();
+			try
+			{
+				this.Conectar();
+				SqlCommand cmd = new SqlCommand("sp_ExitReglon_Retrieve_TpDefinicionNominaLn", this.conexion)
+				{
+					CommandType = CommandType.StoredProcedure
+				};
+				cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdrenglon", CtrliIdrenglon));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicion", CtrliIdDefinicion));
+                cmd.Parameters.Add(new SqlParameter("@CtrliElemnom", CtrliElemnom));
+                SqlDataReader data = cmd.ExecuteReader();
+				cmd.Dispose();
+				if (data.HasRows)
+				{
+					while (data.Read())
+					{
+                        NominaLnBean ls = new NominaLnBean();
+						{
+							ls.iIdDefinicionHd = int.Parse(data["Existe"].ToString());
+
+						};
+						list.Add(ls);
+					}
+				}
+				else
+				{
+                    NominaLnBean ls = new NominaLnBean();
+					{
+						ls.iIdDefinicionHd = 0;
+
+					};
+					list.Add(ls);
+				}
+				data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+			}
+			catch (Exception exc)
+			{
+				Console.WriteLine(exc);
+			}
+			return list;
+
+		}
+
+
+
+	}
 }
 

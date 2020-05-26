@@ -18,8 +18,7 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.Adapters;
 using System.Web.UI.HtmlControls;
-
-
+using System.Configuration;
 
 namespace Payroll.Models.Beans
 {
@@ -184,6 +183,13 @@ namespace Payroll.Models.Beans
 
     }
 
+    public class TpCalculosCarBean {
+        public string sValor { get; set; }
+        public int iIdRenglon { get; set; }
+        public string sNombreRenglon { get; set; }
+        public decimal dTotal { get; set; }
+        public string sMensaje { get; set; }
+    }
     public class TPProcesos
     {
         public int iIdTarea { get; set; }

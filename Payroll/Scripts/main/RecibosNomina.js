@@ -12,7 +12,7 @@
     const TipodePerdioRec = document.getElementById('TipodePerdioRec');
     const PeridoNom = document.getElementById('PeridoNom');
     const Emisor = document.getElementById('Emisor');
-
+    
     const BtbGeneraXM = document.getElementById('BtbGeneraXML');
 
     var EmpresNom;
@@ -162,9 +162,6 @@
          arreglosubcadena = periodo.split(separador, limite);
          NoEmpleado = EmpleadosNom.value;
          const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, iPeriodo: arreglosubcadena[0] };
-        
-         console.log(dataSend2);
-
          $.ajax({
              url: "../Empleados/ReciboNomina",
              type: "POST",
@@ -203,7 +200,6 @@
 
              }
          });
-
      };
 
      btnFloBuscar.addEventListener('click', FBuscar);
@@ -214,8 +210,7 @@
         IdEmpresa = EmpresaNom.value;
         anio = anoNom.value;
         Tipoperiodo = TipodePerdioRec.value;
-        datosPeriodo = PeridoNom.value;
-        console.log('Generar archivo XML');
+        datosPeriodo = PeridoNom.value;       
         const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo };
         console.log(dataSend);
 

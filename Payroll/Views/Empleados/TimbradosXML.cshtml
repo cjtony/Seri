@@ -2,10 +2,8 @@
 
     @*Botones Flotantes*@
     <div>
-        <button class="flotante rounded btn btn-outline-success" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
-            <i class="fas fa-search"></i>
-        </button>
-        <button class="flotante2 rounded btn btn-outline-danger" title="Limpiar todos los campos" id="btnFloLimpiar" type="button" btvisible="true" value="1">
+      
+        <button class="flotante rounded btn btn-outline-danger" title="Limpiar todos los campos" id="btnFloLimpiar" type="button" btvisible="true" value="1">
             <i class="fas fa-eraser"></i>
         </button>
     </div>
@@ -56,29 +54,24 @@
                         Versión CFDI:
                     </label>
                     <div class="col-sm-4" style="margin-left:-5%">
-                        <input placeholder="Versión" maxlength="2" tvvisible="false" type="text" id="version" class="form-control form-control-sm text-capitalize" />
+                        <input placeholder="Versión" maxlength="2" tvvisible="false" type="text" id="versionxml" class="form-control form-control-sm text-capitalize" />
                     </div>
                 </div>
                 <div class="form-group row col-md-8">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                        <input type="file" class="custom-file-input" id="fileUpload" lang="es-mx">
                         <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
                     </div>
                 </div>
-            </div>
-        </div>
-        <form class="md-form">
-            <div class="file-field">
-                <div class="btn btn-primary btn-sm float-left">
-                    <span>Choose file</span>
-                    <input type="file">
+                <div class="form-group row col-md-8" style="margin-left:40%">
+                    <button type="submit" class="btn btn-primary mb-2 " id="btnTiembrar"><span class="fa fa-arrow-circle-o-up"></span> Timbrar </button>
                 </div>
-                <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" placeholder="Upload your file">
-                </div>
+           
+                
             </div>
-        </form>
+        </div>  
     </div>
 
 
 </div>
+<script src="~/Scripts/main/Timbradosxml.js"></script>
