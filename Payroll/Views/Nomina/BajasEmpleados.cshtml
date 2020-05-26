@@ -32,19 +32,19 @@
                     <ul class="list-group shadow rounded">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-id-badge mr-1 text-info"></i> Nomina</span>
-                            <span class="badge badge-info" id="id_emp"></span>
+                            <span class="badge badge-info p-2" id="id_emp"></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-calendar mr-1 text-info"></i> Ultimo aumento</span>
-                            <span class="badge badge-info" id="aumento_emp"></span>
+                            <span class="badge badge-info p-2" id="aumento_emp"></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-calendar mr-1 text-info"></i> Fecha antiguedad</span>
-                            <span class="badge badge-info" id="antiguedad_emp"></span>
+                            <span class="badge badge-info p-2" id="antiguedad_emp"></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-calendar mr-1 text-info"></i> Fecha ingreso</span>
-                            <span class="badge badge-info" id="ingreso_emp"></span>
+                            <span class="badge badge-info p-2" id="ingreso_emp"></span>
                         </li>
                     </ul>
                 </div>
@@ -52,15 +52,21 @@
                     <ul class="list-group shadow rounded">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-money-check-alt mr-1 text-info"></i> Sueldo mensual</span>
-                            <span class="badge badge-info" id="sueldo_emp"></span>
+                            <span class="badge badge-info p-2" id="sueldo_emp"></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-user-tie mr-1 text-info"></i> Nivel empleado</span>
-                            <span class="badge badge-info" id="nivel_emp"></span>
+                            <span class="badge badge-info p-2" id="nivel_emp"></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="fas fa-building mr-1 text-info"></i> Plaza & nb</span>
-                            <span class="badge badge-info" id="posicion_emp"></span>
+                            <span class="badge badge-info p-2" id="posicion_emp"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-folder mr-1 text-info"></i> Finiquitos </span>
+                            <span class="badge badge-info p-2" id="btnShowWindowDataDonw">
+                                <a href="#" data-toggle="modal" data-target="#window-data-down" class="text-white">Ver registros</a>
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -192,20 +198,28 @@
 
 <!-- VENTANA MODAL QUE MUESTRA LA INFORMACION DE LOS FINIQUITOS -->
 <div class="modal fade" id="window-data-down" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel"> <i class="fas fa-file-alt col-ico mr-2"></i>Propuestas Finiquitos </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <ul class="list-group" id="list-data-down">
+                    @*<li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-calendar-alt mr-2 col-ico"></i>Fecha: 10/05/2020 <i class="fas fa-tag ml-2 mr-2 col-ico"></i> Tipo Baja: FINIQUITO VOLUNTARIO</span>
+                        <span class="badge">
+                            <button class="btn btn-sm btn-success"> <i class="fas fa-file-pdf mr-2"></i> Imprimir </button>
+                        </span>
+                    </li>*@
+                    
+                </ul>
+                <div class="row" id="no-data-info"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

@@ -41,7 +41,7 @@ namespace Payroll.Models.Daos
             return downEmployee;
         }
 
-        public List<BajasEmpleadosBean> sp_Finiquitos_Empleado(int keyEmployee, int keyBusiness)
+        public List<BajasEmpleadosBean> sp_Finiquitos_Empleado(int keyEmployee, int keyBusiness, int keySettlement)
         {
             List<BajasEmpleadosBean> listDataDownEmpBean = new List<BajasEmpleadosBean>();
             try {
@@ -49,6 +49,7 @@ namespace Payroll.Models.Daos
                 SqlCommand cmd = new SqlCommand("sp_Finiquitos_Empleado", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa",  keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySettlement));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows) {
                     while (data.Read()) {
@@ -61,7 +62,19 @@ namespace Payroll.Models.Daos
                             iAnios            = Convert.ToInt32(data["Anios"].ToString()),
                             sDias             = data["Dias"].ToString(),
                             iTipo_finiquito_id = Convert.ToInt32(data["Tipo_finiquito_id"].ToString()),
-                            sFiniquito_valor   = data["Finiquito_valor"].ToString()
+                            sFiniquito_valor   = data["Finiquito_valor"].ToString(),
+                            iEmpleado_id       = Convert.ToInt32(data["Empleado_id"].ToString()),
+                            sFecha_recibo      = data["Fecha_recibo"].ToString(),
+                            sEmpresa           = data["NombreEmpresa"].ToString(),
+                            iEstatus           = Convert.ToInt32(data["Estatus"].ToString()),
+                            sRFC               = data["RFC"].ToString(),
+                            iCentro_costo_id   = Convert.ToInt32(data["Centro_costo_id"].ToString()),
+                            sSalario_diario    = data["Salario_diario"].ToString(),
+                            sSalario_mensual   = data["Salario_mensual"].ToString(),
+                            sPuesto            = data["NombrePuesto"].ToString(),
+                            sCentro_costo      = data["CentroCosto"].ToString(),
+                            sDepartamento      = data["DescripcionDepartamento"].ToString(),
+                            sDepto_codigo      = data["Depto_Codigo"].ToString()
                         });
                     }
                 }
@@ -73,6 +86,63 @@ namespace Payroll.Models.Daos
                 this.Conectar().Close();
             }
             return listDataDownEmpBean;
+        }
+
+        public List<DatosFiniquito> sp_Info_Finiquito_Empleado(int keySettlement)
+        {
+            List<DatosFiniquito> listDataDown = new List<DatosFiniquito>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Info_Finiquito_Empleado", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySettlement));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        listDataDown.Add(new DatosFiniquito {
+                            iIdValor = Convert.ToInt32(data["IdValor"].ToString()),
+                            sTipo    = data["Tipo"].ToString(),
+                            iRenglon_id = Convert.ToInt32(data["Renglon_id"].ToString()),
+                            sNombre_Renglon = data["Nombre_Renglon"].ToString(),
+                            sGravado = data["Gravado"].ToString(),
+                            sExcento = data["Excento"].ToString(),
+                            sSaldo   = data["Saldo"].ToString(),
+                            iEmpresa = Convert.ToInt32(data["Empresa"].ToString()),
+                            iNomina  = Convert.ToInt32(data["Nomina"].ToString()),
+                            sNombre  = data["Nombre"].ToString(),
+                            sLeyenda = data["Leyenda"].ToString()
+                        });
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return listDataDown;
+        }
+
+        public BajasEmpleadosBean sp_Selecciona_Finiquito_Pago(int keySettlement)
+        {
+            BajasEmpleadosBean selectSettlementPaid = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Selecciona_Finiquito_Pago", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySettlement));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    selectSettlementPaid.sMensaje = "UPDATE";
+                } else {
+                    selectSettlementPaid.sMensaje = "ERRUPD";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return selectSettlementPaid;
         }
 
     }

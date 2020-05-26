@@ -94,7 +94,7 @@
                         dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
                         dateSendDown.innerHTML += `<option value="1">Fecha de ingreso - ${res[5]}</option>`;
                         document.getElementById('info-employee').classList.remove('d-none');
-                        document.getElementById('info-employee').classList.add('animated fadeIn delay-1s');
+                        //document.getElementById('info-employee').classList.add('animated fadeIn delay-1s');
                     }
                 });
                 //carga select tipo Baja
@@ -121,7 +121,7 @@
     /*
      * Constantes bajas
      */
-
+    const btnShowWindowDataDown = document.getElementById('btnShowWindowDataDonw');
     const btnGuardaBaja = document.getElementById('btnGuardaBaja');
     const keyEmployee   = document.getElementById('keyEmployee');
     const dateAntiquityEmp = document.getElementById('dateAntiquityEmp');
@@ -176,6 +176,215 @@
         });
     }
 
+    // Funcion que muestra los finiquitos que un empleado tiene 
+    fShowDataDown = () => {
+        document.getElementById('list-data-down').innerHTML = "";
+        document.getElementById('no-data-info').innerHTML = "";
+        try {
+            console.log("IdEmpleado: " + keyEmployee.value);
+            if (keyEmployee.value != "") {
+                $.ajax({
+                    url: "../BajasEmpleados/ShowDataDown",
+                    type: "POST",
+                    data: { keyEmployee: parseInt(keyEmployee.value) },
+                    beforeSend: () => {
+                        console.log('Cargando');
+                    }, success: (data) => {
+                        if (data.Bandera == true && data.MensajeError == "none") {
+                            let sumEstatus = 0;
+                            for (let j = 0; j < data.DatosFiniquito.length; j++) {
+                                if (data.DatosFiniquito[j].iEstatus > 0) {
+                                    sumEstatus += 1;
+                                }
+                            }
+                            for (let i = 0; i < data.DatosFiniquito.length; i++) {
+                                let infoPaid = "";
+                                let checked  = "";
+                                if (data.DatosFiniquito[i].iEstatus == 1) {
+                                    checked = "checked";
+                                    infoPaid = `<span class="badge ml-2 badge-warning"><i class="fas fa-clock mr-1"></i>Pendiente para pago</span>`;
+                                } else if (data.DatosFiniquito[i].iEstatus == 2) {
+                                    checked = "checked";
+                                    infoPaid = `<span class="badge ml-2 badge-success"><i class="fas fa-clock mr-1"></i>Pagado</span>`;
+                                }
+                                if (sumEstatus > 0) {
+                                    document.getElementById('list-data-down').innerHTML += `
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <div class="form-check mb-2" id="divSelectPay">
+                                              <input ${checked} disabled class="form-check-input" type="radio" name="selectPay"
+                                                    id="radioSelect${data.DatosFiniquito[i].iIdFiniquito}" 
+                                                        value="${data.DatosFiniquito[i].iIdFiniquito}">
+                                              <label class="form-check-label" for="radioSelect${data.DatosFiniquito[i].iIdFiniquito}">
+                                                Elegir para pago ${infoPaid}
+                                              </label>
+                                            </div>
+                                            <i class="fas fa-calendar-alt mr-2 col-ico"></i>
+                                                Fecha: ${data.DatosFiniquito[i].sFecha_baja} 
+                                            <i class="fas fa-tag ml-2 mr-2 col-ico"></i>
+                                                Tipo Baja: ${data.DatosFiniquito[i].sFiniquito_valor}
+                                        </span>
+                                        <span class="badge">
+                                            <button class="btn btn-sm btn-primary" title="Imprimir"
+                                                onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
+                                                <i class="fas fa-print"></i> 
+                                            </button>
+                                            <button disabled class="btn btn-sm btn-success" title="Guardar">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </span>
+                                    </li>
+                                `;
+                                } else {
+                                    document.getElementById('list-data-down').innerHTML += `
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <div class="form-check mb-2" id="divSelectPay${data.DatosFiniquito[i].iIdFiniquito}">
+                                              <input class="form-check-input" type="radio" name="selectPay"
+                                                    id="radioSelect${data.DatosFiniquito[i].iIdFiniquito}" 
+                                                        value="${data.DatosFiniquito[i].iIdFiniquito}">
+                                              <label class="form-check-label" for="radioSelect${data.DatosFiniquito[i].iIdFiniquito}">
+                                                Elegir para pago ${infoPaid}
+                                              </label>
+                                            </div>
+                                            <i class="fas fa-calendar-alt mr-2 col-ico"></i>
+                                                Fecha: ${data.DatosFiniquito[i].sFecha_baja} 
+                                            <i class="fas fa-tag ml-2 mr-2 col-ico"></i>
+                                                Tipo Baja: ${data.DatosFiniquito[i].sFiniquito_valor}
+                                        </span>
+                                        <span class="badge">
+                                            <button class="btn btn-sm btn-primary" title="Imprimir"
+                                                onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
+                                                <i class="fas fa-print"></i> 
+                                            </button>
+                                            <button class="btn btn-sm btn-success" title="Guardar" onclick="fSelectSettlementPaid(${data.DatosFiniquito[i].iIdFiniquito})">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </span>
+                                    </li>
+                                `;
+                                }
+                            }
+                        } else if (data.Bandera == false && data.MensajeError == "NOTLOADINFO") {
+                            document.getElementById('no-data-info').innerHTML += `
+                                <div class="col-md-8 offset-2 mt-3">
+                                    <div class="alert alert-info" role="alert">
+                                      <i class="fas fa-info-circle mr-2"></i>El empleado no cuenta con ningun finiquito generado.
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            alert('Error!');
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Error');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que limpia los campos 
+    fClearFields = () => {
+        inTiposBaja.value   = "none";
+        inMotivosBaja.value = "none";
+        dateDownEmp.value = "";
+        dateRec.value = "";
+        dateSendDown.value = "none";
+        compSendEsp.value = "none";
+    }
+
+    // Funcion que guarda la eleccion para pago del finiquito
+    fSelectSettlementPaid = (paramid) => {
+        try {
+            if ($("#divSelectPay"+String(paramid)+" input[id='radioSelect" + String(paramid) + "']:radio").is(':checked')) {
+                if (parseInt(paramid) > 0) {
+                    $.ajax({
+                        url: "../BajasEmpleados/SelectSettlementPaid",
+                        type: "POST",
+                        data: { keySettlement: parseInt(paramid) },
+                        beforeSend: () => {
+                            console.log('Guardando');
+                        }, success: (data) => {
+                            if (data.Bandera == true && data.MensajeError == "none") {
+                                Swal.fire({
+                                    title: "Correcto", text: "Opcion guardada", icon: "success",
+                                    showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    fShowDataDown();
+                                });
+                            } else {
+                                fShowTypeAlert('Error', "Ocurrio un error al guardar la opcion para pago", "error", "radioSelect" + String(paramid), 0);
+                            }
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    location.reload();
+                }
+            } else {
+                fShowTypeAlert('Atención', 'Selecciona una opcion de pago', 'info', "radioSelect"+String(paramid), 2);
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que genera el PDF del finiquito
+    fGenerateReceiptPDF = (paramid, paramide) => {
+        try {
+            if (parseInt(paramid) > 0) {
+                $.ajax({
+                    url: "../BajasEmpleados/GenerateReceiptDown",
+                    type: "POST",
+                    data: { keySettlement: parseInt(paramid), keyEmployee: parseInt(paramide) },
+                    beforeSend: () => {
+                        console.log('Generando');
+                    }, success: (data) => {
+                        console.log(data);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Error');
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
     // Funcion que envia los datos de la baja (Finiquitos)
     fSendDataDown = () => {
         try {
@@ -201,20 +410,25 @@
                                         type: "POST",
                                         data: dataSend,
                                         success: (data) => {
-                                            if (data.Bandera == true && MensajeError == "none") {
-                                                if (data.DatosFiniquito.length > 0) {
-                                                    for (let i = 0; i < data.DatosFiniquito.length; i++) {
-                                                        console.log(data.DatosFiniquito[i].iIdFiniquito);
-                                                    }
+                                            if (data.Bandera == true && data.MensajeError == "none") {
+                                                Swal.fire({
+                                                    title: "Correcto",
+                                                    text: "Datos registrados!",
+                                                    icon: "success",
+                                                    showClass: { popup: 'animated fadeInDown faster' },
+                                                    hideClass: { popup: 'animated fadeOutUp faster' },
+                                                    confirmButtonText: "Aceptar", allowOutsideClick: false,
+                                                    allowEscapeKey: false, allowEnterKey: false,
+                                                }).then((value) => {
+                                                    fClearFields();
+                                                    fShowDataDown();
                                                     setTimeout(() => {
                                                         $("#window-data-down").modal("show");
                                                     }, 1000);
-                                                } else {
-                                                    alert("No se pudo cargar la informacion");
-                                                }
-                                            } else if (data.Bandera == false && MensajeError == "ERRMOSTINFO") {
+                                                });
+                                            } else if (data.Bandera == false && data.MensajeError == "ERRMOSTINFO") {
                                                 alert("Registro correcto, error al mostrar informacion");
-                                            } else if (data.Bandera == false && MensajeError == "ERRINSFINIQ") {
+                                            } else if (data.Bandera == false && data.MensajeError == "ERRINSFINIQ") {
                                                 alert("Error al registrar la informacion");
                                             } else {
                                                 alert("Ocurrio un error, reporte al área de TI");
@@ -258,6 +472,7 @@
      * Ejecucion de funciones
      */
 
+    btnShowWindowDataDown.addEventListener('click', fShowDataDown);
     btnGuardaBaja.addEventListener('click', fSendDataDown);
 
 });
