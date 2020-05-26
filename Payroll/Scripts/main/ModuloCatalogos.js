@@ -18,11 +18,13 @@
     );
     $("#fechas-periodo").on("click", function () {
         
-        LoadTabFechasPeriodos();
+        //LoadTabFechasPeriodos();
         //console.log(LoadDetalleTab(2));
         $("#v-pills-profile-tab").click();
     });
-
+    $("#v-pills-profile-tab").on("click", function () {
+        LoadTabFechasPeriodos();
+    });
     LoadTabFechasPeriodos = () => {
         $.ajax({
             url: "../Catalogos/LoadFechasPeriodos",
@@ -45,7 +47,7 @@
                             "<td colspan='3' >" +
                             "<div class='col-md-12'>" +
                             "<label>" + data[i]['Empresa_id'] + " " + data[i]['NombreEmpresa'] + " - " + data[i]['Tipo_Periodo_Id'] + "" + data[i]["DescripcionTipoPeriodo"] + " - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-"+data[i]["NombreEmpresa"]+"\", "+data[i]["Empresa_id"]+");'><i class='fas fa-plus'></i></div>" +
-                            "<div id='"+data[i]["NombreEmpresa"]+"' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
+                            "<div id='collapse-"+data[i]["NombreEmpresa"]+"' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
                             "</div>" +
                             "</div>" +
                             "</td >" +
@@ -60,7 +62,7 @@
                                 "<td colspan='3' >" +
                                 "<div class='col-md-12'>" +
                                 "<label>" + data[i]['Empresa_id'] + " " + data[i]['NombreEmpresa'] + " - " + data[i]['Tipo_Periodo_Id'] + "" + data[i]["DescripcionTipoPeriodo"] + " - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'><i class='fas fa-plus'></i></div>" +
-                                "<div id='" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
+                                "<div id='collapse-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
                                 "</div>" +
                                 "</div>" +
                                 "</td >" +
@@ -68,7 +70,7 @@
                         }
                     }
                 }
-                $("#v-pills-profile-tab").click();
+                //$("#v-pills-profile-tab").click();
             }
         });
     }

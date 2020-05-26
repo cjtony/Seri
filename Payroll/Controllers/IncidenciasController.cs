@@ -170,7 +170,7 @@ namespace Payroll.Controllers
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            Dao.sp_TAusentismos_Insert_Ausentismo( Tipo_Ausentismo_id,id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada,Periodo );
+            lista = Dao.sp_TAusentismos_Insert_Ausentismo( Tipo_Ausentismo_id,id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada,Periodo );
             lista.Add("Ausentismo registrado con éxito");
             return Json(lista);
         }
@@ -182,8 +182,8 @@ namespace Payroll.Controllers
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            Dao.sp_TAusentismos_Update_Ausentismo(id, Tipo_Ausentismo_id, id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada, Periodo);
-            lista.Add("Ausentismo registrado con éxito");
+            lista = Dao.sp_TAusentismos_Update_Ausentismo(id, Tipo_Ausentismo_id, id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada, Periodo);
+            //lista.Add("Ausentismo registrado con éxito");
             return Json(lista);
         }
         [HttpPost]

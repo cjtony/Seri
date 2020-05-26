@@ -81,7 +81,7 @@
                 }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: (data) => {
+                success: (data1) => {
                     
                     $.ajax({
                         method: "POST",
@@ -89,7 +89,7 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: (data) => {
-                            console.log(data);
+                            //console.log(data);
                             document.getElementById("tabody").innerHTML = "";
                             for (var i = 0; i < data.length; i++) {
                                 //document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Tipo_Ausentismo_id"] + "</td><td>" + data[i]["Fecha_Ausentismo"] + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn btn-secondary btn-sm btn-editar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div></td></tr>";
@@ -101,12 +101,23 @@
                     fechaa.value = "";
                     dias.value = "";
                     cau_falta.value = "";
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Correcto!',
-                        text: "Ausentismo agregado con éxito"
 
-                    });
+                    if (data1["iFlag"] == 0) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Error!',
+                            text: "" + data1["sRespuesta"]
+
+                        });
+                    } else if (data1["iFlag"] == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Correcto!',
+                            text: "" + data1["sRespuesta"]
+
+                        });
+                    }
+                    
 
                    
                 }
@@ -200,7 +211,7 @@
                 }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: (data) => {
+                success: (data1) => {
 
                     $.ajax({
                         method: "POST",
@@ -220,12 +231,21 @@
                     fechaa.value = "";
                     dias.value = "";
                     cau_falta.value = "";
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Correcto!',
-                        text: "Ausentismo agregado con éxito"
+                    if (data1["iFlag"] == 0) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Error!',
+                            text: "" + data1["sRespuesta"]
 
-                    });
+                        });
+                    } else if (data1["iFlag"] == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Correcto!',
+                            text: "" + data1["sRespuesta"]
+
+                        });
+                    }
 
 
                 }
