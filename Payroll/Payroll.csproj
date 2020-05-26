@@ -951,11 +951,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-<<<<<<< HEAD
     <Folder Include="Archivos\certificados\XmlZip\" />
-=======
     <Folder Include="Views\BajasEmpleados\" />
->>>>>>> dev0aguilar
     <Folder Include="Views\CatalogsTables\" />
     <Folder Include="Views\ConfigDataBank\" />
     <Folder Include="Views\Dispersion\" />
