@@ -154,9 +154,7 @@
                  EmpresNom = data[0].sNombreComp + ' ' + 'RFC: ' + data[0].sRFCEmpleado + '  en el periodo: '+ periodo;
                  $('#Emisor').html(EmpresNom);                             
              }
-         });
-
-        
+         });      
          separador = " ",
          limite = 2,
          arreglosubcadena = periodo.split(separador, limite);

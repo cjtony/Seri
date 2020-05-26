@@ -4,6 +4,26 @@ using System.Collections.Generic;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
+using System;
+using System.Linq;
+using System.Web;
+using Payroll.Models.Utilerias;
+using System.Data.SqlClient;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
+using System.Configuration;
+using System.Media;
+using System.Xml;
+
+using System.Drawing;
+using System.Web.UI.WebControls;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
+
 namespace Payroll.Controllers
 {
     public class NominaController : Controller
@@ -538,6 +558,28 @@ namespace Payroll.Controllers
             ListDef = dao.sp_RenglonesDefinicionNL_Update_TplantillaDefinicionNL(iIdDefinicion);
             return Json(ListDef);
         }
-    
+
+        [HttpPost]
+        public ActionResult PDFCaratula()
+        {
+            string Fecha  = DateTime.Now.ToString("dd/MM/yyyy ");
+            string path = Server.MapPath("Archivos\\certificados\\PDF\\Caratula.pdf");
+            path = path.Replace("\\Nomina", "");
+            FileStream pdf = new FileStream(path, FileMode.Create);
+            Document documento = new Document(iTextSharp.text.PageSize.LETTER, 0, 0, 0, 0);
+            PdfWriter PW = PdfWriter.GetInstance(documento, pdf);
+            documento.Open();
+
+            documento.Add(new Paragraph("Fecha: "+ Fecha));
+            PdfPTable table1 = new PdfPTable(4);
+           
+            
+           
+            documento.Close();
+            return null;
+        }
+
+      
+
     }
 }

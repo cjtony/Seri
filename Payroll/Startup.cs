@@ -26,8 +26,9 @@ namespace Payroll
         public void Configuration(IAppBuilder app)
         {
             // Para obtener más información sobre cómo configurar la aplicación, visite https://go.microsoft.com/fwlink/?LinkID=316888
-           // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
-            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
+            // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
+            //GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
+            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GESERIPROD01; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
             app.UseHangfireDashboard();
             app.UseHangfireServer();
         }
