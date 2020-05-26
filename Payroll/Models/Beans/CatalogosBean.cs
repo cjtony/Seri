@@ -580,4 +580,19 @@ namespace Payroll.Models.Beans
         public string Descripcion { get; set; }
         public string Fecha_Aplicacion { get; set; }
     }
+    public class InicioFechasPeriodoBean
+    {
+        public string id { get; set; }
+        public string Empresa_id { get; set; }
+        public string NombreEmpresa { get; set; }
+        public string Anio { get; set; }
+        public string Tipo_Periodo_Id { get; set; }
+        public string DescripcionTipoPeriodo { get; set; }
+        public string Periodo { get; set; }
+        public string Fecha_Inicio { get; set; }
+        public string Fecha_Final { get; set; }
+        public string Fecha_Proceso { get; set; }
+        public string Fecha_Pago { get; set; }
+        public string Dias_Efectivos { get; set; }
+    }
 }
