@@ -582,11 +582,20 @@
         for (let t = 0; t < arrInput.length; t++) {
             if (arrInput[t].hasAttribute("tp-select")) {
                 let textpag;
-                if (arrInput[t].value == "0") {
-                    const attrselect = arrInput[t].getAttribute('tp-select');
-                    fshowtypealert('Atención', 'Selecciona una opción de ' + String(attrselect), 'warning', arrInput[t], 0);
-                    validate = 1;
-                    break;
+                if (arrInput[t].id == "tipper") {
+                    if (arrInput[t].value == "n") {
+                        const attrselect = arrInput[t].getAttribute('tp-select');
+                        fshowtypealert('Atención', 'Selecciona una opción de ' + String(attrselect), 'warning', arrInput[t], 0);
+                        validate = 1;
+                        break;
+                    }
+                } else {
+                    if (arrInput[t].value == "0") {
+                        const attrselect = arrInput[t].getAttribute('tp-select');
+                        fshowtypealert('Atención', 'Selecciona una opción de ' + String(attrselect), 'warning', arrInput[t], 0);
+                        validate = 1;
+                        break;
+                    }
                 }
                 if (arrInput[t].id == "tippag") {
                     textpag = $('select[id="tippag"] option:selected').text();

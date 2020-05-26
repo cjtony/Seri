@@ -357,7 +357,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultdepartments.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sDeptoCodigo} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselectdepartment(${data[i].iIdDepartamento})"></i> </button>`;
+                                resultdepartments.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sDeptoCodigo} - ${data[i].sDescripcionDepartamento} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselectdepartment(${data[i].iIdDepartamento})"></i> </button>`;
                             }
                         }
                     }, error: (jqXHR, exception) => {
@@ -825,7 +825,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultdepartmentsadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sDeptoCodigo} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectoptionnewposition(${data[i].iIdDepartamento},'${data[i].sDeptoCodigo}')"></i> </button>`;
+                                resultdepartmentsadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sDeptoCodigo} - ${data[i].sDescripcionDepartamento} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectoptionnewposition(${data[i].iIdDepartamento},'${data[i].sDeptoCodigo}')"></i> </button>`;
                             }
                         }
                     }, error: (jqXHR, exception) => {

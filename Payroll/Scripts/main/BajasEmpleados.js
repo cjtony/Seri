@@ -45,8 +45,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (tipo) => {
-                
-                document.getElementById("inMotivosBaja").innerHTML = "";
+                document.getElementById('inMotivosBaja').innerHTML = "<option value='none'>Selecciona</option>";
                 for (var i = 0; i < tipo.length; i++) {
                     console.log(t + " y " + tipo[i]["TipoEmpleado_id"]);
                     if (t == tipo[i]["TipoEmpleado_id"]) {
@@ -71,7 +70,8 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (emp) => {
-                //console.log(data);
+                console.log('Mostrando datos de empleado');
+                console.log(emp);
                 document.getElementById("nameuser").innerHTML = emp[0].Nombre_Empleado + " " + emp[0].Apellido_Paterno_Empleado + " " + emp[0].Apellido_Materno_Empleado;
                 //carga datos de header para baja
                 $.ajax({
@@ -82,12 +82,19 @@
                     contentType: "application/json; charset=utf-8",
                     success: (res) => {
                         console.log(res);
+                        document.getElementById('keyEmployee').value = res[0];
                         document.getElementById("id_emp").innerHTML = res[0];
                         document.getElementById("sueldo_emp").innerHTML = res[2].substring(0, res[2].length - 2);
                         document.getElementById("aumento_emp").innerHTML = res[3];
                         document.getElementById("antiguedad_emp").innerHTML = res[4];
-                        document.getElementById("nivel_emp").innerHTML = res[5];
-                        document.getElementById("posicion_emp").innerHTML = res[6];
+                        document.getElementById("ingreso_emp").innerHTML = res[5];
+                        document.getElementById("nivel_emp").innerHTML = res[6];
+                        document.getElementById("posicion_emp").innerHTML = res[7];
+                        document.getElementById('dateAntiquityEmp').value = res[4];
+                        dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
+                        dateSendDown.innerHTML += `<option value="1">Fecha de ingreso - ${res[5]}</option>`;
+                        document.getElementById('info-employee').classList.remove('d-none');
+                        //document.getElementById('info-employee').classList.add('animated fadeIn delay-1s');
                     }
                 });
                 //carga select tipo Baja
@@ -98,8 +105,8 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: (tipo) => {
+                        console.log('Tipos de baja');
                         console.log(tipo);
-                        document.getElementById("inTiposBaja").innerHTML = "<option value='' > Seleciona </option>";
                         for (var i = 0; i < tipo.length; i++) {
                             document.getElementById("inTiposBaja").innerHTML += "<option value='" + tipo[i]["IdTipo_Empleado"] + "'>" + tipo[i]["Descripcion"] + "</option>";
                         }
@@ -110,5 +117,362 @@
             }
         });
     }
-    
+
+    /*
+     * Constantes bajas
+     */
+    const btnShowWindowDataDown = document.getElementById('btnShowWindowDataDonw');
+    const btnGuardaBaja = document.getElementById('btnGuardaBaja');
+    const keyEmployee   = document.getElementById('keyEmployee');
+    const dateAntiquityEmp = document.getElementById('dateAntiquityEmp');
+    const inTiposBaja   = document.getElementById('inTiposBaja');
+    const inMotivosBaja = document.getElementById('inMotivosBaja');
+    const dateDownEmp   = document.getElementById('dateDownEmp');
+    const dateRec       = document.getElementById('dateRec');
+    const dateSendDown  = document.getElementById('dateSendDown');
+    const compSendEsp   = document.getElementById('compSendEsp');
+
+    /*
+     * Funciones
+     */
+
+    // Funcion que captura los errores de ajax que se puedan generar
+    fcaptureaerrorsajax = (jq, exc) => {
+        let msg = "";
+        if (jq.status === 0) {
+            msg = "No conectado. \n Verifica tu conexión de red.";
+        } else if (jq.status === 404) {
+            msg = 'Página solicitada no encontrada. [404]';
+        } else if (jq.status == 500) {
+            msg = 'Error interno del servidor [500].';
+        } else if (exc === 'parsererror') {
+            msg = 'El análisis JSON solicitado falló.';
+        } else if (exc === 'timeout') {
+            msg = 'Error de tiempo de espera.';
+        } else if (exc === 'abort') {
+            msg = 'Solicitud de Ajax abortada.';
+        } else {
+            msg = 'Error no detectado.\n' + jq.responseText;
+        }
+        console.log(msg);
+    }
+
+    // Funcion que muestra alertas de forma dinamica
+    fShowTypeAlert = (title, text, icon, element, clear) => {
+        Swal.fire({
+            title: title, text: text, icon: icon,
+            showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+        }).then((acepta) => {
+            $("html, body").animate({ scrollTop: $(`#${element.id}`).offset().top - 50 }, 1000);
+            if (clear == 1) {
+                setTimeout(() => {
+                    element.focus();
+                    setTimeout(() => { element.value = ""; }, 300);
+                }, 1200);
+            } else if (clear == 2) {
+                setTimeout(() => { element.focus(); }, 1200);
+            }
+        });
+    }
+
+    // Funcion que muestra los finiquitos que un empleado tiene 
+    fShowDataDown = () => {
+        document.getElementById('list-data-down').innerHTML = "";
+        document.getElementById('no-data-info').innerHTML = "";
+        try {
+            console.log("IdEmpleado: " + keyEmployee.value);
+            if (keyEmployee.value != "") {
+                $.ajax({
+                    url: "../BajasEmpleados/ShowDataDown",
+                    type: "POST",
+                    data: { keyEmployee: parseInt(keyEmployee.value) },
+                    beforeSend: () => {
+                        console.log('Cargando');
+                    }, success: (data) => {
+                        if (data.Bandera == true && data.MensajeError == "none") {
+                            let sumEstatus = 0;
+                            for (let j = 0; j < data.DatosFiniquito.length; j++) {
+                                if (data.DatosFiniquito[j].iEstatus > 0) {
+                                    sumEstatus += 1;
+                                }
+                            }
+                            for (let i = 0; i < data.DatosFiniquito.length; i++) {
+                                let infoPaid = "";
+                                let checked  = "";
+                                if (data.DatosFiniquito[i].iEstatus == 1) {
+                                    checked = "checked";
+                                    infoPaid = `<span class="badge ml-2 badge-warning"><i class="fas fa-clock mr-1"></i>Pendiente para pago</span>`;
+                                } else if (data.DatosFiniquito[i].iEstatus == 2) {
+                                    checked = "checked";
+                                    infoPaid = `<span class="badge ml-2 badge-success"><i class="fas fa-clock mr-1"></i>Pagado</span>`;
+                                }
+                                if (sumEstatus > 0) {
+                                    document.getElementById('list-data-down').innerHTML += `
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <div class="form-check mb-2" id="divSelectPay">
+                                              <input ${checked} disabled class="form-check-input" type="radio" name="selectPay"
+                                                    id="radioSelect${data.DatosFiniquito[i].iIdFiniquito}" 
+                                                        value="${data.DatosFiniquito[i].iIdFiniquito}">
+                                              <label class="form-check-label" for="radioSelect${data.DatosFiniquito[i].iIdFiniquito}">
+                                                Elegir para pago ${infoPaid}
+                                              </label>
+                                            </div>
+                                            <i class="fas fa-calendar-alt mr-2 col-ico"></i>
+                                                Fecha: ${data.DatosFiniquito[i].sFecha_baja} 
+                                            <i class="fas fa-tag ml-2 mr-2 col-ico"></i>
+                                                Tipo Baja: ${data.DatosFiniquito[i].sFiniquito_valor}
+                                        </span>
+                                        <span class="badge">
+                                            <button class="btn btn-sm btn-primary" title="Imprimir"
+                                                onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
+                                                <i class="fas fa-print"></i> 
+                                            </button>
+                                            <button disabled class="btn btn-sm btn-success" title="Guardar">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </span>
+                                    </li>
+                                `;
+                                } else {
+                                    document.getElementById('list-data-down').innerHTML += `
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <div class="form-check mb-2" id="divSelectPay${data.DatosFiniquito[i].iIdFiniquito}">
+                                              <input class="form-check-input" type="radio" name="selectPay"
+                                                    id="radioSelect${data.DatosFiniquito[i].iIdFiniquito}" 
+                                                        value="${data.DatosFiniquito[i].iIdFiniquito}">
+                                              <label class="form-check-label" for="radioSelect${data.DatosFiniquito[i].iIdFiniquito}">
+                                                Elegir para pago ${infoPaid}
+                                              </label>
+                                            </div>
+                                            <i class="fas fa-calendar-alt mr-2 col-ico"></i>
+                                                Fecha: ${data.DatosFiniquito[i].sFecha_baja} 
+                                            <i class="fas fa-tag ml-2 mr-2 col-ico"></i>
+                                                Tipo Baja: ${data.DatosFiniquito[i].sFiniquito_valor}
+                                        </span>
+                                        <span class="badge">
+                                            <button class="btn btn-sm btn-primary" title="Imprimir"
+                                                onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
+                                                <i class="fas fa-print"></i> 
+                                            </button>
+                                            <button class="btn btn-sm btn-success" title="Guardar" onclick="fSelectSettlementPaid(${data.DatosFiniquito[i].iIdFiniquito})">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </span>
+                                    </li>
+                                `;
+                                }
+                            }
+                        } else if (data.Bandera == false && data.MensajeError == "NOTLOADINFO") {
+                            document.getElementById('no-data-info').innerHTML += `
+                                <div class="col-md-8 offset-2 mt-3">
+                                    <div class="alert alert-info" role="alert">
+                                      <i class="fas fa-info-circle mr-2"></i>El empleado no cuenta con ningun finiquito generado.
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            alert('Error!');
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Error');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que limpia los campos 
+    fClearFields = () => {
+        inTiposBaja.value   = "none";
+        inMotivosBaja.value = "none";
+        dateDownEmp.value = "";
+        dateRec.value = "";
+        dateSendDown.value = "none";
+        compSendEsp.value = "none";
+    }
+
+    // Funcion que guarda la eleccion para pago del finiquito
+    fSelectSettlementPaid = (paramid) => {
+        try {
+            if ($("#divSelectPay"+String(paramid)+" input[id='radioSelect" + String(paramid) + "']:radio").is(':checked')) {
+                if (parseInt(paramid) > 0) {
+                    $.ajax({
+                        url: "../BajasEmpleados/SelectSettlementPaid",
+                        type: "POST",
+                        data: { keySettlement: parseInt(paramid) },
+                        beforeSend: () => {
+                            console.log('Guardando');
+                        }, success: (data) => {
+                            if (data.Bandera == true && data.MensajeError == "none") {
+                                Swal.fire({
+                                    title: "Correcto", text: "Opcion guardada", icon: "success",
+                                    showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    fShowDataDown();
+                                });
+                            } else {
+                                fShowTypeAlert('Error', "Ocurrio un error al guardar la opcion para pago", "error", "radioSelect" + String(paramid), 0);
+                            }
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    location.reload();
+                }
+            } else {
+                fShowTypeAlert('Atención', 'Selecciona una opcion de pago', 'info', "radioSelect"+String(paramid), 2);
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que genera el PDF del finiquito
+    fGenerateReceiptPDF = (paramid, paramide) => {
+        try {
+            if (parseInt(paramid) > 0) {
+                $.ajax({
+                    url: "../BajasEmpleados/GenerateReceiptDown",
+                    type: "POST",
+                    data: { keySettlement: parseInt(paramid), keyEmployee: parseInt(paramide) },
+                    beforeSend: () => {
+                        console.log('Generando');
+                    }, success: (data) => {
+                        console.log(data);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Error');
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que envia los datos de la baja (Finiquitos)
+    fSendDataDown = () => {
+        try {
+            if (inTiposBaja.value != "none") {
+                if (inMotivosBaja.value != "none") {
+                    if (dateDownEmp.value != "") {
+                        if (dateRec.value != "") {
+                            if (dateSendDown.value == "1" || dateSendDown.value == "0") {
+                                if (compSendEsp.value == "1" || compSendEsp.value == "0") {
+                                    const dataSend = {
+                                        keyEmployee: parseInt(keyEmployee.value),
+                                        dateAntiquityEmp: (dateAntiquityEmp.value),
+                                        idTypeDown: parseInt(inTiposBaja.value),
+                                        idReasonsDown: parseInt(inMotivosBaja.value),
+                                        dateDownEmp: String(dateDownEmp.value),
+                                        dateReceipt: String(dateRec.value),
+                                        typeDate: parseInt(dateSendDown.value),
+                                        typeCompensation: parseInt(compSendEsp.value)
+                                    };
+                                    console.log(dataSend);
+                                    $.ajax({
+                                        url: "../BajasEmpleados/SendDataDownSettlement",
+                                        type: "POST",
+                                        data: dataSend,
+                                        success: (data) => {
+                                            if (data.Bandera == true && data.MensajeError == "none") {
+                                                Swal.fire({
+                                                    title: "Correcto",
+                                                    text: "Datos registrados!",
+                                                    icon: "success",
+                                                    showClass: { popup: 'animated fadeInDown faster' },
+                                                    hideClass: { popup: 'animated fadeOutUp faster' },
+                                                    confirmButtonText: "Aceptar", allowOutsideClick: false,
+                                                    allowEscapeKey: false, allowEnterKey: false,
+                                                }).then((value) => {
+                                                    fClearFields();
+                                                    fShowDataDown();
+                                                    setTimeout(() => {
+                                                        $("#window-data-down").modal("show");
+                                                    }, 1000);
+                                                });
+                                            } else if (data.Bandera == false && data.MensajeError == "ERRMOSTINFO") {
+                                                alert("Registro correcto, error al mostrar informacion");
+                                            } else if (data.Bandera == false && data.MensajeError == "ERRINSFINIQ") {
+                                                alert("Error al registrar la informacion");
+                                            } else {
+                                                alert("Ocurrio un error, reporte al área de TI");
+                                            }
+                                        }, error: (jqXHR, exception) => {
+                                            fcaptureaerrorsajax(jqXHR, exception);
+                                        }
+                                    });
+                                } else {
+                                    fShowTypeAlert('Atención', 'Seleccione una opción para el campo compensacion especial', 'info', compSendEsp, 2);
+                                }
+                            } else {
+                                fShowTypeAlert('Atención', 'Seleccione una opción para el campo fecha a usar', 'info', dateSendDown, 2);
+                            }
+                        } else {
+                            fShowTypeAlert('Atención', 'Selecciona una fecha de recibo', 'info', dateRec, 2);
+                        }
+                    } else {
+                        fShowTypeAlert('Atención', 'Seleccione una fecha de baja para el empleado', 'info', dateDownEmp, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Selecciona una opcion para el motivo de baja', 'info', inMotivosBaja, 2);
+                }
+            } else {
+                fShowTypeAlert('Atención', 'Seleccione una opción para el tipo de baja', 'info', inTiposBaja, 2);
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    /*
+     * Ejecucion de funciones
+     */
+
+    btnShowWindowDataDown.addEventListener('click', fShowDataDown);
+    btnGuardaBaja.addEventListener('click', fSendDataDown);
+
 });
