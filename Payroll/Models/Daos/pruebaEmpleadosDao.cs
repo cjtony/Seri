@@ -398,7 +398,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public void sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada)
+        public void sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada,int Periodo)
         {
             List<string> lista = new List<string>();
             this.Conectar();
@@ -415,6 +415,30 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", Certificado_imss));
             cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", Comentarios_imss));
             cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", Causa_FaltaInjustificada));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            data.Close();
+        }
+        public void sp_TAusentismos_Update_Ausentismo(int id, int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo)
+        {
+            List<string> lista = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TAusentismos_Update_Ausentismo", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlId", Tipo_Ausentismo_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", Tipo_Ausentismo_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", Recupera_Ausentismo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", Fecha_Ausentismo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", Dias_Ausentismo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", Certificado_imss));
+            cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", Comentarios_imss));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", Causa_FaltaInjustificada));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             data.Close();

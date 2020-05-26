@@ -1,0 +1,100 @@
+﻿<div class="container font-labels">
+    <div class="row">
+        <div class="col-3">
+            <div class="nav pills-catalogos flex-column nav-pills" id="pills-catalogos" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Lista de catalogos</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Fechas - Periodos</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Politicas de vacaciones</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Catalogo 3 ...</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                @* TAB 1 *@
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <div class="font-button">Lista de catalogos</div>
+                    <hr />
+                    <div class="container col-md-12 row d-flex justify-content-around">
+
+                        <div id="fechas-periodo" class=" btntab shadow-lg bg-white  btn mb-5 mx-2 col-md-3" style="max-width: 18rem;">
+                            <div class="btntittle col-md-12 bg-primary text-white text-center rounded p-3 mt-2 font-labels"><i class="far fa-list-alt fa-lg"></i> Fechas - Periodos</div>
+                            <br />
+                            <div class="container text-black-50 pb-5 text-justify font-labels"> Vista de las fechas correspondientes a cada periodo.</div>
+                        </div>
+
+                        <div id="politicas-vacaciones" class=" btntab shadow-lg bg-white  btn mb-5 mx-2 col-md-3" style="max-width: 18rem;">
+                            <div class="btntittle col-md-12 bg-primary text-white rounded p-3 mt-2 font-labels"><i class="far fa-list-alt fa-lg"></i> Políticas de vacaciones</div>
+                            <br />
+                            <div class="container text-black-50 pb-5 text-justify font-labels"> Definición de días para vacaciones otorgados por cada año de trabajo.</div>
+                        </div>
+
+                    </div>
+                </div>
+                @* TAB 2 *@
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <div class="">Fechas - Periodos</div>
+                    <hr />
+                    <table class="table table-sm table-striped table-fechas-periodos">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id Empresa</th>
+                                <th scope="col">Nombre Empresa</th>
+                                <th scope="col">Año</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytab-fechas-periodos">
+                            <tr>
+                                <td colspan="3">
+                                    <div class="col-md-12">
+                                        <label>4 REJUM - 2020 - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class="badge badge-success btn" onclick="LoadDetalleFechasPeriodo('collapse-REJUM', 4);"><i class="fas fa-plus"></i></div>
+                                        <div class="collapse collapse-REJUM col-md-12" id="collapse-REJUM">
+                                            
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                @* TAB 3 *@
+            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                <div class="col-1md-12">Politicas de vacaciones</div>
+                <hr />
+                <table class="table table-sm table-striped table-politicas-vacaciones col-md-12">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id Empresa</th>
+                            <th scope="col">Nombre Empresa</th>
+                            <th scope="col">Año</th>
+                            <th scope="col">Fecha Efectiva</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodytab-fechas-periodos">
+                        <tr>
+                            <td colspan="3">
+                                <div class="col-md-12">
+                                    <label>4 REJUM - 2020 - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class="badge badge-success btn" onclick="LoadDetalleFechasPeriodo('collapse-REJUM', 4);"><i class="fas fa-plus"></i></div>
+                                    <div class="collapse collapse-REJUM col-md-12" id="collapse-REJUM">
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+                @* TAB 4 *@
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    
+</div>
+<script src="~/Scripts/main/ModuloCatalogos.js"></script>

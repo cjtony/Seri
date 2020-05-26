@@ -44,7 +44,12 @@
             
             console.log("all ok with the fields ");
             console.log(data);
-
+            var benef;
+            if (Beneficiaria.value == "") {
+                benef = 0;
+            } else {
+                benef = Beneficiaria.value;
+            }
             $.ajax({
                 url: "../Incidencias/SavePension",
                 type: "POST",
@@ -58,7 +63,7 @@
                     Tipo_Calculo: TCalculo.value,
                     Aumentar_segun_salario_minimo_general: ch2,
                     Aumentar_segun_aumento_de_sueldo: ch3,
-                    Beneficiaria: Beneficiaria.value,
+                    Beneficiaria: benef,
                     Banco: Banco.value,
                     Sucursal: Sucursal.value,
                     Tarjeta_vales: TVales.value,
@@ -81,7 +86,7 @@
                             for (var i = 0; i < data.length; i++) {
                                 
                                 document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Beneficiaria"] + "</td><td>" + data[i]["No_Oficio"] + "</td><td>" + data[i]["Fecha_Oficio"] + "</td><td>$ " + data[i]["Cuota_Fija"] + " - % " + data[i]["Porcentaje"] + "</td><td><div class='btn btn-secondary btn-sm btn-editar-pensiones' onclick='eliminarPension( " + data[i]["IdIdPension"] + " );'><i class='far fa-edit'></i></div></td></tr>";
-                                console.log(data[i]["Tipo_Ausentismo_id"]);
+                                //console.log(data[i]["Tipo_Ausentismo_id"]);
                             }
                         }
                     });
