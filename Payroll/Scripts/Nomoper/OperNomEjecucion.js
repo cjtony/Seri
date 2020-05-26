@@ -23,6 +23,7 @@
     const PercepCal = document.getElementById('PercepCal');
     const DeduCal = document.getElementById('DeduCal');
     const totalCal = document.getElementById('totalCal');
+    const btnPdfCal = document.getElementById('btnPdfCal');
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
@@ -132,7 +133,6 @@
     //    IdDropList = 0;
     //    $("#2").empty();
 
-
     //};
 
     //btnlimpDat.addEventListener('click', FLimpiaCampos);
@@ -157,7 +157,6 @@
 
         $("#jqxdropdownbutton").jqxDropDownButton('setContent', dropDownContent);
         TbAño.value = AnioDropList;
-
      
         const dataSend = { IdDefinicionHD: IdDropList, iperiodo: 0 };
         $.ajax({
@@ -166,8 +165,8 @@
             data: dataSend,
             success: (data) => {
                 console.log('Resultado de periodo: '+data)
-                TxbTipoPeriodo.value = data[0].iId;
-                TipoPeridoCal.value = data[0].iId;
+                TxbTipoPeriodo.value = data[0].iId + " " + data[0].sValor;
+                TipoPeridoCal.value = data[0].iId + " " + data[0].sValor;
             },
             error: function (jqXHR, exception) {
                 fcaptureaerrorsajax(jqXHR, exception);
@@ -352,9 +351,15 @@
 
             $("#TbCalculos").jqxGrid('deleterow', i);
         }
+        
+        var tipoPeriodo = TxbTipoPeriodo.value;
+            separador = " ",
+            limite = 2,
+            arreglosubcadena = tipoPeriodo.split(separador, limite);
+
 
         IdDropList;
-        const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: TxbTipoPeriodo.value, iPeriodo: periodo, idEmpresa: empresaid };
+        const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena[0] , iPeriodo: periodo, idEmpresa: empresaid };
         console.log(dataSend);
         var per;
         var dedu;
@@ -477,6 +482,9 @@
                                 textInput.val("");
                             });
                         };
+
+
+
                         $("#TbCalculos").jqxGrid({
                             width: 600,
                             height: 325,
@@ -504,7 +512,11 @@
                             ]
                         });               
                         if (empresaid == 0) {
-                            const dataSend2 = { iIdCalculosHd: IdDropList, iTipoPeriodo: TxbTipoPeriodo.value, iPeriodo: periodo };
+                            TipodePeridoDroplip = TxbTipoPeriodo.value;
+                            separador = " ",
+                                limite = 2,
+                                arreglosubcadena3 = TipodePeridoDroplip.split(separador, limite);
+                            const dataSend2 = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena3[0], iPeriodo: periodo };
 
                             $("#EmpresaCal").empty();
                             $('#EmpresaCal').append('<option value="0" selected="selected">Selecciona</option>');
@@ -560,13 +572,17 @@
         IdDropList;
         AnioDropList;
         TipodePeridoDroplip = TxbTipoPeriodo.value;
+        separador = " ",
+        limite = 2,
+        arreglosubcadena3 = TipodePeridoDroplip.split(separador, limite);
         periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
         separador = " ",
         limite = 2,
+
         arreglosubcadena2 = periodo.split(separador, limite);
         const dataSend = { iIdDefinicionHd: IdDropList };
-        const dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: TipodePeridoDroplip, iperiodo: arreglosubcadena2[0] };
-
+        const dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0] };
+        console.log("datos de ejecucion:"+dataSend2);
         $.ajax({
             url: "../Nomina/CompruRegistroExit",
             type: "POST",
@@ -576,7 +592,7 @@
                 if (data[0].iIdCalculosHd == 1) {
 
                     console.log(dataSend);
-                    fshowtypealert("Ejecucion", "El calculo de la nomina seleccionado esta en proceso", "Right")
+                    fshowtypealert("Ejecucion", "El calculo de la nomina en ejecucion", "Right")
                     $.ajax({
                         url: "../Nomina/ProcesosPots",
                         type: "POST",
@@ -602,8 +618,7 @@
 
     //// funcion de cerrar nomina 
 
-   
-
+  
     //btnFloCerrarNom.addEventListener('click', FCerrarNom);
 
     FValorChec = () => {
@@ -755,36 +770,6 @@
    
 
 
-    /* FUNCION QUE MUESTRA ALERTAS */
-    fshowtypealert = (title, text, icon) => {
-        Swal.fire({
-            title: title, text: text, icon: icon,
-            showClass: { popup: 'animated fadeInDown faster' },
-            hideClass: { popup: 'animated fadeOutUp faster' },
-            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
-        }).then((acepta) => {
-
-            //  Nombrede.value       = '';
-            // Descripcionde.value  = '';
-            //iAnode.value         = '';
-            //cande.value          = '';
-            //$("html, body").animate({
-            //    scrollTop: $(`#${element.id}`).offset().top - 50
-            //}, 1000);
-            //if (clear == 1) {
-            //    setTimeout(() => {
-            //        element.focus();
-            //        setTimeout(() => { element.value = ""; }, 300);
-            //    }, 1200);
-            //} else {
-            //    setTimeout(() => {
-            //        element.focus();
-            //    }, 1200);
-            //}
-        });
-    };
-
-
     $('#PeridoEje').change(function () {
 
         IdDropList;
@@ -833,4 +818,50 @@
 
     });
 
+    //// Genera Caratula en PDF///
+    //$('#btnPdfCal').on('click', function () {
+
+    //    $.ajax({
+    //        url: "../Nomina/PDFCaratula",
+    //        type: "POST",
+    //        data: JSON.stringify(),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+                
+
+             
+    //        }
+    //    });
+
+
+    //});
+
+    /* FUNCION QUE MUESTRA ALERTAS */
+    fshowtypealert = (title, text, icon) => {
+        Swal.fire({
+            title: title, text: text, icon: icon,
+            showClass: { popup: 'animated fadeInDown faster' },
+            hideClass: { popup: 'animated fadeOutUp faster' },
+            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+        }).then((acepta) => {
+
+            //  Nombrede.value       = '';
+            // Descripcionde.value  = '';
+            //iAnode.value         = '';
+            //cande.value          = '';
+            //$("html, body").animate({
+            //    scrollTop: $(`#${element.id}`).offset().top - 50
+            //}, 1000);
+            //if (clear == 1) {
+            //    setTimeout(() => {
+            //        element.focus();
+            //        setTimeout(() => { element.value = ""; }, 300);
+            //    }, 1200);
+            //} else {
+            //    setTimeout(() => {
+            //        element.focus();
+            //    }, 1200);
+            //}
+        });
+    };
 });

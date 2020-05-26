@@ -1629,7 +1629,7 @@ namespace Payroll.Models.Daos
                         CTipoPeriodoBean ls = new CTipoPeriodoBean();
                         {
                             ls.iId = int.Parse(data["Tipo_Periodo_id"].ToString());
-                           
+                            ls.sValor = data["Valor"].ToString();
                         };
 
 

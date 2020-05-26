@@ -17,9 +17,10 @@ using System.Configuration;
 using System.Media;
 using System.Xml;
 
-
 using System.Drawing;
 using System.Web.UI.WebControls;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace Payroll.Controllers
 {
@@ -367,15 +368,18 @@ namespace Payroll.Controllers
         [HttpPost]
         public ActionResult LoadFile(HttpPostedFileBase fileUpload)
         {
-            try {
+            try
+            {
                 string path = Server.MapPath("~/Archivos/certificados/");
-                if (Directory.Exists(path)) {
+                if (Directory.Exists(path))
+                {
                     Directory.CreateDirectory(path);
                 }
                 fileUpload.SaveAs(path + Path.GetFileName(fileUpload.FileName));
-            
+
             }
-            catch(Exception e) {
+            catch (Exception e)
+            {
                 return Json(new { Value = false, Message = e.Message }, JsonRequestBehavior.AllowGet);
             }
 

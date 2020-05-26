@@ -59,7 +59,6 @@
                         if (typeof data.Value != "undefined") {
                             fshowtypealert('Timbrado XML', data.Message, 'warning');
                             const dataSend = { Anio: aniox, TipoPeriodo: TipPeriodox, Perido: Peridox, Version: versionx, NomArchivo: NomArch };
-
                             $.ajax({
                                 url: "../Empleados/TimbXML",
                                 type: "POST",
@@ -68,8 +67,6 @@
                               
                                 }
                             });
-                         
-
 
                         }
                         else {
