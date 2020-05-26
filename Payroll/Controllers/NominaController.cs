@@ -1,6 +1,7 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
 using System.Collections.Generic;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
@@ -45,7 +46,6 @@ namespace Payroll.Controllers
             FuncionesNomina dao = new FuncionesNomina();
             int usuario = int.Parse(Session["iIdUsuario"].ToString());
             bean = dao.sp_DefineNom_insert_DefineNom(sNombreDefinicion, sDescripcion, iAno, iCancelado, usuario);
-
             return Json(bean);
         }
         // llena  listado de empresas
@@ -57,7 +57,7 @@ namespace Payroll.Controllers
             LE = Dao.sp_CEmpresas_Retrieve_Empresas();
             if (LE.Count > 0)
             {
-                for (int i = 0; i < LE.Count - 1; i++)
+                for (int i = 0; i < LE.Count ; i++)
                 {
                     LE[i].sNombreEmpresa = LE[i].iIdEmpresa + " " + LE[i].sNombreEmpresa;
                 }
@@ -68,7 +68,7 @@ namespace Payroll.Controllers
         // regresa el listado del periodo
         [HttpPost]
         public JsonResult LisTipPeriodo(int IdEmpresa)
-        {          
+        {
             List<CTipoPeriodoBean> LTP = new List<CTipoPeriodoBean>();
             FuncionesNomina Dao = new FuncionesNomina();
             LTP = Dao.sp_CTipoPeriod_Retrieve_TiposPeriodos(IdEmpresa);
@@ -76,11 +76,11 @@ namespace Payroll.Controllers
         }
         // regresa el listado de renglon
         [HttpPost]
-        public JsonResult LisRenglon(int IdEmpresa)
+        public JsonResult LisRenglon(int IdEmpresa,int iElemntoNOm)
         {
             List<CRenglonesBean> LR = new List<CRenglonesBean>();
             FuncionesNomina Dao = new FuncionesNomina();
-            LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa);
+            LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa ,iElemntoNOm);
             return Json(LR);
         }
         // regresa el listado de acumulado 
@@ -123,15 +123,15 @@ namespace Payroll.Controllers
         }
         // Regresa el listado de periodo
         [HttpPost]
-        public JsonResult ListPeriodo(int iIdEmpresesas, int ianio, int iTipoPeriodo)   
+        public JsonResult ListPeriodo(int iIdEmpresesas, int ianio, int iTipoPeriodo)
         {
             List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
             LPe = dao.sp_Cperiodo_Retrieve_Cperiodo(iIdEmpresesas, ianio, iTipoPeriodo);
             return Json(LPe);
 
-         }
-        // llena datos de la tabla de Percepciones
+        }
+        // llena de datos en la tabla de percepciones
         [HttpPost]
         public JsonResult listdatosPercesiones(int iIdDefinicionln)
         {
@@ -178,6 +178,7 @@ namespace Payroll.Controllers
             return Json(Dt);
         }
         [HttpPost]
+        // llena de datos en la tabla de deducciones
         public JsonResult listdatosDeducuiones(int iIdDefinicionln)
         {
             List<NominaLnDatBean> Dta = new List<NominaLnDatBean>();
@@ -222,6 +223,7 @@ namespace Payroll.Controllers
 
             return Json(Dta);
         }
+
         [HttpPost]
         public JsonResult ListadoNomDefinicion()
         {
@@ -349,7 +351,6 @@ namespace Payroll.Controllers
             bean = dao.sp_TpCalculos_update_TpCalculos(iIdDefinicionHd, iNominaCerrada);
             return Json(bean);
         }
-        
         [HttpPost]
         public JsonResult TpDefinicionnl()
         {
@@ -439,76 +440,32 @@ namespace Payroll.Controllers
             FuncionesNomina dao = new FuncionesNomina();
             var Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             var Empleado_id = int.Parse(Session["Empleado_id"].ToString());
-            bean = dao.sp_TEmpleado_Nomina_Retrieve_DatosBaja(Empresa_id,Empleado_id);
+            bean = dao.sp_TEmpleado_Nomina_Retrieve_DatosBaja(Empresa_id, Empleado_id);
             return Json(bean);
         }
 
         [HttpPost]
-        public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo)
+        public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa)
         {
-                List<TpCalculosLn> Dta = new List<TpCalculosLn>();
+            List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
             //List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            Dta = dao.sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(iIdCalculosHd, iTipoPeriodo, iPeriodo);
-            //if (Dta != null)
-            //{
-            //    for (int i = 0; i < Dta.Count; i++)
-            //    {
-            //        if (Dta[i].iElementonomina == "39")
-            //        {
-            //            Dta[i].iElementonomina = "Percepciones";
-            //        }
-
-            //        if (Dta[i].iElementonomina == "40")
-            //        {
-            //            Dta[i].iElementonomina = "Deducciones";
-            //        }
-
-
-            //        if (Dta[i].iEsespejo == "True")
-            //        {
-            //            Dta[i].iEsespejo = "Si";
-            //        }
-
-            //        else if (Dta[i].iEsespejo == "False")
-            //        {
-            //            Dta[i].iEsespejo = "No";
-            //        }
-
-            //        if (Dta[i].iIdAcumulado == "0")
-            //        {
-
-            //            Dta[i].iIdAcumulado = "";
-            //        }
-
-
-
-            //        if (Dta[i].iIdAcumulado != "0" && Dta[i].iIdAcumulado != "" && Dta[i].iIdAcumulado != " ")
-            //        {
-
-            //            int num = int.Parse(Dta[i].iIdAcumulado);
-            //            DA = dao.sp_DescripAcu_Retrieve_DescripAcu(num);
-            //            Dta[i].iIdAcumulado = DA[0].iIdAcumulado;
-
-            //        }
-
-            //    }
-            //}
-
-
-            //Startup obj = new Startup();
-
-            //int op = 1, iIdjobs = 2, iIdTarea = 0;
-            //obj.ConsultaTpJobs(op, iIdjobs, iIdTarea);
-
-            //int iNominaCerrada = 1, idNum = 39;
-            //obj.ActualizaCalculoshd(iNominaCerrada, idNum);
-            //int IdJobs = 458;
-            //obj.Reprocesos(IdJobs);
+            Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa);
 
             return Json(Dta);
         }
 
+        [HttpPost]
+        public JsonResult EmpresaCal(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo)
+        {
+            List<EmpresasBean> Dta = new List<EmpresasBean>();
+            //List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            Dta = dao.sp_Empresa_Retrieve_TpCalculosLN(iIdCalculosHd, iTipoPeriodo, iPeriodo);
+
+            return Json(Dta);
+
+        }
         public JsonResult ListTBProcesosJobs()
         {
             int op1 = 0, op2 = 0, op3 = 0, CrtliIdJobs = 0, CtrliIdTarea = 0;
@@ -563,5 +520,24 @@ namespace Payroll.Controllers
             return Json(bean);
         }
 
+        [HttpPost]
+        public JsonResult ExiteRenglon(int iIdDefinicionHd, int iIdEmpresa, int iRenglon, int iElementonomina) {
+
+            List<NominaLnBean> Exte = new List<NominaLnBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            Exte = dao.sp_ExitReglon_Retrieve_TpDefinicionNominaLn(iIdEmpresa, iRenglon, iIdDefinicionHd, iElementonomina);
+            return Json (Exte);
+        }
+
+        [HttpPost]
+
+        public JsonResult UpdateRenglonDefNl(int iIdDefinicion)
+        {
+            NominaLnBean ListDef = new NominaLnBean();
+            FuncionesNomina dao = new FuncionesNomina();
+            ListDef = dao.sp_RenglonesDefinicionNL_Update_TplantillaDefinicionNL(iIdDefinicion);
+            return Json(ListDef);
+        }
+    
     }
 }

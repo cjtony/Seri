@@ -11,11 +11,12 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Configuration;
 using System.Media;
 using System.Xml;
-using System.IO.Compression;
+
 
 using System.Drawing;
 using System.Web.UI.WebControls;
@@ -45,12 +46,16 @@ namespace Payroll.Controllers
             return PartialView();
         }
 
-        public PartialViewResult TimbradosXML()
+        //public PartialViewResult TimbradosXML()
+        //{
+        //    return PartialView();
+        //}
+
+        public ActionResult TimbradosXML()
         {
             return PartialView();
         }
 
-       
         [HttpPost]
         public JsonResult LoadStates()
         {
@@ -314,17 +319,68 @@ namespace Payroll.Controllers
 
         }
 
-        
+
         [HttpPost]
-       
+
         public JsonResult XMLNomina(int IdEmpresa, string sNombreComple, int Periodo, int anios, int Tipodeperido)
         {
-            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();            
-              ListEmpleadosDao Dao = new ListEmpleadosDao();
-              string path = Server.MapPath("Archivos\\certificados\\");
-              path = path.Replace("\\Empleados", "");
-              ListDatEmisor = Dao.GXMLNOM (IdEmpresa, sNombreComple, path,Periodo, anios, Tipodeperido);      
+            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            string path = Server.MapPath("Archivos\\certificados\\");
+            path = path.Replace("\\Empleados", "");
+            ListDatEmisor = Dao.GXMLNOM(IdEmpresa, sNombreComple, path, Periodo, anios, Tipodeperido);
             return Json(ListDatEmisor);
+        }
+
+        [HttpPost]
+        public JsonResult TimbXML(int Anio, int TipoPeriodo, int Perido, int Version, string NomArchivo)
+        {
+            var fileName = NomArchivo;
+            string PathZip = Server.MapPath("Archivos\\certificados\\");
+            PathZip = PathZip.Replace("\\Empleados", "");
+            PathZip = PathZip + NomArchivo;
+            string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
+            path = path.Replace("\\Empleados", "");
+
+            //ZipFile.ExtractToDirectory(PathZip, path);
+
+            DirectoryInfo di = new DirectoryInfo(path);
+            foreach (var fi in di.GetFiles())
+            {
+                String pathxml = path + fi.Name;
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(pathxml);
+                XmlNode nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
+                string ValorAtributo = nodo.Attributes.GetNamedItem("Folio").Value;
+                XmlNode nodo2 = xmlDoc.GetElementsByTagName("tfd:TimbreFiscalDigital").Item(0);
+                string ValorAtributo2 = nodo2.Attributes.GetNamedItem("UUID").Value;
+                XmlNode nodo3 = xmlDoc.GetElementsByTagName("tfd:TimbreFiscalDigital").Item(0);
+                string ValorAtributo3 = nodo3.Attributes.GetNamedItem("SelloSAT").Value;
+            };
+
+            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
+
+            return Json(ListDatEmisor);
+        }
+
+
+        [HttpPost]
+        public ActionResult LoadFile(HttpPostedFileBase fileUpload)
+        {
+            try {
+                string path = Server.MapPath("~/Archivos/certificados/");
+                if (Directory.Exists(path)) {
+                    Directory.CreateDirectory(path);
+                }
+                fileUpload.SaveAs(path + Path.GetFileName(fileUpload.FileName));
+            
+            }
+            catch(Exception e) {
+                return Json(new { Value = false, Message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+
+            return Json(new { Value = true, Message = "Archivo cargado se procedera el timbrado" }, JsonRequestBehavior.AllowGet);
         }
 
 

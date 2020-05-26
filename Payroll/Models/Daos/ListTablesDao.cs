@@ -8,11 +8,12 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Configuration;
 using System.Media;
 using System.Xml;
-using System.IO.Compression;
+
 using System.Drawing;
 using System.Web.UI.WebControls;
 
@@ -1154,7 +1155,12 @@ namespace Payroll.Models.Daos
             return ListDatEmisor;
         }
 
-     
-
+        public List<string> Archivo()
+        {
+            
+            List<string> zips = new List<string>();
+            
+            return zips;
+        }
     }
 }
