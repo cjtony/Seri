@@ -11,6 +11,7 @@ using System.IO;
 using System.Text;
 using static iTextSharp.text.Font;
 using Payroll.Models.Utilerias;
+using System.Globalization;
 
 namespace Payroll.Controllers
 {
@@ -99,6 +100,7 @@ namespace Payroll.Controllers
         {
             Boolean flag = false;
             String  messageError = "none";
+            string nameFilePdf = "";
             List<BajasEmpleadosBean> dataDownEmployee = new List<BajasEmpleadosBean>();
             List<DatosFiniquito> listDataDownBean     = new List<DatosFiniquito>();
             BajasEmpleadosDaoD   dataDownEmplDaoD     = new BajasEmpleadosDaoD();
@@ -167,7 +169,7 @@ namespace Payroll.Controllers
                         }
                         ConversorMoneda convertMon = new ConversorMoneda();
                         // Definimos el nombre del archivo pdf
-                        string nameFilePdf = typeSettlement.Replace(" ", "_").ToUpper() + "_" + keyEmployee.ToString() + ".pdf";
+                        nameFilePdf = typeSettlement.Replace(" ", "_").ToUpper() + "_" + keyEmployee.ToString() + ".pdf";
                         if (System.IO.File.Exists(pathSaveDocs + nameFolder + @"\\" + nameFilePdf)) {
                             System.IO.File.Delete(pathSaveDocs + nameFolder + @"\\" + nameFilePdf);
                         }
@@ -260,7 +262,7 @@ namespace Payroll.Controllers
                             if (lengthPer > 0) {
                                 if (data.iIdValor == 1 && data.iRenglon_id != 990) {
                                     descPerc = data.sNombre_Renglon + " " + data.sLeyenda;
-                                    totaPerc = "$" + data.sSaldo.Replace(".", ",");
+                                    totaPerc = "$" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo));
                                 }
                             }
                             // Descripcion de la percepcion
@@ -274,7 +276,7 @@ namespace Payroll.Controllers
                             if (lengthDed > 0) {
                                 if (data.iIdValor == 2 && data.iRenglon_id != 1990) {
                                     descDedu = data.sNombre_Renglon + " " + data.sLeyenda;
-                                    totaDedu = "$ " + data.sSaldo.Replace(".",",");
+                                    totaDedu = "$ " + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo));
                                 }
                             }
                             // Descripcion de la deduccion
@@ -295,7 +297,7 @@ namespace Payroll.Controllers
                                 clPercepciones.Colspan = 2;
                                 tableInfo.AddCell(clPercepciones);
                                 // Total de la percepcion
-                                clPercepciones = new PdfPCell(new Phrase("     $" + data.sSaldo.Replace(".",","), _standardFont));
+                                clPercepciones = new PdfPCell(new Phrase("     $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo)), _standardFont));
                                 clPercepciones.Colspan = 1;
                                 tableInfo.AddCell(clPercepciones);
                             }
@@ -305,7 +307,7 @@ namespace Payroll.Controllers
                                 clDeducciones.Colspan = 2;
                                 tableInfo.AddCell(clDeducciones);
                                 // Total de la deduccion
-                                clDeducciones = new PdfPCell(new Phrase("     $" + data.sSaldo.Replace(".",","), _standardFont));
+                                clDeducciones = new PdfPCell(new Phrase("     $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo)), _standardFont));
                                 clDeducciones.Colspan = 1;
                                 tableInfo.AddCell(clDeducciones);
                             }
@@ -316,7 +318,7 @@ namespace Payroll.Controllers
                         doc.Add(new Chunk("\n"));
                         pr.Clear();
                         pr.Font = new Font(FontFactory.GetFont("ARIAL", 10, Font.BOLD));
-                        pr.Add("Finiquito a favor: $" + totalBalance.Replace(".",",") + ".");
+                        pr.Add("Finiquito a favor: $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalBalance)));
                         pr.Alignment = Element.ALIGN_RIGHT;
                         doc.Add(pr);
                         pr.Clear();
@@ -327,7 +329,7 @@ namespace Payroll.Controllers
                         // Creamos la celda de salario mensual
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add("Salario diario");
+                        pr.Add("Salario Mensual");
                         PdfPCell clSalarioMensual = new PdfPCell();
                         clSalarioMensual.BorderWidth = 0.75f;
                         clSalarioMensual.PaddingTop = -7;
@@ -337,7 +339,7 @@ namespace Payroll.Controllers
                         // Creamos la celda de salario diario
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add("Salario mensual");
+                        pr.Add("Salario Diario");
                         PdfPCell clSalarioDiario = new PdfPCell();
                         clSalarioDiario.BorderWidth = 0.75f;
                         clSalarioDiario.PaddingTop = -7;
@@ -361,7 +363,7 @@ namespace Payroll.Controllers
                         // Dato del salario mensual
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add("$" + salaryMonth.Replace(".",","));
+                        pr.Add("$" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(salaryMonth)));
                         clSalarioMensual = new PdfPCell();
                         clSalarioMensual.BorderWidth = 0.75f;
                         clSalarioMensual.PaddingTop = -7;
@@ -372,7 +374,7 @@ namespace Payroll.Controllers
                         // Dato del salario diario
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add("$" + salaryDay.Replace(".",","));
+                        pr.Add("$" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(salaryDay)));
                         clSalarioDiario = new PdfPCell();
                         clSalarioDiario.BorderWidth = 0.75f;
                         clSalarioDiario.PaddingTop = -7;
@@ -635,7 +637,36 @@ namespace Payroll.Controllers
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             }
-            return Json(new { });
+            string nameFileSession = Path.GetFileNameWithoutExtension(nameFilePdf);
+            Session[nameFilePdf] = nameFilePdf;
+            return Json(new { Bandera = flag, MensajeError = messageError, NombrePDF = nameFilePdf, InfoFiniquito = dataDownEmployee });
+        }
+
+        [HttpPost]
+        public JsonResult DeletePdfSettlement(string namePdfSettlement)
+        {
+            Boolean flagV = false;
+            Boolean flagC = false;
+            Boolean flagD = false;
+            String  messageError = "none";
+            string  pathSaveDocs = Server.MapPath("~/Content/");
+            string  folderFiles  = "DOCSFINIQUITOS";
+            try {
+                string namePdfClear = namePdfSettlement.Trim();
+                if (Session[namePdfSettlement] != null) {
+                    flagV = true;
+                    if (System.IO.File.Exists(pathSaveDocs + folderFiles + @"\\" + Session[namePdfSettlement].ToString())) {
+                        flagC = true;
+                        System.IO.File.Delete(pathSaveDocs + folderFiles + @"\\" + Session[namePdfSettlement].ToString());
+                        if (!System.IO.File.Exists(pathSaveDocs + folderFiles + @"\\" + Session[namePdfSettlement].ToString())) {
+                            flagD = true;
+                        }
+                    }
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { BanderaValida = flagV, BanderaComprueba = flagV, BanderaElimina = flagD, MensajeError = messageError });
         }
 
         [HttpPost]

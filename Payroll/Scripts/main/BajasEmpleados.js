@@ -132,6 +132,9 @@
     const dateSendDown  = document.getElementById('dateSendDown');
     const compSendEsp   = document.getElementById('compSendEsp');
 
+    const btnCloseSettlementSelect = document.getElementById("btnCloseSettlementSelect");
+    const icoCloseSettlementSelect = document.getElementById("icoCloseSettlementSelect");
+
     /*
      * Funciones
      */
@@ -225,10 +228,10 @@
                                                 Tipo Baja: ${data.DatosFiniquito[i].sFiniquito_valor}
                                         </span>
                                         <span class="badge">
-                                            <button class="btn btn-sm btn-primary" title="Imprimir"
+                                            <a href="#" class="btn btn-sm btn-primary" title="Detalle"
                                                 onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
-                                                <i class="fas fa-print"></i> 
-                                            </button>
+                                                <i class="fas fa-eye"></i> 
+                                            </a>
                                             <button disabled class="btn btn-sm btn-success" title="Guardar">
                                                 <i class="fas fa-check"></i>
                                             </button>
@@ -253,10 +256,10 @@
                                                 Tipo Baja: ${data.DatosFiniquito[i].sFiniquito_valor}
                                         </span>
                                         <span class="badge">
-                                            <button class="btn btn-sm btn-primary" title="Imprimir"
+                                            <a href="#" class="btn btn-sm btn-primary" title="Detalle"
                                                 onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
-                                                <i class="fas fa-print"></i> 
-                                            </button>
+                                                <i class="fas fa-eye"></i> 
+                                            </a>
                                             <button class="btn btn-sm btn-success" title="Guardar" onclick="fSelectSettlementPaid(${data.DatosFiniquito[i].iIdFiniquito})">
                                                 <i class="fas fa-check"></i>
                                             </button>
@@ -365,6 +368,64 @@
                         console.log('Generando');
                     }, success: (data) => {
                         console.log(data);
+                        $("#window-data-down").modal("hide");
+                        if (data.Bandera == true && data.MensajeError == "none") {
+                            setTimeout(() => {
+                                $("#settlement-details").modal("show");
+                            }, 1000);
+                            const salario_mensual = parseInt(data.InfoFiniquito[0].sSalario_mensual).toFixed(2);
+                            const salario_diario  = parseInt(data.InfoFiniquito[0].sSalario_diario).toFixed(2);
+                            document.getElementById("div-details").innerHTML += `
+                                <div class="col-md-6 mt-4">
+                                    <ul class="list-group shadow card rounded">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha de baja</span>
+                                            <span class="badge badge-primary badge-pill">${data.InfoFiniquito[0].sFecha_baja}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha de ingreso</span>
+                                            <span class="badge badge-primary badge-pill">${data.InfoFiniquito[0].sFecha_ingreso}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha de antiguedad</span>
+                                            <span class="badge badge-primary badge-pill">${data.InfoFiniquito[0].sFecha_antiguedad}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha recibo</span>
+                                            <span class="badge badge-primary badge-pill">${data.InfoFiniquito[0].sFecha_recibo}</span>
+                                        </li>   
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 mt-4">
+                                    <ul class="list-group shadow card rounded">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Años trabajados</span>
+                                            <span class="badge badge-primary badge-pill">${data.InfoFiniquito[0].iAnios}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Dias trabajados</span>
+                                            <span class="badge badge-primary badge-pill">${data.InfoFiniquito[0].sDias}</span>
+                                        </li>  
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-money-check-alt mr-1 col-ico"></i>Salario mensual</span>
+                                            <span class="badge badge-primary badge-pill">$${salario_mensual}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-money-check-alt mr-1 col-ico"></i>Salario diario</span>
+                                            <span class="badge badge-primary badge-pill">$${salario_diario}</span>
+                                        </li> 
+                                    </ul>
+                                </div>
+                                <div class="form-group mt-5 col-md-4 offset-4">
+                                    <a class="btn btn-primary btn-block btn-sm" id="btnprint${paramid}"> <i class="fas fa-download"></i> Descargar PDF </a>
+                                </div>
+                            `;
+                            document.getElementById("typeSettlement").textContent = data.InfoFiniquito[0].sFiniquito_valor;
+                            document.getElementById("btnprint" + String(paramid)).setAttribute("download", data.NombrePDF);
+                            document.getElementById("btnprint" + String(paramid)).setAttribute("href", "../../Content/DOCSFINIQUITOS/" + data.NombrePDF);
+                            btnCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ")");
+                            icoCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ")");
+                        }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }
@@ -377,6 +438,60 @@
                 console.error('EvalError: ', error.message);
             } else if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que elimina el pdf generado una vez descargado
+    fDeletePdfSettlement = (paramstr, paramid) => {
+        try {
+            if (paramstr != "") {
+                $.ajax({
+                    url: "../BajasEmpleados/DeletePdfSettlement",
+                    type: "POST",
+                    data: { namePdfSettlement: paramstr },
+                    beforeSend: () => {
+                        btnCloseSettlementSelect.disabled = true;
+                        icoCloseSettlementSelect.disabled = true;
+                        document.getElementById("div-details").innerHTML = `<div class='col-md-6 text-center offset-3 mt-3'>
+                            <div class="alert alert-info" role="alert">
+                              <b>Espere un momento por favor...</b>
+                            </div>
+                        </div>`;
+                    }, success: (data) => {
+                        setTimeout(() => {
+                            if (data.BanderaValida == true && data.BanderaComprueba == true && data.BanderaElimina == true && data.MensajeError == "none") {
+                                $("#settlement-details").modal("hide");
+                                document.getElementById("div-details").innerHTML = "";
+                                document.getElementById("typeSettlement").textContent = "";
+                                btnCloseSettlementSelect.removeAttribute("onclick");
+                                icoCloseSettlementSelect.removeAttribute("onclick");
+                                btnCloseSettlementSelect.disabled = false;
+                                icoCloseSettlementSelect.disabled = false;
+                                fShowDataDown();
+                                setTimeout(() => {
+                                    $("#window-data-down").modal("show");
+                                }, 500);
+                            } else {
+                                alert('Error al eliminar el pdf del almacenamiento temporal');
+                            }
+                        }, 1000); 
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
             } else if (error instanceof TypeError) {
                 console.error('TypeError: ', error.message);
             } else {
