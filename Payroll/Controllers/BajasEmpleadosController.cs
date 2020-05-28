@@ -104,6 +104,7 @@ namespace Payroll.Controllers
             List<BajasEmpleadosBean> dataDownEmployee = new List<BajasEmpleadosBean>();
             List<DatosFiniquito> listDataDownBean     = new List<DatosFiniquito>();
             BajasEmpleadosDaoD   dataDownEmplDaoD     = new BajasEmpleadosDaoD();
+            string nameEmployee = "";
             try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
                 dataDownEmployee = dataDownEmplDaoD.sp_Finiquitos_Empleado(keyEmployee, keyBusiness, keySettlement);
@@ -162,6 +163,7 @@ namespace Payroll.Controllers
                         }
                         //Foreach para sacar el saldo total
                         foreach (DatosFiniquito data in listDataDownBean) {
+                            nameEmployee = data.sNombre;
                             if (data.iIdValor == 5 && data.iRenglon_id == 9999) {
                                 totalBalance = data.sSaldo;
                                 break;
@@ -169,7 +171,8 @@ namespace Payroll.Controllers
                         }
                         ConversorMoneda convertMon = new ConversorMoneda();
                         // Definimos el nombre del archivo pdf
-                        nameFilePdf = typeSettlement.Replace(" ", "_").ToUpper() + "_" + keyEmployee.ToString() + ".pdf";
+                        nameFilePdf = nameEmployee.Replace(" ", "").ToUpper() + "_" + keyEmployee.ToString() + "_E" + keyBusiness + ".pdf" ;
+                        //nameFilePdf = "E" + keyBusiness.ToString() + "_" + typeSettlement.Replace(" ", "_").ToUpper() + "_" + keyEmployee.ToString() + ".pdf";
                         if (System.IO.File.Exists(pathSaveDocs + nameFolder + @"\\" + nameFilePdf)) {
                             System.IO.File.Delete(pathSaveDocs + nameFolder + @"\\" + nameFilePdf);
                         }
@@ -184,9 +187,9 @@ namespace Payroll.Controllers
                         Font fontParagraph = new Font(FontFamily.HELVETICA, 8, Font.ITALIC);
                         Paragraph pr = new Paragraph();
                         DateTime datePdf = DateTime.Now;
-                        string datePrintReceipt = ConvertDateText(Convert.ToDateTime(dateReceipt).ToString("yyyy-MM-dd"));
+                        string datePrintReceipt = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
                         pr.Font = fontBold;
-                        pr.Add("Empresa: " + nameBusiness.ToUpper() + ".");
+                        pr.Add(nameBusiness.ToUpper() + ".");
                         doc.Add(pr);
                         pr.Clear();
                         doc.Add(new Chunk("\n"));
@@ -203,15 +206,15 @@ namespace Payroll.Controllers
                         pr.Clear();
                         doc.Add(new Chunk("\n"));
                         pr.Font = fontParagraph;
-                        string balanceConvertText = convertMon.Convertir(totalBalance, true, "PESOS");
+                        string balanceConvertText = convertMon.Convertir(Convert.ToDouble(totalBalance).ToString(), true, "PESOS");
                         string dateDownConvert    = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
-                        string paragraphDescription = "Recibí de la empresa " + nameBusiness.ToUpper() + " la cantidad neta de $" + totalBalance.Replace(".",",") + " (" + balanceConvertText + "). Por los conceptos detallados en la hoja de desglose de finiquito que me corresponde, con motivo de mi renuncia a esta institución, por lo que dejo de prestar mis servicios de manera voluntaria a partir del día " + dateDownConvert + ".";
+                        string paragraphDescription = "Recibí de " + nameBusiness.ToUpper() + " la cantidad neta de $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalBalance)) + " (" + balanceConvertText + "). Por los conceptos detallados en la hoja de desglose de finiquito que me corresponde, con motivo de mi renuncia a esta institución, por lo que dejo de prestar mis servicios de manera voluntaria a partir del día " + dateDownConvert + ".";
                         pr.Add(paragraphDescription);
                         pr.Alignment = Element.ALIGN_JUSTIFIED;
                         doc.Add(pr);
                         pr.Clear();
                         doc.Add(new Chunk("\n"));
-                        string paragrahpDescription2 = "En esa virtud manifiesto que estoy conforme con el finiquito mencionado, en cuanto a su importe y conceptos que se especifican, el cual recibo a mi entera satisfación y por lo mismo, les otorgo mi más amplio finiquito, sin reserva de ninguna acción, ni derecho que ejercitar posteriormente en contra de la Empresa " + nameBusiness + ", " + "ya que durante el tiempo que presté mis servicios, siempre me fueron cubiertas íntegra y puntualmente todas las prestaciones a que tuve derecho, tales como: aguinaldo, vacaciones, prima vacacional, salarios, tiempo extra, descansos obligatorios y en si cualquier otra prestación derivada de mi contrato individual de trabajo, o de la normatividad de la materia, por consiguiente me doy por pagado de todas y cada una de ellas.";
+                        string paragrahpDescription2 = "En esa virtud manifiesto que estoy conforme con el finiquito mencionado, en cuanto a su importe y conceptos que se especifican, el cual recibo a mi entera satisfación y por lo mismo, les otorgo mi más amplio finiquito, sin reserva de ninguna acción, ni derecho que ejercitar posteriormente en contra de " + nameBusiness + ", " + "ya que durante el tiempo que presté mis servicios, siempre me fueron cubiertas íntegra y puntualmente todas las prestaciones a que tuve derecho, tales como: aguinaldo, vacaciones, prima vacacional, salarios, tiempo extra, descansos obligatorios y en si cualquier otra prestación derivada de mi contrato individual de trabajo, o de la normatividad de la materia, por consiguiente me doy por pagado de todas y cada una de ellas.";
                         pr.Font = fontParagraph;
                         pr.Add(paragrahpDescription2);
                         pr.Alignment = Element.ALIGN_JUSTIFIED;
@@ -243,10 +246,8 @@ namespace Payroll.Controllers
                         pr.Clear();
                         tableInfo.AddCell(clPercepciones);
                         tableInfo.AddCell(clDeducciones);
-                        string nameEmployee = "";
                         // Foreach para llenar los datos de las celdas
                         foreach (DatosFiniquito data in listDataDownBean) {
-                            nameEmployee = data.sNombre;
                             int lengthPer = 0;
                             int lengthDed = 0;
                             if (data.iIdValor == 1 && data.iRenglon_id != 990) {
@@ -524,7 +525,7 @@ namespace Payroll.Controllers
                         doc.Add(detailsTable);
                         doc.Add(new Chunk("\n"));
                         // Creamos la tabla de los datos del puesto del empleado
-                        PdfPTable detailsJobTable = new PdfPTable(9);
+                        PdfPTable detailsJobTable = new PdfPTable(8);
                         detailsJobTable.WidthPercentage = 100;
                         // Creamos la celda del centro de costo
                         pr.Font = fontCells;
@@ -533,19 +534,19 @@ namespace Payroll.Controllers
                         PdfPCell clCentroCosto = new PdfPCell();
                         clCentroCosto.BorderWidth = 0.75f;
                         clCentroCosto.PaddingTop = -7;
-                        clCentroCosto.Colspan = 3;
+                        clCentroCosto.Colspan = 4;
                         clCentroCosto.AddElement(pr);
                         pr.Clear();
                         // Creamos la celda del departamento
-                        pr.Font = fontCells;
-                        pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add("Departamento");
-                        PdfPCell clDepartamento = new PdfPCell();
-                        clDepartamento.BorderWidth = 0.75f;
-                        clDepartamento.PaddingTop = -7;
-                        clDepartamento.Colspan = 3;
-                        clDepartamento.AddElement(pr);
-                        pr.Clear();
+                        //pr.Font = fontCells;
+                        //pr.Alignment = Element.ALIGN_CENTER;
+                        //pr.Add("Departamento");
+                        //PdfPCell clDepartamento = new PdfPCell();
+                        //clDepartamento.BorderWidth = 0.75f;
+                        //clDepartamento.PaddingTop = -7;
+                        //clDepartamento.Colspan = 3;
+                        //clDepartamento.AddElement(pr);
+                        //pr.Clear();
                         // Creamos la celda de puesto
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
@@ -553,12 +554,12 @@ namespace Payroll.Controllers
                         PdfPCell clPuesto = new PdfPCell();
                         clPuesto.BorderWidth = 0.75f;
                         clPuesto.PaddingTop = -7;
-                        clPuesto.Colspan = 3;
+                        clPuesto.Colspan = 4;
                         clPuesto.AddElement(pr);
                         pr.Clear();
                         // Añadimos las celdas a la tabla
                         detailsJobTable.AddCell(clCentroCosto);
-                        detailsJobTable.AddCell(clDepartamento);
+                        //detailsJobTable.AddCell(clDepartamento);
                         detailsJobTable.AddCell(clPuesto);
                         // Añadimos datos a las celdas de la tabla detailsJobTable
                         // Dato del centro de costo
@@ -568,21 +569,21 @@ namespace Payroll.Controllers
                         clCentroCosto = new PdfPCell();
                         clCentroCosto.BorderWidth = 0.75f;
                         clCentroCosto.PaddingTop = -7;
-                        clCentroCosto.Colspan = 3;
+                        clCentroCosto.Colspan = 4;
                         clCentroCosto.AddElement(pr);
                         pr.Clear();
                         detailsJobTable.AddCell(clCentroCosto);
                         // Dato del departamento
-                        pr.Font = fontCells;
-                        pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add(departamentName);
-                        clDepartamento = new PdfPCell();
-                        clDepartamento.BorderWidth = 0.75f;
-                        clDepartamento.PaddingTop = -7;
-                        clDepartamento.Colspan = 3;
-                        clDepartamento.AddElement(pr);
-                        pr.Clear();
-                        detailsJobTable.AddCell(clDepartamento);
+                        //pr.Font = fontCells;
+                        //pr.Alignment = Element.ALIGN_CENTER;
+                        //pr.Add(departamentName);
+                        //clDepartamento = new PdfPCell();
+                        //clDepartamento.BorderWidth = 0.75f;
+                        //clDepartamento.PaddingTop = -7;
+                        //clDepartamento.Colspan = 3;
+                        //clDepartamento.AddElement(pr);
+                        //pr.Clear();
+                        //detailsJobTable.AddCell(clDepartamento);
                         // Dato del puesto
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
@@ -590,7 +591,7 @@ namespace Payroll.Controllers
                         clPuesto = new PdfPCell();
                         clPuesto.BorderWidth = 0.75f;
                         clPuesto.PaddingTop = -7;
-                        clPuesto.Colspan = 3;
+                        clPuesto.Colspan = 4;
                         clPuesto.AddElement(pr);
                         pr.Clear();
                         detailsJobTable.AddCell(clPuesto);
@@ -599,21 +600,66 @@ namespace Payroll.Controllers
                         doc.Add(new Chunk("\n"));
                         doc.Add(new Chunk("\n"));
                         // Creamos la ultima tabla para el nombre y firma
-                        PdfPTable tableFirm = new PdfPTable(1);
+                        PdfPTable tableFirm = new PdfPTable(9);
                         tableFirm.WidthPercentage = 100;
-                        // Creamos la celda de nombre
+                        // Creamos la celda de departamento
                         Font fontFirm = new Font(FontFactory.GetFont("ARIAL", 10, Font.BOLD));
+                        pr.Font = fontFirm;
+                        pr.Alignment = Element.ALIGN_CENTER;
+                        pr.Add("Departamento");
+                        PdfPCell clDepartamento = new PdfPCell();
+                        clDepartamento.Border = 0;
+                        clDepartamento.PaddingTop = -7;
+                        clDepartamento.Colspan = 3;
+                        clDepartamento.AddElement(pr);
+                        pr.Clear();
+                        // Creamos la celda de fecha de baja
+                        pr.Font = fontFirm;
+                        pr.Alignment = Element.ALIGN_CENTER;
+                        pr.Add("Fecha Baja");
+                        PdfPCell clFechaBajaTexto = new PdfPCell();
+                        clFechaBajaTexto.Border = 0;
+                        clFechaBajaTexto.PaddingTop = -7;
+                        clFechaBajaTexto.Colspan = 3;
+                        clFechaBajaTexto.AddElement(pr);
+                        pr.Clear();
+                        // Creamos la celda de nombre
                         pr.Font = fontFirm;
                         pr.Alignment = Element.ALIGN_CENTER;
                         pr.Add(nameEmployee);
                         PdfPCell clNombreEmpleado = new PdfPCell();
                         clNombreEmpleado.Border = 0;
                         clNombreEmpleado.PaddingTop = -7;
+                        clNombreEmpleado.Colspan = 3;
                         clNombreEmpleado.AddElement(pr);
                         pr.Clear();
                         //Agregamos la celda a la tabla
+                        tableFirm.AddCell(clDepartamento);
+                        tableFirm.AddCell(clFechaBajaTexto);
                         tableFirm.AddCell(clNombreEmpleado);
                         //Agregamos el valor de nombre y firma abajo de la celda de nombre
+                        //Dato del departamento
+                        pr.Font = fontFirm;
+                        pr.Alignment = Element.ALIGN_CENTER;
+                        pr.Add(departamentName);
+                        clDepartamento = new PdfPCell();
+                        clDepartamento.BorderWidth = 0;
+                        clDepartamento.PaddingTop = 7;
+                        clDepartamento.Colspan = 3;
+                        clDepartamento.AddElement(pr);
+                        pr.Clear();
+                        tableFirm.AddCell(clDepartamento);
+                        //Dato de la fecha de baja texto
+                        pr.Font = fontFirm;
+                        pr.Alignment = Element.ALIGN_CENTER;
+                        pr.Add(dateDownConvert);
+                        clDepartamento = new PdfPCell();
+                        clDepartamento.BorderWidth = 0;
+                        clDepartamento.PaddingTop = 7;
+                        clDepartamento.Colspan = 3;
+                        clDepartamento.AddElement(pr);
+                        pr.Clear();
+                        tableFirm.AddCell(clDepartamento);
                         // Dato de la nomina
                         pr.Font = fontFirm;
                         pr.Alignment = Element.ALIGN_CENTER;
@@ -621,6 +667,7 @@ namespace Payroll.Controllers
                         clNombreEmpleado = new PdfPCell();
                         clNombreEmpleado.BorderWidth = 0;
                         clNombreEmpleado.PaddingTop = 7;
+                        clNombreEmpleado.Colspan = 3;
                         clNombreEmpleado.AddElement(pr);
                         tableFirm.AddCell(clNombreEmpleado);
                         pr.Clear();
@@ -660,6 +707,7 @@ namespace Payroll.Controllers
                         System.IO.File.Delete(pathSaveDocs + folderFiles + @"\\" + Session[namePdfSettlement].ToString());
                         if (!System.IO.File.Exists(pathSaveDocs + folderFiles + @"\\" + Session[namePdfSettlement].ToString())) {
                             flagD = true;
+                            Session.Remove(namePdfSettlement);
                         }
                     }
                 }
