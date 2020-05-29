@@ -16,6 +16,11 @@
 
     const btnVerifCodPost = document.getElementById('btn-verif-codpost');
 
+    //Funcion para validar solo numeros 
+    $('.input-number').on('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
     // INICIO FUNCIONALIDADES ESTADOS \\
     let getDataTabDataGen;
     // ** Funcion que carga los estados ** \\

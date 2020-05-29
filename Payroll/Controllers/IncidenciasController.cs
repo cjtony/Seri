@@ -171,7 +171,7 @@ namespace Payroll.Controllers
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
             lista = Dao.sp_TAusentismos_Insert_Ausentismo( Tipo_Ausentismo_id,id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada,Periodo );
-            lista.Add("Ausentismo registrado con éxito");
+            //lista.Add("Ausentismo registrado con éxito");
             return Json(lista);
         }
         [HttpPost]

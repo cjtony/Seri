@@ -217,7 +217,7 @@ namespace Payroll.Models.Daos
 
             return empresa;
         }
-        public List<string> sp_Insert_FirstStep_Empresas(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase)
+        public List<string> sp_Insert_FirstStep_Empresas(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo)
         {
             List<string> res = new List<string>();
             this.Conectar();
@@ -241,6 +241,14 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlsNombre_Afiliacion", inNombre_Afiliacion));
             cmd.Parameters.Add(new SqlParameter("@ctrliRiesgoTrabajo", inRiesgoTrabajo));
             cmd.Parameters.Add(new SqlParameter("@ctrliClaseRP", inClase));
+
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo_id", intipoperiodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Inicio", infinicio));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Final", inffinal));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Proceso", infpago));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Pago", infproceso));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDias_Pagados", indiaspagados));
+
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)

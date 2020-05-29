@@ -100,5 +100,79 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
+        public List<string> sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(int Empresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlAno", inano));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", inperiodo));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Inicio", infinicio));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Final", inffinal));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Proceso", infproceso));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Pago", infpago));
+                cmd.Parameters.Add(new SqlParameter("@ctrlDias_Pagados", indiaspago));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sRespuesta"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<string> sp_CInicio_Fechas_Periodo_Delete_Fecha_Periodo(int Empresa_id, int Id)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CInicio_Fechas_Periodo_Delete_Fecha_Periodo", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlId", Id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sRespuesta"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
     }
 }

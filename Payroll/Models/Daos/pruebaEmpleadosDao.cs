@@ -387,8 +387,11 @@ namespace Payroll.Models.Daos
             cmd.Dispose();
             if (data.HasRows)
             {
-                list.Add(data["iFlag"].ToString());
-                list.Add(data["sRespuesta"].ToString());
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
             }
             else
             {
@@ -420,8 +423,11 @@ namespace Payroll.Models.Daos
             cmd.Dispose();
             if (data.HasRows)
             {
-                list.Add(data["iFlag"].ToString());
-                list.Add(data["sRespuesta"].ToString());
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
             }
             else
             {

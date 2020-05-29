@@ -1,17 +1,17 @@
 ﻿<div class="container font-labels">
     <div class="row">
-        <div class="col-3">
+        <div class="col-2">
             <div class="nav pills-catalogos flex-column nav-pills" id="pills-catalogos" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Lista de catalogos</a>
-                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Fechas - Periodos</a>
-                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Politicas de vacaciones</a>
-                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Catalogo 3 ...</a>
+                <a class="nav-link active" id="v-pills-lista-tab" data-toggle="pill" href="#v-pills-lista" role="tab" aria-controls="v-pills-home" aria-selected="true">Lista de catalogos</a>
+                <a class="nav-link" id="v-pills-FechasPeriodos-tab" data-toggle="pill" href="#v-pills-FechasPeriodos" role="tab" aria-controls="v-pills-profile" aria-selected="false">Fechas - Periodos</a>
+                <a class="nav-link" id="v-pills-politicas-tab" data-toggle="pill" href="#v-pills-politicas" role="tab" aria-controls="v-pills-messages" aria-selected="false">Politicas de vacaciones</a>
+                <a class="nav-link" id="v-pills-editar-tab" data-toggle="pill" href="#v-pills-editar" role="tab" aria-controls="v-pills-settings" aria-selected="false" aria-disabled="false">Modulo de Edicion</a>
             </div>
         </div>
-        <div class="col-9">
+        <div class="col-10">
             <div class="tab-content" id="v-pills-tabContent">
                 @* TAB 1 *@
-                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class="tab-pane fade show active" id="v-pills-lista" role="tabpanel" aria-labelledby="v-pills-home-tab">
                     <div class="font-button">Lista de catalogos</div>
                     <hr />
                     <div class="container col-md-12 row d-flex justify-content-around">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 @* TAB 2 *@
-                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <div class="tab-pane fade" id="v-pills-FechasPeriodos" role="tabpanel" aria-labelledby="v-pills-FechasPeriodos-tab">
                     <div class="">Fechas - Periodos</div>
                     <hr />
                     <table class="table table-sm table-striped table-fechas-periodos">
@@ -48,7 +48,7 @@
                                     <div class="col-md-12">
                                         <label>4 REJUM - 2020 - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class="badge badge-success btn" onclick="LoadDetalleFechasPeriodo('collapse-REJUM', 4);"><i class="fas fa-plus"></i></div>
                                         <div class="collapse collapse-REJUM col-md-12" id="collapse-REJUM">
-                                            
+
                                         </div>
                                     </div>
                                 </td>
@@ -57,35 +57,93 @@
                     </table>
                 </div>
                 @* TAB 3 *@
-            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                <div class="col-1md-12">Politicas de vacaciones</div>
-                <hr />
-                <table class="table table-sm table-striped table-politicas-vacaciones col-md-12">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id Empresa</th>
-                            <th scope="col">Nombre Empresa</th>
-                            <th scope="col">Año</th>
-                            <th scope="col">Fecha Efectiva</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bodytab-fechas-periodos">
-                        <tr>
-                            <td colspan="3">
-                                <div class="col-md-12">
-                                    <label>4 REJUM - 2020 - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class="badge badge-success btn" onclick="LoadDetalleFechasPeriodo('collapse-REJUM', 4);"><i class="fas fa-plus"></i></div>
-                                    <div class="collapse collapse-REJUM col-md-12" id="collapse-REJUM">
+                <div class="tab-pane fade" id="v-pills-politicas" role="tabpanel" aria-labelledby="v-pills-politicas-tab">
+                    <div class="col-1md-12">Politicas de vacaciones</div>
+                    <hr />
+                    <table class="table table-sm table-striped table-politicas-vacaciones col-md-12">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id Empresa</th>
+                                <th scope="col">Nombre Empresa</th>
+                                <th scope="col">Año</th>
+                                <th scope="col">Fecha Efectiva</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodytab-fechas-periodos">
+                            <tr>
+                                <td colspan="3">
+                                    <div class="col-md-12">
+                                        <label>4 REJUM - 2020 - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class="badge badge-success btn" onclick="LoadDetalleFechasPeriodo('collapse-REJUM', 4);"><i class="fas fa-plus"></i></div>
+                                        <div class="collapse collapse-REJUM col-md-12" id="collapse-REJUM">
 
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 @* TAB 4 *@
-                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
-                
+                <div class="tab-pane fade" id="v-pills-editar" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    <div class="d-flex justify-content-between"><label id="lblEdicion" class="col-md-9"></label><div id="bodybotonagregar" class="col-md-3"></div></div>
+                    <hr />
+                    <div id="bodyEditarModulo" class="col-md-12">
+
+                    </div>
+                    <input type="hidden" id="Empresa_id_editar_fecha_periodo" value="" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar -->
+    <div class="modal fade" id="modalAgregarFechaPeriodo" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Agregar <span class="text-danger h5">Fecha - Periodo</span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmAddFechasPeriodos" method="post" class="row">
+
+                        <div class="form-group col-md-4">
+                            <label>Año</label>
+                            <input class="form-control form-control-sm" type="number" id="inano" name="inano" min="" required/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Periodo</label>
+                            <input class="form-control form-control-sm" type="text" name="inperiodo" id="inperiodo" value="" placeholder="No. Periodo" required/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Inicio</label>
+                            <input class="form-control form-control-sm" type="date" name="infinicio" id="infinicio" value="" required/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Final</label>
+                            <input class="form-control form-control-sm" type="date" name="inffinal" id="inffinal" value="" required/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Proceso</label>
+                            <input class="form-control form-control-sm" type="date" name="infproceso" id="infproceso" value="" required/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Pago</label>
+                            <input class="form-control form-control-sm" type="date" name="infpago" id="infpago" value="" required/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Dias Pago</label>
+                            <input class="form-control form-control-sm" type="text" name="indiaspago" id="indiaspago" value="15" required/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button id="btnsavefechaperiodo" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -94,7 +152,5 @@
 
 
 
-
-    
 </div>
 <script src="~/Scripts/main/ModuloCatalogos.js"></script>

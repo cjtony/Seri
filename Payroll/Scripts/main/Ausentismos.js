@@ -93,7 +93,7 @@
                             document.getElementById("tabody").innerHTML = "";
                             for (var i = 0; i < data.length; i++) {
                                 //document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Tipo_Ausentismo_id"] + "</td><td>" + data[i]["Fecha_Ausentismo"] + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn btn-secondary btn-sm btn-editar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div></td></tr>";
-                                document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Nombre_Ausentismo"] + "</td><td>" + data[i]["Fecha_Ausentismo"].substring(0,10) + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn-group' role='group' aria-label='Basic example'><div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-secondary btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-trash-alt'></i></div></div></td></tr>";
+                                document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Nombre_Ausentismo"] + "</td><td>" + data[i]["Fecha_Ausentismo"].substring(0,10) + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn-group' role='group' aria-label='Basic example'><div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-danger btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div></div></td></tr>";
                                 console.log(data[i]["Tipo_Ausentismo_id"]);
                             }
                         }
@@ -117,7 +117,7 @@
 
                         });
                     }
-                    
+                    $("#frmAusentismos").reset();
 
                    
                 }
@@ -181,6 +181,7 @@
                 break;       
         }
     });
+
     $("#btnUpdate").on("click", function () {
         console.log("btn-editar");
         var data = $("#frmAusentismos").serialize();
@@ -253,6 +254,7 @@
 
         }
     });
+
     $("#btn-cambiar-empleado").on("click", function () {
         $("#modalLiveSearchEmpleado").modal("toggle");
     });
@@ -292,12 +294,13 @@ function tabAusentismo() {
             console.log(data);
             document.getElementById("tabody").innerHTML = "";
             for (var i = 0; i < data.length; i++) {
-                document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Nombre_Ausentismo"] + "</td><td>" + data[i]["Fecha_Ausentismo"].substring(0,10) + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn-group' role='group' aria-label='Basic example'><div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-secondary btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-trash-alt'></i></div></div></td></tr>";
+                document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Nombre_Ausentismo"] + "</td><td>" + data[i]["Fecha_Ausentismo"].substring(0,10) + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn-group' role='group' aria-label='Basic example'><div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-danger btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div></div></td></tr>";
                 console.log(data[i]["Tipo_Ausentismo_id"]);
             }
         }
     });
 }
+
 function eliminarAusentismo(Ausentismo_id) {
     console.log("boton eliminar: " + Ausentismo_id);
     $.ajax({
@@ -308,19 +311,27 @@ function eliminarAusentismo(Ausentismo_id) {
         contentType: "application/json; charset=utf-8",
         success: (data) => {
             console.log(data);
-            Swal.fire({
-                icon: 'success',
-                title: 'Correcto!',
-                text: data[1]
-
-            });
+            if (data[0] == '0') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Error!',
+                    text: data[1]
+                });
+            } else if(data[0] == '1'){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Correcto!',
+                    text: data[1]
+                });
+            }
+            tabAusentismo();
         }
     });
 }
 //Editar ausentismo
 function editarAusentismo(Ausentismo_id) {
     var motivo = document.getElementById("inMotivoAusentismo");
-    var recup = document.getElementById("inRecuperacionAusentismo");
+    //var recup = document.getElementById("inRecuperacionAusentismo");
     var fechaa = document.getElementById("inFechaAusentismo");
     var dias = document.getElementById("inDiasAusentismo");
     var causa = document.getElementById("inCausaAusentismo");
@@ -338,6 +349,10 @@ function editarAusentismo(Ausentismo_id) {
             console.log(data);
             dias.value = data[0].Dias_Ausentismo;
             causa.value = data[0].Causa_FaltaInjustificada;
+            console.log(data[0].Fecha_Ausentismo + " _ " + data[0].RecuperaAusentismo);
+            fechaa.value = data[0].Fecha_Ausentismo;
+
+            $("#inRecuperacionAusentismo option[value='" + data[0].RecuperaAusentismo + "']").attr("selected", true);
             console.log(data[0].Certificado_imss.length);
             if (data[0].Certificado_imss.length != 0) {
                 certif.disabled = false;
