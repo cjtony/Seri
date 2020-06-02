@@ -47,7 +47,93 @@
     $('#EmpresaNom').change(function () {
 
         IdEmpresa = EmpresaNom.value;
-        const dataSend = { iIdEmpresa: IdEmpresa };
+        const dataSend = { IdEmpresa: IdEmpresa };
+        $("#TipodePerdioRec").empty();
+        $('#TipodePerdioRec').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisTipPeriodo",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("TipodePerdioRec").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
+                }
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+
+
+
+
+    });
+
+     ///// ListBox Perido//////
+
+     $('#EmpleadosNom').change(function () {
+
+         //IdEmpresa = EmpresaNom.value;
+         //anio = anoNom.value;
+         //Tipodeperiodo = TipodePerdioRec.value;
+         //const dataSend = { iIdEmpresesas: IdEmpresa, ianio: anio, iTipoPeriodo: Tipodeperiodo };
+         //console.log(dataSend);
+         //$("#PeridoNom").empty();
+         //$('#PeridoNom').append('<option value="0" selected="selected">Selecciona</option>');    
+         //$.ajax({
+         //    url: "../Nomina/ListPeriodo",
+         //    type: "POST",
+         //    data: dataSend,
+         //    success: (data) => {
+         //        console.log(data);
+
+         //        for (i = 0; i < data.length; i++) {
+         //            document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
+         //        }
+         //    },
+         //});
+
+     });
+
+    //// Muestra fecha de inicio y fin de peridodos
+
+    $('#TipodePerdioRec').change(function () {
+
+        IdEmpresa = EmpresaNom.value;
+        anio = anoNom.value;
+        Tipodeperiodo = TipodePerdioRec.value;
+        const dataSend = { iIdEmpresesas: IdEmpresa, ianio: anio, iTipoPeriodo: Tipodeperiodo };
+        console.log(dataSend);
+        $("#PeridoNom").empty();
+        $('#PeridoNom').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/ListPeriodo",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                console.log(data);
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].sNominaCerrada == "True") {
+                        document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
+                    }
+                    
+                }
+            },
+        });
+
+    });
+
+     $('#PeridoNom').change(function () {
+
+         IdEmpresa = EmpresaNom.value;
+         Tipodeperiodo = TipodePerdioRec.value;
+         var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
+         separador = " ",
+         limite = 2,
+         arreglosubcadena = periodo.split(separador, limite);
+
+         const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0] };
+         console.log(dataSend);
         $("#EmpleadosNom").empty();
         $('#EmpleadosNom').append('<option value="0" selected="selected">Selecciona</option>');
         $.ajax({
@@ -60,56 +146,6 @@
                 }
             }
         });
-        const dataSend2 = { IdEmpresa: IdEmpresa };
-        $("#TipodePerdioRec").empty();
-        $('#TipodePerdioRec').append('<option value="0" selected="selected">Selecciona</option>');
-        $.ajax({
-            url: "../Nomina/LisTipPeriodo",
-            type: "POST",
-            data: dataSend2,
-            success: (data) => {
-                for (i = 0; i < data.length; i++) {
-                    document.getElementById("TipodePerdioRec").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
-                }
-            },
-            error: function (jqXHR, exception) {
-                fcaptureaerrorsajax(jqXHR, exception);
-            }
-        });
-
-
-    });
-
-     ///// ListBox Perido//////
-
-     $('#EmpleadosNom').change(function () {
-
-         IdEmpresa = EmpresaNom.value;
-         anio = anoNom.value;
-         Tipodeperiodo = TipodePerdioRec.value;
-         const dataSend = { iIdEmpresesas: IdEmpresa, ianio: anio, iTipoPeriodo: Tipodeperiodo };
-         console.log(dataSend);
-         $("#PeridoNom").empty();
-         $('#PeridoNom').append('<option value="0" selected="selected">Selecciona</option>');    
-         $.ajax({
-             url: "../Nomina/ListPeriodo",
-             type: "POST",
-             data: dataSend,
-             success: (data) => {
-                 console.log(data);
-
-                 for (i = 0; i < data.length; i++) {
-                     document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
-                 }
-             },
-         });
-
-     });
-
-    //// Muestra fecha de inicio y fin de peridodos
-
-     $('#PeridoNom').change(function () {
-
        
      });
 
@@ -183,8 +219,8 @@
                  var dataAdapter = new $.jqx.dataAdapter(source);
                  $("#TbRecibosNomina").jqxGrid(
                      {
-                         width: 718,
-
+                         
+                         width: 720,   
                          source: dataAdapter,
                          columnsresize: true,
                          columns: [
@@ -195,7 +231,6 @@
                              { text: 'Informativos', datafield: 'dInformativos', width: 100 }
                          ]
                      });
-
              }
          });
      };

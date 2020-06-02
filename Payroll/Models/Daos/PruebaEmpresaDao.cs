@@ -727,7 +727,6 @@ namespace Payroll.Models.Daos
                         Agendadas = data["Agendadas"].ToString(),
                         Disfrutadas = data["Disfrutadas"].ToString(),
                         Cancelado = data["Cancelado"].ToString()
-
                     };
                     lista.Add(list);
                 }
@@ -737,7 +736,6 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
-
             return lista;
         }
         public List<string> sp_TPeriodosVacaciones_Dist_Set_PeriodoDisfrutado(int IdPer_vac_Dist)
@@ -816,7 +814,6 @@ namespace Payroll.Models.Daos
             {
                 while (data.Read())
                 {
-
                     periodo.Add(data["Id"].ToString());
                     periodo.Add(data["Empresa_id"].ToString());
                     periodo.Add(data["Anio"].ToString());
@@ -828,7 +825,6 @@ namespace Payroll.Models.Daos
                     periodo.Add(data["Fecha_Proceso"].ToString());
                     periodo.Add(data["Fecha_Pago"].ToString());
                     periodo.Add(data["Dias_Efectivos"].ToString());
-
                 }
             }
             else

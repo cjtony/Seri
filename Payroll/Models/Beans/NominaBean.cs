@@ -188,6 +188,7 @@ namespace Payroll.Models.Beans
         public int iIdRenglon { get; set; }
         public string sNombreRenglon { get; set; }
         public decimal dTotal { get; set; }
+        public string sTotal { get; set; }
         public string sMensaje { get; set; }
     }
     public class TPProcesos
@@ -247,15 +248,16 @@ namespace Payroll.Models.Beans
     }
 
     public class ReciboNominaBean
-    { 
+    {
 
-       public int iIdRenglon { get; set; }
-       public int iIdTipoPeriodo { get; set; }
-       public string sNombre_Renglon { get; set; }
-       public decimal  dSaldo { get; set; }
-       public int iConsecutivo { get; set; }
-       public int iIdCalculoshd { get; set; }
-       public int iElementoNomina { get; set; }
+        public int iIdRenglon { get; set; }
+        public int iIdTipoPeriodo { get; set; }
+        public string sNombre_Renglon { get; set; }
+        public decimal dSaldo { get; set; }
+        public int iConsecutivo { get; set; }
+        public int iIdCalculoshd { get; set; }
+        public int iElementoNomina { get; set; }
+        public string sValor { get; set; }
        public string sEspejo { get; set; }
        public string sMensaje { get; set; }
 

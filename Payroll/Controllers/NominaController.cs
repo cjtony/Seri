@@ -22,7 +22,7 @@ using System.Drawing;
 using System.Web.UI.WebControls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-
+using Microsoft.Ajax.Utilities;
 
 namespace Payroll.Controllers
 {
@@ -468,10 +468,17 @@ namespace Payroll.Controllers
         public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa)
         {
             List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
+            
             //List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
             Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa);
-
+            if (Dta.Count > 1) {
+                for (int i = 0; i < Dta.Count; i++) {
+                    Dta[i].sTotal="$ "+ string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Dta[i].dTotal);
+                } 
+            
+            }
+         
             return Json(Dta);
         }
 
@@ -494,7 +501,6 @@ namespace Payroll.Controllers
             LTbProc = dao.sp_TPProcesosJobs_Retrieve_TPProcesosJobs(op1, op2, op3, CrtliIdJobs, CtrliIdTarea);
             return Json(LTbProc);
         }
-
         public JsonResult ListStatusProcesosJobs()
         {
             List<TPProcesos> LTbProc = new List<TPProcesos>();
@@ -504,7 +510,6 @@ namespace Payroll.Controllers
             obj.ActBDTbJobs();
             return Json(LTbProc);
         }
-
         public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo)
         {
             Startup obj = new Startup();
@@ -523,15 +528,14 @@ namespace Payroll.Controllers
             return Json(LTP);
         }
         [HttpPost]
-        public JsonResult ListPeriodoEmpresa(int IdDefinicionHD, int iperiodo)
+        public JsonResult ListPeriodoEmpresa(int IdDefinicionHD, int iperiodo, int NomCerr)
         {
             List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            LPe = dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(IdDefinicionHD, iperiodo);
+            LPe = dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(IdDefinicionHD, iperiodo,NomCerr);
             return Json(LPe);
 
         }
-
         public JsonResult UpdateCInicioFechasPeriodo(int iIdDefinicionHd, int iPerido, int iNominaCerrada)
         {
             CInicioFechasPeriodoBean bean = new CInicioFechasPeriodoBean();
@@ -539,7 +543,6 @@ namespace Payroll.Controllers
             bean = dao.sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(iIdDefinicionHd, iPerido, iNominaCerrada);
             return Json(bean);
         }
-
         [HttpPost]
         public JsonResult ExiteRenglon(int iIdDefinicionHd, int iIdEmpresa, int iRenglon, int iElementonomina) {
 
@@ -548,9 +551,7 @@ namespace Payroll.Controllers
             Exte = dao.sp_ExitReglon_Retrieve_TpDefinicionNominaLn(iIdEmpresa, iRenglon, iIdDefinicionHd, iElementonomina);
             return Json (Exte);
         }
-
         [HttpPost]
-
         public JsonResult UpdateRenglonDefNl(int iIdDefinicion)
         {
             NominaLnBean ListDef = new NominaLnBean();
@@ -558,7 +559,6 @@ namespace Payroll.Controllers
             ListDef = dao.sp_RenglonesDefinicionNL_Update_TplantillaDefinicionNL(iIdDefinicion);
             return Json(ListDef);
         }
-
         [HttpPost]
         public ActionResult PDFCaratula()
         {
@@ -578,8 +578,42 @@ namespace Payroll.Controllers
             documento.Close();
             return null;
         }
+        [HttpPost]
+        public JsonResult ExitPerODedu(int iIdDefinicionHd) {
+            List<int> op = new List<int>();
+            FuncionesNomina dao = new FuncionesNomina();
+            op = dao.sp_ExitPercepODeduc_Retrieve_TPlantilla_Definicion_Nomina_Ln(iIdDefinicionHd);
 
-      
+            return Json(op);
+        }
+        [HttpPost]
+        public JsonResult QryDifinicionPeriodoCerrado()
+        {
+            
+            List<NominahdBean> TD = new List<NominahdBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            TD = dao.sp_DefinicionConNomCe_Retrieve_TpDefinicionNominaHd();
+
+            if (TD != null)
+            {
+
+                for (int i = 0; i < TD.Count; i++)
+                {
+
+                    if (TD[i].iCancelado == "True")
+                    {
+                        TD[i].iCancelado = "Si";
+                    }
+
+                    else if (TD[i].iCancelado == "False")
+                    {
+                        TD[i].iCancelado = "No";
+                    }
+                }
+            }
+
+            return Json(TD);
+        }
 
     }
 }
