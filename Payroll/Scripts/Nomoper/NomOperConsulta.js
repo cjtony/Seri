@@ -11,7 +11,7 @@
     const BAgregar = document.getElementById('BAgregar');
     const BActu = document.getElementById('BActu');
     //const BEliminar = document.getElementById('BEliminar');
- 
+
     // Funcion llena listbox con los nombres de la definicion
 
     FlistNombreDef = () => {
@@ -104,7 +104,7 @@
     };
     BActu.addEventListener('click', botonActu);
 
-   
+
     // Fucion llena grid dependiendo que seleccionen en listBox DeNombre
 
     FRecargaGrip = () => {
@@ -193,13 +193,13 @@
 
     };
 
-  
+
     FSelectDefinicion();
 
     // abre ventana del agregar 
 
     FAgrega = () => {
-        
+
         btnAgregarDefinicion.style.visibility = 'visible';
         btnActualizarDefinicion.style.visibility = 'hidden';
 
@@ -207,9 +207,9 @@
 
     BAgregar.addEventListener('click', FAgrega);
 
-                  // pantalla de agregar definicion
+    // pantalla de agregar definicion
 
-            //    declaracion de variables
+    //    declaracion de variables
 
     const Nombrede = document.getElementById('NombreDe');
     const Descripcionde = document.getElementById('DescripcionDe');
@@ -220,12 +220,12 @@
     var DatoDescripcion;
     var Datoano;
     var DatoCancel;
-    
+
     const btnAgregarDefinicion = document.getElementById('btnAgregarDefinicion');
     const btnCierraDefinicion = document.getElementById('btnCierraDefinicion');
     const btnActualizarDefinicion = document.getElementById('btnActualizarDefinicion');
-  
-                     // FAgrega datos de definicion en BD
+
+    // FAgrega datos de definicion en BD
 
     FAgregaDef = () => {
         if (Nombrede.value != "" && Nombrede.value != " " && Descripcionde.value != "" && Descripcionde.value != " " && iAnode.value != "" && iAnode.value != " ") {
@@ -247,7 +247,7 @@
                         iAnode.value = '';
                         cande.value = '';
                         FRecargaGrip();
-                       
+
                     } else {
                         fshowtypealert('Error', 'Contacte a sistemas', 'error');
                     }
@@ -279,12 +279,12 @@
 
     btnCierraDefinicion.addEventListener('click', CerrarPantDef);
 
-                // Actualiza Definicion de platilla 
+    // Actualiza Definicion de platilla 
 
     FActualiza = () => {
 
         var opselesc = cande.options[cande.selectedIndex].text;
-        if (DatoNombrede != Nombrede.value || DatoDescripcion != Descripcionde.value || Datoano != iAnode.value || DatoCancel != opselesc  ) {
+        if (DatoNombrede != Nombrede.value || DatoDescripcion != Descripcionde.value || Datoano != iAnode.value || DatoCancel != opselesc) {
             const dataSend = {
                 sNombreDefinicion: Nombrede.value, sDescripcion: Descripcionde.value,
                 iAno: iAnode.value, iCancelado: cande.value, iIdDefinicionhd: IdDh
@@ -312,7 +312,7 @@
 
     btnActualizarDefinicion.addEventListener('click', FActualiza);
 
-                           // Pantalla  Percepciones
+    // Pantalla  Percepciones
 
     // llena el grip de Percepciones
 
@@ -320,14 +320,14 @@
     var RosCountPer;
     FcargaPercepciones = () => {
 
-     
+
         for (var i = 0; i <= RosCountPer; i++) {
 
             $("#TbPercepciones").jqxGrid('deleterow', i);
         }
 
         navPercepcionestab.style.visibility = "visible";
-     
+
         const dataSend = { iIdDefinicionln: IdDh };
         $.ajax({
             url: "../Nomina/listdatosPercesiones",
@@ -336,42 +336,42 @@
             success: (data) => {
 
                 if (data.length > 0) {
-                    RosCountPer = data.length;            
+                    RosCountPer = data.length;
                 }
-                    var source =
+                var source =
+                {
+                    localdata: data,
+                    datatype: "array",
+                    datafields:
+                        [
+                            { name: 'iIdDefinicionln', type: 'string' },
+                            { name: 'IdEmpresa', type: 'string' },
+                            { name: 'iRenglon', type: 'string' },
+                            { name: 'iTipodeperiodo', type: 'string' },
+                            { name: 'iIdAcumulado', type: 'string' },
+                            { name: 'iEsespejo', type: 'string' }
+                        ]
+                };
+
+
+
+                var dataAdapter = new $.jqx.dataAdapter(source);
+
+                $("#TbPercepciones").jqxGrid(
                     {
-                        localdata: data,
-                        datatype: "array",
-                        datafields:
-                            [
-                                { name: 'iIdDefinicionln', type: 'string' },
-                                { name: 'IdEmpresa', type: 'string' },
-                                { name: 'iRenglon', type: 'string' },
-                                { name: 'iTipodeperiodo', type: 'string' },
-                                { name: 'iIdAcumulado', type: 'string' },
-                                { name: 'iEsespejo', type: 'string' }
-                            ]
-                    };
+                        width: 980,
 
-                      
-
-                    var dataAdapter = new $.jqx.dataAdapter(source);
-                
-                    $("#TbPercepciones").jqxGrid(
-                        {
-                            width: 980,
-
-                            source: dataAdapter,
-                            columnsresize: true,
-                            columns: [
-                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
-                                { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
-                                { text: 'Renglon', datafield: 'iRenglon', width: 250 },
-                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
-                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
-                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
-                            ]
-                        });                
+                        source: dataAdapter,
+                        columnsresize: true,
+                        columns: [
+                            { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
+                            { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
+                            { text: 'Renglon', datafield: 'iRenglon', width: 250 },
+                            { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
+                            { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
+                            { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                        ]
+                    });
             }
         });
     };
@@ -505,23 +505,23 @@
 
     });
 
-   
 
-              // FAgrega datos de percepcion en BD
+
+    // FAgrega datos de percepcion en BD
 
     FAgregaper = () => {
-     
+
         var op = RegTipoperiodo1.options[RegTipoperiodo1.selectedIndex].text;
-        if (RegEmpresa.value != "0" && RegRenglon.value != "0" && iRegEspejo.value != "0" && op != "Selecciona") {           
-                    var ispejo;
-                    if (iRegEspejo.value == "1") {
-                        ispejo = "1";
-                    }
-                    else if (iRegEspejo.value == "2") {
-                        ispejo = "0";
-                    }
-                    $("#TpDefinicion").click();              
-               const dataSend = { iIdFinicion: IdDh };
+        if (RegEmpresa.value != "0" && RegRenglon.value != "0" && iRegEspejo.value != "0" && op != "Selecciona") {
+            var ispejo;
+            if (iRegEspejo.value == "1") {
+                ispejo = "1";
+            }
+            else if (iRegEspejo.value == "2") {
+                ispejo = "0";
+            }
+            $("#TpDefinicion").click();
+            const dataSend = { iIdFinicion: IdDh };
 
             $.ajax({
                 url: "../Nomina/DefCancelado",
@@ -538,7 +538,7 @@
                     else if (cancelado == "False" || cancelado == "false") {
                         opcanel1 = 0;
                     }
-                   
+
 
                     const idempresa = RegEmpresa.value;
                     const idTipoPeriodo = RegTipoperiodo1.value;
@@ -590,7 +590,7 @@
                                 });
 
                             }
-                            if (data[0].iIdDefinicionHd == 1) {
+                            if (data[0].iIdDefinicionHd > 0) {
                                 fshowtypealert("Nomina/Percepción", "La percepcion ya esta ingresada favor de ingresar otra percepción diferente", "warning")
                             }
 
@@ -599,9 +599,9 @@
                         error: function (jqXHR, exception) {
                             fcaptureaerrorsajax(jqXHR, exception);
                         }
-                    });  
-                  
-                },       
+                    });
+
+                },
             });
         }
 
@@ -615,7 +615,7 @@
 
     btnAgregarPercep.addEventListener('click', FAgregaper);
 
-                     // abre ventana y carga datos 
+    // abre ventana y carga datos 
     botonActuPer = () => {
         console.log('actualiza');
         $("#TbPercepciones").click();
@@ -687,7 +687,7 @@
         var op = RegEmpresa.options[RegEmpresa.selectedIndex].text;
         var opval = RegEmpresa.value;
         const dataSend2 = { IdEmpresa: opval };
-      
+
 
         $("#RegTipoperiodo1").empty();
         $('#RegTipoperiodo1').append('<option value="0" selected="selected">Selecciona</option>');
@@ -728,19 +728,19 @@
                             type: "POST",
                             data: dataSend,
                             success: (data) => {
-                                for (i = 0; i < data.length; i++) {
-                                    document.getElementById("RegPeridoPer").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo}</option>`;
+                                if (data.length > 0) {
+                                    for (i = 0; i < data.length; i++) {
+                                        document.getElementById("RegPeridoPer").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo}</option>`;
 
-                                }
-
-                                for ( i = 0; i < RegPeridoPer.length; i++) {
-                                    if (RegPeridoPer.options[i].text == datoperiodo) {
-                                        // seleccionamos el valor que coincide
-                                        RegPeridoPer.selectedIndex = i;
                                     }
+                                    for (i = 0; i < RegPeridoPer.length; i++) {
+                                        if (RegPeridoPer.options[i].text == datoperiodo) {
+                                            // seleccionamos el valor que coincide
+                                            RegPeridoPer.selectedIndex = i;
+                                        }
 
+                                    }
                                 }
-
                             },
 
 
@@ -797,7 +797,7 @@
 
     btnCierrapercepcion.addEventListener('click', FlimpicamposPEr);
 
-       //Funcion que guarda la actulalizacion de la percepcion en el BD
+    //Funcion que guarda la actulalizacion de la percepcion en el BD
 
     FactulizaPer = () => {
 
@@ -816,24 +816,21 @@
         //var PeriodoPerId = iRegPeridoPer.value;
 
         $("#TbPercepciones").click();
-        console.log(DatoRenglon);
-        console.log(RenglonPre);
 
-        if ( DatoRenglon != RenglonPre && DatoEmpresa != EmpresaPer || datotipoperiodo != TipoPeriodoPre || datoespejo != EspejoPre || datoacumulado != AcumuladoPre /*|| datoperiodo != PeriodoPer*/) {
 
-            if (EspejoPreId == 2) { EspejoPreId = 0;  }
+        if (DatoRenglon != RenglonPre && DatoEmpresa != EmpresaPer || datotipoperiodo != TipoPeriodoPre || datoespejo != EspejoPre || datoacumulado != AcumuladoPre /*|| datoperiodo != PeriodoPer*/) {
 
+            if (EspejoPreId == 2) { EspejoPreId = 0; }
             const dataSend2 = {
                 iIdDefinicionln: DatoiId, iIdEmpresa: EmpresaIDper,
                 iTipodeperiodo: TipoPeriodoPreId, /*iIdperiodo: PeriodoPer,*/
                 iRenglon: RenglonPerId, iEsespejo: EspejoPreId, iIdAcumulado: AcumuladoPreId
-            };         
-
+            };
             const dataSend3 = {
                 iIdDefinicionHd: IdDh, iIdEmpresa: EmpresaIDper,
                 iRenglon: RenglonPerId, iElementonomina: 39
             };
-     
+
             $.ajax({
                 url: "../Nomina/ExiteRenglon",
                 type: "POST",
@@ -848,6 +845,7 @@
                             data: dataSend2,
                             success: function (data) {
                                 if (data.sMensaje == "success") {
+
                                     $("#TpDefinicion").click();
                                     FcargaPercepciones();
                                     fshowtypealert('Registro Actualizado!', 'Definicion de Percepción', 'success');
@@ -862,55 +860,53 @@
                         });
 
                     }
-                    if (data[0].iIdDefinicionHd == 1) {
+                    if (data[0].iIdDefinicionHd == DatoiId) {
+
+                        $.ajax({
+                            url: "../Nomina/UpdatePtDefinicionNl",
+                            type: "POST",
+                            data: dataSend2,
+                            success: function (data) {
+                                if (data.sMensaje == "success") {
+
+                                    $("#TpDefinicion").click();
+                                    FcargaPercepciones();
+                                    fshowtypealert('Registro Actualizado!', 'Definicion de Percepción', 'success');
+
+                                } else {
+                                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                                }
+                            },
+                            error: function (jqXHR, exception) {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+
+                    }
+                    if (data[0].iIdDefinicionHd != DatoiId) {
                         fshowtypealert("Nomina/Percepción", "La percepcion ya esta registrada ", "warning")
+
                     }
 
-                },
-                error: function (jqXHR, exception) {
-                    fcaptureaerrorsajax(jqXHR, exception);
-                }
-            });              
-        }
-
-        if (DatoRenglon == RenglonPre && DatoEmpresa != EmpresaPer || datotipoperiodo != TipoPeriodoPre || datoespejo != EspejoPre || datoacumulado != AcumuladoPre) {
-
-            const dataSend4 = {
-                iIdDefinicionln: DatoiId, iIdEmpresa: EmpresaIDper,
-                iTipodeperiodo: TipoPeriodoPreId, /*iIdperiodo: PeriodoPer,*/
-                iRenglon: RenglonPerId, iEsespejo: EspejoPreId, iIdAcumulado: AcumuladoPreId
-            }; 
-            $.ajax({
-                url: "../Nomina/UpdatePtDefinicionNl",
-                type: "POST",
-                data: dataSend4,
-                success: function (data) {
-                    if (data.sMensaje == "success") {
-                        $("#TpDefinicion").click();
-                        FcargaPercepciones();
-                        fshowtypealert('Registro Actualizado!', 'Definicion de Percepción', 'success');
-
-                    } else {
-                        fshowtypealert('Error', 'Contacte a sistemas', 'error');
-                    }
                 },
                 error: function (jqXHR, exception) {
                     fcaptureaerrorsajax(jqXHR, exception);
                 }
             });
         }
+
         else {
             console.log('datos iguales');
 
         }
-       
+
     };
 
     btnActualizarPercep.addEventListener('click', FactulizaPer);
 
     FDeleteDefinicionNLPer = () => {
 
-       
+
         $("#TbPercepciones").click();
         console.log(DatoiId);
         const dataSend = {
@@ -926,7 +922,7 @@
                     fshowtypealert('Percepción!', 'Regitro Eliminado', 'success');
                     $("#TpDefinicion").click();
                     FcargaPercepciones();
-                    
+
 
                 } else {
                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
@@ -941,7 +937,7 @@
     }
 
 
-    BEliminarPer.addEventListener('click',FDeleteDefinicionNLPer)
+    BEliminarPer.addEventListener('click', FDeleteDefinicionNLPer)
 
     FVisualizacionBotones = () => {
         btnAgregarPercep.style.visibility = "visible";
@@ -980,19 +976,19 @@
 
     // Percepciones y deducciones
 
-                       //  Tab Deducciones
+    //  Tab Deducciones
 
     var RosCountdedu;
 
-       FcargaDeducionesGrip = () => {
+    FcargaDeducionesGrip = () => {
 
         $("#TpDefinicion").click();
         const dataSend = { iIdDefinicionln: IdDh };
 
-           for (var i = 0; i <= RosCountdedu; i++) {
+        for (var i = 0; i <= RosCountdedu; i++) {
 
-               $("#TbDeducciones").jqxGrid('deleterow', i);
-           }
+            $("#TbDeducciones").jqxGrid('deleterow', i);
+        }
 
         $.ajax({
             url: "../Nomina/listdatosDeducuiones",
@@ -1000,7 +996,7 @@
             data: dataSend,
             success: (data) => {
                 if (data.length > 0) {
-                    RosCountdedu = data.length;               
+                    RosCountdedu = data.length;
                 }
                 var source =
                 {
@@ -1036,7 +1032,7 @@
 
     };
 
-        // declaracion de Variables 
+    // declaracion de Variables 
 
     var RegEmpresade = document.getElementById('RegEmpresaDe');
     var RegRenglonde = document.getElementById('RegRenglonDe');
@@ -1046,16 +1042,16 @@
     //var iRegPeridoDe = document.getElementById('RegPeridoDe');
     var AnioDeduc;
     var canceladode;
-   
 
-        // declaracion de botones 
+
+    // declaracion de botones 
     const BAgregardedu2 = document.getElementById('BAgregardedu2');
     const btnAgregarDedu = document.getElementById('btnAgregarDedu');
     const btnCierraDedu = document.getElementById('btnCierraDedu');
     const BActudedu = document.getElementById('BActudedu');
     const btnActualizarDedu = document.getElementById('btnActualizarDedu');
     const BEliminardedu = document.getElementById('BEliminardedu');
-     
+
     // llena el drop lis de Empresa de Deduccion
     LisEmpresaDe = () => {
 
@@ -1197,8 +1193,8 @@
     };
 
     BEliminardedu.addEventListener('click', FDeleteDefinicionNLdedu)
-    
-  
+
+
     // Funcion llenado el drop list de periodo de dedudcion
 
     //FrecargaPeridoDeduc = () => {
@@ -1244,8 +1240,8 @@
     //                    });
     //                }
     //            });
-            
-        
+
+
 
     //}
     //$('#RegTipoperiodoDe').change(function () {
@@ -1343,16 +1339,16 @@
                                     }
                                 });
                             }
-                            if (data[0].iIdDefinicionHd == 1) {
+                            if (data[0].iIdDefinicionHd > 0) {
                                 fshowtypealert("Nomina/Deducción", "La deducción ya esta ingresada favor de ingresar otra deducción diferente", "warning")
                             }
                         },
                         error: function (jqXHR, exception) {
                             fcaptureaerrorsajax(jqXHR, exception);
                         }
-                    });  
+                    });
 
-                   
+
                 },
                 error: function (jqXHR, exception) {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -1397,8 +1393,8 @@
 
         var OpRenglon = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
         var opvalEmpresa = RegEmpresaDe.value;
-        const dataSend = { IdEmpresa: opvalEmpresa, iElemntoNOm: 2};
-   
+        const dataSend = { IdEmpresa: opvalEmpresa, iElemntoNOm: 2 };
+
 
         $("#RegRenglonDe").empty();
         $('#RegRenglonDe').append('<option value="0" selected="selected">Selecciona</option>');
@@ -1422,7 +1418,7 @@
                 var opEmpresaval = RegEmpresaDe.value;
                 OpRenglon = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
                 const opRenglonTex = RegRenglonDe.value;
-                const dataSend3 = { iIdEmpresa: opEmpresaval, iIdRenglon: opRenglonTex };             
+                const dataSend3 = { iIdEmpresa: opEmpresaval, iIdRenglon: opRenglonTex };
                 $("#RegAcumuladoDe").empty();
                 $('#RegAcumuladoDe').append('<option value="0" selected="selected">Selecciona</option>');
                 $.ajax({
@@ -1454,7 +1450,7 @@
         });
 
 
-        var op = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;  
+        var op = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
         var opvalde = RegEmpresaDe.value;
         const dataSend2 = { IdEmpresa: opvalde };
         $("#RegTipoperiodoDe").empty();
@@ -1540,14 +1536,14 @@
     };
     BActudedu.addEventListener('click', FActualizaboton);
 
-     // Funcion desaprece el boton de actualizar y aparece el boton de agregar
+    // Funcion desaprece el boton de actualizar y aparece el boton de agregar
     Fagregarboton = () => {
 
         btnAgregarDedu.style.visibility = "visible";
         btnActualizarDedu.style.visibility = "hidden";
 
     };
-    
+
     BAgregardedu2.addEventListener('click', Fagregarboton);
 
     /// valores seleccionados en tablaDedu
@@ -1569,7 +1565,7 @@
 
     //// FGuardar Actualizacion de Deduccion en la BD
 
-    FActualizaDed = () => {    
+    FActualizaDed = () => {
 
         var Empresaded = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
         var EmpresaIDded = RegEmpresaDe.value;
@@ -1609,6 +1605,7 @@
                             data: dataSend2,
                             success: function (data) {
                                 if (data.sMensaje == "success") {
+                                    console.log('aaa');
                                     $("#TpDefinicion").click();
                                     FcargaDeducionesGrip();
                                     fshowtypealert('Registro Actualizado!', ' Deducción', 'success');
@@ -1621,35 +1618,32 @@
                                 fcaptureaerrorsajax(jqXHR, exception);
                             }
                         });
-                       
-                    }
-                    if (data[0].iIdDefinicionHd == 1) {
-                        fshowtypealert("Nomina/Deducción", "La deducción ya esta ingresada favor de ingresar otra deducción diferente", "warning")
-                    }
-                },
-                error: function (jqXHR, exception) {
-                    fcaptureaerrorsajax(jqXHR, exception);
-                }
-            });  
-        }
-        if (DatoEmpresade != Empresaded || DatoRenglonde != Renglonded || datotipoperiodode != TipoPeriododed || datoespejode != Espejoded || datoacumuladode != Acumuladoded /*|| datoperiodode != Periododed*/) {
-            const dataSend4 = {
-                iIdDefinicionln: DatoiIdde, iIdEmpresa: EmpresaIDded,
-                iTipodeperiodo: TipoPeriododedId,/* iIdperiodo: Periododed,*/
-                iRenglon: RenglondedId, iEsespejo: EspejodedId, iIdAcumulado: AcumuladodedId
-            };
-            $.ajax({
-                url: "../Nomina/UpdatePtDefinicionNl",
-                type: "POST",
-                data: dataSend4,
-                success: function (data) {
-                    if (data.sMensaje == "success") {
-                        $("#TpDefinicion").click();
-                        FcargaDeducionesGrip();
-                        fshowtypealert('Registro Actualizado!', ' Deducción', 'success');
 
-                    } else {
-                        fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                    }
+                    if (data[0].iIdDefinicionHd == DatoiIdde) {
+                        $.ajax({
+                            url: "../Nomina/UpdatePtDefinicionNl",
+                            type: "POST",
+                            data: dataSend2,
+                            success: function (data) {
+                                if (data.sMensaje == "success") {
+                                    console.log('aaa');
+                                    $("#TpDefinicion").click();
+                                    FcargaDeducionesGrip();
+                                    fshowtypealert('Registro Actualizado!', ' Deducción', 'success');
+
+                                } else {
+                                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                                }
+                            },
+                            error: function (jqXHR, exception) {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+
+                    }
+                    if (data[0].iIdDefinicionHd != DatoiIdde) {
+                        fshowtypealert("Nomina/Deducción", "La deducción ya esta ingresada favor de ingresar otra deducción diferente", "warning")
                     }
                 },
                 error: function (jqXHR, exception) {
@@ -1657,6 +1651,7 @@
                 }
             });
         }
+
         else {
             console.log('datos iguales');
 

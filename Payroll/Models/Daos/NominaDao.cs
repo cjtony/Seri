@@ -1725,7 +1725,7 @@ namespace Payroll.Models.Daos
 					{
                         NominaLnBean ls = new NominaLnBean();
 						{
-							ls.iIdDefinicionHd = int.Parse(data["Existe"].ToString());
+							ls.iIdDefinicionHd = int.Parse(data["IdDefinicion_Ln"].ToString());
 
 						};
 						list.Add(ls);
