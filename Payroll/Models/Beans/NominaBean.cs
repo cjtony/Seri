@@ -1,24 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-
-using System.Collections;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.ComponentModel.Design.Serialization;
-using System.IO;
-using System.Security.Principal;
-using System.Web.Caching;
-using System.Web.ModelBinding;
-using System.Web.Routing;
-using System.Web.SessionState;
-using System.Web.UI;
-using System.Web.UI.Adapters;
-using System.Web.UI.HtmlControls;
-using System.Configuration;
 
 namespace Payroll.Models.Beans
 {
@@ -183,7 +163,8 @@ namespace Payroll.Models.Beans
 
     }
 
-    public class TpCalculosCarBean {
+    public class TpCalculosCarBean
+    {
         public string sValor { get; set; }
         public int iIdRenglon { get; set; }
         public string sNombreRenglon { get; set; }
@@ -232,7 +213,7 @@ namespace Payroll.Models.Beans
         public string sRegistroImss { get; set; }
         public string sCURP { get; set; }
         public string sDescripcion { get; set; }
-        public String sCtaCheques { get; set; }   
+        public String sCtaCheques { get; set; }
         public int iRegimenFiscal { get; set; }
         public int iIdNomina { get; set; }
         public string sMensaje { get; set; }
@@ -247,33 +228,34 @@ namespace Payroll.Models.Beans
     }
 
     public class ReciboNominaBean
-    { 
+    {
 
-       public int iIdRenglon { get; set; }
-       public int iIdTipoPeriodo { get; set; }
-       public string sNombre_Renglon { get; set; }
-       public decimal  dSaldo { get; set; }
-       public int iConsecutivo { get; set; }
-       public int iIdCalculoshd { get; set; }
-       public int iElementoNomina { get; set; }
-       public string sEspejo { get; set; }
-       public string sMensaje { get; set; }
+        public int iIdRenglon { get; set; }
+        public int iIdTipoPeriodo { get; set; }
+        public string sNombre_Renglon { get; set; }
+        public decimal dSaldo { get; set; }
+        public int iConsecutivo { get; set; }
+        public int iIdCalculoshd { get; set; }
+        public int iElementoNomina { get; set; }
+        public string sEspejo { get; set; }
+        public string sMensaje { get; set; }
 
     }
 
     public class TablaNominaBean
-    { 
-       public string sConcepto { get; set; }
-       public string dPercepciones { get; set; }
-       public string dDeducciones { get; set; }
-       public string dSaldos { get; set; }
-       public string dInformativos { get; set; }
-       public string sMensaje { get; set; }
+    {
+        public string sConcepto { get; set; }
+        public string dPercepciones { get; set; }
+        public string dDeducciones { get; set; }
+        public string dSaldos { get; set; }
+        public string dInformativos { get; set; }
+        public string sMensaje { get; set; }
     }
 
-    public class XMLBean {
+    public class XMLBean
+    {
 
-        public string sfilecer { get; set;}
+        public string sfilecer { get; set; }
         public string sfilekey { get; set; }
         public string stransitorio { get; set; }
         public int ifolio { get; set; }

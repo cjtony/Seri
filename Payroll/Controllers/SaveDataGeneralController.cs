@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Payroll.Models.Beans;
+﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using System;
+using System.Web.Mvc;
 
 namespace Payroll.Controllers
 {
@@ -40,7 +37,8 @@ namespace Payroll.Controllers
             int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             addDepartamentoBean = saveDepartamentoDao.sp_Departamentos_Insert_Departamento(keyemp, regdepart, descdepart, nivestuc, nivsuptxt, edific, piso, ubicac, centrcost, reportaa, dgatxt, dirgentxt, direjetxt, diraretxt, dirgen, direje, dirare, usuario);
             string result = "error";
-            if (addDepartamentoBean.sMensaje == "success") {
+            if (addDepartamentoBean.sMensaje == "success")
+            {
                 result = addDepartamentoBean.sMensaje;
             }
             var data = new { result = result };
@@ -48,7 +46,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult SavePositions(string codposic, int depaid, int puesid, int regpatcla, int localityr, int emprepreg, int reportempr) 
+        public JsonResult SavePositions(string codposic, int depaid, int puesid, int regpatcla, int localityr, int emprepreg, int reportempr)
         {
             DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
             DatosPosicionesDao savePosicionDao = new DatosPosicionesDao();
@@ -58,7 +56,7 @@ namespace Payroll.Controllers
             addPosicionBean = savePosicionDao.sp_Posiciones_Insert_Posicion(codposic, depaid, puesid, regpatcla, localityr, emprepreg, reportempr, usuario, keyemp);
             var data = new { result = addPosicionBean.sMensaje };
             return Json(data);
-            
+
         }
 
         //Guarda los datos generales del empleado

@@ -59,7 +59,7 @@ namespace Payroll.Controllers
         {
             List<AusentismosBean> lista = new List<AusentismosBean>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            lista =  Dao.sp_TiposAusentimo_Retrieve_TiposAusentismo();
+            lista = Dao.sp_TiposAusentimo_Retrieve_TiposAusentismo();
             return Json(lista);
         }
         [HttpPost]
@@ -68,7 +68,7 @@ namespace Payroll.Controllers
             List<VW_TipoIncidenciaBean> lista = new List<VW_TipoIncidenciaBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int IdEmpresa = int.Parse(Session["IdEmpresa"].ToString());
-            lista =  Dao.sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(IdEmpresa);
+            lista = Dao.sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(IdEmpresa);
             return Json(lista);
         }
         [HttpPost]
@@ -111,7 +111,7 @@ namespace Payroll.Controllers
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
-            lista = Dao.sp_TCreditos_Retrieve_Creditos(id1,id2);
+            lista = Dao.sp_TCreditos_Retrieve_Creditos(id1, id2);
             //var data = new { data = lista };
             return Json(lista);
         }
@@ -122,7 +122,7 @@ namespace Payroll.Controllers
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
-            lista =  Dao.sp_TCreditos_Insert_Credito(id1,id2, TipoDescuento, SeguroVivienda, Descuento, NoCredito, FechaAprovacion, Descontar, FechaBaja, FechaReinicio);
+            lista = Dao.sp_TCreditos_Insert_Credito(id1, id2, TipoDescuento, SeguroVivienda, Descuento, NoCredito, FechaAprovacion, Descontar, FechaBaja, FechaReinicio);
             return Json(lista);
         }
         [HttpPost]
@@ -132,7 +132,7 @@ namespace Payroll.Controllers
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
-            lista = Dao.sp_TAusentismos_Retrieve_Ausentismos_Empleado(id2,id1);
+            lista = Dao.sp_TAusentismos_Retrieve_Ausentismos_Empleado(id2, id1);
             return Json(lista);
         }
         [HttpPost]
@@ -142,7 +142,7 @@ namespace Payroll.Controllers
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
-            lista = Dao.sp_TAusentismos_Retrieve_Ausentismo_Empleado(id2,id1,IdAusentismo);
+            lista = Dao.sp_TAusentismos_Retrieve_Ausentismo_Empleado(id2, id1, IdAusentismo);
             return Json(lista);
         }
         [HttpPost]
@@ -170,7 +170,7 @@ namespace Payroll.Controllers
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            lista = Dao.sp_TAusentismos_Insert_Ausentismo( Tipo_Ausentismo_id,id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada,Periodo );
+            lista = Dao.sp_TAusentismos_Insert_Ausentismo(Tipo_Ausentismo_id, id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada, Periodo);
             //lista.Add("Ausentismo registrado con éxito");
             return Json(lista);
         }
@@ -207,14 +207,14 @@ namespace Payroll.Controllers
             return Json(res);
         }
         [HttpPost]
-        public JsonResult SaveRegistroIncidencia( int inRenglon, int inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
+        public JsonResult SaveRegistroIncidencia(int inRenglon, int inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
         {
             List<string> res = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
             int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia( Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
+            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
             return Json(res);
         }
         [HttpPost]

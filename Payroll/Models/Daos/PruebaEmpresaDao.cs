@@ -61,10 +61,10 @@ namespace Payroll.Models.Daos
                     //--------------QUITAR ESTE FILTRO UNA VEZ QUE SE ARREGLEN LAS EMPRESAS Y LOS EMPLEADOS 
                     //if (int.Parse(data["IdEmpresa"].ToString()) > 3)
                     //{
-                        listEmpresas.IdEmpresa = int.Parse(data["IdEmpresa"].ToString());
-                        listEmpresas.RazonSocial = data["RazonSocial"].ToString();
-                        listEmpresas.NombreEmpresa = data["NombreEmpresa"].ToString();
-                        list.Add(listEmpresas);
+                    listEmpresas.IdEmpresa = int.Parse(data["IdEmpresa"].ToString());
+                    listEmpresas.RazonSocial = data["RazonSocial"].ToString();
+                    listEmpresas.NombreEmpresa = data["NombreEmpresa"].ToString();
+                    list.Add(listEmpresas);
                     //}
                 }
             }

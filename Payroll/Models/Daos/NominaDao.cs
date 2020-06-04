@@ -1,14 +1,10 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
-using System.Data.SqlClient;
+using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Web.Mvc;
-using Antlr.Runtime.Tree;
+using System.Data.SqlClient;
 
 namespace Payroll.Models.Daos
 {
@@ -74,7 +70,7 @@ namespace Payroll.Models.Daos
                         EmpresasBean ls = new EmpresasBean
                         {
                             iIdEmpresa = int.Parse(data["IdEmpresa"].ToString()),
-                            sNombreEmpresa =  data["NombreEmpresa"].ToString() 
+                            sNombreEmpresa = data["NombreEmpresa"].ToString()
 
                         };
                         list.Add(ls);
@@ -93,7 +89,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public List<CTipoPeriodoBean> sp_CTipoPeriod_Retrieve_TiposPeriodos(int  Idempresa)
+        public List<CTipoPeriodoBean> sp_CTipoPeriod_Retrieve_TiposPeriodos(int Idempresa)
         {
             List<CTipoPeriodoBean> list = new List<CTipoPeriodoBean>();
             try
@@ -135,7 +131,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa ,int ctrliElemntoNOm)
+        public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa, int ctrliElemntoNOm)
         {
             List<CRenglonesBean> list = new List<CRenglonesBean>();
             try
@@ -362,14 +358,16 @@ namespace Payroll.Models.Daos
                         CInicioFechasPeriodoBean LP = new CInicioFechasPeriodoBean();
                         {
                             LP.iId = int.Parse(data["Id"].ToString());
-                            if (CtrliIdTipoPeriodo != 0) { 
+                            if (CtrliIdTipoPeriodo != 0)
+                            {
                                 LP.iPeriodo = int.Parse(data["Periodo"].ToString());
                                 LP.iPeriodo = int.Parse(data["Periodo"].ToString());
                                 LP.sFechaInicio = data["Fecha_Inicio"].ToString();
                                 LP.sFechaFinal = data["Fecha_Final"].ToString();
                                 LP.sFechaPago = data["Fecha_Pago"].ToString();
                             }
-                            if (CtrliIdTipoPeriodo == 0) {
+                            if (CtrliIdTipoPeriodo == 0)
+                            {
                                 LP.iPeriodo = int.Parse(data["Periodo"].ToString());
                                 LP.sFechaInicio = data["Fecha_Inicio"].ToString();
                                 LP.sFechaFinal = data["Fecha_Final"].ToString();
@@ -778,7 +776,7 @@ namespace Payroll.Models.Daos
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrliIdDefinicionnl", CtrlIdDefinicionLn));
-           
+
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     bean.sMensaje = "success";
@@ -874,7 +872,7 @@ namespace Payroll.Models.Daos
 
         }
 
-            
+
         public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliNominaCerrada)
         {
             TpCalculosHd bean = new TpCalculosHd();
@@ -1101,7 +1099,7 @@ namespace Payroll.Models.Daos
 
         }
 
-        public List<TpCalculosLn> sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo,int CrtliPeriodo)
+        public List<TpCalculosLn> sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo)
         {
             List<TpCalculosLn> list = new List<TpCalculosLn>();
             try
@@ -1134,7 +1132,7 @@ namespace Payroll.Models.Daos
                             ls.iImporte = data["Importe"].ToString();
                             ls.iSaldo = data["Saldo"].ToString();
                             ls.iGravado = data["Gravado"].ToString();
-                            ls.iExcento = data["Excento"].ToString(); 
+                            ls.iExcento = data["Excento"].ToString();
                             ls.sFecha = data["Fecha"].ToString();
                             ls.iInactivo = data["Inactivo"].ToString();
                             ls.iTipoEmpleado = int.Parse(data["Cg_TipoEmpleado_id"].ToString());
@@ -1150,7 +1148,7 @@ namespace Payroll.Models.Daos
                     TpCalculosLn ls = new TpCalculosLn();
                     ls.sMensaje = "No hay datos";
                     list.Add(ls);
-                    
+
                 }
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
@@ -1186,7 +1184,7 @@ namespace Payroll.Models.Daos
                             ls.sValor = data["Valor"].ToString();
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
-                            ls.dTotal =decimal.Parse(data["total"].ToString());
+                            ls.dTotal = decimal.Parse(data["total"].ToString());
                             ls.sMensaje = "success";
                         };
                         list.Add(ls);
@@ -1223,7 +1221,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicion", CtrliIdCalculoshd));
                 cmd.Parameters.Add(new SqlParameter("@CtrliTipodePerido", CrtliIdTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CrtliPeriodo));
-           
+
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -1234,7 +1232,7 @@ namespace Payroll.Models.Daos
                         {
                             ls.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
                             ls.sNombreEmpresa = data["NombreEmpresa"].ToString();
-                            
+
                             ls.sMensaje = "success";
                         };
                         list.Add(ls);
@@ -1487,7 +1485,8 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-        public List<string> sp_TEmpleado_Nomina_Retrieve_DatosBaja(int Empresa_id, int Empleado_id) {
+        public List<string> sp_TEmpleado_Nomina_Retrieve_DatosBaja(int Empresa_id, int Empleado_id)
+        {
             List<string> list = new List<string>();
             try
             {
@@ -1527,7 +1526,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public TPProcesos sp_CNomina_1(int p_Ano, int p_Tipo_periodo , int p_Periodo , int p_IdDefinicion_Hd)
+        public TPProcesos sp_CNomina_1(int p_Ano, int p_Tipo_periodo, int p_Periodo, int p_IdDefinicion_Hd)
         {
             TPProcesos bean = new TPProcesos();
             try
@@ -1537,7 +1536,7 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-          
+
                 cmd.Parameters.Add(new SqlParameter("@p_Ano", p_Ano));
                 cmd.Parameters.Add(new SqlParameter("@p_Tipo_periodo", p_Tipo_periodo));
                 cmd.Parameters.Add(new SqlParameter("@p_Periodo", p_Periodo));
@@ -1561,11 +1560,11 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
-        public List<ReciboNominaBean> sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(int CtrliIdEmpresa , int CtrliIdemplado, int CtrliPeriodo)
+        public List<ReciboNominaBean> sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(int CtrliIdEmpresa, int CtrliIdemplado, int CtrliPeriodo)
         {
             List<ReciboNominaBean> list = new List<ReciboNominaBean>();
             try
-                {
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado", this.conexion)
                 {
@@ -1579,21 +1578,21 @@ namespace Payroll.Models.Daos
                 if (data.HasRows)
                 {
 
-                   
+
                     while (data.Read())
                     {
-                            ReciboNominaBean ls = new ReciboNominaBean();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                        ReciboNominaBean ls = new ReciboNominaBean();
+                        {
                             ls.sNombre_Renglon = data["Nombre_Renglon"].ToString();
                             ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
                             ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
                             ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                         }
-                             
+
                         list.Add(ls);
                     }
-                   
+
                 }
                 else
                 {
@@ -1650,12 +1649,12 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public List<CInicioFechasPeriodoBean> sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(int CrtliIdDeficionHd,int CrtliPeriodo)
+        public List<CInicioFechasPeriodoBean> sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(int CrtliIdDeficionHd, int CrtliPeriodo)
         {
             List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
             try
             {
-                int CrtliIdEmpresa = 0; 
+                int CrtliIdEmpresa = 0;
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo", this.conexion)
                 {
@@ -1731,55 +1730,55 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
-		public List<NominaLnBean> sp_ExitReglon_Retrieve_TpDefinicionNominaLn(int CtrliIdEmpresa,int CtrliIdrenglon, int CtrliIdDefinicion, int CtrliElemnom)
-		{
-			List<NominaLnBean> list = new List<NominaLnBean>();
-			try
-			{
-				this.Conectar();
-				SqlCommand cmd = new SqlCommand("sp_ExitReglon_Retrieve_TpDefinicionNominaLn", this.conexion)
-				{
-					CommandType = CommandType.StoredProcedure
-				};
-				cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+        public List<NominaLnBean> sp_ExitReglon_Retrieve_TpDefinicionNominaLn(int CtrliIdEmpresa, int CtrliIdrenglon, int CtrliIdDefinicion, int CtrliElemnom)
+        {
+            List<NominaLnBean> list = new List<NominaLnBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ExitReglon_Retrieve_TpDefinicionNominaLn", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdrenglon", CtrliIdrenglon));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicion", CtrliIdDefinicion));
                 cmd.Parameters.Add(new SqlParameter("@CtrliElemnom", CtrliElemnom));
                 SqlDataReader data = cmd.ExecuteReader();
-				cmd.Dispose();
-				if (data.HasRows)
-				{
-					while (data.Read())
-					{
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
                         NominaLnBean ls = new NominaLnBean();
-						{
-							ls.iIdDefinicionHd = int.Parse(data["Existe"].ToString());
+                        {
+                            ls.iIdDefinicionHd = int.Parse(data["Existe"].ToString());
 
-						};
-						list.Add(ls);
-					}
-				}
-				else
-				{
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
                     NominaLnBean ls = new NominaLnBean();
-					{
-						ls.iIdDefinicionHd = 0;
+                    {
+                        ls.iIdDefinicionHd = 0;
 
-					};
-					list.Add(ls);
-				}
-				data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
-			}
-			catch (Exception exc)
-			{
-				Console.WriteLine(exc);
-			}
-			return list;
+                    };
+                    list.Add(ls);
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
 
-		}
+        }
 
 
 
-	}
+    }
 }
 

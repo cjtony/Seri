@@ -1,27 +1,11 @@
-﻿using Payroll.Models.Beans;
-using Payroll.Models.Daos;
-using System.Collections.Generic;
-using System.Web.Helpers;
-using System.Web.Mvc;
-
-using System;
-using System.Linq;
-using System.Web;
-using Payroll.Models.Utilerias;
-using System.Data.SqlClient;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
-using System.Configuration;
-using System.Media;
-using System.Xml;
-
-using System.Drawing;
-using System.Web.UI.WebControls;
-using iTextSharp.text;
+﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Payroll.Models.Beans;
+using Payroll.Models.Daos;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.Mvc;
 
 
 namespace Payroll.Controllers
@@ -77,7 +61,7 @@ namespace Payroll.Controllers
             LE = Dao.sp_CEmpresas_Retrieve_Empresas();
             if (LE.Count > 0)
             {
-                for (int i = 0; i < LE.Count ; i++)
+                for (int i = 0; i < LE.Count; i++)
                 {
                     LE[i].sNombreEmpresa = LE[i].iIdEmpresa + " " + LE[i].sNombreEmpresa;
                 }
@@ -96,11 +80,11 @@ namespace Payroll.Controllers
         }
         // regresa el listado de renglon
         [HttpPost]
-        public JsonResult LisRenglon(int IdEmpresa,int iElemntoNOm)
+        public JsonResult LisRenglon(int IdEmpresa, int iElemntoNOm)
         {
             List<CRenglonesBean> LR = new List<CRenglonesBean>();
             FuncionesNomina Dao = new FuncionesNomina();
-            LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa ,iElemntoNOm);
+            LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa, iElemntoNOm);
             return Json(LR);
         }
         // regresa el listado de acumulado 
@@ -505,7 +489,7 @@ namespace Payroll.Controllers
             return Json(LTbProc);
         }
 
-        public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo)
+        public JsonResult ProcesosPots(int IdDefinicionHD, int anio, int iTipoPeriodo, int iperiodo)
         {
             Startup obj = new Startup();
             string NomProceso = "CNomina";
@@ -541,12 +525,13 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ExiteRenglon(int iIdDefinicionHd, int iIdEmpresa, int iRenglon, int iElementonomina) {
+        public JsonResult ExiteRenglon(int iIdDefinicionHd, int iIdEmpresa, int iRenglon, int iElementonomina)
+        {
 
             List<NominaLnBean> Exte = new List<NominaLnBean>();
             FuncionesNomina dao = new FuncionesNomina();
             Exte = dao.sp_ExitReglon_Retrieve_TpDefinicionNominaLn(iIdEmpresa, iRenglon, iIdDefinicionHd, iElementonomina);
-            return Json (Exte);
+            return Json(Exte);
         }
 
         [HttpPost]
@@ -562,7 +547,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public ActionResult PDFCaratula()
         {
-            string Fecha  = DateTime.Now.ToString("dd/MM/yyyy ");
+            string Fecha = DateTime.Now.ToString("dd/MM/yyyy ");
             string path = Server.MapPath("Archivos\\certificados\\PDF\\Caratula.pdf");
             path = path.Replace("\\Nomina", "");
             FileStream pdf = new FileStream(path, FileMode.Create);
@@ -570,16 +555,16 @@ namespace Payroll.Controllers
             PdfWriter PW = PdfWriter.GetInstance(documento, pdf);
             documento.Open();
 
-            documento.Add(new Paragraph("Fecha: "+ Fecha));
+            documento.Add(new Paragraph("Fecha: " + Fecha));
             PdfPTable table1 = new PdfPTable(4);
-           
-            
-           
+
+
+
             documento.Close();
             return null;
         }
 
-      
+
 
     }
 }

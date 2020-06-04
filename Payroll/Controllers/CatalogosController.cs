@@ -16,7 +16,7 @@ namespace Payroll.Controllers
         public JsonResult LoadFechasPeriodos()
         {
             List<InicioFechasPeriodoBean> Lista;
-            ModCatalogosDao  Dao = new ModCatalogosDao();
+            ModCatalogosDao Dao = new ModCatalogosDao();
             Lista = Dao.sp_Retrieve_CInicio_Fechas_Periodo();
             return Json(Lista);
         }
@@ -33,19 +33,11 @@ namespace Payroll.Controllers
         {
             List<string> Lista;
             ModCatalogosDao Dao = new ModCatalogosDao();
-            
-            Lista = Dao.sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(inEmpresa_id, inano, inperiodo, infinicio, inffinal, infproceso, infpago, indiaspago);
-            return Json(Lista);
-        }
-        [HttpPost]
-        public JsonResult SaveNewPolitica(int inEmpresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago)
-        {
-            List<string> Lista;
-            ModCatalogosDao Dao = new ModCatalogosDao();
 
             Lista = Dao.sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(inEmpresa_id, inano, inperiodo, infinicio, inffinal, infproceso, infpago, indiaspago);
             return Json(Lista);
         }
+
         [HttpPost]
         public JsonResult SaveNewEffdt(int Empresa_id, string Effdt)
         {
@@ -60,7 +52,7 @@ namespace Payroll.Controllers
         {
             List<string> Lista;
             ModCatalogosDao Dao = new ModCatalogosDao();
-            
+
             Lista = Dao.sp_CInicio_Fechas_Periodo_Delete_Fecha_Periodo(Empresa_id, Id);
             return Json(Lista);
         }
@@ -73,7 +65,15 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CPoliticasVacaciones_Delete_Politica(Empresa_id, Effdt, Anios);
             return Json(Lista);
         }
+        [HttpPost]
+        public JsonResult SaveNewPolitica(string inEmpresa_id, string inEffdt, string inano, string indias, string inprimav, string indiasa)
+        {
+            List<string> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
 
+            Lista = Dao.sp_CPoliticasVacaciones_Insert_Politica(inEmpresa_id, inEffdt, inano, indias, inprimav, indiasa);
+            return Json(Lista);
+        }
 
 
         [HttpPost]

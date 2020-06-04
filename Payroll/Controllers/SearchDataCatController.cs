@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Payroll.Models.Beans;
+﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 
 namespace Payroll.Controllers
@@ -85,7 +82,7 @@ namespace Payroll.Controllers
             listRegionBean = regionDao.sp_Regionales_Retrieve_Search_Regionales(wordsearch, keyemp);
             return Json(listRegionBean);
         }
-        
+
         [HttpPost]
         public JsonResult DataSelectRegional(int clvregional)
         {

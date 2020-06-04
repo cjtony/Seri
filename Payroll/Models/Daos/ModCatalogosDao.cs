@@ -1,9 +1,9 @@
-﻿using Payroll.Models.Utilerias;
-using Payroll.Models.Beans;
+﻿using Payroll.Models.Beans;
+using Payroll.Models.Utilerias;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace Payroll.Models.Daos
 {
@@ -38,7 +38,7 @@ namespace Payroll.Models.Daos
                         Bean.Fecha_Proceso = data["Fecha_Proceso"].ToString();
                         Bean.Fecha_Pago = data["Fecha_Pago"].ToString();
                         Bean.Dias_Efectivos = data["Dias_Efectivos"].ToString();
-                        
+
                         listBean.Add(Bean);
                     }
                 }
@@ -193,7 +193,7 @@ namespace Payroll.Models.Daos
                     while (data.Read())
                     {
                         TabPoliticasVacacionesBean Bean = new TabPoliticasVacacionesBean();
-                        
+
                         Bean.Empresa_id = data["Empresa_id"].ToString();
                         Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
                         Bean.Effdt = data["Effdt"].ToString();
@@ -235,7 +235,7 @@ namespace Payroll.Models.Daos
                     while (data.Read())
                     {
                         TabPoliticasVacacionesBean Bean = new TabPoliticasVacacionesBean();
-                        
+
                         Bean.Empresa_id = data["Empresa_id"].ToString();
                         Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
                         Bean.Effdt = data["Effdt"].ToString();
@@ -373,7 +373,45 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-        public List<string> sp_CPoliticasVacaciones_Delete_Politica(int Empresa_id,string Effdt, int Anio)
+        public List<string> sp_CPoliticasVacaciones_Insert_Politica(string inEmpresa_id, string inEffdt, string inano, string indias, string inprimav, string indiasa)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CPoliticasVacaciones_Insert_Politica", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", inEmpresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlEffdt", inEffdt));
+                cmd.Parameters.Add(new SqlParameter("@ctrlAnio", inano));
+                cmd.Parameters.Add(new SqlParameter("@ctrlDias", indias));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPrimav", inprimav));
+                cmd.Parameters.Add(new SqlParameter("@ctrlDiasa", indiasa));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        list.Add(data["iFlag"].ToString());
+                        list.Add(data["sRespuesta"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+        public List<string> sp_CPoliticasVacaciones_Delete_Politica(int Empresa_id, string Effdt, int Anio)
         {
             List<string> listBean = new List<string>();
             try

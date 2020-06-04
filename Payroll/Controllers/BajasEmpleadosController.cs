@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Payroll.Models.Beans;
 using Payroll.Models.Daos;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+using Payroll.Models.Utilerias;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Web.Mvc;
 using static iTextSharp.text.Font;
-using Payroll.Models.Utilerias;
 
 namespace Payroll.Controllers
 {
@@ -25,21 +23,23 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
-            string  typeDateStr  = "";
-            string  typeCompensationStr = "";
-            string  dateDownFormat    = Convert.ToDateTime(dateDownEmp).ToString("dd/MM/yyyy");
-            string  dateReceiptFormat = Convert.ToDateTime(dateReceipt).ToString("dd/MM/yyyy");
+            Boolean flag = false;
+            String messageError = "none";
+            string typeDateStr = "";
+            string typeCompensationStr = "";
+            string dateDownFormat = Convert.ToDateTime(dateDownEmp).ToString("dd/MM/yyyy");
+            string dateReceiptFormat = Convert.ToDateTime(dateReceipt).ToString("dd/MM/yyyy");
             BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
             BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
             List<BajasEmpleadosBean> listDataDownEmp = new List<BajasEmpleadosBean>();
-            try {
-                int keyBusiness     = int.Parse(Session["IdEmpresa"].ToString());
-                typeDateStr         = (typeDate == 0) ? "Fecha Antiguedad" : "Fecha Ingreso";
+            try
+            {
+                int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                typeDateStr = (typeDate == 0) ? "Fecha Antiguedad" : "Fecha Ingreso";
                 typeCompensationStr = (typeCompensation == 0) ? "Sin compensacion especial" : "Con compensacion especial";
-                downEmployeeBean    = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation);
-                if (downEmployeeBean.sMensaje == "SUCCESS") {
+                downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation);
+                if (downEmployeeBean.sMensaje == "SUCCESS")
+                {
                     flag = true;
                     //listDataDownEmp = downEmployeeDaoD.sp_Finiquitos_Empleado(keyEmployee, keyBusiness);
                     //if (listDataDownEmp.Count > 0) {
@@ -47,10 +47,14 @@ namespace Payroll.Controllers
                     //} else {
                     //    messageError = "ERRMOSTINFO";
                     //}
-                } else {
+                }
+                else
+                {
                     messageError = "ERRINSFINIQ";
                 }
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError });
@@ -60,19 +64,25 @@ namespace Payroll.Controllers
         public JsonResult ShowDataDown(int keyEmployee)
         {
             Boolean flag = false;
-            String  messageError = "none";
+            String messageError = "none";
             List<BajasEmpleadosBean> listDataDownEmp = new List<BajasEmpleadosBean>();
-            BajasEmpleadosDaoD       downEmployeeDao = new BajasEmpleadosDaoD();
-            try {
-                int keyBusiness   = int.Parse(Session["IdEmpresa"].ToString());
+            BajasEmpleadosDaoD downEmployeeDao = new BajasEmpleadosDaoD();
+            try
+            {
+                int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
                 int keySettlement = 0;
                 listDataDownEmp = downEmployeeDao.sp_Finiquitos_Empleado(keyEmployee, keyBusiness, keySettlement);
-                if (listDataDownEmp.Count > 0) {
+                if (listDataDownEmp.Count > 0)
+                {
                     flag = true;
-                } else {
+                }
+                else
+                {
                     messageError = "NOTLOADINFO";
                 }
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, DatosFiniquito = listDataDownEmp });
@@ -81,14 +91,17 @@ namespace Payroll.Controllers
         public String ConvertDateText(string dateConvert)
         {
             String convertDate = "";
-            try {
-                string year  = dateConvert.Substring(0, 4);
+            try
+            {
+                string year = dateConvert.Substring(0, 4);
                 string month = dateConvert.Substring(5, 2);
-                string day   = dateConvert.Substring(8, 2);
-                string[] days   = new string[] { "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" };
+                string day = dateConvert.Substring(8, 2);
+                string[] days = new string[] { "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" };
                 string[] months = new string[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
-                convertDate = day + " de " + months[Convert.ToInt32(month) -1] + " del " + year;
-            } catch (Exception exc) {
+                convertDate = day + " de " + months[Convert.ToInt32(month) - 1] + " del " + year;
+            }
+            catch (Exception exc)
+            {
                 Console.WriteLine(exc.Message.ToString());
             }
             return convertDate;
@@ -98,33 +111,39 @@ namespace Payroll.Controllers
         public JsonResult GenerateReceiptDown(int keySettlement, int keyEmployee)
         {
             Boolean flag = false;
-            String  messageError = "none";
+            String messageError = "none";
             List<BajasEmpleadosBean> dataDownEmployee = new List<BajasEmpleadosBean>();
-            List<DatosFiniquito> listDataDownBean     = new List<DatosFiniquito>();
-            BajasEmpleadosDaoD   dataDownEmplDaoD     = new BajasEmpleadosDaoD();
-            try {
+            List<DatosFiniquito> listDataDownBean = new List<DatosFiniquito>();
+            BajasEmpleadosDaoD dataDownEmplDaoD = new BajasEmpleadosDaoD();
+            try
+            {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
                 dataDownEmployee = dataDownEmplDaoD.sp_Finiquitos_Empleado(keyEmployee, keyBusiness, keySettlement);
-                if (dataDownEmployee.Count > 0) {
+                if (dataDownEmployee.Count > 0)
+                {
                     listDataDownBean = dataDownEmplDaoD.sp_Info_Finiquito_Empleado(keySettlement);
-                    if (listDataDownBean.Count > 0) {
+                    if (listDataDownBean.Count > 0)
+                    {
                         flag = true;
                         string pathSaveDocs = Server.MapPath("~/Content/");
                         string nameFolder = "DOCSFINIQUITOS";
                         string nameFileTest = "test.txt";
-                        if (!Directory.Exists(pathSaveDocs + nameFolder)) {
+                        if (!Directory.Exists(pathSaveDocs + nameFolder))
+                        {
                             Directory.CreateDirectory(pathSaveDocs + nameFolder);
                         }
-                        if (!System.IO.File.Exists(pathSaveDocs + nameFolder + @"\\" + nameFileTest)) {
-                            using (StreamWriter fileTest = new StreamWriter(pathSaveDocs + nameFolder + @"\\" + nameFileTest, false, Encoding.UTF8)) {
+                        if (!System.IO.File.Exists(pathSaveDocs + nameFolder + @"\\" + nameFileTest))
+                        {
+                            using (StreamWriter fileTest = new StreamWriter(pathSaveDocs + nameFolder + @"\\" + nameFileTest, false, Encoding.UTF8))
+                            {
                                 fileTest.Write("NO REMOVER");
                                 fileTest.Close();
                             }
                         }
                         // ** Definimos las variables a utilizar para mostrar la informacion del finiquito seleccionado en el pdf ** \\
                         string dateReceipt = "";
-                        string dateDown    = "";
-                        string dateEntry   = "";
+                        string dateDown = "";
+                        string dateEntry = "";
                         string dateAntiquity = "";
                         string rfcEmployee = "";
                         string sAniosAntiquity = "";
@@ -134,13 +153,14 @@ namespace Payroll.Controllers
                         string totalBalance = "";
                         string centrCost = "";
                         string salaryMonth = "";
-                        string salaryDay   = "";
+                        string salaryDay = "";
                         string jobEmployee = "";
                         string centroCostName = "";
                         string departamentName = "";
                         string departamentCode = "";
                         // Foreach para obtener datos de la empresa
-                        foreach (BajasEmpleadosBean data in dataDownEmployee) {
+                        foreach (BajasEmpleadosBean data in dataDownEmployee)
+                        {
                             dateReceipt = data.sFecha_recibo;
                             typeSettlement = data.sFiniquito_valor;
                             nameBusiness = data.sEmpresa;
@@ -159,8 +179,10 @@ namespace Payroll.Controllers
                             departamentCode = data.sDepto_codigo;
                         }
                         //Foreach para sacar el saldo total
-                        foreach (DatosFiniquito data in listDataDownBean) {
-                            if (data.iIdValor == 5 && data.iRenglon_id == 9999) {
+                        foreach (DatosFiniquito data in listDataDownBean)
+                        {
+                            if (data.iIdValor == 5 && data.iRenglon_id == 9999)
+                            {
                                 totalBalance = data.sSaldo;
                                 break;
                             }
@@ -168,7 +190,8 @@ namespace Payroll.Controllers
                         ConversorMoneda convertMon = new ConversorMoneda();
                         // Definimos el nombre del archivo pdf
                         string nameFilePdf = typeSettlement.Replace(" ", "_").ToUpper() + "_" + keyEmployee.ToString() + ".pdf";
-                        if (System.IO.File.Exists(pathSaveDocs + nameFolder + @"\\" + nameFilePdf)) {
+                        if (System.IO.File.Exists(pathSaveDocs + nameFolder + @"\\" + nameFilePdf))
+                        {
                             System.IO.File.Delete(pathSaveDocs + nameFolder + @"\\" + nameFilePdf);
                         }
                         FileStream fs = new FileStream(pathSaveDocs + nameFolder + @"\\" + nameFilePdf, FileMode.Create);
@@ -202,8 +225,8 @@ namespace Payroll.Controllers
                         doc.Add(new Chunk("\n"));
                         pr.Font = fontParagraph;
                         string balanceConvertText = convertMon.Convertir(totalBalance, true, "PESOS");
-                        string dateDownConvert    = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
-                        string paragraphDescription = "Recibí de la empresa " + nameBusiness.ToUpper() + " la cantidad neta de $" + totalBalance.Replace(".",",") + " (" + balanceConvertText + "). Por los conceptos detallados en la hoja de desglose de finiquito que me corresponde, con motivo de mi renuncia a esta institución, por lo que dejo de prestar mis servicios de manera voluntaria a partir del día " + dateDownConvert + ".";
+                        string dateDownConvert = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
+                        string paragraphDescription = "Recibí de la empresa " + nameBusiness.ToUpper() + " la cantidad neta de $" + totalBalance.Replace(".", ",") + " (" + balanceConvertText + "). Por los conceptos detallados en la hoja de desglose de finiquito que me corresponde, con motivo de mi renuncia a esta institución, por lo que dejo de prestar mis servicios de manera voluntaria a partir del día " + dateDownConvert + ".";
                         pr.Add(paragraphDescription);
                         pr.Alignment = Element.ALIGN_JUSTIFIED;
                         doc.Add(pr);
@@ -243,22 +266,27 @@ namespace Payroll.Controllers
                         tableInfo.AddCell(clDeducciones);
                         string nameEmployee = "";
                         // Foreach para llenar los datos de las celdas
-                        foreach (DatosFiniquito data in listDataDownBean) {
+                        foreach (DatosFiniquito data in listDataDownBean)
+                        {
                             nameEmployee = data.sNombre;
                             int lengthPer = 0;
                             int lengthDed = 0;
-                            if (data.iIdValor == 1 && data.iRenglon_id != 990) {
+                            if (data.iIdValor == 1 && data.iRenglon_id != 990)
+                            {
                                 lengthPer += 1;
                             }
-                            if (data.iIdValor == 2 && data.iRenglon_id != 1990) {
+                            if (data.iIdValor == 2 && data.iRenglon_id != 1990)
+                            {
                                 lengthDed += 1;
                             }
                             string descPerc = "";
                             string totaPerc = "";
                             string descDedu = "";
                             string totaDedu = "";
-                            if (lengthPer > 0) {
-                                if (data.iIdValor == 1 && data.iRenglon_id != 990) {
+                            if (lengthPer > 0)
+                            {
+                                if (data.iIdValor == 1 && data.iRenglon_id != 990)
+                                {
                                     descPerc = data.sNombre_Renglon + " " + data.sLeyenda;
                                     totaPerc = "$" + data.sSaldo.Replace(".", ",");
                                 }
@@ -271,10 +299,12 @@ namespace Payroll.Controllers
                             clPercepciones = new PdfPCell(new Phrase("     " + totaPerc, _standardFont));
                             clPercepciones.Colspan = 1;
                             tableInfo.AddCell(clPercepciones);
-                            if (lengthDed > 0) {
-                                if (data.iIdValor == 2 && data.iRenglon_id != 1990) {
+                            if (lengthDed > 0)
+                            {
+                                if (data.iIdValor == 2 && data.iRenglon_id != 1990)
+                                {
                                     descDedu = data.sNombre_Renglon + " " + data.sLeyenda;
-                                    totaDedu = "$ " + data.sSaldo.Replace(".",",");
+                                    totaDedu = "$ " + data.sSaldo.Replace(".", ",");
                                 }
                             }
                             // Descripcion de la deduccion
@@ -288,24 +318,27 @@ namespace Payroll.Controllers
 
                         }
                         // Foreach para agregar los totales de deduccion y percepcion
-                        foreach (DatosFiniquito data in listDataDownBean) {
-                            if (data.iIdValor == 1 && data.iRenglon_id == 990) {
+                        foreach (DatosFiniquito data in listDataDownBean)
+                        {
+                            if (data.iIdValor == 1 && data.iRenglon_id == 990)
+                            {
                                 // Descripcion de la percepcion
                                 clPercepciones = new PdfPCell(new Phrase("     " + data.sNombre_Renglon, _standardFont));
                                 clPercepciones.Colspan = 2;
                                 tableInfo.AddCell(clPercepciones);
                                 // Total de la percepcion
-                                clPercepciones = new PdfPCell(new Phrase("     $" + data.sSaldo.Replace(".",","), _standardFont));
+                                clPercepciones = new PdfPCell(new Phrase("     $" + data.sSaldo.Replace(".", ","), _standardFont));
                                 clPercepciones.Colspan = 1;
                                 tableInfo.AddCell(clPercepciones);
                             }
-                            if (data.iIdValor == 2 && data.iRenglon_id == 1990) {
+                            if (data.iIdValor == 2 && data.iRenglon_id == 1990)
+                            {
                                 // Descripcion de la deduccion
                                 clDeducciones = new PdfPCell(new Phrase("     " + data.sNombre_Renglon, _standardFont));
                                 clDeducciones.Colspan = 2;
                                 tableInfo.AddCell(clDeducciones);
                                 // Total de la deduccion
-                                clDeducciones = new PdfPCell(new Phrase("     $" + data.sSaldo.Replace(".",","), _standardFont));
+                                clDeducciones = new PdfPCell(new Phrase("     $" + data.sSaldo.Replace(".", ","), _standardFont));
                                 clDeducciones.Colspan = 1;
                                 tableInfo.AddCell(clDeducciones);
                             }
@@ -316,7 +349,7 @@ namespace Payroll.Controllers
                         doc.Add(new Chunk("\n"));
                         pr.Clear();
                         pr.Font = new Font(FontFactory.GetFont("ARIAL", 10, Font.BOLD));
-                        pr.Add("Finiquito a favor: $" + totalBalance.Replace(".",",") + ".");
+                        pr.Add("Finiquito a favor: $" + totalBalance.Replace(".", ",") + ".");
                         pr.Alignment = Element.ALIGN_RIGHT;
                         doc.Add(pr);
                         pr.Clear();
@@ -361,7 +394,7 @@ namespace Payroll.Controllers
                         // Dato del salario mensual
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add("$" + salaryMonth.Replace(".",","));
+                        pr.Add("$" + salaryMonth.Replace(".", ","));
                         clSalarioMensual = new PdfPCell();
                         clSalarioMensual.BorderWidth = 0.75f;
                         clSalarioMensual.PaddingTop = -7;
@@ -372,7 +405,7 @@ namespace Payroll.Controllers
                         // Dato del salario diario
                         pr.Font = fontCells;
                         pr.Alignment = Element.ALIGN_CENTER;
-                        pr.Add("$" + salaryDay.Replace(".",","));
+                        pr.Add("$" + salaryDay.Replace(".", ","));
                         clSalarioDiario = new PdfPCell();
                         clSalarioDiario.BorderWidth = 0.75f;
                         clSalarioDiario.PaddingTop = -7;
@@ -626,33 +659,45 @@ namespace Payroll.Controllers
                         doc.Add(tableFirm);
                         doc.Close();
                         pw.Close();
-                    } else {
+                    }
+                    else
+                    {
                         messageError = "ERRNOTDATA";
                     }
-                } else {
+                }
+                else
+                {
                     messageError = "ERRLOADINFFINIQUITO";
                 }
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 messageError = exc.Message.ToString();
             }
             return Json(new { });
         }
 
         [HttpPost]
-        public JsonResult SelectSettlementPaid (int keySettlement)
+        public JsonResult SelectSettlementPaid(int keySettlement)
         {
             Boolean flag = false;
-            String  messageError = "none";
+            String messageError = "none";
             BajasEmpleadosBean selectSettlementPaidBean = new BajasEmpleadosBean();
             BajasEmpleadosDaoD selectSettlementPaidDaoD = new BajasEmpleadosDaoD();
-            try {
+            try
+            {
                 selectSettlementPaidBean = selectSettlementPaidDaoD.sp_Selecciona_Finiquito_Pago(keySettlement);
-                if (selectSettlementPaidBean.sMensaje == "UPDATE") {
+                if (selectSettlementPaidBean.sMensaje == "UPDATE")
+                {
                     flag = true;
-                } else {
+                }
+                else
+                {
                     messageError = "ERRUPD";
                 }
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError });

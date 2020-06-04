@@ -562,17 +562,6 @@ namespace Payroll.Models.Beans
     }
     public class TabIncidenciasBean
     {
-        //public int IdTRegistro_Incidencia { get; set; }
-        //public int Empresa_id { get; set; }
-        //public int Anio { get; set; }
-        //public int NPeriodo { get; set; }
-        //public int Empleado_id { get; set; }
-        //public int Renglon { get; set; }
-        //public int Cantidad { get; set; }
-        //public int Plazos { get; set; }
-        //public string Descripcion { get; set; }
-        //public string Referencia { get; set; }
-        //public string Fecha_Aplicacion { get; set; }
         public string Nombre_Renglon { get; set; }
         public string VW_TipoIncidencia_id { get; set; }
         public int Cantidad { get; set; }
@@ -598,7 +587,7 @@ namespace Payroll.Models.Beans
     }
     public class TabPoliticasVacacionesBean
     {
-        public string Id { get; set; } 
+        public string Id { get; set; }
         public string NombreEmpresa { get; set; }
         public string Empresa_id { get; set; }
         public string Effdt { get; set; }

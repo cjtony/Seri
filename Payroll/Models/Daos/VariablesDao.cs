@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Payroll.Models.Beans;
+﻿using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
-using System.Data.SqlClient;
+using System;
 using System.Data;
+using System.Data.SqlClient;
 namespace Payroll.Models.Daos
 {
     public class VariablesDao { }
@@ -15,22 +12,29 @@ namespace Payroll.Models.Daos
         public NumeroNominaBean sp_Consulta_NumeroNomina_Empresa(int keyemp)
         {
             NumeroNominaBean numeroNominaBean = new NumeroNominaBean();
-            try {
+            try
+            {
                 this.Conectar();
-                SqlCommand cmd = new SqlCommand("sp_Consulta_NumeroNomina_Empresa", this.conexion) {
+                SqlCommand cmd = new SqlCommand("sp_Consulta_NumeroNomina_Empresa", this.conexion)
+                {
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyemp));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read()) {
+                if (data.Read())
+                {
                     numeroNominaBean.iNominaSiguiente = Convert.ToInt32(data["NominaSiguiente"].ToString());
-                    numeroNominaBean.iNominaTope      = Convert.ToInt32(data["NominaTope"].ToString());
-                    numeroNominaBean.sMensaje         = "success";
-                } else {
+                    numeroNominaBean.iNominaTope = Convert.ToInt32(data["NominaTope"].ToString());
+                    numeroNominaBean.sMensaje = "success";
+                }
+                else
+                {
                     numeroNominaBean.sMensaje = "error";
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 Console.WriteLine(exc);
             }
             return numeroNominaBean;
@@ -42,21 +46,28 @@ namespace Payroll.Models.Daos
         public NumeroPosicionBean sp_Consulta_NumeroPosicion()
         {
             NumeroPosicionBean numeroPosicionBean = new NumeroPosicionBean();
-            try {
+            try
+            {
                 this.Conectar();
-                SqlCommand cmd = new SqlCommand("sp_Consulta_NumeroPosicion", this.conexion) {
+                SqlCommand cmd = new SqlCommand("sp_Consulta_NumeroPosicion", this.conexion)
+                {
                     CommandType = CommandType.StoredProcedure
                 };
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read()) {
-                    numeroPosicionBean.iPosicionUltima    = Convert.ToInt32(data["PosicionUltima"].ToString());
+                if (data.Read())
+                {
+                    numeroPosicionBean.iPosicionUltima = Convert.ToInt32(data["PosicionUltima"].ToString());
                     numeroPosicionBean.iPosicionSiguiente = Convert.ToInt32(data["PosicionSiguiente"].ToString());
-                    numeroPosicionBean.sMensaje           = "success";
-                } else {
+                    numeroPosicionBean.sMensaje = "success";
+                }
+                else
+                {
                     numeroPosicionBean.sMensaje = "error";
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 Console.WriteLine(exc);
             }
             return numeroPosicionBean;

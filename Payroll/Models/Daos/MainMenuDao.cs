@@ -28,12 +28,12 @@ namespace Payroll.Models.Daos
                 {
                     while (data.Read())
                     {
-                        
+
                         PerfilUser = int.Parse(data["Perfil"].ToString());
-                        
+
                     }
                 }
-                
+
                 permBean = bringMenus(PerfilUser);
             }
             catch (Exception exc)
@@ -42,9 +42,9 @@ namespace Payroll.Models.Daos
             }
 
             return permBean;
-        
+
         }
-            
+
         public List<MainMenuBean> bringMenus(int Profile_User)
         {
             List<MainMenuBean> MmenuBean = new List<MainMenuBean>();
@@ -53,7 +53,7 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
-            
+
             cmd.Parameters.Add(new SqlParameter("@IdPerfil", Profile_User));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
@@ -90,7 +90,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@IdItem", Id_Item));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
-            
+
             if (data.HasRows)
             {
                 while (data.Read())
@@ -111,8 +111,8 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        
-        
+
+
 
     }
 }

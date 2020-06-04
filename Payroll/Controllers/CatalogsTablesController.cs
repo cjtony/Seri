@@ -197,7 +197,7 @@ namespace Payroll.Controllers
         public JsonResult SaveSucursal(string desc, string clav)
         {
             SucursalesBean sucursalBean = new SucursalesBean();
-            SucursalesDao  sucursalDao  = new SucursalesDao();
+            SucursalesDao sucursalDao = new SucursalesDao();
             int usuario = int.Parse(Session["iIdUsuario"].ToString());
             sucursalBean = sucursalDao.sp_Sucursales_Insert_Sucursales(desc, clav, usuario);
             return Json(sucursalBean);

@@ -1,26 +1,11 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
-using System.Collections.Generic;
-using System.Web.Mvc;
-
 using System;
-using System.Linq;
-using System.Web;
-using Payroll.Models.Utilerias;
-using System.Data.SqlClient;
-using System.Data;
-using System.Globalization;
+using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Text;
-using System.Configuration;
-using System.Media;
+using System.Web;
+using System.Web.Mvc;
 using System.Xml;
-
-using System.Drawing;
-using System.Web.UI.WebControls;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 
 namespace Payroll.Controllers
 {

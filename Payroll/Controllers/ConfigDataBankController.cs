@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
-using Payroll.Models.Beans;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Payroll.Controllers
 {

@@ -401,7 +401,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada,int Periodo)
+        public List<string> sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -631,7 +631,7 @@ namespace Payroll.Models.Daos
             data.Close();
             return list;
         }
-        public List<VW_TipoIncidenciaBean> sp_TRegistro_incidencias_Update_Incidencia( int Empresa_id, int Empleado_id, int Renglon, int Cantidad, int Plazos, string Descripcion, string Referencia, string Fecha_Aplicacion)
+        public List<VW_TipoIncidenciaBean> sp_TRegistro_incidencias_Update_Incidencia(int Empresa_id, int Empleado_id, int Renglon, int Cantidad, int Plazos, string Descripcion, string Referencia, string Fecha_Aplicacion)
         {
             List<VW_TipoIncidenciaBean> list = new List<VW_TipoIncidenciaBean>();
             this.Conectar();
@@ -660,7 +660,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<TabIncidenciasBean> sp_TIncidencias_Retrieve_Incidencias_Empleado( int Empresa_id, int Empleado_id, int Periodo)
+        public List<TabIncidenciasBean> sp_TIncidencias_Retrieve_Incidencias_Empleado(int Empresa_id, int Empleado_id, int Periodo)
         {
             List<TabIncidenciasBean> list = new List<TabIncidenciasBean>();
             this.Conectar();

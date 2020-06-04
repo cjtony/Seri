@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Payroll.Models.Beans;
+﻿using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
-using System.Data.SqlClient;
+using System;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace Payroll.Models.Daos
 {

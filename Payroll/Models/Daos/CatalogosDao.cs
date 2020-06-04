@@ -1591,13 +1591,19 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlClaveSucursal", clasucursal));
                 cmd.Parameters.Add(new SqlParameter("@ctrlUsuario", usuario));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read()) {
-                    if (data["sRespuesta"].ToString() == "") {
+                if (data.Read())
+                {
+                    if (data["sRespuesta"].ToString() == "")
+                    {
                         sucursalBean.sMensaje = "success";
-                    } else {
+                    }
+                    else
+                    {
                         sucursalBean.sMensaje = data["sRespuesta"].ToString();
                     }
-                } else {
+                }
+                else
+                {
                     sucursalBean.sMensaje = "error";
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); conexion.Close();

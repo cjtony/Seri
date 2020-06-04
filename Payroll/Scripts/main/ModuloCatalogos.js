@@ -86,6 +86,9 @@
                 if (data[0] == "1") {
                     LoadTabPoliticasVacaciones();
                     LoadPoliticasVacacionesFuturas();
+                    document.getElementById("frmnewEffdt").reset();
+
+                    $("#modalAgregarNewEffdtPoliticas").modal("hide");
                     Swal.fire({
                         icon: 'success',
                         title: 'Completado!',
@@ -683,7 +686,8 @@
                 url: "../Catalogos/SaveNewPolitica",
                 type: "POST",
                 data: JSON.stringify({
-                    inEmpresa_id: i$("#Empresa_id_editar").val(),
+                    inEmpresa_id: $("#Empresa_id_editar").val(),
+                    inEffdt: $("#Effdt_editar").val(),
                     inano: inanio.value,
                     indias: indias.value,
                     inprimav: inprimav.value,
@@ -752,6 +756,7 @@
                             });
                         } else {
                             editarFechasPeriodos(Empresa_id.value);
+
                             Swal.fire({
                                 title: 'Correcto!',
                                 icon: 'success',
