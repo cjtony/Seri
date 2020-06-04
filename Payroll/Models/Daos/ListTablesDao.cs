@@ -99,7 +99,7 @@ namespace Payroll.Models.Daos
             }
             return listEmpleadosBean;
         }
-        public EmpleadosBean sp_Empleados_Retrieve_Empleado(int keyemploye)
+        public EmpleadosBean sp_Empleados_Retrieve_Empleado(int keyemploye, int keybusiness)
         {
             EmpleadosBean empleadoBean = new EmpleadosBean();
             try
@@ -110,6 +110,7 @@ namespace Payroll.Models.Daos
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", keyemploye));
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keybusiness));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read())
                 {
@@ -117,7 +118,7 @@ namespace Payroll.Models.Daos
                     empleadoBean.sNombreEmpleado = (String.IsNullOrEmpty(data["Nombre_Empleado"].ToString())) ? "" : data["Nombre_Empleado"].ToString();
                     empleadoBean.sApellidoPaterno = (String.IsNullOrEmpty(data["Apellido_Paterno_Empleado"].ToString())) ? "" : data["Apellido_Paterno_Empleado"].ToString();
                     empleadoBean.sApellidoMaterno = (String.IsNullOrEmpty(data["Apellido_Materno_Empleado"].ToString())) ? "" : data["Apellido_Materno_Empleado"].ToString();
-                    empleadoBean.sFechaNacimiento = (String.IsNullOrEmpty(data["Fecha_Nacimiento_Empleado"].ToString())) ? "" : data["Fecha_Nacimiento_Empleado"].ToString();
+                    empleadoBean.sFechaNacimiento = (String.IsNullOrEmpty(data["Fecha_Nacimiento_Empleado"].ToString())) ? "" : Convert.ToDateTime(data["Fecha_Nacimiento_Empleado"]).ToString("yyyy-MM-dd");
                     empleadoBean.sLugarNacimiento = (String.IsNullOrEmpty(data["Lugar_Nacimiento_Empleado"].ToString())) ? "" : data["Lugar_Nacimiento_Empleado"].ToString();
                     if (data["Cg_Titulo_id"].ToString().Length != 0)
                     {
@@ -167,18 +168,19 @@ namespace Payroll.Models.Daos
                     empleadoBean.sTelefonoFijo = (String.IsNullOrEmpty(data["Telefono_Fijo"].ToString())) ? "" : data["Telefono_Fijo"].ToString();
                     empleadoBean.sTelefonoMovil = (String.IsNullOrEmpty(data["Telefono_Movil"].ToString())) ? "" : data["Telefono_Movil"].ToString();
                     empleadoBean.sCorreoElectronico = (String.IsNullOrEmpty(data["Correo_Electronico"].ToString())) ? "" : data["Correo_Electronico"].ToString();
-                    empleadoBean.sFechaMatrimonio = (String.IsNullOrEmpty(data["Fecha_Matrimonio"].ToString())) ? "" : data["Fecha_Matrimonio"].ToString();
+                    empleadoBean.sFechaMatrimonio = (String.IsNullOrEmpty(data["Fecha_Matrimonio"].ToString())) ? "" : Convert.ToDateTime(data["Fecha_Matrimonio"]).ToString("yyyy-MM-dd");
                     empleadoBean.sTipoSangre = (String.IsNullOrEmpty(data["Tipo_Sangre"].ToString())) ? "" : data["Tipo_Sangre"].ToString();
                     empleadoBean.sMensaje = "success";
                 }
                 else
                 {
-                    empleadoBean.sMensaje = "error";
+                    empleadoBean.sMensaje = "ERRDB";
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
             }
             catch (Exception exc)
             {
+                empleadoBean.sMensaje = exc.Message.ToString();
                 string origenerror = "ListTablesdao";
                 string mensajeerror = exc.ToString();
                 CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
@@ -201,8 +203,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", keyemploye));
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyemp));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read())
-                {
+                if (data.Read()) {
                     imssBean.iIdImss = Convert.ToInt32(data["IdImss"].ToString());
                     imssBean.iEmpleado_id = Convert.ToInt32(data["Empleado_id"].ToString());
                     imssBean.iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
@@ -211,32 +212,24 @@ namespace Payroll.Models.Daos
                     imssBean.sRegistroImss = (String.IsNullOrEmpty(data["RegistroImss"].ToString())) ? "" : data["RegistroImss"].ToString();
                     imssBean.sRfc = (String.IsNullOrEmpty(data["RFC"].ToString())) ? "" : data["RFC"].ToString();
                     imssBean.sCurp = (String.IsNullOrEmpty(data["CURP"].ToString())) ? "" : data["CURP"].ToString();
-                    if (data["Cg_NivelEstudio_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_NivelEstudio_id"].ToString().Length != 0) {
                         imssBean.iNivelEstudio_id = Convert.ToInt32(data["Cg_NivelEstudio_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         imssBean.iNivelEstudio_id = 0;
                     }
-                    if (data["Cg_NivelSocioeconomico_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_NivelSocioeconomico_id"].ToString().Length != 0) {
                         imssBean.iNivelSocioeconomico_id = Convert.ToInt32(data["Cg_NivelSocioeconomico_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         imssBean.iNivelSocioeconomico_id = 0;
                     }
                     imssBean.sMensaje = "success";
                 }
-                else
-                {
-                    imssBean.sMensaje = "error";
+                else {
+                    imssBean.sMensaje = "ERRDB";
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
+                imssBean.sMensaje = exc.Message.ToString();
                 string origenerror = "ListTablesdao";
                 string mensajeerror = exc.ToString();
                 CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
@@ -348,12 +341,13 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    nominaBean.sMensaje = "error";
+                    nominaBean.sMensaje = "ERRDB";
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
             }
             catch (Exception exc)
             {
+                nominaBean.sMensaje = exc.Message.ToString();
                 string origenerror = "ListTablesdao";
                 string mensajeerror = exc.ToString();
                 CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
@@ -378,11 +372,11 @@ namespace Payroll.Models.Daos
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read())
                 {
-                    posicionBean.iIdPosicionAsig = Convert.ToInt32(data["IdPosicion_Asig"].ToString());
+                    //posicionBean.iIdPosicionAsig = Convert.ToInt32(data["IdPosicion_Asig"].ToString());
                     posicionBean.iIdPosicion = Convert.ToInt32(data["IdPosicion"].ToString());
                     posicionBean.sPosicionCodigo = data["PosCode1"].ToString();
                     posicionBean.sFechaEffectiva = Convert.ToDateTime(data["Effdt"].ToString()).ToString("yyyy-MM-dd");
-                    posicionBean.sFechaInicio = Convert.ToDateTime(data["Fecha_Inicio_Asign"].ToString()).ToString("yyyy-MM-dd");
+                    //posicionBean.sFechaInicio = Convert.ToDateTime(data["Fecha_Inicio_Asign"].ToString()).ToString("yyyy-MM-dd");
                     posicionBean.iPuesto_id = Convert.ToInt32(data["Puesto_id"].ToString());
                     posicionBean.sNombrePuesto = data["NombrePuesto"].ToString();
                     posicionBean.sPuestoCodigo = data["PuestoCodigo"].ToString();
@@ -392,7 +386,7 @@ namespace Payroll.Models.Daos
                     posicionBean.iIdLocalidad = Convert.ToInt32(data["Localidad_id"].ToString());
                     posicionBean.sLocalidad = data["Descripcion"].ToString();
                     posicionBean.iIdReportaAPosicion = Convert.ToInt32(data["Reporta_A_Posicion_id"].ToString());
-                    posicionBean.sCodRepPosicion = data["PosCode2"].ToString();
+                    //posicionBean.sCodRepPosicion = data["PosCode2"].ToString();
                     posicionBean.iIdRegistroPat = Convert.ToInt32(data["RegPat_id"].ToString());
                     posicionBean.sRegistroPat = data["Afiliacion_IMSS"].ToString();
                     posicionBean.iIdReportaAEmpresa = Convert.ToInt32(data["Reporta_A_Empresa"].ToString());

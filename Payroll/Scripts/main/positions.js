@@ -19,7 +19,7 @@
                         document.getElementById('emprep').value = data.sRegistroPat;
                         document.getElementById('localty').value = data.sLocalidad;
                         document.getElementById('report').value = data.iIdReportaAPosicion;
-                        document.getElementById('msjfech').classList.remove('d-none');
+                        //document.getElementById('msjfech').classList.remove('d-none');
                         $("#searchpositionstab").modal('hide');
                         console.log(data);
                     } else {

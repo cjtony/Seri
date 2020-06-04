@@ -1,5 +1,5 @@
 ﻿$(function () {
-
+    console.log('entrando a main')
     // Comentar cuando el proyecto este en produccion \\
     //const idefectivo = 1115;
     //const idcuentach = 1116;
@@ -22,6 +22,29 @@
     }
 
     someMethodIThinkMightBeSlow();
+
+    const dateLocSto = localStorage.getItem("dateedit");
+    const modeLocSto = localStorage.getItem("modeedit");
+    if (modeLocSto != null) {
+        const date = new Date();
+        let fechAct;
+        let day = date.getDay();
+        if (date.getDay() < 10) {
+            day = "0" + date.getDay();
+        }
+        if (date.getMonth() + 1 < 10) {
+            fechAct = date.getFullYear() + "-" + "0" + (date.getMonth() + 1) + "-" + day;
+        } else {
+            fechAct = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + day;
+        }
+        if (dateLocSto != null) {
+            if (dateLocSto != fechAct) {
+                setTimeout(() => {
+                    fclearlocsto(0);
+                }, 2000);
+            }
+        }
+    }
 
     const dateact = document.getElementById('dateact');
     let d = new Date();
@@ -324,9 +347,9 @@
             let frmonth;
             if (d.getMonth() + 1 < 10) { frmonth = "0" + (d.getMonth() + 1); } else { frmonth = d.getMonth() + 1; }
             const fechact = d.getFullYear() + '-' + frmonth + '-' + d.getDate();
-            fecefe.disabled = true;
+            fecefe.disabled = false;
             fecefe.value = fechact;
-            fecefecnom.disabled = true;
+            fecefecnom.disabled = false;
             fecefecnom.value = fechact;
             fechefectpos.disabled = false;
             fechefectpos.value = fechact;
@@ -353,6 +376,7 @@
     fclearlocsto = (type) => {
         let timerInterval;
         localStorage.removeItem('modeedit');
+        localStorage.removeItem('dateedit');
         localStorage.removeItem('tabSelected');
         localStorage.removeItem('objectTabDataGen'); localStorage.removeItem('objectDataTabImss');
         localStorage.removeItem('objectDataTabNom'); localStorage.removeItem('objectDataTabEstructure');
@@ -631,17 +655,17 @@
                         fechAct = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
                     }
                     if (arrInput[t].value != "" && attrdate == "less") {
-                        if (arrInput[t].value > fechAct) {
-                            fshowtypealert('Atención', 'La ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser mayor a la fecha actual', 'warning', arrInput[t], 1);
-                            validate = 1;
-                            break;
-                        }
+                        //if (arrInput[t].value > fechAct) {
+                        //    fshowtypealert('Atención', 'La ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser mayor a la fecha actual', 'warning', arrInput[t], 1);
+                        //    validate = 1;
+                        //    break;
+                        //}
                     } else if (arrInput[t].value != "" && attrdate == "higher") {
-                        if (arrInput[t].value < fechAct) {
-                            fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
-                            validate = 1;
-                            break;
-                        }
+                        //if (arrInput[t].value < fechAct) {
+                        //    fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
+                        //    validate = 1;
+                        //    break;
+                        //}
                     } else {
                         fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[t].placeholder), 'warning', arrInput[t], 0);
                         validate = 1;
@@ -700,11 +724,11 @@
                     } else {
                         fechAct = ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + dateadd;
                     }
-                    if (arrInput[a].value < fechAct) {
-                        fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
-                        validate = 1;
-                        break;
-                    }
+                    //if (arrInput[a].value < fechAct) {
+                    //    fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
+                    //    validate = 1;
+                    //    break;
+                    //}
                 } else {
                     fshowtypealert('Atencion', 'Completa el campo ' + String(arrInput[a].placeholder), 'warning', arrInput[a], 0);
                     validate = 1;

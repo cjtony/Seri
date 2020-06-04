@@ -145,42 +145,90 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataTabGenEmploye(int keyemploye)
         {
-            EmpleadosBean empleadoBean = new EmpleadosBean();
+            Boolean flag         = false;
+            String  messageError = "none";
+            EmpleadosBean empleadoBean       = new EmpleadosBean();
             ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
-            empleadoBean = listEmpleadoDao.sp_Empleados_Retrieve_Empleado(keyemploye);
-            return Json(empleadoBean);
+            try {
+                int keyemp   = int.Parse(Session["IdEmpresa"].ToString());
+                empleadoBean = listEmpleadoDao.sp_Empleados_Retrieve_Empleado(keyemploye, keyemp);
+                if (empleadoBean.sMensaje != "success") {
+                    messageError = empleadoBean.sMensaje;
+                } else {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = empleadoBean });
         }
 
         [HttpPost]
         public JsonResult DataTabImssEmploye(int keyemploye)
         {
-            ImssBean imssBean = new ImssBean();
+            Boolean flag         = false;
+            String  messageError = "none";
+            ImssBean imssBean                = new ImssBean();
             ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
-            // Reemplazar por la sesion de la empresa
-            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-            imssBean = listEmpleadoDao.sp_Imss_Retrieve_ImssEmpleado(keyemploye, keyemp);
-            return Json(imssBean);
+            try {
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+                imssBean   = listEmpleadoDao.sp_Imss_Retrieve_ImssEmpleado(keyemploye, keyemp);
+                if (imssBean.sMensaje != "success") {
+                    messageError = imssBean.sMensaje.ToString();
+                } else {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = imssBean });
         }
 
         [HttpPost]
         public JsonResult DataTabNominaEmploye(int keyemploye)
         {
-            DatosNominaBean datoNominaBean = new DatosNominaBean();
+            Boolean flag         = false;
+            String  messageError = "none";
+            DatosNominaBean datoNominaBean   = new DatosNominaBean();
             ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
-            // Reemplazar por la sesion de la empresa
-            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-            datoNominaBean = listEmpleadoDao.sp_Nominas_Retrieve_NominaEmpleado(keyemploye, keyemp);
-            return Json(datoNominaBean);
+            try {
+                int keyemp     = int.Parse(Session["IdEmpresa"].ToString());
+                datoNominaBean = listEmpleadoDao.sp_Nominas_Retrieve_NominaEmpleado(keyemploye, keyemp);
+                if (datoNominaBean.sMensaje != "success") {
+                    messageError = datoNominaBean.sMensaje;
+                } else {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = datoNominaBean });
         }
 
         [HttpPost]
         public JsonResult DataTabStructureEmploye(int keyemploye)
         {
+            Boolean flag         = false;
+            String  messageError = "none";
             DatosPosicionesBean datoPosicionBean = new DatosPosicionesBean();
-            ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
-            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-            datoPosicionBean = listEmpleadoDao.sp_Posiciones_Retrieve_PosicionEmpleado(keyemploye, keyemp);
-            return Json(datoPosicionBean);
+            ListEmpleadosDao listEmpleadoDao     = new ListEmpleadosDao();
+            try {
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+                datoPosicionBean = listEmpleadoDao.sp_Posiciones_Retrieve_PosicionEmpleado(keyemploye, keyemp);
+                if (datoPosicionBean.sMensaje != "success") {
+                    messageError = datoPosicionBean.sMensaje;
+                }
+                if (datoPosicionBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = true, MensajeError = messageError, Datos = datoPosicionBean });
         }
         //Codigo nuevo
         [HttpPost]

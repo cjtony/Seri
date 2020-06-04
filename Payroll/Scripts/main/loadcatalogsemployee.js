@@ -626,16 +626,6 @@
     const infobankct = document.getElementById('infobankct');
     const infobankch = document.getElementById('infobankch');
 
-    if (JSON.parse(localStorage.getItem('objectDataTabNom')) != null) {
-        for (i in getDataTabNom) {
-            if (getDataTabNom[i].key === "nom") {
-                if (getDataTabNom[i].data.banuse != "") {
-                    fdatabank(false);
-                }
-            }
-        }
-    }
-
     fchangetippag = () => {
         if (tippag.value == idcuentach || tippag.value == idcuentaah) {
             fdatabank(false);
@@ -660,6 +650,18 @@
             fdatabank(true);
         }
     }
+
+    if (JSON.parse(localStorage.getItem('objectDataTabNom')) != null) {
+        for (i in getDataTabNom) {
+            if (getDataTabNom[i].key === "nom") {
+                if (getDataTabNom[i].data.banuse != "") {
+                    fdatabank(false);
+                }
+            }
+        }
+        fchangetippag();
+    }
+
 
     tippag.addEventListener('change', fchangetippag);
 

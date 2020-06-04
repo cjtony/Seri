@@ -1,5 +1,5 @@
 ﻿$(function () {
-
+    console.log('entrando a datos generales')
     // Comentar cuando el proyecto este en produccion \\
     //const idefectivo = 1115;
     //const idcuentach = 1116;
@@ -455,6 +455,8 @@
             title: title.value, nacion: nacion.value, state: state.value, codpost: codpost.value, city: city.value, colony: colony.value, street: street.value,
             numberst: numberst.value, telfij: telfij.value, telmov: telmov.value, email: mailus.value, tipsan: tipsan.value, fecmat: fecmat.value
         };
+        console.log('Datos generales');
+        console.log(dataSend);
         try {
             document.getElementById('txtsave1').textContent = 'Guardando...';
             $.ajax({
@@ -522,6 +524,8 @@
             fecefe: fecefe.value, regimss: regimss.value, rfc: rfc.value, curp: curp.value, nivest: nivest.value, nivsoc: nivsoc.value, empleado: name.value,
             apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value
         };
+        console.log('Datos de imss');
+        console.log(dataSend);
         try {
             document.getElementById('txtsave2').textContent = 'Guardando...';
             $.ajax({
@@ -603,6 +607,8 @@
             //motinc: motinc.value,
             tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0
         };
+        console.log('Datos de nomina');
+        console.log(dataSend);
         try {
             document.getElementById('txtsave3').textContent = 'Guardando';
             $.ajax({
@@ -610,7 +616,7 @@
                 type: "POST",
                 data: dataSend,
                 success: (data) => {
-                    if (data.result == "success") {
+                    if (data.Bandera === true && data.MensajeError === "none") {
                         icosave3.classList.add('text-success');
                         txtsave3.textContent = 'Guardado';
                         setTimeout(() => {
@@ -663,6 +669,8 @@
             clvstr: clvstr.value, fechefectpos: fechefectpos.value, fechinipos: fechinipos.value,
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value
         };
+        console.log('Datos de estructura');
+        console.log(dataSend);
         try {
             document.getElementById('txtsave4').textContent = 'Guardando';
             fsearchpositionsig();
@@ -795,7 +803,7 @@
                     for (let t = 0; t < arrInput.length; t++) {
                         if (arrInput[t].hasAttribute("tp-select")) {
                             let textpag;
-                            if (arrInput[t].value == "0") {
+                            if (arrInput[t].value == "n") {
                                 const attrselect = arrInput[t].getAttribute('tp-select');
                                 fshowtypealert('Atención', 'Selecciona una opción de ' + String(attrselect), 'warning', arrInput[t], 0);
                                 validatedatanom = 1;
@@ -833,23 +841,6 @@
                                     fechAct = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + d.getDate();
                                 } else {
                                     fechAct = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-                                }
-                                if (arrInput[t].value != "" && attrdate == "less") {
-                                    if (arrInput[t].value > fechAct) {
-                                        fshowtypealert('Atención', 'La ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser mayor a la fecha actual', 'warning', arrInput[t], 1);
-                                        validatedatanom = 1;
-                                        break;
-                                    }
-                                } else if (arrInput[t].value != "" && attrdate == "higher") {
-                                    if (arrInput[t].value < fechAct) {
-                                        fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
-                                        validatedatanom = 1;
-                                        break;
-                                    }
-                                } else {
-                                    fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[t].placeholder), 'warning', arrInput[t], 0);
-                                    validatedatanom = 1;
-                                    break;
                                 }
                             } else {
                                 if (arrInput[t].value == "") {
@@ -1228,11 +1219,11 @@
                                     break;
                                 }
                             } else if (arrInput[t].value != "" && attrdate == "higher") {
-                                if (arrInput[t].value < fechAct) {
-                                    fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
-                                    validatedatanom = 1;
-                                    break;
-                                }
+                                //if (arrInput[t].value < fechAct) {
+                                //    fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
+                                //    validatedatanom = 1;
+                                //    break;
+                                //}
                             } else {
                                 fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[t].placeholder), 'warning', arrInput[t], 0);
                                 validatedatanom = 1;
@@ -1278,6 +1269,25 @@
                 } else { $("#nav-datanom-tab").click(); }
             } else { $("#nav-imss-tab").click(); }
         } else { $("#nav-datagen-tab").click(); }
+    }
+
+    const date = new Date();
+    let fechAct;
+    let day = date.getDay();
+    if (date.getDay() < 10) {
+        day = "0" + date.getDay();
+    }
+    if (date.getMonth() + 1 < 10) {
+        fechAct = date.getFullYear() + "-" + "0" + (date.getMonth() + 1) + "-" + day;
+    } else {
+        fechAct = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + day;
+    }
+
+    const modeLocSto = localStorage.getItem("modeedit");
+    if (modeLocSto == null) {
+        fecefe.value = fechAct;
+        fecefecnom.value = fechAct;
+        fechefectpos.value = fechAct;
     }
 
    //btnsaveedit.addEventListener('click', fvalidatefieldsedit);

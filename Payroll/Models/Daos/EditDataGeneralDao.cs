@@ -183,7 +183,7 @@ namespace Payroll.Models.Daos
             return imssBean;
         }
 
-        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, int motinc, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position)
+        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position)
         {
             DatosNominaBean nominaBean = new DatosNominaBean();
             try
@@ -201,7 +201,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoJornada", tipjor));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoContrato", tipcon));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoContratacion", tipcontra));
-                cmd.Parameters.Add(new SqlParameter("@ctrlMotivoInc", motinc));
+                //cmd.Parameters.Add(new SqlParameter("@ctrlMotivoInc", motinc));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaIngreso", fecing));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaAntiguedad", fecant));
                 cmd.Parameters.Add(new SqlParameter("@ctrlVencimientoCont", vencon));
@@ -222,6 +222,7 @@ namespace Payroll.Models.Daos
             }
             catch (Exception exc)
             {
+                nominaBean.sMensaje = exc.Message.ToString();
                 Console.WriteLine(exc);
             }
             return nominaBean;

@@ -227,7 +227,7 @@ namespace Payroll.Models.Daos
     }
     public class ImssDao : Conexion
     {
-        public ImssBean sp_Imss_Insert_Imss(string fecefe, string regimss, string rfc, string curp, int nivest, int nivsoc, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp)
+        public ImssBean sp_Imss_Insert_Imss(string fecefe, string regimss, string rfc, string curp, int nivest, int nivsoc, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int keyemployee)
         {
             ImssBean imssBean = new ImssBean();
             try {
@@ -247,6 +247,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlApellidoM", apemat.ToUpper()));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaNaci", fechanaci));
                 cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa", keyemp));
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", keyemployee));
                 if (cmd.ExecuteNonQuery() > 0) {
                     imssBean.sMensaje = "success";
                 } else {
@@ -266,7 +267,7 @@ namespace Payroll.Models.Daos
     }
     public class DatosNominaDao : Conexion
     {
-        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp,  int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string estats, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp)
+        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp,  int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp)
         {
             DatosNominaBean datoNominaBean = new DatosNominaBean();
             try {
@@ -583,7 +584,7 @@ namespace Payroll.Models.Daos
             }
             return datoPosicionBean;
         }
-        public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsigEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvposasig, int clvnom, int usuario)
+        public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsigEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom, int usuario)
         {
             DatosPosicionesBean datoPosicionBean = new DatosPosicionesBean();
             try

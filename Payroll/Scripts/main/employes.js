@@ -156,7 +156,7 @@
         const dataLocSto = {
             key: 'estructure', data: {
                 clvstract: clvstract.value,
-                clvposasig: clvposasig.value,
+                //clvposasig: clvposasig.value,
                 clvstr: clvstr.value,
                 numpla: numpla.value,
                 depaid: depaid.value,
@@ -167,7 +167,7 @@
                 emprep: emprep.value,
                 report: report.value,
                 fechefectpos: fechefectpos.value,
-                fechinipos: fechinipos.value,
+                //fechinipos: fechinipos.value,
                 fechefecposact: fechefecposact.value
             }
         };
@@ -244,27 +244,27 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DE LA POSICION ASIGNADA A LA ESTRUCTURA */
     floaddatatabstructure = (paramid) => {
+        console.log("Estructura");
         try {
             $.ajax({
                 url: "../Empleados/DataTabStructureEmploye",
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
+                    console.log("Imprimiendo los datos de la estructura");
                     console.log(data);
-                    if (data.sMensaje == "success") {
-                        clvstract.value = data.iIdPosicion;
-                        clvposasig.value = data.iIdPosicionAsig;
-                        numpla.value = data.sPosicionCodigo;
-                        puesid.value = data.iPuesto_id;
-                        pueusu.value = data.sNombrePuesto;
-                        depaid.value = data.iDepartamento_id;
-                        depart.value = data.sDeptoCodigo;
-                        localty.value = data.sLocalidad;
-                        emprep.value = data.sRegistroPat;
-                        report.value = data.iIdReportaAPosicion;
-                        fechefectpos.value = data.sFechaEffectiva;
-                        fechinipos.value = data.sFechaInicio;
-                        fechefecposact.value = data.sFechaEffectiva;
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        clvstract.value = data.Datos.iIdPosicion;
+                        numpla.value    = data.Datos.sPosicionCodigo;
+                        puesid.value    = data.Datos.iPuesto_id;
+                        pueusu.value    = data.Datos.sNombrePuesto;
+                        depaid.value    = data.Datos.iDepartamento_id;
+                        depart.value    = data.Datos.sDeptoCodigo;
+                        localty.value   = data.Datos.sLocalidad;
+                        emprep.value    = data.Datos.sRegistroPat;
+                        report.value    = data.Datos.iIdReportaAPosicion;
+                        fechefectpos.value   = data.Datos.sFechaEffectiva;
+                        fechefecposact.value = data.Datos.sFechaEffectiva;
                         document.getElementById('btn-save-data-all').disabled = true;
                         flocalstodatatabstructure();
                         fchecklocalstotab();
@@ -272,6 +272,16 @@
                             btnsavedataall.classList.add('d-none');
                             btnsaveeditdataest.classList.remove('d-none');
                         }
+                    } else {
+                        document.getElementById('div-most-alert-data-estructure').innerHTML += `
+                            <div class="alert alert-danger text-center" role="alert">
+                                <b>
+                                    <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos de la estructura, informe al área de TI.
+                                    <br/>
+                                    <i class="fas fa-code mr-2"></i> Error: ${data.MensajeError}
+                                </b>
+                            </div>
+                        `;
                     }
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
@@ -289,38 +299,50 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DE NOMINA DEL EMPLEADO SELECCIONADO A EDICION */
     floaddatatabnomina = (paramid) => {
+        console.log("Nomina");
         try {
             $.ajax({
                 url: "../Empleados/DataTabNominaEmploye",
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    if (data.sMensaje === "success") {
-                        console.log(data);
-                        clvnom.value = data.iIdNomina;
-                        fechefectact.value = data.sFechaEfectiva;
-                        fecefecnom.value = data.sFechaEfectiva;
-                        salmen.value = data.dSalarioMensual;
-                        tipper.value = data.iTipoPeriodo;
-                        tipemp.value = data.iTipoEmpleado_id;
-                        nivemp.value = data.iNivelEmpleado_id;
-                        tipjor.value = data.iTipoJornada_id;
-                        tipcon.value = data.iTipoContrato_id;
-                        tipcontra.value = data.iTipoContratacion_id;
+                    console.log("Imprimiendo los datos de nomina");
+                    console.log(data);
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        clvnom.value       = data.Datos.iIdNomina;
+                        fechefectact.value = data.Datos.sFechaEfectiva;
+                        fecefecnom.value   = data.Datos.sFechaEfectiva;
+                        salmen.value       = data.Datos.dSalarioMensual;
+                        tipper.value       = data.Datos.iTipoPeriodo;
+                        tipemp.value       = data.Datos.iTipoEmpleado_id;
+                        nivemp.value       = data.Datos.iNivelEmpleado_id;
+                        tipjor.value       = data.Datos.iTipoJornada_id;
+                        tipcon.value       = data.Datos.iTipoContrato_id;
+                        tipcontra.value    = data.Datos.iTipoContratacion_id;
                         //motinc.value = data.iMotivoIncremento_id;
-                        fecing.value = data.sFechaIngreso;
-                        fecant.value = data.sFechaAntiguedad;
-                        vencon.value = data.sVencimientoContrato;
-                        tippag.value = data.iTipoPago_id;
-                        banuse.value = data.iBanco_id;
-                        cunuse.value = data.sCuentaCheques;
-                        clvstr.value = data.iPosicion_id;
+                        fecing.value       = data.Datos.sFechaIngreso;
+                        fecant.value       = data.Datos.sFechaAntiguedad;
+                        vencon.value       = data.Datos.sVencimientoContrato;
+                        tippag.value       = data.Datos.iTipoPago_id;
+                        banuse.value       = data.Datos.iBanco_id;
+                        cunuse.value       = data.Datos.sCuentaCheques;
+                        clvstr.value       = data.Datos.iPosicion_id;
                         floaddatatabstructure(paramid);
                         flocalstodatatabnomina();
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedatanomina.classList.add('d-none');
                             btnsaveeditdatanomina.classList.remove('d-none');
                         }
+                    } else {
+                        document.getElementById('div-most-alert-data-imss').innerHTML += `
+                            <div class="alert alert-danger text-center" role="alert">
+                                <b>
+                                    <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos de la nomina, informe al área de TI.
+                                    <br/>
+                                    <i class="fas fa-code mr-2"></i> Error: ${data.MensajeError}
+                                </b>
+                            </div>
+                        `;
                     }
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
@@ -338,30 +360,40 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DEL IMSS DEL EMPLEADO SELECCIONADO A EDICION */
     floaddatatabimss = (paramid) => {
+        console.log("IMSS");
         try {
             $.ajax({
                 url: "../Empleados/DataTabImssEmploye",
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log('Imss data')
+                    console.log('Imprimiendo los datos del IMSS')
                     console.log(data);
                     if (localStorage.getItem('modeedit') != null) {
                         btnsaveeditdataimss.classList.remove('d-none');
                         btnsavedataimss.classList.add('d-none');
                     }
-                    if (data.sMensaje === "success") {
-                        console.log(data);
-                        clvimss.value = data.iIdImss;
-                        fechefecactimss.value = data.sFechaEfectiva;
-                        fecefe.value = data.sFechaEfectiva;
-                        regimss.value = data.sRegistroImss;
-                        rfc.value = data.sRfc;
-                        curp.value = data.sCurp;
-                        nivest.value = data.iNivelEstudio_id;
-                        nivsoc.value = data.iNivelSocioeconomico_id;
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        clvimss.value         = data.Datos.iIdImss;
+                        fechefecactimss.value = data.Datos.sFechaEfectiva;
+                        fecefe.value          = data.Datos.sFechaEfectiva;
+                        regimss.value         = data.Datos.sRegistroImss;
+                        rfc.value             = data.Datos.sRfc;
+                        curp.value            = data.Datos.sCurp;
+                        nivest.value          = data.Datos.iNivelEstudio_id;
+                        nivsoc.value          = data.Datos.iNivelSocioeconomico_id;
                         flocalstodatatabimss();
                         floaddatatabnomina(paramid);
+                    } else {
+                        document.getElementById('div-most-alert-data-imss').innerHTML += `
+                            <div class="alert alert-danger text-center" role="alert">
+                                <b>
+                                    <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos del imss, informe al área de TI.
+                                    <br/>
+                                    <i class="fas fa-code mr-2"></i> Error: ${data.MensajeError}
+                                </b>
+                            </div>
+                        `;
                     }
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
@@ -392,46 +424,62 @@
     fvalidatebuttonsaction();
     /* FUNCION QUE CARGA LOS DATOS GENERALES DEL EMPLEADO SELECCIONADO A EDICION */
     floaddatatabgeneral = (paramid) => {
+        document.getElementById('div-most-alert-data-gen').innerHTML = "";
         try {
             $.ajax({
                 url: "../Empleados/DataTabGenEmploye",
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
+                    console.log("Imprimiendo los datos generales");
                     console.log(data);
                     if (localStorage.getItem("modeedit") != null) {
                         btnsaveeditdatagen.classList.remove('d-none');
                         btnsavedatagen.classList.add('d-none');
                     }
-                    if (data.sMensaje === "success") {
-                        clvemp.value = data.iIdEmpleado;
-                        name.value = data.sNombreEmpleado;
-                        apepat.value = data.sApellidoPaterno;
-                        apemat.value = data.sApellidoMaterno;
-                        fnaci.value = data.sFechaNacimiento;
-                        lnaci.value = data.sLugarNacimiento;
-                        title.value = data.iTitulo_id;
-                        sex.value = data.iGeneroEmpleado;
-                        nacion.value = data.iNacionalidad;
-                        estciv.value = data.iEstadoCivil;
-                        codpost.value = data.sCodigoPostal;
-                        state.value = data.iEstado_id;
-                        city.value = data.sCiudad;
-                        street.value = data.sCalle;
-                        numberst.value = data.sNumeroCalle;
-                        telfij.value = data.sTelefonoFijo;
-                        telmov.value = data.sTelefonoMovil;
-                        mailus.value = data.sCorreoElectronico;
-                        tipsan.value = data.sTipoSangre;
-                        fecmat.value = data.sFechaMatrimonio;
-                        fvalidatestatecodpost(0, data.iEstado_id);
+                    if (data.MensajeError === "none" && data.Bandera === true) {
+                        clvemp.value   = data.Datos.iIdEmpleado;
+                        name.value     = data.Datos.sNombreEmpleado;
+                        apepat.value   = data.Datos.sApellidoPaterno;
+                        apemat.value   = data.Datos.sApellidoMaterno;
+                        fnaci.value    = data.Datos.sFechaNacimiento;
+                        lnaci.value    = data.Datos.sLugarNacimiento;
+                        title.value    = data.Datos.iTitulo_id;
+                        sex.value      = data.Datos.iGeneroEmpleado;
+                        nacion.value   = data.Datos.iNacionalidad;
+                        estciv.value   = data.Datos.iEstadoCivil;
+                        codpost.value  = data.Datos.sCodigoPostal;
+                        state.value    = data.Datos.iEstado_id;
+                        city.value     = data.Datos.sCiudad;
+                        street.value   = data.Datos.sCalle;
+                        numberst.value = data.Datos.sNumeroCalle;
+                        telfij.value   = data.Datos.sTelefonoFijo;
+                        telmov.value   = data.Datos.sTelefonoMovil;
+                        mailus.value   = data.Datos.sCorreoElectronico;
+                        tipsan.value   = data.Datos.sTipoSangre;
+                        fecmat.value   = data.Datos.sFechaMatrimonio;
+                        fvalidatestatecodpost(0, data.Datos.iEstado_id);
                         setTimeout(() => {
-                            colony.value = data.sColonia;
+                            colony.value = data.Datos.sColonia;
                             floaddatatabimss(paramid);
                             flocalstodatatabimss();
                             flocalstodatatabgen();
-                        }, 1200);
+                        }, 2000);
+                    } else {
+                        document.getElementById('div-most-alert-data-gen').innerHTML += `
+                            <div class="alert alert-danger text-center" role="alert">
+                                <b>
+                                    <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos generales, informe al área de TI.
+                                    <br/>
+                                    <i class="fas fa-code mr-2"></i> Error: ${data.MensajeError}
+                                </b>
+                            </div>
+                        `;
                     }
+                    setTimeout(() => {
+                        document.getElementById('body-init').style.paddingRight = '0px';
+                        //document.getElementById('body-init').removeAttribute("style");
+                    }, 2000);
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
                 }
@@ -448,6 +496,18 @@
             }
         }
     }
+    const date = new Date();
+    let fechAct;
+    let day = date.getDay();
+    if (date.getDay() < 10) {
+        day = "0" + date.getDay();
+    }
+    if (date.getMonth() + 1 < 10) {
+        fechAct = date.getFullYear() + "-" + "0" + (date.getMonth() + 1) + "-" + day;
+    } else {
+        fechAct = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + day;
+    }
+    fechinipos.value = fechAct;
     /* FUNCION QUE CARGA LOS DATOS DEL EMPLEADO SELECCIONADO */
     fselectemploye = (paramid, paramstr) => {
         Swal.fire({
@@ -483,6 +543,20 @@
                     if (result.dismiss === Swal.DismissReason.timer) {
                         floaddatatabgeneral(paramid);
                         localStorage.setItem('modeedit', 1);
+                        console.log('Generando localstorage')
+                        const date = new Date();
+                        let fechAct;
+                        let day = date.getDay();
+                        if (date.getDay() < 10) {
+                            day = "0" + date.getDay();
+                        }
+                        if (date.getMonth() + 1 < 10) {
+                            fechAct = date.getFullYear() + "-" + "0" + (date.getMonth() + 1) + "-" + day;
+                        } else {
+                            fechAct = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + day;
+                        }
+                        console.log(fechAct);
+                        localStorage.setItem('dateedit', fechAct);
                         setTimeout(() => {
                             $("#nav-datagen-tab").click();
                         }, 1000);
@@ -629,7 +703,9 @@
                     type: "POST",
                     data: dataSendGenEdit,
                     success: (data) => {
-                        if (data.result == "success") {
+                        console.log('Editando datos generales');
+                        console.log(data);
+                        if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos generales actualizados", icon: 'success',
                                 showClass: { popup: 'animated fadeInDown faster' },
@@ -674,8 +750,9 @@
     fsaveeditdataimss = () => {
         try {
             const dataSendImssEdit = {
-                regimss: regimss.value, fecefe: fecefe.value, rfc: rfc.value, curp: curp.value, nivest: nivest.value, nivsoc: nivsoc.value, clvimss: clvimss.value
+                regimss: regimss.value, fecefe: fecefe.value, rfc: rfc.value, curp: curp.value, nivest: nivest.value, nivsoc: nivsoc.value, clvimss: clvimss.value, fecefeact: fechefecactimss.value, keyemployee: clvemp.value
             };
+            console.log(dataSendImssEdit);
             let validatedataimss = 0;
             const arrInput = [regimss, fecefe, rfc, curp, nivest, nivsoc];
             for (let i = 0; i < arrInput.length; i++) {
@@ -688,17 +765,19 @@
                     } else {
                         fechAct = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
                     }
-                    if (arrInput[i].value != "" && attrdate == "higher") {
-                        if (arrInput[i].value < fechAct) {
-                            fshowtypealert('Atención', 'La fecha de ' + arrInput[i].placeholder + ' seleccionada ' + arrInput[i].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[i], 1);
-                            validatedatanom = 1;
-                            break;
-                        }
-                    } else {
-                        fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[i].placeholder), 'warning', arrInput[i], 0);
-                        validatedatanom = 1;
-                        break;
-                    }
+                    //if (arrInput[i].value != "" && attrdate == "higher") {
+                    //    if (localStorage.getItem("modeedit") == null) {
+                    //        if (arrInput[i].value < fechAct) {
+                    //            fshowtypealert('Atención', 'La fecha de ' + arrInput[i].placeholder + ' seleccionada ' + arrInput[i].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[i], 1);
+                    //            validatedatanom = 1;
+                    //            break;
+                    //        }
+                    //    }
+                    //} else {
+                    //    fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[i].placeholder), 'warning', arrInput[i], 0);
+                    //    validatedatanom = 1;
+                    //    break;
+                    //}
                 } else {
                     if (arrInput[i].hasAttribute("tp-select")) {
                         if (arrInput[i].value == "0") {
@@ -722,7 +801,9 @@
                     type: "POST",
                     data: dataSendImssEdit,
                     success: (data) => {
-                        if (data.result == "success") {
+                        console.log('Editando datos del imss');
+                        console.log(data);
+                        if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos del imss actualizados", icon: 'success',
                                 showClass: { popup: 'animated fadeInDown faster' },
@@ -789,7 +870,7 @@
         }
         try {
             let validatedatanom = 0;
-            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, motinc, tippag];
+            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag];
             if (fecefecnom.value != fechefectact.value) {
                 arrInput.push(fecefecnom);
             }
@@ -844,24 +925,24 @@
                         } else {
                             fechAct = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + dateadd;
                         }
-                        if (arrInput[t].value != "" && attrdate == "less") {
-                            if (arrInput[t].value > fechAct) {
-                                fshowtypealert('Atención', 'La ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser mayor a la fecha actual', 'warning', arrInput[t], 1);
-                                validatedatanom = 1;
-                                break;
-                            }
-                        } else if (arrInput[t].value != "" && attrdate == "higher") {
-                            if (arrInput[t].value < fechAct) {
-                                fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
-                                validatedatanom = 1;
-                                console.log();
-                                break;
-                            }
-                        } else {
-                            fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[t].placeholder), 'warning', arrInput[t], 0);
-                            validatedatanom = 1;
-                            break;
-                        }
+                        //if (arrInput[t].value != "" && attrdate == "less") {
+                        //    if (arrInput[t].value > fechAct) {
+                        //        fshowtypealert('Atención', 'La ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser mayor a la fecha actual', 'warning', arrInput[t], 1);
+                        //        validatedatanom = 1;
+                        //        break;
+                        //    }
+                        //} else if (arrInput[t].value != "" && attrdate == "higher") {
+                        //    if (arrInput[t].value < fechAct) {
+                        //        fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
+                        //        validatedatanom = 1;
+                        //        console.log();
+                        //        break;
+                        //    }
+                        //} else {
+                        //    fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[t].placeholder), 'warning', arrInput[t], 0);
+                        //    validatedatanom = 1;
+                        //    break;
+                        //}
                     } else {
                         if (arrInput[t].value == "") {
                             fshowtypealert('Atención', 'Completa el campo ' + arrInput[t].placeholder, 'warning', arrInput[t], 0);
@@ -872,13 +953,13 @@
                 }
             }
             if (validatedatanom == 0) {
-                console.log(datasend);
                 $.ajax({
                     url: url,
                     type: "POST",
                     data: datasend,
                     success: (data) => {
-                        if (data.result == "success") {
+                        console.log(data);
+                        if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos de nomina actualizados", icon: 'success',
                                 showClass: { popup: 'animated fadeInDown faster' },
@@ -939,13 +1020,13 @@
                             } else {
                                 fechAct = ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + datetod;
                             }
-                            if (arrInput[a].value < fechAct) {
-                                console.log(arrInput[a].value);
-                                console.log(fechAct);
-                                fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
-                                validateSend = 1;
-                                break;
-                            }
+                            //if (arrInput[a].value < fechAct) {
+                            //    console.log(arrInput[a].value);
+                            //    console.log(fechAct);
+                            //    fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
+                            //    validateSend = 1;
+                            //    break;
+                            //}
                         }
                         else {
                             fshowtypealert('Atencion', 'Completa el campo ' + String(arrInput[a].placeholder), 'warning', arrInput[a], 0);
@@ -961,7 +1042,9 @@
                     }
                 }
                 const dataSend = {
-                    clvstr: clvstr.value, fechefectpos: fechefectpos.value, fechinipos: fechinipos.value, clvemp: clvemp.value, clvposasig: clvposasig.value, clvnom: clvnom.value,
+                    clvstr: clvstr.value, fechefectpos: fechefectpos.value, fechinipos: fechinipos.value, clvemp: clvemp.value,
+                    //clvposasig: clvposasig.value,
+                    clvnom: clvnom.value,
                 };
                 if (validateSend == 0) {
                     $.ajax({
@@ -969,7 +1052,28 @@
                         type: "POST",
                         data: dataSend,
                         success: (data) => {
-                            console.log(data);
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                Swal.fire({
+                                    title: 'Correcto!', text: "Datos de estructura actualizados", icon: 'success',
+                                    showClass: { popup: 'animated fadeInDown faster' },
+                                    hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    floaddatatabgeneral(clvemp.value);
+                                    $("html, body").animate({
+                                        scrollTop: $('#nav-datanom-tab').offset().top - 50
+                                    }, 1000);
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!', text: "Contacte a sistemas", icon: 'error',
+                                    showClass: { popup: 'animated fadeInDown faster' },
+                                    hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    location.reload();
+                                });
+                            }
                         }, error: (jqXHR, exception) => {
                             fcaptureaerrorsajax(jqXHR, exception);
                         }
