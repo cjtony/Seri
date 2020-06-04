@@ -161,6 +161,7 @@
     <Compile Include="Controllers\IncidenciasController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\NominaController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\SaveDataGeneralController.cs" />
     <Compile Include="Controllers\SearchDataCatController.cs" />
     <Compile Include="Global.asax.cs">
@@ -887,6 +888,7 @@
     <Content Include="Scripts\main\puestos.js" />
     <Content Include="Scripts\main\RecibosNomina.js" />
     <Content Include="Scripts\main\regionales.js" />
+    <Content Include="Scripts\main\Reportes\main.js" />
     <Content Include="Scripts\main\savedatageneral.js" />
     <Content Include="Scripts\main\startMenu.js" />
     <Content Include="Scripts\main\Timbradosxml.js" />
@@ -952,6 +954,7 @@
     <Content Include="Views\Incidencias\TablaIncidencias.cshtml" />
     <Content Include="Views\Empleados\TimbradosXML.cshtml" />
     <Content Include="Views\Catalogos\VistaCatalogos.cshtml" />
+    <Content Include="Views\Reportes\GenerarReporte.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

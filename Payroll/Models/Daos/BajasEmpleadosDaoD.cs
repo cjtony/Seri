@@ -1,16 +1,52 @@
-﻿using Payroll.Models.Beans;
-using Payroll.Models.Utilerias;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using Payroll.Models.Beans;
+using Payroll.Models.Utilerias;
 
 namespace Payroll.Models.Daos
 {
     public class BajasEmpleadosDaoD : Conexion
     {
 
-        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation)
+        public PeriodoActualBean sp_Load_Info_Periodo_Empr(int keyBusiness, int yearAct)
+        {
+            PeriodoActualBean periodoActual = new PeriodoActualBean();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Load_Info_Periodo_Empr", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@ctrlAnio", yearAct));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read())
+                {
+                    periodoActual.iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
+                    periodoActual.iAnio = Convert.ToInt32(data["Anio"].ToString());
+                    periodoActual.iTipoPeriodo = Convert.ToInt32(data["Tipo_Periodo_id"].ToString());
+                    periodoActual.iPeriodo = Convert.ToInt32(data["Periodo"].ToString());
+                    periodoActual.sFecha_Inicio = data["Fecha_Inicio"].ToString();
+                    periodoActual.sFecha_Final = data["Fecha_Final"].ToString();
+                    periodoActual.sMensaje = "success";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return periodoActual;
+        }
+
+        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation, int daysPendings, int yearAct, int keyPeriodAct, string dateStartPayment, string dateEndPayment)
         {
             BajasEmpleadosBean downEmployee = new BajasEmpleadosBean();
             try
@@ -25,6 +61,11 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Empleado_id", keyEmployee));
                 cmd.Parameters.Add(new SqlParameter("@ban_fecha_ingreso", typeDate));
                 cmd.Parameters.Add(new SqlParameter("@ban_compensacion_especial", typeCompensation));
+                cmd.Parameters.Add(new SqlParameter("@dias_pendientes", daysPendings));
+                cmd.Parameters.Add(new SqlParameter("@anio", yearAct));
+                cmd.Parameters.Add(new SqlParameter("@periodo", keyPeriodAct));
+                cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Inicio", dateStartPayment));
+                cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Fin", dateEndPayment));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     downEmployee.sMensaje = "SUCCESS";
@@ -82,9 +123,18 @@ namespace Payroll.Models.Daos
                             sSalario_diario = data["Salario_diario"].ToString(),
                             sSalario_mensual = data["Salario_mensual"].ToString(),
                             sPuesto = data["NombrePuesto"].ToString(),
+                            sPuesto_codigo = data["PuestoCodigo"].ToString(),
                             sCentro_costo = data["CentroCosto"].ToString(),
                             sDepartamento = data["DescripcionDepartamento"].ToString(),
-                            sDepto_codigo = data["Depto_Codigo"].ToString()
+                            sDepto_codigo = data["Depto_Codigo"].ToString(),
+                            iAnioPeriodo = Convert.ToInt32(data["Anio"].ToString()),
+                            iPeriodo = Convert.ToInt32(data["Periodo"].ToString()),
+                            iDias_Pendientes = Convert.ToInt32(data["Dias_pendientes"].ToString()),
+                            sCancelado = data["Cancelado"].ToString(),
+                            sRegistroImss = data["RegistroImss"].ToString(),
+                            sCta_Cheques = data["Cta_Cheques"].ToString(),
+                            sFecha_Pago_Inicio = data["Fecha_Pago_Inicio"].ToString(),
+                            sFecha_Pago_Fin = data["Fecha_Pago_Fin"].ToString()
                         });
                     }
                 }
@@ -173,6 +223,37 @@ namespace Payroll.Models.Daos
                 this.Conectar().Close();
             }
             return selectSettlementPaid;
+        }
+
+        public BajasEmpleadosBean sp_Cancela_Finiquito(int keySetlement, int typeCancel)
+        {
+            BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Cancela_Finiquito", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySetlement));
+                cmd.Parameters.Add(new SqlParameter("@Cancelado", typeCancel));
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    downEmployeeBean.sMensaje = "success";
+                }
+                else
+                {
+                    downEmployeeBean.sMensaje = "ERRORUPD";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return downEmployeeBean;
         }
 
     }

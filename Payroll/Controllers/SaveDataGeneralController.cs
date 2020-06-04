@@ -63,12 +63,26 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataGeneral(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, string nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, string tipsan, string fecmat)
         {
+            Boolean flag         = false;
+            String  messageError = "none";
             EmpleadosBean addEmpleadoBean = new EmpleadosBean();
-            EmpleadosDao empleadoDao = new EmpleadosDao();
-            int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
-            // Reemplazar por la sesion de la empresa
-            int empresa = int.Parse(Session["IdEmpresa"].ToString());
-            addEmpleadoBean = empleadoDao.sp_Empleados_Insert_Empleado(name, apepat, apemat, sex, estciv, fnaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, usuario, empresa, tipsan, fecmat);
+            EmpleadosDao empleadoDao      = new EmpleadosDao();
+            string convertFNaci = "";
+            if (fnaci != "") {
+                convertFNaci = Convert.ToDateTime(fnaci).ToString("dd/MM/yyyy");
+            }
+            string convertFMatr = "";
+            if (fecmat != "") {
+                convertFMatr = Convert.ToDateTime(fecmat).ToString("dd/MM/yyyy");
+            }
+            try {
+                int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                int empresa     = int.Parse(Session["IdEmpresa"].ToString());
+                addEmpleadoBean = empleadoDao.sp_Empleados_Insert_Empleado(name, apepat, apemat, sex, estciv, convertFNaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, usuario, empresa, tipsan, convertFMatr);
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
             var data = new { result = addEmpleadoBean.sMensaje };
             return Json(addEmpleadoBean);
         }
@@ -77,52 +91,131 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataImss(string fecefe, string regimss, string rfc, string curp, int nivest, int nivsoc, string empleado, string apepat, string apemat, string fechanaci)
         {
+            Boolean flag         = false;
+            String  messageError = "none";
             ImssBean addImssBean = new ImssBean();
-            ImssDao imssDao = new ImssDao();
-            int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
-            //Sesion de la empresa
-            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-            addImssBean = imssDao.sp_Imss_Insert_Imss(fecefe, regimss, rfc, curp, nivest, nivsoc, usuario, empleado, apepat, apemat, fechanaci, keyemp);
+            ImssDao imssDao      = new ImssDao();
+            string convertFEffdt = "";
+            if (fecefe != "") {
+                convertFEffdt = Convert.ToDateTime(fecefe).ToString("dd/MM/yyyy");
+            }
+            string convertFNaciE = "";
+            if (fechanaci != "") {
+                convertFNaciE = Convert.ToDateTime(fechanaci).ToString("dd/MM/yyyy");
+            }
+            try {
+                int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+                addImssBean = imssDao.sp_Imss_Insert_Imss(convertFEffdt, regimss, rfc, curp, nivest, nivsoc, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, 0);
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
             var data = new { result = addImssBean.sMensaje };
             return Json(data);
         }
 
         //Guarda los datos de la nomina del empleado
         [HttpPost]
-        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string estats, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp)
+        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp)
         {
+            Boolean flag         = false;
+            String  messageError = "none";
             DatosNominaBean addDatoNomina = new DatosNominaBean();
-            DatosNominaDao datoNominaDao = new DatosNominaDao();
-            //Reemplazar por la session de la empresa
-            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-            int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
-            addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(fecefecnom, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, estats, usuario, empleado, apepat, apemat, fechanaci, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp);
-            var data = new { result = addDatoNomina.sMensaje };
-            return Json(data);
+            DatosNominaDao datoNominaDao  = new DatosNominaDao();
+            string convertFEffdt = "";
+            if (fecefecnom != "") {
+                convertFEffdt = Convert.ToDateTime(fecefecnom).ToString("dd/MM/yyyy");
+            }
+            string convertFIngrs = "";
+            if (fecing != "") {
+                convertFIngrs = Convert.ToDateTime(fecing).ToString("dd/MM/yyyy");
+            }
+            string convertFAcnti = "";
+            if (fecant != "") {
+                convertFAcnti = Convert.ToDateTime(fecant).ToString("dd/MM/yyyy");
+
+            }
+            string convertFVenco = "";
+            if (vencon != "") {
+                convertFVenco = Convert.ToDateTime(vencon).ToString("dd/MM/yyyy");
+            }
+            string convertFNaciE = "";
+            if (fechanaci != "") {
+                convertFNaciE = Convert.ToDateTime(fechanaci).ToString("dd/MM/yyyy");
+            }
+            try {
+                int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
+                int usuario   = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp);
+                if (addDatoNomina.sMensaje != "success") {
+                    messageError = addDatoNomina.sMensaje;
+                }
+                if (addDatoNomina.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
         }
 
         //Guarda los datos de estructura del empleado
         [HttpPost]
         public JsonResult DataEstructura(int clvstr, string fechefectpos, string fechinipos, string empleado, string apepat, string apemat, string fechanaci)
         {
+            Boolean flag         = false;
+            String  messageError = "none";
             DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
-            DatosPosicionesDao datoPosicionDao = new DatosPosicionesDao();
-            int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
-            addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(clvstr, fechefectpos, fechinipos, empleado, apepat, apemat, fechanaci, usuario);
+            DatosPosicionesDao datoPosicionDao  = new DatosPosicionesDao();
+            string convertFEffdt = "";
+            if (fechefectpos != "") {
+                convertFEffdt = Convert.ToDateTime(fechefectpos).ToString("dd/MM/yyyy");
+            }
+            string convertFNaciE = "";
+            if (fechanaci != "") {
+                convertFNaciE = Convert.ToDateTime(fechanaci).ToString("dd/MM/yyyy");
+            }
+            string convertFIniP = "";
+            if (fechinipos != "") {
+                convertFIniP = Convert.ToDateTime(fechinipos).ToString("dd/MM/yyyy");
+            }
+            try {
+                int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(clvstr, convertFEffdt, fechinipos, empleado, apepat, apemat, convertFNaciE, usuario);
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
             var data = new { result = addPosicionBean.sMensaje };
             return Json(data);
         }
 
         // Guarda los datos de la estructura al editar el empleado
         [HttpPost]
-        public JsonResult DataEstructuraEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvposasig, int clvnom)
+        public JsonResult DataEstructuraEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom)
         {
+            Boolean flag          = false;
+            String  messageError  = "none";
+            string  convertFEffdt = Convert.ToDateTime(fechefectpos).ToString("dd/MM/yyyy");
+            string  convertFIniP  = Convert.ToDateTime(fechinipos).ToString("dd/MM/yyyy");
             DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
-            DatosPosicionesDao datoPosicionDao = new DatosPosicionesDao();
-            int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
-            addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsigEdit(clvstr, fechefectpos, fechinipos, clvemp, clvposasig, clvnom, usuario);
-            var data = new { result = addPosicionBean.sMensaje };
-            return Json(data);
+            DatosPosicionesDao datoPosicionDao  = new DatosPosicionesDao();
+            try {
+                int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsigEdit(clvstr, convertFEffdt, convertFIniP, clvemp, clvnom, usuario);
+                if (addPosicionBean.sMensaje != "success") {
+                    messageError = addPosicionBean.sMensaje;
+                }
+                if (addPosicionBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = true, MensajeError = messageError });
         }
 
         //Guarda los datos de las regionales

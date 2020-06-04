@@ -1,6 +1,4 @@
 ﻿<div class="font-labels container rounded bg-white col-md-10">
-    <div class="">Bajas Empleados</div>
-    <div class="dropdown-divider"></div>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active font-navs" id="nav-datagen-tab" data-toggle="tab" href="#nav-bajas" role="tab" aria-controls="nav-datagen" aria-selected="true">
@@ -25,9 +23,10 @@
     </nav>
     <div class="tab-content">
         <div class="tab-pane active" id="nav-bajas" role="tabpanel" aria-labelledby="home-tab">
-            <h5 class="text-center title-font mb-3 mt-4"> <i class="fas fa-edit mr-2"></i> Registrar Bajas de Empleados a la Nómina</h5>
-            <div class="dropdown-divider"></div>
             <div class="row mb-4 d-none" id="info-employee">
+                <div class="col-md-12">
+                    <h5 class="text-center title-font mb-4 mt-4"> <i class="fas fa-edit mr-2"></i> Datos del empleado</h5>
+                </div>
                 <div class="col-md-6">
                     <ul class="list-group shadow rounded">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -71,9 +70,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="dropdown-divider"></div>
             <div id="frmbajas">
-                <h5 class="text-center title-font mb-4 mt-4"><i class="fas fa-clipboard-list mr-2"></i> Completa el formulario</h5>
+                <h5 class="text-center title-font mb-4 mt-5"><i class="fas fa-clipboard-list mr-2"></i> Completa el formulario</h5>
                 <div class="dropdown-divider"></div>
                 <div class="form-group row col-md-12 m-0 mt-3">
                     <div class="form-group col-md-4">
@@ -90,34 +88,18 @@
                             <option value="">Seclecciona</option>
                         </select>
                     </div>
-                    @*<div class="form-group col-md-4">
-                            <label class="">Nota de Baja</label>
-                            <input type="text" class="form-control font-labels" placeholder="Escriba un comentario acerca de la baja" />
-                        </div>*@
                     <div class="form-group col-md-4">
                         <label>Fecha Baja</label>
                         <input type="date" class="form-control" id="dateDownEmp" />
                     </div>
-                    <div class="form-group col-md-4">
+                    @*<div class="form-group col-md-4">
                         <label>Fecha recibo</label>
                         <input type="date" class="form-control" id="dateRec" />
+                    </div>*@
+                    <div class="form-group col-md-4">
+                        <label>Dias pendientes</label>
+                        <input type="number" class="form-control" id="daysPendings" value="0" min="0" pattern="^[0-9]+" />
                     </div>
-                    @*<div class="form-group col-md-4">
-                            <label>Vacaciones Tomadas</label>
-                            <input type="text" class="form-control" id="" placeholder="#" />
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>Año actual</label>
-                            <input type="text" class="form-control" id="" placeholder="#" />
-                        </div>*@
-                    @*<div class="form-group col-md-4">
-                            <label>Vacaciones Pendientes</label>
-                            <input type="text" class="form-control" id="" placeholder="#" />
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>Años anteriores</label>
-                            <input type="text" class="form-control" id="" placeholder="#" />
-                        </div>*@
                     <div class="col-md-4 form-group">
                         <label>Fecha a usar</label>
                         <select class="form-control form-control-sm" id="dateSendDown">
@@ -132,28 +114,11 @@
                             <option value="1">Si</option>
                         </select>
                     </div>
-                    @*<div class="col-md-12">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                <label class="custom-control-label" for="customSwitch1">Salario Diario en Indemnizaciones</label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                                <label class="custom-control-label" for="customSwitch2">No volver a contratar</label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                                <label class="custom-control-label" for="customSwitch3">No entregar vales de despensa </label>
-                            </div>
-                        </div>*@
                     <div class="col-md-4 text-center offset-4 p-3 mb-3 mt-4">
-                        <button class="btn btn-light col-btn-login font-button btn-sm" id="btnGuardaBaja" type="button">
+                        <button class="btn btn-primary font-button btn-sm" id="btnGuardaBaja" type="button">
                             <i class="fas fa-check-circle mr-2"></i>Guardar
                         </button>
                     </div>
-                    @*<div class="d-flex justify-content-end col-md-12">
-                            <div class="btn btn-primary form-control btn-sm font-labels my-3">Guardar registro</div>
-                        </div>*@
                 </div>
             </div>
         </div>
@@ -208,18 +173,35 @@
             </div>
             <div class="modal-body">
                 <ul class="list-group" id="list-data-down">
-                    @*<li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-calendar-alt mr-2 col-ico"></i>Fecha: 10/05/2020 <i class="fas fa-tag ml-2 mr-2 col-ico"></i> Tipo Baja: FINIQUITO VOLUNTARIO</span>
-                        <span class="badge">
-                            <button class="btn btn-sm btn-success"> <i class="fas fa-file-pdf mr-2"></i> Imprimir </button>
-                        </span>
-                    </li>*@
-                    
                 </ul>
                 <div class="row" id="no-data-info"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-outline-danger shadow btn-sm" data-dismiss="modal">
+                    <i class="fas fa-times-circle mr-1"></i> Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL QUE MUESTRA EL DETALLE DEL FINIQUITO -->
+<div class="modal fade" id="settlement-details" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerSettlement"> <i class="fas fa-file-alt col-ico mr-2"></i><span id="typeSettlement"></span> </h5>
+                <button type="button" class="close text-danger" id="icoCloseSettlementSelect" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="div-details"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger btn-sm shadow" id="btnCloseSettlementSelect">
+                    <i class="fas fa-times-circle mr-1"></i> Cerrar
+                </button>
             </div>
         </div>
     </div>

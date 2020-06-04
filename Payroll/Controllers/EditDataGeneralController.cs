@@ -1,5 +1,6 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using System;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
@@ -37,35 +38,117 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult EditDataGeneral(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, int nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, string tipsan, string fecmat, int clvemp)
         {
-            EmpleadosBean empleadoBean = new EmpleadosBean();
-            EditEmpleadoDao editEmpleadoDao = new EditEmpleadoDao();
-            empleadoBean = editEmpleadoDao.sp_Empleados_Update_Empleado(name, apepat, apemat, sex, estciv, fnaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, fecmat, tipsan, clvemp);
-            var data = new { result = empleadoBean.sMensaje };
-            return Json(data);
+            Boolean flag         = false;
+            String  messageError = "none";
+            EmpleadosBean employeeBean      = new EmpleadosBean();
+            EditEmpleadoDao editEmployeeDao = new EditEmpleadoDao();
+            string convertFNaci = Convert.ToDateTime(fnaci).ToString("dd/MM/yyyy");
+            string convertFMatr = Convert.ToDateTime(fecmat).ToString("dd/MM/yyyy");
+            try {
+                employeeBean = editEmployeeDao.sp_Empleados_Update_Empleado(name, apepat, apemat, sex, estciv, convertFNaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, convertFMatr, tipsan, clvemp);
+                if (employeeBean.sMensaje != "success") {
+                    messageError = employeeBean.sMensaje;
+                }
+                if (employeeBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
         }
 
         // Edicion de los datos del imss del empleado
 
         [HttpPost]
-        public JsonResult EditDataImss(string regimss, string fecefe, string rfc, string curp, int nivest, int nivsoc, int clvimss)
+        public JsonResult EditDataImss(string regimss, string fecefe, string rfc, string curp, int nivest, int nivsoc, int clvimss, string fecefeact, int keyemployee)
         {
-            ImssBean imssBean = new ImssBean();
+            Boolean flag         = false;
+            String  messageError = "none";
+            string test = "";
+            ImssBean imssBean               = new ImssBean();
             EditEmpleadoDao editEmpleadoDao = new EditEmpleadoDao();
-            imssBean = editEmpleadoDao.sp_Imss_Update_DatoImss(regimss, fecefe, rfc, curp, nivest, nivsoc, clvimss);
-            var data = new { result = imssBean.sMensaje };
-            return Json(data);
+            string convertFEffdt            = "";
+            if (fecefe != "") {
+                convertFEffdt = Convert.ToDateTime(fecefe).ToString("dd/MM/yyyy");
+            }
+            string convertFEffdtAct = "";
+            if (fecefeact != "") {
+                convertFEffdtAct = Convert.ToDateTime(fecefeact).ToString("dd/MM/yyyy");
+            }
+            try {
+                if (convertFEffdt != convertFEffdtAct) {
+                    int usuario          = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                    int keyemp           = int.Parse(Session["IdEmpresa"].ToString());
+                    ImssDao saveDataImss = new ImssDao();
+                    imssBean             = saveDataImss.sp_Imss_Insert_Imss(convertFEffdt, regimss, rfc, curp, nivest, nivsoc, usuario, "none","none","none","none", keyemp, keyemployee);
+                } else {
+                    imssBean = editEmpleadoDao.sp_Imss_Update_DatoImss(regimss, convertFEffdt, rfc, curp, nivest, nivsoc, clvimss);
+                }
+                if (imssBean.sMensaje != "success") {
+                    messageError = imssBean.sMensaje;
+                } 
+                if (imssBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Test = test });
         }
 
         // Edicion de los datos de la nomina del empleado
 
         [HttpPost]
-        public JsonResult EditDataNomina(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, int motinc, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position)
+        public JsonResult EditDataNomina(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position)
         {
-            DatosNominaBean nominaBean = new DatosNominaBean();
+            Boolean flag         = false;
+            String  messageError = "none";
+            DatosNominaBean nominaBean      = new DatosNominaBean();
             EditEmpleadoDao editEmpleadoDao = new EditEmpleadoDao();
-            nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, motinc, fecing, fecant, vencon, tippag, banuse, cunuse, clvnom, position);
-            var data = new { result = nominaBean.sMensaje };
-            return Json(data);
+            string convertFEffdtAct = "";
+            if (fechefectact != "") {
+                convertFEffdtAct = Convert.ToDateTime(fechefectact).ToString("dd/MM/yyyy");
+            }
+            string convertFEffdt = "";
+            if (fecefecnom != "") {
+                convertFEffdt = Convert.ToDateTime(fecefecnom).ToString("dd/MM/yyyy");
+            }
+            string convertFIngrs = "";
+            if (fecing != "") {
+                convertFIngrs = Convert.ToDateTime(fecing).ToString("dd/MM/yyyy");
+            }
+            string convertFAntiq = "";
+            if (fecant != "") {
+                convertFAntiq = Convert.ToDateTime(fecant).ToString("dd/MM/yyyy");
+            }
+            string convertFVencC = "";
+            if (vencon != "") {
+                convertFVencC = Convert.ToDateTime(vencon).ToString("dd/MM/yyyy");
+            }
+            try {
+                //if (convertFEffdt != convertFEffdtAct) {
+                //    int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                //    int keyemp  = int.Parse(Session["IdEmpresa"].ToString());
+                //    DatosNominaDao nominaDao = new DatosNominaDao();
+                //    nominaBean = nominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAntiq, convertFVencC, usuario, "none", "none", "none", "none",);
+                //} else {
+                //    nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position);
+                //}
+                nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position);
+                if (nominaBean.sMensaje != "success") {
+                    messageError = nominaBean.sMensaje;
+                }
+                if (nominaBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Slario = salmen });
         }
 
         // Edicion de los datos de estructura del empleado
