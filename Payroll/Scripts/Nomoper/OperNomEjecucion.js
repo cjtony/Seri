@@ -44,6 +44,7 @@
     var IdDropList;
     var IdDropList2;
     var AnioDropList;
+    var Tipoperiodocal;
     var TipodePeridoDroplip;
     var periodo;
     var empresa;
@@ -122,11 +123,11 @@
        
         var args = event.args;
         var row = $("#TpDefinicion").jqxGrid('getrowdata', args.rowindex);
-        console.log(row);
         IdDropList = row.iIdDefinicionhd;
         AnioDropList = row.iAno;
         DefinicionCal.value = row.iIdDefinicionhd + row.sNombreDefinicion;
         var dropDownContent = '<div id="2" style="position: relative; margin-left: 3px; margin-top: 6px;">' + row['iIdDefinicionhd'] + ' ' + row['sNombreDefinicion'] + '</div>';
+        /// sena el campo del droplist de la selecion del grid
         $("#jqxdropdownbutton").jqxDropDownButton('setContent', dropDownContent);
         TbAño.value = AnioDropList;     
         const dataSend = { IdDefinicionHD: IdDropList, iperiodo: 0 };
@@ -136,36 +137,39 @@
             type: "POST",
             data: dataSend,
             success: (data) => {
-                console.log('Resultado de periodo: '+data)
+                Tipoperiodocal = data[0].iId + " " + data[0].sValor;
                 TxbTipoPeriodo.value = data[0].iId + " " + data[0].sValor;
                 TipoPeridoCal.value = data[0].iId + " " + data[0].sValor;
+                ///// saca el periodo actual de la definicion
+                const dataSend2 = { IdDefinicionHD: IdDropList, iperiodo: 0, NomCerr: 0 };
+                $("#PeridoEje").empty();
+                //$('#PeridoEje').append('<option value="0" selected="selected">Selecciona</option>');
+                $.ajax({
+                    url: "../Nomina/ListPeriodoEmpresa",
+                    type: "POST",
+                    data: dataSend2,
+                    success: (data) => {
+                        //for (i = 0; i < data.length; i++) {
+                        document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
+                        periodo = data[0].iPeriodo;
+                        PeriodoCal.value = data[0].iPeriodo;
+                        /// si tiene calculos la definicion del periodo actual  los muestra  
+                        var empresa = 0;
+                        console.log('Empres: ' + empresa + ' periodo: ' + periodo);
+                        FllenagripTpDefinicionLN(periodo, empresa, Tipoperiodocal)
+
+                        //}
+                    },
+
+
+                });
             },
             error: function (jqXHR, exception) {
                 fcaptureaerrorsajax(jqXHR, exception);
             }
         });
 
-        const dataSend2 = { IdDefinicionHD: IdDropList, iperiodo: 0, NomCerr: 0};
-        $("#PeridoEje").empty();
-        //$('#PeridoEje').append('<option value="0" selected="selected">Selecciona</option>');
-        $.ajax({
-            url: "../Nomina/ListPeriodoEmpresa",
-            type: "POST",
-            data: dataSend2,
-            success: (data) => {
-                //for (i = 0; i < data.length; i++) {
-                document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
-                periodo = data[0].iPeriodo;
-                PeriodoCal.value = periodo;
-                empresa = 0
-                FllenagripTpDefinicionLN(periodo, empresa);
-
-                //}
-            },
-
-
-        });
-
+        /// comprueba si la definicion selecionada esta guardada en tbCalculos Hd
         const dataSend3 = { iIdDefinicionHd: IdDropList };
         $.ajax({
             url: "../Nomina/CompruRegistroExit",
@@ -186,8 +190,7 @@
 
             },
         });
-
-       
+  
     });
     $("#TpDefinicion").jqxGrid('selectrow', 0);
 
@@ -321,8 +324,8 @@
 
     //var exampleTheme = theme;
     //var exampleTheme = theme;
-
-    FllenagripTpDefinicionLN = (periodo, empresa) => {   
+    /// llena tabla de calculo
+    FllenagripTpDefinicionLN = (periodo, empresa,Tperiodo) => {   
         var empresaid = empresa;
         
         // borrar por fila 
@@ -330,12 +333,20 @@
 
             $("#TbCalculos").jqxGrid('deleterow', i);
         }
-        
-        var tipoPeriodo = TxbTipoPeriodo.value;
+
+        if (Tperiodo != "0") {
+            var tipoPeriodo = Tperiodo
             separador = " ",
             limite = 2,
             arreglosubcadena = tipoPeriodo.split(separador, limite);
-
+        }
+        if (Tperiodo == "0") {
+            var tipoPeriodo = TxbTipoPeriodo.value;
+            separador = " ",
+            limite = 2,
+            arreglosubcadena = tipoPeriodo.split(separador, limite);
+        }
+      
 
         IdDropList;
         const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena[0] , iPeriodo: periodo, idEmpresa: empresaid };
@@ -348,7 +359,6 @@
                 type: "POST",
                 data: dataSend,
             success: (data) => {
-                console.log(data);
                     RosTabCountCalculo = data.length;
                     var dato = data[0].sMensaje;
                     if (dato == "No hay datos") {
@@ -548,6 +558,7 @@
         btnFloEjecutar.style.visibility = 'hidden';
 
     };
+
     navEjecuciontab.addEventListener('click', Ftabopcion1);
     navVisCalculotab.addEventListener('click', Ftabopcion2);
     navNomCetab.addEventListener('click', Ftabopcion3);
@@ -599,9 +610,7 @@
         });
 
     };
-
     btnFloEjecutar.addEventListener('click', Fejecucion);
-
     FValorChec = () => {
        
 
@@ -751,10 +760,8 @@
         }
 
     };
-
     ChNCerrada.addEventListener('click', FValorChec);
-  
-
+    
     $('#PeridoEje').change(function () {
 
         IdDropList;
@@ -791,13 +798,13 @@
 
 
     });
-
     $('#EmpresaCal').change(function () {
 
         var idempresa = EmpresaCal.value;
         var perido = PeriodoCal.value;
+        Tipoperiodocal = 0;
         
-        FllenagripTpDefinicionLN(periodo, idempresa);
+        FllenagripTpDefinicionLN(periodo, idempresa, Tipoperiodocal);
 
 
     });
@@ -907,10 +914,7 @@
 
         });
     }); 
-
-    $("#TpDefinicion2").jqxGrid('selectrow', 0);
-
-    
+    $("#TpDefinicion2").jqxGrid('selectrow', 0);   
     $('#PeridoEjeNomCe').change(function () {
       
         IdDropList2;
@@ -1307,9 +1311,8 @@
         });
 
     });
-
+     // muestra los calculos en pantalla
     $("#jqxExpander").jqxExpander({ width: '105%', expanded: false });
-
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
@@ -1339,4 +1342,5 @@
             //}
         });
     };
+
 });

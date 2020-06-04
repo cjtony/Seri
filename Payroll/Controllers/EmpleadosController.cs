@@ -387,6 +387,13 @@ namespace Payroll.Controllers
             return Json(new { Value = true, Message = "Archivo cargado se procedera el timbrado" }, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpPost]
+        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo) 
+        {
+            List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            ListTotales = Dao.sp_SaldosTotales_Retrieve_TPlantillasCalculos(iIdEmpresa, iIdEmpleado, iPeriodo);
+            return Json(ListTotales);
+        }
     }
 }

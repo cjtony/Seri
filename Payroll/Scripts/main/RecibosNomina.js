@@ -6,14 +6,16 @@
 
     const EmpresaNom = document.getElementById('EmpresaNom');
     const anoNom = document.getElementById('anoNom');
-    const EmpleadosNom = document.getElementById('EmpleadosNom');
     const btnFloBuscar = document.getElementById('btnFloBuscar');
     const BtbGeneraPDF = document.getElementById('BtbGeneraPDF');
     const TipodePerdioRec = document.getElementById('TipodePerdioRec');
     const PeridoNom = document.getElementById('PeridoNom');
     const Emisor = document.getElementById('Emisor');
-    
     const BtbGeneraXM = document.getElementById('BtbGeneraXML');
+    const btnFloLimpiar = document.getElementById('btnFloLimpiar');
+    const LaTotalPer = document.getElementById('LaTotalPer');
+    const LaTotalDedu = document.getElementById('LaTotalDedu');
+    const LaTotalNom = document.getElementById('LaTotalNom');
 
     var EmpresNom;
     var IdEmpresa;
@@ -25,6 +27,9 @@
     var datainformations;
     var rowscounts = 0;
     ///Listbox de Empresas 
+
+    $("#jqxInput").jqxInput({ placeHolder: " Nombre del Empleado", width: 350, height: 30, minLength: 1 });
+   
 
     FListadoEmpresa = () => {
 
@@ -69,31 +74,7 @@
 
     });
 
-     ///// ListBox Perido//////
-
-     $('#EmpleadosNom').change(function () {
-
-         //IdEmpresa = EmpresaNom.value;
-         //anio = anoNom.value;
-         //Tipodeperiodo = TipodePerdioRec.value;
-         //const dataSend = { iIdEmpresesas: IdEmpresa, ianio: anio, iTipoPeriodo: Tipodeperiodo };
-         //console.log(dataSend);
-         //$("#PeridoNom").empty();
-         //$('#PeridoNom').append('<option value="0" selected="selected">Selecciona</option>');    
-         //$.ajax({
-         //    url: "../Nomina/ListPeriodo",
-         //    type: "POST",
-         //    data: dataSend,
-         //    success: (data) => {
-         //        console.log(data);
-
-         //        for (i = 0; i < data.length; i++) {
-         //            document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
-         //        }
-         //    },
-         //});
-
-     });
+ 
 
     //// Muestra fecha de inicio y fin de peridodos
 
@@ -120,6 +101,8 @@
                 }
             },
         });
+        $("#jqxInput").empty();
+        $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
 
     });
 
@@ -128,24 +111,63 @@
          IdEmpresa = EmpresaNom.value;
          Tipodeperiodo = TipodePerdioRec.value;
          var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
-         separador = " ",
-         limite = 2,
-         arreglosubcadena = periodo.split(separador, limite);
+         if (periodo == "Selecciona") {
+             $("#jqxInput").empty();
+             $("#jqxInput").jqxInput({ source: null, placeHolder: "Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+         }
+         if (periodo != "Selecciona") {
+             separador = " ",
+                 limite = 2,
+                 arreglosubcadena = periodo.split(separador, limite);
 
-         const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0] };
-         console.log(dataSend);
-        $("#EmpleadosNom").empty();
-        $('#EmpleadosNom').append('<option value="0" selected="selected">Selecciona</option>');
-        $.ajax({
-            url: "../Empleados/DataListEmpleado",
-            type: "POST",
-            data: dataSend,
-            success: (data) => {
-                for (i = 0; i < data.length; i++) {
-                    document.getElementById("EmpleadosNom").innerHTML += `<option value='${data[i].iIdEmpleado}'>${data[i].sNombreCompleto}</option>`;
-                }
-            }
-        });
+             const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0] };
+            
+            $.ajax({
+                 url: "../Empleados/DataListEmpleado",
+                 type: "POST",
+                 data: dataSend,
+                success: (data) => {
+                    if (data.length > 0) {
+                        var source =
+                        {
+
+                            localdata: data,
+                            datatype: "array",
+                            datafields:
+                                [
+                                    { name: 'iIdEmpleado' },
+                                    { name: 'sNombreCompleto' }
+
+                                ]
+                        };
+                        var dataAdapter = new $.jqx.dataAdapter(source);
+                        $("#jqxInput").empty();
+                        $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                        $("#jqxInput").on('select', function (event) {
+                            if (event.args) {
+                                var item = event.args.item;
+                                if (item) {
+                                    var valueelement = $("<div></div>");
+                                    valueelement.text("Value: " + item.value);
+                                    var labelelement = $("<div></div>");
+                                    labelelement.text("Label: " + item.label);
+                                    NoEmpleado = item.value;
+                                    NombreEmpleado = item.label;
+                                }
+                            }
+
+                        });
+
+                    }
+                    else {
+                        $("#jqxInput").empty();
+                        $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });  }
+
+                 }
+             });
+
+         }
+        
        
      });
 
@@ -170,14 +192,30 @@
         }
 
     };
+    /// seleciona al empleado 
+    $("#jqxInput").on('select', function (event) {
+        if (event.args) {
+            var item = event.args.item;
+            if (item) {
+                var valueelement = $("<div></div>");
+                valueelement.text("Value: " + item.value);
+                var labelelement = $("<div></div>");
+                labelelement.text("Label: " + item.label);
+                NoEmpleado= item.value;
+                NombreEmpleado = item.label;
+            }
+        }
 
+    });
      //// FLlena del Grid con los datos de La nomina
     FBuscar = () => {
 
         FDelettable();
-
-         IdEmpresa = EmpresaNom.value;
-         NombreEmpleado = EmpleadosNom.options[EmpleadosNom.selectedIndex].text;
+        var TotalPercep=0;
+        var TotalDedu=0;
+        var Total=0;
+        IdEmpresa = EmpresaNom.value;
+        NombreEmpleado;
          var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
          const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado };
          console.log(dataSend);
@@ -194,14 +232,14 @@
          separador = " ",
          limite = 2,
          arreglosubcadena = periodo.split(separador, limite);
-         NoEmpleado = EmpleadosNom.value;
+         NoEmpleado;
          const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, iPeriodo: arreglosubcadena[0] };
          $.ajax({
              url: "../Empleados/ReciboNomina",
              type: "POST",
              data: dataSend2,
              success: (data) => {
-                 console.log(data);
+                 console.log(data);         
                  var source =
                  {
                      localdata: data,
@@ -220,7 +258,8 @@
                  $("#TbRecibosNomina").jqxGrid(
                      {
                          
-                         width: 720,   
+                         width: 720, 
+                         height:250,
                          source: dataAdapter,
                          columnsresize: true,
                          columns: [
@@ -233,20 +272,45 @@
                      });
              }
          });
+     
+        $.ajax({
+            url: "../Empleados/TotalesRecibo",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                console.log(data);
+                if (data.length > 0) {
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].iIdRenglon == 990) {
+                            TotalPercep= data[i].dSaldo
+                            $('#LaTotalPer').html(TotalPercep); 
+                        }
+                        if (data[i].iIdRenglon == 1990) {
+
+                            TotalDedu =  data[i].dSaldo
+                            $('#LaTotalDedu').html(TotalDedu);   
+                        }
+                    }
+                    Total = TotalPercep - TotalDedu;
+                    $('#LaTotalNom').html(Total);
+                    
+                }   
+            }
+        }); 
+
      };
 
      btnFloBuscar.addEventListener('click', FBuscar);
-
+    /// Genera archivo XML
     FGenerarXML = () => {
         IdEmpresa = EmpresaNom.value;
-        NombreEmpleado = EmpleadosNom.options[EmpleadosNom.selectedIndex].text;
+        var nom = $('#jqxInput').jqxInput('val');
+        NombreEmpleado = nom.label;
         IdEmpresa = EmpresaNom.value;
         anio = anoNom.value;
         Tipoperiodo = TipodePerdioRec.value;
         datosPeriodo = PeridoNom.value;       
         const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo };
-        console.log(dataSend);
-
         $.ajax({
             url: "../Empleados/XMLNomina",
             type: "POST",
@@ -258,14 +322,23 @@
           
             }
         });
-
-
-
-     
+ 
     };
 
-   
-
     BtbGeneraXML.addEventListener('click', FGenerarXML);
-  
+
+    btnFloLimpiar.addEventListener('click', function () {
+        EmpresaNom.value = 0;
+        anoNom.value = "";
+        TipodePerdioRec.value = 0;
+        PeridoNom.value = 0;
+        $("#jqxInput").empty();
+        $("#jqxInput").jqxInput('clear');
+        $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "", valueMember: "", width: 350, height: 30, minLength: 1 });
+
+
+    });
+
+
+    
 });

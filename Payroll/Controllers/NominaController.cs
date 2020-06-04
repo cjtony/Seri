@@ -481,7 +481,6 @@ namespace Payroll.Controllers
          
             return Json(Dta);
         }
-
         [HttpPost]
         public JsonResult EmpresaCal(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo)
         {
