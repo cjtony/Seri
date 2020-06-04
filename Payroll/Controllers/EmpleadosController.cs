@@ -231,11 +231,11 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult DataListEmpleado(int iIdEmpresa)
+        public JsonResult DataListEmpleado(int iIdEmpresa, int TipoPeriodo,int periodo)
         {
             List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-            ListEmple = Dao.sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(iIdEmpresa);
+            ListEmple = Dao.sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(iIdEmpresa, TipoPeriodo, periodo);
             return Json(ListEmple);
         }
         [HttpPost]
@@ -281,12 +281,12 @@ namespace Payroll.Controllers
                         {
                             ls.sConcepto = LCRecibo[i].sNombre_Renglon;
 
-                            if (LCRecibo[i].iElementoNomina == 39)
+                            if (LCRecibo[i].sValor == "Percepciones")
                             {
                                 ls.dPercepciones = LCRecibo[i].dSaldo.ToString("#.##");
                                 ls.dDeducciones = "0";
                             }
-                            if (LCRecibo[i].iElementoNomina == 40)
+                            if (LCRecibo[i].sValor == "Deducciones")
                             {
                                 ls.dPercepciones = "0";
                                 ls.dDeducciones = LCRecibo[i].dSaldo.ToString();
@@ -372,6 +372,13 @@ namespace Payroll.Controllers
             return Json(new { Value = true, Message = "Archivo cargado se procedera el timbrado" }, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpPost]
+        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo) 
+        {
+            List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            ListTotales = Dao.sp_SaldosTotales_Retrieve_TPlantillasCalculos(iIdEmpresa, iIdEmpleado, iPeriodo);
+            return Json(ListTotales);
+        }
     }
 }
