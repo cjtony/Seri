@@ -86,12 +86,7 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-<<<<<<< HEAD
-
-        public List<CTipoPeriodoBean> sp_CTipoPeriod_Retrieve_TiposPeriodos(int Idempresa)
-=======
         public List<CTipoPeriodoBean> sp_CTipoPeriod_Retrieve_TiposPeriodos(int  Idempresa)
->>>>>>> proacosta
         {
             List<CTipoPeriodoBean> list = new List<CTipoPeriodoBean>();
             try
@@ -132,12 +127,8 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-<<<<<<< HEAD
 
-        public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa, int ctrliElemntoNOm)
-=======
         public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa ,int ctrliElemntoNOm)
->>>>>>> proacosta
         {
             List<CRenglonesBean> list = new List<CRenglonesBean>();
             try
@@ -859,13 +850,8 @@ namespace Payroll.Models.Daos
             }
             return list;
 
-<<<<<<< HEAD
         }
 
-
-=======
-        } 
->>>>>>> proacosta
         public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliNominaCerrada)
         {
             TpCalculosHd bean = new TpCalculosHd();
@@ -1086,12 +1072,8 @@ namespace Payroll.Models.Daos
             return list;
 
         }
-<<<<<<< HEAD
 
-        public List<TpCalculosLn> sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo)
-=======
         public List<TpCalculosLn> sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo,int CrtliPeriodo)
->>>>>>> proacosta
         {
             List<TpCalculosLn> list = new List<TpCalculosLn>();
             try
@@ -1176,11 +1158,7 @@ namespace Payroll.Models.Daos
                             ls.sValor = data["Valor"].ToString();
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
-<<<<<<< HEAD
                             ls.dTotal = decimal.Parse(data["total"].ToString());
-=======
-                            ls.dTotal =decimal.Parse(data["total"].ToString());                
->>>>>>> proacosta
                             ls.sMensaje = "success";
                         };
                         list.Add(ls);
@@ -1645,11 +1623,8 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-<<<<<<< HEAD
-        public List<CInicioFechasPeriodoBean> sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(int CrtliIdDeficionHd, int CrtliPeriodo)
-=======
+
         public List<CInicioFechasPeriodoBean> sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(int CrtliIdDeficionHd,int CrtliPeriodo, int CtrliNomCerr)
->>>>>>> proacosta
         {
             List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
             try
@@ -1752,17 +1727,7 @@ namespace Payroll.Models.Daos
                     while (data.Read())
                     {
                         NominaLnBean ls = new NominaLnBean();
-<<<<<<< HEAD
-                        {
-                            ls.iIdDefinicionHd = int.Parse(data["Existe"].ToString());
 
-                        };
-                        list.Add(ls);
-                    }
-                }
-                else
-                {
-=======
 						{
 							ls.iIdDefinicionHd = int.Parse(data["IdDefinicion_Ln"].ToString());
 
@@ -1772,7 +1737,6 @@ namespace Payroll.Models.Daos
 				}
 				else
 				{
->>>>>>> proacosta
                     NominaLnBean ls = new NominaLnBean();
                     {
                         ls.iIdDefinicionHd = 0;
@@ -1866,8 +1830,6 @@ namespace Payroll.Models.Daos
                     list = null;
                 }
 
-<<<<<<< HEAD
-=======
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
@@ -1879,7 +1841,6 @@ namespace Payroll.Models.Daos
 
         }
 
->>>>>>> proacosta
     }
 }
 

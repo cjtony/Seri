@@ -238,14 +238,9 @@ namespace Payroll.Models.Beans
         public int iConsecutivo { get; set; }
         public int iIdCalculoshd { get; set; }
         public int iElementoNomina { get; set; }
-<<<<<<< HEAD
-        public string sEspejo { get; set; }
-        public string sMensaje { get; set; }
-=======
         public string sValor { get; set; }
        public string sEspejo { get; set; }
        public string sMensaje { get; set; }
->>>>>>> proacosta
 
     }
 

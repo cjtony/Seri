@@ -5,10 +5,7 @@ using Payroll.Models.Daos;
 using System;
 using System.Collections.Generic;
 using System.IO;
-<<<<<<< HEAD
 using System.Web.Mvc;
-
-=======
 using System.IO.Compression;
 using System.Text;
 using System.Configuration;
@@ -20,7 +17,7 @@ using System.Web.UI.WebControls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Ajax.Utilities;
->>>>>>> proacosta
+using System.Globalization;
 
 namespace Payroll.Controllers
 {
@@ -507,12 +504,8 @@ namespace Payroll.Controllers
             obj.ActBDTbJobs();
             return Json(LTbProc);
         }
-<<<<<<< HEAD
-
-        public JsonResult ProcesosPots(int IdDefinicionHD, int anio, int iTipoPeriodo, int iperiodo)
-=======
         public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo)
->>>>>>> proacosta
+
         {
             Startup obj = new Startup();
             string NomProceso = "CNomina";
@@ -600,9 +593,6 @@ namespace Payroll.Controllers
             if (TD != null)
             {
 
-<<<<<<< HEAD
-
-=======
                 for (int i = 0; i < TD.Count; i++)
                 {
 
@@ -620,7 +610,6 @@ namespace Payroll.Controllers
 
             return Json(TD);
         }
->>>>>>> proacosta
 
     }
 }
