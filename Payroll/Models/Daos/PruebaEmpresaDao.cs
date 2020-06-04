@@ -49,7 +49,6 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
-            //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 
@@ -60,16 +59,13 @@ namespace Payroll.Models.Daos
                     PruebaEmpresaBean listEmpresas = new PruebaEmpresaBean();
                     //
                     //--------------QUITAR ESTE FILTRO UNA VEZ QUE SE ARREGLEN LAS EMPRESAS Y LOS EMPLEADOS 
-                    if (int.Parse(data["IdEmpresa"].ToString()) > 3)
-                    {
+                    //if (int.Parse(data["IdEmpresa"].ToString()) > 3)
+                    //{
                         listEmpresas.IdEmpresa = int.Parse(data["IdEmpresa"].ToString());
                         listEmpresas.RazonSocial = data["RazonSocial"].ToString();
                         listEmpresas.NombreEmpresa = data["NombreEmpresa"].ToString();
                         list.Add(listEmpresas);
-                    }
-
-
-
+                    //}
                 }
             }
             else
@@ -164,7 +160,9 @@ namespace Payroll.Models.Daos
                     empresa.Add(data["RFC"].ToString());
                     empresa.Add(data["FechaAlta"].ToString());
                     empresa.Add(data["Descripcion"].ToString());
-                    
+                    empresa.Add(data["banco_interbancarios"].ToString());
+                    empresa.Add(data["reg_imss_empresa"].ToString());
+
                 }
             }
             else

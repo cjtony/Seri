@@ -10,7 +10,7 @@
         </div>
         <div class="col-10">
             <div class="tab-content" id="v-pills-tabContent">
-                @* TAB 1 *@
+                @* TAB 1 LISTA DE CATALOGOS*@
                 <div class="tab-pane fade show active" id="v-pills-lista" role="tabpanel" aria-labelledby="v-pills-home-tab">
                     <div class="font-button">Lista de catalogos</div>
                     <hr />
@@ -30,16 +30,16 @@
 
                     </div>
                 </div>
-                @* TAB 2 *@
+                @* TAB 2 LISTA DE EMPRESAS CONS SUS RESPECTIVOS FECHAS PERIODOS*@
                 <div class="tab-pane fade" id="v-pills-FechasPeriodos" role="tabpanel" aria-labelledby="v-pills-FechasPeriodos-tab">
                     <div class="">Fechas - Periodos</div>
                     <hr />
                     <table class="table table-sm table-striped table-fechas-periodos">
                         <thead>
                             <tr>
-                                <th scope="col">Id Empresa</th>
-                                <th scope="col">Nombre Empresa</th>
-                                <th scope="col">Año</th>
+                                <th colspan="3" scope="col">Lista de empresas</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody id="bodytab-fechas-periodos">
@@ -56,48 +56,71 @@
                         </tbody>
                     </table>
                 </div>
-                @* TAB 3 *@
+                @* TAB 3 LISTA DE EMPRESAS CON SUS RESPECTIVOS POLITICAS DE VACACIONES*@
                 <div class="tab-pane fade" id="v-pills-politicas" role="tabpanel" aria-labelledby="v-pills-politicas-tab">
-                    <div class="col-1md-12">Politicas de vacaciones</div>
-                    <hr />
-                    <table class="table table-sm table-striped table-politicas-vacaciones col-md-12">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id Empresa</th>
-                                <th scope="col">Nombre Empresa</th>
-                                <th scope="col">Año</th>
-                                <th scope="col">Fecha Efectiva</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bodytab-fechas-periodos">
-                            <tr>
-                                <td colspan="3">
-                                    <div class="col-md-12">
-                                        <label>4 REJUM - 2020 - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class="badge badge-success btn" onclick="LoadDetalleFechasPeriodo('collapse-REJUM', 4);"><i class="fas fa-plus"></i></div>
-                                        <div class="collapse collapse-REJUM col-md-12" id="collapse-REJUM">
+                    <ul class="nav nav-tabs" id="tabpoliticasv" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link font-weight-bold text-danger active" id="vigentes-tab" data-toggle="tab" href="#vigentes" role="tab" aria-controls="vigentes" aria-selected="true">Politicas Vigentes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link font-weight-bold text-danger" id="fururas-tab" data-toggle="tab" href="#futuras" role="tab" aria-controls="futuras" aria-selected="false">Politicas Programadas</a>
+                        </li>
 
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        @* TAB DE POLITICAS VIGENTES*@
+                        <div class="tab-pane fade show active" id="vigentes" role="tabpanel" aria-labelledby="vigentes-tab">
+                            <div class="col-md-12 row my-3"><label class="col-md-6 font-labels">Politicas de vacaciones</label><div class="col-md-6 text-right"><div class="btn btn-info font-labels" id="btn-newEffdtPoliticas">Agregar Nueva Fecha Efectiva</div></div> </div>
+
+                            <table class="table table-sm table-striped table-politicas-vacaciones col-md-12">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" colspan="3">Lista de Empresas</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodytab-politicas-vacaciones">
+                                </tbody>
+                            </table>
+                        </div>
+                        @* TAB DE POLITICAS PROGRAMADAS*@
+                        <div class="tab-pane fade" id="futuras" role="tabpanel" aria-labelledby="futuras-tab">
+                            @*<div class="col-md-12 row mt-3"><label class="col-md-6 font-labels">Politicas de vacaciones</label><div class="col-md-6 text-right"><div class="btn btn-info font-labels" id="btn-newEffdtPoliticas">Agregar Nueva Fecha Efectiva</div></div> </div>*@
+
+                            <table class="table table-sm table-striped table-politicas-vacaciones-futuras col-md-12 mt-3">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" colspan="3">Lista de Empresas por empresa y por fecha efectiva</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodytab-politicas-vacaciones-futuras">
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+
+
                 </div>
                 @* TAB 4 *@
-                <div class="tab-pane fade" id="v-pills-editar" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    <div class="d-flex justify-content-between"><label id="lblEdicion" class="col-md-9"></label><div id="bodybotonagregar" class="col-md-3"></div></div>
+                <div class="tab-pane fade" id="v-pills-editar" role="tabpanel" aria-labelledby="v-pills-editar-tab">
+                    <div class="row col-md-12"><label id="lblEdicion" class="col-md-3 font-weight-bold"></label><input id="Effdt_editar" type='text' class=' form-control form-control-sm col-md-3' value='' disabled><div id="bodybotonagregar" class="col-md-6 text-right"></div></div>
                     <hr />
                     <div id="bodyEditarModulo" class="col-md-12">
 
                     </div>
-                    <input type="hidden" id="Empresa_id_editar_fecha_periodo" value="" />
+                    <input type="hidden" id="Empresa_id_editar" value="" />
                 </div>
 
             </div>
         </div>
     </div>
 
-    <!-- Modal Agregar -->
+    <!-- Modal Agregar Fechas - Periodos-->
     <div class="modal fade" id="modalAgregarFechaPeriodo" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -112,31 +135,31 @@
 
                         <div class="form-group col-md-4">
                             <label>Año</label>
-                            <input class="form-control form-control-sm" type="number" id="inano" name="inano" min="" required/>
+                            <input class="form-control form-control-sm" type="number" id="inano" name="inano" min="" required />
                         </div>
                         <div class="form-group col-md-4">
                             <label>Periodo</label>
-                            <input class="form-control form-control-sm" type="text" name="inperiodo" id="inperiodo" value="" placeholder="No. Periodo" required/>
+                            <input class="form-control form-control-sm" type="text" name="inperiodo" id="inperiodo" value="" placeholder="No. Periodo" required />
                         </div>
                         <div class="form-group col-md-4">
                             <label>Inicio</label>
-                            <input class="form-control form-control-sm" type="date" name="infinicio" id="infinicio" value="" required/>
+                            <input class="form-control form-control-sm" type="date" name="infinicio" id="infinicio" value="" required />
                         </div>
                         <div class="form-group col-md-4">
                             <label>Final</label>
-                            <input class="form-control form-control-sm" type="date" name="inffinal" id="inffinal" value="" required/>
+                            <input class="form-control form-control-sm" type="date" name="inffinal" id="inffinal" value="" required />
                         </div>
                         <div class="form-group col-md-4">
                             <label>Proceso</label>
-                            <input class="form-control form-control-sm" type="date" name="infproceso" id="infproceso" value="" required/>
+                            <input class="form-control form-control-sm" type="date" name="infproceso" id="infproceso" value="" required />
                         </div>
                         <div class="form-group col-md-4">
                             <label>Pago</label>
-                            <input class="form-control form-control-sm" type="date" name="infpago" id="infpago" value="" required/>
+                            <input class="form-control form-control-sm" type="date" name="infpago" id="infpago" value="" required />
                         </div>
                         <div class="form-group col-md-4">
                             <label>Dias Pago</label>
-                            <input class="form-control form-control-sm" type="text" name="indiaspago" id="indiaspago" value="15" required/>
+                            <input class="form-control form-control-sm" type="text" name="indiaspago" id="indiaspago" value="15" required />
                         </div>
                     </form>
                 </div>
@@ -148,8 +171,111 @@
         </div>
     </div>
 
+    <!-- Modal Agregar EFFDT Politicas -->
+    <div class="modal fade" id="modalAgregarNewEffdtPoliticas" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"> Agregar Nueva Fecha Efectiva <span id="politicas-modal-title" class="politicas-modal-title"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center font-small d-flex justify-content-center" id="modal-body-neweffdtpoliticas">
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-4">
+                            <label>Empresa <i class="text-primary fas fa-building"></i></label>
+                            <select class="custom-select custom-select-sm" id="newEffdtEmpresa">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Fecha Efectiva <i class="text-primary far fa-calendar-plus"></i></label>
+                            <input class="form-control form-control-sm" type="date" name="newEffdtFecha" id="newEffdtFecha" mim="" required />
+                        </div>
+                        @*<div class="form-group col-md-4">
+                                <label>Años <i class="text-primary fas fa-sort-numeric-up-alt"></i></label>
+                                <input class="form-control input-number form-control-sm" type="text" name="newEffdtAnios" id="newEffdtAnios" value="0" required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Dias <i class="text-primary fas fa-sort-numeric-up-alt"></i></label>
+                                <input class="form-control input-number form-control-sm" type="text" name="newEffdtDias" id="newEffdtDias" value="6" required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Prima Vacacional <i class="text-primary fas fa-percentage"></i></label>
+                                <input class="form-control input-number form-control-sm" type="text" name="newEffdtPrimav" id="newEffdtPrimav" value="25" required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Dias Aguinaldo <i class="text-primary fas fa-sort-numeric-up-alt"></i></label>
+                                <input class="form-control input-number form-control-sm" type="text" name="newEffdtDiasa" id="newEffdtDiasa" value="15" required />
+                            </div>*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button id="btnneweffdtpoliticas" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Modal Mostrar Politicas -->
+    <div class="modal fade" id="modalMostrarPoliticas" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"> Politicas de vacaciones <span id="politicas-modal-title" class="politicas-modal-title"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center font-small d-flex justify-content-center" id="modal-body-politicas">
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button id="btnsavefechaperiodo" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Agregar Politica -->
+    <div class="modal fade" id="modalNewPolitica" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"> Politicas de vacaciones <span id="politica-modal-title" class="politica-modal-title"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center font-small d-flex justify-content-center" id="">
+                    <form id="frmnewPolitica"></form>
+                    <div class="col-md-12 row">
+                        <div class="col-md-4">
+                            <label>Año</label>
+                            <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaAnio" value="" placeholder="Agregar año"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Dias</label>
+                            <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaDias" value="" placeholder="Agregar dias"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Prima vacacional</label>
+                            <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaPrimav" value="" placeholder="Porcentaje de prima"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Dias aguinaldo</label>
+                            <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaDiasa" value="" placeholder="Dias de aguinaldo"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button id="btnsavenewpolitica" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </div>

@@ -27,7 +27,7 @@ namespace Payroll.Controllers
             MenuDao menDao = new MenuDao();
             int usuSesion = int.Parse(Session["iIdUsuario"].ToString());
             permBean = menDao.sp_Menu_Retrieve_Permisos_Usuario_Menu(usuSesion);
-            string ad = "Sin entrrar", nom = "Sin entrar", inc = "Sin entrar", kio = "Sin entrar", rh = "Sin entrar";
+            string ad = "Sin entrar", nom = "Sin entrar", inc = "Sin entrar", kio = "Sin entrar", rh = "Sin entrar";
             foreach (var item in permBean)
             {
                 if (item.sPerfil == "Administrador")
@@ -99,7 +99,7 @@ namespace Payroll.Controllers
                     }
                     subnavs += "</ul>";
                     i++;
-                    tabnav += "<div class='tab-pane fade' id='pills-" + item.sNombre + "' role='tabpanel' aria-labelledby='" + item.sNombre + "-tab'>" + subnavs + /*tabsubnavs +*/"</div>";
+                    tabnav += "<div class='tab-pane fade' id='pills-" + item.sNombre + "' role='tabpanel' aria-labelledby='" + item.sNombre + "-tab'>" + subnavs + "</div>";
                     subnavs = "";
                 }
             }

@@ -448,7 +448,7 @@ namespace Payroll.Models.Beans
     }
     public class PeriodosVacacionesBean
     {
-        public int IdPer_vac_Dist {get;set;}
+        public int IdPer_vac_Dist { get; set; }
         public int Per_vac_Ln_id { get; set; }
         public string Fecha_Inicio { get; set; }
         public string Fecha_Fin { get; set; }
@@ -522,7 +522,8 @@ namespace Payroll.Models.Beans
         public string sDescripcion { get; set; }
         public string sMensaje { get; set; }
     }
-       public class TipoEmpleadoBean { 
+    public class TipoEmpleadoBean
+    {
         public int IdTipo_Empleado { get; set; }
         public string Descripcion { get; set; }
     }
@@ -532,7 +533,6 @@ namespace Payroll.Models.Beans
         public string Descripcion { get; set; }
         public int TipoEmpleado_id { get; set; }
     }
-
     public class IncidenciasBean
     {
         public int IdTRegistro_Incidencia { get; set; }
@@ -546,7 +546,7 @@ namespace Payroll.Models.Beans
     public class VW_TipoIncidenciaBean
     {
         public int Ren_incid_id { get; set; }
-        public string Descripcion {get;set;}
+        public string Descripcion { get; set; }
     }
     public class IncidenciasProgramadasBean
     {
@@ -594,5 +594,17 @@ namespace Payroll.Models.Beans
         public string Fecha_Proceso { get; set; }
         public string Fecha_Pago { get; set; }
         public string Dias_Efectivos { get; set; }
+        public string Nomina_Cerrada { get; set; }
+    }
+    public class TabPoliticasVacacionesBean
+    {
+        public string Id { get; set; } 
+        public string NombreEmpresa { get; set; }
+        public string Empresa_id { get; set; }
+        public string Effdt { get; set; }
+        public string Anos { get; set; }
+        public string Dias { get; set; }
+        public string Prima_Vacacional_Porcen { get; set; }
+        public string Dias_Aguinaldo { get; set; }
     }
 }

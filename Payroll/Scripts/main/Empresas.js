@@ -157,6 +157,7 @@
     //btnVerifCodPost.addEventListener('click', fvalidatestatecodpost);
 
     // FIN FUNCIONALIDADES ESTADOS \\
+
     
     
 });

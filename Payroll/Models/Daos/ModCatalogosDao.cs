@@ -9,6 +9,7 @@ namespace Payroll.Models.Daos
 {
     public class ModCatalogosDao : Conexion
     {
+        // FUNCIONES PARA LAS FECHAS - PERIODO
         public List<InicioFechasPeriodoBean> sp_Retrieve_CInicio_Fechas_Periodo()
         {
             List<InicioFechasPeriodoBean> listBean = new List<InicioFechasPeriodoBean>();
@@ -83,6 +84,7 @@ namespace Payroll.Models.Daos
                         Bean.Fecha_Proceso = data["Fecha_Proceso"].ToString();
                         Bean.Fecha_Pago = data["Fecha_Pago"].ToString();
                         Bean.Dias_Efectivos = data["Dias_Efectivos"].ToString();
+                        Bean.Nomina_Cerrada = data["Nomina_Cerrada"].ToString();
 
                         listBean.Add(Bean);
                     }
@@ -152,6 +154,238 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
                 cmd.Parameters.Add(new SqlParameter("@ctrlId", Id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sRespuesta"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        // FUNCIONES PARA LAS POLITICAS DE VACACIONES
+        public List<TabPoliticasVacacionesBean> sp_Retrieve_CPoliticasVacaciones()
+        {
+            List<TabPoliticasVacacionesBean> listBean = new List<TabPoliticasVacacionesBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Retrieve_CPoliticasVacaciones", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TabPoliticasVacacionesBean Bean = new TabPoliticasVacacionesBean();
+                        
+                        Bean.Empresa_id = data["Empresa_id"].ToString();
+                        Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
+                        Bean.Effdt = data["Effdt"].ToString();
+                        Bean.Anos = data["Anos"].ToString();
+                        Bean.Dias = data["Dias"].ToString();
+                        Bean.Prima_Vacacional_Porcen = data["Prima_Vacacional_Porcen"].ToString();
+                        Bean.Dias_Aguinaldo = data["Dias_Aguinaldo"].ToString();
+
+                        listBean.Add(Bean);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        // FUNCIONES PARA LAS POLITICAS DE VACACIONES FUTURAS
+        public List<TabPoliticasVacacionesBean> sp_Retrieve_CPoliticasVacaciones_Futuras()
+        {
+            List<TabPoliticasVacacionesBean> listBean = new List<TabPoliticasVacacionesBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Retrieve_CPoliticasVacaciones_Futuras", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TabPoliticasVacacionesBean Bean = new TabPoliticasVacacionesBean();
+                        
+                        Bean.Empresa_id = data["Empresa_id"].ToString();
+                        Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
+                        Bean.Effdt = data["Effdt"].ToString();
+
+                        listBean.Add(Bean);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<TabPoliticasVacacionesBean> sp_Retrieve_CPoliticasVacaciones_Detalle(int Empresa_id)
+        {
+            List<TabPoliticasVacacionesBean> listBean = new List<TabPoliticasVacacionesBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Retrieve_CPoliticasVacacione_Detalle", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TabPoliticasVacacionesBean Bean = new TabPoliticasVacacionesBean();
+                        Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
+                        Bean.Empresa_id = data["Empresa_id"].ToString();
+                        Bean.Effdt = data["Effdt"].ToString();
+                        Bean.Anos = data["Anos"].ToString();
+                        Bean.Dias = data["Dias"].ToString();
+                        Bean.Prima_Vacacional_Porcen = data["Prima_Vacacional_Porcen"].ToString();
+                        Bean.Dias_Aguinaldo = data["Dias_Aguinaldo"].ToString();
+
+                        listBean.Add(Bean);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<TabPoliticasVacacionesBean> sp_Retrieve_CPoliticasVacaciones_Futuras_Detalle(int Empresa_id, string Effdt)
+        {
+            List<TabPoliticasVacacionesBean> listBean = new List<TabPoliticasVacacionesBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Retrieve_CPoliticasVacaciones_Futuras_Detalle", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlEffdt", Effdt));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TabPoliticasVacacionesBean Bean = new TabPoliticasVacacionesBean();
+                        Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
+                        Bean.Empresa_id = data["Empresa_id"].ToString();
+                        Bean.Effdt = data["Effdt"].ToString();
+                        Bean.Anos = data["Anos"].ToString();
+                        Bean.Dias = data["Dias"].ToString();
+                        Bean.Prima_Vacacional_Porcen = data["Prima_Vacacional_Porcen"].ToString();
+                        Bean.Dias_Aguinaldo = data["Dias_Aguinaldo"].ToString();
+
+                        listBean.Add(Bean);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<string> sp_CPoliticasVacaciones_Insert_Effdt_Futura(int Empresa_id, string Effdt)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CPoliticasVacaciones_Insert_Effdt_Futura", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlEffdt", Effdt));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        list.Add(data["iFlag"].ToString());
+                        list.Add(data["sRespuesta"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+        public List<string> sp_CPoliticasVacaciones_Delete_Politica(int Empresa_id,string Effdt, int Anio)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CPoliticasVacaciones_Delete_Politica", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlEffdt", Effdt));
+                cmd.Parameters.Add(new SqlParameter("@ctrlAnio", Anio));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {

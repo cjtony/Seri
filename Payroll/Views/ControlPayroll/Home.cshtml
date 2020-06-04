@@ -44,11 +44,6 @@
         $("#bodySubmenus").empty();
     }
     function btnsEmpresas( id ,nombre) {
-
-        console.log(id, nombre);
-        
-        
-        
         try {
             $.ajax({
                 url: "../Empresas/DefineEmpresa",
@@ -56,16 +51,15 @@
                 data: JSON.stringify({ IdEmpresa: id, NombreEmpresa: nombre }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data[4]);
                     $.ajax({
                         url: "../Empresas/DefinePeriodoActual",
                         type: "POST",
                         data: JSON.stringify({ IdPeriodo: data[4] }),
                         contentType: "application/json; charset=utf-8",
                         success: (dat) => {
-                            console.log(dat);
                             document.getElementById("btnNameEmpresaSelected").innerHTML = nombre;
                             document.getElementById("lblPeriodoId").innerHTML = data[4];
+                            $("#bodySubmenus").empty();
                             $("#modalBtns").modal('hide');
                         }
                     });
@@ -92,6 +86,7 @@
             focus: true
         });
         $("#btn-cambiar-empresas").on("click", function () {
+            loadBtnsEmpresas();
             $("#modalBtns").modal({
                 keyboard: false,
                 backdrop: "static",
@@ -142,16 +137,12 @@
                         $("#vacacionesCollapse").collapse("show");
                         idEmp = data[i]["IdEmpleado"];
                     }
-                    console.log(data[0].IdEmpleado);
                     CargarTabPeriodos(data[0].IdEmpleado);
-
                     document.getElementById("inputSearchEmpleados").value = '';
                 }
             });
         }
-
         $("#modalBtns").modal('show');
-
     });
 </script>
 

@@ -10,7 +10,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 p-3 m-0 form-group row rounded" style="background-color:#E8EAF6;color:black;">
+    <div class="col-md-12 p-3 m-0 form-group font-labels row rounded" style="background-color:#E8EAF6;color:black;">
+        <small class="col-md-12 row">
             <label class="font-weight-bold col-md-2 py-0">Id Empresa : </label>
             <label class="text-left col-md-4 py-0" id="l-01"></label>
             <label class="font-weight-bold col-md-2 py-0">Nombre corto : </label>
@@ -37,7 +38,12 @@
             <label class="text-left col-md-4" id="l-12"></label>
             <label class="font-weight-bold col-md-2">Regimen Fiscal : </label>
             <label class="text-left col-md-4" id="l-13"></label>
-            <div class="col-md-6 font-labels d-flex justify-content-end" ><div id="btnEditarEmpresa" class="btn btn-outline-success font-weight-bold" style="font-size:12px;">Editar  <i class="pl-1 far fa-edit"></i> </div></div>
+            <label class="font-weight-bold col-md-2">Banco Interbancarios : </label>
+            <label class="text-left col-md-4" id="l-14"></label>
+            <label class="font-weight-bold col-md-2">Registro IMSS : </label>
+            <label class="text-left col-md-4" id="l-14"></label>
+        </small>
+        <div class="col-md-6 font-labels d-flex justify-content-end"><div id="btnEditarEmpresa" class="btn btn-outline-success font-weight-bold" style="font-size:12px;">Editar  <i class="pl-1 far fa-edit"></i> </div></div>
     </div>
     <div class="dropdown-divider mb-3"></div>
     <div class="">
@@ -89,6 +95,21 @@
 
                             </div>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="inGiro_empresa">Banco Interbancarios</label>
+                            <select type="text" class="form-control font-labels" name="inRBanco_interbancarios" id="inRBanco_interbancarios" required>
+                            </select>
+                            <div class="valid-feedback">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inGiro_empresa">Registro IMSS</label>
+                            <input type="text" class="form-control font-labels" name="inRegistro_imss" id="inRegistro_imss" placeholder="Registro IMMS" required>
+                            
+                            <div class="valid-feedback">
+
+                            </div>
+                        </div>
                         <div class="form-group col-md-12 row px-5">
                             <div class="form-group col-md-6 alert alert-light ">
                                 <label class="col-md-12 text-dark">Seleccionar tipo de periodo de pago</label>
@@ -113,7 +134,7 @@
 
                                     <div class=" col-md-5 text-center p-2">
                                         <label class="bg-secondary text-white rounded col-md-12">Fecha Final </label>
-                                        <input type="date"  name="ffinal" id="ffinal" class="form-control col-md-12">
+                                        <input type="date" name="ffinal" id="ffinal" class="form-control col-md-12">
                                     </div>
 
                                     <div class=" col-md-5 text-center p-2">
@@ -365,6 +386,24 @@
                 });
             }
         }
+
+        LoadSelectBancos = (Banco_id) => {
+            $.ajax({
+                url: "../Empleados/LoadBanks",
+                type: "POST",
+                data: JSON.stringify({ keyban: Banco_id }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    document.getElementById("inRBanco_interbancarios").innerHTML = "";
+                    for (var i = 0; i < data.length; i++) {
+                        document.getElementById("inRBanco_interbancarios").innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
+                    }
+                
+                }
+            });
+        }
+
+        LoadSelectBancos(0);
     });
     document.getElementById("btnClear").classList.add("invisible");
     document.getElementById("btnUpdate").classList.add("invisible");
@@ -644,6 +683,9 @@
     $("#btnClear").on(function () {
         console.log("Entra al limpiar");
     });
+
+    
+
 </script>
 
 
