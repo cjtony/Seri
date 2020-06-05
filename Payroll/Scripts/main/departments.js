@@ -35,8 +35,14 @@
     const btnclosesearchdepbtn = document.getElementById('btn-close-search-departament-btn')
     const icoclosesearchdepbtn = document.getElementById('ico-close-search-departament-btn');
     /* EJECUCION DE LA LIMPIEZA DEL CAMPO DE BUSQUEDA */
-    btnclosesearchdepbtn.addEventListener('click', () => { searchdepartmentkey.value = ''; resultdepartments.innerHTML = ''; });
-    icoclosesearchdepbtn.addEventListener('click', () => { searchdepartmentkey.value = ''; resultdepartments.innerHTML = ''; });
+    btnclosesearchdepbtn.addEventListener('click', () => {
+        searchdepartmentkey.value = ''; resultdepartments.innerHTML = '';
+        document.getElementById('noresultsdepartaments1').innerHTML = '';
+    });
+    icoclosesearchdepbtn.addEventListener('click', () => {
+        searchdepartmentkey.value = ''; resultdepartments.innerHTML = '';
+        document.getElementById('noresultsdepartaments1').innerHTML = '';
+    });
     /* CREACION DE LOCALSTORAGE */
     localStorage.removeItem('modalbtndepartament');
     btnModalSearchDepartament.addEventListener('click', () => {
@@ -129,6 +135,7 @@
     btnregisterdepartamentbtn.addEventListener('click', () => {
         $("#searchdepartamentbtn").modal('hide');
         searchdepartmentkey.value = '';
+        document.getElementById('noresultsdepartaments1').innerHTML = '';
         resultdepartments.innerHTML = '';
         floadnivestuc(0, 'Active/Desactive', 0, nivestuc, 0);
         //floadbuilding('Active/Desactive', 0, edific, 0);
@@ -346,6 +353,7 @@
     /* FUNCION QUE EJECUTA LA BUSQUEDA EN TIEMPO REAL */
     fsearchdepartments = () => {
         resultdepartments.innerHTML = '';
+        document.getElementById('noresultsdepartaments1').innerHTML = '';
         try {
             if (searchdepartmentkey.value != "") {
                 $.ajax({
@@ -353,12 +361,19 @@
                     type: "POST",
                     data: { wordsearch: searchdepartmentkey.value, type: 'EMPR' },
                     success: (data) => {
+                        console.log(data);
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
                                 resultdepartments.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sDeptoCodigo} - ${data[i].sDescripcionDepartamento} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselectdepartment(${data[i].iIdDepartamento})"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultsdepartaments1').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron departamentos con el termino <b>${searchdepartmentkey.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -819,7 +834,7 @@
                 $.ajax({
                     url: "../SearchDataCat/SearchDepartaments",
                     type: "POST",
-                    data: { wordsearch: searchdepartmentkeyadd.value, type: 'ALL' },
+                    data: { wordsearch: searchdepartmentkeyadd.value, type: 'EMPR' },
                     success: (data) => {
                         if (data.length > 0) {
                             let number = 0;

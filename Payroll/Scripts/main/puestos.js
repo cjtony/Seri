@@ -82,6 +82,7 @@
     fclearsearchresultsadd = () => {
         searchpuestokeyadd.value   = '';
         resultpuestosadd.innerHTML = '';
+        document.getElementById('noresultsjobs2').innerHTML = '';
         $("#searchpuesto").modal('hide');
         $("#registerposition").modal('show');
         setTimeout(() => { pueusureg.focus(); }, 1000);
@@ -159,17 +160,30 @@
     /* EJECUCION DE CREACION DE LOCAL STORAGE */
     localStorage.removeItem('modalbtnpuesto');
     btnModalSearchPuesto.addEventListener('click', () => { localStorage.setItem('modalbtnpuesto', 1); setTimeout(() => { searchpuestokey.focus(); }, 1000); });
-    btnCloseRegisterPbtn.addEventListener('click', () => { localStorage.removeItem('modalbtnpuesto'); searchpuestokey.value = ''; resultpuestos.innerHTML = ''; });
-    icoCloseRegisterPbtn.addEventListener('click', () => { localStorage.removeItem('modalbtnpuesto'); searchpuestokey.value = ''; resultpuestos.innerHTML = ''; });
+    btnCloseRegisterPbtn.addEventListener('click', () => {
+        localStorage.removeItem('modalbtnpuesto'); searchpuestokey.value = '';
+        resultpuestos.innerHTML = '';
+        document.getElementById('noresultsjobs1').innerHTML = '';
+    });
+    icoCloseRegisterPbtn.addEventListener('click', () => {
+        localStorage.removeItem('modalbtnpuesto');
+        searchpuestokey.value = ''; resultpuestos.innerHTML = '';
+        document.getElementById('noresultsjobs1').innerHTML = '';
+        
+    });
     /* EJECUCION DE FUNCION QUE OCULTA LA VENTANA DE BUSQUEDA DE PUESTOS */
     btnRegisterPuestobtn.addEventListener('click', () => {
         $("#searchpuestobtn").modal('hide');
         searchpuestokey.value = ''; resultpuestos.innerHTML = '';
+        document.getElementById('noresultsjobs1').innerHTML = '';
         setTimeout(() => { regcodpuesto.focus(); }, 1000);
     });
     /* EJECUCION DE EVENTO QUE OCULTA LA VENTANA DE BUSQUEDA DE PUESTOS AL REGISTRAR UNA NUEVA POSICION */
     btnregisterpuesto.addEventListener('click', () => {
         $("#searchpuesto").modal('hide');
+        searchpuestokeyadd.value = '';
+        document.getElementById('noresultsjobs2').innerHTML = '';
+        resultpuestosadd.innerHTML = '';
         setTimeout(() => { regcodpuesto.focus(); }, 1000);
     });
     /* EJECUCION DE FUNCION QUE CARGA LAS PROFESIONES FAMILIA AL REGISTRAR UN NUEVO PUESTO */
@@ -227,6 +241,7 @@
     }
     /* FUNCION QUE HACE LA BUSQUEDA EN TIEMPO REAL */
     fsearchkeyuppuesto = () => {
+        console.log('Buscando puesto');
         resultpuestos.innerHTML = '';
         try {
             if (searchpuestokey.value != "") {
@@ -239,8 +254,14 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpuestos.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="feditdatapuesto(${data[i].iIdPuesto})"></i> </button>`;
+                                resultpuestos.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} - ${data[i].sNombrePuesto} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="feditdatapuesto(${data[i].iIdPuesto})"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultsjobs1').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron puestos con el termino <b>${searchpuestokey.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -465,6 +486,7 @@
     fsearchkeyuppuestoadd = () => {
         try {
             resultpuestosadd.innerHTML = '';
+            document.getElementById('noresultsjobs2').innerHTML = '';
             if (searchpuestokeyadd.value != "") {
                 $.ajax({
                     url: "../SearchDataCat/SearchPuesto",
@@ -477,6 +499,12 @@
                                 number += 1;
                                 resultpuestosadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectpuestopos(${data[i].iIdPuesto},'${data[i].sNombrePuesto}')"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultsjobs2').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron puestos con el termino <b>${searchpuestokeyadd.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);

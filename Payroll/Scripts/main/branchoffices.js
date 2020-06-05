@@ -52,8 +52,8 @@
     const btnclearfieldssucursal = document.getElementById('btn-clear-fields-sucursal');
     const icoclearfieldssucursal = document.getElementById('ico-clear-fields-sucursal');
     /* LIMPIA LA BUSQUEDA AL CERRAR LA MDOAL */
-    btnCloseSearchOffices.addEventListener('click', () => { searchofficekey.value = ''; resultoffices.innerHTML = ''; localStorage.removeItem('modalbtnsucursal'); });
-    icoCloseSearchOffices.addEventListener('click', () => { searchofficekey.value = ''; resultoffices.innerHTML = ''; localStorage.removeItem('modalbtnsucursal'); });
+    btnCloseSearchOffices.addEventListener('click', () => { searchofficekey.value = ''; resultoffices.innerHTML = ''; localStorage.removeItem('modalbtnsucursal'); document.getElementById('noresultoffices1').innerHTML = ''; });
+    icoCloseSearchOffices.addEventListener('click', () => { searchofficekey.value = ''; resultoffices.innerHTML = ''; localStorage.removeItem('modalbtnsucursal'); document.getElementById('noresultoffices1').innerHTML = ''; });
     /* FUNCION QUE LIMPIA LOS CAMPOS AL MOMENTO DE REGISTRAR UNA SUCURSAL */
     fclearfieldssucursal = () => {
         descsucursal.value = '';
@@ -73,11 +73,15 @@
     /* EJECUCION DE EVENTO QUE OCULTA LA VENTANA MODAL DE BUSQUEDA DE SUCURSALES */
     btnregistersucursalbtn.addEventListener('click', () => {
         $("#searchsucursales").modal('hide');
+        searchofficekey.value = '';
+        resultoffices.innerHTML = '';
+        document.getElementById('noresultoffices1').innerHTML = '';
         setTimeout(() => { descsucursal.focus(); }, 1000);
     });
     /* FUNCION QUE HACE LA BUSQUEDA EN TIEMPO REAL */
     fsearchkeyupoffices = () => {
         resultoffices.innerHTML = '';
+        document.getElementById('noresultoffices1').innerHTML = '';
         try {
             if (searchofficekey.value != "") {
                 $.ajax({
@@ -91,6 +95,12 @@
                                 number += 1;
                                 resultoffices.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselectoffice(${data[i].iIdSucursal})"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultoffices1').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron sucursales con el termino <b>${searchofficekey.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);

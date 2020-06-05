@@ -17,6 +17,7 @@
     fclearsearchresults = () => {
         searchlocalityadd.value = '';
         resultlocalityadd.innerHTML = '';
+        document.getElementById('noresultslocality1').innerHTML = '';
         $("#searchlocality").modal('hide');
         $("#registerposition").modal('show');
     }
@@ -47,7 +48,6 @@
     }
     /* FUNCION QUE REALIZA LA BUSQUEDA EN TIEMPO REAL DE LAS LOCALIDADES */
     fsearchlocalitysadd = () => {
-        console.log('probando')
         try {
             resultlocalityadd.innerHTML = '';
             if (searchlocalityadd.value != "") {
@@ -58,10 +58,16 @@
                     success: (data) => {
                         if (data.length > 0) {
                             let number = 0;
-                            for (let i = 0; i < data.length; i++) { 
+                            for (let i = 0; i < data.length; i++) {
                                 number += 1;
                                 resultlocalityadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].iCodigoLocalidad} - ${data[i].sDescripcion} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectlocality(${data[i].iIdLocalidad}, '${data[i].sDescripcion}',${data[i].iRegistroPatronal_id}, '${data[i].sRegistroPatronal}')"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultslocality1').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron localidades con el termino <b>${searchlocalityadd.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
