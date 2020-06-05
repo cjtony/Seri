@@ -7,9 +7,9 @@
         @*<button class="flotante0 rounded btn btn-outline-success animated fadeIn delay-1s" title="Guardar cambios" id="btn-save-edit">
             <i class="fas fa-user-check"></i>
         </button>*@
-        <button class="flotante rounded btn btn-outline-success" title="Continuar" id="btn-save-data">
+        @*<button class="flotante rounded btn btn-outline-success" title="Continuar" id="btn-save-data">
             <i class="fas fa-check"></i>
-        </button>
+        </button>*@
         <button class="flotante2 rounded btn btn-outline-danger" title="Limpiar todos los campos" id="btn-clear-localstorage">
             <i class="fas fa-eraser"></i>
         </button>
@@ -864,6 +864,7 @@
                             <div class="col-md-12">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultdepartments">
                                 </div>
+                                <div class="animated fadeIn" id="noresultsdepartaments1"></div>
                             </div>
                         </div>
                     </div>
@@ -906,12 +907,13 @@
                             <div class="offset-2 col-md-8">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultlocalityadd">
                                 </div>
+                                <div class="animated fadeIn" id="noresultslocality1"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocality"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
+                    @*<button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocality"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
                     <button id="btn-close-search-localitys" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
                 </div>
             </div>
@@ -948,6 +950,7 @@
                             <div class="offset-2 col-md-8">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpuestosadd">
                                 </div>
+                                <div class="animated fadeIn" id="noresultsjobs2"></div>
                             </div>
                         </div>
                     </div>
@@ -988,6 +991,7 @@
                             <div class="offset-2 col-md-8">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpuestos">
                                 </div>
+                                <div class="animated fadeIn" id="noresultsjobs1"></div>
                             </div>
                         </div>
                     </div>
@@ -1684,6 +1688,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpositions">
                             </div>
+                            <div class="animated fadeIn" id="noresultpositions"></div>
                         </div>
                     </div>
                 </div>
@@ -1728,6 +1733,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpositionsadd">
                             </div>
+                            <div class="animated fadeIn" id="noresultpositions2"></div>
                         </div>
                     </div>
                 </div>
@@ -1770,6 +1776,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpositionsbtn">
                             </div>
+                            <div class="animated fadeIn" id="noresultpositions3"></div>
                         </div>
                     </div>
                 </div>
@@ -2059,6 +2066,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultregionales">
                             </div>
+                            <div class="animated fadeIn" id="noresultsregionales1"></div>
                         </div>
                     </div>
                 </div>
@@ -2215,6 +2223,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultoffices">
                             </div>
+                            <div class="animated fadeIn" id="noresultoffices1"></div>
                         </div>
                     </div>
                 </div>

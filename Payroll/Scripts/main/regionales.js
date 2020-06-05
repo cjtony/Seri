@@ -58,8 +58,8 @@
         localStorage.setItem('modalregionalesbtn', 1);
         setTimeout(() => { searchregionalkey.focus(); }, 1000);
     });
-    btnCloseSearchRegionales.addEventListener('click', () => { localStorage.removeItem('modalregionalesbtn'); searchregionalkey.value = ''; resultregionales.innerHTML = ''; });
-    icoCloseSearchRegionales.addEventListener('click', () => { localStorage.removeItem('modalregionalesbtn'); searchregionalkey.value = ''; resultregionales.innerHTML = ''; });
+    btnCloseSearchRegionales.addEventListener('click', () => { localStorage.removeItem('modalregionalesbtn'); searchregionalkey.value = ''; resultregionales.innerHTML = ''; document.getElementById('noresultsregionales1').innerHTML = ''; });
+    icoCloseSearchRegionales.addEventListener('click', () => { localStorage.removeItem('modalregionalesbtn'); searchregionalkey.value = ''; resultregionales.innerHTML = ''; document.getElementById('noresultsregionales1').innerHTML = ''; });
     /* FUNCION QUE LIMPIA LOS CAMPOS DEL FORMULARIO DE REGISTRO DE REGIONALES */
     fclearfieldsregionales = () => {
         descregion.value = '';
@@ -77,6 +77,7 @@
         $("#searchregion").modal('hide');
         searchregionalkey.value    = '';
         resultregionales.innerHTML = '';
+        document.getElementById('noresultsregionales1').innerHTML = '';
         setTimeout(() => {
             descregion.focus();
         }, 1000);
@@ -84,6 +85,7 @@
     /* FUNCION QUE HACE LA BUSQUEDA EN TIEMPO REAL */
     fsearchkeyupregionales = () => {
         resultregionales.innerHTML = '';
+        document.getElementById('noresultsregionales1').innerHTML = '';
         try {
             if (searchregionalkey.value != "") {
                 $.ajax({
@@ -97,6 +99,12 @@
                                 number += 1;
                                 resultregionales.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sClaveRegional} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselectregional(${data[i].iIdRegional})"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultsregionales1').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron regionales con el termino <b>${searchregionalkey.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);

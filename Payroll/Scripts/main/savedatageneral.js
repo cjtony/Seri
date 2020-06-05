@@ -442,7 +442,7 @@
     /*
      * Variables de botones 
      */
-    const btnsavedata = document.getElementById('btn-save-data');
+    //const btnsavedata = document.getElementById('btn-save-data');
     const btnsavedataall = document.getElementById('btn-save-data-all');
 
     /*
@@ -669,8 +669,6 @@
             clvstr: clvstr.value, fechefectpos: fechefectpos.value, fechinipos: fechinipos.value,
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value
         };
-        console.log('Datos de estructura');
-        console.log(dataSend);
         try {
             document.getElementById('txtsave4').textContent = 'Guardando';
             fsearchpositionsig();
@@ -717,7 +715,7 @@
     /*
      * Ejecucion del guardado de los datos 
      */
-    btnsavedata.addEventListener('click', fsavedataestructure);
+    //btnsavedata.addEventListener('click', fsavedataestructure);
 
     /*
      * Funcion que guarda los datos generales del empleado

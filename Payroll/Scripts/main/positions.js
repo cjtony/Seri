@@ -149,10 +149,13 @@
     fclearsearchresults = () => {
         searchpositionkeyadd.value = '';
         resultpositionsadd.innerHTML = '';
+        document.getElementById('noresultpositions2').innerHTML = '';
         $("#searchpositionsadd").modal('hide');
         $("#registerposition").modal('show');
         setTimeout(() => { emprepreg.focus(); }, 1000);
     }
+    btnclosesearchpositionsadd.addEventListener('click', fclearsearchresults);
+    icoclosesearchpositionsadd.addEventListener('click', fclearsearchresults);
     /* EJECUCION DE EVENTO QUE ACTIVA LA CAJA DE BUSQUEDA DE POSICION AL AÑADIR UNA NUEVA */
     btnsearchpositionadd.addEventListener('click', () => {
         $("#registerposition").modal('hide');
@@ -174,6 +177,7 @@
     fclearsearchresultsbtn = () => {
         searchpositionkeybtn.value = '';
         resultpositionsbtn.innerHTML = '';
+        document.getElementById('noresultpositions3').innerHTML = '';
     }
     localStorage.removeItem('modalbtnpositions');
     /* EJECUCION DE FUNCION */
@@ -194,12 +198,19 @@
     const btnsearchnumposition = document.getElementById('btn-search-num-position');
     const btnSearchDepartament = document.getElementById('btn-search-departamento');
     /* LIMPIA LA BUSQUEDA AL CERRAR LA MDOAL */
-    btnCloseSearchPositions.addEventListener('click', () => { searchpositions.value = ''; resultpositions.innerHTML = ''; });
-    icoCloseSearchPositions.addEventListener('click', () => { searchpositions.value = ''; resultpositions.innerHTML = ''; });
+    btnCloseSearchPositions.addEventListener('click', () => {
+        searchpositions.value = ''; resultpositions.innerHTML = '';
+        document.getElementById('noresultpositions').innerHTML = '';
+    });
+    icoCloseSearchPositions.addEventListener('click', () => {
+        searchpositions.value = ''; resultpositions.innerHTML = '';
+        document.getElementById('noresultpositions').innerHTML = '';
+    });
     /* EJECUCION DE FUNCION QUE OCULTA LA BUSUQUEDA DE POSICIONES */
     btnregisterpositions.addEventListener('click', () => {
         searchpositions.value = '';
         resultpositions.innerHTML = '';
+        document.getElementById('noresultpositions').innerHTML = '';
         $("#searchpositionstab").modal('hide');
         setTimeout(() => { codposic.focus(); }, 1000);
     });
@@ -218,6 +229,7 @@
                     if (data.mesage == "success") {
                         codposic.value = data.result;
                     }
+                    console.log(data);
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
                 }
@@ -239,6 +251,7 @@
     /* FUNCION QUE HACE LA BUSQUEDA EN TIEMPO REAL */
     fsearchkeyuppositions = () => {
         resultpositions.innerHTML = '';
+        document.getElementById('noresultpositions').innerHTML = '';
         try {
             if (searchpositions.value != "") {
                 $.ajax({
@@ -252,6 +265,12 @@
                                 number += 1;
                                 resultpositions.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectposition(${data[i].iIdPosicion})"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultpositions').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron posiciones con el termino <b>${searchpositions.value}</b>
+                                </div>
+                            `;
                         }
                         console.log(data);
                     }, error: (jqXHR, exception) => {
@@ -343,6 +362,7 @@
     fsearchkeyuppositionsadd = () => {
         try {
             resultpositionsadd.innerHTML = '';
+            document.getElementById('noresultpositions2').innerHTML = '';
             if (searchpositionkeyadd.value != "") {
                 $.ajax({
                     url: "../SearchDataCat/SearchPositions",
@@ -355,6 +375,12 @@
                                 number += 1;
                                 resultpositionsadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectpositionadd(${data[i].iIdPosicion}, '${data[i].sPosicionCodigo}')"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultpositions2').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron posiciones con el termino <b>${searchpositionkeyadd.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -542,6 +568,7 @@
     fsearchkeyuppositionsbtn = () => {
         try {
             resultpositionsbtn.innerHTML = '';
+            document.getElementById('noresultpositions3').innerHTML = '';
             if (searchpositionkeybtn.value != "") {
                 $.ajax({
                     url: "../SearchDataCat/SearchPositionsList",
@@ -554,6 +581,12 @@
                                 number += 1;
                                 resultpositionsbtn.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back" title="Editar">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-eye ml-2 col-ico fa-lg" onclick="fviewdatailspos(${data[i].iIdPosicion})"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultpositions3').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron posiciones con el termino <b>${searchpositionkeybtn.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
