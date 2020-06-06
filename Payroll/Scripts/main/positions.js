@@ -259,6 +259,7 @@
                     type: "POST",
                     data: { wordsearch: searchpositions.value, type: 'EMPR' },
                     success: (data) => {
+                        resultpositions.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {

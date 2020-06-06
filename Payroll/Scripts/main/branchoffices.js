@@ -89,6 +89,7 @@
                     type: "POST",
                     data: { wordsearch: searchofficekey.value },
                     success: (data) => {
+                        resultoffices.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {

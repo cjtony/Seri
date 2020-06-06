@@ -58,11 +58,18 @@
     const btnSearchTableDepartament3 = document.getElementById('btn-search-table-departaments3');
     const btnSearchTableDepartament4 = document.getElementById('btn-search-table-departaments4');
     /* ELIMINA EL LOCAL STORAGE AL CARGAR LA PAGINA */
+    localStorage.removeItem('modalbtndepartament');
+    localStorage.removeItem('editdepartament');
     localStorage.removeItem('departsearch0');
     localStorage.removeItem('departsearch1');
     localStorage.removeItem('departsearch2');
     localStorage.removeItem('departsearch3');
     localStorage.removeItem('departsearch4');
+    localStorage.removeItem('departsearch0edit');
+    localStorage.removeItem('departsearch1edit');
+    localStorage.removeItem('departsearch2edit');
+    localStorage.removeItem('departsearch3edit');
+    localStorage.removeItem('departsearch4edit');
     /* FUNCION QUE GENERA LOCALSTORAGE */
     fgeneratelocalstobtns = (param) => {
         localStorage.setItem(String(param), 1);
@@ -123,6 +130,11 @@
     const btnSearchTableDepartament2Edit = document.getElementById('btn-search-table-departaments2edit');
     const btnSearchTableDepartament3Edit = document.getElementById('btn-search-table-departaments3edit');
     const btnSearchTableDepartament4Edit = document.getElementById('btn-search-table-departaments4edit');
+    btnSearchTableDepartament0Edit.addEventListener('click', () => { fgeneratelocalstobtns('departsearch0edit'); });
+    btnSearchTableDepartament1Edit.addEventListener('click', () => { fgeneratelocalstobtns('departsearch1edit'); });
+    btnSearchTableDepartament2Edit.addEventListener('click', () => { fgeneratelocalstobtns('departsearch2edit'); });
+    btnSearchTableDepartament3Edit.addEventListener('click', () => { fgeneratelocalstobtns('departsearch3edit'); });
+    btnSearchTableDepartament4Edit.addEventListener('click', () => { fgeneratelocalstobtns('departsearch4edit'); });
     /* CONSTANTES DEL CENTRO DE COSTOS */
     const btnsearchcentrcost      = document.getElementById('btn-search-centrcosts');
     const btnclosesearchcentrcost = document.getElementById('btn-close-search-centrcost');
@@ -292,18 +304,21 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DEL DEPARTAMENTO SELECCIONADO AL MOMENTO DE EDITARLOS */
     fselectdepartment = (param) => {
+        /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DE NIVEL ESTRUCTURA */
+        floadnivestuc(0, 'Active/Desactive', 0, edinivestuc, 0);
+        /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT EDIFICIOS */
+        floadbuilding('Active/Desactive', 0, ediedific, 0);
+        /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT CENTRO DE COSTOS */
+        floadcentrcost(0, 'Active/Desactive', 0, edicentrcost);
+        document.getElementById('namedepartamentedi').textContent = 'Espere un momento, cargando información';
+        $("#editdepartament").modal('show');
+        $("#searchdepartamentbtn").modal('hide');
         try {
             $.ajax({
                 url: "../SearchDataCat/SelectDepartment",
                 type: "POST",
                 data: { clvdep: param },
                 success: (data) => {
-                    /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DE NIVEL ESTRUCTURA */
-                    floadnivestuc(0, 'Active/Desactive', 0, edinivestuc, 0);
-                    /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT EDIFICIOS */
-                    floadbuilding('Active/Desactive', 0, ediedific, 0);
-                    /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT CENTRO DE COSTOS */
-                    floadcentrcost(0, 'Active/Desactive', 0, edicentrcost);
                     /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT REPORTA A */
                     floadbusiness(0, 'Active/Desactive', 0, edireportaa);
                     /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DIRECCION GENERAL */
@@ -312,27 +327,27 @@
                     floadbusiness(0, 'Active/Desactive', 0, edidireje);
                     /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DIRECCION DE AREA */
                     floadbusiness(0, 'Active/Desactive', 0, edidirare);
-                    $("#editdepartament").modal('show');
-                    $("#searchdepartamentbtn").modal('hide');
                     searchdepartmentkey.value = ''; resultdepartments.innerHTML = '';
-                    document.getElementById('namedepartamentedi').textContent = data.sDescripcionDepartamento;
-                    clvdepart.value = data.iIdDepartamento;
-                    edidepart.value = data.sDeptoCodigo;
-                    edidescdepart.value = data.sDescripcionDepartamento;
-                    nivsuptxtedit.value = data.sNivelSuperior;
-                    edinivestuc.value = data.sNivelEstructura;
-                    ediedific.value = data.iEdificioId;
-                    edipiso.value = data.sPiso;
-                    ediubicac.value = data.sUbicacion;
-                    edicentrcost.value = data.iCentroCostoId;
-                    edireportaa.value = data.iEmpresaReportaId;
-                    edidgatxt.value = data.sDGA;
-                    edidirgentxt.value = data.sDirecGen;
-                    edidirejetxt.value = data.sDirecEje;
-                    edidiraretxt.value = data.sDirecAre;
-                    edidirgen.value = data.iEmpreDirGen;
-                    edidireje.value = data.iEmpreDirEje;
-                    edidirare.value = data.iEmpreDirAre;
+                    setTimeout(() => {
+                        document.getElementById('namedepartamentedi').textContent = data.sDescripcionDepartamento;
+                        clvdepart.value = data.iIdDepartamento;
+                        edidepart.value = data.sDeptoCodigo;
+                        edidescdepart.value = data.sDescripcionDepartamento;
+                        nivsuptxtedit.value = data.sNivelSuperior;
+                        edinivestuc.value = data.sNivelEstructura;
+                        ediedific.value = data.iEdificioId;
+                        edipiso.value = data.sPiso;
+                        ediubicac.value = data.sUbicacion;
+                        edicentrcost.value = data.iCentroCostoId;
+                        edireportaa.value = data.iEmpresaReportaId;
+                        edidgatxt.value = data.sDGA;
+                        edidirgentxt.value = data.sDirecGen;
+                        edidirejetxt.value = data.sDirecEje;
+                        edidiraretxt.value = data.sDirecAre;
+                        edidirgen.value = data.iEmpreDirGen;
+                        edidireje.value = data.iEmpreDirEje;
+                        edidirare.value = data.iEmpreDirAre;
+                    }, 2000);
                     console.log(data);
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -361,7 +376,7 @@
                     type: "POST",
                     data: { wordsearch: searchdepartmentkey.value, type: 'EMPR' },
                     success: (data) => {
-                        console.log(data);
+                        resultdepartments.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
@@ -398,7 +413,7 @@
     searchdepartmentkey.addEventListener('keyup', fsearchdepartments);
     /* GUARDADO DE LA EDICION DE LOS DEPARTAMENTOS */
     btnedidepartament.addEventListener('click', () => {
-        const arrInputs = [edidepart, edidescdepart, edinivestuc, ediedific, edipiso, edicentrcost, edireportaa, edidirgen, edidireje, edidirare];
+        const arrInputs = [edidepart, edidescdepart, edinivestuc, ediedific, edipiso, edicentrcost, edireportaa];
         let validate = 0;
         for (let i = 0; i < arrInputs.length; i++) {
             if (arrInputs[i].hasAttribute('tp-select')) {
@@ -482,7 +497,7 @@
     });
     /* FUNCION QUE GUARDA LOS DATOS DE UN NUEVO DEPARTAMENTO */
     btnsavedepartament.addEventListener('click', () => {
-        const arrInputs = [regdepart, descdepart, nivestuc, edific, piso, centrcost, reportaa, dirgen, direje, dirare];
+        const arrInputs = [regdepart, descdepart, nivestuc, edific, piso, centrcost, reportaa];
         let validate = 0;
         for (let i = 0; i < arrInputs.length; i++) {
             if (arrInputs[i].hasAttribute('tp-select')) {
@@ -586,8 +601,16 @@
     const btnclosesearchedifics = document.getElementById('btn-close-search-edifics');
     const icoclosesearchedifics = document.getElementById('ico-close-search-edifics');
     /* EJECUCION QUE MUESTRA LA VENTANA DE NUEVO DEPARTAMENTO AL MOMENTO DE CERRAR LA BUSQUEDA DE LOS DEPARTAMENTOS */
-    btnclosesearchclosedepbtn.addEventListener('click', () => { $("#registerdepartament").modal('show'); });
-    icoclosesearchclosedepbtn.addEventListener('click', () => { $("#registerdepartament").modal('show'); });
+    btnclosesearchclosedepbtn.addEventListener('click', () => {
+        $("#registerdepartament").modal('show');
+        searchdepartmentkeynew.value = '';
+        resultdepartmentsnew.innerHTML = '';
+    });
+    icoclosesearchclosedepbtn.addEventListener('click', () => {
+        searchdepartmentkeynew.value = '';
+        resultdepartmentsnew.innerHTML = '';
+        $("#registerdepartament").modal('show');
+    });
     btnclosesearchedifics.addEventListener('click', () => { $("#registerdepartament").modal('show'); });
     icoclosesearchedifics.addEventListener('click', () => { $("#registerdepartament").modal('show'); });
     /* FUNCION QUE CARGA EN LOS INPUTS EL DEPARTAMENTO SELECCIONADO */
@@ -596,20 +619,45 @@
         searchdepartmentkeynew.value = '';
         resultdepartmentsnew.innerHTML = '';
         try {
+            // Añadde un nivel superior al editar un departamento
+            if (localStorage.getItem('departsearch0edit') != null) {
+                nivsuptxtedit.value = paramstr;
+                localStorage.removeItem('departsearch0edit');
+            }
+            // Añade un dg al momento de editar un departamento
+            if (localStorage.getItem('departsearch1edit') != null) {
+                edidgatxt.value = paramstr;
+                localStorage.removeItem('departsearch1edit');
+            }
+            // Añade una dir general al momento de editar un departamento 
+            if (localStorage.getItem('departsearch2edit') != null) {
+                edidirgentxt.value = paramstr;
+                localStorage.removeItem('departsearch2edit');
+            }
+            // Añade una dir ejecutiva al momento de editar un departamento
+            if (localStorage.getItem('departsearch3edit') != null) {
+                edidirejetxt.value = paramstr;
+                localStorage.removeItem('departsearch3edit');
+            }
+            // Añade una dir de area al momento de editar un departamento 
+            if (localStorage.getItem('departsearch4edit') != null) {
+                edidiraretxt.value = paramstr;
+                localStorage.removeItem('departsearch4edit');
+            }
             if (localStorage.getItem('departsearch0') != null) {
                 nivsuptxt.value = paramstr;
                 localStorage.removeItem('departsearch0');
-                $("#registerdepartament").modal('show');
+                //$("#registerdepartament").modal('show');
             }
             if (localStorage.getItem('departsearch1') != null) {
                 dgatxt.value = paramstr;
                 localStorage.removeItem('departsearch1');
-                $("#registerdepartament").modal('show');
+                //$("#registerdepartament").modal('show');
             }
             if (localStorage.getItem('departsearch2') != null) {
                 dirgentxt.value = paramstr;
                 localStorage.removeItem('departsearch2');
-                $("#registerdepartament").modal('show');
+                //$("#registerdepartament").modal('show');
             }
             if (localStorage.getItem('departsearch3') != null) {
                 direjetxt.value = paramstr;
@@ -641,8 +689,9 @@
                 $.ajax({
                     url: "../SearchDataCat/SearchDepartaments",
                     type: "POST",
-                    data: { wordsearch: searchdepartmentkeynew.value, type: 'ALL' },
+                    data: { wordsearch: searchdepartmentkeynew.value, type: 'EMPR' },
                     success: (data) => {
+                        resultdepartmentsnew.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
@@ -704,6 +753,7 @@
                     type: "POST",
                     data: { wordsearch: searchcentrcosts.value },
                     success: (data) => {
+                        resultcentrcosts.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
@@ -768,6 +818,7 @@
                     type: "POST",
                     data: { wordsearch: searchedifickey.value },
                     success: (data) => {
+                        resultedifics.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
@@ -836,6 +887,7 @@
                     type: "POST",
                     data: { wordsearch: searchdepartmentkeyadd.value, type: 'EMPR' },
                     success: (data) => {
+                        resultdepartmentsadd.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {

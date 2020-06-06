@@ -56,6 +56,7 @@
                     type: "POST",
                     data: { wordsearch: searchlocalityadd.value },
                     success: (data) => {
+                        resultlocalityadd.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
