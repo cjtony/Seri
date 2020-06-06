@@ -590,7 +590,6 @@
     /* FUNCION QUE EJECUTA LA BUSUQEDA REAL DE LOS EMPLEADOS */
     fsearchemployes = () => {
         const filtered = $("input:radio[name=filtroemp]:checked").val();
-        console.log(filtered.trim());
         try {
             resultemployekey.innerHTML = '';
             if (searchemployekey.value != "") {
@@ -599,6 +598,7 @@
                     type: "POST",
                     data: { wordsearch: searchemployekey.value, filtered: filtered.trim() },
                     success: (data) => {
+                        resultemployekey.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
