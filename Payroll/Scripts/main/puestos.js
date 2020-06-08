@@ -241,7 +241,7 @@
     }
     /* FUNCION QUE HACE LA BUSQUEDA EN TIEMPO REAL */
     fsearchkeyuppuesto = () => {
-        console.log('Buscando puesto');
+        noresultsjobs1.innerHTML = '';
         resultpuestos.innerHTML = '';
         try {
             if (searchpuestokey.value != "") {
@@ -250,6 +250,7 @@
                     type: "POST",
                     data: { wordsearch: searchpuestokey.value },
                     success: (data) => {
+                        resultpuestos.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {

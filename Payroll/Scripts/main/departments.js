@@ -15,6 +15,7 @@
     fclearsearchresults = () => {
         searchdepartmentkeyadd.value = '';
         resultdepartmentsadd.innerHTML = '';
+        document.getElementById('noresultsdepartamentadd').innerHTML = '';
         $("#searchdepartament").modal('hide');
         $("#registerposition").modal('show');
         setTimeout(() => { departreg.focus(); }, 1000);
@@ -113,8 +114,12 @@
     const edidescdepart = document.getElementById('edidescdepart');
     const nivsuptxtedit = document.getElementById('nivsuptxtedit');
     const edireportaa = document.getElementById('edireportaa');
-    const edicentrcost = document.getElementById('edicentrcost');
-    const ediedific = document.getElementById('ediedific');
+    //const edicentrcost = document.getElementById('edicentrcost');
+    const centrcosttxtredit = document.getElementById('centrcosttxtredit');
+    const centrcostedit = document.getElementById('centrcostedit');
+    const edificedit = document.getElementById('edificedit');
+    const edifictxtedit = document.getElementById('edifictxtedit');
+    //const ediedific = document.getElementById('ediedific');
     const edinivestuc = document.getElementById('edinivestuc');
     const edipiso = document.getElementById('edipiso');
     const ediubicac = document.getElementById('ediubicac');
@@ -174,9 +179,9 @@
     btnClearFieldsDepart.addEventListener('click', fclearfieldsnewdepart);
     icoClearFieldsDepart.addEventListener('click', fclearfieldsnewdepart);
     // Funcion que carga los niveles de estructura \\
-    floadnivestuc = (state, type, keyniv, elementid, val) => {
+    floadnivestuc = async (state, type, keyniv, elementid, val) => {
         try {
-            $.ajax({
+            await $.ajax({
                 url: "../CatalogsTables/NivEstruct",
                 type: "POST",
                 data: { state: state, type: type, keyniv: keyniv },
@@ -209,9 +214,9 @@
         }
     }
     // Funcion que carga los datos de edificio \\
-    floadbuilding = (type, keyedi, elementid, val) => {
+    floadbuilding = async (type, keyedi, elementid, val) => {
         try {
-            $.ajax({
+            await $.ajax({
                 url: "../CatalogsTables/Buildings",
                 type: "POST",
                 data: { type: type, keyedi: keyedi },
@@ -243,9 +248,9 @@
         }
     }
     // Funcion que carga los centros de costo \\
-    floadcentrcost = (state, type, keycos, elementid) => {
+    floadcentrcost = async (state, type, keycos, elementid) => {
         try {
-            $.ajax({
+            await $.ajax({
                 url: "../CatalogsTables/CentrCost",
                 type: "POST",
                 data: { state: state, type: type, keycos: keycos },
@@ -273,9 +278,9 @@
         }
     }
     // Funcion que carga las empresas del sistema \\
-    floadbusiness = (state, type, keyemp, elementid) => {
+    floadbusiness = async (state, type, keyemp, elementid) => {
         try {
-            $.ajax({
+            await $.ajax({
                 url: "../CatalogsTables/Business",
                 type: "POST",
                 data: { state: state, type: type, keyemp: keyemp },
@@ -302,14 +307,47 @@
             }
         }
     }
+    floadbusinessedit = async (state, type, keyemp) => {
+        try {
+            await $.ajax({
+                url: "../CatalogsTables/Business",
+                type: "POST",
+                data: { state: state, type: type, keyemp: keyemp },
+                success: (data) => {
+                    const quantity = data.length;
+                    if (quantity > 0) {
+                        for (let i = 0; i < data.length; i++) {
+                            edireportaa.innerHTML += `<option value="${data[i].iIdEmpresa}">${data[i].sNombreEmpresa}</option>`;
+                            edidirgen.innerHTML   += `<option value="${data[i].iIdEmpresa}">${data[i].sNombreEmpresa}</option>`;
+                            edidireje.innerHTML   += `<option value="${data[i].iIdEmpresa}">${data[i].sNombreEmpresa}</option>`;
+                            edidirare.innerHTML   += `<option value="${data[i].iIdEmpresa}">${data[i].sNombreEmpresa}</option>`;
+
+                        }
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
     /* FUNCION QUE CARGA LOS DATOS DEL DEPARTAMENTO SELECCIONADO AL MOMENTO DE EDITARLOS */
     fselectdepartment = (param) => {
         /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DE NIVEL ESTRUCTURA */
         floadnivestuc(0, 'Active/Desactive', 0, edinivestuc, 0);
         /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT EDIFICIOS */
-        floadbuilding('Active/Desactive', 0, ediedific, 0);
+        //floadbuilding('Active/Desactive', 0, ediedific, 0);
         /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT CENTRO DE COSTOS */
-        floadcentrcost(0, 'Active/Desactive', 0, edicentrcost);
+        //floadcentrcost(0, 'Active/Desactive', 0, edicentrcost);
         document.getElementById('namedepartamentedi').textContent = 'Espere un momento, cargando información';
         $("#editdepartament").modal('show');
         $("#searchdepartamentbtn").modal('hide');
@@ -319,14 +357,9 @@
                 type: "POST",
                 data: { clvdep: param },
                 success: (data) => {
+                    console.log(data);
                     /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT REPORTA A */
-                    floadbusiness(0, 'Active/Desactive', 0, edireportaa);
-                    /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DIRECCION GENERAL */
-                    floadbusiness(0, 'Active/Desactive', 0, edidirgen);
-                    /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DIRECCION EJECUTIVA */
-                    floadbusiness(0, 'Active/Desactive', 0, edidireje);
-                    /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT DIRECCION DE AREA */
-                    floadbusiness(0, 'Active/Desactive', 0, edidirare);
+                    floadbusinessedit(0, 'Active/Desactive', 0);
                     searchdepartmentkey.value = ''; resultdepartments.innerHTML = '';
                     setTimeout(() => {
                         document.getElementById('namedepartamentedi').textContent = data.sDescripcionDepartamento;
@@ -335,10 +368,14 @@
                         edidescdepart.value = data.sDescripcionDepartamento;
                         nivsuptxtedit.value = data.sNivelSuperior;
                         edinivestuc.value = data.sNivelEstructura;
-                        ediedific.value = data.iEdificioId;
+                        edificedit.value = data.iEdificioId;
+                        edifictxtedit.value = data.sEdificioN;
+                        //ediedific.value = data.iEdificioId;
                         edipiso.value = data.sPiso;
                         ediubicac.value = data.sUbicacion;
-                        edicentrcost.value = data.iCentroCostoId;
+                        centrcostedit.value = data.iCentroCostoId;
+                        centrcosttxtredit.value = data.sCentroCosto;
+                        //edicentrcost.value = data.iCentroCostoId;
                         edireportaa.value = data.iEmpresaReportaId;
                         edidgatxt.value = data.sDGA;
                         edidirgentxt.value = data.sDirecGen;
@@ -413,7 +450,7 @@
     searchdepartmentkey.addEventListener('keyup', fsearchdepartments);
     /* GUARDADO DE LA EDICION DE LOS DEPARTAMENTOS */
     btnedidepartament.addEventListener('click', () => {
-        const arrInputs = [edidepart, edidescdepart, edinivestuc, ediedific, edipiso, edicentrcost, edireportaa];
+        const arrInputs = [edidepart, edidescdepart, edinivestuc, edificedit, edipiso, centrcostedit, edireportaa];
         let validate = 0;
         for (let i = 0; i < arrInputs.length; i++) {
             if (arrInputs[i].hasAttribute('tp-select')) {
@@ -434,7 +471,7 @@
         if (validate == 0) {
             const dataSend = {
                 edidepart: edidepart.value, edidescdepart: edidescdepart.value, edinivestuc: edinivestuc.value, nivsuptxtedit: nivsuptxtedit.value,
-                ediedific: ediedific.value, edipiso: edipiso.value, ediubicac: ediubicac.value, edicentrcost: edicentrcost.value,
+                ediedific: edificedit.value, edipiso: edipiso.value, ediubicac: ediubicac.value, edicentrcost: centrcostedit.value,
                 edireportaa: edireportaa.value, edidgatxt: edidgatxt.value, edidirgentxt: edidirgentxt.value, edidirejetxt: edidirejetxt.value,
                 edidiraretxt: edidiraretxt.value, edidirgen: edidirgen.value, edidireje: edidireje.value, edidirare: edidirare.value,
                 clvdepart: clvdepart.value
@@ -852,6 +889,7 @@
         try {
             searchdepartmentkeyadd.value   = '';
             resultdepartmentsadd.innerHTML = '';
+            document.getElementById('noresultsdepartamentadd').innerHTML = '';
             $("#searchdepartament").modal('hide');
             $("#registerposition").modal('show');
             depaid.value    = paramid;
@@ -894,6 +932,12 @@
                                 number += 1;
                                 resultdepartmentsadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sDeptoCodigo} - ${data[i].sDescripcionDepartamento} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectoptionnewposition(${data[i].iIdDepartamento},'${data[i].sDeptoCodigo}')"></i> </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultsdepartamentadd').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron departamentos con el termino <b>${searchdepartmentkeyadd.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -916,4 +960,199 @@
     }
     /* EJECUCION DE LA FUNCION QUE CARGA LOS DEPARTAMENTOS AL MOMENTO DE REGISTRAR UNA NUEVA POSICION */
     searchdepartmentkeyadd.addEventListener('keyup', fsearchdepartamentsadd);
+
+    /* CODIGO PARA LA EDICION DE LOS DEPARTAMENTOS */
+    const searchedifickeyedit = document.getElementById('searchedifickeyedit');
+    const resultedificsedit   = document.getElementById('resultedificsedit');
+    const noresultedificsedit = document.getElementById('noresultedificsedit');
+    const btnSearchEdificEdit = document.getElementById('btn-search-edific-edit');
+    const btnCloseSearcEdEdit = document.getElementById('btn-close-search-edifics-edit');
+    const icoCloseSearcEdEdit = document.getElementById('ico-close-search-edifics-edit');
+
+    /* ACTIVAR CAMPO DE BUSQUEDA AL PRESIONAR EL BOTON DE BUSCAR UN NUEVO EDIFICIO AL EDITAR UN DEPARTAMENTO */
+    btnSearchEdificEdit.addEventListener('click', () => {
+        $("#editdepartament").modal('hide');
+        setTimeout(() => {
+            searchedifickeyedit.focus();
+        }, 1000);
+    });
+
+    /* FUNCION QUE LIMPIA LA CAJA DE BUSQUEDA Y LOS RESULTADOS AL BUSCAR UN NUEVO EDIFICIO AL EDITAR UN DEPARTAMENTO */
+    fclearfieldssearcheditedific = () => {
+        searchedifickeyedit.value     = '';
+        resultedificsedit.innerHTML   = '';
+        noresultedificsedit.innerHTML = '';
+    }
+
+    /* LIMPIA LA CAJA DE BUSQUEDA Y LOS RESULTADOS AL BUSCAR UN NUEVO EDIFICIO AL EDITAR UN DEPARTAMENTO */
+    btnCloseSearcEdEdit.addEventListener('click', fclearfieldssearcheditedific);
+    icoCloseSearcEdEdit.addEventListener('click', fclearfieldssearcheditedific);
+
+    /* FUNCION QUE EJECUTA LA BUSQUEDA EN TIEMPO REAL DE LOS EDIFICIOS PARA EDITAR UN DEPARTAMENTO */
+    fsearchedificedit = () => {
+        resultedificsedit.innerHTML = '';
+        try {
+            if (searchedifickeyedit.value != "") {
+                $.ajax({
+                    url: "../SearchDataCat/SearchEdifics",
+                    type: "POST",
+                    data: { wordsearch: searchedifickeyedit.value },
+                    success: (data) => {
+                        resultedificsedit.innerHTML = '';
+                        if (data.length > 0) {
+                            let number = 0;
+                            for (let i = 0; i < data.length; i++) {
+                                number += 1;
+                                resultedificsedit.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sNombreEdificio} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectedificedit(${data[i].iIdEdificio},'${data[i].sNombreEdificio}')"></i> </button>`;
+                            }
+                        } else {
+                            noresultedificsedit.innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron edificios con el termino <b>${searchedifickeyedit.value}</b>
+                                </div>
+                            `;
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                resultedificsedit.innerHTML = '';
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    /* EJECUCION DE LA BUSQUEDA EN TIEMPO REAL DE LOS EDIFICIOS AL EDITAR UN DEPARTAMENTO */
+    searchedifickeyedit.addEventListener('keyup', fsearchedificedit);
+
+    /* FUNCION QUE ASIGNA EL NUEVO EDIFICIO A LA EDICION DEL DEPARTAMENTO CORRESPONDIENTE */
+    fselectedificedit = (paramid, paramstr) => {
+        try {
+            $("#searchedificedit").modal('hide');
+            resultedificsedit.innerHTML   = '';
+            noresultedificsedit.innerHTML = '';
+            searchedifickeyedit.value     = '';
+            setTimeout(() => { $("#editdepartament").modal('show'); }, 500);
+            edificedit.value    = paramid;
+            edifictxtedit.value = paramstr;
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    /* CODIGO PARA LA EDICION DE UN CENTRO COSTO AL EDITAR UN NUEVO DEPARTAMENTO */
+    const searchcentrcostsedit   = document.getElementById('searchcentrcostsedit');
+    const resultcentrcostsedit   = document.getElementById('resultcentrcostsedit');
+    const noresultscentrcostedit = document.getElementById('noresultscentrcostedit');
+    const btnSearchCentrCostEdit = document.getElementById('btn-search-centrcosts-edit');
+    const btnCloseSearchCenCEdit = document.getElementById('btn-close-search-centrcost-edit');
+    const icoCloseSearchCenCEdit = document.getElementById('ico-close-search-centrcost-edit');
+
+    /* ACTIVAR CAMPO DE BUSQUEDA AL BUSCAR UN NUEVO CENTRO DE COSTO AL EDITAR UN DEPARTAMENTO */
+    btnSearchCentrCostEdit.addEventListener('click', () => {
+        $("#editdepartament").modal('hide');
+        setTimeout(() => {
+            searchcentrcostsedit.focus();
+        }, 1000);
+    });
+
+    /* FUNCION QUE LIMPIA LA CAJA DE BUSQUEDA Y DE RESULTADOS AL BUSCAR UUN NUEVO CENTRO DE COSTO AL EDITAR UN DEPARTAMENTO */
+    fclearfieldssearchcentrcostedit = () => {
+        searchcentrcostsedit.value       = '';
+        resultcentrcostsedit.innerHTML   = '';
+        noresultscentrcostedit.innerHTML = '';
+    }
+
+    /* LIMPIEZA DE LA CAJA DE BUSQUEDA Y RESULTADOS DE LA EDICION DE UN CENTRO DE COSTO AL EDITAR UN DEPARTAMENTO */
+    btnCloseSearchCenCEdit.addEventListener('click', fclearfieldssearchcentrcostedit);
+    icoCloseSearchCenCEdit.addEventListener('click', fclearfieldssearchcentrcostedit);
+
+    /* FUNCION QUE EJECUTA LA BUSQUEDA EN TIEMPO REAL DEL CENTRO DE COSTO AL EDITAR UN DEPARTAMENTO */
+    fsearchcentrcostosedit = () => {
+        resultcentrcostsedit.innerHTML = '';
+        try {
+            if (searchcentrcostsedit.value != "") {
+                $.ajax({
+                    url: "../SearchDataCat/SearchCentrCost",
+                    type: "POST",
+                    data: { wordsearch: searchcentrcostsedit.value },
+                    success: (data) => {
+                        resultcentrcostsedit.innerHTML = '';
+                        if (data.length > 0) {
+                            let number = 0;
+                            for (let i = 0; i < data.length; i++) {
+                                number += 1;
+                                resultcentrcostsedit.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sCentroCosto} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectcentrcostedit(${data[i].iIdCentroCosto},'${data[i].sCentroCosto}')"></i> </button>`;
+                            }
+                        } else {
+                            noresultscentrcostedit.innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron edificios con el termino <b>${searchcentrcostsedit.value}</b>
+                                </div>
+                            `;
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                resultcentrcostsedit.innerHTML = '';
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    /* EJECUCION DE LA FUNCION QUE REALIZA LA BUSQUEDA EN TIEMPO DE REAL DE LOS CENTROS DE COSTOS */
+    searchcentrcostsedit.addEventListener('keyup', fsearchcentrcostosedit);
+
+    /* FUNCION QUE ASIGNA EL NUEVO CENTRO DE COSTO AL DEPARTAMENTO CORRESPONDIENTE */
+    fselectcentrcostedit = (paramid, paramstr) => {
+        try {
+            $("#searchcentrscostedit").modal('hide');
+            searchcentrcostsedit.value       = '';
+            resultcentrcostsedit.innerHTML   = '';
+            noresultscentrcostedit.innerHTML = '';
+            setTimeout(() => { $("#editdepartament").modal('show'); }, 500);
+            centrcostedit.value     = paramid;
+            centrcosttxtredit.value = paramstr;
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
 });

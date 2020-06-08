@@ -194,9 +194,11 @@ namespace Payroll.Models.Beans
         public string sNivelEstructura { get; set; }
         public string sNivelSuperior { get; set; }
         public int iEdificioId { get; set; }
+        public string sEdificioN { get; set; }
         public string sPiso { get; set; }
         public string sUbicacion { get; set; }
         public int iCentroCostoId { get; set; }
+        public string sCentroCosto { get; set; }
         public int iEmpresaReportaId { get; set; }
         public string sEmpresaReportaA { get; set; }
         public string sDGA { get; set; }
