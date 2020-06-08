@@ -370,6 +370,7 @@
                     type: "POST",
                     data: { wordsearch: searchpositionkeyadd.value, type: 'ALL' },
                     success: (data) => {
+                        resultpositionsadd.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
@@ -566,21 +567,22 @@
         }
     }
     /* FUNCION QUE REALIZA LA BUSQUEDA EN TIEMPO REAL DE POSICIONES AL DAR CLICK EN EL BOTON DE POSICIONES */
-    fsearchkeyuppositionsbtn = () => {
+    fsearchkeyuppositionsbtn = async () => {
         try {
             resultpositionsbtn.innerHTML = '';
             document.getElementById('noresultpositions3').innerHTML = '';
             if (searchpositionkeybtn.value != "") {
-                $.ajax({
+                await $.ajax({
                     url: "../SearchDataCat/SearchPositionsList",
                     type: "POST",
                     data: { wordsearch: searchpositionkeybtn.value },
                     success: (data) => {
+                        resultpositionsbtn.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpositionsbtn.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back" title="Editar">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-eye ml-2 col-ico fa-lg" onclick="fviewdatailspos(${data[i].iIdPosicion})"></i> </button>`;
+                                resultpositionsbtn.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back" title="Detalles">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-eye ml-2 col-ico fa-lg" onclick="fviewdatailspos(${data[i].iIdPosicion})"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultpositions3').innerHTML = `

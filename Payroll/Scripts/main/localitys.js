@@ -49,6 +49,7 @@
     /* FUNCION QUE REALIZA LA BUSQUEDA EN TIEMPO REAL DE LAS LOCALIDADES */
     fsearchlocalitysadd = () => {
         try {
+            noresultslocality1.innerHTML = '';
             resultlocalityadd.innerHTML = '';
             if (searchlocalityadd.value != "") {
                 $.ajax({

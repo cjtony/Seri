@@ -825,6 +825,7 @@
                             <div class="col-md-12">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultdepartmentsadd">
                                 </div>
+                                <div class="animated fadeIn" id="noresultsdepartamentadd"></div>
                             </div>
                         </div>
                     </div>
@@ -904,7 +905,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="offset-2 col-md-8">
+                            <div class="offset-1 col-md-10">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultlocalityadd">
                                 </div>
                                 <div class="animated fadeIn" id="noresultslocality1"></div>
@@ -938,16 +939,16 @@
                                 <div class="form-group row">
                                     <label for="searchpuestokeyadd" class="col-form-label col-md-5">
                                         <i class="fas fa-terminal mr-1"></i>
-                                        Código puesto
+                                        Nombre puesto
                                     </label>
                                     <div class="col-md-7">
-                                        <input type="text" class="form-control form-control-sm text-uppercase" id="searchpuestokeyadd" placeholder="Ingresa el código" />
+                                        <input type="text" class="form-control form-control-sm text-uppercase" id="searchpuestokeyadd" placeholder="Ingresa el nombre" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="offset-2 col-md-8">
+                            <div class="offset-1 col-md-10">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpuestosadd">
                                 </div>
                                 <div class="animated fadeIn" id="noresultsjobs2"></div>
@@ -979,16 +980,16 @@
                                 <div class="form-group row">
                                     <label for="searchpuestokey" class="col-form-label col-md-5">
                                         <i class="fas fa-terminal mr-1"></i>
-                                        Código puesto
+                                        Nombre puesto
                                     </label>
                                     <div class="col-md-7">
-                                        <input type="text" class="form-control form-control-sm text-uppercase" id="searchpuestokey" placeholder="Ingresa el código" />
+                                        <input type="text" class="form-control form-control-sm text-uppercase" id="searchpuestokey" placeholder="Ingresa el nombre" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="offset-2 col-md-8">
+                            <div class="offset-1 col-md-10">
                                 <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpuestos">
                                 </div>
                                 <div class="animated fadeIn" id="noresultsjobs1"></div>
@@ -1351,10 +1352,20 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label font-labels" for="ediedific">Edificio:</label>
+                                <label class="col-form-label font-labels" for="edifictxt">Edificio</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-edific-edit" data-toggle="modal" data-target="#searchedificedit">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="form-control form-control-sm" readonly id="edificedit" />
+                                    <input placeholder="Edificio" type="text" id="edifictxtedit" maxlength="50" class="form-control form-control-sm" readonly />
+                                </div>
+                                @*<label class="col-form-label font-labels" for="ediedific">Edificio:</label>
                                 <select tp-select="Edificio" class="form-control form-control-sm" id="ediedific">
                                     <option selected value="0">Selecciona</option>
-                                </select>
+                                </select>*@
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="edipiso">Piso</label>
@@ -1365,6 +1376,16 @@
                                 <input placeholder="Ubicación" maxlength="50" type="text" id="ediubicac" class="form-control form-control-sm" />
                             </div>
                             <div class="form-group">
+                                <label class="col-form-label font-labels" for="centrcosttxtr">Centro de costos nuevo inpt</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-centrcosts-edit" data-toggle="modal" data-target="#searchcentrscostedit">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="form-control form-control-sm" readonly id="centrcostedit" />
+                                    <input placeholder="Centro de costo" type="text" id="centrcosttxtredit" maxlength="50" class="form-control form-control-sm" readonly />
+                                </div>
                                 <label class="col-form-label font-labels" for="edicentrcost">Centro de costo:</label>
                                 <select tp-select="Centro de costo" class="form-control form-control-sm" id="edicentrcost">
                                     <option selected value="0">Selecciona</option>
@@ -2388,6 +2409,46 @@
     </div>
 </div>
 
+<!-- VENTANA MODAL QUE MUESTRA LOS CENTROS DE COSTO AL EDITAR UN DEPARTAMENTO -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchcentrscostedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Centros de costo </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-centrcost-edit">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="form-group row">
+                                <label for="searchcentrcostsedit" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i> Centro de costo:
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchcentrcostsedit" placeholder="Ingresa el centro de costo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultcentrcostsedit">
+                            </div>
+                            <div class="animated fadeIn" id="noresultscentrcostedit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-centrcost-edit" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- VENTANA MODAL QUE MUESTRA LOS EDIFICIOS PARA REGISTRAR UN NUEVO DEPARTAMENTO -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchedific" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
@@ -2422,6 +2483,46 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-edifics" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL QUE MUESTRA LOS EDIFIOCS AL EDITAR UN DEPARTAMENTO-->
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchedificedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Edificios </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-edifics-edit">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="form-group row">
+                                <label for="searchedifickey" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i> Edificio:
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchedifickeyedit" placeholder="Edificio" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultedificsedit">
+                            </div>
+                            <div class="animated fadeIn" id="noresultedificsedit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-edifics-edit" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
             </div>
         </div>
     </div>

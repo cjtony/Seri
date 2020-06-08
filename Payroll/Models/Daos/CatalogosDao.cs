@@ -896,6 +896,7 @@ namespace Payroll.Models.Daos
                         departamentosBean.iEdificioId = Convert.ToInt32(data["Edificio_id"].ToString());
                     }
                     else { departamentosBean.iEdificioId = 0; }
+                    departamentosBean.sEdificioN = data["NombreEdificio"].ToString();
                     departamentosBean.sPiso = (String.IsNullOrEmpty(data["Piso"].ToString())) ? "" : data["Piso"].ToString();
                     departamentosBean.sUbicacion = (String.IsNullOrEmpty(data["Ubicacion"].ToString())) ? "" : data["Ubicacion"].ToString();
                     if (data["CentroCosto_id"].ToString().Length != 0)
@@ -903,6 +904,7 @@ namespace Payroll.Models.Daos
                         departamentosBean.iCentroCostoId = Convert.ToInt32(data["CentroCosto_id"].ToString());
                     }
                     else { departamentosBean.iCentroCostoId = 0; }
+                    departamentosBean.sCentroCosto = data["CentroCosto"].ToString();
                     if (data["EmpresaReporta_id"].ToString().Length != 0)
                     {
                         departamentosBean.iEmpresaReportaId = Convert.ToInt32(data["EmpresaReporta_id"].ToString());
