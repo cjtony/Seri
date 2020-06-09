@@ -169,6 +169,7 @@
     </Compile>
     <Compile Include="Models\Beans\BajasEmpleadosBean.cs" />
     <Compile Include="Models\Beans\CatalogosBean.cs" />
+    <Compile Include="Models\Beans\CodigoCatalogoBean.cs" />
     <Compile Include="Models\Beans\ConfigDataBankBean.cs" />
     <Compile Include="Models\Beans\DispersionBean.cs" />
     <Compile Include="Models\Beans\MainMenuBean.cs" />
@@ -850,6 +851,7 @@
     <Content Include="Scripts\main\BajasEmpleados.js" />
     <Content Include="Scripts\main\branchoffices.js" />
     <Content Include="Scripts\main\catalogos.js" />
+    <Content Include="Scripts\main\centrcost.js" />
     <Content Include="Scripts\main\Creditos.js" />
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
@@ -897,6 +899,7 @@
     <Content Include="Scripts\Nomoper\NomOperConsulta.js" />
     <Content Include="Scripts\Nomoper\OperNom.js" />
     <Content Include="Scripts\Nomoper\OperNomEjecucion.js" />
+    <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\sweetalert\sweetalert.min.js" />
     <Content Include="Scripts\toastr\toastr.min.js" />
     <Content Include="Web.config" />

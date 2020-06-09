@@ -1,5 +1,4 @@
 ﻿$(function () {
-    console.log('entrando a main')
     // Comentar cuando el proyecto este en produccion \\
     //const idefectivo = 1115;
     //const idcuentach = 1116;
@@ -14,10 +13,7 @@
 
     function someMethodIThinkMightBeSlow() {
         const startTime = performance.now();
-
-        // Do the normal stuff for this function
-
-        const duration = performance.now() - startTime;
+        const duration  = performance.now() - startTime;
         console.log(`someMethodIThinkMightBeSlow took ${duration}ms`);
     }
 
@@ -343,18 +339,20 @@
 
     fasignsdates = () => {
         if (localStorage.getItem('modeedit') == null) {
-            const d = new Date();
-            let frmonth;
-            if (d.getMonth() + 1 < 10) { frmonth = "0" + (d.getMonth() + 1); } else { frmonth = d.getMonth() + 1; }
-            const fechact = d.getFullYear() + '-' + frmonth + '-' + d.getDate();
-            fecefe.disabled = false;
-            fecefe.value = fechact;
-            fecefecnom.disabled = false;
-            fecefecnom.value = fechact;
-            fechefectpos.disabled = false;
-            fechefectpos.value = fechact;
-            fechinipos.disabled = false;
-            fechinipos.value = fechact;
+            const date    = new Date();
+            const frmonth = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            const frday   = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+            const fechact = date.getFullYear() + '-' + frmonth + '-' + frday;
+            setTimeout(() => {
+                fecefe.disabled       = false;
+                fecefe.value          = fechact;
+                fecefecnom.disabled   = false;
+                fecefecnom.value      = fechact;
+                fechefectpos.disabled = false;
+                fechefectpos.value    = fechact;
+                fechinipos.disabled   = false;
+                fechinipos.value      = fechact;
+            }, 1000);
         }
     };
 

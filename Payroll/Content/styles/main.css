@@ -129,57 +129,57 @@ input {
     bottom: 480px !important;
     left: 20px !important;
 }
-.flotante0 {
-    position: fixed;
-    bottom: 540px;
-    right: 20px;
-}
-
-.flotante {
-    position: fixed;
-    bottom: 480px;
-    right: 20px;
-}
-
-.flotante2 {
+.flotante-clear {
     position: fixed;
     bottom: 420px;
     right: 20px;
 }
 
+.flotante1 {
+    position: fixed;
+    bottom: 370px;
+    right: 20px;
+}
+
+.flotante2 {
+    position: fixed;
+    bottom: 320px;
+    right: 20px;
+}
+
 .flotante3 {
     position: fixed;
-    bottom: 360px;
+    bottom: 270px;
     right: 20px;
 }
 
 .flotante4 {
     position: fixed;
-    bottom: 300px;
+    bottom: 220px;
     right: 20px;
 }
 
 .flotante5 {
     position: fixed;
-    bottom: 240px;
+    bottom: 170px;
     right: 20px;
 }
 
 .flotante6 {
     position: fixed;
-    bottom: 180px;
+    bottom: 120px;
     right: 20px;
 }
 
 .flotante7 {
     position: fixed;
-    bottom: 120px;
+    bottom: 70px;
     right: 20px;
 }
 
 .flotante8 {
     position:fixed;
-    bottom: 60px;
+    bottom: 20px;
     right: 20px;
 }
 span > .paginate_button {

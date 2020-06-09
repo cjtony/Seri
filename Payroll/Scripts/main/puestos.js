@@ -30,6 +30,43 @@
             }
         }
     }
+    /* FUNCION QUE CARGA LOS DATOS DEL SELECT TIPOS DE PUESTOS */
+    floadtypesjobs = async (paramstr) => {
+        try {
+            if (paramstr != "") {
+                await $.ajax({
+                    url: "../SearchDataCat/TypesJobs",
+                    type: "POST",
+                    data: { typeJob: paramstr },
+                    success: (data) => {
+                        console.log(data);
+                        if (data.Bandera === true && data.MensajeError === "none") {
+                            for (let i = 0; i < data.Datos.length; i++) {
+                                typeregpuesto.innerHTML += `<option value="${data.Datos[i].iId},${data.Datos[i].sCodigo}">${data.Datos[i].sDescripcion}</option>`;
+                            }
+                        } else {
+
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion no valida, no se cargaron los tipos de puestos');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
     /* Funcion que carga los datos del select profesion familia  */
     floadproffamily = (state, type, keyprof, elementid) => {
         try {
@@ -61,6 +98,7 @@
         }
     }
     /* CONSTANTES DE REGISTRAR UN NUEVO PUESTO */
+    const typeregpuesto  = document.getElementById('typeregpuesto');
     const regcodpuesto   = document.getElementById('regcodpuesto');
     const regpuesto      = document.getElementById('regpuesto');
     const regdescpuesto  = document.getElementById('regdescpuesto');
@@ -147,6 +185,8 @@
     btnsearchpuesto.addEventListener('click', () => { $("#registerposition").modal('hide'); setTimeout(() => { searchpuestokeyadd.focus(); }, 1000); });
     /* EJECUCION DE CARGA LOS DATOS DEL SELECT CLASIFICACION PUESTO */
     floadcataloggeneral(ediclasifpuesto, 0, 'Active/Desactive', 0, 23);
+    /* EJECUCION DE CARGA LOS DATOS DEL SELECT TIPO DE PUESTO */
+    floadtypesjobs('puesto');
     /* EJECUCION DE CARGA DE LOS DATOS DEL SELECT PROFESION FAMILIA */
     floadproffamily(1, 'Active/Desactive', 0, ediproffamily);
     /* EJECUCION DE CARGA DE LOS DATOS DEL SELECT COLECTIVO */
@@ -176,7 +216,11 @@
         $("#searchpuestobtn").modal('hide');
         searchpuestokey.value = ''; resultpuestos.innerHTML = '';
         document.getElementById('noresultsjobs1').innerHTML = '';
-        setTimeout(() => { regcodpuesto.focus(); }, 1000);
+        regcodpuesto.disabled = true;
+        setTimeout(() => {
+            typeregpuesto.focus();
+            //regcodpuesto.focus();
+        }, 1000);
     });
     /* EJECUCION DE EVENTO QUE OCULTA LA VENTANA DE BUSQUEDA DE PUESTOS AL REGISTRAR UNA NUEVA POSICION */
     btnregisterpuesto.addEventListener('click', () => {
@@ -365,7 +409,7 @@
     });
     /* FUNCION Y EJECUCIÓN DEL GUARDADO DE DATOS DE UN NUEVO PUESTO */
     btnSavePuesto.addEventListener('click', () => {
-        const arrInputs = [regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto];
+        const arrInputs = [typeregpuesto, regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto];
         let validate = 0;
         for (let i = 0; i < arrInputs.length; i++) {
             if (arrInputs[i].hasAttribute('tp-select')) {
@@ -384,7 +428,11 @@
             }
         }
         if (validate == 0) {
+            const valueTypeJob = typeregpuesto.value;
+            const valuesArrays = valueTypeJob.split(",");
+            const keyTypeJobSe = parseInt(valuesArrays[0]);
             const dataEnv = {
+                typeregpuesto: keyTypeJobSe,
                 regcodpuesto: regcodpuesto.value, regpuesto: regpuesto.value, regdescpuesto: regdescpuesto.value, proffamily: proffamily.value, clasifpuesto: clasifpuesto.value,
                 regcolect: regcolect.value, nivjerarpuesto: nivjerarpuesto.value, perfmanager: perfmanager.value, tabpuesto: tabpuesto.value
             };  
@@ -529,4 +577,25 @@
     }
     /* EJECUCION DE FUNCION QUE REALIZA UNA BUSQUEDA EN TIEMPO REAL DE PUESTOS */
     searchpuestokeyadd.addEventListener('keyup', fsearchkeyuppuestoadd);
+
+    /* FUNCION QUE ASIGNA EL CODIGO DE PUESTO AL CAMPO REGCODPUESTO */
+    typeregpuesto.addEventListener('change', () => {
+        try {
+            const valueTypJob  = typeregpuesto.value;
+            const valuesArray  = valueTypJob.split(",");
+            const keyJobSelec  = parseInt(valuesArray[0]);
+            const codJobSelec  = valuesArray[1];
+            regcodpuesto.value = codJobSelec;
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    });
 });

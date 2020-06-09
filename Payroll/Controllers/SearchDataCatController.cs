@@ -143,6 +143,95 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult DataSelectCentrCost(int keycentrcost)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            CentrosCostosBean centrCostBean = new CentrosCostosBean();
+            CentrosCostosDao  centrCostDaoD = new CentrosCostosDao();
+            try {
+                int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
+                centrCostBean = centrCostDaoD.sp_Data_Centro_Costo(keyemp, keycentrcost);
+                if (centrCostBean.sMensaje != "success") {
+                    messageError = centrCostBean.sMensaje;
+                }
+                if (centrCostBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = centrCostBean });
+        }
+
+        [HttpPost]
+        public JsonResult SaveEditCentrCost(int keycentrcost, string ncentrocosto, string dcentrocosto)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            CentrosCostosBean centrCostBean = new CentrosCostosBean();
+            CentrosCostosDao  centrCostDaoD = new CentrosCostosDao();
+            try {
+                int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
+                centrCostBean = centrCostDaoD.sp_Update_Centro_Costo(keycentrcost, ncentrocosto, dcentrocosto, keyemp);
+                if (centrCostBean.sMensaje != "success") {
+                    messageError = centrCostBean.sMensaje;
+                }
+                if (centrCostBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError});
+        }
+
+        [HttpPost]
+        public JsonResult SaveDataCentrCost(string ncentrcost, string dcentrcost)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            CentrosCostosBean centrCostBean = new CentrosCostosBean();
+            CentrosCostosDao  centrCostDaoD = new CentrosCostosDao();
+            try {
+                int keyUser   = int.Parse(Session["iIdUsuario"].ToString());
+                int keyEmpr   = int.Parse(Session["IdEmpresa"].ToString());
+                centrCostBean = centrCostDaoD.sp_Insert_Centro_Costo(keyEmpr, ncentrcost.Trim().ToUpper(), dcentrcost.Trim().ToUpper(), keyUser);
+                if (centrCostBean.sMensaje != "success") {
+                    messageError = centrCostBean.sMensaje;
+                }
+                if (centrCostBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult TypesJobs(string typeJob)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<CodigoCatalogoBean> codeCatBean = new List<CodigoCatalogoBean>();
+            CodigoCatalogosDao       codeCatDaoD = new CodigoCatalogosDao();
+            try {
+                codeCatBean = codeCatDaoD.sp_Datos_Codigo_Catalogo(typeJob);
+                if (codeCatBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = codeCatBean });
+        }
+
+        [HttpPost]
         public JsonResult SearchEdifics(string wordsearch)
         {
             List<EdificiosBean> edificioBean = new List<EdificiosBean>();

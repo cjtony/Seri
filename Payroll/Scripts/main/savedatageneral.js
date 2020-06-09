@@ -882,19 +882,21 @@
                                         let datetod;
                                         if (ds.getDate() < 10) {
                                             datetod = "0" + ds.getDate();
-                                        } else { datetod = ds.getDate(); }
+                                        } else {
+                                            datetod = ds.getDate();
+                                        }
                                         if (ds.getMonth() + 1 < 10) {
                                             fechAct = ds.getFullYear() + "-" + "0" + (ds.getMonth() + 1) + "-" + datetod;
                                         } else {
                                             fechAct = ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + datetod;
                                         }
-                                        if (arrInput[a].value < fechAct) {
-                                            console.log(arrInput[a].value);
-                                            console.log(fechAct);
-                                            fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
-                                            validateSend = 1;
-                                            break;
-                                        }
+                                        //if (arrInput[a].value < fechAct) {
+                                        //    console.log(arrInput[a].value);
+                                        //    console.log(fechAct);
+                                        //    fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
+                                        //    validateSend = 1;
+                                        //    break;
+                                        //}
                                     }
                                     else {
                                         fshowtypealert('Atencion', 'Completa el campo ' + String(arrInput[a].placeholder), 'warning', arrInput[a], 0);

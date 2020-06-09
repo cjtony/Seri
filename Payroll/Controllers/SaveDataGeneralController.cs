@@ -18,14 +18,32 @@ namespace Payroll.Controllers
 
         //Guarda los datos de puesto
         [HttpPost]
-        public JsonResult SaveDataPuestos(string regcodpuesto, string regpuesto, string regdescpuesto, int proffamily, int clasifpuesto, int regcolect, int nivjerarpuesto, int perfmanager, int tabpuesto)
+        public JsonResult SaveDataPuestos(int typeregpuesto, string regcodpuesto, string regpuesto, string regdescpuesto, int proffamily, int clasifpuesto, int regcolect, int nivjerarpuesto, int perfmanager, int tabpuesto)
         {
-            PuestosBean addPuestoBean = new PuestosBean();
-            SavePuestosDao savePuestoDao = new SavePuestosDao();
-            // Reemplazar por la sesion de la empresa
-            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-            int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
-            addPuestoBean = savePuestoDao.sp_Puestos_Insert_Puestos(regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto, usuario, keyemp);
+            Boolean flag         = false;
+            String  messageError = "none";
+            CodigoCatalogoBean codeCatBean = new CodigoCatalogoBean();
+            CodigoCatalogosDao codeCatDaoD = new CodigoCatalogosDao();
+            PuestosBean addPuestoBean      = new PuestosBean();
+            SavePuestosDao savePuestoDao   = new SavePuestosDao();
+            try {
+                codeCatBean         = codeCatDaoD.sp_Dato_Codigo_Catalogo_Seleccionado(typeregpuesto);
+                string codeTypeJob  = codeCatBean.sCodigo;
+                int consecutiveCode = codeCatBean.iConsecutivo;
+                regcodpuesto        = codeTypeJob + (consecutiveCode + 1).ToString();
+                int keyemp          = int.Parse(Session["IdEmpresa"].ToString());
+                int usuario         = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                addPuestoBean       = savePuestoDao.sp_Puestos_Insert_Puestos(regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto, usuario, keyemp);
+                if (addPuestoBean.sMensaje != "success") {
+                    messageError = addPuestoBean.sMensaje;
+                } 
+                if (addPuestoBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
             return Json(addPuestoBean);
         }
 
