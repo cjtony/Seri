@@ -227,7 +227,7 @@
         var datos = { Descripcion: Desl.value, TasaIva: Tasl.value, Afiliacion_IMSS: Afil.value, Sucursal_id: Sucl.value, Regional_id: Regl.value, ZonaEconomica_id: ZoEl.value, Estado_id: Estl.value };
         var form2 = document.getElementById("frmLocalidades");
         if (form2.checkValidity() === false) {
-            alert("no valido");
+            //alert("no valido");
             form2.classList.add("was-validated");
         } else {
             $.ajax({

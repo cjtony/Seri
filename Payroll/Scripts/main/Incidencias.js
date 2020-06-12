@@ -128,16 +128,17 @@
 
     //Funciones
     MostrarDatosEmpleado = (idE) => {
-        var txtIdEmpleado = { "IdEmpleado": idE };
+        var txtIdEmpleado = { "IdEmpleado": idE, Empresa_id: 0 };
         $.ajax({
-            url: "../Empleados/SearchEmpleado",
+            url: "../Empleados/SearchDataEmpleado",
             type: "POST",
-            data: JSON.stringify(txtIdEmpleado),
+            data: JSON.stringify({ "Empleado_id": idE, Empresa_id: "0" }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                console.log(data);
                 createTab();
-                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
+                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "";
                 $("#modalLiveSearchEmpleado").modal("hide");
             }
         });

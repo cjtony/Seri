@@ -228,3 +228,7 @@ span > .paginate_button {
     text-align: center !important;
 }
 
+.bg-icon-menu {
+    color: #020F59 !important;
+    background-color: white !important;
+}

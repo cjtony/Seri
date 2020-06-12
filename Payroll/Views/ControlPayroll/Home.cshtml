@@ -11,7 +11,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Selecciona la empresa</h4>
-                
+
             </div>
             <div class="modal-body row">
                 <div class="col-12 mb-3">
@@ -36,14 +36,14 @@
             timerProgressBar: true,
             onBeforeOpen: () => {
                 $("#bodySubmenus").load(data);
-                Swal.showLoading();      
+                Swal.showLoading();
             }
         });
     }
     function change() {
         $("#bodySubmenus").empty();
     }
-    function btnsEmpresas( id ,nombre) {
+    function btnsEmpresas(id, nombre) {
         try {
             $.ajax({
                 url: "../Empresas/DefineEmpresa",
@@ -51,18 +51,32 @@
                 data: JSON.stringify({ IdEmpresa: id, NombreEmpresa: nombre }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    $.ajax({
-                        url: "../Empresas/DefinePeriodoActual",
-                        type: "POST",
-                        data: JSON.stringify({ IdPeriodo: data[4] }),
-                        contentType: "application/json; charset=utf-8",
-                        success: (dat) => {
-                            document.getElementById("btnNameEmpresaSelected").innerHTML = nombre;
-                            document.getElementById("lblPeriodoId").innerHTML = data[4];
-                            $("#bodySubmenus").empty();
-                            $("#modalBtns").modal('hide');
-                        }
-                    });
+                    console.log(data);
+                    if (data[0] != "0") {
+                        $.ajax({
+                            url: "../Empresas/DefinePeriodoActual",
+                            type: "POST",
+                            data: JSON.stringify({ IdPeriodo: data[4] }),
+                            contentType: "application/json; charset=utf-8",
+                            success: (dat) => {
+                                document.getElementById("btnNameEmpresaSelected").innerHTML = nombre;
+                                document.getElementById("lblPeriodoId").innerHTML = data[4];
+                                $("#bodySubmenus").empty();
+                                $("#modalBtns").modal('hide');
+                            }
+                        });
+                    } else {
+                        document.getElementById("btnNameEmpresaSelected").innerHTML = nombre;
+                        document.getElementById("lblPeriodoId").innerHTML = "Sin Periodo";
+                        $("#bodySubmenus").empty();
+                        $("#modalBtns").modal('hide');
+                        Swal.fire({
+                            icon: 'warning',
+                            html: '<h1 class="text-danger font-weight-bold col-md-12">Aviso!</h1><p class="font-weight-bold">La empresa no tiene periodos abiertos<br><small class="text-justify text-muted">*Para poder trabajar de manera normal en todos los modulos genere mas periodos e ingrese nuevamente al sistema</small><small class="text-justify text-muted"></small></p>'
+                        });
+                    }
+
+
                 }
             });
         } catch (err) {

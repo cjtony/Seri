@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\program files (x86)\microsoft visual studio\2019\community\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="16.0">
+ <Targets>
+  <Target Name="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\bin\Payroll.dll">
+   <Modules>
+    <Module Name="payroll.dll">
+     <Namespaces>
+      <Namespace Name="Payroll">
+       <Types>
+        <Type Name="CERT_NAME_BLOB" Kind="Struct" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesThatOwnNativeResourcesShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1049" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="NonBreaking">
+           <Issue Certainty="50" Level="CriticalError">Implemente IDisposable en 'CERT_NAME_BLOB'.</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#pbData" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="PointersShouldNotBeVisible" Category="Microsoft.Security" CheckId="CA2111" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="CriticalError">Convertir 'CERT_NAME_BLOB.pbData' en privado.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="CRYPT_KEY_PROV_INFO" Kind="Struct" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#rgProvParam" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="PointersShouldNotBeVisible" Category="Microsoft.Security" CheckId="CA2111" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="CriticalError">Convertir 'CRYPT_KEY_PROV_INFO.rgProvParam' en privado.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="LibreriasFacturas" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetCadenaOriginal(System.String,System.String,System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\App_Start" File="LibreriasFacturas.cs" Line="43">El objeto 'sr' admite Dispose más de una vez en el método 'LibreriasFacturas.GetCadenaOriginal(string, string, string)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 43</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="Win32" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#CertCreateSelfSignCertificate(System.IntPtr,Payroll.CERT_NAME_BLOB&amp;,System.UInt32,Payroll.CRYPT_KEY_PROV_INFO&amp;,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="95" Level="CriticalWarning">Puesto que es un método P/Invoke, se debe definir 'Win32.CertCreateSelfSignCertificate(IntPtr, ref CERT_NAME_BLOB, uint, ref CRYPT_KEY_PROV_INFO, IntPtr, IntPtr, IntPtr, IntPtr)' en una clase con el nombre NativeMethods, SafeNativeMethods o UnsafeNativeMethods.</Issue>
+            </Message>
+            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="CriticalError">Cambie la accesibilidad del elemento P/Invoke 'Win32.CertCreateSelfSignCertificate(IntPtr, ref CERT_NAME_BLOB, uint, ref CRYPT_KEY_PROV_INFO, IntPtr, IntPtr, IntPtr, IntPtr)' para que no esté visible desde fuera del ensamblado.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#CertFreeCertificateContext(System.IntPtr)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="95" Level="CriticalWarning">Puesto que es un método P/Invoke, se debe definir 'Win32.CertFreeCertificateContext(IntPtr)' en una clase con el nombre NativeMethods, SafeNativeMethods o UnsafeNativeMethods.</Issue>
+            </Message>
+            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="CriticalError">Cambie la accesibilidad del elemento P/Invoke 'Win32.CertFreeCertificateContext(IntPtr)' para que no esté visible desde fuera del ensamblado.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#CertStrToName(System.UInt32,System.String,System.UInt32,System.IntPtr,System.Byte[],System.UInt32&amp;,System.IntPtr)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="95" Level="CriticalWarning">Puesto que es un método P/Invoke, se debe definir 'Win32.CertStrToName(uint, string, uint, IntPtr, byte[], ref uint, IntPtr)' en una clase con el nombre NativeMethods, SafeNativeMethods o UnsafeNativeMethods.</Issue>
+            </Message>
+            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="CriticalError">Cambie la accesibilidad del elemento P/Invoke 'Win32.CertStrToName(uint, string, uint, IntPtr, byte[], ref uint, IntPtr)' para que no esté visible desde fuera del ensamblado.</Issue>
+            </Message>
+            <Message Id="1" TypeName="SpecifyMarshalingForPInvokeStringArguments" Category="Microsoft.Globalization" CheckId="CA2101" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="NonBreaking">
+             <Issue Name="ParameterImplicitAnsi" Certainty="75" Level="Error">Para reducir el riesgo de la seguridad, serialice el parámetro 'pszX500' como Unicode, estableciendo DllImport.CharSet en CharSet.Unicode, o bien serializando el parámetro de forma explícita como UnmanagedType.LPWStr. Si necesita serializar esta cadena como ANSI o dependiente del sistema, especifique MarshalAs de forma explícita y establezca BestFitMapping=false. Para mayor seguridad, establezca también ThrowOnUnmappableChar=true.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="Payroll.Controllers">
+       <Types>
+        <Type Name="BajasEmpleadosController" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GenerateReceiptDown(System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Controllers" File="BajasEmpleadosController.cs" Line="122">El objeto 'fileTest' admite Dispose más de una vez en el método 'BajasEmpleadosController.GenerateReceiptDown(int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 122</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="Payroll.Models.Daos">
+       <Types>
+        <Type Name="DataDispersionBusiness" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#sp_Datos_Banco(System.Collections.Generic.List`1&lt;Payroll.Models.Beans.DataDepositsBankingBean&gt;)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="DispersionDao.cs" Line="258">El objeto 'new SqlCommand("sp_Datos_Banco", this.conexion)' admite Dispose más de una vez en el método 'DataDispersionBusiness.sp_Datos_Banco(List&lt;DataDepositsBankingBean&gt;)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 258</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="FuncionesNomina" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#sp_CAcumuladoREnglones_Retrieve_CAcumuladoREnglones(System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="215">El objeto 'new SqlCommand("sp_CAcumuladoREnglones_Retrieve_CAcumuladoREnglones", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_CAcumuladoREnglones_Retrieve_CAcumuladoREnglones(int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 215</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_Caratula_Retrieve_TPlantilla_Calculos(System.Int32,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1202">El objeto 'new SqlCommand("sp_Caratula_Retrieve_TPlantilla_Calculos", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_Caratula_Retrieve_TPlantilla_Calculos(int, int, int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1202</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_CEmpresas_Retrieve_Empresas()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="87">El objeto 'new SqlCommand("sp_CEmpresas_Retrieve_Empresas", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_CEmpresas_Retrieve_Empresas()'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 87</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_Cperiodo_Retrieve_Cperiodo(System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="392">El objeto 'new SqlCommand("sp_Cperiodo_Retrieve_Cperiodo", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_Cperiodo_Retrieve_Cperiodo(int, int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 392</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_CRenglones_Retrieve_CRenglones(System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="172">El objeto 'new SqlCommand("sp_CRenglones_Retrieve_CRenglones", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_CRenglones_Retrieve_CRenglones(int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 172</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_CTipoPeriod_Retrieve_TiposPeriodos(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="129">El objeto 'new SqlCommand("sp_CTipoPeriod_Retrieve_TiposPeriodos", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_CTipoPeriod_Retrieve_TiposPeriodos(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 129</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_DefCancelados_Retrieve_DefCancelados(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="295">El objeto 'new SqlCommand("sp_DefCancelados_Retrieve_DefCancelados", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_DefCancelados_Retrieve_DefCancelados(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 295</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_DeficionNominaCancelados_Retrieve_DeficionNominaCancelados(System.String,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="658">El objeto 'new SqlCommand("sp_DeficionNominaCancelados_Retrieve_DeficionNominaCancelados", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_DeficionNominaCancelados_Retrieve_DeficionNominaCancelados(string, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 658</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_DefinicionesDeNomLn_Retrieve_DefinicionesDeNomLn(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="530">El objeto 'new SqlCommand("sp_DefinicionesDeNomLn_Retrieve_DefinicionesDeNomLn", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_DefinicionesDeNomLn_Retrieve_DefinicionesDeNomLn(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 530</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_DefinicionesNomLn_Retrieve_DefinicionesNomLn(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="439">El objeto 'new SqlCommand("sp_DefinicionesNomLn_Retrieve_DefinicionesNomLn", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_DefinicionesNomLn_Retrieve_DefinicionesNomLn(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 439</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_DefinicionNombresHd_Retrieve_DefinicionNombresHd()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="570">El objeto 'new SqlCommand("sp_DefinicionNombresHd_Retrieve_DefinicionNombresHd", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_DefinicionNombresHd_Retrieve_DefinicionNombresHd()'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 570</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_DescripAcu_Retrieve_DescripAcu(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="480">El objeto 'new SqlCommand("sp_DescripAcu_Retrieve_DescripAcu", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_DescripAcu_Retrieve_DescripAcu(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 480</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_Empresa_Retrieve_TpCalculosLN(System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1250">El objeto 'new SqlCommand("sp_Empresa_Retrieve_TpCalculosLN", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_Empresa_Retrieve_TpCalculosLN(int, int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1250</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_EstatusJobsTbProcesos_retrieve_EstatusJobsTbProcesos()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1287">El objeto 'new SqlCommand("sp_EstatusJobsTbProcesos_retrieve_EstatusJobsTbProcesos", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_EstatusJobsTbProcesos_retrieve_EstatusJobsTbProcesos()'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1287</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_ExiteDefinicionTpCalculo_Retrieve_ExiteDefinicionTpCalculo(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="867">El objeto 'new SqlCommand("sp_ExiteDefinicionTpCalculo_Retrieve_ExiteDefinicionTpCalculo", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_ExiteDefinicionTpCalculo_Retrieve_ExiteDefinicionTpCalculo(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 867</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_ExitReglon_Retrieve_TpDefinicionNominaLn(System.Int32,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1771">El objeto 'new SqlCommand("sp_ExitReglon_Retrieve_TpDefinicionNominaLn", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_ExitReglon_Retrieve_TpDefinicionNominaLn(int, int, int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1771</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_IdDefinicionNomina_Retrieve_IdDefinicionNomina()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="252">El objeto 'new SqlCommand("sp_IdDefinicionNomina_Retrieve_IdDefinicionNomina", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_IdDefinicionNomina_Retrieve_IdDefinicionNomina()'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 252</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1155">El objeto 'new SqlCommand("sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_IdEmpresasTPCalculoshd_Retrieve_IdEmpresasTPCalculoshd(int, int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1155</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1094">El objeto 'new SqlCommand("sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(string)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1094</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1690">El objeto 'new SqlCommand("sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1690</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_TipoPeridoTpDefinicionNomina_Retrieve_TpDefinicionNomina(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1644">El objeto 'new SqlCommand("sp_TipoPeridoTpDefinicionNomina_Retrieve_TpDefinicionNomina", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_TipoPeridoTpDefinicionNomina_Retrieve_TpDefinicionNomina(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1644</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_TpDefinicionesNom_Retrieve_TpDefinicionNom()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="612">El objeto 'new SqlCommand("sp_TpDefinicionesNom_Retrieve_TpDefinicionNom", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_TpDefinicionesNom_Retrieve_TpDefinicionNom()'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 612</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_TpDefinicionNomins_Retrieve_TpDefinicionNomins()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="976">El objeto 'new SqlCommand("sp_TpDefinicionNomins_Retrieve_TpDefinicionNomins", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_TpDefinicionNomins_Retrieve_TpDefinicionNomins()'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 976</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_TPProcesosJobs_Retrieve_TPProcesosJobs(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="NominaDao.cs" Line="1055">El objeto 'new SqlCommand("sp_TPProcesosJobs_Retrieve_TPProcesosJobs", this.conexion)' admite Dispose más de una vez en el método 'FuncionesNomina.sp_TPProcesosJobs_Retrieve_TPProcesosJobs(int, int, int, int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1055</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="ListEmpleadosDao" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GXMLNOM(System.Int32,System.String,System.String,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="ListTablesDao.cs" Line="1146">El objeto 'stream' admite Dispose más de una vez en el método 'ListEmpleadosDao.GXMLNOM(int, string, string, int, int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 1146</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_DatosPerido_Retrieve_DatosPerido(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="ListTablesDao.cs" Line="554">El objeto 'new SqlCommand("sp_DatosPerido_Retrieve_DatosPerido", this.conexion)' admite Dispose más de una vez en el método 'ListEmpleadosDao.sp_DatosPerido_Retrieve_DatosPerido(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 554</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_EmisorReceptor_Retrieve_EmisorReceptor(System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="ListTablesDao.cs" Line="505">El objeto 'new SqlCommand("sp_EmisorReceptor_Retrieve_EmisorReceptor", this.conexion)' admite Dispose más de una vez en el método 'ListEmpleadosDao.sp_EmisorReceptor_Retrieve_EmisorReceptor(int, int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 505</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="ListTablesDao.cs" Line="448">El objeto 'new SqlCommand("sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa", this.conexion)' admite Dispose más de una vez en el método 'ListEmpleadosDao.sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(int)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 448</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_FileCer_Retrieve_CCertificados(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="ListTablesDao.cs" Line="599">El objeto 'new SqlCommand("sp_FileCer_Retrieve_CCertificados", this.conexion)' admite Dispose más de una vez en el método 'ListEmpleadosDao.sp_FileCer_Retrieve_CCertificados(string)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 599</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#sp_ObtenFolioCCertificados_RetrieveUpdate_Ccertificados(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2020-06-04 18:26:23Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\Juan Flores Torres\Desktop\Server\promejia\Seri\Payroll\Models\Daos" File="ListTablesDao.cs" Line="642">El objeto 'new SqlCommand("sp_ObtenFolioCCertificados_RetrieveUpdate_Ccertificados", this.conexion)' admite Dispose más de una vez en el método 'ListEmpleadosDao.sp_ObtenFolioCCertificados_RetrieveUpdate_Ccertificados(string)'. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 642</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060">
+   <Name>Mueva P/Invokes a la clase NativeMethods</Name>
+   <Description>Este tipo contiene miembros con el atributo DllImport. Los miembros con el atributo DllImport deben estar contenidos en clases denominadas NativeMethods, SafeNativeMethods o UnsafeNativeMethods.</Description>
+   <Resolution Name="Default">Puesto que es un método P/Invoke, se debe definir {0} en una clase con el nombre NativeMethods, SafeNativeMethods o UnsafeNativeMethods.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182161.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalWarning</MessageLevel>
+   <File Name="designrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="No usar Dispose varias veces en objetos" Category="Microsoft.Usage" CheckId="CA2202">
+   <Name>No usar Dispose varias veces en objetos</Name>
+   <Description>Un método Dispose correctamente implementado se puede llamar varias veces sin producir ninguna excepción. Sin embargo, esto no está garantizado y, para evitar generar una excepción System.ObjectDisposedException, no debe llamar al método Dispose más de una vez en un objeto.</Description>
+   <Resolution Name="Default">El objeto {0} admite Dispose más de una vez en el método {1}. Para evitar generar una excepción System.ObjectDisposedException, no debe llamar a Dispose más de una vez en un objeto.: Lines: 122</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182334.aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401">
+   <Name>Los elementos P/Invoke no deben estar visibles</Name>
+   <Description>La capa de interoperabilidad no debe ser pública. No debe aplicar el atributo DllImport en miembros accesibles públicamente (public o protected).</Description>
+   <Resolution Name="Default">Cambie la accesibilidad del elemento P/Invoke {0} para que no esté visible desde fuera del ensamblado.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182209.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="50">CriticalError</MessageLevel>
+   <File Name="interoperabilityrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="PointersShouldNotBeVisible" Category="Microsoft.Security" CheckId="CA2111">
+   <Name>Los punteros no deberían estar visibles</Name>
+   <Description>Los campos IntPtr y UIntPtr se deberían declarar como privados. Exponer punteros no privados puede tener como consecuencia una vulnerabilidad de la seguridad.</Description>
+   <Resolution Name="Default">Convertir {0} en privado.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182306.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">CriticalError</MessageLevel>
+   <File Name="securityrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="SpecifyMarshalingForPInvokeStringArguments" Category="Microsoft.Globalization" CheckId="CA2101">
+   <Name>Especifique serialización para argumentos de cadena P/Invoke</Name>
+   <Description>Cuando se serializan cadenas como ANSI (o Auto en Win9x), es posible que cambien algunos caracteres. Si está activada la asignación de ajuste perfecto, en las cadenas que aparecen diferentes en Unicode se serializarán como cadenas ANSI idénticas, lo que puede dar lugar a decisiones de seguridad incorrectas. Si se desactiva la asignación de ajuste perfecto, se reduce el riesgo, ya que a todos los caracteres sin equivalente se les asigna '?'. Asimismo, tenga en cuenta que CharSet.Ansi es el valor predeterminado para todas las operaciones de serialización de cadenas. La serialización Unicode se debe especificar de forma explícita, ya sea con el valor CharSet de DllImport o StructLayout, o bien con el atributo MarshalAs con un tipo Unicode no administrado (o dependiente del sistema).</Description>
+   <Resolution Name="ParameterImplicitAnsi">Para reducir el riesgo de la seguridad, serialice el parámetro {0} como Unicode, estableciendo DllImport.CharSet en CharSet.Unicode, o bien serializando el parámetro de forma explícita como UnmanagedType.LPWStr. Si necesita serializar esta cadena como ANSI o dependiente del sistema, especifique MarshalAs de forma explícita y establezca BestFitMapping=false. Para mayor seguridad, establezca también ThrowOnUnmappableChar=true.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182319.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Error</MessageLevel>
+   <File Name="globalizationrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="TypesThatOwnNativeResourcesShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1049">
+   <Name>Los tipos que poseen recursos nativos deben ser descartables</Name>
+   <Description>Los tipos que asignan recursos sin administrar deben implementar IDisposable para permitir que los llamadores liberen los recursos a petición. Si se produce un error en la implementación de IDisposable puede dar como resultado que los recursos no administrados no estén disponibles o que estén infrautilizados.</Description>
+   <Resolution Name="Default">Implemente IDisposable en {0}.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182173.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="50">CriticalError</MessageLevel>
+   <File Name="designrules.dll" Version="16.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">Categoría</String>
+  <String Key="Certainty">Certeza</String>
+  <String Key="CollapseAll">Contraer todo</String>
+  <String Key="CheckId">Comprobar id.</String>
+  <String Key="Error">Error</String>
+  <String Key="Errors">errores</String>
+  <String Key="ExpandAll">Expandir todo</String>
+  <String Key="Help">Ayuda</String>
+  <String Key="Line">Línea</String>
+  <String Key="Messages">mensajes</String>
+  <String Key="LocationNotStoredInPdb">[Ubicación no almacenada en Pdb]</String>
+  <String Key="Project">Proyecto</String>
+  <String Key="Resolution">Resolución</String>
+  <String Key="Rule">Regla</String>
+  <String Key="RuleFile">Archivo de regla</String>
+  <String Key="RuleDescription">Descripción de la regla</String>
+  <String Key="Source">Origen</String>
+  <String Key="Status">Estado</String>
+  <String Key="Target">Círculos concéntricos</String>
+  <String Key="Warning">Advertencia</String>
+  <String Key="Warnings">advertencias</String>
+  <String Key="ReportTitle">Informe de análisis del código</String>
+ </Localized>
+</FxCopReport>

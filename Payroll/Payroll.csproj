@@ -357,6 +357,7 @@
     <Content Include="Archivos\certificados\CSD_unidad_CGA1511196P4_20160128_134059.key" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Catalogos\Consulta.js" />
     <Content Include="Scripts\dataTables.autoFill.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\dataTables.jqueryui.js" />
@@ -884,7 +885,7 @@
     <Content Include="Scripts\main\loadmenu.js" />
     <Content Include="Scripts\main\localitys.js" />
     <Content Include="Scripts\main\main.js" />
-    <Content Include="Scripts\main\ModuloCatalogos.js" />
+    <Content Include="Scripts\Catalogos\ModuloCatalogos.js" />
     <Content Include="Scripts\main\PensionesAlimenticias.js" />
     <Content Include="Scripts\main\positions.js" />
     <Content Include="Scripts\main\puestos.js" />
@@ -958,6 +959,24 @@
     <Content Include="Views\Empleados\TimbradosXML.cshtml" />
     <Content Include="Views\Catalogos\VistaCatalogos.cshtml" />
     <Content Include="Views\Reportes\GenerarReporte.cshtml" />
+    <Content Include="Views\Catalogos\Empleados.cshtml" />
+    <Content Include="Views\Catalogos\CEmpleados.cshtml" />
+    <Content Include="Views\Catalogos\FechasPeriodos.cshtml" />
+    <Content Include="Views\Catalogos\CFechasPeriodos.cshtml" />
+    <Content Include="Views\Catalogos\PoliticasVacaciones.cshtml" />
+    <Content Include="Views\Catalogos\CPoliticasVacaciones.cshtml" />
+    <Content Include="Views\Catalogos\Puestos.cshtml" />
+    <Content Include="Views\Catalogos\CPuestos.cshtml" />
+    <Content Include="Views\Catalogos\CentrosCostos.cshtml" />
+    <Content Include="Views\Catalogos\CCentrosCostos.cshtml" />
+    <Content Include="Views\Catalogos\Localidades.cshtml" />
+    <Content Include="Views\Catalogos\CLocalidades.cshtml" />
+    <Content Include="Views\Catalogos\RegistroPatronal.cshtml" />
+    <Content Include="Views\Catalogos\CRegistroPatronal.cshtml" />
+    <Content Include="Views\Catalogos\Regionales.cshtml" />
+    <Content Include="Views\Catalogos\CRegionales.cshtml" />
+    <Content Include="Views\Catalogos\Sucursales.cshtml" />
+    <Content Include="Views\Catalogos\CSucursales.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

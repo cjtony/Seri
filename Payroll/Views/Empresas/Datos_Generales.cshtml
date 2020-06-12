@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-end ">
                 <div class="btn btn-link pr-1 btnadd font-labels" id="btnadd" href="#inNombre_Empresa">
                     Agregar empresa <i class='text-success fas fa-plus-circle'></i>
-                </div>       
+                </div>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
             <label class="font-weight-bold col-md-2">Banco Interbancarios : </label>
             <label class="text-left col-md-4" id="l-14"></label>
             <label class="font-weight-bold col-md-2">Registro IMSS : </label>
-            <label class="text-left col-md-4" id="l-14"></label>
+            <label class="text-left col-md-4" id="l-15"></label>
         </small>
         <div class="col-md-6 font-labels d-flex justify-content-end"><div id="btnEditarEmpresa" class="btn btn-outline-success font-weight-bold" style="font-size:12px;">Editar  <i class="pl-1 far fa-edit"></i> </div></div>
     </div>
@@ -51,7 +51,7 @@
     </div>
     <div class="accordion" id="accordionExample">
         <div class=" col-md-12">
-            
+
             <div id="collapseAddEmpresa" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                 <div class="col-md-12">
                     Agregar datos de la nueva empresa
@@ -105,10 +105,18 @@
                         <div class="form-group col-md-6">
                             <label for="inGiro_empresa">Registro IMSS</label>
                             <input type="text" class="form-control font-labels" name="inRegistro_imss" id="inRegistro_imss" placeholder="Registro IMMS" required>
-                            
+
                             <div class="valid-feedback">
 
                             </div>
+                        </div>
+                        <div class="form-group col-md-6 bg-info rounded">
+
+                            <label class="col-md-12 text-white"><i class="fas fa-clone fa-sm"></i> Copia la configuración de la empresa:</label>
+                            <select class="custom-select custom-select-sm" id="inclonar">
+                                <option value="0">Sin Empresas que clonar</option>
+                            </select>
+
                         </div>
                         <div class="form-group col-md-12 row px-5">
                             <div class="form-group col-md-6 alert alert-light ">
@@ -299,7 +307,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <script>
@@ -398,7 +406,7 @@
                     for (var i = 0; i < data.length; i++) {
                         document.getElementById("inRBanco_interbancarios").innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
                     }
-                
+
                 }
             });
         }
@@ -460,8 +468,10 @@
             document.getElementById("l-09").innerHTML = data[8];
             document.getElementById("l-10").innerHTML = data[9];
             document.getElementById("l-11").innerHTML = data[10];
-            document.getElementById("l-12").innerHTML = data[11].substring(0,10);
+            document.getElementById("l-12").innerHTML = data[11].substring(0, 10);
             document.getElementById("l-13").innerHTML = data[12];
+            document.getElementById("l-14").innerHTML = data[13] + " - " + data[14];
+            document.getElementById("l-15").innerHTML = data[15];
         }
     });
     $.ajax({
@@ -486,6 +496,23 @@
             for (i = 0; i < data.length; i++) {
                 document.getElementById("inRFiscal_empresa").innerHTML += `<option value='${data[i].IdRegimenFiscal}'>${data[i].Descripcion}</option>`;
             }
+        }
+    });
+    //LLENA SELECT EMPRESAS
+    $.ajax({
+        url: "../Empresas/LoadSEmp",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: (data) => {
+            console.log(data);
+            if (data.length != 0) {
+                var select = document.getElementById("inclonar");
+                select.innerHTML = "<option value='0'>No clonar</option>";
+                for (var i = 0; i < data.length; i++) {
+                    select.innerHTML += "<option value='" + data[i]["IdEmpresa"] + "'>" + data[i]["IdEmpresa"] + "&nbsp;&nbsp;" + data[i]["NombreEmpresa"] + "</option>";
+                }
+            }
+
         }
     });
 
@@ -519,6 +546,9 @@
             var afImss = document.getElementById("inAfiliacionIMSS");
             var riesgot = document.getElementById("inRiesgoTrabajo");
             var claserp = document.getElementById("inClase");
+            var bancoin = document.getElementById("inRBanco_interbancarios");
+            var regimss = document.getElementById("inRegistro_imss");
+            var clonar = document.getElementById("inclonar");
 
             //Variables para primer fecha periodo
             var finicio = document.getElementById("finicio");
@@ -552,7 +582,10 @@
                 , infproceso: fproceso.value
                 , indiaspagados: diaspagados.value
                 , intipoperiodo: 3
-                
+                , inbancoin: bancoin.value
+                , inregimss: regimss.value
+                , inclonar: clonar.value
+
             };
             console.log(datos);
             $.ajax({
@@ -603,7 +636,7 @@
     $("#btnadd").on("click", function () {
         document.getElementById("btnadd").innerHTML = "Ocultar agregar empresa <i class='text-danger fas fa-minus-circle'></i>";
         console.log("show");
-        
+
     });
     $('#collapseAddEmpresa').on('hidden.bs.collapse', function () {
         document.getElementById("btnadd").innerHTML = "Agregar empresa <i class='text-success fas fa-plus-circle'></i>";
@@ -655,7 +688,7 @@
                 document.getElementById("btn_saveEmpresa").classList.add("invisible");
                 document.getElementById("btnClear").classList.remove("invisible");
                 document.getElementById("btnUpdate").classList.remove("invisible");
-                
+
                 $("#inNombre_empresa").focus();
 
                 $.ajax({
@@ -678,13 +711,13 @@
 
             }
         });
-        
+
     });
     $("#btnClear").on(function () {
         console.log("Entra al limpiar");
     });
 
-    
+
 
 </script>
 

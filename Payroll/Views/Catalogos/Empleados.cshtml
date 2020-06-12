@@ -1,0 +1,139 @@
+﻿<div class="container col-md-10 shadow-lg p-3 mb-5 bg-white rounded ">
+    <label class="h5 col-md-12">Catálogo de empleados</label>
+    <div class="col-md-12 row">
+        <div class="col-md-3">
+
+            <div id="body-cards-empresas" class="col-md-12 row"></div>
+        </div>
+        <div class="col-md-9">
+            <div class="col-md-12 mb-3">
+                <div class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modalBusquedaEmpleado"><i class="fas fa-search"></i> Buscar Empleado</div>
+            </div>
+            @*<div class="collapse collapseDataEmp col-md-12 pr-3 mt-3">*@
+                <nav class="col-md-12">
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true">Datos Generales</a>
+                        <a class="nav-item nav-link" id="nav-imss-tab" data-toggle="tab" href="#nav-imss" role="tab" aria-controls="nav-imss" aria-selected="false">IMSS</a>
+                        <a class="nav-item nav-link" id="nav-nomina-tab" data-toggle="tab" href="#nav-nomina" role="tab" aria-controls="nav-nomina" aria-selected="false">Nómina</a>
+                        <a class="nav-item nav-link" id="nav-estructura-tab" data-toggle="tab" href="#nav-estructura" role="tab" aria-controls="nav-estructura" aria-selected="false">Estructura</a>
+                    </div>
+                </nav>
+                <div class="tab-content col-md-12" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-general" role="tabpanel" aria-labelledby="nav-general-tab">
+                        <div class="col-md-12 row font-labels" id="collapseEmp">
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Empleado Id</label>
+                                <input type="text" readonly value="" class="lbl-1  form-control form-control-sm"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Nombre(s)</label>
+                                <input type="text" readonly value="" class="lbl-2 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Apellido Paterno</label>
+                                <input type="text" readonly value="" class="lbl-3 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Apellido Materno</label>
+                                <input type="text" readonly value="" class="lbl-4 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Fecha Nacimiento</label>
+                                <input type="text" readonly value="" class="lbl-5 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Lugar Nacimiento</label>
+                                <input type="text" readonly value="" class="lbl-6 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Titulo</label>
+                                <input type="text" readonly value="" class="lbl-7 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Genero</label>
+                                <input type="text" readonly value="" class="lbl-8 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Nacionalidad</label>
+                                <input type="text" readonly value="" class="lbl-9 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Estado Civil</label>
+                                <input type="text" readonly value="" class="lbl-10 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Codigo Postal</label>
+                                <input type="text" readonly value="" class="lbl-11 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Estado</label>
+                                <input type="text" readonly value="" class="lbl-12 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Ciudad</label>
+                                <input type="text" readonly value="" class="lbl-13 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Colonia</label>
+                                <input type="text" readonly value="" class="lbl-14 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">Calle</label>
+                                <input type="text" readonly value="" class="lbl-15 form-control form-control-sm" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold">No. Calle</label>
+                                <input type="text" readonly value="" class="lbl-16 form-control form-control-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-imss" role="tabpanel" aria-labelledby="nav-imss-tab">...</div>
+                    <div class="tab-pane fade" id="nav-nomina" role="tabpanel" aria-labelledby="nav-nomina-tab">...</div>
+                    <div class="tab-pane fade" id="nav-estructura" role="tabpanel" aria-labelledby="nav-estructura-tab">...</div>
+                </div>
+            @*</div>*@
+        </div>
+
+
+        
+    </div>
+</div>
+<!-- Modal Mostrar Busqueda de empleados -->
+<div class="modal fade" id="modalBusquedaEmpleado" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> Politicas de vacaciones <span id="politicas-modal-title" class="politicas-modal-title"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center font-small " id="">
+                <form class="col-md-12 row d-flex justify-content-center" id="frmEmpleados">
+                    <div class="form-group col-md-4">
+                        <label for="formGroupExampleInput">Empresas</label>
+                        <select class="custom-select custom-select-sm" id="inEmpresa">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label for="formGroupExampleInput">Buscar por</label>
+                        <input type="text" class="form-control" id="inSearch" placeholder="Ingrese el nombre o numero de nómina">
+                    </div>
+                    <div class="form-group col-md-12" id="result">
+                        
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/Consulta.js"></script>
+<script>
+    $(function () {
+        LoadBodyCards();
+        LoadSelectEmpresas();
+    });
+</script>

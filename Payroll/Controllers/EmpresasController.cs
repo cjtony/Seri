@@ -22,10 +22,24 @@ namespace Payroll.Controllers
         {
             @Session["IdEmpresa"] = IdEmpresa;
             @Session["sEmpresa"] = NombreEmpresa;
-            List<string> Periodo;
+            List<string> Periodo = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             Periodo = Dao.sp_CInicio_Fechas_Periodo_Verify_id(IdEmpresa);
-            return Json(Periodo);
+            if (Periodo == null)
+            {
+                List<string> Periodonull = new List<string>();
+                Periodonull.Add("0");
+                Periodonull.Add(IdEmpresa.ToString());
+                Periodonull.Add("");
+                Periodonull.Add("0");
+                Periodonull.Add("Sin Periodo");
+                return Json(Periodonull);
+            }
+            else
+            {
+                return Json(Periodo);
+            }
+            
         }
         [HttpPost]
         public void DefinePeriodoActual(int IdPeriodo)
@@ -103,12 +117,13 @@ namespace Payroll.Controllers
             empresas = Dao.sp_CEmpresas_Retrieve_Empresa(IdEmpresa);
             return Json(empresas);
         }
+
         [HttpPost]
-        public JsonResult Insert_Empresa_FirstStep(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, int inColonia_empresa, string inDelegacion_Empresa, string inCalle_Empresa, string inAfiliacionIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo)
+        public JsonResult Insert_Empresa_FirstStep(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, int inColonia_empresa, string inDelegacion_Empresa, string inCalle_Empresa, string inAfiliacionIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, int inbancoin,string inregimss, int inclonar )
         {
             List<string> empresas = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            empresas = Dao.sp_Insert_FirstStep_Empresas(inNombre_empresa, inNomCorto_empresa, inRfc_empresa, inGiro_empresa, inRegimenFiscal_Empresa, inCodigo_postal, inEstado_empresa, inMunicipio_empresa, inCiudad_empresa, inDelegacion_Empresa, inColonia_empresa, inCalle_Empresa, inAfiliacionIMSS, inNombre_Afiliacion, inRiesgoTrabajo, int.Parse(Session["iIdUsuario"].ToString()), inClase, infinicio, inffinal, infpago, infproceso, indiaspagados, intipoperiodo);
+            empresas = Dao.sp_Insert_FirstStep_Empresas(inNombre_empresa, inNomCorto_empresa, inRfc_empresa, inGiro_empresa, inRegimenFiscal_Empresa, inCodigo_postal, inEstado_empresa, inMunicipio_empresa, inCiudad_empresa, inDelegacion_Empresa, inColonia_empresa, inCalle_Empresa, inAfiliacionIMSS, inNombre_Afiliacion, inRiesgoTrabajo, int.Parse(Session["iIdUsuario"].ToString()), inClase, infinicio, inffinal, infpago, infproceso, indiaspagados, intipoperiodo, inbancoin, inregimss, inclonar);
             return Json(empresas);
         }
         public PartialViewResult Registros_Patronales()

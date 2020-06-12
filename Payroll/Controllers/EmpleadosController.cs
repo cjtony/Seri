@@ -119,12 +119,21 @@ namespace Payroll.Controllers
             return Json(empleados);
         }
         [HttpPost]
+        public JsonResult SearchEmpleadosM(string txtSearch,string Empresa_id)
+        {
+            List<DescEmpleadoVacacionesBean> empleados = new List<DescEmpleadoVacacionesBean>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            empleados = Dao.sp_Retrieve_liveSearchEmpleado(int.Parse(Empresa_id), txtSearch);
+
+            return Json(empleados);
+        }
+        [HttpPost]
         public JsonResult SearchEmpleado(int IdEmpleado)
         {
             @Session["Empleado_id"] = IdEmpleado;
             List<DescEmpleadoVacacionesBean> empleados = new List<DescEmpleadoVacacionesBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
-            empleados = Dao.sp_CEmpleado_Retrieve_Empleado(int.Parse(Session["Empleado_id"].ToString()), int.Parse(Session["IdEmpresa"].ToString()));
+            empleados = Dao.sp_CEmpleado_Retrieve_Empleado(IdEmpleado, int.Parse(Session["IdEmpresa"].ToString()));
             return Json(empleados);
         }
         [HttpPost]
@@ -428,5 +437,20 @@ namespace Payroll.Controllers
             ListTotales = Dao.sp_SaldosTotales_Retrieve_TPlantillasCalculos(iIdEmpresa, iIdEmpleado, iPeriodo);
             return Json(ListTotales);
         }
+
+        [HttpPost]
+        public JsonResult SearchDataEmpleado(int Empleado_id, int Empresa_id)
+        {
+            List<string> empleados = new List<string>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            if (Empresa_id == 0)
+            {
+                Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+            }
+            @Session["Empleado_id"] = Empleado_id;
+            empleados = Dao.sp_Templeado_Retrieve_DatosEmpleado(Empresa_id,Empleado_id);
+            return Json(empleados);
+        }
+
     }
 }
