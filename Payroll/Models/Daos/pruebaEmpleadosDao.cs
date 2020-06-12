@@ -55,6 +55,57 @@ namespace Payroll.Models.Daos
 
             return list;
         }
+        public List<string> sp_Templeado_Retrieve_DatosEmpleado(int Empresa_id, int Empleado_id)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Templeado_Retrieve_DatosEmpleado", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["Empleado_id"].ToString());
+                    list.Add(data["Nombre_Empleado"].ToString());
+                    list.Add(data["Apellido_Paterno_Empleado"].ToString());
+                    list.Add(data["Apellido_Materno_Empleado"].ToString());
+                    list.Add(data["Fecha_Nacimiento_Empleado"].ToString());
+                    list.Add(data["Lugar_Nacimiento_Empleado"].ToString());
+                    list.Add(data["Titulo"].ToString());
+                    list.Add(data["Genero"].ToString());
+                    list.Add(data["Nacionalidad"].ToString());
+                    list.Add(data["Estado_civil"].ToString());
+                    list.Add(data["Codigo_Postal"].ToString());
+                    list.Add(data["Estado"].ToString());
+                    list.Add(data["Ciudad"].ToString());
+                    list.Add(data["Colonia"].ToString());
+                    list.Add(data["Calle"].ToString());
+                    list.Add(data["Numero_Calle"].ToString());
+                    list.Add(data["Telefono_Fijo"].ToString());
+                    list.Add(data["Telefono_Movil"].ToString());
+                    list.Add(data["Correo_Electronico"].ToString());
+                    list.Add(data["Fecha_Matrimonio"].ToString());
+                    list.Add(data["Tipo_Sangre"].ToString());
+                    list.Add(data["Fecha_Alta"].ToString());
+                    list.Add(data["CURP"].ToString());
+                    list.Add(data["RegistroImss"].ToString());
+                    list.Add(data["RFC"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
         public List<DescEmpleadoVacacionesBean> sp_CEmpleado_Retrieve_Empleado(int IdEmpleado, int IdEmpresa)
         {
             List<DescEmpleadoVacacionesBean> list = new List<DescEmpleadoVacacionesBean>();

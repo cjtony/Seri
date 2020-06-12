@@ -413,7 +413,7 @@ namespace Payroll.Models.Beans
         public string DescripcionDepartamento { get; set; }
         public string DescripcionPuesto { get; set; }
         public string FechaIngreso { get; set; }
-        //
+        public string Empresa_id { get; set; }
         public int Id_Per_Vac { get; set; }
         public string Fecha_Aniversario { get; set; }
         public int Id_Per_Vac_Ln { get; set; }
@@ -595,5 +595,35 @@ namespace Payroll.Models.Beans
         public string Dias { get; set; }
         public string Prima_Vacacional_Porcen { get; set; }
         public string Dias_Aguinaldo { get; set; }
+    }
+    //public class CatalogoPuestosBean
+    //{
+    //    public int id { get; set; }
+    //    public string Catalogo { get; set; }
+    //    public string Descripcion { get; set; }
+    //    public string Cancelado { get; set; }
+    //    public string Codigo { get; set; }
+    //}
+    public class EmpleadosxEmpresaBean
+    {
+        public string Empresa_id { get; set; }
+        public string NombreEmpresa { get; set; }
+        public string No { get; set; }
+    }
+    public class DataPuestosBean
+    {
+        public int iFlag { get; set; }
+        public string idPuesto { get; set; }
+        public string PuestoCodigo { get; set; }
+        public string NombrePuesto { get; set; }
+        public string DescripcionPuesto { get; set; }
+        public string Empresa_id { get; set; }
+        public string NombreProfesion { get; set; }
+        public string ClasificacionPuesto { get; set; }
+        public string Colectivo { get; set; }
+        public string NivelJerarquico { get; set; }
+        public string PerformanceManager { get; set; }
+        public string Tabulador { get; set; }
+        public string fecha_alta { get; set; }
     }
 }

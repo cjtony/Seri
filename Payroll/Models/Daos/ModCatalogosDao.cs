@@ -446,5 +446,205 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
+        public List<EmpleadosxEmpresaBean> sp_CEmpresas_Retrieve_NoEmpleados()
+        {
+            List<EmpleadosxEmpresaBean> listBean = new List<EmpleadosxEmpresaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CEmpresas_Retrieve_NoEmpleados", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmpleadosxEmpresaBean list = new EmpleadosxEmpresaBean();
+                        list.Empresa_id = data["IdEmpresa"].ToString();
+                        list.NombreEmpresa = data["NombreEmpresa"].ToString();
+                        list.No = data["No"].ToString();
+                        listBean.Add(list);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<string> sp_TPuestos_Retrieve_Puestos_Empresa(int Empresa_id)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TPuestos_Retrieve_Puestos_Empresa", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        list.Add(data["IdPuesto"].ToString());
+                        list.Add(data["Empresa_id"].ToString());
+                        list.Add(data["PuestoCodigo"].ToString());
+                        list.Add(data["NombrePuesto"].ToString());
+                        list.Add(data["DescripcionPuesto"].ToString());
+                        list.Add(data["NombreProfesion"].ToString());
+                        list.Add(data["ClasificacionPuesto"].ToString());
+                        list.Add(data["Colectivo"].ToString());
+                        list.Add(data["NivelJerarquico"].ToString());
+                        list.Add(data["PerformanceManager"].ToString());
+                        list.Add(data["Tabulador"].ToString());
+                        list.Add(data["Fecha_Alta"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+        public List<List<string>> sp_TPuestos_Retrieve_Empresas()
+        {
+            List<List<string>> lista = new List<List<string>>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TPuestos_Retrieve_Empresas", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                //cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        List<string> list = new List<string>();
+                        list.Add(data["Empresa_id"].ToString());
+                        list.Add(data["NombreEmpresa"].ToString());
+                        list.Add(data["NumeroPuestos"].ToString());
+                        lista.Add(list);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return lista;
+        }
+        public List<DataPuestosBean> sp_Tpuestos_Search_Puesto(int Empresa_id, string Search)
+        {
+            
+            List<DataPuestosBean> list = new List<DataPuestosBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Tpuestos_Search_Puesto", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlSearch", Search));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    DataPuestosBean listEmpleados = new DataPuestosBean();
+                    if (int.Parse(data["iFlag"].ToString()) == 0)
+                    {
+                        listEmpleados.iFlag = int.Parse(data["iFlag"].ToString());
+                        listEmpleados.idPuesto = data["IdPuesto"].ToString();
+                        listEmpleados.NombrePuesto = data["NombrePuesto"].ToString();
+                        listEmpleados.DescripcionPuesto = data["DescripcionPuesto"].ToString();
+                        listEmpleados.PuestoCodigo = data["PuestoCodigo"].ToString();
+                        listEmpleados.fecha_alta = data["Fecha_Alta"].ToString();
+                    }
+                    else
+                    {
+                        listEmpleados.iFlag = int.Parse(data["iFlag"].ToString());
+                        listEmpleados.NombrePuesto = data["title"].ToString();
+                        listEmpleados.DescripcionPuesto = data["resume"].ToString();
+                    }
+                    list.Add(listEmpleados);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
+        public List<DataPuestosBean> sp_TPuestos_Retrieve_Puesto(int Empresa_id, string Puesto_id)
+        {
+
+            List<DataPuestosBean> list = new List<DataPuestosBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPuestos_Retrieve_Puesto", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPuesto_id", Puesto_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    DataPuestosBean listEmpleados = new DataPuestosBean();
+                    listEmpleados.idPuesto = data["IdPuesto"].ToString();
+                    listEmpleados.NombrePuesto = data["NombrePuesto"].ToString();
+                    listEmpleados.DescripcionPuesto = data["DescripcionPuesto"].ToString();
+                    listEmpleados.PuestoCodigo = data["PuestoCodigo"].ToString();
+                    listEmpleados.fecha_alta = data["Fecha_Alta"].ToString();
+                    listEmpleados.Empresa_id = data["Empresa_id"].ToString();
+                    listEmpleados.NombreProfesion = data["NombreProfesion"].ToString();
+                    listEmpleados.ClasificacionPuesto = data["ClasificacionPuesto"].ToString();
+                    listEmpleados.Colectivo = data["Colectivo"].ToString();
+                    listEmpleados.NivelJerarquico = data["NivelJerarquico"].ToString();
+                    listEmpleados.PerformanceManager = data["PerformanceManager"].ToString();
+                    listEmpleados.Tabulador = data["Tabulador"].ToString();
+
+                    list.Add(listEmpleados);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
     }
 }

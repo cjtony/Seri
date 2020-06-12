@@ -34,12 +34,32 @@
     $("#politicas-vacaciones").on("click", function () {
         $("#v-pills-politicas-tab").click();
     });
+    $("#puestos").on("click", function () {
+        $("#v-pills-puestos-tab").click();
+    });
+    $("#localidades").on("click", function () {
+        $("#v-pills-localidades-tab").click();
+    });
+    $("#registros-patronales").on("click", function () {
+        $("#v-pills-registros-patronales-tab").click();
+    });
+    $("#centros-costos").on("click", function () {
+        $("#v-pills-centros-costos-tab").click();
+    });
+    $("#sucursales").on("click", function () {
+        $("#v-pills-sucursales-tab").click();
+    });
+    $("#regionales").on("click", function () {
+        $("#v-pills-regionales-tab").click();
+    });
+
+
+
     $("#v-pills-FechasPeriodos-tab").on("click", function () {
         LoadTabFechasPeriodos();
     });
     $("#v-pills-politicas-tab").on("click", function () {
         LoadTabPoliticasVacaciones();
-        
     });
     $("#v-pills-editar-tab").on("click", function (evt) {
         
