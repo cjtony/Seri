@@ -61,6 +61,17 @@ namespace Payroll.Models.Beans
         public int iIdSeccionReporte { get; set; }
         public int iIdAcumulado { get; set; }
         public int iCancelado { get; set; }
+        public string sCancelado { get; set; }
+        public int iTipodeRenglon { get; set; }
+        public int iEspejo { get; set; }
+        public string sEspejo { get; set; }
+        public int ilistCalclos { get; set; }
+        public string slistCalculos { get; set; }
+        public string sCuentaCont { get; set; }
+        public string sDespCuCont { get; set; }
+        public string sCargAbCuenta { get; set; }
+        public int iIdSat { get; set; }
+        public string sIdSat { get; set; }
         public string sMensaje { get; set; }
     }
 
@@ -264,4 +275,20 @@ namespace Payroll.Models.Beans
         public string sMensaje { get; set; }
     }
 
+    public class SelloSatBean {
+        public int iIdCalculosHd { get; set; }
+        public int iIdEmpresa { get; set; }
+        public int iIdEmpleado { get; set; }
+        public int ianio { get; set; }
+        public int iTipoPeriodo { get; set; }
+        public int iPeriodo { get; set; }
+        public string sRecibos { get; set; }
+        public string sSelloSat { get; set; }
+        public string sUUID { get; set; }
+        public string sSelloCFD { get; set; }
+        public string Rfcprov { get; set; }
+        public string sNoCertificado { get; set; }
+        public string Fechatimbrado { get; set; }
+        public string sMensaje { get; set; }
+    }
 }

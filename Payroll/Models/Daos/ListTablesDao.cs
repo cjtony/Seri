@@ -10,6 +10,9 @@ using System.IO.Compression;
 using System.Text;
 using System.Web;
 using System.Xml;
+using System.Drawing;
+using System.Web.UI.WebControls;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Payroll.Models.Daos
 {
@@ -665,7 +668,6 @@ namespace Payroll.Models.Daos
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
                             ls.sEspejo = data["es_espejo"].ToString();
-
                         }
 
                         list.Add(ls);
@@ -688,6 +690,7 @@ namespace Payroll.Models.Daos
         public HttpResponse response { get; }
         public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido)
         {
+            int IdCalcHD,iperiodo;
             List<string> NomArchXML = new List<string>();
             string[] Nombre = sNombreComple.Split(' ');
             string Idempleado = Nombre[0].ToString();
@@ -745,6 +748,7 @@ namespace Payroll.Models.Daos
                 string folio = "";
                 List<CInicioFechasPeriodoBean> LFechaPerido = new List<CInicioFechasPeriodoBean>();
                 LFechaPerido = sp_DatosPerido_Retrieve_DatosPerido(Periodo);
+                iperiodo = LFechaPerido[0].iPeriodo;
                 if (LFechaPerido[0].sMensaje == null)
                 {
 
@@ -760,7 +764,7 @@ namespace Payroll.Models.Daos
                     List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
                     ListTotales = sp_SaldosTotales_Retrieve_TPlantillasCalculos(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo);
                     LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id, LFechaPerido[0].iPeriodo);
-
+                    IdCalcHD = LisTRecibo[0].iIdCalculoshd;
                     //Partidas
                     string tipoNom = " ";
                     string TotalPercepciones = " ";
@@ -918,11 +922,19 @@ namespace Payroll.Models.Daos
                     int TDias = 0;
                     string Dias = LisTRecibo[0].sNombre_Renglon;
                     sDiasEfectivos = Convert.ToString(iTdias);
+                          
+                      
                     if (Dias.Length > 7)
                     {
-                        string[] dias = Dias.Split(':');
-                        Dias = dias[1].ToString();
-                        Dias = Dias.Replace("}", "");
+                        if (LisTRecibo[0].iIdRenglon == 0)
+                        {
+                            string[] dias = Dias.Split(':');
+                            Dias = dias[1].ToString();
+                            Dias = Dias.Replace("}", "");
+                        }
+                        else {
+                            Dias = "0";
+                        }
                         decimal DiasNo = Convert.ToDecimal(Dias);
                         iTdias = iTdias - DiasNo;
                         TDias = Convert.ToInt16(iTdias);
@@ -954,10 +966,19 @@ namespace Payroll.Models.Daos
                     xmlWriter.WriteAttributeString("Puesto", sPuesto);
                     xmlWriter.WriteAttributeString("RiesgoPuesto", "1");
                     xmlWriter.WriteAttributeString("PeriodicidadPago", "04");
-                    if ((sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18) && sBanco.Length > 0)
+                    if (sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18)
                     {
-                        xmlWriter.WriteAttributeString("Banco", sBanco);
-                        xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
+                        if (sBanco.Length > 0)
+                        {
+                            xmlWriter.WriteAttributeString("Banco", sBanco);
+                            xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
+                        }
+                        else {
+                            xmlWriter.WriteAttributeString("Banco", "0");
+                            xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
+
+                        }
+
                     }
                     else
                     if ((sCuentaBancaria.Length == 18))
@@ -1076,11 +1097,12 @@ namespace Payroll.Models.Daos
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteEndElement();
-                    //xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
                     //Cerrar
                     xmlWriter.Flush();
                     xmlWriter.Close();
-                    //string FileCadenaXslt = path + "cadenaoriginal_3_3.xslt";
+                    Dao.sp_Tsellos_InsertUPdate_TSellosSat(0, IdCalcHD, IdEmpresa, NumEmpleado, anios, Tipodeperido, iperiodo, "Nomina", " ", " ", " ", " ", " ", " ");
+                    //FileCadenaXslt = path + "cadenaoriginal_3_3.xslt";
                     string Cadena = LibreriasFacturas.GetCadenaOriginal(ArchivoXmlFile, FileCadenaXslt, path);
                     string selloDigitalOriginal = LibreriasFacturas.ObtenerSelloDigital(Cadena, s_certificadoKey, s_transitorio);
                     LibreriasFacturas.AplicarSelloDigital(selloDigitalOriginal, ArchivoXmlFile);
@@ -1106,8 +1128,6 @@ namespace Payroll.Models.Daos
                     sr.Close();
                     sw.Close();
                     File.Delete(ArchivoXmlFile); //Borra archivo temporal
-
-
                     // 1 
                     //DirectoryInfo dir = new DirectoryInfo(@"C:\reportes\");
                     // 2 
@@ -1154,5 +1174,8 @@ namespace Payroll.Models.Daos
 
             return zips;
         }
+
     }
+
+
 }

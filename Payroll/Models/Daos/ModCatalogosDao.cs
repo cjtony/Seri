@@ -493,6 +493,7 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
                 SqlDataReader data = cmd.ExecuteReader();
+
                 if (data.HasRows)
                 {
                     while (data.Read())
@@ -646,5 +647,61 @@ namespace Payroll.Models.Daos
 
             return list;
         }
+
+        public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa, int ctrliElemntoNOm)
+        {
+            List<CRenglonesBean> list = new List<CRenglonesBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CRenglones_Retrieve_CRenglones", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrliIdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@ctrliElemntoNOm", ctrliElemntoNOm));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CRenglonesBean ls = new CRenglonesBean();
+                        {
+                            ls.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
+                            ls.iIdRenglon = int.Parse(data["IdRenglon"].ToString());
+                            ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
+                            ls.iIdElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
+                            ls.iIdSeccionReporte = int.Parse(data["Cg_Seccion_en_Reporte_id"].ToString());
+                            ls.iIdAcumulado = int.Parse(data["Acumulado_id"].ToString());
+                            ls.sCancelado = data["Cancelado"].ToString();
+                            ls.iTipodeRenglon = int.Parse(data["Tipo_renglon_id"].ToString());
+                            ls.sEspejo = data["rng_espejo"].ToString();
+                            ls.slistCalculos = data["lista_calculo_id"].ToString();
+                            ls.sCuentaCont = data["Cuenta_Contable"].ToString();
+                            ls.sDespCuCont = data["Descripcion_Cuenta_Contable"].ToString();
+                            ls.sCargAbCuenta = data["cargo_abono_cuenta"].ToString();
+                            ls.sIdSat = data["Sat_id"].ToString();
+                            ls.sMensaje = "success";
+                        };
+
+
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
     }
 }

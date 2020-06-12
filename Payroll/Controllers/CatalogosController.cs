@@ -85,6 +85,10 @@ namespace Payroll.Controllers
             return PartialView();
         }
         // POST: PETICIONES
+        public PartialViewResult VistaRenglones() {
+            return PartialView();
+        }
+
         [HttpPost]
         public JsonResult LoadFechasPeriodos()
         {
@@ -229,5 +233,13 @@ namespace Payroll.Controllers
             Lista = Dao.sp_TPuestos_Retrieve_Puesto(Empresa_id, Puesto_id);
             return Json(Lista);
         }
+        public JsonResult datRenglones(int IdEmpresa, int iElemntoNOm)
+        {
+            List<CRenglonesBean> LR = new List<CRenglonesBean>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa, iElemntoNOm);
+            return Json(LR);
+        }
+
     }
 }

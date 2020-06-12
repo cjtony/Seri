@@ -1557,6 +1557,8 @@ namespace Payroll.Models.Daos
                     {
                         ReciboNominaBean ls = new ReciboNominaBean();
                         {
+
+                            ls.iIdCalculoshd = int.Parse(data["Calculos_Hd_id"].ToString());
                             ls.sNombre_Renglon = data["Nombre_Renglon"].ToString();
                             ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
                             ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
@@ -1839,6 +1841,50 @@ namespace Payroll.Models.Daos
             return list;
 
 
+        }
+
+        public SelloSatBean sp_Tsellos_InsertUPdate_TSellosSat(int Ctrliop, int CrtiIdCalculos, int CtrliIdEmpresa, int CtrliIdEmpleado, int CtrliAnio, int CtrliTipoPerdio, int CtrliPeriodo, string CtrlsRecibo, string CtrlsSello, string CtrlsUUID, string CtrlsSelloCFD, string CtrlsRfcProvCertif, string CtrlsNoCertificadoSAT, string CtrlsFechatim)
+        {
+            SelloSatBean bean = new SelloSatBean();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Tsellos_InsertUPdate_TSellosSat", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@Ctrliop", Ctrliop));
+                cmd.Parameters.Add(new SqlParameter("@CrtiIdCalculos", CrtiIdCalculos));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPerdio", CtrliTipoPerdio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsRecibo", CtrlsRecibo));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsSello", CtrlsSello));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsUUID", CtrlsUUID));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsSelloCFD", CtrlsSelloCFD));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsRfcProvCertif", CtrlsRfcProvCertif));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsNoCertificadoSAT", CtrlsNoCertificadoSAT));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsFechatim", CtrlsFechatim));
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
         }
 
     }
