@@ -58,6 +58,9 @@
     <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="MessagingToolkit.QRCode, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MessagingToolkit.QRCode.1.3.0\lib\MessagingToolkit.QRCode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -355,6 +358,7 @@
     <Content Include="Archivos\certificados\CSD_unidad_CGA1511196P4_20160128_134059.key" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Catalogos\Catalogos.js" />
     <Content Include="Scripts\dataTables.autoFill.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\dataTables.jqueryui.js" />
@@ -610,6 +614,7 @@
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\icon_collapse.png" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\icon_expand.png" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\info.png" />
+    <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\jqx.base.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\le-frog\ReadMe.txt" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\le-frog\ui-bg_diagonals-small_0_aaaaaa_40x40.png" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\le-frog\ui-bg_diagonals-thick_15_444444_40x40.png" />
@@ -812,7 +817,6 @@
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\images\wp_check_white.png" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.android.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.arctic.css" />
-    <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.base.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.black.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.blackberry.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.bootstrap.css" />
@@ -952,6 +956,7 @@
     <Content Include="Views\Incidencias\TablaIncidencias.cshtml" />
     <Content Include="Views\Empleados\TimbradosXML.cshtml" />
     <Content Include="Views\Catalogos\VistaCatalogos.cshtml" />
+    <Content Include="Views\Catalogos\VistaRenglones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

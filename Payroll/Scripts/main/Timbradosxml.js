@@ -5,10 +5,9 @@
     const anoxml = document.getElementById('anoxml');
     const TipoPeriodoxml = document.getElementById('TipoPeriodoxml');
     const Periodoxml = document.getElementById('Periodoxml');
-    const versionxml = document.getElementById('versionxml');
     const fileUpload = document.getElementById('fileUpload');
     var Path;
-    versionxml.value = "12";
+    const  versionxml = "12";
     /// carga el nombre del archivo en upfile
 
     $('.custom-file input').change(function () {
@@ -34,10 +33,9 @@
         var aniox = anoxml.value;
         var TipPeriodox = TipoPeriodoxml.value;
         var Peridox = Periodoxml.value;
-        var versionx = versionxml.value;
+        var versionx = versionxml;
         console.log(aniox);
-        if (aniox.value != "" && TipPeriodox != "" && Peridox !="" && versionx !="" ) {
-            console.log('entro');
+        if (aniox.value != "" && TipPeriodox != "" && Peridox !="" && versionx !="" ) {        
             var selectFile = $("#fileUpload")[0].files[0];
             var dataString = new FormData();
             var NomArch = selectFile.name;          
@@ -45,7 +43,6 @@
             limite = 2,
             arreglosubcadena = NomArch.split(separador, limite);
             dataString.append("fileUpload", selectFile);
-           
             if (arreglosubcadena[1] == "zip") {
                 $.ajax({
                     url: "../Empleados/LoadFile",
@@ -55,23 +52,30 @@
                     processData: false,
                     async: false,
                     success: function (data) {
-                        console.log(data);
                         if (typeof data.Value != "undefined") {
                             fshowtypealert('Timbrado XML', data.Message, 'warning');
                             const dataSend = { Anio: aniox, TipoPeriodo: TipPeriodox, Perido: Peridox, Version: versionx, NomArchivo: NomArch };
+                            console.log("dato:" + dataSend);
                             $.ajax({
                                 url: "../Empleados/TimbXML",
                                 type: "POST",
                                 data: dataSend,
                                 success: (data) => {
-                              
+                                    console.log(data.length);
+                                    console.log(data);
+                                    if (data[0].sMensaje !=null) {
+                                        console.log('descarga');
+                                        var url = '\\Archivos\\certificados\\Pdfzio.zip';
+                                        window.open(url);
+                                    }
+
+
                                 }
                             });
 
                         }
                         else {
                             fshowtypealert('Timbrado XML', "Error no identificado en la carga del archivo Winzip", 'warning');
-
                         }
 
                     },
@@ -95,7 +99,16 @@
 
     });
 
-
+    /// Validaciones
+    $("#anoxml").keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
+    $("#TipoPeriodoxml").keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
+    $("#Periodoxml").keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
         Swal.fire({
