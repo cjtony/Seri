@@ -1,9 +1,9 @@
 ﻿<div class="mt-2 mb-5 container-fluid">
 
     <div>
-        @*<button class="flotanteleft rounded btn btn-outline-danger animated fadeIn delay-1s" title="LOGS" id="btn-logs">
-                <i class="fas fa-times"></i>
-            </button>*@
+        @*<button class="flotante-show rounded btn btn-info animated fadeIn delay-1s" title="Ver campos requeridos" id="btn-show-fields-required">
+                <i class="fas fa-eye" id="ico-show"></i>
+        </button>*@
         @*<button class="flotante0 rounded btn btn-outline-success animated fadeIn delay-1s" title="Guardar cambios" id="btn-save-edit">
                 <i class="fas fa-user-check"></i>
             </button>*@
@@ -16,7 +16,7 @@
         <button type="button" data-toggle="modal" data-target="#btnsearchcentrscost" class="flotante1 rounded btn btn-primary" title="Centros de costo" id="btn-modal-search-centr-cost">
             <i class="fas fa-store"></i>
         </button>
-        <button class="flotante2 rounded btn btn-primary" title="Registrar localidad" id="btn-modal-search-localitys">
+        <button type="button" data-toggle="modal" data-target="#searchlocalidadbtn" class="flotante2 rounded btn btn-primary" title="Registrar localidad" id="btn-modal-search-localitys">
             <i class="fas fa-map-marked-alt"></i>
         </button>
         <button type="button" data-toggle="modal" data-target="#searchregion" class="flotante3 rounded btn btn-primary" title="Regionales" id="btn-modal-search-regionales">
@@ -92,7 +92,7 @@
                             <div class="tab-pane fade show active p-3" id="nav-datagen" role="tabpanel" aria-labelledby="nav-datagen-tab">
                                 <div class="row mt-4">
                                     <div id="div-most-alert-data-gen" class="col-md-8 offset-2"></div>
-                                    <div class="col-md-12 mb-4">
+                                    <div class="col-md-6">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
                                                 <b>
@@ -100,13 +100,25 @@
                                                     Datos principales
                                                 </b>
                                             </h6>
-                                            <hr />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-right">
+                                            <p>
+                                                <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
+                                            </p>
+                                        </div>
+                                        @*<button class="rounded btn btn-info btn-block animated fadeIn delay-1s" title="Ver campos requeridos" id="btn-show-fields-required">
+                                            <i class="fas fa-eye" id="ico-show"></i>
+                                        </button>*@
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr />
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <input type="hidden" value="0" readonly class="form-control form-control-sm" id="clvemp" />
-                                            <label for="name" class="col-sm-4 col-form-label font-labels">
+                                            <label for="name" class="col-sm-4 col-form-label font-labels" id="label-name">
                                                 Nombre:
                                             </label>
                                             <div class="col-sm-8">
@@ -114,7 +126,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="apepat" class="col-sm-4 col-form-label font-labels">
+                                            <label for="apepat" class="col-sm-4 col-form-label font-labels" id="label-patern">
                                                 Apellido Paterno:
                                             </label>
                                             <div class="col-sm-8">
@@ -122,7 +134,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="apemat" class="col-sm-4 col-form-label font-labels">
+                                            <label for="apemat" class="col-sm-4 col-form-label font-labels" id="label-matern">
                                                 Apellido Materno:
                                             </label>
                                             <div class="col-sm-8">
@@ -130,7 +142,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="sex" class="col-sm-4 col-form-label font-labels">
+                                            <label for="sex" class="col-sm-4 col-form-label font-labels" id="label-genero">
                                                 Genero:
                                             </label>
                                             <div class="col-sm-8">
@@ -140,7 +152,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="estciv" class="col-sm-4 col-form-label font-labels">
+                                            <label for="estciv" class="col-sm-4 col-form-label font-labels" id="label-estciv">
                                                 Estado civil:
                                             </label>
                                             <div class="col-sm-8">
@@ -152,7 +164,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="fnaci" class="col-sm-4 col-form-label font-labels">
+                                            <label for="fnaci" class="col-sm-4 col-form-label font-labels" id="label-datebirth">
                                                 Fecha de Nacimiento:
                                             </label>
                                             <div class="col-sm-8">
@@ -160,7 +172,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="lnaci" class="col-sm-4 col-form-label font-labels">
+                                            <label for="lnaci" class="col-sm-4 col-form-label font-labels" id="label-placebirth">
                                                 Lugar de Nacimiento:
                                             </label>
                                             <div class="col-sm-8">
@@ -168,7 +180,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="title" class="col-sm-4 col-form-label font-labels">
+                                            <label for="title" class="col-sm-4 col-form-label font-labels" id="label-title">
                                                 Titulo:
                                             </label>
                                             <div class="col-sm-8">
@@ -178,7 +190,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="nacion" class="col-sm-4 col-form-label font-labels">
+                                            <label for="nacion" class="col-sm-4 col-form-label font-labels" id="label-nationality">
                                                 Nacionalidad:
                                             </label>
                                             <div class="col-sm-8">
@@ -203,7 +215,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="state" class="col-sm-4 col-form-label font-labels">
+                                            <label for="state" class="col-sm-4 col-form-label font-labels" id="label-state">
                                                 Estado:
                                             </label>
                                             <div class="col-sm-8">
@@ -213,7 +225,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="codpost" class="col-sm-4 col-form-label font-labels">
+                                            <label for="codpost" class="col-sm-4 col-form-label font-labels" id="label-codpost">
                                                 C. postal:
                                             </label>
                                             <div class="col-sm-8">
@@ -233,7 +245,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="city" class="col-sm-4 col-form-label font-labels">
+                                            <label for="city" class="col-sm-4 col-form-label font-labels" id="label-city">
                                                 Ciudad:
                                             </label>
                                             <div class="col-sm-8">
@@ -243,7 +255,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="colony" class="col-sm-4 col-form-label font-labels">
+                                            <label for="colony" class="col-sm-4 col-form-label font-labels" id="label-colony">
                                                 Colonia:
                                             </label>
                                             <div class="col-sm-8">
@@ -253,7 +265,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="street" class="col-sm-4 col-form-label font-labels">
+                                            <label for="street" class="col-sm-4 col-form-label font-labels" id="label-street">
                                                 Calle:
                                             </label>
                                             <div class="col-sm-8">
@@ -292,7 +304,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="telmov" class="col-sm-4 col-form-label font-labels">
+                                            <label for="telmov" class="col-sm-4 col-form-label font-labels" id="label-telmovil">
                                                 Telefono movil:
                                             </label>
                                             <div class="col-sm-8">
@@ -300,7 +312,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="mailus" class="col-sm-4 col-form-label font-labels">
+                                            <label for="mailus" class="col-sm-4 col-form-label font-labels" id="label-email">
                                                 Correo electronico:
                                             </label>
                                             <div class="col-sm-8">
@@ -343,20 +355,29 @@
                             <div class="tab-pane fade p-3" id="nav-imss" role="tabpanel" aria-labelledby="nav-imss-tab">
                                 <div class="row mt-4">
                                     <div id="div-most-alert-data-imss" class="col-md-8 offset-2"></div>
-                                    <div class="col-md-12 mb-4">
+                                    <div class="col-md-6">
                                         <div class="text-left">
-                                            <h6 class="col-ico">
+                                            <h6 class="col-ico font-nav-child">
                                                 <i class="fas fa-circle fa-sm mr-ico-05"></i>
                                                 Registros oficiales
                                             </h6>
-                                            <hr />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-right">
+                                            <p>
+                                                <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr />
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <input type="hidden" readonly class="form-control form-control-sm" id="clvimss" />
                                             <input type="hidden" readonly class="form-control form-control-sm" id="fechefecactimss" />
-                                            <label for="regimss" class="col-sm-4 col-form-label font-labels">
+                                            <label for="regimss" class="col-sm-4 col-form-label font-labels" id="label-regimss">
                                                 Registro IMSS:
                                             </label>
                                             <div class="col-sm-8">
@@ -364,7 +385,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="fecefe" class="col-sm-4 col-form-label font-labels">
+                                            <label for="fecefe" class="col-sm-4 col-form-label font-labels" id="label-efimss">
                                                 Fecha efectiva
                                             </label>
                                             <div class="col-sm-8">
@@ -374,7 +395,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="rfc" class="col-sm-4 col-form-label font-labels">
+                                            <label for="rfc" class="col-sm-4 col-form-label font-labels" id="label-rfc">
                                                 R.F.C:
                                             </label>
                                             <div class="col-sm-8">
@@ -385,11 +406,14 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="curp" class="col-sm-4 col-form-label font-labels">
+                                            <label for="curp" class="col-sm-4 col-form-label font-labels" id="label-curp">
                                                 C.U.R.P:
                                             </label>
                                             <div class="col-sm-8">
                                                 <input placeholder="C.U.R.P" type="text" id="curp" class="form-control form-control-sm text-uppercase" maxlength="18" />
+                                                <div class="d-none" id="divcurpinvalid">
+                                                    <p id="textcurpinvalid"></p>
+                                                </div>
                                                 <div class="invalid-feedback">
                                                     Introduzca una curp valida. Si los primeros 10 digitos de su rfc con los primeros 10 digitos de su curp son correctos compruebe que sea una curp valida.
                                                 </div>
@@ -400,7 +424,7 @@
                                 <div class="row mt-4">
                                     <div class="col-md-12 mb-4">
                                         <div class="text-left">
-                                            <h6 class="col-ico">
+                                            <h6 class="col-ico font-nav-child">
                                                 <i class="fas fa-circle fa-sm mr-ico-05"></i>
                                                 Otros
                                             </h6>
@@ -409,7 +433,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="nivest" class="col-sm-4 col-form-label font-labels">
+                                            <label for="nivest" class="col-sm-4 col-form-label font-labels" id="label-nivest">
                                                 Nivel de estudios:
                                             </label>
                                             <div class="col-sm-8">
@@ -419,7 +443,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="nivsoc" class="col-sm-4 col-form-label font-labels">
+                                            <label for="nivsoc" class="col-sm-4 col-form-label font-labels" id="label-nivsoc">
                                                 Nivel socioeconomico:
                                             </label>
                                             <div class="col-sm-8">
@@ -445,20 +469,29 @@
                             <div class="tab-pane fade p-3" id="nav-datanom" role="tabpanel" aria-labelledby="nav-datanom-tab">
                                 <div class="row mt-4">
                                     <div id="div-most-alert-data-nomina" class="col-md-6 offset-3"></div>
-                                    <div class="col-md-12 mb-4">
+                                    <div class="col-md-6">
                                         <div class="text-left">
-                                            <h6 class="col-ico">
+                                            <h6 class="col-ico font-nav-child">
                                                 <i class="fas fa-circle fa-sm mr-ico-05"></i>
                                                 Datos de ingreso
                                             </h6>
-                                            <hr />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-right">
+                                            <p>
+                                                <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr />
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <input type="hidden" readonly class="form-control form-control-sm" id="clvnom" />
                                             <input type="hidden" readonly class="form-control form-control-sm" id="fechefectact" />
-                                            <label for="fecefecnom" class="col-sm-4 col-form-label font-labels">
+                                            <label for="fecefecnom" class="col-sm-4 col-form-label font-labels" id="label-efnom">
                                                 Fecha Efectiva
                                             </label>
                                             <div class="col-sm-8">
@@ -466,7 +499,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="salmen" class="col-sm-4 col-form-label font-labels">
+                                            <label for="salmen" class="col-sm-4 col-form-label font-labels" id="label-salmen">
                                                 Salario mensual:
                                             </label>
                                             <div class="col-sm-8">
@@ -479,7 +512,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="tipper" class="col-sm-4 col-form-label font-labels">
+                                            <label for="tipper" class="col-sm-4 col-form-label font-labels" id="label-tipper">
                                                 Tipo periodo:
                                             </label>
                                             <div class="col-sm-8">
@@ -489,7 +522,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="tipemp" class="col-sm-4 col-form-label font-labels">
+                                            <label for="tipemp" class="col-sm-4 col-form-label font-labels" id="label-tipemp">
                                                 Tipo de empleado:
                                             </label>
                                             <div class="col-sm-8">
@@ -499,7 +532,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="nivemp" class="col-sm-4 col-form-label font-labels">
+                                            <label for="nivemp" class="col-sm-4 col-form-label font-labels" id="label-nivemp">
                                                 Nivel empleado:
                                             </label>
                                             <div class="col-sm-8">
@@ -509,7 +542,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="tipjor" class="col-sm-4 col-form-label font-labels">
+                                            <label for="tipjor" class="col-sm-4 col-form-label font-labels" id="label-tipjor">
                                                 Tipo de jornada:
                                             </label>
                                             <div class="col-sm-8">
@@ -519,7 +552,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="tipcon" class="col-sm-4 col-form-label font-labels">
+                                            <label for="tipcon" class="col-sm-4 col-form-label font-labels" id="label-tipcon">
                                                 Tipo de contrato:
                                             </label>
                                             <div class="col-sm-8">
@@ -531,7 +564,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="tipcontra" class="col-sm-4 col-form-label font-labels">
+                                            <label for="tipcontra" class="col-sm-4 col-form-label font-labels" id="label-tiptra">
                                                 Tipo de contratacion:
                                             </label>
                                             <div class="col-sm-8">
@@ -563,7 +596,7 @@
                                                 </div>
                                             </div>*@
                                         <div class="form-group row">
-                                            <label for="fecing" class="col-sm-4 col-form-label font-labels">
+                                            <label for="fecing" class="col-sm-4 col-form-label font-labels" id="label-fing">
                                                 Fecha de ingreso:
                                             </label>
                                             <div class="col-sm-8">
@@ -571,7 +604,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="fecant" class="col-sm-4 col-form-label font-labels">
+                                            <label for="fecant" class="col-sm-4 col-form-label font-labels" id="label-frec">
                                                 Fecha de reconocimiento de antiguedad:
                                             </label>
                                             <div class="col-sm-8">
@@ -590,7 +623,7 @@
                                     <div class="row mt-4">
                                         <div class="col-md-12 mb-4">
                                             <div class="text-left">
-                                                <h6 class="col-ico">
+                                                <h6 class="col-ico font-nav-child">
                                                     <i class="fas fa-circle fa-sm mr-ico-05"></i>
                                                     Tipo de pago
                                                 </h6>
@@ -599,7 +632,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label for="tippag" class="col-sm-4 col-form-label font-labels">
+                                                <label for="tippag" class="col-sm-4 col-form-label font-labels" id="label-tippag">
                                                     Tipo de pago:
                                                 </label>
                                                 <div class="col-sm-8">
@@ -664,21 +697,30 @@
                             <div class="tab-pane fade p-3" id="nav-estructure" role="tabpanel" aria-labelledby="nav-estructure-tab">
                                 <div class="row mt-4">
                                     <div id="div-most-alert-data-estructure" class="col-md-6 offset-3"></div>
-                                    <div class="col-md-12 mb-4">
+                                    <div class="col-md-6">
                                         <div class="text-left">
                                             <h6 class="col-ico">
                                                 <i class="fas fa-circle fa-sm mr-ico-05"></i>
                                                 Datos de la plantilla
                                             </h6>
-                                            <hr />
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-right">
+                                            <p>
+                                                <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr />
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <input type="hidden" readonly class="form-control form-control-sm" id="clvposasig" />
                                             <input type="hidden" readonly class="form-control form-control-sm" id="clvstract" />
                                             <input type="hidden" readonly class="form-control form-control-sm" id="clvstr" placeholder="N°. de posición" />
-                                            <label for="numpla" class="col-sm-4 col-form-label font-labels">
+                                            <label for="numpla" class="col-sm-4 col-form-label font-labels" id="label-posit">
                                                 N°. de posición:
                                             </label>
                                             <div class="col-sm-8">
@@ -693,7 +735,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="depart" class="col-sm-4 col-form-label font-labels">
+                                            <label for="depart" class="col-sm-4 col-form-label font-labels" id="label-depart">
                                                 Departamento:
                                             </label>
                                             <div class="col-sm-8">
@@ -703,7 +745,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="pueusu" class="col-sm-4 col-form-label font-labels">
+                                            <label for="pueusu" class="col-sm-4 col-form-label font-labels" id="label-puest">
                                                 Puestos:
                                             </label>
                                             <div class="col-sm-8">
@@ -715,7 +757,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="localty" class="col-sm-4 col-form-label font-labels">
+                                            <label for="localty" class="col-sm-4 col-form-label font-labels" id="label-local">
                                                 Localidad:
                                             </label>
                                             <div class="col-sm-8">
@@ -723,7 +765,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="emprep" class="col-sm-4 col-form-label font-labels">
+                                            <label for="emprep" class="col-sm-4 col-form-label font-labels" id="label-regpa">
                                                 Registro patronal:
                                             </label>
                                             <div class="col-sm-8">
@@ -731,7 +773,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="report" class="col-sm-4 col-form-label font-labels">
+                                            <label for="report" class="col-sm-4 col-form-label font-labels" id="label-repos">
                                                 Posicion reporta a:
                                             </label>
                                             <div class="col-sm-8">
@@ -741,7 +783,7 @@
                                     </div>
                                     <div class="offset-3 col-md-6 mt-3">
                                         <div class="form-group row">
-                                            <label for="fechefectpos" class="col-sm-4 col-form-label font-labels">
+                                            <label for="fechefectpos" class="col-sm-4 col-form-label font-labels" id="label-efpos">
                                                 Fecha efectiva:
                                             </label>
                                             <div class="col-sm-8">
@@ -920,8 +962,255 @@
                 </div>
             </div>
             <div class="modal-footer">
-                @*<button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocality"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+                <button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocality"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
                 <button id="btn-close-search-localitys" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL PARA BUSCAR LAS LOCALIDADES MEDIENTE EL BOTON DERECHO -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchlocalidadbtn" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-map-marked-alt mr-2 col-ico"></i> Lista de localidades</h5>
+                <button id="ico-close-search-localitys-btn" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-2 col-md-8">
+                            <div class="form-group row">
+                                <label for="keysearchlocalityadd" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i>
+                                    Localidad:
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="keysearchlocalityadd" placeholder="Ingresa la localidad" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="listresultslocalitysadd">
+                            </div>
+                            <div class="animated fadeIn" id="noresultslocality1btn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocalitybtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
+                <button id="btn-close-search-localitys-btn" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL PARA GUARDAR LOCALIDADES -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="registerlocality" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar localidad</h5>
+                <button id="ico-close-search-localitys-save" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-danger shadow">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="codelocalitysave" class="col-form-label font-labels">
+                                    Codigo localidad:
+                                </label>
+                                <input type="number" readonly class="form-control form-control-sm text-uppercase" id="codelocalitysave" placeholder="Codigo de localidad" />
+                            </div>
+                            <div class="form-group">
+                                <label for="desclocalitysave" class="col-form-label font-labels">
+                                    Descripcion:
+                                </label>
+                                <input type="text" class="form-control form-control-sm text-uppercase" id="desclocalitysave" placeholder="Descripcion" />
+                            </div>
+                            <div class="form-group">
+                                <label for="ivalocalitysave" class="col-form-label font-labels">
+                                    Taza Iva:
+                                </label>
+                                <input type="number" class="form-control form-control-sm text-uppercase" id="ivalocalitysave" placeholder="Taza Iva" />
+                            </div>
+                            <div class="form-group">
+                                <label for="regpatrlocalitysave" class="col-form-label font-labels">
+                                    Registro patronal:
+                                </label>
+                                <select class="form-control form-control-sm" id="regpatrlocalitysave" tp-select="Registro patronal">
+                                    <option value="none">Selecciona</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="zoneecolocalitysave" class="col-form-label font-labels">
+                                    Zona economica:
+                                </label>
+                                <select class="form-control form-control-sm" id="zoneecolocalitysave">
+                                    <option value="none">Selecciona</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="estatelocalitysave" class="col-form-label font-labels">
+                                    Estado:
+                                </label>
+                                <select class="form-control form-control-sm" id="estatelocalitysave">
+                                    <option value="none">Selecciona</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reglocalitysave" class="col-form-label font-labels">
+                                    Regional:
+                                </label>
+                                <div class="">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-regionales-locality-save" data-toggle="modal" data-target="#searchregiondynamic">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" readonly id="idreglocalitysave" placeholder="" class="form-control form-control-sm" />
+                                        <input type="text" readonly id="reglocalitysave" class="form-control form-control-sm" placeholder="Regional" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="suclocalitysave" class="col-form-label font-labels">
+                                    Sucursal:
+                                </label>
+                                <div class="">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-sucursales-locality-save" data-toggle="modal" data-target="#searchsucursalesdynamic">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" readonly id="idsuclocalitysave" placeholder="" class="form-control form-control-sm" />
+                                        <input type="text" readonly id="suclocalitysave" class="form-control form-control-sm" placeholder="Sucursal" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-toggle="modal" type="button" class="btn btn-success shadow btn-sm" id="btnsavelocality"> <i class="fas fa-check-circle mr-2"></i> Guardar </button>
+                <button id="btn-close-search-localitys-save" type="button" class="btn btn-sm btn-danger shadow" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL PARA EDITAR LOCALIDADES -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="localityedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-edit mr-2 col-ico"></i> Editar localidad</h5>
+                <button id="ico-close-search-localitys-edit" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-danger shadow">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="codelocalityedit" class="col-form-label font-labels">
+                                    Codigo localidad:
+                                </label>
+                                <input type="hidden" readonly class="form-control form-control-sm" id="keylocalityedit" />
+                                <input type="number" readonly class="form-control form-control-sm text-uppercase" id="codelocalityedit" placeholder="Codigo de localidad" />
+                            </div>
+                            <div class="form-group">
+                                <label for="desclocalityedit" class="col-form-label font-labels">
+                                    Descripcion:
+                                </label>
+                                <input type="text" class="form-control form-control-sm text-uppercase" id="desclocalityedit" placeholder="Descripcion" />
+                            </div>
+                            <div class="form-group">
+                                <label for="ivalocalityedit" class="col-form-label font-labels">
+                                    Taza Iva:
+                                </label>
+                                <input type="number" class="form-control form-control-sm text-uppercase" id="ivalocalityedit" placeholder="Taza Iva" />
+                            </div>
+                            <div class="form-group">
+                                <label for="regpatrlocalityedit" class="col-form-label font-labels">
+                                    Registro patronal:
+                                </label>
+                                <select class="form-control form-control-sm" id="regpatrlocalityedit" tp-select="Registro patronal">
+                                    <option value="none">Selecciona</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="zoneecolocalityedit" class="col-form-label font-labels">
+                                    Zona economica:
+                                </label>
+                                <select class="form-control form-control-sm" id="zoneecolocalityedit">
+                                    <option value="none">Selecciona</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="estatelocalityedit" class="col-form-label font-labels">
+                                    Estado:
+                                </label>
+                                <select class="form-control form-control-sm" id="estatelocalityedit">
+                                    <option value="none">Selecciona</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reglocalityedit" class="col-form-label font-labels">
+                                    Regional:
+                                </label>
+                                <div class="">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-regionales-locality-edit" data-toggle="modal" data-target="#searchregiondynamic">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" readonly id="idreglocalityedit" placeholder="" class="form-control form-control-sm" />
+                                        <input type="text" readonly id="reglocalityedit" class="form-control form-control-sm" placeholder="Registro patronal" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="suclocalityedit" class="col-form-label font-labels">
+                                    Sucursal:
+                                </label>
+                                <div class="">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-sucursales-locality-edit" data-toggle="modal" data-target="#searchsucursalesdynamic">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" readonly id="idsuclocalityedit" placeholder="" class="form-control form-control-sm" />
+                                        <input type="text" readonly id="suclocalityedit" class="form-control form-control-sm" placeholder="Sucursal" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-toggle="modal" type="button" class="btn btn-success shadow btn-sm" id="btnsaveeditlocality"> <i class="fas fa-check-circle mr-2"></i> Guardar cambios</button>
+                <button id="btn-close-search-localitys-edit" type="button" class="btn btn-sm btn-danger shadow" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
             </div>
         </div>
     </div>
@@ -2107,6 +2396,94 @@
             <div class="modal-footer">
                 <button data-toggle="modal" data-target="#registerregion" type="button" class="btn btn-outline-success btn-sm" id="btnregisterregionbtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-regionales"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL REGIONALES EDICION LOCALIDADES -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchregiondynamic" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchpositionlabel">
+                    <i class="fas fa-map-signs mr-2 col-ico"></i>
+                    Regionales
+                </h5>
+                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-regionales-dy">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="form-group row">
+                                <label for="searchregionalkeydynamic" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i> Código regional:
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchregionalkeydynamic" placeholder="Ingresa el código" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultregionalesdynamic">
+                            </div>
+                            <div class="animated fadeIn" id="noresultsregionales1dynamic"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-toggle="modal" data-target="#registerregion" type="button" class="btn btn-outline-success btn-sm" id="btnregisterregionbtndy"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-regionales-dy"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL SUCURSALES EDICION LOCALIDADES -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchsucursalesdynamic" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchpositionlabel">
+                    <i class="fas fa-store-alt mr-2 col-ico"></i>
+                    Sucursales
+                </h5>
+                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-offices-dy">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-2 col-md-8">
+                            <div class="form-group row">
+                                <label for="searchofficekeydynamic" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i> Código sucursal:
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchofficekeydynamic" placeholder="Ingresa el código" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultofficesdynamic">
+                            </div>
+                            <div class="animated fadeIn" id="noresultoffices1dynamic"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-toggle="modal" data-target="#registersucursal" type="button" class="btn btn-outline-success btn-sm" id="btnregistersucursalbtndy"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-offices-dy"> <i class="fas fa-times mr-2"></i> Cerrar</button>
             </div>
         </div>
     </div>

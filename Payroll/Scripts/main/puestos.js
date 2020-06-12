@@ -39,7 +39,6 @@
                     type: "POST",
                     data: { typeJob: paramstr },
                     success: (data) => {
-                        console.log(data);
                         if (data.Bandera === true && data.MensajeError === "none") {
                             for (let i = 0; i < data.Datos.length; i++) {
                                 typeregpuesto.innerHTML += `<option value="${data.Datos[i].iId},${data.Datos[i].sCodigo}">${data.Datos[i].sDescripcion}</option>`;
@@ -137,6 +136,7 @@
     /* CONSTANTES DE LA EDICION DEL PUESTO */
     const clvpuesto         = document.getElementById('clvpuesto');
     const edicodpuesto      = document.getElementById('edicodpuesto');
+    edicodpuesto.readOnly   = true;
     const edipuesto         = document.getElementById('edipuesto');
     const edidescpuesto     = document.getElementById('edidescpuesto');
     const ediproffamily     = document.getElementById('ediproffamily');
@@ -443,9 +443,9 @@
                     type: "POST",
                     data: dataEnv,
                     success: (data) => {
-                        if (data.sMensaje === "success") {
+                        if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
-                                title: 'Registro correcto', icon: 'success',
+                                title: 'Registro correcto', text: "Codigo de puesto: " + data.Puesto, icon: 'success',
                                 showClass: { popup: 'animated fadeInDown faster' },
                                 hideClass: { popup: 'animated fadeOutUp faster' },
                                 confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,

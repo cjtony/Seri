@@ -21,7 +21,6 @@
                         document.getElementById('report').value = data.iIdReportaAPosicion;
                         //document.getElementById('msjfech').classList.remove('d-none');
                         $("#searchpositionstab").modal('hide');
-                        console.log(data);
                     } else {
                         Swal.fire({
                             title: "Atencion", text: "No se encontro resultado con tu busqueda", icon: "warning",
@@ -49,6 +48,7 @@
     /* CONSTANTES REGISTRO DE POSICIONES */
     const codposic = document.getElementById('codposic');
     const regpatcla = document.getElementById('regpatcla');
+    regpatcla.disabled = true;
     const departreg = document.getElementById('departreg');
     const pueusureg = document.getElementById('pueusureg');
     const depaid = document.getElementById('depaid');
@@ -60,6 +60,7 @@
     const emprepregtxt = document.getElementById('emprepregtxt');
     const report = document.getElementById('report');
     const reportempr = document.getElementById('reportempr');
+    reportempr.disabled = true;
     /* CONSTANTES EDICION DE POSICIONES */
     const codtxtinf = document.getElementById('codtxtinf');
     const clvposition = document.getElementById('clvposition');
@@ -329,7 +330,7 @@
     /* EJECUCION DE FUNCION QUE CARGA LOS REGISTROS PATRONALES */
     //floadregpatclases(regpatcla);
     /* FUNCION QUE CARGA LOS DATOS DE LA POSICION SELECCIONADA AL AÑADIR UNA NUEVA */
-    fselectpositionadd = (paramid, paramstr) => {
+    fselectpositionadd = (paramid, paramstr, parameid) => {
         try {
             searchpositionkeyadd.value = '';
             resultpositionsadd.innerHTML = '';
@@ -337,6 +338,7 @@
             $("#registerposition").modal('show');
             emprepreg.value = paramid;
             emprepregtxt.value = paramstr;
+            reportempr.value = parameid;
             //if (localStorage.getItem('modalbtnpositions') != null) {
             //    $("#editposition").modal('show');
             //    emprepedit.value       = paramid;
@@ -370,12 +372,13 @@
                     type: "POST",
                     data: { wordsearch: searchpositionkeyadd.value, type: 'ALL' },
                     success: (data) => {
+                        console.log(data);
                         resultpositionsadd.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpositionsadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectpositionadd(${data[i].iIdPosicion}, '${data[i].sPosicionCodigo}')"></i> </button>`;
+                                resultpositionsadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombreE} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectpositionadd(${data[i].iIdPosicion}, '${data[i].sNombreE}', ${data[i].iEmpresa_id})"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultpositions2').innerHTML = `
@@ -470,21 +473,30 @@
                     success: (data) => {
                         if (data.result === "success") {
                             Swal.fire({
-                                title: 'Posicion registrada', icon: 'success',
+                                title: 'Posicion registrada con codigo: ' + codposic.value, icon: 'success',
                                 showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
                                 confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                             }).then((acepta) => {
                                 $("#registerposition").modal('hide');
-                                fclearfieldsregpositions();
                                 setTimeout(() => {
                                     if (JSON.parse(localStorage.getItem('modalbtnpositions')) != null) {
-                                        $("#searchpositions").modal('show');
-                                        setTimeout(() => { searchpositionkeybtn.focus(); }, 1000);
+                                        $("#searchpositionstab").modal('show');
+                                        searchpositionkey.value = codposic.value;
+                                        searchpositionkey.value = codposic.value;
+                                        setTimeout(() => {
+                                            searchpositionkey.focus();
+                                        }, 1000);
                                     } else {
                                         $("#searchpositionstab").modal('show');
-                                        setTimeout(() => { searchpositionkey.focus(); }, 1000);
+                                        searchpositionkey.value = codposic.value;
+                                        setTimeout(() => {
+                                            searchpositionkey.focus();
+                                        }, 1000);
                                     }
                                 }, 1000);
+                                setTimeout(() => {
+                                    fclearfieldsregpositions();
+                                }, 1500);
                             });
                         } else {
                             Swal.fire({
@@ -496,7 +508,7 @@
                                 fclearfieldsregpositions();
                                 setTimeout(() => {
                                     if (JSON.parse(localStorage.getItem('modalbtnpositions')) != null) {
-                                        $("#searchpositions").modal('show');
+                                        $("#searchpositionstab").modal('show');
                                         setTimeout(() => { searchpositionkeybtn.focus(); }, 1000);
                                     } else {
                                         $("#searchpositionstab").modal('show');

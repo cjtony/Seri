@@ -218,6 +218,7 @@
                 success: (data) => {
                     const quantity = data.length;
                     let naciond;
+                    let flag = false;
                     for (t in getDataTabDataGen) {
                         if (getDataTabDataGen[t].key === "general") {
                             naciond = getDataTabDataGen[t].data.nacion;
@@ -227,8 +228,17 @@
                         for (let i = 0; i < data.length; i++) {
                             if (naciond == data[i].iIdNacionalidad) {
                                 nacion.innerHTML += `<option selected value="${data[i].iIdNacionalidad}">${data[i].sDescripcion}</option>`;
+                                flag = true;
                             } else {
-                                nacion.innerHTML += `<option value="${data[i].iIdNacionalidad}">${data[i].sDescripcion}</option>`;
+                                if (data[i].iIdNacionalidad == 484) {
+                                    if (flag == false) {
+                                        nacion.innerHTML += `<option selected value="${data[i].iIdNacionalidad}">${data[i].sDescripcion}</option>`;
+                                    } else {
+                                        nacion.innerHTML += `<option value="${data[i].iIdNacionalidad}">${data[i].sDescripcion}</option>`;
+                                    }
+                                } else {
+                                    nacion.innerHTML += `<option value="${data[i].iIdNacionalidad}">${data[i].sDescripcion}</option>`;
+                                }
                             }
                         }
                     } else {
@@ -372,13 +382,21 @@
         } else {
             btnVerifCodPost.disabled = true;
             btnVerifCodPost.classList.remove('btn-info');
-            colony.value = "0"; city.value = "", street.value = "", numberst.value = "";
+            colony.value      = "0";
+            colony.disabled   = true;
+            city.value        = "";
+            city.disabled     = true;
+            street.value      = "";
+            street.disabled   = true;
+            numberst.value    = "";
+            numberst.disabled = true;
         }
     }
 
     codpost.addEventListener('keyup', fvalidatecodpost);
 
     fvalidatestatecodpost = (foc, paramstate) => {
+        colony.innerHTML = "<option value='0'>Selecciona</option>";
         let statesend = state.value;
         if (paramstate != 0) {
             statesend = paramstate;
@@ -403,10 +421,10 @@
                             for (i = 0; i < data.length; i++) {
                                 city.value = data[i].sCiudad;
                                 if (data[i].sColonia != "") {
-                                    if (data[i].sColonia == colonyd) {
-                                        colony.innerHTML += `<option selected value="${data[i].sColonia}">${data[i].sColonia}</option>`;
+                                    if (data[i].sColonia.toUpperCase() == colonyd) {
+                                        colony.innerHTML += `<option selected value="${data[i].sColonia.toUpperCase()}">${data[i].sColonia}</option>`;
                                     } else {
-                                        colony.innerHTML += `<option value="${data[i].sColonia}">${data[i].sColonia}</option>`;
+                                        colony.innerHTML += `<option value="${data[i].sColonia.toUpperCase()}">${data[i].sColonia}</option>`;
                                     }
                                 }
                             }
@@ -456,7 +474,7 @@
         if (JSON.parse(localStorage.getItem("objectTabDataGen")) != null) {
             for (dt in getDataTabDataGen) {
                 if (getDataTabDataGen[dt].data.colony != "" && getDataTabDataGen[dt].data.street != ""
-                    && getDataTabDataGen[dt].data.numberst != "" && getDataTabDataGen[dt].data.codpost != "") {
+                    && getDataTabDataGen[dt].data.codpost != "") {
                     stateloc = getDataTabDataGen[dt].data.state;
                     flag = true;
                     break;
@@ -639,10 +657,10 @@
                 infobankch.classList.add('d-none');
             }
             //clvbank.textContent = '';
-            cunuse.value = "";
-            banuse.value = "0";
+            //cunuse.value = "12313123";
+            //banuse.value = "0";
         } else {
-            banuse.value = 0;
+            banuse.value = "0";
             cunuse.value = "";
             //clvbank.textContent = '';
             infobankch.classList.add('d-none');
@@ -659,11 +677,16 @@
                 }
             }
         }
-        fchangetippag();
+        //fchangetippag();
+        setTimeout(() => { fchangetippag(); }, 2000);
     }
 
 
-    tippag.addEventListener('change', fchangetippag);
+    tippag.addEventListener('change', () => {
+        cunuse.value = "";
+        banuse.value = "0";
+        fchangetippag();
+    });
 
     $("#cunuse").keyup(function () {
         this.value = (this.value + '').replace(/[^0-9]/g, '');
@@ -769,12 +792,45 @@
 
     function validarInput(input) {
         var curp = input.value.toUpperCase();
+        const nameE = name.value;
+        const apePE = document.getElementById('apepat').value;
+        const apeME = document.getElementById('apemat').value;
+        const fNaci = document.getElementById('fnaci').value;
+        const arrayBirth = fNaci.split("-");
+        const lyricsFirtsSurname  = apePE.substring(0, 2).toUpperCase();
+        const lyricsSecondSurname = apeME.substring(0, 1).toUpperCase();
+        const lyricsNameEmployee  = nameE.substring(0, 1).toUpperCase();
+        const yearBirthEmployee   = arrayBirth[0].substring(2, 4);
+        const monthBirthEmployee  = arrayBirth[1];
+        const dayBirthEmployee    = arrayBirth[2];
+        let   valueSexEmployee    = "";
+        if (parseInt(sex.value) === 55) {
+            valueSexEmployee = "M";
+        } else if (parseInt(sex.value) === 56) {
+            valueSexEmployee = "H";
+        }
+        const curpFormatDataEmpl = lyricsFirtsSurname + lyricsSecondSurname + lyricsNameEmployee + yearBirthEmployee + monthBirthEmployee + dayBirthEmployee + valueSexEmployee;
+        console.log('Prototipo curp: ' + curpFormatDataEmpl);
+        const divCurpInvalid = document.getElementById('divcurpinvalid');
+        const txtCurpInvalid = document.getElementById('textcurpinvalid');
         if (curp.length > 0) {
-            if (curpValida(curp)) {
-                input.classList.remove('is-invalid');
-                btnSaveDataImss.disabled = false;
+            const letterCurp = curp.substring(0, 11);
+            console.log("Extracion: " + letterCurp);
+            if (letterCurp == curpFormatDataEmpl) {
+                divCurpInvalid.classList.add('d-none');
+                txtCurpInvalid.classList.textContent = '';
+                txtCurpInvalid.classList.add('text-danger', 'font-labels');
+                if (curpValida(curp)) {
+                    input.classList.remove('is-invalid');
+                    btnSaveDataImss.disabled = false;
+                } else {
+                    input.classList.add('is-invalid');
+                    btnSaveDataImss.disabled = true;
+                }
             } else {
-                input.classList.add('is-invalid');
+                divCurpInvalid.classList.remove('d-none');
+                txtCurpInvalid.textContent = 'Los caracteres ingresados no coinciden con el formato';
+                txtCurpInvalid.classList.add('text-danger', 'font-labels');
                 btnSaveDataImss.disabled = true;
             }
         }
@@ -785,6 +841,7 @@
     curp.addEventListener('change', () => {
         validarInput(curp);
     });
+
     curp.addEventListener('keyup', () => {
         if (rfc.value.length > 10) {
             if (curp.value.length > 10) {

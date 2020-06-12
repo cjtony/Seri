@@ -15,7 +15,7 @@ namespace Payroll.Models.Daos
     }
     public class SavePuestosDao :  Conexion
     {
-        public PuestosBean sp_Puestos_Insert_Puestos(string regcodpuesto, string regpuesto, string regdescpuesto, int proffamily, int clasifpuesto, int regcolect, int nivjerarpuesto, int perfmanager, int tabpuesto, int usuario, int keyemp)
+        public PuestosBean sp_Puestos_Insert_Puestos(string regcodpuesto, string regpuesto, string regdescpuesto, int proffamily, int clasifpuesto, int regcolect, int nivjerarpuesto, int perfmanager, int tabpuesto, int usuario, int keyemp, int consecutivenew, int typeregpuesto)
         {
             PuestosBean addPuestoBean = new PuestosBean();
             try {
@@ -34,6 +34,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlPerfomanceId", perfmanager));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTabuladorId", tabpuesto));
                 cmd.Parameters.Add(new SqlParameter("@ctrlUsuarioId", usuario));
+                cmd.Parameters.Add(new SqlParameter("@Consecutivo", consecutivenew));
+                cmd.Parameters.Add(new SqlParameter("@keyCodeCatalog", typeregpuesto));
                 SqlCommand validate = new SqlCommand("sp_Puestos_Validate_Puesto", this.conexion) {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -56,6 +58,7 @@ namespace Payroll.Models.Daos
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); conexion.Close();
             } catch (Exception exc) {
+                addPuestoBean.sMensaje = exc.Message.ToString();
                 string origenerror = "SaveDataGeneralDao";
                 string mensajeerror = exc.ToString();
                 CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
@@ -456,6 +459,11 @@ namespace Payroll.Models.Daos
                         posicionBean.iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
                         posicionBean.sPosicionCodigo = data["PosicionCodigo"].ToString();
                         posicionBean.iPuesto_id = Convert.ToInt32(data["Puesto_id"].ToString());
+                        if (data["TYPEDATA"].ToString() == "YESEMP") {
+                            posicionBean.sNombreE = data["Nombre_Empleado"].ToString() + " " + data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString();
+                            posicionBean.sPaternoE = data["Apellido_Paterno_Empleado"].ToString();
+                            posicionBean.sMaternoE = data["Apellido_Materno_Empleado"].ToString();
+                        }
                         posicionBean.sNombrePuesto = data["NombrePuesto"].ToString();
                         posicionBean.iDepartamento_id = Convert.ToInt32(data["Departamento_id"].ToString());
                         posicionBean.sNombreDepartamento = data["Depto_Codigo"].ToString();

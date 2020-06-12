@@ -689,7 +689,7 @@ namespace Payroll.Models.Daos
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Dato_Codigo_Catalogo_Seleccionado", this.conexion) { CommandType = CommandType.StoredProcedure };
-                cmd.Parameters.Add(new SqlParameter("@IdCatalogo", keytypejob));
+                cmd.Parameters.Add(new SqlParameter("@IdRegistro", keytypejob));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read()) {
                     codeCatBean.iId          = Convert.ToInt32(data["id"].ToString());
@@ -1416,7 +1416,139 @@ namespace Payroll.Models.Daos
             }
             return listLocalidadesBean;
         }
+
+        public LocalidadesBean sp_Dato_Localidad_Seleccionada(int keyLocality, int keyEmp)
+        {
+            LocalidadesBean localityBean = new LocalidadesBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Dato_Localidad_Seleccionada", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdLocalidad", keyLocality));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyEmp));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    localityBean.IdLocalidad         = Convert.ToInt32(data["IdLocalidad"].ToString());
+                    localityBean.Empresa_id          = Convert.ToInt32(data["Empresa_id"].ToString());
+                    localityBean.Codigo_Localidad    = Convert.ToInt32(data["Codigo_Localidad"].ToString());
+                    localityBean.Descripcion         = data["Descripcion"].ToString();
+                    localityBean.TasaIva             = data["TazaIva"].ToString();
+                    localityBean.RegistroPatronal_id = Convert.ToInt32(data["RegistroPatronal_id"].ToString());
+                    localityBean.ZonaEconomica_id    = Convert.ToInt32(data["ZonaEconomica_id"].ToString());
+                    localityBean.Regional_id         = Convert.ToInt32(data["Regional_id"].ToString());
+                    localityBean.ClaveRegional       = data["Clave_Regional"].ToString();
+                    localityBean.DescripcionRegional = data["Descripcion_Regional"].ToString();
+                    localityBean.Sucursal_id         = Convert.ToInt32(data["Sucursal_id"].ToString());
+                    localityBean.ClaveSucursal       = data["Clave_Sucursal"].ToString();
+                    localityBean.DescripcionSucursal = data["Descripcion_Sucursal"].ToString();
+                    localityBean.Estado_id           = Convert.ToInt32(data["Cg_Estado_id"].ToString());
+                    localityBean.sMensaje            = "success";
+                } else {
+                    localityBean.sMensaje = "NODATALOAD";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                localityBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return localityBean;
+        }
+
+        public LocalidadesBean2 sp_Update_Localidad(int keylocality, string desclocality, string ivalocality, int regpatlocality, int idreglocality, int zonelocality, int idsuclocality, int estatelocality)
+        {
+            LocalidadesBean2 saveEditLocBean = new LocalidadesBean2();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Update_Localidad", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdLocalidad", keylocality));
+                cmd.Parameters.Add(new SqlParameter("@Descripcion", desclocality));
+                cmd.Parameters.Add(new SqlParameter("@TasIva", ivalocality));
+                cmd.Parameters.Add(new SqlParameter("@RegistroPatronalId", regpatlocality));
+                cmd.Parameters.Add(new SqlParameter("@RegionalId", idreglocality));
+                cmd.Parameters.Add(new SqlParameter("@ZonaEconomicaId", zonelocality));
+                cmd.Parameters.Add(new SqlParameter("@SucursalId", idsuclocality));
+                cmd.Parameters.Add(new SqlParameter("@EstadoId", estatelocality));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    saveEditLocBean.sMensaje = "success";
+                } else {
+                    saveEditLocBean.sMensaje = "NOTUPDATE";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                saveEditLocBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return saveEditLocBean;
+        }
+
+        public LocalidadesBean2 sp_Insert_Localidad(string desclocality, string ivalocality, int regpatlocality, int idreglocality, int zonelocality, int idsuclocality, int estatelocality, int keyemp)
+        {
+            LocalidadesBean2 saveDataLocBean = new LocalidadesBean2();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Insert_Localidad", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Descripcion", desclocality));
+                cmd.Parameters.Add(new SqlParameter("@TasIva", ivalocality));
+                cmd.Parameters.Add(new SqlParameter("@RegistroPatronalId", regpatlocality));
+                cmd.Parameters.Add(new SqlParameter("@RegionalId", idreglocality));
+                cmd.Parameters.Add(new SqlParameter("@ZonaEconomicaId", zonelocality));
+                cmd.Parameters.Add(new SqlParameter("@SucursalId", idsuclocality));
+                cmd.Parameters.Add(new SqlParameter("@EstadoId", estatelocality));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (data["Respuesta"].ToString() == "INSERT") {
+                        saveDataLocBean.sMensaje         = "success";
+                        saveDataLocBean.iCodigoLocalidad = Convert.ToInt32(data["Codigo"].ToString());
+                    } else {
+                        saveDataLocBean.sMensaje = data["Respuesta"].ToString();
+                    }
+                } else {
+                    saveDataLocBean.sMensaje = "ERRINSERT";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                saveDataLocBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return saveDataLocBean;
+        }
+
     }
+
+    public class ZonaEconomicaDao : Conexion
+    {
+        public List<ZonaEconomicaBean> sp_Datos_Zonas_Economicas()
+        {
+            List<ZonaEconomicaBean> zoneEcoBean = new List<ZonaEconomicaBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Zonas_Economicas", this.conexion) { CommandType = CommandType.StoredProcedure };
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        zoneEcoBean.Add(new ZonaEconomicaBean { 
+                            iIdZonaEconomica = Convert.ToInt32(data["IdZonaEconomica"].ToString()),
+                            sDescripcion     = data["Descripcion"].ToString()
+                        });
+                    }
+                }
+                cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return zoneEcoBean;
+        }
+    }
+
     public class RegistroPatronalDao : Conexion
     {
         public List<RegistroPatronalBean2> sp_Registro_Patronal_Retrieve_Registros_Patronales(int keyemp)

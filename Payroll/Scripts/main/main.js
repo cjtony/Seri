@@ -105,7 +105,13 @@
     fclearfieldsvar1 = () => {
         for (let i = 0; i < vardatagen.length; i++) {
             if (vardatagen[i].getAttribute('tp-select') != null) {
-                vardatagen[i].value = "0";
+                if (vardatagen[i].id == "nacion") {
+                    vardatagen[i].value = 484;
+                } else if (vardatagen[i].id == "estciv") {
+                    vardatagen[i].value = 50;
+                } else {
+                    vardatagen[i].value = "0";
+                }
             } else {
                 vardatagen[i].value = "";
             }
@@ -254,6 +260,7 @@
     floaddatatabs = () => {
         if (JSON.parse(localStorage.getItem('objectTabDataGen')) != null) {
             const getDataTabDataGen = JSON.parse(localStorage.getItem('objectTabDataGen'));
+            let dcolony;
             for (i in getDataTabDataGen) {
                 if (getDataTabDataGen[i].key === "general") {
                     clvemp.value = getDataTabDataGen[i].data.clvemp;
@@ -265,6 +272,8 @@
                     estciv.value = getDataTabDataGen[i].data.estciv; codpost.value = getDataTabDataGen[i].data.codpost;
                     state.value = getDataTabDataGen[i].data.state; city.value = getDataTabDataGen[i].data.city;
                     street.value = getDataTabDataGen[i].data.street;
+                    dcolony = getDataTabDataGen[i].data.colony;
+                    //colony.innerHTML = `<option value="${getDataTabDataGen[i].data.colony}"></option>`;
                     numberst.value = getDataTabDataGen[i].data.numberst;
                     telfij.value = getDataTabDataGen[i].data.telfij; telmov.value = getDataTabDataGen[i].data.telmov;
                     mailus.value = getDataTabDataGen[i].data.mailus; tipsan.value = getDataTabDataGen[i].data.tipsan;
@@ -276,6 +285,7 @@
                 document.getElementById('nameuser').textContent = "Editando al Empleado: " + clvemp.value + " - " + name.value + " " + apep.value + " " + apem.value + ".";
             } else {
                 document.getElementById('nameuser').textContent = "Empleado: " + name.value + " " + apep.value + " " + apem.value + ".";
+                //setTimeout(() => { colony.value = dcolony; }, 1500);
             }
         }
         if (JSON.parse(localStorage.getItem('objectDataTabImss')) != null) {
@@ -383,6 +393,11 @@
         fclearfieldsvar1(); fclearfieldsvar2(); fclearfieldsvar3(); fclearfieldsvar4();
         document.getElementById('icouser').classList.add('d-none');
         document.getElementById('nameuser').textContent = '';
+        colony.innerHTML = "<option value='0'>Selecciona</option>";
+        codpost.disabled = true;
+        colony.disabled  = true;
+        street.disabled  = true;
+        numberst.disabled = true;
         fvalidatebuttonsactionmain();
         if (type == 1) {
             Swal.fire({
@@ -412,6 +427,7 @@
                 }
             });
         }
+        fasignsdates();
     }
 
     btnClearLocSto.addEventListener('click', () => { fclearlocsto(1); });
@@ -560,6 +576,85 @@
         }
     });
 
+    /* FUNCION QUE VALIDA CURP MAIN */
+    function curpValidaMain(curp) {
+        var re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/,
+            validado = curp.match(re);
+        if (!validado)
+            return false;
+        function digitoVerificador(curp17) {
+            var diccionario = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
+                lngSuma = 0.0,
+                lngDigito = 0.0;
+            for (var i = 0; i < 17; i++)
+                lngSuma = lngSuma + diccionario.indexOf(curp17.charAt(i)) * (18 - i);
+            lngDigito = 10 - lngSuma % 10;
+            if (lngDigito == 10) return 0;
+            return lngDigito;
+        }
+        if (validado[2] != digitoVerificador(validado[1]))
+            return false;
+        return true;
+    }
+
+    function validarInputMain(input) {
+        var curp = input.value.toUpperCase();
+        const nameE = name.value;
+        const apePE = document.getElementById('apepat').value;
+        const apeME = document.getElementById('apemat').value;
+        const fNaci = document.getElementById('fnaci').value;
+        const arrayBirth = fNaci.split("-");
+        const lyricsFirtsSurname = apePE.substring(0, 2).toUpperCase();
+        const lyricsSecondSurname = apeME.substring(0, 1).toUpperCase();
+        const lyricsNameEmployee = nameE.substring(0, 1).toUpperCase();
+        const yearBirthEmployee = arrayBirth[0].substring(2, 4);
+        const monthBirthEmployee = arrayBirth[1];
+        const dayBirthEmployee = arrayBirth[2];
+        let valueSexEmployee = "";
+        if (parseInt(sex.value) === 55) {
+            valueSexEmployee = "M";
+        } else if (parseInt(sex.value) === 56) {
+            valueSexEmployee = "H";
+        }
+        const curpFormatDataEmpl = lyricsFirtsSurname + lyricsSecondSurname + lyricsNameEmployee + yearBirthEmployee + monthBirthEmployee + dayBirthEmployee + valueSexEmployee;
+        console.log('Prototipo curp: ' + curpFormatDataEmpl);
+        const divCurpInvalid = document.getElementById('divcurpinvalid');
+        const txtCurpInvalid = document.getElementById('textcurpinvalid');
+        let flagReturn;
+        if (curp.length > 0) {
+            const letterCurp = curp.substring(0, 11);
+            console.log("Extracion: " + letterCurp);
+            if (letterCurp == curpFormatDataEmpl) {
+                flagReturn = true;
+                divCurpInvalid.classList.add('d-none');
+                txtCurpInvalid.classList.textContent = '';
+                txtCurpInvalid.classList.add('text-danger', 'font-labels');
+                if (curpValidaMain(curp)) {
+                    input.classList.remove('is-invalid');
+                    btnSaveDataImss.disabled = false;
+                } else {
+                    input.classList.add('is-invalid');
+                    btnSaveDataImss.disabled = true;
+                }
+            } else {
+                flagReturn = false;
+                divCurpInvalid.classList.remove('d-none');
+                txtCurpInvalid.textContent = 'Los caracteres ingresados no coinciden con el formato';
+                txtCurpInvalid.classList.add('text-danger', 'font-labels');
+                btnSaveDataImss.disabled = true;
+            }
+        }
+        return flagReturn;
+    }
+
+    setTimeout(() => {
+        name.addEventListener('change',  () => { validarInputMain(curp) });
+        apep.addEventListener('change',  () => { validarInputMain(curp) });
+        apem.addEventListener('change',  () => { validarInputMain(curp) });
+        sex.addEventListener('change',   () => { validarInputMain(curp) });
+        fnaci.addEventListener('change', () => { validarInputMain(curp) });
+    }, 2000);
+
     btnSaveDataImss.addEventListener('click', () => {
         const arrInput = [imss, rfc, curp, nivest, nivsoc];
         let validate = 0;
@@ -578,6 +673,12 @@
                     break;
                 }
             }
+        }
+        let flagResultValidCurp = validarInputMain(curp);
+        if (flagResultValidCurp == false) {
+            fshowtypealert('Atención', 'Curp invalida, compruebe', curp.placeholder, 'warning', curp, 0);
+            validate = 1;
+            setTimeout(() => { $("#nav-imss-tab").click(); }, 1000);
         }
         if (validate == 0) {
             gotoppage(navDataNomTab, '#nav-datanom-tab', "Ahora completa los datos del apartado Datos de nomina!");
@@ -678,6 +779,12 @@
                 }
             }
         }
+        let flagResultValidCurp = validarInputMain(curp);
+        if (flagResultValidCurp == false) {
+            fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
+            validate = 1;
+            setTimeout(() => { $("#nav-imss-tab").click(); }, 1000);
+        }
         if (validate == 0) {
             gotoppage(navEstructureTab, '#nav-estructure-tab', "Ahora completa los datos del apartado Estructura!");
             const dataLocSto = {
@@ -746,6 +853,12 @@
                 }
             }
         }
+        let flagResultValidCurp = validarInputMain(curp);
+        if (flagResultValidCurp == false) {
+            fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
+            validate = 1;
+            setTimeout(() => { $("#nav-imss-tab").click(); }, 1000);
+        }
         if (validate == 0) {
             gotoppage(navEstructureTab, '#nav-estructure-tab', "Los datos esperan para ser guardados");
             const dataLocSto = {
@@ -769,5 +882,97 @@
         }
     });
 
+    const btnShowFieldsRequired = document.getElementById('btn-show-fields-required');
+
+    localStorage.setItem("ShowFieldsRequired", 1);
+
+    fShowFieldsRequiredDataGen = () => {
+        //const icoShow = document.getElementById('ico-show');
+        const labelName = document.getElementById('label-name');
+        const labelAPat = document.getElementById('label-patern');
+        const labelAMat = document.getElementById('label-matern');
+        const labelGene = document.getElementById('label-genero');
+        const labelEstC = document.getElementById('label-estciv');
+        const labelDBir = document.getElementById('label-datebirth');
+        const labelPBir = document.getElementById('label-placebirth');
+        const labelTitl = document.getElementById('label-title');
+        const labelNati = document.getElementById('label-nationality');
+        const labelStat = document.getElementById('label-state');
+        const labelCity = document.getElementById('label-city');
+        const labelCPos = document.getElementById('label-codpost');
+        const labelColo = document.getElementById('label-colony');
+        const labelStre = document.getElementById('label-street');
+        const labelTMov = document.getElementById('label-telmovil');
+        const labelEmai = document.getElementById('label-email');
+        const arrInput = [labelName, labelAPat, labelAMat, labelGene, labelEstC, labelDBir, labelPBir, labelTitl, labelNati, labelStat, labelCity, labelCPos, labelColo, labelStre, labelTMov, labelEmai];
+        if (localStorage.getItem("ShowFieldsRequired") == "1") {
+            for (let i = 0; i < arrInput.length; i++) {
+                arrInput[i].classList.add('col-ico', 'font-weight-bold');
+            }
+            localStorage.setItem("ShowFieldsRequired", 2);
+            //icoShow.classList.remove("fa-eye");
+            //icoShow.classList.add("fa-eye-slash");
+        } else if (localStorage.getItem("ShowFieldsRequired") == "2") {
+            for (let i = 0; i < arrInput.length; i++) {
+                arrInput[i].classList.remove('col-ico', 'font-weight-bold');
+            }
+            localStorage.setItem("ShowFieldsRequired", 1);
+            //icoShow.classList.remove("fa-eye-slash");
+            //icoShow.classList.add("fa-eye");
+        }
+    }
+
+    fShowFieldsRequiredDataGen();
+
+    fShowFieldsRequiredImss = () => {
+        const labelRIms = document.getElementById('label-regimss');
+        const labelEfim = document.getElementById('label-efimss');
+        const labelRfc  = document.getElementById('label-rfc');
+        const labelCurp = document.getElementById('label-curp');
+        const labelNEst = document.getElementById('label-nivest');
+        const labelNSoc = document.getElementById('label-nivsoc');
+        const arrInput = [labelRIms, labelEfim, labelRfc, labelCurp, labelNEst, labelNSoc];
+        for (let i = 0; i < arrInput.length; i++) {
+            arrInput[i].classList.add('col-ico', 'font-weight-bold');
+        }
+    }
+
+    fShowFieldsRequiredImss();
+
+    fShowFieldsRequiredNomina = () => {
+        const labelEfno = document.getElementById('label-efnom');
+        const labelSMen = document.getElementById('label-salmen');
+        const labelTPer = document.getElementById('label-tipper');
+        const labelTEmp = document.getElementById('label-tipemp');
+        const labelNEmp = document.getElementById('label-nivemp');
+        const labelTJor = document.getElementById('label-tipjor');
+        const labelTCon = document.getElementById('label-tipcon');
+        const labelTTra = document.getElementById('label-tiptra');
+        const labelFIng = document.getElementById('label-fing');
+        const labelFRec = document.getElementById('label-frec');
+        const labelTPag = document.getElementById('label-tippag');
+        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag];
+        for (let i = 0; i < arrInput.length; i++) {
+            arrInput[i].classList.add('col-ico', 'font-weight-bold');
+        }
+    }
+
+    fShowFieldsRequiredNomina();
+
+    fShowFieldsRequiredPositions = () => {
+        const labelPosi = document.getElementById('label-posit');
+        const labelDepa = document.getElementById('label-depart');
+        const labelPues = document.getElementById('label-puest');
+        const labelLocl = document.getElementById('label-local');
+        const labelRPat = document.getElementById('label-regpa');
+        const labelRPos = document.getElementById('label-repos');
+        const labelEPos = document.getElementById('label-efpos');
+        const arrInput = [labelPosi, labelDepa, labelPues, labelLocl, labelRPat, labelRPos, labelEPos];
+        for (let i = 0; i < arrInput.length; i++) {
+            arrInput[i].classList.add('col-ico', 'font-weight-bold');
+        }
+    }
+
+    fShowFieldsRequiredPositions();
 
 });
