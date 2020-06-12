@@ -32,6 +32,7 @@
             }
         }
     }
+    const btnregisterregionbtn = document.getElementById('btnregisterregionbtn');
     /* CONSTANTES BUSQUEDA DE REGIONALES */
     const searchregionalkey = document.getElementById('searchregionalkey');
     const resultregionales = document.getElementById('resultregionales');
@@ -271,4 +272,5 @@
             }
         }
     });
+
 });

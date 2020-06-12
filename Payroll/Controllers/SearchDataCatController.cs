@@ -248,6 +248,134 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult DataLocalitySelect(int keyLocality)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            LocalidadesBean localitysBean = new LocalidadesBean();
+            LocalidadesDao  localitysDaoD = new LocalidadesDao();
+            try {
+                int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
+                localitysBean = localitysDaoD.sp_Dato_Localidad_Seleccionada(keyLocality, keyemp);
+                if (localitysBean.sMensaje != "success") {
+                    messageError = localitysBean.sMensaje;
+                }
+                if (localitysBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = localitysBean });
+        }
+
+        [HttpPost]
+        public JsonResult LoadRegPatLocalitys()
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<RegistroPatronalBean2> regPatronalBean = new List<RegistroPatronalBean2>();
+            RegistroPatronalDao         regPatronalDaoD = new RegistroPatronalDao();
+            try {
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+                regPatronalBean = regPatronalDaoD.sp_Registro_Patronal_Retrieve_Registros_Patronales(keyemp);
+                if (regPatronalBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = regPatronalBean });
+        }
+
+        [HttpPost]
+        public JsonResult LoadZoneEconomic()
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            List<ZonaEconomicaBean> zoneEcoBean = new List<ZonaEconomicaBean>();
+            ZonaEconomicaDao        zoneEcoDaoD = new ZonaEconomicaDao();
+            try {
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+                zoneEcoBean = zoneEcoDaoD.sp_Datos_Zonas_Economicas();
+                if (zoneEcoBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = zoneEcoBean });
+        }
+
+        [HttpPost]
+        public JsonResult LoadEstatesRep()
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            List<CatalogoGeneralBean> catGeneralBean = new List<CatalogoGeneralBean>();
+            CatalogoGeneralDao        catGeneralDao  = new CatalogoGeneralDao();
+            try {
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+                catGeneralBean = catGeneralDao.sp_CatalogoGeneral_Consulta_CatalogoGeneral(0, "Active/Desactive", 0, 1);
+                if (catGeneralBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = catGeneralBean });
+        }
+
+        [HttpPost]
+        public JsonResult SaveEditLocality(int keylocality, string desclocality, string ivalocality, int regpatlocality, int zonelocality, int estatelocality, int idreglocality, int idsuclocality)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            LocalidadesBean2 saveEditLocBean = new LocalidadesBean2();
+            LocalidadesDao   saveEditLocDaoD = new LocalidadesDao();
+            try {
+                saveEditLocBean = saveEditLocDaoD.sp_Update_Localidad(keylocality, desclocality.Trim().ToUpper(), ivalocality, regpatlocality, idreglocality, zonelocality, idsuclocality, estatelocality);
+                if (saveEditLocBean.sMensaje != "success") {
+                    messageError = saveEditLocBean.sMensaje;
+                }
+                if (saveEditLocBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult SaveDataLocality(string desclocality, string ivalocality, int regpatlocality, int zonelocality, int estatelocality, int idreglocality, int idsuclocality)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            LocalidadesBean2 saveDataLocBean = new LocalidadesBean2();
+            LocalidadesDao   saveDataLocDaoD = new LocalidadesDao();
+            try {
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+                saveDataLocBean = saveDataLocDaoD.sp_Insert_Localidad(desclocality.Trim().ToUpper(), ivalocality, regpatlocality, idreglocality, zonelocality, idsuclocality, estatelocality, keyemp);
+                if (saveDataLocBean.sMensaje != "success") {
+                    messageError = saveDataLocBean.sMensaje;
+                }
+                if (saveDataLocBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Codigo = saveDataLocBean.iCodigoLocalidad });
+        }
+
+        [HttpPost]
         public JsonResult SearchEmploye(string wordsearch, string filtered)
         {
             List<EmpleadosBean> empleadoBean = new List<EmpleadosBean>();

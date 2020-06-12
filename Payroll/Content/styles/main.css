@@ -129,6 +129,13 @@ input {
     bottom: 480px !important;
     left: 20px !important;
 }
+
+.flotante-show {
+    position: fixed;
+    bottom: 470px;
+    right: 20px;
+}
+
 .flotante-clear {
     position: fixed;
     bottom: 420px;

@@ -27,10 +27,21 @@ namespace Payroll.Controllers
                 codeCatBean         = codeCatDaoD.sp_Dato_Codigo_Catalogo_Seleccionado(typeregpuesto);
                 string codeTypeJob  = codeCatBean.sCodigo;
                 int consecutiveCode = codeCatBean.iConsecutivo;
-                regcodpuesto        = codeTypeJob + (consecutiveCode + 1).ToString();
+                int consecutiveCNew = consecutiveCode + 1;
+                string ceros = "";
+                if (consecutiveCNew.ToString().Length == 1) {
+                    ceros = "0000";
+                } else if (consecutiveCNew.ToString().Length == 2) {
+                    ceros = "000";
+                } else if (consecutiveCNew.ToString().Length == 3) {
+                    ceros = "00";
+                } else if (consecutiveCNew.ToString().Length == 4) {
+                    ceros = "0";
+                }
+                regcodpuesto        = codeTypeJob + ceros + consecutiveCNew.ToString();
                 int keyemp          = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario         = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                addPuestoBean       = savePuestoDao.sp_Puestos_Insert_Puestos(regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto, usuario, keyemp);
+                addPuestoBean       = savePuestoDao.sp_Puestos_Insert_Puestos(regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto, usuario, keyemp, consecutiveCNew, typeregpuesto);
                 if (addPuestoBean.sMensaje != "success") {
                     messageError = addPuestoBean.sMensaje;
                 } 
@@ -41,7 +52,7 @@ namespace Payroll.Controllers
                 flag         = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(addPuestoBean);
+            return Json(new { Bandera = flag, MensajeError = messageError, Puesto = regcodpuesto });
         }
 
         //Guarda los datos del departamento

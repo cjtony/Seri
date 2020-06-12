@@ -291,6 +291,9 @@ namespace Payroll.Models.Beans
         public int iPuesto_id { get; set; }
         public string sPuestoCodigo { get; set; }
         public string sNombrePuesto { get; set; }
+        public string sNombreE { get; set; }
+        public string sPaternoE { get; set; }
+        public string sMaternoE { get; set; }
         public string sFechaEffectiva { get; set; }
         public string sFechaInicio { get; set; }
         public int iDepartamento_id { get; set; }
@@ -324,9 +327,14 @@ namespace Payroll.Models.Beans
         public string TasaIva { get; set; }
         public int RegistroPatronal_id { get; set; }
         public int Regional_id { get; set; }
+        public string ClaveRegional { get; set; }
+        public string DescripcionRegional { get; set; }
         public int ZonaEconomica_id { get; set; }
         public int Sucursal_id { get; set; }
+        public string ClaveSucursal { get; set; }
+        public string DescripcionSucursal { get; set; }
         public int Estado_id { get; set; }
+        public string sMensaje { get; set; }
     }
     public class LocalidadesBean2
     {
@@ -341,6 +349,7 @@ namespace Payroll.Models.Beans
         public int iZonaEconomica_id { get; set; }
         public int iSucursal_id { get; set; }
         public int iEstado_id { get; set; }
+        public string sMensaje { get; set; }
     }
     public class RegistroPatronalBean
     {

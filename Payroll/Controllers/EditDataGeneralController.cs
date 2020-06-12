@@ -43,7 +43,10 @@ namespace Payroll.Controllers
             EmpleadosBean employeeBean      = new EmpleadosBean();
             EditEmpleadoDao editEmployeeDao = new EditEmpleadoDao();
             string convertFNaci = Convert.ToDateTime(fnaci).ToString("dd/MM/yyyy");
-            string convertFMatr = Convert.ToDateTime(fecmat).ToString("dd/MM/yyyy");
+            string convertFMatr = "";
+            if (fecmat != "") {
+                convertFMatr = Convert.ToDateTime(fecmat).ToString("dd/MM/yyyy");
+            }
             try {
                 employeeBean = editEmployeeDao.sp_Empleados_Update_Empleado(name, apepat, apemat, sex, estciv, convertFNaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, convertFMatr, tipsan, clvemp);
                 if (employeeBean.sMensaje != "success") {

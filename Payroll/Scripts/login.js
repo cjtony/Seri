@@ -66,9 +66,15 @@ $(function () {
                     data: JSON.stringify(dataSend),
                     contentType: "application/json; charset=utf-8",
                     dataType: "JSON",
+                    beforeSend: () => {
+                        btnlogin.disabled = true;
+                        document.getElementById('msjvalidateinfo').classList.remove('d-none');
+                    },
                     success: (request) => {
+                        document.getElementById('msjvalidateinfo').classList.add('d-none');
+                        btnlogin.disabled = false;
                         if (request.sMensaje === "usererror") {
-                            fshowalerts("warning", "Atención!", "El usuario ingresado es incorrecto o se encuentra cancelado", username, 1,"n");
+                            fshowalerts("warning", "Atención!", "El usuario ingresado es incorrecto o se encuentra cancelado", username, 1, "n");
                         } else if (request.sMensaje === "passerror") {
                             fshowalerts("warning", "Atención!", "La contraseña ingresada es incorrecta", password, 1, "n");
                         } else if (request.sMensaje === "success") {
@@ -116,7 +122,6 @@ $(function () {
 
     document.addEventListener('keydown', function (event) {
         const mayus = event.getModifierState && event.getModifierState('CapsLock');
-        console.log(mayus);
         if (mayus) {
             document.getElementById('msjmaysact').classList.remove('d-none');
         } else {

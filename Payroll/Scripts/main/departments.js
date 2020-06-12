@@ -919,6 +919,7 @@
     fsearchdepartamentsadd = () => {
         try {
             resultdepartmentsadd.innerHTML = '';
+            document.getElementById('noresultsdepartamentadd').innerHTML = '';
             if (searchdepartmentkeyadd.value != "") {
                 $.ajax({
                     url: "../SearchDataCat/SearchDepartaments",
