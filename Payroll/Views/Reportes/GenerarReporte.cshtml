@@ -1,5 +1,19 @@
-﻿<div class="container-fluid mb-5">
+﻿@*<link rel="stylesheet" href="~/Content/datatables-new/sb-admin-2.min.css" />*@
+<link rel="stylesheet" href="~/Content/datatables-new/stylesTables.css" />
+<link rel="stylesheet" href="~/Content/datatables-new/dataTables.bootstrap4.min.css" />
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<script type="text/javascript" src="~/Scripts/datatables-new/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="~/Scripts/datatables-new/dataTables.bootstrap4.min.js"></script>
 
+<div class="container-fluid mb-5">
+    <div>
+        <button class="flotante-clear btn-circle btn btn-danger" title="Restablecer" id="btn-clear-params-reports">
+            <i class="fas fa-backspace"></i>
+        </button>
+        <button type="button" data-toggle="modal" data-target="#searchGroupBusiness" class="flotante1 btn btn-primary btn-circle shadow" title="Grupos de empresas" id="btn-modal-search-centr-cost">
+            <i class="fas fa-building"></i>
+        </button>
+    </div>
     <div class="row">
         <div class="col-sm-10 offset-1">
             <nav>
@@ -24,7 +38,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8 offset-2">
-                                    <div class="form-group text-center rounded shadow p-3">
+                                    <div class="form-group text-center rounded shadow p-3 border-left-primary">
                                         <label class="col-form-label" style="font-size: 14px;">
                                             <i class="fas fa-pallet mr-2 col-ico"></i>
                                             Tipo periodo: <span id="typeperactnomemp" class="font-weight-bold"></span>
@@ -40,13 +54,58 @@
                                     </div>
                                 </div>
                                 <div class="col-md-10 offset-1">
-                                    <div class="row shadow rounded p-3">
-                                        <div class="col-md-4 mt-3 offset-1">
+                                    <div class="row shadow rounded p-3 border-left-primary">
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-group text-center">
+                                                <label class="col-form-label font-labels col-ico">
+                                                    Generar reporte por:
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-check text-center">
+                                                <input class="form-check-input" type="radio" name="optionReportGenerate" id="oneRadioBusiness" value="0">
+                                                <label class="form-check-label font-labels" for="exampleRadios1">
+                                                    Empresa.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-3">
+                                            <div class="form-check text-center">
+                                                <input class="form-check-input" type="radio" name="optionReportGenerate" id="groupRadioBusiness" value="1">
+                                                <label class="form-check-label font-labels" for="exampleRadios1">
+                                                    Grupo de empresas.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 offset-1">
+                                            <div class="form-group">
+                                                <label class="col-form-label font-labels col-ico" for="selectOneBusiness">
+                                                    Empresa
+                                                </label>
+                                                <select class="form-control form-control-sm" id="selectOneBusiness">
+                                                    <option value="none">Selecciona</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <label class="col-form-label font-labels col-ico" for="selectOneBusiness">
+                                                        Grupo de empresas
+                                                    </label>
+                                                    <select class="form-control form-control-sm" id="selectGroupBusiness">
+                                                        <option value="none">Selecciona</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-4 offset-1">
                                             <div class="form-group text-center">
                                                 <label class="col-form-label font-labels"><i class="fas fa-file mr-2 col-ico"></i> Tipo de reporte</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 mt-3">
+                                        <div class="col-md-6 mt-4">
                                             <div class="form-group">
                                                 <select class="form-control form-control-sm" id="typeReportselect">
                                                     <option value="0">Selecciona</option>
@@ -56,29 +115,23 @@
                                                     <option value="ACUM_NOM">ACUMULADOS POR NOMINA Y PERIODO</option>
                                                     <option value="ALTAEMP">REPORTE DE ALTAS EN EL PERIODO</option>
                                                     <option value="BAJA_FEC">BAJAS POR RANGO DE FECHAS</option>
-                                                    <option value="CAT_EMP_AC">CATALOGO DE EMPLEADOS ACTIVOS (CON SUELDO)</option>
-                                                    <option value="CATEMPACSS">CATALOGO DE EMPLEADOS ACTIVOS (SIN SUELDO)</option>
+                                                    <option value="CAT_EMP_AC">EMPLEADOS ACTIVOS (CON SUELDO)</option>
+                                                    <option value="CATEMPACSS">EMPLEADOS ACTIVOS (SIN SUELDO)</option>
                                                     <option value="RECIRENG">DETALLE DE RENGLONES DE NOMINA POR EMPRESA (AÑO ACTUAL)</option>
                                                     <option value="RECIRENG_">DETALLE DE RENGLONES DE NOMINA POR EMPRESA (AÑO ANTERIOR)</option>
                                                     <option value="RECINOMI">RECIBOS DE NOMINA</option>
                                                     <option value="RECMATRIX">RECIBOS CRUZADOS</option>
                                                     <option value="TOTACUMS">TOTAL DE ACUMULADOS POR EMPRESA</option>
                                                     <option value="ESTRUCTURA">REPORTE ESTRUCTURA</option>
-                                                    <option value="SABANA">REPORTE DE NÓMINA</option>
+                                                    <option value="SABANA">HOJA DE CALCULO</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        @*<div class="col-md-4 mt-3">
-                    <div class="form-group text-center">
-                        <button class="btn btn-outline-primary btn-block btn-sm" id="btnContinueReport">
-                            <i class="fas fa-check-circle mr-2"></i> Continuar
-                        </button>
-                    </div>
-                </div>*@
                                     </div>
                                 </div>
                                 <div class="col-md-10 mt-3 offset-1" id="contentParameters"></div>
                                 <div class="col-md-6 mt-3 offset-3" id="contentBtnGenerate"></div>
+                                <div class="col-md-4 mt-3 offset-4" id="contentGenerateRep"></div>
                             </div>
                         </div>
                     </div>
@@ -87,4 +140,86 @@
         </div>
     </div>
 </div>
+
+<!-- VENTANA MODAL DE REGISTRO DE GRUPOS DE EMPRESAS -->
+<div class="modal fade bg-gradient" data-backdrop="static" data-keyboard="false" id="searchGroupBusiness" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable rounded" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelSGrpBusiness"> <i class="fas fa-building mr-2 col-ico"></i> Grupos de empresas </h5>
+                <button id="icoCloseSearchGroupBusiness" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="table-responsive animated fadeIn">
+                        <table class="table table-bordered" id="dataTable" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Nombre grupo</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Nombre grupo</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="data-groupbusiness">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-success btn-sm btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>*@
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btnCloseSearchGroupBusiness">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm shadow btn-danger" data-dismiss="modal" id="btnCloseSearchGroupBusiness"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- VENTANA MODAL DE VISUALIZACION DE EMPRESAS POR GRUPO -->
+<div class="modal fade bg-gradient" data-backdrop="static" data-keyboard="false" id="viewBusinessGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable rounded" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelVGrpBusiness"> <i class="fas fa-building mr-2 col-ico"></i> Empresas del grupo: <span id="nameBusinessGroup"></span> </h5>
+                <button id="icoCloseBusinessGroup" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row" id="containerBusinessGroup">                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btnCloseBusinessGroup">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm shadow btn-danger" data-dismiss="modal" id="btnCloseSearchGroupBusiness"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/Scripts/main/Reportes/main.js"></script>

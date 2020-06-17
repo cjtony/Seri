@@ -73,7 +73,7 @@
 
     // ** EJECUCIÓN DE FUNCION BLOQUEA CAMPOS BANCARIOS ** \\
 
-    fdatabank(true);
+    //fdatabank(true);
 
     /*
      * VARIABLES DE LOCALSTORAGE 
@@ -674,6 +674,8 @@
             if (getDataTabNom[i].key === "nom") {
                 if (getDataTabNom[i].data.banuse != "") {
                     fdatabank(false);
+                } else {
+                    fdatabank(true);
                 }
             }
         }

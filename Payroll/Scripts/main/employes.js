@@ -327,6 +327,9 @@
                         banuse.value       = data.Datos.iBanco_id;
                         cunuse.value       = data.Datos.sCuentaCheques;
                         clvstr.value       = data.Datos.iPosicion_id;
+                        if (data.Datos.iBanco_id != 999) {
+                            fdatabank(false);
+                        }
                         floaddatatabstructure(paramid);
                         flocalstodatatabnomina();
                         if (localStorage.getItem('modeedit') != null) {
@@ -847,7 +850,12 @@
     /* FUNCION QUE GUARDA LA EDICION DE LOS DATOS DE NOMINA DEL EMPLEADO */
     fsaveeditdatanomina = () => {
         let url = "", datasend, banco;
-        if (banuse.value == "0") { banco = 94; } else { banco = banuse.value; }
+        if (tippag.value == "218" || tippag.value == "220") {
+            banco = 999;
+        } else {
+            banco = banuse.value;
+        }
+        if (banuse.value == "0") { banco = 999; } else { banco = banuse.value; }
         if (fechefectact.value != fecefecnom.value) {
             url = "../SaveDataGeneral/DataNomina";
             datasend = {
@@ -864,7 +872,7 @@
                 fecefecnom: fecefecnom.value, fechefectact: fechefectact.value, salmen: salmen.value, tipper: tipper.value, tipemp: tipemp.value,
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,
                 //motinc: motinc.value,
-                fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banuse.value,
+                fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value
             };
         }

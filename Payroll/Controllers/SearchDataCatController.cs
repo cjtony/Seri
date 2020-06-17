@@ -217,7 +217,8 @@ namespace Payroll.Controllers
             List<CodigoCatalogoBean> codeCatBean = new List<CodigoCatalogoBean>();
             CodigoCatalogosDao       codeCatDaoD = new CodigoCatalogosDao();
             try {
-                codeCatBean = codeCatDaoD.sp_Datos_Codigo_Catalogo(typeJob);
+                int keyEmpr = int.Parse(Session["IdEmpresa"].ToString());
+                codeCatBean = codeCatDaoD.sp_Datos_Codigo_Catalogo(typeJob, keyEmpr);
                 if (codeCatBean.Count > 0) {
                     flag = true;
                 }

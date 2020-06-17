@@ -653,13 +653,14 @@ namespace Payroll.Models.Daos
 
     public class CodigoCatalogosDao : Conexion {
         
-        public List<CodigoCatalogoBean> sp_Datos_Codigo_Catalogo(string typeJob)
+        public List<CodigoCatalogoBean> sp_Datos_Codigo_Catalogo(string typeJob, int keyEmpr)
         {
             List<CodigoCatalogoBean> listCodeCatBean = new List<CodigoCatalogoBean>();
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Datos_Codigo_Catalogo", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@Catalogo", typeJob));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyEmpr));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows) {
                     while (data.Read()) {
