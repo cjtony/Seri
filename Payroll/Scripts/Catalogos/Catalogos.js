@@ -1,7 +1,12 @@
 ﻿$(function () { 
-      //themas 
+
+    //themas 
     $("#dTabCrenglones").jqxDataTable({ theme: 'darkblue' })
-   
+    $("#ChecCancel").jqxCheckBox({ theme: 'darkblue' })
+    $("#ChecEspejo").jqxCheckBox({ theme: 'darkblue' })
+
+
+
     console.log('hola munfo');
     /// Carga Tb Renglones 
     FTabCRenglones = () => {
@@ -73,7 +78,9 @@
         });                   
     };
     FTabCRenglones();
-
+    ChecEspejo
+        $("#ChecCancel").jqxCheckBox({ width: 120, height: 25 });
+        $("#ChecEspejo").jqxCheckBox({ width: 120, height: 25 });
         $("#orderID").jqxInput({ disabled: true, width: 150, height: 30 });
         $("#save").jqxButton({ height: 30, width: 80 });
         $("#cancel").jqxButton({ height: 30, width: 80 });
@@ -123,5 +130,9 @@
   
     });
         $("#button1").jqxButton({ width: 120, imgPosition: "left", textPosition: "left", imgSrc: "../../images/facebook.png", textImageRelation: "imageBeforeText" });
+
+
+
+
 
 });

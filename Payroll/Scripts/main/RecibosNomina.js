@@ -179,7 +179,6 @@
 
 
     FDelettable = () => {
-
         if (rowscounts > 0) {
             console.log('elimina datos de tabla');
            var datainformations = $('#TbRecibosNomina').jqxGrid('getdatainformation');

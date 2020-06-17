@@ -476,6 +476,7 @@ namespace Payroll.Controllers
          
             return Json(Dta);
         }
+       
         [HttpPost]
         public JsonResult EmpresaCal(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo)
         {
@@ -609,6 +610,20 @@ namespace Payroll.Controllers
             }
 
             return Json(TD);
+        }
+
+
+        [HttpPost]
+        public JsonResult Statusproc(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa, int anio)
+        {
+            FuncionesNomina dao = new FuncionesNomina();
+             
+            List<TPProcesos> Dta = new List<TPProcesos>();
+            string Parametro = anio+","+ iTipoPeriodo+","+ iPeriodo+","+ iIdCalculosHd+ "%";
+           
+            Dta = dao.sp_StatusProceso_Retrieve_TPProceso(Parametro);
+
+            return Json(Dta);
         }
 
     }
