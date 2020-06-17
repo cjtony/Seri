@@ -1,6 +1,7 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
 using System.Collections.Generic;
+using System.Data;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
@@ -81,6 +82,14 @@ namespace Payroll.Controllers
             return PartialView();
         }
         public PartialViewResult CFechasPeriodos()
+        {
+            return PartialView();
+        }
+        public PartialViewResult GruposEmpresas()
+        {
+            return PartialView();
+        }
+        public PartialViewResult CGruposEmpresas()
         {
             return PartialView();
         }
@@ -241,5 +250,62 @@ namespace Payroll.Controllers
             return Json(LR);
         }
 
+        [HttpPost]
+        public JsonResult LoadGruposEmpresas()
+        {
+            List<List<string>> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_CGruposEmpresas_Retrieve_Grupos();
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadEmpresasGrupo(int Grupo_id)
+        {
+            List<List<string>> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_CGruposEmpresas_Retrieve_EmpresasGrupo(Grupo_id);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadAllPuestos()
+        {
+            List<DataPuestosBean> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_TPuestos_Retrieve_AllPuestos();
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadPolitica(int Empresa_id, string Effdt, string Anio)
+        {
+            List<TabPoliticasVacacionesBean> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_CPoliticasVacaciones_Retrieve_Politica(Empresa_id, Effdt, Anio);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult UpdatePolitica(int Empresa_id, string Effdt, int Anio, int Dias, int Diasa, int Prima, int Anion)
+        {
+            List<string> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_CPoliticasVacaciones_Update_Politica(Empresa_id, Effdt, Anio, Dias, Diasa, Prima, Anion);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadPeriodo(int Empresa_id, int Id)
+        {
+            List<InicioFechasPeriodoBean> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_CInicio_Fechas_Periodo_Retrieve_Periodo(Empresa_id, Id);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult UpdatePeriodo(int Empresa_id, int editid, int editano, int editperiodo, string editfinicio, string editffinal, string editfproceso, string editfpago, int editdiaspago)
+        {
+            List<string> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+
+            Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Periodo(Empresa_id, editid, editano, editperiodo, editfinicio, editffinal, editfproceso, editfpago, editdiaspago);
+            return Json(Lista);
+        }
     }
 }
