@@ -10,31 +10,31 @@
         @*<button class="flotante rounded btn btn-outline-success" title="Continuar" id="btn-save-data">
                 <i class="fas fa-check"></i>
             </button>*@
-        <button class="flotante-clear rounded btn btn-danger" title="Limpiar todos los campos" id="btn-clear-localstorage">
+        <button class="flotante-clear btn-circle btn btn-danger" title="Limpiar todos los campos" id="btn-clear-localstorage">
             <i class="fas fa-backspace"></i>
         </button>
-        <button type="button" data-toggle="modal" data-target="#btnsearchcentrscost" class="flotante1 rounded btn btn-primary" title="Centros de costo" id="btn-modal-search-centr-cost">
+        <button type="button" data-toggle="modal" data-target="#btnsearchcentrscost" class="flotante1 btn-circle btn btn-primary" title="Centros de costo" id="btn-modal-search-centr-cost">
             <i class="fas fa-store"></i>
         </button>
-        <button type="button" data-toggle="modal" data-target="#searchlocalidadbtn" class="flotante2 rounded btn btn-primary" title="Registrar localidad" id="btn-modal-search-localitys">
+        <button type="button" data-toggle="modal" data-target="#searchlocalidadbtn" class="flotante2 btn-circle btn btn-primary" title="Registrar localidad" id="btn-modal-search-localitys">
             <i class="fas fa-map-marked-alt"></i>
         </button>
-        <button type="button" data-toggle="modal" data-target="#searchregion" class="flotante3 rounded btn btn-primary" title="Regionales" id="btn-modal-search-regionales">
+        <button type="button" data-toggle="modal" data-target="#searchregion" class="flotante3 btn-circle btn btn-primary" title="Regionales" id="btn-modal-search-regionales">
             <i class="fas fa-house-user"></i>
         </button>
-        <button class="flotante4 rounded btn btn-primary" title="Registrar departamento" data-toggle="modal" data-target="#searchdepartamentbtn" id="btn-modal-search-departament">
+        <button class="flotante4 btn-circle btn btn-primary" title="Registrar departamento" data-toggle="modal" data-target="#searchdepartamentbtn" id="btn-modal-search-departament">
             <i class="fas fa-city"></i>
         </button>
-        <button class="flotante5 rounded btn btn-primary" title="Registrar puesto" data-toggle="modal" data-target="#searchpuestobtn" id="btn-modal-search-puesto">
+        <button class="flotante5 btn-circle btn btn-primary" title="Registrar puesto" data-toggle="modal" data-target="#searchpuestobtn" id="btn-modal-search-puesto">
             <i class="fas fa-chalkboard-teacher"></i>
         </button>
-        <button class="flotante6 rounded btn btn-primary" title="Posiciones" data-toggle="modal" data-target="#searchpositions" id="btn-modal-search-positions">
+        <button class="flotante6 btn-circle btn btn-primary" title="Posiciones" data-toggle="modal" data-target="#searchpositions" id="btn-modal-search-positions">
             <i class="fas fa-laptop-house"></i>
         </button>
-        <button class="flotante7 rounded btn btn-primary" title="Sucursales" data-toggle="modal" data-target="#searchsucursales" id="btn-modal-search-sucursales">
+        <button class="flotante7 btn-circle btn btn-primary" title="Sucursales" data-toggle="modal" data-target="#searchsucursales" id="btn-modal-search-sucursales">
             <i class="fas fa-store-alt"></i>
         </button>
-        <button class="flotante8 rounded btn btn-primary" title="Empleados" data-toggle="modal" data-target="#searchemploye" id="btn-modal-search-employe">
+        <button class="flotante8 btn-circle btn btn-primary" title="Empleados" data-toggle="modal" data-target="#searchemploye" id="btn-modal-search-employe">
             <i class="fas fa-users"></i>
         </button>
     </div>
@@ -3043,6 +3043,27 @@
 <script type="text/javascript" src="~/Scripts/main/savedatageneral.js"></script>
 <script type="text/javascript" src="~/Scripts/main/employes.js"></script>
 <script type="text/javascript">
+    $(function () {
+        setTimeout(() => {
+            const getDataTabNom1 = JSON.parse(localStorage.getItem('objectDataTabNom'));
+            if (JSON.parse(localStorage.getItem('objectDataTabNom')) != null) {
+                for (i in getDataTabNom1) {
+                    if (getDataTabNom1[i].key == "nom") {
+                        if (getDataTabNom1[i].data.banuse != "") {
+                            document.getElementById('banuse').removeAttribute("disabled");
+                            document.getElementById('cunuse').removeAttribute("disabled");
+                            document.getElementById('cunuse').value = getDataTabNom1[i].data.cunuse;
+                        } else {
+                            document.getElementById('banuse').disabled = true;
+                            document.getElementById('cunuse').disabled = true;
+                        }
+                    }
+                }
+            }
+        }, 3000);
+        //fchangetippag();
+        setTimeout(() => { fchangetippag(); }, 2000);
+    });
     function check(e) {
         tecla = (document.all) ? e.keyCode : e.which;
         if (tecla == 8) {

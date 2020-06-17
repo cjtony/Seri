@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=5.1.2.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.5.1.2\lib\net45\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Hangfire.Console, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Console.1.4.2\lib\net45\Hangfire.Console.dll</HintPath>
     </Reference>
@@ -68,6 +71,7 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -77,6 +81,8 @@
     <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -172,6 +178,7 @@
     <Compile Include="Models\Beans\CodigoCatalogoBean.cs" />
     <Compile Include="Models\Beans\ConfigDataBankBean.cs" />
     <Compile Include="Models\Beans\DispersionBean.cs" />
+    <Compile Include="Models\Beans\GruposEmpresasBean.cs" />
     <Compile Include="Models\Beans\MainMenuBean.cs" />
     <Compile Include="Models\Beans\MenuBean.cs" />
     <Compile Include="Models\Beans\NominaBean.cs" />
@@ -180,6 +187,7 @@
     <Compile Include="Models\Beans\PoliticasVacacionesBean.cs" />
     <Compile Include="Models\Beans\PruebaEmpleadosBean.cs" />
     <Compile Include="Models\Beans\PruebaEmpresaBean.cs" />
+    <Compile Include="Models\Beans\ReporteNominaBean.cs" />
     <Compile Include="Models\Beans\UsuariosBean.cs" />
     <Compile Include="Models\Beans\VariablesBean.cs" />
     <Compile Include="Models\Daos\BajasEmpleadosDaoD.cs" />
@@ -194,6 +202,7 @@
     <Compile Include="Models\Daos\NominaDao.cs" />
     <Compile Include="Models\Daos\pruebaEmpleadosDao.cs" />
     <Compile Include="Models\Daos\PruebaEmpresaDao.cs" />
+    <Compile Include="Models\Daos\ReportesDao.cs" />
     <Compile Include="Models\Daos\SaveDataGeneralDao.cs" />
     <Compile Include="Models\Daos\UsuariosDao.cs" />
     <Compile Include="Models\Daos\VariablesDao.cs" />
@@ -220,6 +229,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\datatables-new\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\datatables-new\sb-admin-2.min.css" />
+    <Content Include="Content\datatables-new\stylesTables.css" />
     <Content Include="Content\dataTables.bootstrap.css" />
     <Content Include="Content\dataTables.jqueryui.css" />
     <Content Include="Content\datatables\datatables.min.css" />
@@ -357,6 +369,8 @@
     <Content Include="Archivos\certificados\CSD_unidad_CGA1511196P4_20160128_134059.key" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\datatables-new\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\datatables-new\jquery.dataTables.min.js" />
     <Content Include="Scripts\dataTables.autoFill.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\dataTables.jqueryui.js" />

@@ -305,25 +305,33 @@
         if (JSON.parse(localStorage.getItem('objectDataTabNom')) != null) {
             const getDataTabNom = JSON.parse(localStorage.getItem('objectDataTabNom'));
             for (i in getDataTabNom) {
-                if (getDataTabNom[i].key === "nom") {
+                if (getDataTabNom[i].key == "nom") {
                     clvnom.value = getDataTabNom[i].data.clvnom;
                     fecefecnom.value = getDataTabNom[i].data.fecefecnom;
                     salmen.value = getDataTabNom[i].data.salmen; fechefectact.value = getDataTabNom[i].data.fechefectact;
                     tipper.value = getDataTabNom[i].data.tipper; tipemp.value = getDataTabNom[i].data.tipemp;
                     nivemp.value = getDataTabNom[i].data.nivemp; tipjor.value = getDataTabNom[i].data.tipjor;
                     tipcon.value = getDataTabNom[i].data.tipcon; fecing.value = getDataTabNom[i].data.fecing;
-                    fecant.value = getDataTabNom[i].data.fecant; vencon.value = getDataTabNom[i].data.vencon;
-                    //estats.value = getDataTabNom[i].data.estats;
+                    fecant.value = getDataTabNom[i].data.fecant; vencon.value = getDataTabNom[i].data.vencon;                   
                     tipcontra.value = getDataTabNom[i].data.tipcontra;
-                    //motinc.value = getDataTabNom[i].data.motinc;
                     tippag.value = getDataTabNom[i].data.tippag;
-                    banuse.value = getDataTabNom[i].data.banuse; cunuse.value = getDataTabNom[i].data.cunuse;
-                    //clvbank.textContent = getDataTabNom[i].data.clvbank;
+                    banuse.value = getDataTabNom[i].data.banuse;
+                    if (getDataTabNom[i].data.banuse != 999) {
+                        banuse.disabled = false;
+                        cunuse.disabled = false;
+                        console.log('Entro');
+                    } else {
+                        console.log('Fallo');
+                    }
+                    //cunuse.value = "2312312312";
+                    //console.log("Cuenta: " + getDataTabNom[i].data.cunuse.length);
                     if (getDataTabNom[i].data.tippag == idcuentach) {
                         cunuse.setAttribute("maxlength", 11);
                     } else if (getDataTabNom[i].data.tippag == idcuentaah) {
                         cunuse.setAttribute("maxlength", 18);
                     }
+                    const cuentaavalor = getDataTabNom[i].data.cunuse;
+                    setTimeout(() => { cunuse.value = cuentaavalor }, 2000);
                 }
             }
         }
