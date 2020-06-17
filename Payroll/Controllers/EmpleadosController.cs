@@ -3,11 +3,9 @@ using Payroll.Models.Daos;
 using System;
 using System.Collections.Generic;
 using System.IO;
-<<<<<<< HEAD
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
-=======
 using System.IO.Compression;
 using System.Text;
 using System.Configuration;
@@ -20,10 +18,6 @@ using System.Drawing;
 using System.Web.UI.WebControls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-
-
-
->>>>>>> proacosta
 
 namespace Payroll.Controllers
 {
