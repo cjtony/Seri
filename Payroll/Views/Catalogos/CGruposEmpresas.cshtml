@@ -1,0 +1,89 @@
+﻿<div class="col-md-10 container bg-white p-3 rounded shadow shadow-lg">
+    <div class="col-md-12 mt-3">
+        <label class="h5 pb-2 mb-3 col-md-12 border-bottom">Grupos Empresas</label>
+        <div class="col-md-12 row">
+            <form class="col-md-12 row">
+                <div class="form-group col-md-4">
+                    <label>Grupo</label>
+                    <select class="custom-select custom-select-sm" id="inGrupos">
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Empresa</label>
+                    <select class="custom-select custom-select-sm" disabled id="inEmpresa">
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="invisible">src-only</label>
+                    <div class="btn btn-block btn-outline-success btn-sm">Agregar <i class="fas fa-save"></i></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="accordion col-md-12 pb-3" id="accordionGruposEmpresas">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link btn-block d-flex justify-content-between aling-items-center" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <span>Grupo #1</span><span class="text-primary"><i class="fas fa-layer-group fa-lg"></i> 12</span>
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-secondary">Empresa 1</li>
+                        <li class="list-group-item list-group-item-secondary">Dapibus ac facilisis in</li>
+                        <li class="list-group-item list-group-item-secondary">Morbi leo risus</li>
+                        <li class="list-group-item list-group-item-secondary">Porta ac consectetur ac</li>
+                        <li class="list-group-item list-group-item-secondary">Vestibulum at eros</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left d-flex justify-content-between aling-items-center" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <span>Grupo #2</span><span class="text-primary"><i class="fas fa-layer-group fa-lg"></i> 8</span>
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-secondary">Cras justo odio</li>
+                        <li class="list-group-item list-group-item-secondary">Dapibus ac facilisis in</li>
+                        <li class="list-group-item list-group-item-secondary">Morbi leo risus</li>
+                        <li class="list-group-item list-group-item-secondary">Porta ac consectetur ac</li>
+                        <li class="list-group-item list-group-item-secondary">Vestibulum at eros</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left d-flex justify-content-between aling-items-center" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <span>Grupo #3</span><span class="text-primary"><i class="fas fa-layer-group fa-lg"></i> 6</span>
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-secondary">Cras justo odio</li>
+                        <li class="list-group-item list-group-item-secondary">Dapibus ac facilisis in</li>
+                        <li class="list-group-item list-group-item-secondary">Morbi leo risus</li>
+                        <li class="list-group-item list-group-item-secondary">Porta ac consectetur ac</li>
+                        <li class="list-group-item list-group-item-secondary">Vestibulum at eros</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js"></script>
+<script>
+    $(function () {
+        LoadSelectEmpresas();
+        LoadSelectGrupos();
+        LoadAcordeonGrupos();
+    });
+</script>

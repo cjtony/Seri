@@ -1,1 +1,83 @@
-﻿
+﻿<div class="col-md-10 container font-labels">
+    <div class="">Fechas - Periodos</div>
+    <hr />
+    <table class="table table-sm table-striped table-fechas-periodos">
+        <thead>
+            <tr>
+                <th colspan="3" scope="col">Lista de empresas</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody id="bodytab-fechas-periodos">
+            <tr>
+                <td colspan="3">
+                    <div class="col-md-12">
+                        <label>4 REJUM - 2020 - Quincenal</label>&nbsp;&nbsp;&nbsp;<div class="badge badge-success btn" onclick="LoadDetalleFechasPeriodo('collapse-REJUM', 4);"><i class="fas fa-plus"></i></div>
+                        <div class="collapse collapse-REJUM col-md-12" id="collapse-REJUM">
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="hidden" id="editar_empresa_id" value="" />
+    <input type="hidden" id="editar_id" value="" />
+</div>
+<!-- Modal Editar Fechas - Periodos-->
+<div class="modal fade" id="modalEditarFechaPeriodo" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Editar <span class="text-danger h5">Fecha - Periodo</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAddFechasPeriodos" method="post" class="row was-validated">
+                    <div class="form-group col-md-4">
+                        <label>Año</label>
+                        <input class="form-control form-control-sm" disabled type="number" id="editano" name="editano" min="" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Periodo</label>
+                        <input class="form-control form-control-sm" type="text" name="editperiodo" id="editperiodo" value="" placeholder="No. Periodo" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Inicio</label>
+                        <input class="form-control form-control-sm" type="date" name="editfinicio" id="editfinicio" value="" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Final</label>
+                        <input class="form-control form-control-sm" type="date" name="editffinal" id="editffinal" value="" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Proceso</label>
+                        <input class="form-control form-control-sm" type="date" name="editfproceso" id="editfproceso" value="" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Pago</label>
+                        <input class="form-control form-control-sm" type="date" name="editfpago" id="editfpago" value="" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Dias Pago</label>
+                        <input class="form-control form-control-sm" type="text" name="editdiaspago" id="editdiaspago" value="" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button id="btnUpdatefechaperiodo" type="button" class="btn btn-success"><i class="fas fa-save"></i> Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js"></script>
+<script>
+    $(function () {
+        LoadTabFechasPeriodos();
+    });
+</script>

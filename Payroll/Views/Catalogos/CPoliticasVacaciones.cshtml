@@ -1,1 +1,201 @@
-﻿
+﻿<div class="container col-md-10 bg-white rounded shadow shadow-lg p-4">
+    <ul class="nav nav-tabs" id="tabpoliticasv" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold text-danger active" id="vigentes-tab" data-toggle="tab" href="#vigentes" role="tab" aria-controls="vigentes" aria-selected="true">Politicas Vigentes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold text-danger" id="fururas-tab" data-toggle="tab" href="#futuras" role="tab" aria-controls="futuras" aria-selected="false">Politicas Programadas</a>
+        </li>
+        <li>
+            <a class="nav-link font-weight-bold text-dark" id="editar-tab" data-toggle="tab" href="#editar" role="tab" aria-controls="editar" aria-selected="false">Edición</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        @* TAB DE POLITICAS VIGENTES*@
+        <div class="tab-pane fade show active" id="vigentes" role="tabpanel" aria-labelledby="vigentes-tab">
+            <div class="col-md-12 row my-3"><label class="col-md-6 font-labels">Politicas de vacaciones</label><div class="col-md-6 text-right"><div class="btn btn-info font-labels" id="btn-newEffdtPoliticas">Agregar Nueva Fecha Efectiva</div></div> </div>
+
+            <table class="table table-sm table-striped table-politicas-vacaciones font-labels col-md-12">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="3">Lista de Empresas</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="bodytab-politicas-vacaciones">
+                </tbody>
+            </table>
+        </div>
+        @* TAB DE POLITICAS PROGRAMADAS*@
+        <div class="tab-pane fade" id="futuras" role="tabpanel" aria-labelledby="futuras-tab">
+            @*<div class="col-md-12 row mt-3"><label class="col-md-6 font-labels">Politicas de vacaciones</label><div class="col-md-6 text-right"><div class="btn btn-info font-labels" id="btn-newEffdtPoliticas">Agregar Nueva Fecha Efectiva</div></div> </div>*@
+
+            <table class="table table-sm table-striped table-politicas-vacaciones-futuras font-labels col-md-12 mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="3">Lista de Empresas por empresa y por fecha efectiva</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="bodytab-politicas-vacaciones-futuras">
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="editar" role="tabpanel" aria-labelledby="editar-tab">
+            <small id="infoEditar" class="col-md-12 text-center text-danger">No has seleccionado ningúna politica a editar</small>
+            <div class="row col-md-12 mt-4">
+                <label id="lblEdicion" class="col-md-3 font-weight-bold"></label>
+                <input id="Effdt_editar" disabled type='text' class='invisible form-control text-center form-control-sm col-md-3' value=''>
+                <div class="col-md-3">
+                    <select id="selectp" class="custom-select custom-select-sm">
+                        <option value="0">Vigentes</option>
+                        <option value="1">Programadas</option>
+                    </select>
+                </div>
+                <div id="bodybotonagregar" class="col-md-3"></div>
+            </div>
+            <hr />
+            <div id="bodyEditarModulo" class="col-md-12">
+
+            </div>
+            <input type="hidden" id="Empresa_id_editar" value="" />
+        </div>
+    </div>
+</div>
+<!-- Modal Agregar EFFDT Politicas -->
+<div class="modal fade" id="modalAgregarNewEffdtPoliticas" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> Agregar Nueva Fecha Efectiva <span id="politicas-modal-title" class="politicas-modal-title"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center font-small d-flex justify-content-center" id="modal-body-neweffdtpoliticas">
+                <form id="frmnewEffdt" class="col-md-12">
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-4">
+                            <label class="col-md-12">Empresa <i class="text-primary fas fa-building"></i></label>
+                            <select class="col-md-12 custom-select custom-select-sm" id="newEffdtEmpresa">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Fecha Efectiva <i class="text-primary far fa-calendar-plus"></i></label>
+                            <input class="form-control form-control-sm" type="date" name="newEffdtFecha" id="newEffdtFecha" mim="" required />
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button id="btnneweffdtpoliticas" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Agregar Politica -->
+<div class="modal fade" id="modalNewPolitica" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> Politicas de vacaciones <span id="politica-modal-title" class="politica-modal-title"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center font-small d-flex justify-content-center" id="">
+                <form id="frmnewPolitica"></form>
+                <div class="col-md-12 row">
+                    <div class="col-md-6">
+                        <label>Año</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaAnio" value="" placeholder="Agregar año" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Dias</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaDias" value="" placeholder="Agregar dias" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Prima vacacional</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaPrimav" value="25" placeholder="Porcentaje de prima" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Dias aguinaldo</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="newPoliticaDiasa" value="15" placeholder="Dias de aguinaldo" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button id="btnsavenewpolitica" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Editar Politica -->
+<div class="modal fade" id="modalEditarPolitica" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> Politicas de vacaciones <span id="politica-modal-title" class="politica-modal-title"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center font-small d-flex justify-content-center" id="">
+                <form id="frmEditarPolitica"></form>
+                <div class="col-md-12 row">
+                    <div class="col-md-6">
+                        <label>Año</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="EditarPoliticaAnio" value="" placeholder="Agregar año" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Dias</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="EditarPoliticaDias" value="" placeholder="Agregar dias" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Prima vacacional</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="EditarPoliticaPrimav" value="" placeholder="Porcentaje de prima" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Dias aguinaldo</label>
+                        <input class="input-number form-control form-control-sm" type="text" name="" id="EditarPoliticaDiasa" value="" placeholder="Dias de aguinaldo" />
+                    </div>
+                    <input type="hidden" id="anioEditar" value="" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button id="btnSaveEditPolitica" type="button" class="btn btn-success"><i class="fas fa-save"></i> Editar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Mostrar Politicas -->
+<div class="modal fade" id="modalMostrarPoliticas" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> Politicas de vacaciones <span id="politicas-modal-title" class="politicas-modal-title"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center font-small d-flex justify-content-center" id="modal-body-politicas">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js"></script>
+<script>
+    $(function () {
+        LoadTabPoliticasVacaciones();
+    });
+</script>

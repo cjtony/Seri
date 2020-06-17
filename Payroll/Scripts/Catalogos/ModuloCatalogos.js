@@ -52,9 +52,6 @@
     $("#regionales").on("click", function () {
         $("#v-pills-regionales-tab").click();
     });
-
-
-
     $("#v-pills-FechasPeriodos-tab").on("click", function () {
         LoadTabFechasPeriodos();
     });
@@ -78,15 +75,12 @@
     });
     // Mostar Modal Agregar NEW EFFDT 
     $("#btn-newEffdtPoliticas").on("click", function () {
-
         var now = new Date();
-
         var day = ("0" + now.getDate()).slice(-2);
         var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
         var today = now.getFullYear() + "-" + (month) + "-" + (day);
         $("#newEffdtFecha").attr("min",today);
-        LoadSelectEmpresas("newEffdtEmpresa");
+        LoadSelectEmpresas_sid("newEffdtEmpresa");
         $("#modalAgregarNewEffdtPoliticas").modal("show");
     });
     $('.input-number').on('input', function () {
@@ -107,14 +101,12 @@
                     LoadTabPoliticasVacaciones();
                     LoadPoliticasVacacionesFuturas();
                     document.getElementById("frmnewEffdt").reset();
-
                     $("#modalAgregarNewEffdtPoliticas").modal("hide");
                     Swal.fire({
                         icon: 'success',
                         title: 'Completado!',
                         text: data[1]
                     });
-
                 } else {
                     Swal.fire({
                         icon: 'warning',
@@ -126,14 +118,15 @@
         });
     });
 
-    LoadSelectEmpresas = (select_id) => {
+    LoadSelectEmpresas_sid = (select_id) => {
         $.ajax({
             url: "../Empresas/LoadSEmp",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                console.log(select_id);
                 var select = document.getElementById(select_id);
-                select.innerHTML = "";
+                //select.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     select.innerHTML += "<option value='" + data[i]["IdEmpresa"] + "'>" + data[i]["IdEmpresa"] + " " + data[i]["NombreEmpresa"] + "</option>"
                 }
@@ -162,7 +155,7 @@
                             "<tr>" +
                             "<td colspan='3' >" +
                             "<div class='col-md-12 row'>" +
-                            "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-info ml-2' onclick='editarFechasPeriodos(" + data[i]["Empresa_id"] +");'>Editar <i class='fas fa-edit'></i></div></div>" +
+                            "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
                             "<div id='collapse-"+data[i]["NombreEmpresa"]+"' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
                             "</div>" +
                             "</div>" +
@@ -177,7 +170,7 @@
                                 "<tr>" +
                                 "<td colspan='3' >" +
                                 "<div class='col-md-12 row'>" +
-                                "<label class='col-md-1'>" + data[i]['Empresa_id'] + " </label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-info ml-2' onclick='editarFechasPeriodos(" + data[i]["Empresa_id"] +");'>Editar <i class='fas fa-edit'></i></div></div>" +
+                                "<label class='col-md-1'>" + data[i]['Empresa_id'] + " </label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
                                 "<div id='collapse-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
                                 "</div>" +
                                 "</div>" +
@@ -312,6 +305,7 @@
                     "<th>Fecha Proceso</th>" +
                     "<th>Fecha Pago</th>" +
                     "<th>Días Efectivos</th>" +
+                    "<th>Acciones</th>" +
                     "</tr>" +
                     "</thead>" +
                     "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
@@ -325,6 +319,7 @@
                             "<td class=''>" + data[j]["Fecha_Proceso"] + "</td>" +
                             "<td class=''>" + data[j]["Fecha_Pago"] + "</td>" +
                             "<td class=''>" + data[j]["Dias_Efectivos"] + "</td>" +
+                            "<td class=''></td>" +
                             "</tr>";
                     } else {
                         document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
@@ -335,6 +330,7 @@
                             "<td class=''>" + data[j]["Fecha_Proceso"] + "</td>" +
                             "<td class=''>" + data[j]["Fecha_Pago"] + "</td>" +
                             "<td class=''>" + data[j]["Dias_Efectivos"] + "</td>" +
+                            "<td class=''><div class='btn badge badge-info' onclick='MostrarEditarPeriodo("+data[j]["Empresa_id"]+",\""+data[j]["id"]+"\");'>Editar <i class='fas fa-edit'></i></div></td>" +
                             "</tr>";
                     }
 
@@ -513,13 +509,16 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
+                
                 $("#lblEdicion").html("Politicas Vacaciones " + data[0]["NombreEmpresa"]);
                 $("#Empresa_id_editar").val(data[0]["Empresa_id"]);
+                $("#infoEditar").addClass("invisible");
+                $("#Effdt_editar").removeClass("invisible");
+                $("#selectp  option[value='0']").attr("selected", true);
                 $("#Effdt_editar").val(Effdt);
-                $("#bodybotonagregar").html("<div class='btn btn-info btn-sm col-md-6 font-label' onclick='addRegistroFechasPeriodos();'>Agregar Registro</div>");
+                $("#bodybotonagregar").html("<div class='btn btn-info btn-sm col-md-12 font-label' onclick='addRegistroFechasPeriodos();'>Agregar Registro</div>");
                 $("#bodyEditarModulo").html(
-                    "<table class='table table-sm table-striped text-center'>" +
+                    "<table class='table table-sm font-labels table-striped text-center'>" +
                     "<thead>" +
                     "<tr>" +
                     "<th scope='col'>Años</th>" +
@@ -549,7 +548,7 @@
 
                 }
 
-                $("#v-pills-editar-tab").click();
+                $("#editar-tab").click();
             }
         });
 
@@ -566,10 +565,13 @@
                 console.log(data);
                 $("#lblEdicion").html("Politicas Vacaciones " + data[0]["NombreEmpresa"]);
                 $("#Empresa_id_editar").val(data[0]["Empresa_id"]);
+                $("#infoEditar").addClass("invisible");
+                $("#Effdt_editar").removeClass("invisible");
+                $("#selectp  option[value='1']").attr("selected", true);
                 $("#Effdt_editar").val(Effdt);
-                $("#bodybotonagregar").html("<div class='btn btn-info btn-sm col-md-6 font-label' onclick='addNewPolitica(" + Empresa_id + ",\"" + Effdt + "\");'>Agregar Registro</div>");
+                $("#bodybotonagregar").html("<div class='btn btn-info btn-sm col-md-12 font-label' onclick='addNewPolitica(" + Empresa_id + ",\"" + Effdt + "\");'>Agregar Registro</div>");
                 $("#bodyEditarModulo").html(
-                    "<table class='table table-sm table-striped text-center'>" +
+                    "<table class='table table-sm table-striped font-labels text-center'>" +
                     "<thead>" +
                     "<tr>" +
                     "<th scope='col'>Años</th>" +
@@ -599,7 +601,7 @@
 
                 }
 
-                $("#v-pills-editar-tab").click();
+                $("#editar-tab").click();
             }
         });
 
@@ -689,7 +691,7 @@
             });
         }
     });
-    //
+    // Guardar nueva politica
     $("#btnsavenewpolitica").on("click", function () {
         var form = document.getElementById("frmnewPolitica");
         if (form.checkValidity() === false) {
@@ -733,7 +735,12 @@
                             text: data[1],
                             timer: 1500
                         });
-                        editarFechasPeriodos(inEmpresa_id.value);
+                        if ($("#selectp").val() == 0) {
+                            editarPoliticas($("#Empresa_id_editar").val(), $("#Effdt_editar").val());
+                        } else {
+                            editarPoliticasFuturas($("#Empresa_id_editar").val(), $("#Effdt_editar").val());
+                        }
+                        
                         $("#modalNewPolitica").modal("hide");
                         form.reset();
                     }
@@ -842,13 +849,197 @@
 
     }
 
-    //
-    $('#v-pills-editar-tab').on('hide.bs.tab', function () {
-        $("#lblEdicion").html("");
-        $("#Empresa_id_editar").val("");
-        $("#Effdt_editar").val("");
-        $("#bodybotonagregar").html("");
-        $("#bodyEditarModulo").html("");
-    })
+    //LLENA GRUPOS EMPRESAS HEADER
+    LoadAcordeonGrupos = () => {
+        $.ajax({
+            url: "../Catalogos/LoadGruposEmpresas",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var acordeon = document.getElementById("accordionGruposEmpresas");
+                acordeon.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    acordeon.innerHTML += ""
+                        + "<div class='card'>"
+                        + "<div class='card-header' id='heading" + data[i][0] + "'>"
+                        + "<h2 class='mb-0'>"
+                        + "<button class='btn btn-link btn-block d-flex justify-content-between aling-items-center' onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] + "\",\"ul" + data[i][0] + "\",\"collapse" + data[i][0] + "\")' type='button'>"
+                        + "" + data[i][1] + ""
+                        + "</button>"
+                        + "</h2>"
+                        + "</div>"
+                        + "<div id='collapse" + data[i][0] + "' class='collapse' aria-labelledby='heading" + data[i][0] + "' data-parent='#accordionGruposEmpresas'>"
+                        + "<ul id='ul" + data[i][0] + "' class='list-group list-group-flush'>"
+                        + "</ul>"
+                        + "</div>"
+                        + "</div >";
+                }
+            }
+        });
+    }
+    //LLENA GRUPOS EMPRESAS LINE
+    MostrarEmpresasEnGrupo = (Grupo_id, ul, collapse) => {
+        $.ajax({
+            url: "../Catalogos/LoadEmpresasGrupo",
+            type: "POST",
+            data: JSON.stringify({ Grupo_id: Grupo_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var lista = document.getElementById(ul)
+                lista.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    lista.innerHTML += "<li class='list-group-item list-group-item-secondary d-flex justify-content-between aling-items-center'>" + data[i][0] + " - " + data[i][1] + "<span class='btn badge badge-danger' title='Quitar empresa'><i class='fas fa-minus'></i></span></li>";
+                }
+                $("#" + collapse).collapse("toggle");
+            }
+        });
+    }
+    //LLENA SELECT EMPRESAS
+    LoadSelectEmpresas = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var select = document.getElementById("inEmpresa");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    select.innerHTML += "<option value='" + data[i]["IdEmpresa"] + "'>" + data[i]["IdEmpresa"] + "&nbsp;&nbsp;" + data[i]["NombreEmpresa"] + "</option>";
+                }
+            }
+        });
+    }
+    //LLENA SELECT GRUPOS
+    LoadSelectGrupos = () => {
+            $.ajax({
+                url: "../Catalogos/LoadGruposEmpresas",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    var select = document.getElementById("inGrupos");
+                    select.innerHTML = "";
+                    for (var i = 0; i < data.length; i++) {
+                        select.innerHTML += "<option value='" + data[i][0] + "'>" + data[i][1] + "</option>";
+                    }
+                }
+            });
+        }
+    //CAMBIO DE SELECT GRUPOS
+    $("#inGrupos").on("change", function () {
+        console.log($(this).val());
+        console.val('valor del grupo');
+    });
+    // CARGA MODAL DE EDITAR POLITICAS
+    cargaModalEditarPolitica = (Empresa_id, Effdt, Anio) => {
+        $.ajax({
+            url: "../Catalogos/LoadPolitica",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id, Effdt: Effdt, Anio: Anio }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                console.log($("#Empresa_id_editar").val());
+                $("#EditarPoliticaAnio").val(data[0]["Anos"]);
+                $("#EditarPoliticaDias").val(data[0]["Dias"]);
+                $("#EditarPoliticaDiasa").val(data[0]["Dias_Aguinaldo"]);
+                $("#EditarPoliticaPrimav").val(data[0]["Prima_Vacacional_Porcen"]);
+                $("#anioEditar").val(Anio);
+                $("#modalEditarPolitica").modal("show");
+            }
+        });
+    }
+    $("#btnSaveEditPolitica").on("click", function () {
+        
+        $.ajax({
+            url: "../Catalogos/UpdatePolitica",
+            type: "POST",
+            data: JSON.stringify({
+                Empresa_id: $("#Empresa_id_editar").val(),
+                Effdt: $("#Effdt_editar").val(),
+                Anio: $("#EditarPoliticaAnio").val(),
+                Dias: $("#EditarPoliticaDias").val(),
+                Diasa: $("#EditarPoliticaDiasa").val(),
+                Prima: $("#EditarPoliticaPrimav").val(),
+                Anion: $("#anioEditar").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                $("#modalEditarPolitica").modal("hide");
+                if (data[0] == '0') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Error!',
+                        text: data[1],
+                        timer: 3000
+                    });
+                } else {
+                    if ($("#selectp").val() == 0) {
+                        editarPoliticas($("#Empresa_id_editar").val(), $("#Effdt_editar").val());
+                    } else {
+                        editarPoliticasFuturas($("#Empresa_id_editar").val(), $("#Effdt_editar").val());
+                    }
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Correcto!',
+                        text: data[1],
+                        timer: 3000
+                    });
 
+                }
+                
+
+            }
+        });
+    });
+    // MOSTRAR EDITAR PERIODO
+    MostrarEditarPeriodo = (Empresa_id,Id) => {
+        $.ajax({
+            url: "../Catalogos/LoadPeriodo",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id, Id: Id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                $("#editano").val(data[0]["Anio"]);
+                $("#editperiodo").val(data[0]["Periodo"]);
+                $("#editfinicio").attr("value", data[0]["Fecha_Inicio"].substring(6) + "-" + data[0]["Fecha_Inicio"].substring(3, 5) + "-" + data[0]["Fecha_Inicio"].substring(0, 2));
+                $("#editffinal").attr("value", data[0]["Fecha_Final"].substring(6) + "-" + data[0]["Fecha_Final"].substring(3, 5) + "-" + data[0]["Fecha_Final"].substring(0, 2));
+                $("#editfproceso").attr("value", data[0]["Fecha_Proceso"].substring(6) + "-" + data[0]["Fecha_Proceso"].substring(3, 5) + "-" + data[0]["Fecha_Proceso"].substring(0, 2));
+                $("#editfpago").attr("value", data[0]["Fecha_Pago"].substring(6) + "-" + data[0]["Fecha_Pago"].substring(3, 5) + "-" + data[0]["Fecha_Pago"].substring(0, 2));
+                $("#editdiaspago").val(data[0]["Dias_Efectivos"]);
+                $("#modalEditarFechaPeriodo").modal("show");
+                $("#editar_empresa_id").val(Empresa_id);
+                $("#editar_id").val(Id);
+            }
+        });
+    }
+
+    $("#btnUpdatefechaperiodo").on("click", function () {
+        
+        $.ajax({
+            url: "../Catalogos/UpdatePeriodo",
+            type: "POST",
+            data: JSON.stringify({
+                Empresa_id: $("#editar_empresa_id").val(),
+                editid: $("#editar_id").val(),
+                editano: $("#editano").val(),
+                editperiodo: $("#editperiodo").val(),
+                editfinicio: $("#editfinicio").val(),
+                editffinal: $("#editffinal").val(),
+                editfproceso: $("#editfproceso").val(),
+                editfpago: $("#editfpago").val(),
+                editdiaspago: $("#editdiaspago").val()}),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+            }
+        });
+
+    });
+    
 });

@@ -110,6 +110,14 @@
 
                             </div>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="inGrupo_empresa">Grupo Empresas</label>
+                            <select id="inGrupo_empresa" class="custom-select custom-select-sm">
+                            </select>
+                            <div class="valid-feedback">
+
+                            </div>
+                        </div>
                         <div class="form-group col-md-6 bg-info rounded">
 
                             <label class="col-md-12 text-white"><i class="fas fa-clone fa-sm"></i> Copia la configuración de la empresa:</label>
@@ -451,6 +459,19 @@
         this.value = this.value.replace(/[^0-9]/g, '');
     });
     $.ajax({
+                url: "../Catalogos/LoadGruposEmpresas",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    var select = document.getElementById("inGrupo_empresa");
+                    select.innerHTML = "";
+                    for (var i = 0; i < data.length; i++) {
+                        select.innerHTML += "<option value='" + data[i][0] + "'>" + data[i][1] + "</option>";
+                    }
+                }
+            });
+    $.ajax({
         url: "../Empresas/LoadDatosEmpresa",
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -549,7 +570,7 @@
             var bancoin = document.getElementById("inRBanco_interbancarios");
             var regimss = document.getElementById("inRegistro_imss");
             var clonar = document.getElementById("inclonar");
-
+            var grupoe = document.getElementById("inGrupo_empresa");
             //Variables para primer fecha periodo
             var finicio = document.getElementById("finicio");
             var ffinal = document.getElementById("ffinal");
@@ -585,7 +606,7 @@
                 , inbancoin: bancoin.value
                 , inregimss: regimss.value
                 , inclonar: clonar.value
-
+                , ingrupoe: grupoe.value
             };
             console.log(datos);
             $.ajax({

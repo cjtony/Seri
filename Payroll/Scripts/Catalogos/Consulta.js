@@ -458,4 +458,93 @@
             $("#inSearchPuesto").focus();
         }
     });
+    // BOTON QUE EXPORTA LOS PUESTOS A UN ARCHIVO CSV 
+    $("#btnExportToCSV").on("click", function () {
+
+        const headers = {
+            id: 'Id Puesto',
+            empresa_id: 'Empresa',
+            codigo: 'Codigo Puesto',
+            nombre: 'Nombre del puesto',
+            descripcion: 'Descripcion',
+            profecion: 'Profesion',
+            clasificacion: 'Clasificacion',
+            colectivo: 'Colectivo',
+            nivel_jerarquico: 'Nivel Jerarquico',
+            performance: 'Performance Manager',
+            tabulador: 'Tabulador',
+            fecha_alta: 'Fecha Alta'
+        };
+        //
+        $.ajax({
+            url: "../Catalogos/LoadAllPuestos",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                
+            }
+        });
+
+        //
+        const data = [
+            {
+                id: '1', empresa_id: '2', codigo: 'Emp23', nombre: 'Puesto1',
+                descripcion: 'Descripcion', profecion: 'Profesion', clasificacion: 'Clasificacion', colectivo: 'Colectivo',
+                nivel_jerarquico: 'Nivel Jerarquico', performance: 'Performance Manager', tabulador: 'Tabulador', fecha_alta: 'Fecha Alta'
+            }
+
+        ];
+
+        exportCSVFile(headers, data, 'Lista de Puestos');
+
+    });
+
+    //LLENA GRUPOS EMPRESAS HEADER
+    LoadAcordeonGrupos = () => {
+        $.ajax({
+            url: "../Catalogos/LoadGruposEmpresas",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var acordeon = document.getElementById("accordionGruposEmpresas");
+                acordeon.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    acordeon.innerHTML += ""
+                        + "<div class='card'>"
+                        + "<div class='card-header' id='heading" + data[i][0] +"'>"
+                        + "<h2 class='mb-0'>"
+                        + "<button class='btn btn-link btn-block d-flex justify-content-between aling-items-center' onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] +"\",\"ul"+data[i][0]+"\",\"collapse"+data[i][0]+"\")' type='button'>"
+                        + "" + data[i][1] + ""
+                        + "</button>"
+                        + "</h2>"
+                        + "</div>"
+                        + "<div id='collapse" + data[i][0] + "' class='collapse' aria-labelledby='heading" + data[i][0] +"' data-parent='#accordionGruposEmpresas'>"
+                        + "<ul id='ul"+data[i][0]+"' class='list-group list-group-flush'>"
+                        + "</ul>"
+                        + "</div>"
+                        + "</div >";
+                }
+            }
+        });
+    }
+    //LLENA GRUPOS EMPRESAS LINE
+    MostrarEmpresasEnGrupo = (Grupo_id,ul,collapse) => {
+        $.ajax({
+            url: "../Catalogos/LoadEmpresasGrupo",
+            type: "POST",
+            data: JSON.stringify({ Grupo_id: Grupo_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var lista = document.getElementById(ul)
+                lista.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    lista.innerHTML += "<li class='list-group-item list-group-item-secondary'>" + data[i][0] + " - " + data[i][1] + "</li>";
+                }
+                $("#" + collapse).collapse("toggle");
+            }
+        });
+    }
 });

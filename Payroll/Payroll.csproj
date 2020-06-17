@@ -356,6 +356,7 @@
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
+    <Content Include="Scripts\Catalogos\toCSV.js" />
     <Content Include="Scripts\dataTables.autoFill.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\dataTables.jqueryui.js" />
@@ -971,6 +972,8 @@
     <Content Include="Views\Catalogos\CRegionales.cshtml" />
     <Content Include="Views\Catalogos\Sucursales.cshtml" />
     <Content Include="Views\Catalogos\CSucursales.cshtml" />
+    <Content Include="Views\Catalogos\GruposEmpresas.cshtml" />
+    <Content Include="Views\Catalogos\CGruposEmpresas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
