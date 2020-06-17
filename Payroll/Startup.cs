@@ -172,7 +172,7 @@ namespace Payroll
                  List<HangfireJobs> id = new List<HangfireJobs>();
                  FuncionesNomina Dao = new FuncionesNomina();
                  id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
-                int Idjobs = Convert.ToInt16(id[0].iId.ToString());
+                int Idjobs = Convert.ToInt32(id[0].iId.ToString());
                 string StatusJobs = "En Cola";
                 string Nombrejobs = "CNomina1";
                 string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + "," + FechaProceso;

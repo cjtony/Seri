@@ -7,8 +7,6 @@
     const iAnode = document.getElementById('iAnoDe');
     const cande = document.getElementById('DCancelado');
   
-
-
     
              // declaracion de botones 
 
@@ -60,19 +58,13 @@
     // funcion de control de botondes de direccionamiento para percepciones y deducione
 
     FdirPer = () => {
-
         $("#nav-Percepciones-tab").click();
-
     };
-
     btnContPercepciones.addEventListener('click', FdirPer);
 
     Fdirde = () => {
-
         $("#nav-Deduccion-tab").click();
-
     };
-
     btnContDeducciones.addEventListener('click', Fdirde);
 
     //funcion que  guarda los datos en la BD
@@ -125,8 +117,7 @@
                 success: (data) => {
                     console.log(data);
                     for (i = 0; i < data.length; i++) {
-                        IdMaxDefNomde = data[i].iIdDefinicionhd;
-                                      
+                        IdMaxDefNomde = data[i].iIdDefinicionhd;                                   
                     }
                 }
             });
@@ -224,15 +215,36 @@
 
     });
 
-    // funcion que limpia campos de definicion
+    /////// funcion que limpia campos de definicion
 
     FLimpiaCampos = () => {
 
-            if (btnlimpDefinicion.value == "1") {
-                Nombrede.value = '';
-                Descripcionde.value = '';
-                iAnode.value = '';
-                cande.value = '';
+        console.log('valor de boton:'+  btnlimpDefinicion.value);
+        if (btnlimpDefinicion.value == "1") {
+            console.log('limpia campos');
+                //Nombrede.value = '';
+                //Descripcionde.value = '';
+                //iAnode.value = '';
+                //cande.value = '';
+            $("#nav-Percepciones-tab").removeClass("active");
+            $("#nav-Deduccion-tab").removeClass("active");
+            btnGuardarDefinicion.style.visibility = 'hidden';
+            btnGuardarDefinicion.value = "2";
+            $.ajax({
+                url: "../Nomina/IdmaxDefiniconNom",
+                type: "POST",
+                data: JSON.stringify(),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    for (i = 0; i < data.length; i++) {
+                        IdMaxDefNomde = data[i].iIdDefinicionhd;
+                    }
+                }
+            });
+
+
+
             }
 
             if (btnlimpDefinicion.value == "2") {
@@ -415,6 +427,9 @@
         RecargaLisAcumulado();
    
     });
+    $('#Tpoperiodo1').change(function () {
+
+    });
 
       //// Guarda persepciones 
     FSavePres = () => {
@@ -525,6 +540,8 @@
     };
     
     btnGuardarPercepcion.addEventListener('click', FactivaGuaryLlegrippre);
+
+
 
      // Funcion carga datos en tabla
 
@@ -683,54 +700,6 @@
 
       // funcion de Guadar Deducciones
 
-    // Funcion llenado el drop list de periodo de dedudcion
-
-    FrecargaPeridoDeduc = () => {
-
-        const dataSend = { iIdFinicion: IdMaxDefNomde };
-        $.ajax({
-            url: "../Nomina/DefCancelado",
-            type: "POST",
-            data: dataSend,
-            success: (data) => {
-
-                for (i = 0; i < data.length; i++) {
-                    AnioDeduc = data[i].iAno;
-
-                }
-
-                var OpEmpresa = RegEmpresade.value;
-                const OpIdTipoperiodo = RegTipoperiodoDe.value;
-                console.log(AnioDeduc);
-                const anio = AnioDeduc;
-                const dataSend = { iIdEmpresesas: OpEmpresa, ianio: anio, iTipoPeriodo: OpIdTipoperiodo };
-                $("#RegPeridoDe").empty();
-                $('#RegPeridoDe').append('<option value="0" selected="selected">Selecciona</option>');
-                console.log(dataSend);
-                $.ajax({
-                    url: "../Nomina/ListPeriodo",
-                    type: "POST",
-                    data: dataSend,
-                    success: (data) => {
-
-                        console.log(data);
-                        intpe = data.length - 1;
-                        $('#RegPeridoDe').append(`<option value=" ${data[intpe].iId} " selected="selected">${data[intpe].iPeriodo}</option>`);
-
-                        //for (i = 0; i < data.length; i++) {
-                        //    document.getElementById("RegPeridoDe").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo}</option>`;
-
-                        //}
-                    },
-                });
-            }
-        });
-
-    };
-
-    $('#RegTipoperiodoDe').change(function () {
-        FrecargaPeridoDeduc();
-    });
 
     // Funcion Guarda refistros en la base de datos de la pantalla Deducciones
     FSavededu = () => {

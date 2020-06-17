@@ -564,10 +564,10 @@ namespace Payroll.Controllers
                 /////////////// tipo de pago 
                 ///
 
-                Paragraph Espacio3 = new Paragraph(20, " ");
-                Paragraph table6 = new Paragraph();
-                table6.IndentationLeft = 50;
-                PdfPTable table7 = new PdfPTable(1);
+                 Paragraph Espacio3 = new Paragraph(20, " ");
+                 Paragraph table6 = new Paragraph();
+                 table6.IndentationLeft = 50;
+                 PdfPTable table7 = new PdfPTable(1);
                  table7.HorizontalAlignment = 0;
                  table7.PaddingTop = 10;
                  table7.TotalWidth = 500;
@@ -611,13 +611,9 @@ namespace Payroll.Controllers
                   
                     sbanco = sbanco + " " + ListEmisor[0].sDescripcion;
                 }
-    
-                
+                 
                 Paragraph Banco = new Paragraph(-1, sbanco, TexNegCuerpo);
                 Banco.IndentationLeft = 75;
-
-
-
 
                 Paragraph TPeriodo = new Paragraph(-22,"Periodo:", TTexNegCuerpo);
                 TPeriodo.IndentationLeft = 200;

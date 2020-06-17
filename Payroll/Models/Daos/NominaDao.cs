@@ -1882,6 +1882,87 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
+        public List<TPProcesos> sp_StatusProceso_Retrieve_TPProceso(string CtrlsParametro)
+        {
+            List<TPProcesos> list = new List<TPProcesos>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_StatusProceso_Retrieve_TPProceso", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrlsParametro", CtrlsParametro));
+            
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TPProcesos ls = new TPProcesos();
+                        {
+                            ls.sEstatusJobs = data["EstatusJobs"].ToString();
+                            ls.sMensaje = "success";
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    TPProcesos ls = new TPProcesos();
+                    ls.sMensaje = "No hay datos";
+                    list.Add(ls);
+
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+
+        }
+
+        public List<int> sp_EmpresaDef_Retrieve_TPDefinicionNomina(int CltrliIdDefinicionHd)
+        {
+            List<int> list = new List<int>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_EmpresaDef_Retrieve_TPDefinicionNomina", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CltrliIdDefinicionHd", CltrliIdDefinicionHd));
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        list.Add(int.Parse(data["EstatusJobs"].ToString()));
+                    }
+                }
+                else
+                {
+                    
+                    list = null;
+
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+
+        }
     }
 }
 
