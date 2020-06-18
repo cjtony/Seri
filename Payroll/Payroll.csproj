@@ -849,6 +849,7 @@
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.ui-sunny.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.web.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.windowsphone.css" />
+    <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.base.css" />
     <Content Include="Scripts\main\Ausentismos.js" />
     <Content Include="Scripts\main\BajasEmpleados.js" />
     <Content Include="Scripts\main\branchoffices.js" />
