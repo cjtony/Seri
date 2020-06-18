@@ -83,7 +83,6 @@
 }
 
 .jqx-clear {
-   
     left: 0px;
     top: 0px;
     -webkit-appearance: none !important;
@@ -1144,7 +1143,6 @@ button.jqx-button, input[type=button].jqx-button, input[type=submit].jqx-button 
         padding-top: 0px;
         padding-bottom: 0px;
         -webkit-box-shadow: none !important;
-       
         box-shadow: none !important;
     }
 
@@ -2299,7 +2297,6 @@ of the horizontal scrollbar.*/
     border: none;
     width: 100%;
     height: 100%;
-
     position: absolute;
 }
 /*jqxComboBox Style*/
@@ -4060,7 +4057,6 @@ input[type=text].jqx-input, input[type=password].jqx-input {
     outline: none;
     outline-width: 0px;
     -webkit-user-modify: inherit;
-    
     -moz-background-clip: padding;
     background-clip: padding-box;
     -webkit-background-clip: padding-box;
@@ -7081,7 +7077,6 @@ ol li .jqx-listmenu-item-label:before {
 }
 
 .jqx-pivotgrid-content-wrapper {
-   
     overflow: hidden;
     border: solid 1px grey;
 }
@@ -7311,14 +7306,14 @@ jqx-knob {
     padding-left: 100px;
 }
 
-.jqx-palette > ul,
-.jqx-shades > ul,
-.jqx-color-labels > ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+    .jqx-palette > ul,
+    .jqx-shades > ul,
+    .jqx-color-labels > ul {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 
 .jqx-color-labels > ul {
     flex-direction: column;
@@ -7331,9 +7326,9 @@ jqx-knob {
     cursor: pointer;
 }
 
-.jqx-color-cell:hover {
-    border-radius: 8px;
-}
+    .jqx-color-cell:hover {
+        border-radius: 8px;
+    }
 
 .jqx-shade-cell {
     width: 38px;
@@ -7354,87 +7349,87 @@ jqx-knob {
 
 .jqx-heatmap-container-wrapper {
     display: flex;
- }
+}
 
- .jqx-heatmap-container-wrapper canvas {
-    display: block;
- }
+    .jqx-heatmap-container-wrapper canvas {
+        display: block;
+    }
 
- .jqx-heatmap-title {
+.jqx-heatmap-title {
     font-weight: bold;
     margin-bottom: 25px;
     text-align: center;
- }
+}
 
- .jqx-heatmap-grid {
+.jqx-heatmap-grid {
     display: flex;
     cursor: default;
- }
+}
 
- .jqx-x-axis-container {
+.jqx-x-axis-container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
- }
+}
 
- .jqx-y-axis-container {
+.jqx-y-axis-container {
     display: flex;
     flex-direction: row-reverse;
     flex-grow: 1;
- }
+}
 
- .jqx-column {
+.jqx-column {
     display: flex;
     flex-direction: column-reverse;
- }
+}
 
- .jqx-x-axis {
+.jqx-x-axis {
     display: flex;
- }
+}
 
- .jqx-x-axis-label {
+.jqx-x-axis-label {
     padding-top: 10px;
     font-size: 14px;
     color: gray;
     text-align: center;
- }
+}
 
- .jqx-x-axis-label.jqx-top {
-    padding: 0 0 10px 0;
- }
+    .jqx-x-axis-label.jqx-top {
+        padding: 0 0 10px 0;
+    }
 
- .jqx-y-axis {
+.jqx-y-axis {
     display: flex;
     flex-direction: column-reverse;
- }
+}
 
- .jqx-y-axis.jqx-margin-top-auto {
-    margin-top: auto;
- }
+    .jqx-y-axis.jqx-margin-top-auto {
+        margin-top: auto;
+    }
 
- .jqx-y-axis-label {
+.jqx-y-axis-label {
     display: flex;
     align-items: center;
     color: gray;
     padding-right: 10px;
- }
+}
 
- .jqx-y-axis-label.jqx-right {
-    padding: 0 0 0 10px;
- }
+    .jqx-y-axis-label.jqx-right {
+        padding: 0 0 0 10px;
+    }
 
- .jqx-heatmap-cell {
+.jqx-heatmap-cell {
     position: relative;
     padding: 20px 10px;
     margin: 1px;
     text-align: center;
- }
+}
 
- .jqx-heatmap-cell.jqx-empty-cell {
-    pointer-events: none;
- }
+    .jqx-heatmap-cell.jqx-empty-cell {
+        pointer-events: none;
+    }
 
- .jqx-heatmap-tooltip {
+.jqx-heatmap-tooltip {
     display: inline-block;
     position: absolute;
     background: #000;
@@ -7445,117 +7440,117 @@ jqx-knob {
     border-radius: 3px;
     transition: top 0.7s ease, left 0.7s ease;
     box-shadow: 0px 5px 3px -3px rgba(0, 0, 0, 0.75);
- }
+}
 
- .jqx-heatmap-tooltip::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: calc(50% - 5px);
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 10px 5px 0 5px;
-    border-color: #000 transparent transparent transparent;
- }
+    .jqx-heatmap-tooltip::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: calc(50% - 5px);
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 5px 0 5px;
+        border-color: #000 transparent transparent transparent;
+    }
 
- .jqx-legend-vertical {
+.jqx-legend-vertical {
     position: relative;
     margin-left: 10px;
- }
+}
 
- .jqx-legend-vertical.jqx-left {
-    margin: 0 10px 0 0;
- }
+    .jqx-legend-vertical.jqx-left {
+        margin: 0 10px 0 0;
+    }
 
- .jqx-legend-vertical.jqx-margin-top-auto {
-    margin-top: auto;
- }
+    .jqx-legend-vertical.jqx-margin-top-auto {
+        margin-top: auto;
+    }
 
- .jqx-legend-horizontal {
+.jqx-legend-horizontal {
     position: relative;
     margin-left: auto;
     margin-bottom: 40px;
- }
+}
 
- .jqx-legend-horizontal.jqx-bottom {
-    margin-top: 10px;
-    margin-bottom: 30px;
- }
+    .jqx-legend-horizontal.jqx-bottom {
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
 
- .jqx-legend-horizontal.jqx-margin-right-auto {
-    margin-right: auto;
-    margin-left: 0;
- }
+    .jqx-legend-horizontal.jqx-margin-right-auto {
+        margin-right: auto;
+        margin-left: 0;
+    }
 
- .jqx-palette-vertical {
+.jqx-palette-vertical {
     width: 10px;
     height: 100%;
- }
+}
 
- .jqx-palette-horizontal {
+.jqx-palette-horizontal {
     width: 100%;
     height: 10px;
- }
+}
 
- .jqx-palette-horizontal.jqx-fixed {
-    display: flex;
- }
+    .jqx-palette-horizontal.jqx-fixed {
+        display: flex;
+    }
 
- .jqx-color-container,
- .jqx-color-container-tick {
+.jqx-color-container,
+.jqx-color-container-tick {
     cursor: pointer;
- }
+}
 
- .jqx-opacity-50 {
+.jqx-opacity-50 {
     opacity: 0.5;
- }
+}
 
- .jqx-selected-color {
+.jqx-selected-color {
     background: #d3d3d3 !important;
- }
+}
 
- .jqx-heatmap-hidden {
+.jqx-heatmap-hidden {
     visibility: hidden;
- }
+}
 
- .jqx-tick-vertical {
+.jqx-tick-vertical {
     position: absolute;
     left: 15px;
- }
+}
 
- .jqx-tick-vertical::before {
-    content: '';
-    width: 10px;
-    background: #fff;
-    height: 1px;
-    position: absolute;
-    top: 6px;
-    left: -15px;
- }
+    .jqx-tick-vertical::before {
+        content: '';
+        width: 10px;
+        background: #fff;
+        height: 1px;
+        position: absolute;
+        top: 6px;
+        left: -15px;
+    }
 
- .jqx-tick-vertical.jqx-no-line::before,
- .jqx-tick-horizontal.jqx-no-line::before {
-    content: none;
- }
+    .jqx-tick-vertical.jqx-no-line::before,
+    .jqx-tick-horizontal.jqx-no-line::before {
+        content: none;
+    }
 
- .jqx-tick-horizontal {
+.jqx-tick-horizontal {
     position: absolute;
     top: 20px;
- }
+}
 
- .jqx-tick-horizontal::before {
-    content: '';
-    width: 10px;
-    background: #fff;
-    width: 1px;
-    height: 10px;
-    position: absolute;
-    top: -20px;
-    left: 6px;
- }
+    .jqx-tick-horizontal::before {
+        content: '';
+        width: 10px;
+        background: #fff;
+        width: 1px;
+        height: 10px;
+        position: absolute;
+        top: -20px;
+        left: 6px;
+    }
 
- .jqx-arrow-vertical {
+.jqx-arrow-vertical {
     width: 0;
     height: 0;
     border-top: 6px solid transparent;
@@ -7564,9 +7559,9 @@ jqx-knob {
     position: absolute;
     left: -8px;
     display: none;
- }
+}
 
- .jqx-arrow-horizontal {
+.jqx-arrow-horizontal {
     width: 0;
     height: 0;
     border-left: 6px solid transparent;
@@ -7576,9 +7571,9 @@ jqx-knob {
     top: 11px;
     left: -6px;
     display: none;
- }
+}
 
- /*jqxTimePicker Style*/
+/*jqxTimePicker Style*/
 .jqx-time-picker {
     display: block;
     border: 1px solid #c5c5c5;
@@ -7590,123 +7585,154 @@ jqx-knob {
     min-width: 250px;
     box-sizing: border-box;
 }
-.jqx-time-picker * {
-    box-sizing: border-box;
-}
-.jqx-time-picker[view="landscape"] {
-    min-width: 400px;
-}
-.jqx-time-picker>.jqx-container {
-    width: 100%;
-    height: 100%;
-}
-.jqx-time-picker[view="landscape"]>.jqx-container, .jqx-time-picker .jqx-header, .jqx-time-picker .jqx-svg-container, .jqx-time-picker .jqx-hour-minute-container {
-    display: flex;
-}
-.jqx-time-picker .jqx-header {
-    width: 100%;
-    height: 20%;
-    justify-content: center;
-    align-items: center;
-}
-.jqx-time-picker[view="landscape"] .jqx-header {
-    flex-direction: column;
-    width: 33%;
-    height: 100%;
-}
-.jqx-time-picker .jqx-main-container {
-    width: 100%;
-    height: 80%;
-    padding: 2%;
-    background-color: var(--jqx-time-picker-background);
-}
-.jqx-time-picker[view="portrait"] .jqx-header.jqx-widget-header.jqx-unselectable {
-    border-top-left-radius: inherit;
-    border-top-right-radius: inherit;
-}
-.jqx-time-picker[view="landscape"] .jqx-main-container {
-    width: 67%;
-    height: 100%;
-}
-.jqx-time-picker .jqx-svg-container {
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-.jqx-time-picker[footer] .jqx-svg-container {
-    height: calc(100% - 30px);
-}
-.jqx-time-picker .jqx-footer {
-    display: none;
-}
-.jqx-time-picker[footer] .jqx-footer {
-    display: block;
-    width: 100%;
-    height: 30px;
-}
-.jqx-time-picker .jqx-hour-minute-container {
-    font-size: 50px;
-}
-.jqx-time-picker .jqx-am-pm-container {
-    margin-left: 10px;
-}
-.jqx-time-picker[view="landscape"] .jqx-am-pm-container {
-    margin-left: 0;
-}
-.jqx-time-picker .jqx-hour-container, .jqx-time-picker .jqx-minute-container, .jqx-time-picker .jqx-am-container, .jqx-time-picker .jqx-pm-container {
-    opacity: 0.5;
-    cursor: pointer;
-}
-.jqx-time-picker[readonly] .jqx-hour-container, .jqx-time-picker[disabled] .jqx-hour-container, .jqx-time-picker[readonly] .jqx-minute-container, .jqx-time-picker[disabled] .jqx-minute-container, .jqx-time-picker[readonly] .jqx-am-container, .jqx-time-picker[disabled] .jqx-am-container, .jqx-time-picker[readonly] .jqx-pm-container, .jqx-time-picker[disabled] .jqx-pm-container {
-    cursor: default;
-}
-.jqx-time-picker .jqx-selected {
-    opacity: 1;
-}
-.jqx-time-picker .jqx-hour-minute-container div:nth-child(2) {
-    opacity: 0.5;
-}
-.jqx-time-picker .jqx-svg-picker {
-    border-radius: 50%;
-    position: relative;
-    box-sizing: content-box;
-}
-.jqx-time-picker .jqx-svg-picker.animate {
-    animation: jqx-time-picker-animation 0.5s linear;
-}
-.jqx-time-picker[disabled] {
-    opacity: 0.55;
-    cursor: default;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-.jqx-time-picker .jqx-label.jqx-selected {
-    fill: white;
-}
-.jqx-time-picker .jqx-header:focus {
-    outline: 1px solid skyblue;
-}
-.jqx-time-picker .jqx-svg-picker:focus {
-    border: 1px solid skyblue;
-    outline: none;
-}
+
+    .jqx-time-picker * {
+        box-sizing: border-box;
+    }
+
+    .jqx-time-picker[view="landscape"] {
+        min-width: 400px;
+    }
+
+    .jqx-time-picker > .jqx-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .jqx-time-picker[view="landscape"] > .jqx-container, .jqx-time-picker .jqx-header, .jqx-time-picker .jqx-svg-container, .jqx-time-picker .jqx-hour-minute-container {
+        display: flex;
+    }
+
+    .jqx-time-picker .jqx-header {
+        width: 100%;
+        height: 20%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .jqx-time-picker[view="landscape"] .jqx-header {
+        flex-direction: column;
+        width: 33%;
+        height: 100%;
+    }
+
+    .jqx-time-picker .jqx-main-container {
+        width: 100%;
+        height: 80%;
+        padding: 2%;
+        background-color: var(--jqx-time-picker-background);
+    }
+
+    .jqx-time-picker[view="portrait"] .jqx-header.jqx-widget-header.jqx-unselectable {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+    }
+
+    .jqx-time-picker[view="landscape"] .jqx-main-container {
+        width: 67%;
+        height: 100%;
+    }
+
+    .jqx-time-picker .jqx-svg-container {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .jqx-time-picker[footer] .jqx-svg-container {
+        height: calc(100% - 30px);
+    }
+
+    .jqx-time-picker .jqx-footer {
+        display: none;
+    }
+
+    .jqx-time-picker[footer] .jqx-footer {
+        display: block;
+        width: 100%;
+        height: 30px;
+    }
+
+    .jqx-time-picker .jqx-hour-minute-container {
+        font-size: 50px;
+    }
+
+    .jqx-time-picker .jqx-am-pm-container {
+        margin-left: 10px;
+    }
+
+    .jqx-time-picker[view="landscape"] .jqx-am-pm-container {
+        margin-left: 0;
+    }
+
+    .jqx-time-picker .jqx-hour-container, .jqx-time-picker .jqx-minute-container, .jqx-time-picker .jqx-am-container, .jqx-time-picker .jqx-pm-container {
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+    .jqx-time-picker[readonly] .jqx-hour-container, .jqx-time-picker[disabled] .jqx-hour-container, .jqx-time-picker[readonly] .jqx-minute-container, .jqx-time-picker[disabled] .jqx-minute-container, .jqx-time-picker[readonly] .jqx-am-container, .jqx-time-picker[disabled] .jqx-am-container, .jqx-time-picker[readonly] .jqx-pm-container, .jqx-time-picker[disabled] .jqx-pm-container {
+        cursor: default;
+    }
+
+    .jqx-time-picker .jqx-selected {
+        opacity: 1;
+    }
+
+    .jqx-time-picker .jqx-hour-minute-container div:nth-child(2) {
+        opacity: 0.5;
+    }
+
+    .jqx-time-picker .jqx-svg-picker {
+        border-radius: 50%;
+        position: relative;
+        box-sizing: content-box;
+    }
+
+        .jqx-time-picker .jqx-svg-picker.animate {
+            animation: jqx-time-picker-animation 0.5s linear;
+        }
+
+    .jqx-time-picker[disabled] {
+        opacity: 0.55;
+        cursor: default;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .jqx-time-picker .jqx-label.jqx-selected {
+        fill: white;
+    }
+
+    .jqx-time-picker .jqx-header:focus {
+        outline: 1px solid skyblue;
+    }
+
+    .jqx-time-picker .jqx-svg-picker:focus {
+        border: 1px solid skyblue;
+        outline: none;
+    }
+
 @keyframes jqx-time-picker-animation {
     0% {
         opacity: 1;
     }
+
     25% {
         opacity: 0.5;
     }
+
     50% {
         opacity: 0;
     }
+
     75% {
         opacity: 0.5;
     }
+
     100% {
         opacity: 1;
     }

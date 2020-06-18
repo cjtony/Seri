@@ -13,6 +13,7 @@
     const navEjecuciontab = document.getElementById('nav-Ejecucion-tab');
     const navVisCalculotab = document.getElementById('nav-VisCalculo-tab');
     const navNomCetab = document.getElementById('nav-NomCe-tab');
+    const navVisNominatab = document.getElementById('nav-VisNomina-tab');
     const btnFloEjecutar = document.getElementById('btnFloEjecutar');
     const TbAño = document.getElementById('TbAño');
     const TxbTipoPeriodo = document.getElementById('TxbTipoPeriodo');
@@ -37,8 +38,9 @@
     const LaTotalNomCe = document.getElementById('LaTotalNomCe');
     const LaEmpresaNoCe = document.getElementById('LaEmpresaNoCe');
     const EmpresaNoCe = document.getElementById('EmpresaNoCe');
-    const btnVerNomina = document.getElementById('btnVerNomina');
+    //const btnVerNomina = document.getElementById('btnVerNomina');
     const EmpresaNom = document.getElementById('EmpresaNom');
+    const BntBusRecibo = document.getElementById('btnFloBuscar');
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
@@ -124,6 +126,8 @@
     // seleccion de linea de grip y la guarda en el droplist y carga los datos de tipo de perio y llena el drop de periodo
       
     $("#TpDefinicion").on('rowselect', function (event) {
+        seconds=60
+        $("#timerNotification").jqxNotification("closeLast");
        
         var args = event.args;
         var row = $("#TpDefinicion").jqxGrid('getrowdata', args.rowindex);
@@ -196,9 +200,8 @@
 
             },
         });
-
-        $("#timerNotification").jqxNotification("closeLast");
-        $("#timeOutNotification").jqxNotification("closeLast");
+    
+        
     });
 
     $("#TpDefinicion").jqxGrid('selectrow', 0);
@@ -370,6 +373,8 @@
                RosTabCountCalculo = data.length;
                var dato = data[0].sMensaje;
                 if (dato == "No hay datos") {
+                   
+            
                     $.ajax({
                         url: "../Nomina/Statusproc",
                         type: "POST",
@@ -381,23 +386,26 @@
                                 $("#nav-VisCalculo-tab").addClass("disabled"); 
                                 $("#nav-VisNomina-tab").addClass("disabled");
                             }
-                            if (dato == "En Cola") {
-                                $("#timerNotification").jqxNotification("open");
-                                $("#nav-VisCalculo-tab").addClass("disabled");
-                                $("#nav-VisNomina-tab").addClass("disabled");
+                            if (dato == "success") {
+                                if (data[0].sEstatusJobs == "En Cola") {
+                                    $("#timerNotification").jqxNotification("open");
+                                    $("#nav-VisCalculo-tab").addClass("disabled");
+                                    $("#nav-VisNomina-tab").addClass("disabled");
+                                }
+                                if (data[0].sEstatusJobs == "Procesando") {
+                                    $("#timerNotification").jqxNotification("open");
+                                    $("#nav-VisCalculo-tab").addClass("disabled");
+                                    $("#nav-VisNomina-tab").addClass("disabled");
+                                }
                             }
-                            if (dato == "Procesando") {
-                                $("#timerNotification").jqxNotification("open");
-                                $("#nav-VisCalculo-tab").addClass("disabled");
-                                $("#nav-VisNomina-tab").addClass("disabled");
-                            }
+                         
                         },
                     });                 
      
                 }
 
                 if (dato == "success") {
-                    console.log('hay calculos');
+  
                      for (var i=0; i < data.length; i++) {
                         if (data[i].iIdRenglon == 990) {
                            per = data[i].dTotal;
@@ -412,7 +420,6 @@
                                 totalCal.value = "$ " + new Intl.NumberFormat("en-IN").format(total);
                             }
                     }
-
                         $.ajax({
                         url: "../Nomina/Statusproc",
                         type: "POST",
@@ -422,7 +429,14 @@
                             if (dato == "success") {
                                 if (data[0].sEstatusJobs == "Terminado") {                         
                                     $("#messageNotification").jqxNotification("open");
-                                   
+                                }
+
+                                if (data[0].sEstatusJobs == "En Cola") {
+                                    $("#timerNotification").jqxNotification("open");
+                                 
+                                }
+                                if (data[0].sEstatusJobs == "Procesando") {
+                                    $("#timerNotification").jqxNotification("open");
                                    
                                 }
 
@@ -431,8 +445,6 @@
                          
                         },
                     });   
-
-
                         var source =
                         {  
                             localdata: data,
@@ -627,7 +639,8 @@
                     }
 
             },
-        });    
+        });   
+       
     };
 
     /// desaparece botones de ejecucion dependiendo el tab que se eligan 
@@ -636,27 +649,31 @@
         //btnFloGuardar.style.visibility = 'visible';
         ////btnlimpDat.style.visibility = 'visible';
         btnFloEjecutar.style.visibility = 'visible';
-
+        btnFloBuscar.style.visibility = 'hidden';
 
     };
     Ftabopcion2 = () => {
 
         btnFloGuardar.style.visibility = 'hidden';
-        btnlimpDat.style.visibility = 'hidden';
         btnFloEjecutar.style.visibility = 'hidden';
-
+        btnFloBuscar.style.visibility = 'hidden';
     };
     Ftabopcion3 = () => {
 
         btnFloGuardar.style.visibility = 'hidden';
-        btnlimpDat.style.visibility = 'hidden';
         btnFloEjecutar.style.visibility = 'hidden';
-
+        btnFloBuscar.style.visibility = 'hidden';
     };
-
+    FTanopcion4 = () => {
+        console.log('desaparese boton');
+        btnFloGuardar.style.visibility = 'hidden';
+        btnFloEjecutar.style.visibility = 'hidden';
+        btnFloBuscar.style.visibility = 'visible';
+    };
     navEjecuciontab.addEventListener('click', Ftabopcion1);
     navVisCalculotab.addEventListener('click', Ftabopcion2);
     navNomCetab.addEventListener('click', Ftabopcion3);
+    navVisNominatab.addEventListener('click', FTanopcion4);
 
                    // Procesos de Ejecucion 
 
@@ -886,8 +903,7 @@
         FllenaCalculos();
 
 
-    });
-                      
+    });                     
     $('#EmpresaCal').change(function () {
 
         var idempresa = EmpresaCal.value;
@@ -1408,8 +1424,8 @@
                  // muestra calculos de nomina del empleado
 
 
-    FMusNom = () => {
-
+    FBusNom = () => {
+        console.log('buscar recibo');
         //FDelettable();
         var TotalPercep = 0;
         var TotalDedu = 0;
@@ -1459,14 +1475,10 @@
                         //groups: ['price'],
                         columns: [
                             { text: 'Concepto', datafield: 'sConcepto', width: 300 },
-                            { text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"],  width: 150, cellsformat: 'c2' },
-                            { text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"],  width: 150, cellsformat: 'c2' },
-                            { text: 'Saldos', datafield: 'dSaldos', aggregates: ["sum"],  width: 150, cellsformat: 'c2' },
                             {
-                                text: 'Informativos', datafield: 'dInformativos', aggregates: ["sum"], width: 150, cellsformat: 'c2',
-                                cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                                text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
-                                    if (value.toString().indexOf("sum") >= 0) {
+                                    if (value.toString().indexOf("Sum") >= 0) {
 
                                         return defaultRender.replace("Sum", "Total");
 
@@ -1476,7 +1488,62 @@
 
                                 aggregatesrenderer: function (aggregates, column, element) {
 
-                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Sum" + ': ' + aggregates.sum + '</div>';
+                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
+
+                                    return renderstring;
+
+                                }},
+                            {
+                                text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+
+                                    if (value.toString().indexOf("Sum") >= 0) {
+
+                                        return defaultRender.replace("Sum", "Total");
+
+                                    }
+
+                                },
+
+                                aggregatesrenderer: function (aggregates, column, element) {
+
+                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
+
+                                    return renderstring;
+
+                                } },
+                            {
+                                text: 'Saldos', datafield: 'dSaldos', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+
+                                    if (value.toString().indexOf("Sum") >= 0) {
+
+                                        return defaultRender.replace("Sum", "Total");
+
+                                    }
+
+                                },
+
+                                aggregatesrenderer: function (aggregates, column, element) {
+
+                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
+
+                                    return renderstring;
+
+                                }  },
+                            {
+                                text: 'Informativos', datafield: 'dInformativos', aggregates: ["sum"], width: 150, cellsformat: 'c2',
+                                cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+
+                                    if (value.toString().indexOf("Sum") >= 0) {
+
+                                        return defaultRender.replace("Sum", "Total");
+
+                                    }
+
+                                },
+
+                                aggregatesrenderer: function (aggregates, column, element) {
+
+                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
                                     return renderstring;
 
@@ -1515,8 +1582,8 @@
         }); 
       
     };
-    btnVerNomina.addEventListener('click',FMusNom)
-
+    //btnVerNomina.addEventListener('click',FBusNom)
+    BntBusRecibo.addEventListener('click',FBusNom)
 
                // muestra los calculos en pantalla
     $("#jqxExpander").jqxExpander({ width: '105%', expanded: false });
@@ -1535,8 +1602,6 @@
        
     
     };
-
-
     FLimpiaCamp = () => {
 
         $("#2").empty();
@@ -1610,33 +1675,24 @@
     $("#timeOutNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: true, autoClose: false, template: "time" });
     $("#timerNotification").on("close", function () {
 
-        if ($("#answerInput").val() != 8) {
+        if ($(".timer").text(seconds) = 1) {
 
             $("#timeOutNotification").jqxNotification("open");
 
         }
 
     });
-    $("#submitAnswer").click(function () {
-        if (seconds > 1) {
-        }
-    });
+   
     var seconds = 60;
     var interval = setInterval(function () {
 
         if (seconds > 1) {
-
             seconds--;
-
             $(".timer").text(seconds);
-
         } else {
-
             clearInterval(interval);
-
             $("#timerNotification").jqxNotification("closeLast");
-
         }
 
-    }, 800);
+    }, 1000);
 });
