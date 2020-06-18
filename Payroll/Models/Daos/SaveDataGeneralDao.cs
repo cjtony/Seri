@@ -636,7 +636,7 @@ namespace Payroll.Models.Daos
             }
             return datoPosicionBean;
         }
-        public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsig(int clvstr, string fechefectpos, string fechinipos, string empleado, string apepat, string apemat, string fechanaci, int usuario)
+        public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsig(int clvstr, string fechefectpos, string fechinipos, string empleado, string apepat, string apemat, string fechanaci, int usuario, int keyemp)
         {
             DatosPosicionesBean datoPosicionBean = new DatosPosicionesBean();
             try
@@ -654,8 +654,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlApellidoP", apepat));
                 cmd.Parameters.Add(new SqlParameter("@ctrlApellidoM", apemat));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaNaci", fechanaci));
-                if (cmd.ExecuteNonQuery() > 0)
-                {
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
+                if (cmd.ExecuteNonQuery() > 0) {
                     datoPosicionBean.sMensaje = "success";
                 }
                 else

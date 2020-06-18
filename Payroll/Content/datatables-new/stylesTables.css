@@ -119,6 +119,18 @@
     border-left: 0.25rem solid #4e73df !important;
 }
 
+.border-right-primary {
+    border-right: 0.25rem solid #4e73df !important;
+}
+
+.border-bottom-primary {
+    border-bottom: 0.25rem solid #4e73df !important;
+}
+
+.border-top-primary {
+    border-top: 0.25rem solid #4e73df !important;
+}
+
 .btn-success {
     color: #fff;
     background-color: #1cc88a;
@@ -812,3 +824,13 @@ button.bg-success:focus {
     .show > .btn-info.dropdown-toggle:focus {
         box-shadow: 0 0 0 0.2rem rgba(84, 196, 212, 0.5);
     }
+
+.bg-info {
+    background-color: #36b9cc !important;
+}
+
+a.bg-info:hover, a.bg-info:focus,
+button.bg-info:hover,
+button.bg-info:focus {
+    background-color: #2a96a5 !important;
+}
