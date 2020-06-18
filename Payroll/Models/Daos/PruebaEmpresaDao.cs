@@ -57,15 +57,10 @@ namespace Payroll.Models.Daos
                 while (data.Read())
                 {
                     PruebaEmpresaBean listEmpresas = new PruebaEmpresaBean();
-                    //
-                    //--------------QUITAR ESTE FILTRO UNA VEZ QUE SE ARREGLEN LAS EMPRESAS Y LOS EMPLEADOS 
-                    //if (int.Parse(data["IdEmpresa"].ToString()) > 3)
-                    //{
                     listEmpresas.IdEmpresa = int.Parse(data["IdEmpresa"].ToString());
                     listEmpresas.RazonSocial = data["RazonSocial"].ToString();
                     listEmpresas.NombreEmpresa = data["NombreEmpresa"].ToString();
                     list.Add(listEmpresas);
-                    //}
                 }
             }
             else
@@ -216,7 +211,7 @@ namespace Payroll.Models.Daos
 
             return empresa;
         }
-        public List<string> sp_Insert_FirstStep_Empresas(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, int inbanco, string inregimss, int inclonar, int ingrupoe)
+        public List<string> sp_Insert_FirstStep_Empresas(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, int inbanco, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
         {
             List<string> res = new List<string>();
             this.Conectar();
@@ -252,6 +247,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlRegimms", inregimss));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresaClon_id", inclonar));
             cmd.Parameters.Add(new SqlParameter("@ctrlGrupoEmpresa", ingrupoe));
+            cmd.Parameters.Add(new SqlParameter("@ctrlNoPeriodo", innoperiodo));
 
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();

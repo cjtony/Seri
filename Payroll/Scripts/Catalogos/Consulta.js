@@ -283,7 +283,7 @@
 
         });
     }
-    //LLENADO DE EMPRESAS
+    //LLENADO DE EMPRESAS EN VISTA EMPLEADO
     LoadBodyCards = () => {
         $.ajax({
             url: "../Catalogos/LoadEmpresasNEmpleados",
@@ -294,11 +294,11 @@
                 var tab = document.getElementById("body-cards-empresas");
                 tab.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    tab.innerHTML += "<div class='card col-md-12'>"
-                        + "<div class='card-body p-0 row'>"
+                    tab.innerHTML += "<div class='col-md-12 row'>"
+                        //+ "<div class=' p-0 row'>"
                         + "<small class='col-md-8'>"+ data[i]["Empresa_id"] + " " + data[i]["NombreEmpresa"] +"</small>"
                         + "<small class=''><span class='badge badge-primary'><i class='fas fa-users'></i>&nbsp;&nbsp;&nbsp;" + data[i]["No"] + "</span></small>"
-                        + "</div>"
+                        //+ "</div>"
                         + "</div>";
                 }
             }

@@ -167,6 +167,10 @@
                                         <label class="bg-secondary text-white rounded col-md-12">Dias Pagados </label>
                                         <input type="text" name="diaspagados" id="diaspagados" class="form-control col-md-12 input-number text-center" value="15">
                                     </div>
+                                    <div class=" col-md-5 text-center p-2">
+                                        <label class="bg-secondary text-white rounded col-md-12">No. Periodo </label>
+                                        <input type="text" name="noperiodo" id="noperiodo" class="form-control col-md-12 input-number text-center" value="1">
+                                    </div>
 
                                 </div>
                                 <div class="">
@@ -577,6 +581,7 @@
             var fpago = document.getElementById("fpago");
             var fproceso = document.getElementById("fproceso");
             var diaspagados = document.getElementById("diaspagados");
+            var periodo = document.getElementById("noperiodo");
             //-------------------------------------------------------
 
             var datos = {
@@ -607,6 +612,7 @@
                 , inregimss: regimss.value
                 , inclonar: clonar.value
                 , ingrupoe: grupoe.value
+                , innoperiodo: periodo.value
             };
             console.log(datos);
             $.ajax({
