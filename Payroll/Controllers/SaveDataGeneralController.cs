@@ -213,8 +213,9 @@ namespace Payroll.Controllers
                 convertFIniP = Convert.ToDateTime(fechinipos).ToString("dd/MM/yyyy");
             }
             try {
+                int keyemp      = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(clvstr, convertFEffdt, fechinipos, empleado, apepat, apemat, convertFNaciE, usuario);
+                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(clvstr, convertFEffdt, fechinipos, empleado, apepat, apemat, convertFNaciE, usuario, keyemp);
             } catch (Exception exc) {
                 flag = false;
                 messageError = exc.Message.ToString();

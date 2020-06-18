@@ -1,9 +1,13 @@
-﻿<div class="mt-2 mb-5 container-fluid">
+﻿
+<link rel="stylesheet" href="~/Content/datatables-new/stylesTables.css" />
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<div class="mt-2 mb-5 container-fluid">
 
     <div>
         @*<button class="flotante-show rounded btn btn-info animated fadeIn delay-1s" title="Ver campos requeridos" id="btn-show-fields-required">
-                <i class="fas fa-eye" id="ico-show"></i>
-        </button>*@
+                    <i class="fas fa-eye" id="ico-show"></i>
+            </button>*@
         @*<button class="flotante0 rounded btn btn-outline-success animated fadeIn delay-1s" title="Guardar cambios" id="btn-save-edit">
                 <i class="fas fa-user-check"></i>
             </button>*@
@@ -90,7 +94,7 @@
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active p-3" id="nav-datagen" role="tabpanel" aria-labelledby="nav-datagen-tab">
-                                <div class="row mt-4">
+                                <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
                                     <div id="div-most-alert-data-gen" class="col-md-8 offset-2"></div>
                                     <div class="col-md-6">
                                         <div class="text-left">
@@ -108,9 +112,6 @@
                                                 <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
                                             </p>
                                         </div>
-                                        @*<button class="rounded btn btn-info btn-block animated fadeIn delay-1s" title="Ver campos requeridos" id="btn-show-fields-required">
-                                            <i class="fas fa-eye" id="ico-show"></i>
-                                        </button>*@
                                     </div>
                                     <div class="col-md-12">
                                         <hr />
@@ -201,7 +202,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-4">
+                                <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
                                     <div class="col-md-12 mb-4">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
@@ -282,7 +283,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-4">
+                                <div class="row mt-4 border-left-primary p-3 rounded border-right-primary shadow">
                                     <div class="col-md-12 mb-4">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
@@ -346,14 +347,20 @@
                                         <button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-gen">
                                             Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
                                         </button>
-                                        <button class="btn btn-block btn-outline-success font-button d-none" id="btn-save-edit-data-gen">
-                                            Editar <i class="fas fa-edit ml-ico-05"></i>
+                                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow" id="btn-save-edit-data-gen">
+                                            <span class="icon text-white-50 mr-2">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            <span class="text">Editar</span>
                                         </button>
+                                        @*<button class="btn btn-block btn-outline-success font-button d-none" id="btn-save-edit-data-gen">
+                                            Editar <i class="fas fa-edit ml-ico-05"></i>
+                                        </button>*@
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade p-3" id="nav-imss" role="tabpanel" aria-labelledby="nav-imss-tab">
-                                <div class="row mt-4">
+                                <div class="row mt-4 border-left-primary p-3 rounded border-right-primary shadow">
                                     <div id="div-most-alert-data-imss" class="col-md-8 offset-2"></div>
                                     <div class="col-md-6">
                                         <div class="text-left">
@@ -421,7 +428,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-4">
+                                <div class="row mt-4 border-left-primary p-3 rounded border-right-primary shadow">
                                     <div class="col-md-12 mb-4">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
@@ -456,18 +463,24 @@
                                     <div class="col-md-6 text-center">
                                         <img width="250" class="img-fluid" src="~/Content/img/form-complete.svg" alt="data-register">
                                     </div>
-                                    <div class="offset-md-6 col-md-6 mt-5 text-center">
+                                    <div class="offset-md-7 col-md-4 mt-5 text-center">
                                         <button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-imss">
                                             Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
                                         </button>
-                                        <button class="btn btn-block btn-light btn-outline-success d-none font-button" id="btn-save-edit-data-imss">
-                                            Editar <i class="fas fa-edit ml-ico-05"></i>
+                                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow" id="btn-save-edit-data-imss">
+                                            <span class="icon text-white-50 mr-2">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            <span class="text">Editar</span>
                                         </button>
+                                        @*<button class="btn btn-block btn-light btn-outline-success d-none font-button" id="btn-save-edit-data-imss">
+                                            Editar <i class="fas fa-edit ml-ico-05"></i>
+                                        </button>*@
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade p-3" id="nav-datanom" role="tabpanel" aria-labelledby="nav-datanom-tab">
-                                <div class="row mt-4">
+                                <div class="row mt-4 border-right-primary border-left-primary shadow rounded p-3">
                                     <div id="div-most-alert-data-nomina" class="col-md-6 offset-3"></div>
                                     <div class="col-md-6">
                                         <div class="text-left">
@@ -573,28 +586,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        @*<div class="form-group row">
-                                                <label for="estats" class="col-sm-4 col-form-label font-labels">
-                                                    Tipo de Alta:
-                                                </label>
-                                                <div class="col-sm-8">
-                                                    <select id="estats" tp-select="Tipo de alta" class="form-control form-control-sm">
-                                                        <option selected value="0">Selecciona</option>
-                                                        <option value="Alta">ALTA</option>
-                                                        <option value="Reingreso">REINGRESO</option>
-                                                    </select>
-                                                </div>
-                                            </div>*@
-                                        @*<div class="form-group row">
-                                                <label for="motinc" class="col-sm-4 col-form-label font-labels">
-                                                    Motivo de incremento:
-                                                </label>
-                                                <div class="col-sm-8">
-                                                    <select id="motinc" tp-select="Motivo de incremento" class="form-control form-control-sm">
-                                                        <option selected value="0">Selecciona</option>
-                                                    </select>
-                                                </div>
-                                            </div>*@
                                         <div class="form-group row">
                                             <label for="fecing" class="col-sm-4 col-form-label font-labels" id="label-fing">
                                                 Fecha de ingreso:
@@ -620,86 +611,82 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-4">
-                                        <div class="col-md-12 mb-4">
-                                            <div class="text-left">
-                                                <h6 class="col-ico font-nav-child">
-                                                    <i class="fas fa-circle fa-sm mr-ico-05"></i>
-                                                    Tipo de pago
-                                                </h6>
-                                                <hr />
+                                </div>
+                                <div class="row mt-4 border-right-primary border-left-primary shadow rounded p-3">
+                                    <div class="col-md-12 mb-4">
+                                        <div class="text-left">
+                                            <h6 class="col-ico font-nav-child">
+                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                Tipo de pago
+                                            </h6>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="tippag" class="col-sm-4 col-form-label font-labels" id="label-tippag">
+                                                Tipo de pago:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select tp-select="Tipo de pago" id="tippag" class="form-control form-control-sm">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="tippag" class="col-sm-4 col-form-label font-labels" id="label-tippag">
-                                                    Tipo de pago:
-                                                </label>
-                                                <div class="col-sm-8">
-                                                    <select tp-select="Tipo de pago" id="tippag" class="form-control form-control-sm">
-                                                        <option value="0">Selecciona</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="banuse" class="col-sm-4 col-form-label font-labels">
-                                                    Banco:
-                                                </label>
-                                                <div class="col-sm-8">
-                                                    <select tp-select="Banco" id="banuse" class="form-control form-control-sm">
-                                                        <option value="0">Selecciona</option>
-                                                    </select>
-                                                </div>
+                                        <div class="form-group row">
+                                            <label for="banuse" class="col-sm-4 col-form-label font-labels">
+                                                Banco:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select tp-select="Banco" id="banuse" class="form-control form-control-sm">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="cunuse" class="col-sm-4 col-form-label font-labels">
-                                                    Cuenta:
-                                                </label>
-                                                <div class="col-sm-8">
-                                                    <input placeholder="Cuenta" type="text" id="cunuse" class="form-control form-control-sm" />
-                                                    @*<div class="input-group mb-2">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">
-                                                                    <small id="clvbank">
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                        </div>*@
-                                                </div>
+                                        <div class="form-group row">
+                                            <label for="cunuse" class="col-sm-4 col-form-label font-labels">
+                                                Cuenta:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input placeholder="Cuenta" type="text" id="cunuse" class="form-control form-control-sm" />
                                             </div>
-                                            <div class="form-group text-center d-none animated fadeIn" id="infobankch">
-                                                <div class="alert alert-info" role="alert">
-                                                    <small><b>La longitud del numero de cuenta debe de ser 10 digitos</b></small>
-                                                </div>
+                                        </div>
+                                        <div class="form-group text-center d-none animated fadeIn" id="infobankch">
+                                            <div class="alert alert-info" role="alert">
+                                                <small><b>La longitud del numero de cuenta debe de ser 10 digitos</b></small>
                                             </div>
-                                            <div class="form-group text-center d-none animated fadeIn" id="infobankct">
-                                                <div class="alert alert-info" role="alert">
-                                                    <small><b>La longitud del numero de cuenta debe de ser 18 digitos</b></small>
-                                                </div>
+                                        </div>
+                                        <div class="form-group text-center d-none animated fadeIn" id="infobankct">
+                                            <div class="alert alert-info" role="alert">
+                                                <small><b>La longitud del numero de cuenta debe de ser 18 digitos</b></small>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="offset-6 col-md-6 text-center mt-4">
+                                    <div class="col-md-6 text-center">
                                         <img width="250" class="img-fluid" src="~/Content/img/form-complete.svg" alt="data-register">
                                     </div>
-                                    <div class="offset-md-6 col-md-6 mt-5 text-center">
+                                    <div class="offset-md-7 col-md-4 mt-5 text-center">
                                         <button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-nomina">
                                             Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
                                         </button>
-                                        <button class="btn btn-block btn-outline-success font-button d-none" id="btn-save-edit-data-nomina">
-                                            Editar <i class="fas fa-edit ml-ico-05"></i>
+                                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow" id="btn-save-edit-data-nomina">
+                                            <span class="icon text-white-50 mr-2">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            <span class="text">Editar</span>
                                         </button>
+                                        @*<button class="btn btn-block btn-outline-success font-button d-none" id="btn-save-edit-data-nomina">
+                                            Editar <i class="fas fa-edit ml-ico-05"></i>
+                                        </button>*@
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade p-3" id="nav-estructure" role="tabpanel" aria-labelledby="nav-estructure-tab">
-                                <div class="row mt-4">
+                                <div class="row mt-4 border-left-primary border-right-primary rounded shadow rounded p-3">
                                     <div id="div-most-alert-data-estructure" class="col-md-6 offset-3"></div>
                                     <div class="col-md-6">
                                         <div class="text-left">
-                                            <h6 class="col-ico">
+                                            <h6 class="col-ico font-nav-child">
                                                 <i class="fas fa-circle fa-sm mr-ico-05"></i>
                                                 Datos de la plantilla
                                             </h6>
@@ -808,27 +795,51 @@
                                 </div>
                                 <hr />
                                 <div class="row">
-                                    <div class="col-md-6 mt-5 text-center">
-                                        <div class="mt-4 p-3 card shadow">
-                                            <p class="text-justify">
-                                                Al momento de seleccionar esta opción los datos ingresados permaneceran en los campos durante un periodo maximo de 48 horas, una vez pasado este tiempo la información se eliminara de los campos.
-                                            </p>
-                                            <button class="btn btn-light col-btn-login font-button mt-4" id="btn-save-data-estructure">
-                                                Guardar temporalmente <i class="fas fa-clock ml-ico-05"></i>
-                                            </button>
+                                    <div class="col-md-6">
+                                        <div class="mt-4 p-3 card shadow border-bottom-primary">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary"> <i class="fas fa-info-circle mr-2 col-ico"></i> Informacion </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="text-justify">
+                                                    Al momento de seleccionar esta opción los datos ingresados permaneceran en los campos durante el resto del día, una vez pasado este tiempo la información se eliminara de los campos.
+                                                </p>
+                                                <hr />
+                                                <button type="button" data-dismiss="modal" class="btn btn-info btn-block shadow" id="btn-save-data-estructure">
+                                                    <span class="icon text-white-50 mr-2">
+                                                        <i class="fas fa-clock"></i>
+                                                    </span>
+                                                    <span class="text">Guardar temporalmente</span>
+                                                </button>
+                                                @*<button class="btn btn-light col-btn-login btn-block font-button" id="btn-save-data-estructure">
+                                                    Guardar temporalmente <i class="fas fa-clock ml-ico-05"></i>
+                                                </button>*@
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mt-5 text-center">
-                                        <div class="mt-4 p-3 card shadow">
-                                            <p class="text-justify">
-                                                Al seleccionar esta opción los datos se almacenarán en el sistema estando disponibles en cualquier momento que usted decida consultarlos, quedando los campos libres para iniciar otro registro.
-                                            </p>
-                                            <button class="btn btn-light col-btn-login font-button mt-4" id="btn-save-data-all">
-                                                Guardar registro <i class="fas fa-check ml-ico-05"></i>
-                                            </button>
-                                            <button class="btn btn-outline-success font-button mt-4 d-none" id="btn-save-edit-dataest">
-                                                Editar <i class="fas fa-edit ml-ico-05"></i>
-                                            </button>
+                                    <div class="col-md-6">
+                                        <div class="mt-4 p-3 card shadow border-bottom-primary">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary"> <i class="fas fa-database mr-2 col-ico"></i> Guardado </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="text-justify">
+                                                    Al seleccionar esta opción los datos se almacenarán en el sistema estando disponibles en cualquier momento que usted decida consultarlos, quedando los campos libres para iniciar otro registro.
+                                                </p>
+                                                <hr />
+                                                <button class="btn btn-light col-btn-login font-button mt-4" id="btn-save-data-all">
+                                                    Guardar registro <i class="fas fa-check ml-ico-05"></i>
+                                                </button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow" id="btn-save-edit-dataest">
+                                                    <span class="icon text-white-50 mr-2">
+                                                        <i class="fas fa-edit"></i>
+                                                    </span>
+                                                    <span class="text">Editar</span>
+                                                </button>
+                                                @*<button class="btn btn-outline-success font-button mt-4 d-none" id="btn-save-edit-dataest">
+                                                    Editar <i class="fas fa-edit ml-ico-05"></i>
+                                                </button>*@
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1322,7 +1333,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="regcodpuesto">Codigo puesto:</label>
-                                <input placeholder="Codigo puesto" type="text" id="regcodpuesto" class="form-control form-control-sm text-uppercase" />
+                                <input readonly placeholder="Codigo puesto" type="text" id="regcodpuesto" class="form-control form-control-sm text-uppercase" />
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="regpuesto">Puesto:</label>
@@ -2722,10 +2733,10 @@
 <!-- VENTANA MODAL QUE REGISTRA LOS CENTROS DE COSTOS -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="registercentrcost" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar Centro de costo</h5>
-                <button id="ico-clear-fields-centrcost-save" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-centrcost-save" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2748,8 +2759,18 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsavecentrcost"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-centrcost-save"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavecentrcost">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-centrcost-save">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2758,10 +2779,10 @@
 <!-- VENTANA MODAL QUE EDITA LOS CENTROS DE COSTOS -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="editcentrcost" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit mr-2 col-ico"></i> Editar Centro de costo</h5>
-                <button id="ico-clear-fields-centrcost-edit" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-centrcost-edit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2785,8 +2806,18 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsavecentrcostedit"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-centrcost-edit"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavecentrcostedit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-centrcost-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2834,10 +2865,10 @@
 <!-- VENTANA MODAL QUE BUSCA LOS CENTROS DE COSTOS DE LA EMPRESA EN SESION -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="btnsearchcentrscost" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary ">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Centros de costo </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-centrcost-btn">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-store mr-2 col-ico"></i> Centros de costo </h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-centrcost-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2847,7 +2878,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
                                 <label for="searchcentrcosts" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i> Centro de costo:
+                                    <i class="fas fa-terminal mr-1 col-ico"></i> Centro de costo:
                                 </label>
                                 <div class="col-md-7">
                                     <input type="text" class="form-control form-control-sm text-uppercase" id="keysearchcentrcosts" placeholder="Ingresa el centro de costo" />
@@ -2865,8 +2896,18 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registercentrcost" type="button" class="btn btn-outline-success btn-sm" id="btnregistercentrcost"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-centrcost-btn" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregistercentrcost" data-toggle="modal" data-target="#registercentrcost">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-centrcost-btn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -3049,7 +3090,7 @@
             if (JSON.parse(localStorage.getItem('objectDataTabNom')) != null) {
                 for (i in getDataTabNom1) {
                     if (getDataTabNom1[i].key == "nom") {
-                        if (getDataTabNom1[i].data.banuse != "") {
+                        if (getDataTabNom1[i].data.tippag == 219 || getDataTabNom1[i].data.tippag == 221) {
                             document.getElementById('banuse').removeAttribute("disabled");
                             document.getElementById('cunuse').removeAttribute("disabled");
                             document.getElementById('cunuse').value = getDataTabNom1[i].data.cunuse;
