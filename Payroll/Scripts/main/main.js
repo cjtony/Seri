@@ -684,26 +684,40 @@
         }
         let flagResultValidCurp = validarInputMain(curp);
         if (flagResultValidCurp == false) {
-            fshowtypealert('Atención', 'Curp invalida, compruebe', curp.placeholder, 'warning', curp, 0);
+            fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
             setTimeout(() => { $("#nav-imss-tab").click(); }, 1000);
         }
         if (validate == 0) {
-            gotoppage(navDataNomTab, '#nav-datanom-tab', "Ahora completa los datos del apartado Datos de nomina!");
-            const dataLocSto = {
-                key: 'imss', data: {
-                    fecefe: fecefe.value,
-                    clvimss: clvimss.value,
-                    imss: imss.value,
-                    rfc: rfc.value,
-                    curp: curp.value,
-                    nivest: nivest.value,
-                    nivsoc: nivsoc.value,
+            $.ajax({
+                url: "../SaveDataGeneral/ValidateEmployeeReg",
+                type: "POST",
+                data: { fieldCurp: curp.value, fieldRfc: rfc.value },
+                success: (data) => {
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        gotoppage(navDataNomTab, '#nav-datanom-tab', "Ahora completa los datos del apartado Datos de nomina!");
+                        const dataLocSto = {
+                            key: 'imss', data: {
+                                fecefe: fecefe.value,
+                                clvimss: clvimss.value,
+                                imss: imss.value,
+                                rfc: rfc.value,
+                                curp: curp.value,
+                                nivest: nivest.value,
+                                nivsoc: nivsoc.value,
+                            }
+                        };
+                        objectDataTabImss.dataimss = dataLocSto;
+                        localStorage.setItem('objectDataTabImss', JSON.stringify(objectDataTabImss));
+                        localStorage.setItem('tabSelected', 'datanom');
+                    } else {
+                        fshowtypealert('Atención', 'Los datos del curp y rfc ya se encuentran registrados', 'warning', curp, 0);
+                        fclearlocsto();
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
                 }
-            };
-            objectDataTabImss.dataimss = dataLocSto;
-            localStorage.setItem('objectDataTabImss', JSON.stringify(objectDataTabImss));
-            localStorage.setItem('tabSelected', 'datanom');
+            });
         }
     });
 
@@ -794,26 +808,37 @@
             setTimeout(() => { $("#nav-imss-tab").click(); }, 1000);
         }
         if (validate == 0) {
-            gotoppage(navEstructureTab, '#nav-estructure-tab', "Ahora completa los datos del apartado Estructura!");
-            const dataLocSto = {
-                key: 'nom', data: {
-                    clvnom: clvnom.value,
-                    fecefecnom: fecefecnom.value, salmen: salmen.value,
-                    tipper: tipper.value, tipemp: tipemp.value,
-                    nivemp: nivemp.value, tipjor: tipjor.value,
-                    tipcon: tipcon.value, fecing: fecing.value,
-                    fecant: fecant.value, vencon: vencon.value,
-                    //estats: estats.value,
-                    tipcontra: tipcontra.value,
-                    //motinc: motinc.value,
-                    tippag: tippag.value,
-                    banuse: banuse.value, cunuse: cunuse.value,
-                    //clvbank: clvbank.textContent
+            $.ajax({
+                url: "../SaveDataGeneral/ValidateEmployeeReg",
+                type: "POST",
+                data: { fieldCurp: curp.value, fieldRfc: rfc.value },
+                success: (data) => {
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        gotoppage(navEstructureTab, '#nav-estructure-tab', "Ahora completa los datos del apartado Estructura!");
+                        const dataLocSto = {
+                            key: 'nom', data: {
+                                clvnom: clvnom.value,
+                                fecefecnom: fecefecnom.value, salmen: salmen.value,
+                                tipper: tipper.value, tipemp: tipemp.value,
+                                nivemp: nivemp.value, tipjor: tipjor.value,
+                                tipcon: tipcon.value, fecing: fecing.value,
+                                fecant: fecant.value, vencon: vencon.value,
+                                tipcontra: tipcontra.value,
+                                tippag: tippag.value,
+                                banuse: banuse.value, cunuse: cunuse.value,
+                            }
+                        };
+                        objectDataTabNom.datanom = dataLocSto;
+                        localStorage.setItem('objectDataTabNom', JSON.stringify(objectDataTabNom));
+                        localStorage.setItem('tabSelected', 'dataestructure');
+                    } else {
+                        fshowtypealert('Atención', 'Los datos del curp y rfc ya se encuentran registrados', 'warning', curp, 0);
+                        fclearlocsto();
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
                 }
-            };
-            objectDataTabNom.datanom = dataLocSto;
-            localStorage.setItem('objectDataTabNom', JSON.stringify(objectDataTabNom));
-            localStorage.setItem('tabSelected', 'dataestructure');
+            });
         }
     });
 
@@ -868,25 +893,39 @@
             setTimeout(() => { $("#nav-imss-tab").click(); }, 1000);
         }
         if (validate == 0) {
-            gotoppage(navEstructureTab, '#nav-estructure-tab', "Los datos esperan para ser guardados");
-            const dataLocSto = {
-                key: 'estructure', data: {
-                    numpla: numpla.value,
-                    clvstr: clvstr.value,
-                    depaid: depaid.value,
-                    depart: depart.value,
-                    puesid: puesid.value,
-                    pueusu: pueusu.value,
-                    emprep: emprep.value,
-                    report: report.value,
-                    localty: localty.value,
-                    fechefectpos: fechefectpos.value,
-                    fechinipos: fechinipos.value
+            $.ajax({
+                url: "../SaveDataGeneral/ValidateEmployeeReg",
+                type: "POST",
+                data: { fieldCurp: curp.value, fieldRfc: rfc.value },
+                success: (data) => {
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        gotoppage(navEstructureTab, '#nav-estructure-tab', "Los datos esperan para ser guardados");
+                        const dataLocSto = {
+                            key: 'estructure', data: {
+                                numpla: numpla.value,
+                                clvstr: clvstr.value,
+                                depaid: depaid.value,
+                                depart: depart.value,
+                                puesid: puesid.value,
+                                pueusu: pueusu.value,
+                                emprep: emprep.value,
+                                report: report.value,
+                                localty: localty.value,
+                                fechefectpos: fechefectpos.value,
+                                fechinipos: fechinipos.value
+                            }
+                        };
+                        objectDataTabEstructure.dataestructure = dataLocSto;
+                        localStorage.setItem('objectDataTabEstructure', JSON.stringify(objectDataTabEstructure));
+                        localStorage.setItem('tabSelected', 'dataestructure');
+                    } else {
+                        fshowtypealert('Atención', 'Los datos del curp y rfc ya se encuentran registrados', 'warning', curp, 0);
+                        fclearlocsto();
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
                 }
-            };
-            objectDataTabEstructure.dataestructure = dataLocSto;
-            localStorage.setItem('objectDataTabEstructure', JSON.stringify(objectDataTabEstructure));
-            localStorage.setItem('tabSelected', 'dataestructure');
+            });
         }
     });
 

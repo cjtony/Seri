@@ -21,6 +21,18 @@
     const btnClearFCentrCostSave = document.getElementById('btn-clear-fields-centrcost-save');
     const icoClearFCentrCostSave = document.getElementById('ico-clear-fields-centrcost-save');
 
+    const regcentrcostndep = document.getElementById('regcentrcostndep');
+
+    localStorage.removeItem("centrcostregdep");
+
+    regcentrcostndep.addEventListener('click', () => {
+        $("#searchcentrscost").modal("hide");
+        setTimeout(() => {
+            centrcostsavebtn.focus();
+        }, 1000);
+        localStorage.setItem("centrcostregdep", 1);
+    });
+
     /*
      * Funciones
      */
@@ -45,6 +57,7 @@
     /* FUNCION QUE REALIZA LA BUSQUEDA EN TIEMPO REAL DE LOS CENTROS DE COSTOS */
     fsearchcentrcostosbtn = () => {
         listresultcentrcosts.innerHTML = '';
+        noresultscentrcostbtn1.innerHTML = "";
         try {
             if (keysearchcentrcosts.value != "") {
                 $.ajax({
@@ -57,7 +70,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                listresultcentrcosts.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sCentroCosto} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselecteditcentrcost(${data[i].iIdCentroCosto},'${data[i].sCentroCosto}')"></i> </button>`;
+                                listresultcentrcosts.innerHTML += `<button onclick="fselecteditcentrcost(${data[i].iIdCentroCosto},'${data[i].sCentroCosto}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back border-left-primary">${number}. - ${data[i].sCentroCosto} <i class="fas fa-edit ml-2 text-warning fa-lg"></i> </button>`;
                             }
                         } else {
                             noresultscentrcostbtn1.innerHTML = `
@@ -227,6 +240,14 @@
     fClearFieldsSaveCentrCost = () => {
         centrcostsavebtn.value     = '';
         desccentrcostsavebtn.value = '';
+        if (localStorage.getItem("centrcostregdep") != null) {
+            $("#searchcentrscost").modal('show');
+            setTimeout(() => { searchcentrcosts.focus(); }, 1000);
+            localStorage.removeItem("centrcostregdep");
+        } else {
+            $("#btnsearchcentrscost").modal('show');
+            setTimeout(() => { keysearchcentrcosts.focus(); }, 1000);
+        }
     }
 
     /* FUNCION QUE GUARDA UN NUEVO CENTRO DE COSTO */
@@ -253,12 +274,15 @@
                                     confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                                 }).then((acepta) => {
                                     $("#registercentrcost").modal('hide');
-                                    setTimeout(() => {
-                                        $("#btnsearchcentrscost").modal('show');
-                                    }, 1000);
-                                    setTimeout(() => {
-                                        keysearchcentrcosts.focus();
-                                    }, 1500);
+                                    //if (localStorage.getItem('centrcostregdep') != null) {
+                                    //    $("#searchcentrscost").modal('show');
+                                    //    setTimeout(() => { searchcentrcosts.focus(); }, 1000);
+                                    //    localStorage.removeItem("centrcostregdep");
+                                    //} else {
+                                    //    $("#btnsearchcentrscost").modal('show');
+                                    //    setTimeout(() => { keysearchcentrcosts.focus(); }, 1000);
+                                    //}
+                                   fClearFieldsSaveCentrCost();
                                 });
                             } else {
                                 Swal.fire({

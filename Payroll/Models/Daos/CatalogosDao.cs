@@ -971,6 +971,56 @@ namespace Payroll.Models.Daos
     }
     public class NivelEstructuraDao : Conexion
     {
+
+        public NivelEstructuraBean sp_NivelEstructura_Insert_NivEstructura(int keyemp, string nivEstructure, string descNEstructure, int keyuser)
+        {
+            NivelEstructuraBean nivEstructureBean = new NivelEstructuraBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_NivelEstructura_Insert_NivEstructura", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
+                cmd.Parameters.Add(new SqlParameter("@NivEstructura", nivEstructure));
+                cmd.Parameters.Add(new SqlParameter("@Descripcion", descNEstructure));
+                cmd.Parameters.Add(new SqlParameter("@Usuario", keyuser));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    nivEstructureBean.sMensaje = "SUCCESS";
+                } else {
+                    nivEstructureBean.sMensaje = "ERRINSERT";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                nivEstructureBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return nivEstructureBean;
+        }
+
+        public NivelEstructuraBean sp_NivelEstructura_Update_NivEstructura(int keyNivEstructure, string nivEstructure, string descNivEstructure)
+        {
+            NivelEstructuraBean nivEstructureBean = new NivelEstructuraBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_NivelEstructura_Update_NivEstructura", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdNivel", keyNivEstructure));
+                cmd.Parameters.Add(new SqlParameter("@NivelEstructura", nivEstructure));
+                cmd.Parameters.Add(new SqlParameter("@Descripcion", descNivEstructure));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    nivEstructureBean.sMensaje = "SUCCESS";
+                } else {
+                    nivEstructureBean.sMensaje = "ERRORUPD";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                nivEstructureBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return nivEstructureBean;
+        }
+
         public List<NivelEstructuraBean> sp_NivelEstructura_Retrieve_NivelEstructura(int state, string type, int keyniv, int keyemp)
         {
             List<NivelEstructuraBean> listNivelEstructuraBean = new List<NivelEstructuraBean>();

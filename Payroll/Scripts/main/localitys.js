@@ -43,7 +43,9 @@
         document.getElementById('noresultslocality1').innerHTML = '';
         $("#searchlocality").modal('hide');
         $("#registerposition").modal('show');
+        localStorage.removeItem('reglocality');
     }
+
     /* EJECUCION DE FUNCION QUE LIMPIA EL INPUT DE BUSQUEDA Y LA LISTA DE RESULTADOS ENCONTRADOS */
     btnclosesearchlocalitys.addEventListener('click', fclearsearchresults);
     icoclosesearchlocalitys.addEventListener('click', fclearsearchresults);
@@ -57,6 +59,7 @@
             localityr.value    = paramid;
             localityrtxt.value = paramstr;
             document.getElementById('regpatcla').innerHTML = `<option value="${paramregpat}">${paramstrregpat}</option>`;
+            localStorage.removeItem('reglocality');
         } catch (error) {
             if (error instanceof TypeError) {
                 console.log('TypeError ', error);
@@ -85,7 +88,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultlocalityadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].iCodigoLocalidad} - ${data[i].sDescripcion} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectlocality(${data[i].iIdLocalidad}, '${data[i].sDescripcion}',${data[i].iRegistroPatronal_id}, '${data[i].sRegistroPatronal}')"></i> </button>`;
+                                resultlocalityadd.innerHTML += `<button onclick="fselectlocality(${data[i].iIdLocalidad}, '${data[i].sDescripcion}',${data[i].iRegistroPatronal_id}, '${data[i].sRegistroPatronal}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].iCodigoLocalidad} - ${data[i].sDescripcion} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultslocality1').innerHTML = `
@@ -282,7 +285,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                listresultslocalitysadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].iCodigoLocalidad} - ${data[i].sDescripcion} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselectlocalityedit(${data[i].iIdLocalidad})"></i> </button>`;
+                                listresultslocalitysadd.innerHTML += `<button onclick="fselectlocalityedit(${data[i].iIdLocalidad})" class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back border-left-primary animated fadeIn">${number}. ${data[i].iCodigoLocalidad} - ${data[i].sDescripcion} <i class="fas fa-edit ml-2 text-warning fa-lg"></i> </button>`;
                             }
                         } else {
                             noresultslocality1btn.innerHTML = `
@@ -398,7 +401,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultregionalesdynamic.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sClaveRegional} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectregionallocalitydy(${data[i].iIdRegional}, '${data[i].sClaveRegional}')"></i> </button>`;
+                                resultregionalesdynamic.innerHTML += `<button onclick="fselectregionallocalitydy(${data[i].iIdRegional}, '${data[i].sClaveRegional}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sClaveRegional} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             noresultsregionales1dynamic.innerHTML = `
@@ -505,7 +508,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultofficesdynamic.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectofficedynamic(${data[i].iIdSucursal}, '${data[i].sClaveSucursal}')"></i> </button>`;
+                                resultofficesdynamic.innerHTML += `<button onclick="fselectofficedynamic(${data[i].iIdSucursal}, '${data[i].sClaveSucursal}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             noresultoffices1dynamic.innerHTML = `
@@ -745,8 +748,15 @@
                                                         allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                                                     }).then((acepta) => {
                                                         $("#registerlocality").modal('hide');
-                                                        setTimeout(() => { $("#searchlocalidadbtn").modal('show'); }, 1000);
-                                                        setTimeout(() => { keysearchlocalityadd.focus(); }, 2000);
+                                                        if (localStorage.getItem('reglocality') != null) {
+                                                            $("#searchlocalidad").modal('show');
+                                                            setTimeout(() => {
+                                                                searchlocalityadd.focus();
+                                                            }, 1000);
+                                                        } else {
+                                                            $("#searchlocalidadbtn").modal('show');
+                                                            setTimeout(() => { keysearchlocalityadd.focus(); }, 1000);
+                                                        }
                                                     });
                                                 } else {
                                                     Swal.fire({
@@ -757,8 +767,15 @@
                                                         allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                                                     }).then((acepta) => {
                                                         $("#registerlocality").modal('hide');
-                                                        setTimeout(() => { $("#searchlocalidadbtn").modal('show'); }, 1000);
-                                                        setTimeout(() => { keysearchlocalityadd.focus(); }, 2000);
+                                                        if (localStorage.getItem('reglocality') != null) {
+                                                            $("#searchlocalidad").modal('show');
+                                                            setTimeout(() => {
+                                                                searchlocalityadd.focus();
+                                                            }, 1000);
+                                                        } else {
+                                                            setTimeout(() => { $("#searchlocalidadbtn").modal('show'); }, 1000);
+                                                            setTimeout(() => { keysearchlocalityadd.focus(); }, 2000);
+                                                        }
                                                     });
                                                 }
                                                 btnsavelocality.disabled = false;
@@ -855,5 +872,15 @@
     btnsaveeditlocality.addEventListener('click', fSaveEditLocality);
 
     btnsavelocality.addEventListener('click', fSaveDataLocality);
+
+    const btnregisterlocality = document.getElementById('btnregisterlocality');
+
+    localStorage.removeItem('reglocality');
+
+    btnregisterlocality.addEventListener('click', () => {
+        $("#searchlocalidad").modal('hide');
+        setTimeout(() => { desclocalitysave.focus(); }, 1000);
+        localStorage.setItem('reglocality', 1);
+    });
 
 });

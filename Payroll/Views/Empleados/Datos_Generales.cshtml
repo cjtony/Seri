@@ -1,6 +1,9 @@
 ﻿
 <link rel="stylesheet" href="~/Content/datatables-new/stylesTables.css" />
+<link rel="stylesheet" href="~/Content/datatables-new/dataTables.bootstrap4.min.css" />
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<script type="text/javascript" src="~/Scripts/datatables-new/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="~/Scripts/datatables-new/dataTables.bootstrap4.min.js"></script>
 
 <div class="mt-2 mb-5 container-fluid">
 
@@ -17,19 +20,22 @@
         <button class="flotante-clear btn-circle btn btn-danger" title="Limpiar todos los campos" id="btn-clear-localstorage">
             <i class="fas fa-backspace"></i>
         </button>
+        <button type="button" data-toggle="modal" data-target="#btnsearchnivestructure" class="flotante0 btn-circle btn btn-primary" title="Niveles de estructura" id="btn-modal-search-niv-estructure">
+            <i class="fas fa-network-wired"></i>
+        </button>
         <button type="button" data-toggle="modal" data-target="#btnsearchcentrscost" class="flotante1 btn-circle btn btn-primary" title="Centros de costo" id="btn-modal-search-centr-cost">
             <i class="fas fa-store"></i>
         </button>
-        <button type="button" data-toggle="modal" data-target="#searchlocalidadbtn" class="flotante2 btn-circle btn btn-primary" title="Registrar localidad" id="btn-modal-search-localitys">
+        <button type="button" data-toggle="modal" data-target="#searchlocalidadbtn" class="flotante2 btn-circle btn btn-primary" title="Localidad" id="btn-modal-search-localitys">
             <i class="fas fa-map-marked-alt"></i>
         </button>
         <button type="button" data-toggle="modal" data-target="#searchregion" class="flotante3 btn-circle btn btn-primary" title="Regionales" id="btn-modal-search-regionales">
             <i class="fas fa-house-user"></i>
         </button>
-        <button class="flotante4 btn-circle btn btn-primary" title="Registrar departamento" data-toggle="modal" data-target="#searchdepartamentbtn" id="btn-modal-search-departament">
+        <button class="flotante4 btn-circle btn btn-primary" title="Departamentos" data-toggle="modal" data-target="#searchdepartamentbtn" id="btn-modal-search-departament">
             <i class="fas fa-city"></i>
         </button>
-        <button class="flotante5 btn-circle btn btn-primary" title="Registrar puesto" data-toggle="modal" data-target="#searchpuestobtn" id="btn-modal-search-puesto">
+        <button class="flotante5 btn-circle btn btn-primary" title="Puestos" data-toggle="modal" data-target="#searchpuestobtn" id="btn-modal-search-puesto">
             <i class="fas fa-chalkboard-teacher"></i>
         </button>
         <button class="flotante6 btn-circle btn btn-primary" title="Posiciones" data-toggle="modal" data-target="#searchpositions" id="btn-modal-search-positions">
@@ -84,12 +90,24 @@
                                 <a class="nav-item nav-link font-navs" id="nav-estructure-tab" data-toggle="tab" href="#nav-estructure" role="tab" aria-controls="nav-estructure" aria-selected="false">
                                     <i class="fas fa-project-diagram col-ico mr-ico-05"></i> Estructura
                                 </a>
-                                <a class="nav-item nav-link disabled" id="nav-estructure-tab" data-toggle="tab" href="#nav-estructure" role="tab" aria-controls="nav-estructure" aria-selected="false">
+                                <a class="nav-item nav-link disabled" id="name-employee-action" data-toggle="tab" role="tab" aria-controls="nav-estructure" aria-selected="false">
                                     <div class="text-right">
                                         <i class="fas fa-user-edit text-primary mr-ico-05 d-none" id="icouser"></i>
                                         <span id="nameuser" class="text-capitalize" style="font-size:13px;"></span>
                                     </div>
                                 </a>
+                                <a class="nav-item nav-link rounded border-left-primary shadow border-top-primary border-right-primary" id="mode-night">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="modeNightCheck" value="1">
+                                        <label id="label-mode-night" class="form-check-label font-navs" for="modeNightCheck"><i id="ico-mode-night" class="fas fa-moon mr-2 ml-2"></i> Modo Oscuro</label>
+                                    </div>
+                                </a>
+                                @*<div class="switch-button">
+                                     Checkbox 
+                                    <input type="checkbox" name="switch-button" id="switch-label" class="switch-button__checkbox">
+                                     Botón 
+                                    <label for="switch-label" class="switch-button__label"></label>
+                                </div>*@
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -109,7 +127,7 @@
                                     <div class="col-md-6">
                                         <div class="text-right">
                                             <p>
-                                                <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
+                                                <b class="font-labels" id="info-fields-req-1"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
                                             </p>
                                         </div>
                                     </div>
@@ -344,9 +362,15 @@
                                         <img width="250" class="img-fluid" src="~/Content/img/form-complete.svg" alt="data-register">
                                     </div>
                                     <div class="offset-md-7 col-md-4  text-center">
-                                        <button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-gen">
-                                            Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
+                                        <button type="button" class="btn btn-primary btn-block shadow" id="btn-save-data-gen">
+                                            <span class="icon text-white-50 mr-2">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </span>
+                                            <span class="text">Continuar</span>
                                         </button>
+                                        @*<button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-gen">
+                                                Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
+                                            </button>*@
                                         <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow d-none" id="btn-save-edit-data-gen">
                                             <span class="icon text-white-50 mr-2">
                                                 <i class="fas fa-edit"></i>
@@ -354,8 +378,8 @@
                                             <span class="text">Editar</span>
                                         </button>
                                         @*<button class="btn btn-block btn-outline-success font-button d-none" id="btn-save-edit-data-gen">
-                                            Editar <i class="fas fa-edit ml-ico-05"></i>
-                                        </button>*@
+                                                Editar <i class="fas fa-edit ml-ico-05"></i>
+                                            </button>*@
                                     </div>
                                 </div>
                             </div>
@@ -365,8 +389,10 @@
                                     <div class="col-md-6">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
-                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
-                                                Registros oficiales
+                                                <b>
+                                                    <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                    Registros oficiales
+                                                </b>
                                             </h6>
                                         </div>
                                     </div>
@@ -432,8 +458,10 @@
                                     <div class="col-md-12 mb-4">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
-                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
-                                                Otros
+                                                <b>
+                                                    <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                    Otros
+                                                </b>
                                             </h6>
                                             <hr />
                                         </div>
@@ -464,9 +492,15 @@
                                         <img width="250" class="img-fluid" src="~/Content/img/form-complete.svg" alt="data-register">
                                     </div>
                                     <div class="offset-md-7 col-md-4 mt-5 text-center">
-                                        <button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-imss">
-                                            Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
+                                        <button type="button" class="btn btn-primary btn-block shadow" id="btn-save-data-imss">
+                                            <span class="icon text-white-50 mr-2">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </span>
+                                            <span class="text">Continuar</span>
                                         </button>
+                                        @*<button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-imss">
+                                                Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
+                                            </button>*@
                                         <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow d-none" id="btn-save-edit-data-imss">
                                             <span class="icon text-white-50 mr-2">
                                                 <i class="fas fa-edit"></i>
@@ -474,8 +508,8 @@
                                             <span class="text">Editar</span>
                                         </button>
                                         @*<button class="btn btn-block btn-light btn-outline-success d-none font-button" id="btn-save-edit-data-imss">
-                                            Editar <i class="fas fa-edit ml-ico-05"></i>
-                                        </button>*@
+                                                Editar <i class="fas fa-edit ml-ico-05"></i>
+                                            </button>*@
                                     </div>
                                 </div>
                             </div>
@@ -485,8 +519,10 @@
                                     <div class="col-md-6">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
-                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
-                                                Datos de ingreso
+                                                <b>
+                                                    <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                    Datos de ingreso
+                                                </b>
                                             </h6>
                                         </div>
                                     </div>
@@ -616,8 +652,10 @@
                                     <div class="col-md-12 mb-4">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
-                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
-                                                Tipo de pago
+                                                <b>
+                                                    <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                    Tipo de pago
+                                                </b>
                                             </h6>
                                             <hr />
                                         </div>
@@ -666,9 +704,15 @@
                                         <img width="250" class="img-fluid" src="~/Content/img/form-complete.svg" alt="data-register">
                                     </div>
                                     <div class="offset-md-7 col-md-4 mt-5 text-center">
-                                        <button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-nomina">
-                                            Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
+                                        <button type="button" class="btn btn-primary btn-block shadow" id="btn-save-data-nomina">
+                                            <span class="icon text-white-50 mr-2">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </span>
+                                            <span class="text">Continuar</span>
                                         </button>
+                                        @*<button class="btn btn-block btn-light col-btn-login font-button" id="btn-save-data-nomina">
+                                                Continuar <i class="fas fa-arrow-right ml-ico-05"></i>
+                                            </button>*@
                                         <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow d-none" id="btn-save-edit-data-nomina">
                                             <span class="icon text-white-50 mr-2">
                                                 <i class="fas fa-edit"></i>
@@ -676,8 +720,8 @@
                                             <span class="text">Editar</span>
                                         </button>
                                         @*<button class="btn btn-block btn-outline-success font-button d-none" id="btn-save-edit-data-nomina">
-                                            Editar <i class="fas fa-edit ml-ico-05"></i>
-                                        </button>*@
+                                                Editar <i class="fas fa-edit ml-ico-05"></i>
+                                            </button>*@
                                     </div>
                                 </div>
                             </div>
@@ -687,8 +731,10 @@
                                     <div class="col-md-6">
                                         <div class="text-left">
                                             <h6 class="col-ico font-nav-child">
-                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
-                                                Datos de la plantilla
+                                                <b>
+                                                    <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                    Datos de la plantilla
+                                                </b>
                                             </h6>
                                         </div>
                                     </div>
@@ -812,8 +858,8 @@
                                                     <span class="text">Guardar temporalmente</span>
                                                 </button>
                                                 @*<button class="btn btn-light col-btn-login btn-block font-button" id="btn-save-data-estructure">
-                                                    Guardar temporalmente <i class="fas fa-clock ml-ico-05"></i>
-                                                </button>*@
+                                                        Guardar temporalmente <i class="fas fa-clock ml-ico-05"></i>
+                                                    </button>*@
                                             </div>
                                         </div>
                                     </div>
@@ -827,8 +873,14 @@
                                                     Al seleccionar esta opción los datos se almacenarán en el sistema estando disponibles en cualquier momento que usted decida consultarlos, quedando los campos libres para iniciar otro registro.
                                                 </p>
                                                 <hr />
-                                                <button class="btn btn-light col-btn-login font-button mt-4" id="btn-save-data-all">
-                                                    Guardar registro <i class="fas fa-check ml-ico-05"></i>
+                                                @*<button class="btn btn-light col-btn-login font-button mt-4" id="btn-save-data-all">
+                                                        Guardar registro <i class="fas fa-check ml-ico-05"></i>
+                                                    </button>*@
+                                                <button type="button" class="btn btn-primary btn-block shadow" id="btn-save-data-all">
+                                                    <span class="icon text-white-50 mr-2">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span class="text">Guardar registro</span>
                                                 </button>
                                                 <button type="button" data-dismiss="modal" class="btn btn-primary btn-block shadow d-none" id="btn-save-edit-dataest">
                                                     <span class="icon text-white-50 mr-2">
@@ -837,8 +889,8 @@
                                                     <span class="text">Editar</span>
                                                 </button>
                                                 @*<button class="btn btn-outline-success font-button mt-4 d-none" id="btn-save-edit-dataest">
-                                                    Editar <i class="fas fa-edit ml-ico-05"></i>
-                                                </button>*@
+                                                        Editar <i class="fas fa-edit ml-ico-05"></i>
+                                                    </button>*@
                                             </div>
                                         </div>
                                     </div>
@@ -859,10 +911,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchdepartament" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Lista de departamentos </h5>
-                <button id="ico-close-search-departamentsadd" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-city col-ico mr-2"></i> Departamentos </h5>
+                <button id="ico-close-search-departamentsadd" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -890,8 +942,21 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerdepartament" type="button" class="btn btn-outline-success btn-sm" id="btnregisterdepartament"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-departamentsadd"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button data-toggle="modal" data-target="#registerdepartament" type="button" class="btn btn-outline-success btn-sm" id="btnregisterdepartament"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterdepartament" data-toggle="modal" data-target="#registerdepartament">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-departamentsadd">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-departamentsadd"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -899,10 +964,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchdepartamentbtn" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Lista de departamentos </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-departament-btn">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-city mr-2"></i> Departamentos </h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-departament-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -930,8 +995,24 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerdepartament" type="button" class="btn btn-outline-success btn-sm" id="btnregisterdepartamentbtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-departament-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" data-toggle="modal" data-target="#registerdepartament" id="btnregisterdepartamentbtn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+
+                @*<button data-toggle="modal" data-target="#registerdepartament" type="button" class="btn btn-outline-success btn-sm" id="btnregisterdepartamentbtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-departament-btn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-departament-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -941,10 +1022,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchlocalidad" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-briefcase mr-2 col-ico"></i> Lista de localidades</h5>
-                <button id="ico-close-search-localitys" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-map-marked-alt mr-2 col-ico"></i> Localidades</h5>
+                <button id="ico-close-search-localitys" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -973,8 +1054,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocality"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button id="btn-close-search-localitys" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocality"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+                <button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterlocality">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-localitys">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button id="btn-close-search-localitys" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -983,10 +1076,10 @@
 <!-- VENTANA MODAL PARA BUSCAR LAS LOCALIDADES MEDIENTE EL BOTON DERECHO -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchlocalidadbtn" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-map-marked-alt mr-2 col-ico"></i> Lista de localidades</h5>
-                <button id="ico-close-search-localitys-btn" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-map-marked-alt mr-2 col-ico"></i> Localidades</h5>
+                <button id="ico-close-search-localitys-btn" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1015,8 +1108,22 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocalitybtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button id="btn-close-search-localitys-btn" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" data-toggle="modal" data-target="#registerlocality" id="btnregisterlocalitybtn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                @*<button data-toggle="modal" data-target="#registerlocality" type="button" class="btn btn-outline-success btn-sm" id="btnregisterlocalitybtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-localitys-btn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button id="btn-close-search-localitys-btn" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1025,7 +1132,7 @@
 <!-- VENTANA MODAL PARA GUARDAR LOCALIDADES -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="registerlocality" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar localidad</h5>
                 <button id="ico-close-search-localitys-save" type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1117,8 +1224,22 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" type="button" class="btn btn-success shadow btn-sm" id="btnsavelocality"> <i class="fas fa-check-circle mr-2"></i> Guardar </button>
-                <button id="btn-close-search-localitys-save" type="button" class="btn btn-sm btn-danger shadow" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavelocality">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+
+                @*<button data-toggle="modal" type="button" class="btn btn-success shadow btn-sm" id="btnsavelocality"> <i class="fas fa-check-circle mr-2"></i> Guardar </button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-localitys-save">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1127,7 +1248,7 @@
 <!-- VENTANA MODAL PARA EDITAR LOCALIDADES -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="localityedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-edit mr-2 col-ico"></i> Editar localidad</h5>
                 <button id="ico-close-search-localitys-edit" type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1220,8 +1341,24 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" type="button" class="btn btn-success shadow btn-sm" id="btnsaveeditlocality"> <i class="fas fa-check-circle mr-2"></i> Guardar cambios</button>
-                <button id="btn-close-search-localitys-edit" type="button" class="btn btn-sm btn-danger shadow" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsaveeditlocality">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar cambios</span>
+                </button>
+
+                @*<button data-toggle="modal" type="button" class="btn btn-success shadow btn-sm" id="btnsaveeditlocality"> <i class="fas fa-check-circle mr-2"></i> Guardar cambios</button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-localitys-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button id="btn-close-search-localitys-edit" type="button" class="btn btn-sm btn-danger shadow" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1231,10 +1368,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchpuesto" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-briefcase mr-2 col-ico"></i> Lista de puestos</h5>
-                <button id="ico-close-search-puestosadd" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-chalkboard-teacher mr-2 col-ico"></i> Puestos</h5>
+                <button id="ico-close-search-puestosadd" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1263,8 +1400,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerpuesto" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpuesto"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button id="btn-close-search-puestosadd" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button data-toggle="modal" data-target="#registerpuesto" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpuesto"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterpuesto" data-toggle="modal" data-target="#registerpuesto">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-puestosadd">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button id="btn-close-search-puestosadd" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1272,10 +1421,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchpuestobtn" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-briefcase mr-2 col-ico"></i> Lista de puestos</h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-registerpuesto-btn">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-chalkboard-teacher mr-2 col-ico"></i> Puestos</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-registerpuesto-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1285,7 +1434,7 @@
                         <div class="offset-2 col-md-8">
                             <div class="form-group row">
                                 <label for="searchpuestokey" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i>
+                                    <i class="fas fa-terminal mr-1 col-ico"></i>
                                     Nombre puesto
                                 </label>
                                 <div class="col-md-7">
@@ -1304,8 +1453,23 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerpuesto" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpuestobtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-registerpuesto-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button data-toggle="modal" data-target="#registerpuesto" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpuestobtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterpuestobtn" data-toggle="modal" data-target="#registerpuesto">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-registerpuesto-btn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-registerpuesto-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1314,10 +1478,10 @@
 <!-- VENTANA MODAL REGISTRA PUESTO -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="registerpuesto" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar puesto</h5>
-                <button id="ico-clear-fields-job" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-job" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1386,8 +1550,21 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsavepuesto"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-job"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsavepuesto"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavepuesto">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-job">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-job"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1396,10 +1573,10 @@
 <!-- VENTANA MODAL EDITA PUESTO -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="editpuesto" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title"> <i class="fas fa-edit mr-2 col-ico"></i> Editar puesto <span id="namepuestoedi"></span> </h5>
-                <button id="ico-close-edit-job" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-close-edit-job" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1463,8 +1640,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnedipuesto"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button id="btn-close-edit-job" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnedipuesto"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnedipuesto">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar cambios</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-edit-job">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button id="btn-close-edit-job" type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1473,10 +1662,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="registerdepartament" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar departamento</h5>
-                <button id="ico-clear-fields-departament" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-departament" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1489,16 +1678,23 @@
                                 <input placeholder="Departamento" type="text" maxlength="80" id="regdepart" class="form-control form-control-sm text-uppercase" />
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label font-labels" for="descdepart">Descripción del departamento</label>
-                                <input placeholder="Descripción del departamento" maxlength="80" type="text" id="descdepart" class="form-control form-control-sm text-uppercase" />
+                                <label class="col-form-label font-labels" for="descdepart">Nombre del departamento</label>
+                                <input placeholder="Nombre del departamento" maxlength="80" type="text" id="descdepart" class="form-control form-control-sm text-uppercase" />
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="nivestuc">Nivel de estructura</label>
-                                <select tp-select="Nivel de estructura" class="form-control form-control-sm" id="nivestuc">
-                                    <option selected value="0">Selecciona</option>
-                                </select>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-new-nivel-estructure" data-toggle="modal" data-target="#newnivelestructure">
+                                            <i class="fas fa-plus"></i>
+                                        </div>
+                                    </div>
+                                    <select tp-select="Nivel de estructura" class="form-control form-control-sm" id="nivestuc">
+                                        <option selected value="0">Selecciona</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label class="col-form-label font-labels" for="nivsuptxt">Nivel superior</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -1508,7 +1704,7 @@
                                     </div>
                                     <input placeholder="Nivel superior" type="text" id="nivsuptxt" maxlength="50" class="form-control form-control-sm" readonly />
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="edifictxt">Edificio</label>
                                 <div class="input-group mb-2">
@@ -1517,14 +1713,14 @@
                                             <i class="fas fa-search"></i>
                                         </div>
                                     </div>
-                                    <input type="hidden" class="form-control form-control-sm" readonly id="edific" />
+                                    <input type="hidden" class="form-control form-control-sm" readonly id="edific" placeholder="Edificio" />
                                     <input placeholder="Edificio" type="text" id="edifictxt" maxlength="50" class="form-control form-control-sm" readonly />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label class="col-form-label font-labels" for="piso">Piso</label>
                                 <input placeholder="Piso" maxlength="3" type="text" id="piso" class="form-control form-control-sm text-uppercase" />
-                            </div>
+                            </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="ubicac">Ubicación</label>
                                 <input placeholder="Ubicación" maxlength="50" type="text" id="ubicac" class="form-control form-control-sm text-uppercase" />
@@ -1537,16 +1733,16 @@
                                             <i class="fas fa-search"></i>
                                         </div>
                                     </div>
-                                    <input type="hidden" class="form-control form-control-sm" readonly id="centrcost" />
+                                    <input type="hidden" class="form-control form-control-sm" readonly id="centrcost" placeholder="Centro de costo" />
                                     <input placeholder="Centro de costo" type="text" id="centrcosttxtr" maxlength="50" class="form-control form-control-sm" readonly />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label class="col-form-label font-labels" for="reportaa">Reporta a:</label>
                                 <select tp-select="Reporta a" class="form-control form-control-sm" id="reportaa">
                                     <option selected value="0">Selecciona</option>
                                 </select>
-                            </div>
+                            </div>*@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -1615,8 +1811,22 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsavedepartament"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-departament"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsavedepartament"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavedepartament">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-departament">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-departament"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1626,10 +1836,10 @@
 <!-- VENTANA MODAL EDITA DEPARTAMENTOS -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="editdepartament" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title"> <i class="fas fa-edit mr-2 col-ico"></i> Editar departamento: <span id="namedepartamentedi"></span> </h5>
-                <button id="ico-clear-fields-departament" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-departament" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1643,8 +1853,8 @@
                                 <input placeholder="Departamento" type="text" maxlength="80" id="edidepart" class="form-control form-control-sm text-capitalize" />
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label font-labels" for="edidescdepart">Descripción del departamento</label>
-                                <input placeholder="Descripción del departamento" maxlength="80" type="text" id="edidescdepart" class="form-control form-control-sm text-capitalize" />
+                                <label class="col-form-label font-labels" for="edidescdepart">Nombre del departamento</label>
+                                <input placeholder="Nombre del departamento" maxlength="80" type="text" id="edidescdepart" class="form-control form-control-sm text-capitalize" />
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="edinivestuc">Nivel de estructura</label>
@@ -1652,7 +1862,7 @@
                                     <option selected value="0">Selecciona</option>
                                 </select>
                             </div>
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label class="col-form-label font-labels" for="nivsuptxtedit">Nivel superior</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -1662,7 +1872,7 @@
                                     </div>
                                     <input placeholder="Nivel superior" type="text" id="nivsuptxtedit" maxlength="50" class="form-control form-control-sm" readonly />
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="edifictxt">Edificio</label>
                                 <div class="input-group mb-2">
@@ -1679,16 +1889,16 @@
                                         <option selected value="0">Selecciona</option>
                                     </select>*@
                             </div>
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label class="col-form-label font-labels" for="edipiso">Piso</label>
                                 <input placeholder="Piso" maxlength="3" type="text" id="edipiso" class="form-control form-control-sm text-capitalize" />
-                            </div>
+                            </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="ediubicac">Ubicación</label>
                                 <input placeholder="Ubicación" maxlength="50" type="text" id="ediubicac" class="form-control form-control-sm" />
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label font-labels" for="centrcosttxtr">Centro de costos nuevo inpt</label>
+                                <label class="col-form-label font-labels" for="centrcosttxtr">Centro de costos</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-centrcosts-edit" data-toggle="modal" data-target="#searchcentrscostedit">
@@ -1698,17 +1908,17 @@
                                     <input type="hidden" class="form-control form-control-sm" readonly id="centrcostedit" />
                                     <input placeholder="Centro de costo" type="text" id="centrcosttxtredit" maxlength="50" class="form-control form-control-sm" readonly />
                                 </div>
-                                <label class="col-form-label font-labels" for="edicentrcost">Centro de costo:</label>
-                                <select tp-select="Centro de costo" class="form-control form-control-sm" id="edicentrcost">
-                                    <option selected value="0">Selecciona</option>
-                                </select>
+                                @*<label class="col-form-label font-labels" for="edicentrcost">Centro de costo:</label>
+                                    <select tp-select="Centro de costo" class="form-control form-control-sm" id="edicentrcost">
+                                        <option selected value="0">Selecciona</option>
+                                    </select>*@
                             </div>
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label class="col-form-label font-labels" for="edireportaa">Reporta a:</label>
                                 <select tp-select="Reporta a" class="form-control form-control-sm" id="edireportaa">
                                     <option selected value="0">Selecciona</option>
                                 </select>
-                            </div>
+                            </div>*@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -1777,8 +1987,21 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnedidepartament"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnedidepartament"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnedidepartament">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar cambios</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -1927,10 +2150,10 @@
 <!-- VENTANA MODAL EMPLEADOS -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchemploye" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchemployelabel"> <i class="fas fa-users mr-2 col-ico"></i> Lista de empleados</h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-searchemployes-btn">
+                <h5 class="modal-title" id="searchemployelabel"> <i class="fas fa-users mr-2 col-ico"></i> Empleados</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-searchemployes-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1942,13 +2165,13 @@
                                 <div class="col-md-12 mb-3">
                                     <h6 class="text-center">Aplicar filtro</h6>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 text-center">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="filtroemp" id="filtronumber" value="numero" />
                                         <label class="form-check-label" for="filtronumber">Buscar por numero de empleado.</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 text-center">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="filtroemp" id="filtroname" value="nombre" checked />
                                         <label class="form-check-label" for="filtroname">Buscar por nombre del empleado.</label>
@@ -1956,8 +2179,8 @@
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
-                                <label for="searchemployekey" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i> <span id="labsearchemp">Nombre:</span>
+                                <label for="searchemployekey" class="col-form-label col-md-5 text-center">
+                                    <i class="fas fa-terminal mr-1 col-ico"></i> <span id="labsearchemp">Nombre:</span>
                                 </label>
                                 <div class="col-md-7">
                                     <input type="text" class="form-control form-control-sm text-uppercase" id="searchemployekey" placeholder="NOMBRE DEL EMPLEADO" onkeypress="return check(event)" />
@@ -1974,7 +2197,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-searchemployes-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-searchemployes-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-searchemployes-btn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1993,13 +2222,13 @@
 <!-- VENTANA MODAL POSICIONES -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchpositionstab" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpositionlabel">
-                    <i class="fas fa-circle mr-2 col-ico"></i>
-                    Lista de posiciones disponibles
+                    <i class="fas fa-laptop-house mr-2 col-ico"></i>
+                    Posiciones
                 </h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-positions">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-positions">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2027,8 +2256,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerposition" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpositions"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-positions"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterpositions" data-toggle="modal" data-target="#registerposition">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                @*<button data-toggle="modal" data-target="#registerposition" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpositions"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-positions">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-positions"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2038,13 +2279,13 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchpositionsadd" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpositionlabel">
-                    <i class="fas fa-circle mr-2 col-ico"></i>
-                    Lista de posiciones disponibles
+                    <i class="fas fa-laptop-house mr-2 col-ico"></i>
+                    Posiciones
                 </h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-positionsadd">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-positionsadd">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2072,7 +2313,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-positionsadd"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-positionsadd"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-positionsadd">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2081,13 +2328,13 @@
 <!-- VENTANA MODAL POSICIONES BTN -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchpositions" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpositionlabel">
-                    <i class="fas fa-circle mr-2 col-ico"></i>
-                    Lista de posiciones disponibles
+                    <i class="fas fa-laptop-house mr-2 col-ico"></i>
+                    Posiciones
                 </h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-searchpositions-btn">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-searchpositions-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2097,7 +2344,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
                                 <label for="searchpositionkeybtn" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i> Código posicion:
+                                    <i class="fas fa-terminal mr-1 col-ico"></i> Código posicion:
                                 </label>
                                 <div class="col-md-7">
                                     <input type="text" class="form-control form-control-sm text-uppercase" id="searchpositionkeybtn" placeholder="Ingresa el código" />
@@ -2115,8 +2362,24 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerposition" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpositionbtnadd"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-searchpositions-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterpositionbtnadd" data-toggle="modal" data-target="#registerposition">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+
+                @*<button data-toggle="modal" data-target="#registerposition" type="button" class="btn btn-outline-success btn-sm" id="btnregisterpositionbtnadd"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-searchpositions-btn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-searchpositions-btn"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2124,10 +2387,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="registerposition" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar posicion</h5>
-                <button id="ico-clear-fields-positions" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-positions" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2183,18 +2446,6 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="regpatcla" class="col-sm-4 col-form-label font-labels">
-                                    Registro patronal:
-                                </label>
-                                <div class="col-sm-8">
-                                    <select id="regpatcla" class="form-control form-control-sm" tp-select="Registro patronal">
-                                        <option selected value="0">Selecciona</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
                                 <label for="pueusu" class="col-sm-4 col-form-label font-labels">
                                     Localidad:
                                 </label>
@@ -2208,6 +2459,18 @@
                                         <input type="hidden" readonly id="localityr" placeholder="Localidad" class="form-control form-control-sm" />
                                         <input type="text" readonly id="localityrtxt" class="form-control form-control-sm" placeholder="Localidad" />
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="regpatcla" class="col-sm-4 col-form-label font-labels">
+                                    Registro patronal:
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="regpatcla" class="form-control form-control-sm" tp-select="Registro patronal">
+                                        <option selected value="0">Selecciona</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -2241,8 +2504,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsaveposition"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-positions"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsaveposition"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsaveposition">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-positions">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-positions"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2250,10 +2525,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="editposition" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable rounded" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-eye mr-2 col-ico"></i> Detalles de posicion: <span id="codtxtinf"></span></h5>
-                <button id="ico-clear-positions-edit" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-positions-edit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2362,7 +2637,13 @@
             </div>
             <div class="modal-footer">
                 @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsavepositionedit"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-positions-edit"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-positions-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-positions-edit"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2371,13 +2652,13 @@
 <!-- VENTANA MODAL REGIONALES BTN -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchregion" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpositionlabel">
-                    <i class="fas fa-map-signs mr-2 col-ico"></i>
+                    <i class="fas fa-house-user mr-2 col-ico"></i>
                     Regionales
                 </h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-regionales">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-regionales">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2405,8 +2686,24 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerregion" type="button" class="btn btn-outline-success btn-sm" id="btnregisterregionbtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-regionales"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterregionbtn" data-toggle="modal" data-target="#registerregion">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+
+                @*<button data-toggle="modal" data-target="#registerregion" type="button" class="btn btn-outline-success btn-sm" id="btnregisterregionbtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-regionales">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-regionales"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2415,13 +2712,13 @@
 <!-- VENTANA MODAL REGIONALES EDICION LOCALIDADES -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchregiondynamic" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpositionlabel">
-                    <i class="fas fa-map-signs mr-2 col-ico"></i>
+                    <i class="fas fa-house-user mr-2 col-ico"></i>
                     Regionales
                 </h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-regionales-dy">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-regionales-dy">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2449,8 +2746,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registerregion" type="button" class="btn btn-outline-success btn-sm" id="btnregisterregionbtndy"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-regionales-dy"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button data-toggle="modal" data-target="#registerregion" type="button" class="btn btn-outline-success btn-sm" id="btnregisterregionbtndy"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+                <button data-toggle="modal" data-target="#registerregion" id="btnregisterregionbtndy" type="button" class="btn btn-success btn-sm btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-regionales-dy">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-regionales-dy"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2459,13 +2768,13 @@
 <!-- VENTANA MODAL SUCURSALES EDICION LOCALIDADES -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchsucursalesdynamic" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpositionlabel">
                     <i class="fas fa-store-alt mr-2 col-ico"></i>
                     Sucursales
                 </h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-offices-dy">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-offices-dy">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2493,8 +2802,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registersucursal" type="button" class="btn btn-outline-success btn-sm" id="btnregistersucursalbtndy"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-offices-dy"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button data-toggle="modal" data-target="#registersucursal" type="button" class="btn btn-outline-success btn-sm" id="btnregistersucursalbtndy"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregistersucursalbtndy" data-toggle="modal" data-target="#registersucursal">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-offices-dy"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-offices-dy">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2544,10 +2865,10 @@
 
 <div class="modal fade bg-gradient" data-backdrop="static" id="registerregion" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar region</h5>
-                <button id="ico-clear-fields-region" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-region" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2570,8 +2891,24 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsaveergion"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-regiones"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsaveergion">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsaveergion"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-regiones">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-regiones"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2579,10 +2916,10 @@
 <!-- VENTANA MODAL EDITA REGIONES --->
 <div class="modal fade bg-gradient" data-backdrop="static" id="editregion" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Editar region</h5>
-                <button id="ico-clear-fields-region-edit" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-region-edit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2606,8 +2943,23 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsaveergionedit"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-regiones-edit"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsaveergionedit"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsaveergionedit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar cambios</span>
+                </button>
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-regiones-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-regiones-edit"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2616,13 +2968,13 @@
 <!-- VENTANA MODAL SUCURSALES BTN -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchsucursales" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpositionslabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchpositionlabel">
                     <i class="fas fa-store-alt mr-2 col-ico"></i>
                     Sucursales
                 </h5>
-                <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" id="ico-close-search-offices">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-offices">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2650,8 +3002,24 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-toggle="modal" data-target="#registersucursal" type="button" class="btn btn-outline-success btn-sm" id="btnregistersucursalbtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-offices"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" data-toggle="modal" data-target="#registersucursal" id="btnregistersucursalbtn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+
+                @*<button data-toggle="modal" data-target="#registersucursal" type="button" class="btn btn-outline-success btn-sm" id="btnregistersucursalbtn"> <i class="fas fa-plus mr-2"></i> Agregar nuevo</button>*@
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-offices">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-close-search-offices"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2660,10 +3028,10 @@
 <!-- VENTANA MODAL QUE REGISTRA SUCURSALES -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="registersucursal" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar sucursal</h5>
-                <button id="ico-clear-fields-sucursal" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-sucursal" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2686,8 +3054,21 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsavesucursal"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-sucursal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsavesucursal"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavesucursal">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-sucursal">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-sucursal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2696,10 +3077,10 @@
 <!-- VENTANA MODAL QUE EDITA SUCURSALES -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="editsucursal" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit mr-2 col-ico"></i> Editar sucursal</h5>
-                <button id="ico-clear-fields-sucursal-edit" type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                <button id="ico-clear-fields-sucursal-edit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2723,8 +3104,21 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-sm" id="btnsavesucursaledit"> <i class="fas fa-check mr-2"></i> Guardar </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-sucursal-edit"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-outline-success btn-sm" id="btnsavesucursaledit"> <i class="fas fa-check mr-2"></i> Guardar </button>*@
+
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavesucursaledit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-sucursal-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btn-clear-fields-sucursal-edit"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -2776,6 +3170,183 @@
     </div>
 </div>
 
+<!-- VENTANA MODAL QUE REGISTRA LOS NIVELES DE ESTRUCTURA -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="newnivelestructure" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar nivel de estructura</h5>
+                <button id="ico-clear-fields-nivestructure-save" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="nivestructure" class="col-form-label font-labels">
+                                Nivel estructura:
+                            </label>
+                            <input type="text" id="nivestructure" class="form-control form-control-sm" placeholder="Centro de costo" maxlength="2" />
+                        </div>
+                        <div class="form-group">
+                            <label for="descnivestructure" class="col-form-label font-labels">
+                                Descripcion:
+                            </label>
+                            <input type="text" id="descnivestructure" class="form-control form-control-sm" placeholder="Descripcion" maxlength="50" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavenivestructure">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-nivestructure-save">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL QUE EDITA LOS NIVELES DE ESTRUCTURA -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="editnivestructure" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit mr-2 col-ico"></i> Editar nivel de estructura</h5>
+                <button id="ico-clear-fields-nivestructure-edit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="nivestructureedit" class="col-form-label font-labels">
+                                Nivel estructura:
+                            </label>
+                            <input type="hidden" id="keynivestructureedit" class="form-control form-control-sm" placeholder=""  />
+                            <input type="text" id="nivestructureedit" class="form-control form-control-sm" placeholder="Nivel de estructura" maxlength="2" />
+                        </div>
+                        <div class="form-group">
+                            <label for="descnivestructureedit" class="col-form-label font-labels">
+                                Descripcion:
+                            </label>
+                            <input type="text" id="descnivestructureedit" class="form-control form-control-sm" placeholder="Descripcion" maxlength="50" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsaveeditestructure">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar cambios</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-nivestructure-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VENTANA MODAL QUE BUSCA Y MUESTRA LOS NIVELES DE ESTRUCTURA -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="btnsearchnivestructure" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable rounded" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-network-wired mr-2 col-ico"></i> Niveles de estructura</h5>
+                <button id="ico-close-search-niv-estructure" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="table-responsive animated fadeIn">
+                        <table class="table table-bordered" id="dataTableNivEstructure" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Nivel estructura</th>
+                                    <th>Descripcion</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Nombre grupo</th>
+                                    <th>Descripcion</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="data-nivestructure">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnnewnivestructurebtn" data-toggle="modal" data-target="#newnivelestructure">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-niv-estructure">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="modal fade bg-gradient" data-backdrop="static" id="registerdepartament" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar departamento</h5>
+                <button id="ico-clear-fields-departament" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnnewnivestructurebtn" data-toggle="modal" data-target="#newnivelestructure">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-niv-estructure">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
 <!-- VENTANA MODAL QUE EDITA LOS CENTROS DE COSTOS -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="editcentrcost" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -2826,10 +3397,10 @@
 <!-- VENTANA MODAL QUE MUESTRA LOS DEPARTAMENTOS PARA LA DIRECCION -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchdepartamentsdirec" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Departamentos </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-searchdepartament-btn">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-city mr-2"></i> Departamentos </h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-searchdepartament-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2851,12 +3422,19 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultdepartmentsnew">
                             </div>
+                            <div class="animated fadeIn" id="noresultdepartamentsnew"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-searchclosedep-btn" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-searchclosedep-btn" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-searchclosedep-btn">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2916,10 +3494,10 @@
 <!-- VENTANA MODAL QUE MUESTRA LOS CENTROS DE COSTO PARA REGISTRAR UN NUEVO DEPARTAMENTO -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchcentrscost" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Centros de costo </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-centrcost">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-store mr-2"></i> Centros de costo </h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-centrcost">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2941,12 +3519,25 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultcentrcosts">
                             </div>
+                            <div class="animated fadeIn" id="noresultscentrcostsearch1"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-centrcost" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-centrcost" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
+                <button data-toggle="modal" data-target="#registercentrcost" type="button" class="btn btn-success btn-sm btn-icon-split" id="regcentrcostndep">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Agregar nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-centrcost">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2955,10 +3546,10 @@
 <!-- VENTANA MODAL QUE MUESTRA LOS CENTROS DE COSTO AL EDITAR UN DEPARTAMENTO -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchcentrscostedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary rounded">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Centros de costo </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-centrcost-edit">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-centrcost-edit">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -2986,7 +3577,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-centrcost-edit" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-centrcost-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2995,10 +3591,10 @@
 <!-- VENTANA MODAL QUE MUESTRA LOS EDIFICIOS PARA REGISTRAR UN NUEVO DEPARTAMENTO -->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchedific" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Edificios </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-edifics">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-edifics">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3020,12 +3616,19 @@
                         <div class="offset-1 col-md-10">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultedifics">
                             </div>
+                            <div class="animated fadeIn" id="noresultsedifics1"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-edifics" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-edifics">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-edifics" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>*@
             </div>
         </div>
     </div>
@@ -3034,10 +3637,10 @@
 <!-- VENTANA MODAL QUE MUESTRA LOS EDIFIOCS AL EDITAR UN DEPARTAMENTO-->
 <div class="modal fade bg-gradient" data-backdrop="static" id="searchedificedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary rounded">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-building mr-2"></i> Edificios </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-search-edifics-edit">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-edifics-edit">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3065,7 +3668,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-close-search-edifics-edit" data-dismiss="modal"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-edifics-edit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
             </div>
         </div>
     </div>
@@ -3079,10 +3687,12 @@
 <script type="text/javascript" src="~/Scripts/main/regionales.js"></script>
 <script type="text/javascript" src="~/Scripts/main/branchoffices.js"></script>
 <script type="text/javascript" src="~/Scripts/main/departments.js"></script>
+<script type="text/javascript" src="~/Scripts/main/estructura.js"></script>
 <script type="text/javascript" src="~/Scripts/main/localitys.js"></script>
 <script type="text/javascript" src="~/Scripts/main/centrcost.js"></script>
 <script type="text/javascript" src="~/Scripts/main/savedatageneral.js"></script>
 <script type="text/javascript" src="~/Scripts/main/employes.js"></script>
+<script src="~/Scripts/main/modenight.js"></script>
 <script type="text/javascript">
     $(function () {
         setTimeout(() => {
@@ -3097,6 +3707,19 @@
                         } else {
                             document.getElementById('banuse').disabled = true;
                             document.getElementById('cunuse').disabled = true;
+                        }
+                    }
+                }
+            }
+            const getDataGenTab = JSON.parse(localStorage.getItem('objectTabDataGen'));
+            if (JSON.parse(localStorage.getItem('objectTabDataGen')) != null) {
+                for (i in getDataGenTab) {
+                    if (getDataGenTab[i].key == "general") {
+                        if (getDataGenTab[i].data.codpost != "") {
+                            document.getElementById('btn-verif-codpost').removeAttribute("disabled");
+                            document.getElementById('btn-verif-codpost').classList.add("btn-info");
+                        } else {
+                            document.getElementById('btn-verif-codpost').disabled = true;
                         }
                     }
                 }

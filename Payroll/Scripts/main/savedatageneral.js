@@ -595,7 +595,7 @@
     fsavedatanomina = () => {
         let banco;
         if (banuse.value == "0") {
-            banco = 94;
+            banco = 999;
         } else {
             banco = banuse.value;
         }
@@ -934,13 +934,30 @@
         }
     }
 
-    btnsavedataall.addEventListener('click', fsavedataall);
+
+    btnsavedataall.addEventListener('click', () => {
+        $.ajax({
+            url: "../SaveDataGeneral/ValidateEmployeeReg",
+            type: "POST",
+            data: { fieldCurp: curp.value, fieldRfc: rfc.value },
+            success: (data) => {
+                if (data.Bandera === true && data.MensajeError === "none") {
+                    fsavedataall();
+                } else {
+                    fshowtypealert('Atención', 'Los datos del curp y rfc ya se encuentran registrados', 'warning', curp, 0);
+                    fclearlocsto();
+                }
+            }, error: (jqXHR, exception) => {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+    });
 
     fsaveeditdatastructure = () => {
         var acepta = 0;
         let banco;
         if (banuse.value == "0") {
-            banco = 94;
+            banco = 999;
         } else {
             banco = banuse.value;
         }

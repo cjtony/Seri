@@ -138,6 +138,12 @@ input {
 
 .flotante-clear {
     position: fixed;
+    bottom: 470px;
+    right: 20px;
+}
+
+.flotante0 {
+    position: fixed;
     bottom: 420px;
     right: 20px;
 }
@@ -255,4 +261,53 @@ span > .paginate_button {
     height: 3.5rem;
     width: 3.5rem;
     font-size: 1.35rem;
+}
+
+/* BOTON SWTICH */
+:root {
+    --color-green: #00a878;
+    --color-red: #fe5e41;
+    --color-button: #fdffff;
+    --color-black: #000;
+}
+
+.switch-button {
+    display: inline-block !important;
+}
+
+.switch-button .switch-button__checkbox {
+    display: none !important;
+}
+
+.switch-button .switch-button__label {
+    background-color: var(--color-red) !important;
+    width: 5rem !important;
+    height: 3rem !important;
+    border-radius: 3rem !important;
+    display: inline-block !important;
+    position: relative !important;
+}
+
+.switch-button .switch-button__label:before {
+    transition: .2s !important;
+    display: block !important;
+    position: absolute !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    background-color: var(--color-button) !important;
+    content: '' !important;
+    border-radius: 50% !important;
+    box-shadow: inset 0px 0px 0px 1px var(--color-black) !important;
+}
+
+.switch-button .switch-button__checkbox:checked + .switch-button__label {
+    background-color: var(--color-green) !important;
+}
+
+.switch-button .switch-button__checkbox:checked + .switch-button__label:before {
+    transform: translateX(2rem) !important;
+}
+
+.bg-inpt-mode-night {
+    background-color: #c6c6c6 !important;
 }

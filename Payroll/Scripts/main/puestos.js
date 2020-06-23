@@ -299,7 +299,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpuestos.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} - ${data[i].sNombrePuesto} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="feditdatapuesto(${data[i].iIdPuesto})"></i> </button>`;
+                                resultpuestos.innerHTML += `<button onclick="feditdatapuesto(${data[i].iIdPuesto})" class="animated fadeIn border-left-primary list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} - ${data[i].sNombrePuesto} <i class="fas fa-edit ml-2 text-warning fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultsjobs1').innerHTML = `
@@ -547,7 +547,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpuestosadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectpuestopos(${data[i].iIdPuesto},'${data[i].sNombrePuesto}')"></i> </button>`;
+                                resultpuestosadd.innerHTML += `<button  onclick="fselectpuestopos(${data[i].iIdPuesto},'${data[i].sNombrePuesto}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultsjobs2').innerHTML = `

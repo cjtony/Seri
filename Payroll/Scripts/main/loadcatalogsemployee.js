@@ -282,10 +282,12 @@
                     }
                     if (quantity > 0) {
                         for (let i = 0; i < data.length; i++) {
-                            if (typerd == data[i].iId) {
-                                tipper.innerHTML += `<option selected value="${data[i].iId}">${data[i].sValor}</option>`;
-                            } else {
-                                tipper.innerHTML += `<option value="${data[i].iId}">${data[i].sValor}</option>`;
+                            if (data[i].iId == 0 || data[i].iId == 2 ||data[i].iId == 3) {
+                                if (typerd == data[i].iId) {
+                                    tipper.innerHTML += `<option selected value="${data[i].iId}">${data[i].sValor}</option>`;
+                                } else {
+                                    tipper.innerHTML += `<option value="${data[i].iId}">${data[i].sValor}</option>`;
+                                }
                             }
                         }
                     } else {

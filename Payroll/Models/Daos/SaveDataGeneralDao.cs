@@ -131,6 +131,33 @@ namespace Payroll.Models.Daos
     }
     public class EmpleadosDao : Conexion
     {
+
+        public EmpleadosBean sp_Empleados_Validate_DatosImss(int keyemp, string fieldCurp, string fieldRfc, int keyUser)
+        {
+            EmpleadosBean employeeBean = new EmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Empleados_Validate_DatosImss", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
+                cmd.Parameters.Add(new SqlParameter("@Curp", fieldCurp));
+                cmd.Parameters.Add(new SqlParameter("@Rfc", fieldRfc));
+                cmd.Parameters.Add(new SqlParameter("@IdUsuario", keyUser));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    employeeBean.sMensaje = (data["Respuesta"].ToString() == "notexists") ? "continue" : data["Respuesta"].ToString();
+                } else {
+                    employeeBean.sMensaje = "nodata";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                employeeBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return employeeBean;
+        }
+
         public EmpleadosBean sp_Empleados_Insert_Empleado(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, string nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, int usuario, int keyemp, string tipsan, string fecmat)
         {
             EmpleadosBean empleadoBean = new EmpleadosBean();
