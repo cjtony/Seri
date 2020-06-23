@@ -729,7 +729,8 @@ namespace Payroll.Models.Daos
                 while (data.Read())
                 {
                     TabIncidenciasBean lista = new TabIncidenciasBean();
-
+                    lista.Incidencia_id = int.Parse(data["Incidencia_id"].ToString());
+                    lista.IncidenciaP_id = int.Parse(data["IncidenciaP_id"].ToString());
                     lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
                     lista.VW_TipoIncidencia_id = data["VW_Tipo_Incidencia_id"].ToString();
                     lista.Cantidad = int.Parse(data["Cantidad"].ToString());
@@ -777,6 +778,34 @@ namespace Payroll.Models.Daos
                     lista.Numero_dias = int.Parse(data["Numero_dias"].ToString());
 
                     list.Add(lista);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
+        public List<string> sp_TRegistro_Incidencias_Delete_Incidencias(int Incidencias_id, int IncidenciaP_id)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TRegistro_Incidencias_Delete_Incidencias", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlIncidencia_id", Incidencias_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlIncidenciaP_id", IncidenciaP_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sMensaje"].ToString());
                 }
             }
             else

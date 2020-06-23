@@ -607,14 +607,11 @@
 
     }
     //mostrarModalNuevoPeriodo 
-    addRegistroFechasPeriodos = () => {
-        //Swal.fire({
-        //    icon: 'success',
-        //    title: 'Se va agregar!',
-        //    timer: '1000'
-        //});
+    mostrarModalNuevoPeriodo = (Empresa_id,Anio) => {
         llenaMinAnios();
         $("#modalAgregarFechaPeriodo").modal("show");
+        $("#inanio").val(Anio);
+        $("#inEmpresa_id").val(Empresa_id);
     }
 
     addNewPolitica = () => {
@@ -632,8 +629,8 @@
     });
 
     // Guardar Fecha - Periodo
-    $("#btnsavefechaperiodo").on("click", function () {
-
+    //$("#btnsavefechaperiodo").on("click", function () {
+    savenew = () => { 
         var form = document.getElementById("frmAddFechasPeriodos");
         if (form.checkValidity() === false) {
 
@@ -647,7 +644,7 @@
             var infproceso = document.getElementById("infproceso");
             var infpago = document.getElementById("infpago");
             var indiaspago = document.getElementById("indiaspago");
-            var inEmpresa_id = document.getElementById("Empresa_id_editar");
+            var inEmpresa_id = document.getElementById("inEmpresa_id");
             $.ajax({
                 url: "../Catalogos/SaveNewPeriodo",
                 type: "POST",
@@ -690,7 +687,9 @@
                 }
             });
         }
-    });
+    }
+    //});
+
     // Guardar nueva politica
     $("#btnsavenewpolitica").on("click", function () {
         var form = document.getElementById("frmnewPolitica");

@@ -23,8 +23,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-
-                    console.log(data[0]["iFlag"]);
+                    //console.log(data[0]["iFlag"]);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -54,7 +53,7 @@
             document.getElementById("inConcepto_incidencia").innerHTML = "<option class='' value=''> Selecciona </option>"
             for (var i = 0; i < data.length; i++) {
                 document.getElementById("inConcepto_incidencia").innerHTML += "<option class='' value='" + data[i]["Ren_incid_id"] + "'> " + data[i]["Descripcion"] + "</option>";
-                console.log(data[i]["Descripcion"]);
+                //console.log(data[i]["Descripcion"]);
             }
         }
     });
@@ -63,10 +62,10 @@
         ren_incidencia.value = concepto_incidencia.value;
         console.log(ren_incidencia.value);
         if (ren_incidencia.value == '71') {
-            console.log("si");
+            //console.log("si");
             $("#inCantidad").attr("placeholder","#");
         } else {
-            console.log("no");
+            //console.log("no");
             $("#inCantidad").attr("placeholder", "$ 0000.00");
         }
     });
@@ -76,7 +75,7 @@
         if (form.checkValidity() == false) {
             setTimeout( () => {
                 form.classList.add("was-validated");
-                console.log("no valido");
+               //console.log("no valido");
             }, 5000);
         } else {
             
@@ -97,7 +96,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
+                    //console.log(data);
                     if (data[0] == '0') {
                         Swal.fire({
                             icon: 'danger',
@@ -136,7 +135,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
+               // console.log(data);
                 createTab();
                 document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "";
                 $("#modalLiveSearchEmpleado").modal("hide");
@@ -153,10 +152,60 @@
                 console.log(data);
                 document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tabIncidenciasBody").innerHTML += "<tr><td>" + data[i]["Nombre_Renglon"] + "</td><td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td><td class='text-center'>" + data[i]["Cantidad"] + "</td><td class='text-center'>" + data[i]["Plazos"] + "</td><td class='text-center'>" + data[i]["Descripcion"] + "</td><td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td><td class='text-center'><div class=' badge badge-danger btn'><i class='fas fa-minus'></i></div></td></tr>";
+                    document.getElementById("tabIncidenciasBody").innerHTML += "<tr><td>" + data[i]["Nombre_Renglon"] + "</td><td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td><td class='text-center'>" + data[i]["Cantidad"] + "</td><td class='text-center'>" + data[i]["Plazos"] + "</td><td class='text-center'>" + data[i]["Descripcion"] + "</td><td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td><td class='text-center'><div class=' badge badge-danger btn' onclick='deleteIncidencia("+data[i]["Incidencia_id"]+","+data[i]["IncidenciaP_id"]+");'><i class='fas fa-minus'></i></div></td></tr>";
                 }
             }
         });
+
+    }
+    deleteIncidencia = (Incidencia_id, IncidenciaP_id) => {
+        Swal.fire({
+            title: 'Quieres eliminar la incidencia?',
+            text: "No podras recuperarla!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#A52A0F',
+            cancelButtonColor: 'secondary',
+            confirmButtonText: 'Eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "POST",
+                    data: JSON.stringify({ Incidencia_id: Incidencia_id, IncidenciaP_id: IncidenciaP_id }),
+                    url: "../Incidencias/DeleteIncidencia",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (data) => {
+                        if (data[0] = 0) {
+                            Swal.fire(
+                                'Error!',
+                                data[1],
+                                'warning'
+                            );
+                        } else {
+                            Swal.fire(
+                                'Borrado!',
+                                data[1],
+                                'success'
+                            );
+                            createTab();
+                        }
+                        
+                    }
+                });
+
+
+                
+            }
+        });
+
+
+
+
+        
+
+
 
     }
 

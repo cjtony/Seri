@@ -561,7 +561,8 @@ namespace Payroll.Models.Beans
         public int Numero_dias { get; set; }
     }
     public class TabIncidenciasBean
-    {
+    {   public int Incidencia_id { get; set; }
+        public int IncidenciaP_id { get; set; }
         public string Nombre_Renglon { get; set; }
         public string VW_TipoIncidencia_id { get; set; }
         public int Cantidad { get; set; }

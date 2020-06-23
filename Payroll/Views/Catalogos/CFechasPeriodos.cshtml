@@ -1,6 +1,9 @@
-﻿<div class="col-md-10 container font-labels">
+﻿<div class="col-md-10 container font-labels bg-white p-4 shadow shadow-lg">
     <div class="col-md-12 ">
-        <div class="col-md-12">Fechas - Periodos</div>
+        <div class="col-md-12 d-flex justify-content-between">
+            <span class="h5">Fechas - Periodos</span>
+        </div>
+        
         <hr class="col-md-12" />
         <table class="table table-sm table-striped table-fechas-periodos col-md-12">
             <thead>
@@ -25,6 +28,8 @@
         </table>
         <input type="hidden" id="editar_empresa_id" value="" />
         <input type="hidden" id="editar_id" value="" />
+        <input type="hidden" id="add_anio" value="" />
+        <input type="hidden" id="add_empresa_id" value="" />
     </div>
 </div>
 <!-- Modal Editar Fechas - Periodos-->
@@ -81,17 +86,20 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Agregar <span class="text-danger h5">Fecha - Periodo</span></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Agregar <span class="h5">Fecha - Periodo</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="frmAddFechasPeriodos" method="post" class="row">
-
+                    <div class="form-group col-md-4">
+                        <label>Empresa</label>
+                        <input class="form-control form-control-sm" type="text" id="inEmpresa_id" name="inEmpresa_id" readonly required />
+                    </div>
                     <div class="form-group col-md-4">
                         <label>Año</label>
-                        <input class="form-control form-control-sm" type="number" id="inano" name="inano" min="" required />
+                        <input class="form-control form-control-sm input-number" type="text" id="inano" name="inano" min="" readonly required />
                     </div>
                     <div class="form-group col-md-4">
                         <label>Periodo</label>
@@ -121,7 +129,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnsavefechaperiodo" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                <button id="btnsavefechaperiodo" onclick="savenew();" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
             </div>
         </div>
     </div>
