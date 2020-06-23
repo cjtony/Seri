@@ -6,6 +6,8 @@
     var leyenda_incidencia = document.getElementById("inLeyenda");
     var referencia_incidencia = document.getElementById("inReferencia");
     var fecha_incidencia = document.getElementById("inFechaA");
+    var infinicio = document.getElementById("infinicio");
+    var inffinal = document.getElementById("inffinal");
 
     $("#modalLiveSearchEmpleado").modal("show");
 
@@ -63,11 +65,16 @@
         console.log(ren_incidencia.value);
         if (ren_incidencia.value == '71') {
             //console.log("si");
-            $("#inCantidad").attr("placeholder","#");
+            $("#lblCantidad").html("Dias");
+            $("#inCantidad").attr("placeholder", "#");
+            $("#collapsefechas").collapse("show");
         } else {
             //console.log("no");
+            $("#lblCantidad").html("Cantidad");
             $("#inCantidad").attr("placeholder", "$ 0000.00");
+            $("#collapsefechas").collapse("hide");
         }
+
     });
     //GUARDAR INCIDENCIA
     $("#btnSaveIncidencias").on("click", function () {
@@ -91,7 +98,9 @@
                     inPlazos: plazos_incidencia.value,
                     inLeyenda: leyenda_incidencia.value,
                     inReferencia: referencia_incidencia.value,
-                    inFechaA: fecha_incidencia.value
+                    inFechaA: fecha_incidencia.value,
+                    infinicio: infinicio.value,
+                    inffinal: inffinal.value
                     }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",

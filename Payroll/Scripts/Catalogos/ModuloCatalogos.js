@@ -625,13 +625,14 @@
     }
     // Reinicia el formulario de agregado de fechas periodo
     $('#modalAgregarFechaPeriodo').on('hidden.bs.modal', function (e) {
-        document.getElementById("frmAddFechasPeriodos").reset();
+        document.getElementById("frmNewFechasPeriodos").reset();
     });
 
     // Guardar Fecha - Periodo
-    //$("#btnsavefechaperiodo").on("click", function () {
-    savenew = () => { 
-        var form = document.getElementById("frmAddFechasPeriodos");
+    $("#btnsavefechaperiodo").on("click", function () {
+    //savenew = () => { 
+        console.log("si entra");
+        var form = document.getElementById("frmNewFechasPeriodos");
         if (form.checkValidity() === false) {
 
             form.classList.add("was-validated");
@@ -680,15 +681,15 @@
                         });
                         editarFechasPeriodos(inEmpresa_id.value);
                         $("#modalAgregarFechaPeriodo").modal("hide");
-                        document.getElementById("frmAddFechasPeriodos").reset();
+                        document.getElementById("frmNewFechasPeriodos").reset();
                     }
 
 
                 }
             });
         }
-    }
-    //});
+    //}
+    });
 
     // Guardar nueva politica
     $("#btnsavenewpolitica").on("click", function () {
@@ -1036,6 +1037,8 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
+                $(".collapse").collapse("hide");
+                $("#modalEditarFechaPeriodo").modal("hide");
             }
         });
 
