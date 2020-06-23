@@ -13,6 +13,30 @@ namespace Payroll.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult ValidateEmployeeReg(string fieldCurp, string fieldRfc)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            EmpleadosBean employeeBean = new EmpleadosBean();
+            EmpleadosDao  employeeDaoD = new EmpleadosDao();
+            try {
+                int keyemp   = int.Parse(Session["IdEmpresa"].ToString());
+                int keyUser  = 0;
+                employeeBean = employeeDaoD.sp_Empleados_Validate_DatosImss(keyemp, fieldCurp.Trim(), fieldRfc.Trim(), keyUser);
+                if (employeeBean.sMensaje != "continue") {
+                    messageError = employeeBean.sMensaje;
+                }
+                if (employeeBean.sMensaje == "continue") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag          = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
         //Guarda los datos de puesto
         [HttpPost]
         public JsonResult SaveDataPuestos(int typeregpuesto, string regcodpuesto, string regpuesto, string regdescpuesto, int proffamily, int clasifpuesto, int regcolect, int nivjerarpuesto, int perfmanager, int tabpuesto)

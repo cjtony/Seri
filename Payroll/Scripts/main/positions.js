@@ -265,7 +265,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpositions.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectposition(${data[i].iIdPosicion})"></i> </button>`;
+                                resultpositions.innerHTML += `<button onclick="fselectposition(${data[i].iIdPosicion})" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultpositions').innerHTML = `
@@ -378,7 +378,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpositionsadd.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombreE} <i class="fas fa-check-circle ml-2 col-ico fa-lg" onclick="fselectpositionadd(${data[i].iIdPosicion}, '${data[i].sNombreE}', ${data[i].iEmpresa_id})"></i> </button>`;
+                                resultpositionsadd.innerHTML += `<button onclick="fselectpositionadd(${data[i].iIdPosicion}, '${data[i].sNombreE}', ${data[i].iEmpresa_id})" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombreE} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultpositions2').innerHTML = `
@@ -546,6 +546,8 @@
                     type: "POST",
                     data: { clvposition: paramid },
                     success: (data) => {
+                        console.log(data);
+                        alert('entrando');
                         $("#editposition").modal('show');
                         clvposition.value = data.iIdPosicion;
                         codtxtinf.textContent = data.sPosicionCodigo;
@@ -594,7 +596,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultpositionsbtn.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back" title="Detalles">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-eye ml-2 col-ico fa-lg" onclick="fviewdatailspos(${data[i].iIdPosicion})"></i> </button>`;
+                                resultpositionsbtn.innerHTML += `<button onclick="fviewdatailspos(${data[i].iIdPosicion})" class="animated fadeIn border-left-primary list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back" title="Detalles">${number}. ${data[i].sPosicionCodigo} - ${data[i].sNombrePuesto} <i class="fas fa-eye ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultpositions3').innerHTML = `

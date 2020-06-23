@@ -1,5 +1,6 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -201,6 +202,52 @@ namespace Payroll.Controllers
             int usuario = int.Parse(Session["iIdUsuario"].ToString());
             sucursalBean = sucursalDao.sp_Sucursales_Insert_Sucursales(desc, clav, usuario);
             return Json(sucursalBean);
+        }
+
+        [HttpPost]
+        public JsonResult SaveNivEstructure(string nivEstructure, string descNEstructure)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            NivelEstructuraBean nivEstructureBean = new NivelEstructuraBean();
+            NivelEstructuraDao  nivEstructureDaoD = new NivelEstructuraDao();
+            try {
+                int keyuser       = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                int keyemp        = int.Parse(Session["IdEmpresa"].ToString());
+                nivEstructureBean = nivEstructureDaoD.sp_NivelEstructura_Insert_NivEstructura(keyemp, nivEstructure.Trim(), descNEstructure.Trim(), keyuser);
+                if (nivEstructureBean.sMensaje != "SUCCESS") {
+                    messageError = nivEstructureBean.sMensaje;
+                }
+                if (nivEstructureBean.sMensaje == "SUCCESS") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult EditNivEstructure(int keyNivEstructure, string nivEstructure, string descNivEstructure)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            NivelEstructuraBean nivEstructureBean = new NivelEstructuraBean();
+            NivelEstructuraDao  nivEstructureDaoD = new NivelEstructuraDao();
+            try {
+                nivEstructureBean = nivEstructureDaoD.sp_NivelEstructura_Update_NivEstructura(keyNivEstructure, nivEstructure, descNivEstructure);
+                if (nivEstructureBean.sMensaje != "SUCCESS") {
+                    messageError = nivEstructureBean.sMensaje;
+                }
+                if (nivEstructureBean.sMensaje == "SUCCESS") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
         }
     }
 }

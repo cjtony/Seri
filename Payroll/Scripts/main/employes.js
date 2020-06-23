@@ -607,11 +607,10 @@
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
                                 resultemployekey.innerHTML += `
-                                    <button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">
+                                    <button onclick="fselectemploye(${data[i].iIdEmpleado}, '${data[i].sNombreEmpleado}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back border-left-primary">
                                         ${number}. ${data[i].iIdEmpleado} - ${data[i].sNombreEmpleado}
                                        <span>
-                                             <i title="Editar" class="fas fa-edit ml-2 text-warning fa-lg shadow" onclick="fselectemploye(${data[i].iIdEmpleado}, '${data[i].sNombreEmpleado}')"></i> 
-                                             <i title="Reporte" class="fas fa-eye ml-2 col-ico fa-lg shadow" onclick="fviewdetailsemploye(${data[i].iIdEmpleado})"></i>
+                                             <i title="Editar" class="fas fa-edit ml-2 text-warning fa-lg shadow"></i> 
                                        </span>
                                     </button>`;
                             }

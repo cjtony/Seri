@@ -99,7 +99,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultregionales.innerHTML += `<button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sClaveRegional} <i class="fas fa-edit ml-2 text-warning fa-lg" onclick="fselectregional(${data[i].iIdRegional})"></i> </button>`;
+                                resultregionales.innerHTML += `<button onclick="fselectregional(${data[i].iIdRegional})" class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back animated fadeIn border-left-primary">${number}. - ${data[i].sClaveRegional} <i class="fas fa-edit ml-2 text-warning fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultsregionales1').innerHTML = `

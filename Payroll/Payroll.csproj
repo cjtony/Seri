@@ -893,6 +893,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\login.js" />
     <Content Include="Scripts\main\Empresas.js" />
+    <Content Include="Scripts\main\estructura.js" />
     <Content Include="Scripts\main\formValidation.js" />
     <Content Include="Scripts\main\Incidencias.js" />
     <Content Include="Scripts\main\IncidenciasProg.js" />
@@ -906,6 +907,8 @@
     <Content Include="Scripts\main\localitys.js" />
     <Content Include="Scripts\main\main.js" />
     <Content Include="Scripts\Catalogos\ModuloCatalogos.js" />
+    <Content Include="Scripts\main\modenight.js" />
+    <Content Include="Scripts\main\ModuloCatalogos.js" />
     <Content Include="Scripts\main\PensionesAlimenticias.js" />
     <Content Include="Scripts\main\positions.js" />
     <Content Include="Scripts\main\puestos.js" />
