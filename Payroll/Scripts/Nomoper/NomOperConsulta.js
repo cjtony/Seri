@@ -5,17 +5,22 @@
     var DeNombre = document.getElementById('DeNombre');
     var DeCancelados = document.getElementById('DeCancelados');
     var dato;
+    console.log('empresa selecionada');
+    var empresaSelect = document.getElementById("btnNameEmpresaSelected").innerHTML; 
+
 
     // declaracion de Botone
 
-    const BAgregar = document.getElementById('BAgregar');
+    //const BAgregar = document.getElementById('BAgregar');
     const BActu = document.getElementById('BActu');
+    const btnFloAgre = document.getElementById('btnFloAgre');
     //const BEliminar = document.getElementById('BEliminar');
 
     // Funcion llena listbox con los nombres de la definicion
 
     FlistNombreDef = () => {
-
+       
+       
         $.ajax({
             url: "../Nomina/ListadoNomDefinicion",
             type: "POST",
@@ -64,9 +69,25 @@
                 $("#TpDefinicion").jqxGrid(
                     {
                         width: 980,
-
                         source: dataAdapter,
+                        selectionmode: 'multiplerowsextended',
+                        sortable: true,
+                        pageable: true,
+                        autoheight: true,
+                        autoloadstate: false,
+                        autosavestate: false,
                         columnsresize: true,
+                        showtoolbar: true,
+                        rendertoolbar: function (statusbar) {
+                            var container = $("<div style='overflow: hidden; position: relative; height: 100%; width: 100%;'></div>");
+                            statusbar.append(container);
+                            container.append("<input id='actbut' type='button'title='Actualizar' data-toggle='modal' data-target='#AgregarDefinicion' ></div>");
+                            $("#actbut").jqxButton({ template: "link", width: 60, height: 35, imgSrc: "../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png" });
+                            $("#actbut").on('click', function () {
+                                $("#BActu").click();
+                            });
+
+                        },
                         columns: [
                             { text: 'No. Registro', datafield: 'iIdDefinicionhd', width: 50 },
                             { text: 'Nombre de Definición', datafield: 'sNombreDefinicion', width: 230 },
@@ -103,8 +124,7 @@
         }
     };
     BActu.addEventListener('click', botonActu);
-
-
+    BActu.style.visibility = 'hidden';
     // Fucion llena grid dependiendo que seleccionen en listBox DeNombre
 
     FRecargaGrip = () => {
@@ -158,7 +178,6 @@
     $('#DeNombre').change(function () {
 
         FRecargaGrip();
-
         $("#TpDefinicion").jqxGrid('clearselection');
 
     });
@@ -205,8 +224,8 @@
 
     };
 
-    BAgregar.addEventListener('click', FAgrega);
-
+    //BAgregar.addEventListener('click', FAgrega);
+    btnFloAgre.addEventListener('click', FAgrega);
     // pantalla de agregar definicion
 
     //    declaracion de variables
@@ -353,16 +372,44 @@
                         ]
                 };
 
-
-
                 var dataAdapter = new $.jqx.dataAdapter(source);
 
                 $("#TbPercepciones").jqxGrid(
                     {
                         width: 980,
-
                         source: dataAdapter,
+                        selectionmode: 'multiplerowsextended',
+                        sortable: true,
+                        pageable: true,
+                        autoheight: true,
+                        autoloadstate: false,
+                        autosavestate: false,
                         columnsresize: true,
+                        showtoolbar: true,
+                        rendertoolbar: function (statusbar) {
+                            var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                            var addButton = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                            var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                            var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                            container.append(addButton);
+                            container.append(ActuButton);
+                            container.append(DeletButton);
+                            statusbar.append(container);
+                            addButton.jqxButton({ template: "link", width: 40, height: 25 });
+                            ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                            DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+                            addButton.click(function (event) {
+                                $("#BAgregarPer").click();
+                            });
+                            ActuButton.click(function (event) {
+                                $("#BActuPer").click();
+                            });
+                            DeletButton.click(function (event) {
+                                $("#BEliminarPer").click();
+                            });
+
+
+                        },
                         columns: [
                             { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
                             { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
@@ -622,15 +669,14 @@
         btnAgregarPercep.style.visibility = 'hidden';
         btnActualizarPercep.style.visibility = 'visible';
         for (var i = 0; i < RegEmpresa.length; i++) {
+            
             if (RegEmpresa.options[i].text == DatoEmpresa) {
                 // seleccionamos el valor que coincide
                 RegEmpresa.selectedIndex = i;
             }
 
         }
-        console.log('empresa');
         var opvalEmpresa = RegEmpresa.value;
-        console.log(opvalEmpresa);
         const dataSend = { IdEmpresa: opvalEmpresa, iElemntoNOm: 1 };
         console.log(dataSend);
         $("#RegRenglon").empty();
@@ -687,8 +733,6 @@
         var op = RegEmpresa.options[RegEmpresa.selectedIndex].text;
         var opval = RegEmpresa.value;
         const dataSend2 = { IdEmpresa: opval };
-
-
         $("#RegTipoperiodo1").empty();
         $('#RegTipoperiodo1').append('<option value="0" selected="selected">Selecciona</option>');
         $.ajax({
@@ -767,7 +811,8 @@
     };
 
     BActuPer.addEventListener('click', botonActuPer);
-
+    BActuPer.style.visibility = 'hidden';
+    BAgregarPer.style.visibility = 'hidden';
     $("#TbPercepciones").on('rowselect', function (event) {
         var args = event.args;
         var row = $("#TbPercepciones").jqxGrid('getrowdata', args.rowindex);
@@ -938,14 +983,60 @@
 
 
     BEliminarPer.addEventListener('click', FDeleteDefinicionNLPer)
-
+    BEliminarPer.style.visibility = 'hidden'
     FVisualizacionBotones = () => {
         btnAgregarPercep.style.visibility = "visible";
         btnActualizarPercep.style.visibility = "hidden";
+        for (var i = 0; i < RegEmpresa.length; i++) {
+            var datoempresa= RegEmpresa.options[i].text ;
+               separador = " ",
+                limite = 2,
+                arreglosubcadena = datoempresa.split(separador, limite);
+            if (arreglosubcadena[1] == empresaSelect) {
+                // seleccionamos el valor que coincide
+                RegEmpresa.selectedIndex = i;
+            }
+
+        }
+        var opvalEmpresa = RegEmpresa.value;
+        const dataSend = { IdEmpresa: opvalEmpresa, iElemntoNOm: 1 };
+        $("#RegRenglon").empty();
+        $('#RegRenglon').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisRenglon",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    console.log('imprimerenglon');
+                    document.getElementById("RegRenglon").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sNombreRenglon}</option>`;
+                }        
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+        var opval = RegEmpresa.value;
+        const dataSend2 = { IdEmpresa: opval };
+        $("#RegTipoperiodo1").empty();
+        $('#RegTipoperiodo1').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisTipPeriodo",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("RegTipoperiodo1").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
+                }
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
     };
 
     BAgregarPer.addEventListener('click', FVisualizacionBotones);
-
+    BAgregarPer.style.visibility = 'hidden';
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
         Swal.fire({
@@ -1017,7 +1108,36 @@
                     {
                         width: 980,
                         source: dataAdapter,
+                        selectionmode: 'multiplerowsextended',
+                        sortable: true,
+                        pageable: true,
+                        autoheight: true,
+                        autoloadstate: false,
+                        autosavestate: false,
                         columnsresize: true,
+                        showtoolbar: true,
+                        rendertoolbar: function (statusbar) {
+                            var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                            var addButton2 = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                            var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                            var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                            container.append(addButton2);
+                            container.append(ActuButton2);
+                            container.append(DeletButton2);
+                            statusbar.append(container);
+                            addButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                            ActuButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                            DeletButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                            addButton2.click(function (event) {
+                                $("#BAgregardedu2").click();
+                            });
+                            ActuButton2.click(function (event) {
+                                $("#BActudedu").click();
+                            });
+                            DeletButton2.click(function (event) {
+                                $("#BEliminardedu").click();
+                            });
+                        },
                         columns: [
                             { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
                             { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
@@ -1193,7 +1313,7 @@
     };
 
     BEliminardedu.addEventListener('click', FDeleteDefinicionNLdedu)
-
+    BEliminardedu.style.visibility = 'hidden';
 
     // Funcion llenado el drop list de periodo de dedudcion
 
@@ -1535,16 +1655,64 @@
 
     };
     BActudedu.addEventListener('click', FActualizaboton);
-
+    BActudedu.style.visibility = 'hidden';
     // Funcion desaprece el boton de actualizar y aparece el boton de agregar
     Fagregarboton = () => {
 
         btnAgregarDedu.style.visibility = "visible";
         btnActualizarDedu.style.visibility = "hidden";
+        for (var i = 0; i < RegEmpresade.length; i++) {
+            var datoempresa = RegEmpresade.options[i].text;
+                separador = " ",
+                limite = 2,
+                arreglosubcadena = datoempresa.split(separador, limite);
+            if (arreglosubcadena[1] == empresaSelect) {
+                // seleccionamos el valor que coincide
+                RegEmpresade.selectedIndex = i;
+            }
+
+        };
+        var opvalEmpresa = RegEmpresaDe.value;
+        const dataSend = { IdEmpresa: opvalEmpresa, iElemntoNOm: 2 };
+        $("#RegRenglonDe").empty();
+        $('#RegRenglonDe').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+
+            url: "../Nomina/LisRenglon",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("RegRenglonDe").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sNombreRenglon}</option>`;
+                }           
+
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+        var opvalde = RegEmpresaDe.value;
+        const dataSend2 = { IdEmpresa: opvalde };
+        $("#RegTipoperiodoDe").empty();
+        $('#RegTipoperiodoDe').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisTipPeriodo",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("RegTipoperiodoDe").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
+                }   
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
 
     };
 
     BAgregardedu2.addEventListener('click', Fagregarboton);
+    BAgregardedu2.style.visibility = 'hidden';
 
     /// valores seleccionados en tablaDedu
 
