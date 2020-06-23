@@ -20,7 +20,6 @@
             type: "POST",
             data: dataSend,
             success: (data) => {
-                console.log(data);
                 var source =
                 {
                     localdata: data,
@@ -56,7 +55,6 @@
                         pagerButtonsCount: 10,
                         columnsResize: true,
                         pagerButtonsCount: 8,
-                    
                         columns: [
                             { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
                             { text: 'Renglon', datafield: 'iIdRenglon', width: 300 },
