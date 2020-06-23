@@ -238,5 +238,13 @@ namespace Payroll.Controllers
             res = Dao.sp_TIncidencias_Programadas_Retrieve_Incidencias_Programadas(Empresa_id, Periodo);
             return Json(res);
         }
+        [HttpPost]
+        public JsonResult DeleteIncidencia(int Incidencia_id, int IncidenciaP_id)
+        {
+            List<string> res;
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            res = Dao.sp_TRegistro_Incidencias_Delete_Incidencias(Incidencia_id,IncidenciaP_id);
+            return Json(res);
+        }
     }
 }

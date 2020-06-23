@@ -1,9 +1,5 @@
 ﻿$(document).ready(function () {
-
-
-
     // Carga el contenido del las tablas del menu \\
-
     function loadNavTable() {
         try {
             $.ajax({
@@ -31,10 +27,7 @@
             }
         }
     }
-
     loadNavTable();
-
-    
 });
 
 

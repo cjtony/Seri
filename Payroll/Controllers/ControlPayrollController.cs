@@ -20,50 +20,49 @@ namespace Payroll.Controllers
             }
         }
 
-        [HttpPost]
-        public JsonResult LoadMenu()
-        {
-            List<PermisosBean> permBean;
-            MenuDao menDao = new MenuDao();
-            int usuSesion = int.Parse(Session["iIdUsuario"].ToString());
-            permBean = menDao.sp_Menu_Retrieve_Permisos_Usuario_Menu(usuSesion);
-            string ad = "Sin entrar", nom = "Sin entrar", inc = "Sin entrar", kio = "Sin entrar", rh = "Sin entrar";
-            foreach (var item in permBean)
-            {
-                if (item.sPerfil == "Administrador")
-                {
-                    ad = "Entro";
-                    Session["Administrador"] = 1;
-                }
-                else { Session["Administrador"] = 0; }
-                if (item.sPerfil == "Nomina")
-                {
-                    nom = "Entro";
-                    Session["Nomina"] = 1;
-                }
-                else { Session["Nomina"] = 0; }
-                if (item.sPerfil == "Incidencias")
-                {
-                    inc = "Entro";
-                    Session["Incidencias"] = 1;
-                }
-                else { Session["Incidencias"] = 0; }
-                if (item.sPerfil == "Kiosko")
-                {
-                    kio = "Entro";
-                    Session["Kiosko"] = 1;
-                }
-                else { Session["Kiosko"] = 0; }
-                if (item.sPerfil == "RH")
-                {
-                    rh = "Entro";
-                    Session["RH"] = 1;
-                }
-                else { Session["RH"] = 0; }
-            }
-            var data = new { admin = ad, nomina = nom, incidencia = inc, kiosko = kio, rh };
-            return Json(data);
-        }
+        //[HttpPost]
+        //public JsonResult LoadMenu()
+        //{
+        //    List<PermisosBean> permBean;
+        //    MenuDao menDao = new MenuDao();
+        //    int usuSesion = int.Parse(Session["iIdUsuario"].ToString());
+        //    permBean = menDao.sp_Menu_Retrieve_Permisos_Usuario_Menu(usuSesion);
+        //    foreach (var item in permBean)
+        //    {
+        //        if (item.sPerfil == "Administrador")
+        //        {
+        //            ad = "Entro";
+        //            Session["Administrador"] = 1;
+        //        }
+        //        else { Session["Administrador"] = 0; }
+        //        if (item.sPerfil == "Nomina")
+        //        {
+        //            nom = "Entro";
+        //            Session["Nomina"] = 1;
+        //        }
+        //        else { Session["Nomina"] = 0; }
+        //        if (item.sPerfil == "Incidencias")
+        //        {
+        //            inc = "Entro";
+        //            Session["Incidencias"] = 1;
+        //        }
+        //        else { Session["Incidencias"] = 0; }
+        //        if (item.sPerfil == "Kiosko")
+        //        {
+        //            kio = "Entro";
+        //            Session["Kiosko"] = 1;
+        //        }
+        //        else { Session["Kiosko"] = 0; }
+        //        if (item.sPerfil == "RH")
+        //        {
+        //            rh = "Entro";
+        //            Session["RH"] = 1;
+        //        }
+        //        else { Session["RH"] = 0; }
+        //    }
+        //    var data = new { admin = ad, nomina = nom, incidencia = inc, kiosko = kio, rh };
+        //    return Json(data);
+        //}
 
         [HttpPost]
         public JsonResult MenuInit()
@@ -75,7 +74,6 @@ namespace Payroll.Controllers
             string nav = "<nav class='nav nav-pills flex-column flex-sm-row sticky-top' >";
             string tabnav = "<div class='tab-content'>";
             string subnavs = "<ul class='nav nav-tabs flex-column flex-sm-row ' id='menuTab' role='tablist'>";
-
             int i = 1;
             foreach (var item in MmenuBean)
             {
