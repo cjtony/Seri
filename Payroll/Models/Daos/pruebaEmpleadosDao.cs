@@ -136,10 +136,9 @@ namespace Payroll.Models.Daos
                     listEmpleados.Fecha_Aniversario = data["FechaAntiguedad"].ToString();
                     listEmpleados.Id_Per_Vac_Ln = int.Parse(data["IdPer_Vac_Ln"].ToString());
                     listEmpleados.Anio = int.Parse(data["Anio"].ToString());
-                    listEmpleados.DiasPrima = int.Parse(data["DiasPrima"].ToString());
-                    listEmpleados.DiasDisfrutados = int.Parse(data["DiasDisfrutados"].ToString());
-                    listEmpleados.DiasRestantes = int.Parse(data["DiasRestantes"].ToString());
-
+                    listEmpleados.DiasPrima = (data["DiasPrima"].ToString().Length > 0) ? int.Parse(data["DiasPrima"].ToString()) : 0;
+                    listEmpleados.DiasDisfrutados = (data["DiasDisfrutados"].ToString().Length > 0) ? int.Parse(data["DiasDisfrutados"].ToString()) : 0;
+                    listEmpleados.DiasRestantes = (data["DiasRestantes"].ToString().Length > 0) ? int.Parse(data["DiasRestantes"].ToString()) : 0;
                     list.Add(listEmpleados);
                 }
             }

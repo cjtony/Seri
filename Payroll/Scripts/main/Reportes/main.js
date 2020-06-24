@@ -120,6 +120,7 @@
                         let lengthData = data.Datos.length;
                         let dataLength = 0;
                         for (let i = 0; i < data.Datos.length; i++) {
+                            console.log(data.Datos[i]);
                             if (type == "table") {
                                 document.getElementById('data-groupbusiness').innerHTML += `
                                 <tr>

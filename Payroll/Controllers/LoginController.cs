@@ -55,6 +55,9 @@ namespace Payroll.Controllers
             Session.Remove("Profile");
             Session.Remove("sEmpresa");
             Session.Remove("IdEmpresa");
+            Session.Contents.RemoveAll();
+            Session.Clear();
+            Session.Abandon();
             return Redirect("../Home/Index");
         }
 

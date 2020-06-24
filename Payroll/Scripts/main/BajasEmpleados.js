@@ -63,6 +63,8 @@
     MostrarDatosEmpleado = (idE) => {
         
         var txtIdEmpleado = { "IdEmpleado": idE };
+        console.log(typeof txtIdEmpleado);
+        console.log(txtIdEmpleado);
         $.ajax({
             url: "../Empleados/SearchEmpleado",
             type: "POST",
