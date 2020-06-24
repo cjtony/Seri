@@ -21,6 +21,65 @@ $(function () {
 
     // *-* DECLARACION DE FUNCIONES *-* \\
 
+    // Funcion que captura los errores que ajax pueda obtener \\
+
+    fcaptureaerrorsajax = (jq, exc) => {
+        let msg = "";
+        if (jq.status === 0) {
+            msg = "No conectado. \n Verifica tu conexión de red.";
+        } else if (jq.status === 404) {
+            msg = 'Página solicitada no encontrada. [404]';
+        } else if (jq.status == 500) {
+            msg = 'Error interno del servidor [500].';
+        } else if (exc === 'parsererror') {
+            msg = 'El análisis JSON solicitado falló.';
+        } else if (exc === 'timeout') {
+            msg = 'Error de tiempo de espera.';
+        } else if (exc === 'abort') {
+            msg = 'Solicitud de Ajax abortada.';
+        } else {
+            msg = 'Error no detectado.\n' + jq.responseText;
+        }
+        console.log(msg);
+    }
+
+    // FUNCION QUE LIMPIA LOS VALORES
+    fClearValues = () => {
+        try {
+            $.ajax({
+                url: "./ClearValues",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+                    //btnlogin.disabled = true;
+                },
+                success: (data) => {
+                    if (data.Bandera != true) {
+                        alert('Accion invalida');
+                    }
+                    //else 
+                    //{ 
+                    //}
+                    //btnlogin.disabled = false;
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    fClearValues();
+
     // FUNCION QUE MUESTRA ALERTAS AL USUARIO DEPENDIENDO LA ACCION QUE SE REALIZE \\
 
     fshowalerts = (icon, title, text, element, validate, success) => {
