@@ -147,14 +147,26 @@
                         }
                     }
                     if (quantity > 0) {
-                        for (i = 0; i < data.length; i++) {
-                            if (fieldval == data[i].iId) {
-                                element.innerHTML += `<option selected value="${data[i].iId}">${data[i].sValor}</option>`;
-                            } else {
-                                if (data[i].sValor == 'SOLTERO') {
+                        if (element.id == "tipemp") {
+                            for (i = 0; i < data.length; i++) {
+                                if (data[i].iId === 75 || data[i].iId === 76 || data[i].iId === 77 || data[i].iId === 155 || data[i].iId === 156) {
+                                    if (fieldval == data[i].iId) {
+                                        element.innerHTML += `<option selected value="${data[i].iId}">${data[i].sValor}</option>`;
+                                    } else {
+                                        element.innerHTML += `<option value="${data[i].iId}">${data[i].sValor}</option>`;
+                                    }
+                                }
+                            }
+                        } else {
+                            for (i = 0; i < data.length; i++) {
+                                if (fieldval == data[i].iId) {
                                     element.innerHTML += `<option selected value="${data[i].iId}">${data[i].sValor}</option>`;
                                 } else {
-                                    element.innerHTML += `<option value="${data[i].iId}">${data[i].sValor}</option>`;
+                                    if (data[i].sValor == 'SOLTERO') {
+                                        element.innerHTML += `<option selected value="${data[i].iId}">${data[i].sValor}</option>`;
+                                    } else {
+                                        element.innerHTML += `<option value="${data[i].iId}">${data[i].sValor}</option>`;
+                                    }
                                 }
                             }
                         }
