@@ -149,7 +149,16 @@ namespace Payroll.Controllers
                     dataTable.Locale            = System.Threading.Thread.CurrentThread.CurrentCulture;
                     dataTable                   = reportDao.sp_Datos_Reporte_Altas_Empleado_Fechas(typeOption, keyOptionSel, dateE, dateS);
                     using (ExcelPackage excel = new ExcelPackage()) {
-
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        int columnsDataTable  = dataTable.Columns.Count + 1;
+                        var worksheet         = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                        for (var i = 1; i < columnsDataTable; i++) {
+                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                            worksheet.Cells[1, i].Style.Font.Bold = true;
+                            worksheet.Cells[1, i].Style.WrapText = true;
+                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                        }
                         FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
                         excel.SaveAs(excelFile);
                         flag = true;
