@@ -908,7 +908,6 @@
     <Content Include="Scripts\main\main.js" />
     <Content Include="Scripts\Catalogos\ModuloCatalogos.js" />
     <Content Include="Scripts\main\modenight.js" />
-    
     <Content Include="Scripts\main\PensionesAlimenticias.js" />
     <Content Include="Scripts\main\positions.js" />
     <Content Include="Scripts\main\puestos.js" />
@@ -1003,6 +1002,7 @@
     <Content Include="Views\Catalogos\VistaRenglones.cshtml" />
     <Content Include="Views\Catalogos\GruposEmpresas.cshtml" />
     <Content Include="Views\Catalogos\CGruposEmpresas.cshtml" />
+    <Content Include="Views\Catalogos\CBancos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

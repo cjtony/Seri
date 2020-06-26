@@ -220,5 +220,12 @@ namespace Payroll.Controllers
             var data = new { data = RP };
             return Json(data);
         }
+        public JsonResult UpdateGrupo(string Empresa_id,string Grupo_id)
+        {
+            List<string> Bean;
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            Bean = Dao.sp_CEmpresas_Update_GrupoEmpresas(Empresa_id,Grupo_id);
+            return Json(Bean);
+        }
     }
 }

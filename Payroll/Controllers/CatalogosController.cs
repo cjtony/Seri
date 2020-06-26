@@ -97,7 +97,10 @@ namespace Payroll.Controllers
         public PartialViewResult VistaRenglones() {
             return PartialView();
         }
-
+        public PartialViewResult CBancos()
+        {
+            return PartialView();
+        }
         [HttpPost]
         public JsonResult LoadFechasPeriodos()
         {
@@ -307,5 +310,7 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Periodo(Empresa_id, editid, editano, editperiodo, editfinicio, editffinal, editfproceso, editfpago, editdiaspago);
             return Json(Lista);
         }
+        //[HttpPost]
+        //public JsonResult LoadEmpresasBancos
     }
 }

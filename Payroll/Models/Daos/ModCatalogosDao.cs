@@ -26,19 +26,10 @@ namespace Payroll.Models.Daos
                     while (data.Read())
                     {
                         InicioFechasPeriodoBean Bean = new InicioFechasPeriodoBean();
-                        Bean.id = data["Id"].ToString();
                         Bean.Empresa_id = data["Empresa_id"].ToString();
                         Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
-                        Bean.Anio = data["Anio"].ToString();
                         Bean.Tipo_Periodo_Id = data["Tipo_Periodo_Id"].ToString();
                         Bean.DescripcionTipoPeriodo = data["DescripcionTipoPeriodo"].ToString();
-                        Bean.Periodo = data["Periodo"].ToString();
-                        Bean.Fecha_Inicio = data["Fecha_Inicio"].ToString();
-                        Bean.Fecha_Final = data["Fecha_Final"].ToString();
-                        Bean.Fecha_Proceso = data["Fecha_Proceso"].ToString();
-                        Bean.Fecha_Pago = data["Fecha_Pago"].ToString();
-                        Bean.Dias_Efectivos = data["Dias_Efectivos"].ToString();
-
                         listBean.Add(Bean);
                     }
                 }

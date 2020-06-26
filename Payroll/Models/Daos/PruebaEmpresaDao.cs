@@ -843,5 +843,34 @@ namespace Payroll.Models.Daos
 
             return periodo;
         }
+        public List<string> sp_CEmpresas_Update_GrupoEmpresas(string Empresa_id, string Grupo_id)
+        {
+            List<string> res = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_CEmpresas_Update_GrupoEmpresas", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlGrupo_id", Grupo_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    res.Add(data["iFlag"].ToString());
+                    res.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                res = null;
+            }
+            data.Close();
+
+            return res;
+        }
     }
 }

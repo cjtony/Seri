@@ -1,5 +1,6 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -49,6 +50,9 @@ namespace Payroll.Controllers
         }
         public ActionResult Logout()
         {
+            Console.WriteLine("---------numero de variables----------");
+            Console.WriteLine(Session.Count);
+            Console.WriteLine("---------numero de variables----------");
             Session.Remove("iIdUsuario");
             Session.Remove("sUsuario");
             Session.Remove("Administrador");
