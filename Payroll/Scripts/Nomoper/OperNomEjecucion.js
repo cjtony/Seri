@@ -41,6 +41,10 @@
     //const btnVerNomina = document.getElementById('btnVerNomina');
     const EmpresaNom = document.getElementById('EmpresaNom');
     const BntBusRecibo = document.getElementById('btnFloBuscar');
+    const jqxdropdown = document.getElementById('jqxdropdownbutton');
+    const LanombreDef = document.getElementById('LanombreDef');
+    const NombEmpre = document.getElementById('NombEmpre');
+    const EjeEmpresa = document.getElementById('EjeEmpresa');
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
@@ -61,6 +65,23 @@
     var NoEmpleado;
 
     // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
+
+    LisEmpresa = () => {
+
+        $.ajax({
+            url: "../Nomina/LisEmpresas",
+            type: "POST",
+            data: JSON.stringify(),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("EjeEmpresa").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+                }
+            }
+        });
+
+    };
+    LisEmpresa();
 
     FLlenaGrid = () => {
 
@@ -373,8 +394,6 @@
                RosTabCountCalculo = data.length;
                var dato = data[0].sMensaje;
                 if (dato == "No hay datos") {
-                   
-            
                     $.ajax({
                         url: "../Nomina/Statusproc",
                         type: "POST",
@@ -400,8 +419,7 @@
                             }
                          
                         },
-                    });                 
-     
+                    });                     
                 }
 
                 if (dato == "success") {
@@ -678,7 +696,7 @@
                    // Procesos de Ejecucion 
 
     Fejecucion = () => {
-          
+        seconds = 60;
         IdDropList;
         AnioDropList;
         TipodePeridoDroplip = TxbTipoPeriodo.value;
@@ -705,8 +723,8 @@
                         type: "POST",
                         data: dataSend2,
                         success: (data) => {
-                            FLimpiaCamp();
-          
+                            FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip );
+                          
                         }
                     });
 
@@ -978,7 +996,7 @@
     FLlenaGrid2();
 
                 // define tamaño del droplist
-
+    $("#switchButton").jqxSwitchButton({ width: 60, height: 25 });
     $("#jqxdropdownbutton2").jqxDropDownButton({
         width: 600, height: 30
     });
@@ -1419,10 +1437,10 @@
         });
 
     });
+    
 
-
-                 // muestra calculos de nomina del empleado
-
+    // muestra calculos de nomina del empleado
+    
 
     FBusNom = () => {
         console.log('buscar recibo');
@@ -1462,7 +1480,7 @@
                 $("#TbCalculosNom").jqxGrid(
                     {
                         theme: 'bootstrap',
-                        width: 750,
+                        width: 870,
                         height: 200,
                         source: dataAdapter,
                         //groupable: true,
@@ -1474,9 +1492,8 @@
                         statusbarheight: 25,
                         //groups: ['price'],
                         columns: [
-                            { text: 'Concepto', datafield: 'sConcepto', width: 300 },
-                            {
-                                text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                            { text: 'Concepto', datafield: 'sConcepto', width: 250 },
+                            { text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1485,16 +1502,14 @@
                                     }
 
                                 },
-
-                                aggregatesrenderer: function (aggregates, column, element) {
+                               aggregatesrenderer: function (aggregates, column, element) {
 
                                     var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
                                     return renderstring;
 
                                 }},
-                            {
-                                text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                            { text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1689,10 +1704,45 @@
         if (seconds > 1) {
             seconds--;
             $(".timer").text(seconds);
+
         } else {
             clearInterval(interval);
             $("#timerNotification").jqxNotification("closeLast");
+            $(".timer").text(60);
+            TipodePeridoDroplip = TxbTipoPeriodo.value;
+            periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+            separador = " ",
+            limite = 2,
+            arreglosubcadena2 = periodo.split(separador, limite);
+            FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
         }
 
     }, 1000);
+
+    $('#switchButton').on('change', function (event) {
+        var checked = $('#switchButton').jqxSwitchButton('checked');
+       
+        if (checked == true)
+        {
+            console.log('desaparese' + checked);
+            jqxdropdown.style.visibility = 'hidden';
+            LanombreDef.style.visibility = 'hidden';
+            NombEmpre.style.visibility = 'visible';
+            EjeEmpresa.style.visibility = 'visible';
+        }
+        if (checked == false) {
+            jqxdropdown.style.visibility = 'visible';
+            LanombreDef.style.visibility = 'visible';
+            NombEmpre.style.visibility = 'hidden';
+            EjeEmpresa.style.visibility = 'hidden';
+        }
+  });
+
+
+
+
+
 });
+
+
+
