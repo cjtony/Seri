@@ -34,16 +34,16 @@
         "paginate": {
             "first": "Primero",
             "last": "Ultimo",
-            "next": "<button class='ml-2 btn btn-sm btn-primary'>Siguiente </button>",
-            "previous": "<button class='mr-2 btn btn-sm btn-primary'>Anterior</button>"
+            "next": "Siguiente",
+            "previous": "Anterior"
         }
     };
 
-    setTimeout(() => {
-        $("#table-test").DataTable({
-            language: spanish
-        });
-    }, 2000)
+    //setTimeout(() => {
+    //    $("#table-test").DataTable({
+    //        language: spanish
+    //    });
+    //}, 2000)
 
     /**
      * Funciones
@@ -72,7 +72,11 @@
                 type: "POST",
                 data: {},
                 success: (data) => {
+                    console.log('Datos bancarios');
+                    console.log(data);
                     if (data.Bandera == true && data.MensajeError == "none") {
+                        const dataLength = data.DatosBancos.length;
+                        let lengthData = 0;
                         for (let i = 0; i < data.DatosBancos.length; i++) {
                             tableDataBank.innerHTML += `
                                 <tr>
@@ -81,20 +85,29 @@
                                     <td>${data.DatosBancos[i].sNumeroCliente}</td>
                                     <td>${data.DatosBancos[i].sNumeroCuenta}</td>
                                     <td>${data.DatosBancos[i].sNumeroPlaza}</td>
-                                    <td class="text-center">${data.DatosBancos[i].iGeneraInterface}</td>
-                                    <td class="text-center"><button class="btn btn-warning btn-sm text-white" onclick="fShowDetailsBank(${data.DatosBancos[i].iIdBanco}, '${data.DatosBancos[i].sNombreBanco}', ${data.DatosBancos[i].sNumeroCliente}, ${data.DatosBancos[i].sNumeroCuenta}, ${data.DatosBancos[i].sNumeroPlaza}, ${data.DatosBancos[i].sClabe}, ${data.DatosBancos[i].iCodigoBanco}, ${data.DatosBancos[i].iGeneraInterface})"> <i class="fas fa-file"></i></button></td>
+                                    <td class="text-center">${data.DatosBancos[i].sValor}</td>
+                                    <td class="text-center"><button class="btn btn-warning btn-sm text-white"> <i class="fas fa-file"></i></button></td>
                                 </tr>
                             `;
+                            lengthData += 1;
                         }
+                        if (dataLength == lengthData) {
+                            setTimeout(() => {
+                                $("#table-test").DataTable({
+                                    language: spanish
+                                });
+                            }, 1000);
+                        }
+                        //<td class="text-center"><button class="btn btn-warning btn-sm text-white" onclick="fShowDetailsBank(${data.DatosBancos[i].iIdBanco}, '${data.DatosBancos[i].sNombreBanco}', ${data.DatosBancos[i].sNumeroCliente}, ${data.DatosBancos[i].sNumeroCuenta}, ${data.DatosBancos[i].sNumeroPlaza}, ${data.DatosBancos[i].sClabe}, ${data.DatosBancos[i].iCodigoBanco}, ${data.DatosBancos[i].iGeneraInterface})"> <i class="fas fa-file"></i></button></td>
                     } else {
-                        Swal.fire({
-                            title: "Ocurrio un error", text: "Reporte el problema al area de TI indicando el siguiente código: #CODERRfLoadTableDataBanksDATABANKDIS# ", icon: "error",
-                            showClass: { popup: 'animated fadeInDown faster' },
-                            hideClass: { popup: 'animated fadeOutUp faster' },
-                            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false
-                        }).then((acepta) => {
-                            location.reload();
-                        });
+                        //Swal.fire({
+                        //    title: "Ocurrio un error", text: "Reporte el problema al area de TI indicando el siguiente código: #CODERRfLoadTableDataBanksDATABANKDIS# ", icon: "error",
+                        //    showClass: { popup: 'animated fadeInDown faster' },
+                        //    hideClass: { popup: 'animated fadeOutUp faster' },
+                        //    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false
+                        //}).then((acepta) => {
+                        //    location.reload();
+                        //});
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);

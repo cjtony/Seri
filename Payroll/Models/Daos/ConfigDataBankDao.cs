@@ -26,14 +26,18 @@ namespace Payroll.Models.Daos
                     {
                         lDataTableBean.Add(new LoadDataTableBean
                         {
-                            iIdBanco = Convert.ToInt32(data["banco"].ToString()),
-                            sNombreBanco = data["descripcion"].ToString(),
-                            sNumeroCliente = data["num_cliente"].ToString(),
-                            sNumeroCuenta = data["num_cta_empresa"].ToString(),
-                            sNumeroPlaza = data["plaza"].ToString(),
-                            sClabe = data["clabe"].ToString(),
-                            iGeneraInterface = Convert.ToInt32(data["genera_interface"].ToString()),
-                            iCodigoBanco = Convert.ToInt32(data["codigo_banco"].ToString())
+                            iIdBancoEmpresa = Convert.ToInt32(data["idBanco_emp"].ToString()),
+                            iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString()),
+                            iIdBanco = Convert.ToInt32(data["Banco_id"].ToString()),
+                            sNombreBanco = data["Descripcion"].ToString(),
+                            sNumeroCliente = data["Num_cliente"].ToString(),
+                            sNumeroCuenta = data["Num_Cta_Empresa"].ToString(),
+                            sNumeroPlaza = data["Plaza"].ToString(),
+                            sClabe = data["Clabe"].ToString(),
+                            sCancelado = data["Cancelado"].ToString(),
+                            iCodigoBanco = Convert.ToInt32(data["codigo"].ToString()),
+                            iCg_tipo_dispersion = Convert.ToInt32(data["Cg_tipo_dispercion"].ToString()),
+                            sValor = data["Valor"].ToString()
                         });
                     }
                 }

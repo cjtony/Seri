@@ -1149,5 +1149,27 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, TipoAccion = typeAction });
         }
 
+        [HttpPost]
+        public JsonResult ConfirmPaidSuccess(int keySettlement)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
+            BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
+            try {
+                downEmployeeBean = downEmployeeDaoD.sp_Finiquito_UpdateEstatus_Pagado(keySettlement);
+                if (downEmployeeBean.sMensaje != "SUCCESS") {
+                    messageError = downEmployeeBean.sMensaje;
+                }
+                if (downEmployeeBean.sMensaje == "SUCCESS") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
     }
 }

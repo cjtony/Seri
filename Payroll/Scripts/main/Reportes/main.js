@@ -389,7 +389,7 @@
                     `;
                 } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP") {
                     contentParameters.innerHTML += `
-                        <div class="row mt-3 animated fadeInDown">
+                        <div class="row mt-3 animated fadeInDown"> 
                             <div class="col-md-4 offset-2">
                                 <div class="form-group">
                                     <label class="col-form-label font-labels">Fecha inicio</label> ${parameterDateS}
@@ -549,6 +549,8 @@
                     fGenerateReportPayroll(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "ALTAEMP") {
                     fGenerateReportEmployeesUp(optionBusiness, keyBusinessOpt);
+                } else if (typeReport === "BAJA_FEC") {
+                    fGenerateReportEmployeesDown(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -569,6 +571,56 @@
         }
     }
 
+    // Funcion que desabilita los botones
+    fDisabledButtonsRep = () => {
+        document.getElementById('txtBtnGR').textContent       = "Generando...";
+        document.getElementById('btnGenerateReport').disabled = true;
+        document.getElementById('btnGenerateReport').classList.remove('btn-primary');
+        document.getElementById('btnGenerateReport').classList.add('btn-info');
+        selectOneBusiness.disabled   = true;
+        selectGroupBusiness.disabled = true;
+        typeReportselect.disabled    = true;
+        oneRadioBusiness.disabled    = true;
+        groupRadioBusiness.disabled  = true;
+    }
+
+    // Funcion que habilita los botones
+    fEnabledButtonsRep = () => {
+        btnClearParamsReports.disabled = false;
+        document.getElementById('txtBtnGR').textContent = "Generar Reporte";
+        document.getElementById('btnGenerateReport').disabled = true;
+        document.getElementById('btnGenerateReport').classList.remove('btn-info');
+        document.getElementById('btnGenerateReport').classList.add('btn-primary');
+    }
+
+    // Funcion que muestra el apartado de descarga del archivo
+    fShowContentDownloadFile = (element, folder, file) => {
+        element.innerHTML += `
+                <div class="card border-left-success shadow h-100 py-2 animated fadeIn">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Completado</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/Content/Reportes/${folder}/${file}" download="${file}"><i class="fas fa-download fa-2x text-gray-300"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        console.log('Desde funcion')
+    }
+
     // Funcion que genera el reporte de la hoja de calculo
     fGenerateReportPayroll = async (option, keyOption) => {
         try {
@@ -579,48 +631,16 @@
                     type: "POST",
                     data: { typeOption: option, keyOptionSel: parseInt(keyOption), periodActually: parseInt(period) },
                     beforeSend: (evt) => {
-                        document.getElementById('txtBtnGR').textContent       = "Generando...";
-                        document.getElementById('btnGenerateReport').disabled = true;
-                        document.getElementById('btnGenerateReport').classList.remove('btn-primary');
-                        document.getElementById('btnGenerateReport').classList.add('btn-info');
-                        selectOneBusiness.disabled   = true;
-                        selectGroupBusiness.disabled = true;
-                        typeReportselect.disabled    = true;
+                        fDisabledButtonsRep();
                     }, success: (data) => {
                         setTimeout(() => {
                             if (data.Bandera === true && data.MensajeError === "none") {
-                                console.log(data);
-                                contentGenerateRep.innerHTML += `<div class="card border-left-success shadow h-100 py-2 animated fadeIn">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Completado</div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <a href="/Content/Reportes/${data.Folder}/${data.Archivo}" download="${data.Archivo}"><i class="fas fa-download fa-2x text-gray-300"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>`;
+                                fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
                             } else {
                                 alert('Algo fallo al realizar el reporte');
                                 location.reload();
                             }
-                            btnClearParamsReports.disabled = false;
-                            document.getElementById('txtBtnGR').textContent       = "Generar Reporte";
-                            document.getElementById('btnGenerateReport').disabled = true;
-                            document.getElementById('btnGenerateReport').classList.remove('btn-info');
-                            document.getElementById('btnGenerateReport').classList.add('btn-primary');
+                            fEnabledButtonsRep();
                         }, 2000);
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -645,32 +665,104 @@
 
     // Funcion que genera el reporte de las altas de empleados en un periodo
     fGenerateReportEmployeesUp = async (option, keyOption) => {
-        if (option != "" && parseInt(keyOption) > 0) {
-            const paramDateS = document.getElementById('paramDateS');
-            const paramDateE = document.getElementById('paramDateE');
-            if (paramDateS.value != "") {
-                if (paramDateE.value != "") {
-                    await $.ajax({
-                        url: "../Reportes/ReportEmployeesUp",
-                        type: "POST",
-                        data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateS: paramDateS.value, dateE: paramDateE.value },
-                        beforeSend: () => {
-                            console.log('Generando');
-                        }, success: (data) => {
-                            console.log(data);
-                        }, error: (jqXHR, exception) => {
-                            fcaptureaerrorsajax(jqXHR, exception);
-                        }
-                    });
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDateS = document.getElementById('paramDateS');
+                const paramDateE = document.getElementById('paramDateE');
+                if (paramDateS.value != "") {
+                    if (paramDateE.value != "") {
+                        await $.ajax({
+                            url: "../Reportes/ReportEmployeesUp",
+                            type: "POST",
+                            data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateS: paramDateS.value, dateE: paramDateE.value },
+                            beforeSend: () => {
+                                fDisabledButtonsRep();
+                            }, success: (data) => {
+                                setTimeout(() => {
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    fEnabledButtonsRep();
+                                }, 2000);
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+                    } else {
+                        fShowTypeAlert('Atención', 'Complete el campo Fecha final', 'warning', paramDateE, 2);
+                    }
                 } else {
-                    fShowTypeAlert('Atención', 'Complete el campo Fecha final', 'warning', paramDateE, 2);
+                    fShowTypeAlert('Atención', 'Complete el campo Fecha inicio', 'warning', paramDateS, 2);
                 }
             } else {
-                fShowTypeAlert('Atención', 'Complete el campo Fecha inicio', 'warning', paramDateS, 2);
+                alert('Accion invalida');
+                location.reload();
             }
-        } else {
-            alert('Accion invalida');
-            location.reload();
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de bajas de los empleados por rango de fechas
+    fGenerateReportEmployeesDown = async (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDateS = document.getElementById('paramDateS');
+                const paramDateE = document.getElementById('paramDateE');
+                if (paramDateS.value != "") {
+                    if (paramDateE.value != "") {
+                        await $.ajax({
+                            url: "../Reportes/ReportEmployeesDown",
+                            type: "POST",
+                            data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateS: paramDateS.value, dateE: paramDateE.value },
+                            beforeSend: () => {
+                                fDisabledButtonsRep();
+                            }, success: (data) => {
+                                setTimeout(() => {
+                                    console.log(data);
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    fEnabledButtonsRep();
+                                }, 2000);
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+                    } else {
+                        fShowTypeAlert('Atención', 'Complete el campo Fecha final', 'warning', paramDateE, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo Fecha inicio', 'warning', paramDateS, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
         }
     }
 
@@ -686,6 +778,9 @@
         typeReportselect.value       = "0";
         document.querySelectorAll('[name=optionReportGenerate]').forEach((x) => x.checked = false);
         btnClearParamsReports.disabled = true;
+        oneRadioBusiness.disabled      = true;
+        groupRadioBusiness.disabled    = true;
+        contentParameters.innerHTML    = "";
     }
 
     /*
