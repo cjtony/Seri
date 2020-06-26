@@ -13,36 +13,18 @@
                     if (i == 0) {
                         empresa = data[i]["Empresa_id"];
                     }
-                    if (data[i]["Empresa_id"] == empresa && data[i]["Periodo"] == 1) {
-                        console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                        console.log(data[i]);
-                        tab.innerHTML += "" +
-                            "<tr>" +
-                            "<td colspan='3' >" +
-                            "<div class='col-md-12 row'>" +
-                            "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
-                            "<div id='collapse-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
-                            "</div>" +
-                            "</div>" +
-                            "</td >" +
-                            "</tr >";
-
-                    } else {
-                        empresa = data[i]["Empresa_id"];
-                        if (data[i]["Empresa_id"] == empresa && data[i]["Periodo"] == 1) {
-                            //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                            tab.innerHTML += "" +
-                                "<tr>" +
-                                "<td colspan='3' >" +
-                                "<div class='col-md-12 row'>" +
-                                "<label class='col-md-1'>" + data[i]['Empresa_id'] + " </label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
-                                "<div id='collapse-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
-                                "</div>" +
-                                "</div>" +
-                                "</td >" +
-                                "</tr >";
-                        }
-                    }
+                    console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
+                    console.log(data[i]);
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
                 }
             }
         });
