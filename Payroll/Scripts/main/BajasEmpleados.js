@@ -74,7 +74,7 @@
             success: (emp) => {
                 console.log('Mostrando datos de empleado');
                 console.log(emp);
-                document.getElementById("nameuser").innerHTML = emp[0].Nombre_Empleado + " " + emp[0].Apellido_Paterno_Empleado + " " + emp[0].Apellido_Materno_Empleado;
+                //document.getElementById("nameuser").innerHTML = emp[0].Nombre_Empleado + " " + emp[0].Apellido_Paterno_Empleado + " " + emp[0].Apellido_Materno_Empleado;
                 //carga datos de header para baja
                 $.ajax({
                     url: "../Nomina/LoadDatosBaja",
@@ -248,6 +248,7 @@
                                 let titleCancel   = `title="Cancelar Finiquito"`;
                                 let icoCancel     = `<i class="fas fa-times"></i>`;
                                 let colBtnCancel  = "btn-danger";
+                                let btnPaidSucces = "";
                                 let validCancel = "";
                                 let infoPaid = "";
                                 let checked  = "";
@@ -270,13 +271,19 @@
                                     actionSavePay = "disabled";
                                     enabledPay    = "disabled";
                                     checked       = "checked";
-                                    infoPaid      = `<span class="badge ml-2 badge-warning"><i class="fas fa-clock mr-1"></i>Pendiente para pago</span>`;
+                                    infoPaid = `<span class="badge ml-2 badge-warning"><i class="fas fa-clock mr-1"></i>Pendiente para pago</span>`;
+                                    btnPaidSucces = `<button onclick="fConfirmPaidSuccess(${data.DatosFiniquito[i].iIdFiniquito})" type="button" class="btn btn-sm btn-success" title="Marcar como pagado">
+                                            <i class="fas fa-check-circle"></i>
+                                        </button>`;
                                 } else if (data.DatosFiniquito[i].iEstatus == 2) {
-                                    checked = "checked";
-                                    infoPaid = `<span class="badge ml-2 badge-success"><i class="fas fa-clock mr-1"></i>Pagado</span>`;
+                                    actionSavePay = "disabled";
+                                    enabledPay    = "disabled";
+                                    checked       = "checked";
+                                    checked       = "checked";
+                                    infoPaid      = `<span class="badge ml-2 badge-success"><i class="fas fa-check-circle mr-1"></i>Pagado</span>`;
                                 }
                                 document.getElementById('list-data-down').innerHTML += `
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <li class="list-group-item d-flex justify-content-between align-items-center shadow rounded">
                                     <span>
                                         <div class="form-check mb-2" id="divSelectPay${data.DatosFiniquito[i].iIdFiniquito}">
                                             <input ${enabledPay} ${cancelPay} ${checked} class="form-check-input" type="checkbox" name="selectPay${data.DatosFiniquito[i].iIdFiniquito}"
@@ -287,15 +294,16 @@
                                             </label>
                                         </div>
                                         <i class="fas fa-calendar-alt mr-1 col-ico"></i>
-                                            Baja: ${data.DatosFiniquito[i].sFecha_baja} 
+                                            <span style="font-size:14px;"><b>Baja:</b> ${data.DatosFiniquito[i].sFecha_baja}.</span>
                                         <i class="fas fa-tag ml-1 mr-1 col-ico"></i>
-                                            Tipo: ${data.DatosFiniquito[i].sFiniquito_valor}
+                                            <span style="font-size:14px;"><b>Tipo:</b> ${data.DatosFiniquito[i].sFiniquito_valor}.</span>
                                     </span>
                                     <span class="badge">
                                         <a href="#" class="btn btn-sm btn-primary" title="Detalle"
                                             onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
                                             <i class="fas fa-eye"></i> 
                                         </a>
+                                        ${btnPaidSucces}
                                         <button ${validCancel} class="btn btn-sm btn-success" title="Guardar" ${actionSavePay}>
                                             <i class="fas fa-check"></i>
                                         </button>
@@ -370,7 +378,6 @@
                                     fShowDataDown();
                                 });
                             } else {
-                                
                                 fShowTypeAlert('Error', "Ocurrio un error al guardar la opcion para pago", "error", checkBoxSel, 0);
                             }
                         }, error: (jqXHR, exception) => {
@@ -410,6 +417,8 @@
                         console.log(data);
                         $("#window-data-down").modal("hide");
                         if (data.Bandera == true && data.MensajeError == "none") {
+                            console.log('Imprimiendo datos del finiquito');
+                            console.log(data);
                             setTimeout(() => {
                                 $("#settlement-details").modal("show");
                             }, 1000);
@@ -424,28 +433,34 @@
                                     </div>
                                 `;
                             }
+                            let infoPaid = "";
+                            if (data.InfoFiniquito[0].iEstatus == 1) {
+                                infoPaid = `<span class="badge ml-2 badge-warning p-2"><i class="fas fa-clock mr-2"></i>Pendiente para pago</span>`;
+                            } else if (data.InfoFiniquito[0].iEstatus == 2) {
+                                infoPaid = `<span class="badge ml-2 badge-success p-2"><i class="fas fa-check-circle mr-2"></i>Pagado</span>`;
+                            }
                             document.getElementById("div-details").innerHTML += `
                                 <div class="col-md-6 mt-4">
                                     <ul class="list-group shadow card rounded">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha de baja</span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].sFecha_baja}</span>
+                                            <span><i class="fas fa-calendar-alt col-ico mr-2"></i>Fecha de baja</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].sFecha_baja}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha de ingreso</span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].sFecha_ingreso}</span>
+                                            <span><i class="fas fa-calendar-alt col-ico mr-2"></i>Fecha de ingreso</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].sFecha_ingreso}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha de antiguedad</span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].sFecha_antiguedad}</span>
+                                            <span><i class="fas fa-calendar-alt col-ico mr-2"></i>Fecha de antiguedad</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].sFecha_antiguedad}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Fecha recibo</span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].sFecha_recibo}</span>
+                                            <span><i class="fas fa-calendar-alt col-ico mr-2"></i>Fecha recibo</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].sFecha_recibo}</span>
                                         </li>  
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Dias pendientes</span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].iDias_Pendientes}</span>
+                                            <span><i class="fas fa-calendar-alt col-ico mr-2"></i>Dias pendientes</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].iDias_Pendientes}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -453,31 +468,37 @@
                                     <ul class="list-group shadow card rounded">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span><i class="fas fa-calendar-alt col-ico mr-1"></i> Año y periodo </span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].iAnioPeriodo} - ${data.InfoFiniquito[0].iPeriodo}</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].iAnioPeriodo} - ${data.InfoFiniquito[0].iPeriodo}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Años trabajados</span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].iAnios}</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].iAnios}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span><i class="fas fa-calendar-alt col-ico mr-1"></i>Dias trabajados</span>
-                                            <span class="badge badge-primary">${data.InfoFiniquito[0].sDias}</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">${data.InfoFiniquito[0].sDias}</span>
                                         </li>  
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span><i class="fas fa-money-check-alt mr-1 col-ico"></i>Salario mensual</span>
-                                            <span class="badge badge-primary">$${salario_mensual}</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">$${salario_mensual}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span><i class="fas fa-money-check-alt mr-1 col-ico"></i>Salario diario</span>
-                                            <span class="badge badge-primary">$${salario_diario}</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">$${salario_diario}</span>
                                         </li> 
                                     </ul>
                                 </div>
-                                <div class="form-group mt-5 col-md-4 offset-4">
-                                    <a class="btn btn-primary btn-block btn-sm" id="btnprint${paramid}"> <i class="fas fa-download"></i> Descargar PDF </a>
+                                <div class="form-group mt-4 col-md-4 offset-4 text-center">
+                                    <a class="btn btn-primary btn-sm btn-icon-split" id="btnprint${paramid}">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-download"></i>
+                                        </span>
+                                        <span class="text">Descargar PDF</span>
+                                    </a>
                                 </div>
                             `;
                             document.getElementById("typeSettlement").textContent = data.InfoFiniquito[0].sFiniquito_valor;
+                            document.getElementById("typeSettlement").innerHTML += infoPaid;
                             document.getElementById("btnprint" + String(paramid)).setAttribute("download", data.NombrePDF);
                             document.getElementById("btnprint" + String(paramid)).setAttribute("href", "../../Content/" + data.NombreFolder + "/" + data.NombrePDF);
                             btnCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ", '" + data.NombreFolder + "')");
@@ -502,6 +523,48 @@
             }
         }
     }
+
+    // Funcion que marca el finiquito como pagado
+    fConfirmPaidSuccess = (paramid) => {
+        try {
+            if (parseInt(paramid) > 0) {
+                $.ajax({
+                    url: "../BajasEmpleados/ConfirmPaidSuccess",
+                    type: "POST",
+                    data: {keySettlement: parseInt(paramid)},
+                    success: (data) => {
+                        if (data.Bandera === true && data.MensajeError === "none") {
+                            Swal.fire({
+                                title: "Correcto", text: "Opcion guardada", icon: "success",
+                                showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                            }).then((acepta) => {
+                                fShowDataDown();
+                            });
+                        } else {
+                            const checkBoxSel = document.getElementById("radioSelect" + String(paramid));
+                            fShowTypeAlert('Error', "Ocurrio un error al confirmar el pago", "error", checkBoxSel, 0);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    } 
 
     // Funcion que elimina el pdf generado una vez descargado
     fDeletePdfSettlement = (paramstr, paramid, paramfolder) => {

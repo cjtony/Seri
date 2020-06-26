@@ -115,5 +115,28 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
+        public DataTable sp_Datos_Reporte_Bajas_Empleados_Fechas(string typeOption, int keyOptionSel, string dateS, string dateE)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Bajas_Empleados_Fechas", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@FechaInicio", dateS));
+                cmd.Parameters.Add(new SqlParameter("@FechaFinal", dateE));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@TipoOpcion", typeOption));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand  = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
     }
 }

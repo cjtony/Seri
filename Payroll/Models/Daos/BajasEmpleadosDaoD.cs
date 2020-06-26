@@ -256,5 +256,28 @@ namespace Payroll.Models.Daos
             return downEmployeeBean;
         }
 
+        public BajasEmpleadosBean sp_Finiquito_UpdateEstatus_Pagado(int keySettlement)
+        {
+            BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Finiquito_UpdateEstatus_Pagado", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdFiniquito", keySettlement));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    downEmployeeBean.sMensaje = "SUCCESS";
+                } else {
+                    downEmployeeBean.sMensaje = "ERRUPDPAID";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                downEmployeeBean.sMensaje = exc.Message.ToString();
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return downEmployeeBean;
+        }
+
     }
 }
