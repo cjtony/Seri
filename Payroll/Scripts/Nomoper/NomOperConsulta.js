@@ -5,7 +5,6 @@
     var DeNombre = document.getElementById('DeNombre');
     var DeCancelados = document.getElementById('DeCancelados');
     var dato;
-    console.log('empresa selecionada');
     var empresaSelect = document.getElementById("btnNameEmpresaSelected").innerHTML; 
 
 
@@ -49,7 +48,7 @@
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
+                console.log(data.sNombreDefinicion);
                 var source =
                 {
                     localdata: data,
@@ -65,12 +64,21 @@
                 };
 
                 var dataAdapter = new $.jqx.dataAdapter(source);
-
+                var items = new Array();
+                if (data.length > 0) {
+                    for (i = 0; i < data.length;i++) {
+                        items.push(data[i].sNombreDefinicion);
+                    }
+                }
+                
+               
                 $("#TpDefinicion").jqxGrid(
                     {
-                        width: 980,
+                        theme:'bootstrap',
+                        width: 880,
                         source: dataAdapter,
-                        selectionmode: 'multiplerowsextended',
+                        showfilterrow: true,
+                        filterable: true,
                         sortable: true,
                         pageable: true,
                         autoheight: true,
@@ -90,8 +98,8 @@
                         },
                         columns: [
                             { text: 'No. Registro', datafield: 'iIdDefinicionhd', width: 50 },
-                            { text: 'Nombre de Definición', datafield: 'sNombreDefinicion', width: 230 },
-                            { text: 'Descripción ', datafield: 'sDescripcion', width: 500 },
+                            { text: 'Nombre de Definición', filtertype: 'list', filteritems: items, datafield: 'sNombreDefinicion', width: 230 },
+                            { text: 'Descripción ', datafield: 'sDescripcion', width: 350 },
                             { text: 'año', datafield: 'iAno', whidt: 80 },
                             { text: 'Cancelado', datafield: 'iCancelado', whidt: 25 },
                         ]
@@ -376,7 +384,7 @@
 
                 $("#TbPercepciones").jqxGrid(
                     {
-                        width: 980,
+                        width: 840,
                         source: dataAdapter,
                         selectionmode: 'multiplerowsextended',
                         sortable: true,
@@ -411,11 +419,11 @@
 
                         },
                         columns: [
-                            { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
-                            { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
-                            { text: 'Renglon', datafield: 'iRenglon', width: 250 },
+                            { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 75 },
+                            { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
+                            { text: 'Renglon', datafield: 'iRenglon', width: 180 },
                             { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
-                            { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
+                            { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 200 },
                             { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
                         ]
                     });
@@ -1106,7 +1114,7 @@
                 var dataAdapter = new $.jqx.dataAdapter(source);
                 $("#TbDeducciones").jqxGrid(
                     {
-                        width: 980,
+                        width: 840,
                         source: dataAdapter,
                         selectionmode: 'multiplerowsextended',
                         sortable: true,
