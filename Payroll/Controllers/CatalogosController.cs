@@ -250,6 +250,7 @@ namespace Payroll.Controllers
             List<CRenglonesBean> LR = new List<CRenglonesBean>();
             ModCatalogosDao Dao = new ModCatalogosDao();
             LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa, iElemntoNOm);
+                  
             return Json(LR);
         }
 
@@ -310,7 +311,57 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Periodo(Empresa_id, editid, editano, editperiodo, editfinicio, editffinal, editfproceso, editfpago, editdiaspago);
             return Json(Lista);
         }
-        //[HttpPost]
-        //public JsonResult LoadEmpresasBancos
+
+        // llena  listado de Tipo Renglon
+        [HttpPost]
+        public JsonResult ListTipoRenglon()
+        {
+            List<TipoRenglonBean> LTR = new List<TipoRenglonBean>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            LTR = Dao.sp_TipoRenglon_Retrieve_TipoRenlgon();
+            return Json(LTR);
+        }
+
+        // llena  listado Elemento Nom
+        [HttpPost]
+        public JsonResult ListEleNom()
+        {
+            List<ElementoNominaBean> LTEle = new List<ElementoNominaBean>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            LTEle = Dao.sp_CElemntoNomina_Retrieve_Cgeneral();
+            return Json(LTEle);
+        }
+
+
+        // llena  listado calculo
+        [HttpPost]
+        public JsonResult ListCalcu()
+        {
+            List<ListaCalculoBean> LTcal = new List<ListaCalculoBean>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            LTcal = Dao.sp_ListCalculo_Retrieve_ClistaCalculo();
+            return Json(LTcal);
+        }
+
+        // llena  listado Acumulados
+        [HttpPost]
+        public JsonResult LisAcumu(int iIdEmpresa, int iElementoNom)
+        {
+            List<CRenglonesBean> LTcal = new List<CRenglonesBean>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            LTcal = Dao.sp_Acumulados_Retrieve_CRenglones(iIdEmpresa, iElementoNom);
+            return Json(LTcal);
+        }
+
+        // Lista Sat
+        [HttpPost]
+        public JsonResult ListSat()
+        {
+            List<ListSatBean> LTcal = new List<ListSatBean>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            LTcal = Dao.sp_ListSat_Retrieve_CSatRenglones();
+            return Json(LTcal);
+        }
+
     }
 }

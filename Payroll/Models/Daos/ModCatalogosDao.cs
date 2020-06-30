@@ -780,19 +780,19 @@ namespace Payroll.Models.Daos
                         CRenglonesBean ls = new CRenglonesBean();
                         {
                             ls.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
-                            ls.iIdRenglon = int.Parse(data["IdRenglon"].ToString());
-                            ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
-                            ls.iIdElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
+                            ls.sIdEmpresa = data["NombreEmpresa"].ToString();
+                            ls.sNombreRenglon = data["NombreRenglon"].ToString();
+                            ls.sIdElementoNomina = data["Valor"].ToString();
                             ls.iIdSeccionReporte = int.Parse(data["Cg_Seccion_en_Reporte_id"].ToString());
-                            ls.iIdAcumulado = int.Parse(data["Acumulado_id"].ToString());
+                            ls.sIdAcumulado = data["acumulado"].ToString();
                             ls.sCancelado = data["Cancelado"].ToString();
-                            ls.iTipodeRenglon = int.Parse(data["Tipo_renglon_id"].ToString());
+                            ls.sTipodeRenglon = data["Tipo_renglon"].ToString();
                             ls.sEspejo = data["rng_espejo"].ToString();
-                            ls.slistCalculos = data["lista_calculo_id"].ToString();
+                            ls.slistCalculos = data["listacalculo"].ToString();
                             ls.sCuentaCont = data["Cuenta_Contable"].ToString();
                             ls.sDespCuCont = data["Descripcion_Cuenta_Contable"].ToString();
                             ls.sCargAbCuenta = data["cargo_abono_cuenta"].ToString();
-                            ls.sIdSat = data["Sat_id"].ToString();
+                            ls.sIdSat = data["sat"].ToString();
                             ls.sMensaje = "success";
                         };
 
@@ -975,5 +975,200 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
+
+        /// List Tipo de renglon Consulta
+        public List<TipoRenglonBean> sp_TipoRenglon_Retrieve_TipoRenlgon()
+        {
+            List<TipoRenglonBean> list = new List<TipoRenglonBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TipoRenglon_Retrieve_TipoRenlgon", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TipoRenglonBean ls = new TipoRenglonBean();
+                        ls.iIdRenglon = int.Parse(data["Id"].ToString());
+                        ls.sTipoRenglon = data["Descripcion"].ToString();
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+        /// List Elemento Nomina
+        public List<ElementoNominaBean> sp_CElemntoNomina_Retrieve_Cgeneral()
+        {
+            List<ElementoNominaBean> list = new List<ElementoNominaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CElemntoNomina_Retrieve_Cgeneral", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        ElementoNominaBean ls = new ElementoNominaBean();
+                        ls.iIdValor = int.Parse(data["IdValor"].ToString());
+                        ls.sValor = data["Valor"].ToString();
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+        /// List Calculo
+        public List<ListaCalculoBean> sp_ListCalculo_Retrieve_ClistaCalculo()
+        {
+            List<ListaCalculoBean> list = new List<ListaCalculoBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ListCalculo_Retrieve_ClistaCalculo", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        ListaCalculoBean ls = new ListaCalculoBean();
+                        ls.iIdCalculo = int.Parse(data["Id"].ToString());
+                        ls.sNombreCalculo = data["Descripcion"].ToString();
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+        //Acumulado Renglones
+        public List<CRenglonesBean> sp_Acumulados_Retrieve_CRenglones(int CtrliIdEmpresa, int CtrliIdElemto)
+        {
+            List<CRenglonesBean> list = new List<CRenglonesBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Acumulados_Retrieve_CRenglones", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdElemto", CtrliIdElemto));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CRenglonesBean ls = new CRenglonesBean();
+                        {
+                            ls.iIdRenglon = int.Parse(data["IdRenglon"].ToString());
+                            ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
+                            ls.sMensaje = "success";
+                        };
+
+
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+        // Lista Sat
+        public List<ListSatBean> sp_ListSat_Retrieve_CSatRenglones()
+        {
+            List<ListSatBean> list = new List<ListSatBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ListSat_Retrieve_CSatRenglones", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        ListSatBean ls = new ListSatBean();
+                        ls.idSat = int.Parse(data["IdSat"].ToString());
+                        ls.sSat = data["Descripcion"].ToString();
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
     }
 }

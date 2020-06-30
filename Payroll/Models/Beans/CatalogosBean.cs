@@ -638,4 +638,25 @@ namespace Payroll.Models.Beans
         public string Tabulador { get; set; }
         public string fecha_alta { get; set; }
     }
+
+    public class TipoRenglonBean { 
+         
+        public int iIdRenglon { get; set; }
+        public String sTipoRenglon { get; set; }
+        public string sMensaje { get; set; }
+
+
+    }
+
+    public class ListaCalculoBean
+    {
+
+        public int iIdCalculo { get; set; }
+        public String sNombreCalculo { get; set; }
+        public string sMensaje { get; set; }
+
+
+    }
+
+
 }
