@@ -15,6 +15,25 @@ namespace Payroll.Controllers
         //}
 
         [HttpPost]
+        public JsonResult LoadTypeDispersion()
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            List<CatalogoGeneralBean> lTypeDispersionBean = new List<CatalogoGeneralBean>();
+            LoadDataTableDaoD         lTypeDispersionDaoD = new LoadDataTableDaoD();
+            try {
+                lTypeDispersionBean = lTypeDispersionDaoD.sp_TiposDispersion_Retrieve_TiposDispersion();
+                if (lTypeDispersionBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, DatosDispersion = lTypeDispersionBean });
+        }
+
+        [HttpPost]
         public JsonResult LoadDataTableBanks()
         {
             Boolean flag = false;
@@ -35,7 +54,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateConfigBank(int keyBank, string numClientBank, string numBillBank, string numSquareBank, string numClabeBank, int numCodeBank, int interfaceGen)
+        public JsonResult UpdateConfigBank(int keyBank, string numClientBank, string numBillBank, string numSquareBank, string numClabeBank, int interfaceGen)
         {
             Boolean flag = false;
             String messageError = "none";
@@ -44,7 +63,7 @@ namespace Payroll.Controllers
             try
             {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
-                dataBankBean = dataBankDaoD.sp_Actualiza_Banco_Empresa(keyBusiness, keyBank, numClientBank, numBillBank, numSquareBank, numClabeBank, numCodeBank, interfaceGen);
+                dataBankBean = dataBankDaoD.sp_Actualiza_Banco_Empresa(keyBusiness, keyBank, numClientBank, numBillBank, numSquareBank, numClabeBank, interfaceGen);
                 flag = (dataBankBean.sMensaje == "update") ? true : false;
             }
             catch (Exception exc)

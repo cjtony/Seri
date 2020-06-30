@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace Payroll.Models.Daos
 {
@@ -277,7 +278,8 @@ namespace Payroll.Models.Daos
                             iIdBanco = Convert.ToInt32(data["banco"].ToString()),
                             iIdRenglon = Convert.ToInt32(data["Renglon_id"].ToString()),
                             iDepositos = Convert.ToInt32(data["depositos"].ToString()),
-                            dImporte = Convert.ToDecimal(data["importe"].ToString())
+                            sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["importe"])))
+                            //Convert.ToDecimal(data["importe"].ToString())
                         });
                     }
                 }

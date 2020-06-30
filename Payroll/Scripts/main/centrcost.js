@@ -125,6 +125,10 @@
                         } else {
                             alert('No se cargaron los datos del centro de costo seleccionado');
                         }
+                        setTimeout(() => {
+                            document.getElementById('body-init').style.paddingRight = '0px';
+                            //document.getElementById('body-init').removeAttribute("style");
+                        }, 2000);
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }

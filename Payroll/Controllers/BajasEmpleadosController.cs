@@ -50,12 +50,14 @@ namespace Payroll.Controllers
                     dateEndPayment = periodActBean.sFecha_Final;
                 }
                 downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment);
-                if (downEmployeeBean.sMensaje == "SUCCESS")
-                {
-                    flag = true;
-                }
-                else
-                {
+                if (downEmployeeBean.sMensaje == "SUCCESS") {
+                    downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(keyEmployee, keyBusiness, idTypeDown);
+                    if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
+                        flag = true;
+                    } else {
+                        messageError = "ERRUPDTE";
+                    }
+                } else {
                     messageError = "ERRINSFINIQ";
                 }
             }

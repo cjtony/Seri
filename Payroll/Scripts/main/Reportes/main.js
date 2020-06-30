@@ -535,7 +535,7 @@
     }
 
     // Funcion que comprueba el llenado de los campos del reporte seleccionado
-    fValidateParametersReports = (optionBusiness, typeReport) => {
+    fValidateParametersReports = async (optionBusiness, typeReport) => {
         try {
             if (optionBusiness != "" && typeReport != "") {
                 let keyBusinessOpt;
@@ -546,11 +546,15 @@
                 }
                 // Validamos que tipo de reporte vamos a realizar
                 if (typeReport === "SABANA") {
-                    fGenerateReportPayroll(optionBusiness, keyBusinessOpt);
+                    await fGenerateReportPayroll(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "ALTAEMP") {
-                    fGenerateReportEmployeesUp(optionBusiness, keyBusinessOpt);
+                    await fGenerateReportEmployeesUp(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "BAJA_FEC") {
-                    fGenerateReportEmployeesDown(optionBusiness, keyBusinessOpt);
+                    await fGenerateReportEmployeesDown(optionBusiness, keyBusinessOpt);
+                } else if (typeReport === "CAT_EMP_AC") {
+                    await fGenerateReportEmployeesActiveWithSalary(optionBusiness, keyBusinessOpt);
+                } else if (typeReport === "CATEMPACSS") {
+                    await fGenerateReportEmployeesActiveWithoutSalary(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -622,11 +626,11 @@
     }
 
     // Funcion que genera el reporte de la hoja de calculo
-    fGenerateReportPayroll = async (option, keyOption) => {
+    fGenerateReportPayroll = (option, keyOption) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 const period = localStorage.getItem("period");
-                await $.ajax({
+                $.ajax({
                     url: "../Reportes/ReportPayroll",
                     type: "POST",
                     data: { typeOption: option, keyOptionSel: parseInt(keyOption), periodActually: parseInt(period) },
@@ -664,14 +668,14 @@
     }
 
     // Funcion que genera el reporte de las altas de empleados en un periodo
-    fGenerateReportEmployeesUp = async (option, keyOption) => {
+    fGenerateReportEmployeesUp = (option, keyOption) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 const paramDateS = document.getElementById('paramDateS');
                 const paramDateE = document.getElementById('paramDateE');
                 if (paramDateS.value != "") {
                     if (paramDateE.value != "") {
-                        await $.ajax({
+                        $.ajax({
                             url: "../Reportes/ReportEmployeesUp",
                             type: "POST",
                             data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateS: paramDateS.value, dateE: paramDateE.value },
@@ -715,14 +719,14 @@
     }
 
     // Funcion que genera el reporte de bajas de los empleados por rango de fechas
-    fGenerateReportEmployeesDown = async (option, keyOption) => {
+    fGenerateReportEmployeesDown = (option, keyOption) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 const paramDateS = document.getElementById('paramDateS');
                 const paramDateE = document.getElementById('paramDateE');
                 if (paramDateS.value != "") {
                     if (paramDateE.value != "") {
-                        await $.ajax({
+                        $.ajax({
                             url: "../Reportes/ReportEmployeesDown",
                             type: "POST",
                             data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateS: paramDateS.value, dateE: paramDateE.value },
@@ -766,6 +770,94 @@
         }
     }
 
+    // Funcion que genera el reporte de empleados activos con sueldo
+    fGenerateReportEmployeesActiveWithSalary = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDate = document.getElementById('paramDate');
+                if (paramDate.value != "") {
+                    $.ajax({
+                        url: "../Reportes/ReportEmployeesActiveWithSalary",
+                        type: "POST",
+                        data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateActive: paramDate.value },
+                        beforeSend: () => {
+                            fDisabledButtonsRep();
+                        }, success: (data) => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo Fecha del personal activo', 'warning', paramDate, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de empleados activos sin sueldo
+    fGenerateReportEmployeesActiveWithoutSalary = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDate = document.getElementById('paramDate');
+                if (paramDate.value != "") {
+                    $.ajax({
+                        url: "../Reportes/ReportEmployeesActiveWithoutSalary",
+                        type: "POST",
+                        data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateActive: paramDate.value },
+                        beforeSend: () => {
+                            fDisabledButtonsRep();
+                        }, success: (data) => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    fShowTypeAlert('Atención!', 'Complete el campo Fecha del personal activo', 'warning', paramDate, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     // Funcion que limpia la parametrizacion del formulario de reportes
     fClearParamsReports = () => {
         contentGenerateRep.innerHTML = "";
@@ -778,8 +870,8 @@
         typeReportselect.value       = "0";
         document.querySelectorAll('[name=optionReportGenerate]').forEach((x) => x.checked = false);
         btnClearParamsReports.disabled = true;
-        oneRadioBusiness.disabled      = true;
-        groupRadioBusiness.disabled    = true;
+        oneRadioBusiness.disabled      = false;
+        groupRadioBusiness.disabled    = false;
         contentParameters.innerHTML    = "";
     }
 

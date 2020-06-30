@@ -57,7 +57,7 @@
         public string sBanco { get; set; }
         public int iIdRenglon { get; set; }
         public int iDepositos { get; set; }
-        public decimal dImporte { get; set; }
+        public string sImporte { get; set; }
     }
 
     public class BankDetailsBean

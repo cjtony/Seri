@@ -38,8 +38,8 @@
         "paginate": {
             "first": "Primero",
             "last": "Ultimo",
-            "next": "<button class='ml-2 btn btn-sm btn-primary'>Siguiente </button>",
-            "previous": "<button class='mr-2 btn btn-sm btn-primary'>Anterior</button>"
+            "next": "Siguiente",
+            "previous": "Anterior"
         }
     };
 
@@ -205,10 +205,10 @@
                             for (let i = 0; i < quantity; i++) {
                                 number += 1;
                                 resultemployekeynom.innerHTML += `
-                                    <button class="list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">
+                                    <button onclick="fRetainedPayrollEmployee(${data[i].iIdEmpleado}, '${data[i].sNombreEmpleado}', ${data[i].iTipoPeriodo})" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">
                                         ${number}. ${data[i].iIdEmpleado} - ${data[i].sNombreEmpleado}
                                        <span>
-                                             <i title="Retener nomina" class="fas fa-user-times ml-2 text-danger fa-lg shadow" onclick="fRetainedPayrollEmployee(${data[i].iIdEmpleado}, '${data[i].sNombreEmpleado}', ${data[i].iTipoPeriodo})"></i>
+                                             <i title="Retener nomina" class="fas fa-user-times ml-2 text-danger fa-lg shadow"></i>
                                        </span>
                                     </button>
                                 `;
@@ -398,6 +398,7 @@
                             <span class="sr-only">Loading...</span>
                             Desplegando
                         `;
+                        btndesplegartab.disabled = true;
                     },
                     success: (data) => {
                         btndesplegartab.classList.add('active');
@@ -429,10 +430,10 @@
                                         }
                                         document.getElementById("table-body-data").innerHTML += `
                                             <tr>
-                                                <th scope="row">${data.DatosDepositos[i].iIdBanco}</th>
-                                                <td><i class="fas fa-university mr-2 text-primary"></i>${nomBanco}</td>
-                                                <td>${data.DatosDepositos[i].iDepositos}</td>
-                                                <td> <i class="fas fa-money-bill mr-2 text-success"></i> ${data.DatosDepositos[i].dImporte}</td>
+                                                <th scope="row"><i class="fas fa-university mr-2 text-primary"></i>${data.DatosDepositos[i].iIdBanco}</th>
+                                                <td><i class="fas fa-file-alt mr-2 text-primary"></i>${nomBanco}</td>
+                                                <td><i class="fas fa-calculator mr-2 text-primary"></i> ${data.DatosDepositos[i].iDepositos}</td>
+                                                <td> <i class="fas fa-money-bill mr-2 text-success"></i> $ ${data.DatosDepositos[i].sImporte}</td>
                                             </tr>
                                         `;
                                         console.log("dato", data.DatosDepositos[i]);
