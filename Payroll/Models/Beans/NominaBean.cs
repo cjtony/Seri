@@ -55,14 +55,18 @@ namespace Payroll.Models.Beans
     public class CRenglonesBean
     {
         public int iIdEmpresa { get; set; }
+        public string sIdEmpresa { get; set; }
         public int iIdRenglon { get; set; }
         public string sNombreRenglon { get; set; }
         public int iIdElementoNomina { get; set; }
+        public string sIdElementoNomina { get; set; }
         public int iIdSeccionReporte { get; set; }
         public int iIdAcumulado { get; set; }
+        public string sIdAcumulado { get; set; }
         public int iCancelado { get; set; }
         public string sCancelado { get; set; }
         public int iTipodeRenglon { get; set; }
+        public string sTipodeRenglon { get; set; }
         public int iEspejo { get; set; }
         public string sEspejo { get; set; }
         public int ilistCalclos { get; set; }
@@ -291,4 +295,17 @@ namespace Payroll.Models.Beans
         public string Fechatimbrado { get; set; }
         public string sMensaje { get; set; }
     }
+    public class ElementoNominaBean
+    {
+        public int iIdValor { get; set; }
+        public string sValor { get; set; }
+        public string sMensaje { get; set; }
+    }
+
+    public class ListSatBean { 
+       public int idSat { get; set; }
+       public string sSat { get; set; }
+        public string sMensaje { get; set; }
+    }
+
 }
