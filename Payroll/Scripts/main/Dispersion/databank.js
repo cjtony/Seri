@@ -11,12 +11,14 @@
     const numBillBank = document.getElementById('num-bill-bank');
     const numSquareBank = document.getElementById('num-square-bank');
     const numClabeBank = document.getElementById('num-clabe-bank');
-    const numCodeBank = document.getElementById('num-code-bank');
-    const depositsInterbank = document.getElementById('deposits-interbank');
-    const depositsBank = document.getElementById('deposits-bank');
+    //const numCodeBank = document.getElementById('num-code-bank');
+    //const depositsInterbank = document.getElementById('deposits-interbank');
+    //const depositsBank = document.getElementById('deposits-bank');
     const icoCloseConfigBank = document.getElementById('ico-close-config-bank');
     const btnCloseConfigBank = document.getElementById('btn-close-config-bank');
     const btnSaveConfigBank = document.getElementById('btn-save-config-bank');
+
+    const typeDispersionBank = document.getElementById('type-dispersion-bank');
 
     const spanish = {
         "decimal": "",
@@ -64,16 +66,51 @@
         });
     }
 
+    // Funcion que carga los tipos de dispersion
+    fLoadTypeDispersion = async () => {
+        try {
+            await $.ajax({
+                url: "../ConfigDataBank/LoadTypeDispersion",
+                type: "POST",
+                data: {},
+                success: (data) => {
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        for (let i = 0; i < data.DatosDispersion.length; i++) {
+                            var tDis = data.DatosDispersion[i];
+                            typeDispersionBank.innerHTML += `<option value="${tDis.iId}">${tDis.sValor}</option>`;
+                        }
+                    } else {
+                        alert('Error al cargar los tipos de dispersion');
+                        location.reload();
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    fLoadTypeDispersion();
+
     // Funcion que carga los datos bancarios en la tabla
     fLoadTableDataBanks = () => {
+        tableDataBank.innerHTML = "";
         try {
             $.ajax({
                 url: "../ConfigDataBank/LoadDataTableBanks",
                 type: "POST",
                 data: {},
                 success: (data) => {
-                    console.log('Datos bancarios');
-                    console.log(data);
                     if (data.Bandera == true && data.MensajeError == "none") {
                         const dataLength = data.DatosBancos.length;
                         let lengthData = 0;
@@ -86,7 +123,14 @@
                                     <td>${data.DatosBancos[i].sNumeroCuenta}</td>
                                     <td>${data.DatosBancos[i].sNumeroPlaza}</td>
                                     <td class="text-center">${data.DatosBancos[i].sValor}</td>
-                                    <td class="text-center"><button class="btn btn-warning btn-sm text-white"> <i class="fas fa-file"></i></button></td>
+                                    <td class="text-center">
+                                        <button type="button" onclick="fChangeTypeBank(${data.DatosBancos[i].iIdBancoEmpresa}, '${data.DatosBancos[i].sNombreBanco}',${data.DatosBancos[i].sNumeroCliente}, ${data.DatosBancos[i].sNumeroCuenta}, ${data.DatosBancos[i].sNumeroPlaza}, ${data.DatosBancos[i].sClabe}, ${data.DatosBancos[i].iCg_tipo_dispersion})" class="btn btn-warning btn-sm btn-icon-split shadow">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            <span class="text">Editar</span>
+                                        </button>
+                                    </td>
                                 </tr>
                             `;
                             lengthData += 1;
@@ -108,6 +152,11 @@
                         //}).then((acepta) => {
                         //    location.reload();
                         //});
+                        setTimeout(() => {
+                            $("#table-test").DataTable({
+                                language: spanish
+                            });
+                        }, 1000);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -126,6 +175,36 @@
         }
     }
 
+    // Funcion que cambia el tipo de dispersion del banco 
+    fChangeTypeBank = (paramid, paramnamebank, paramnclient, paramnbill, paramsquare, paramclab, paramtypedis) => {
+        try {
+            if (parseInt(paramid) > 0) {
+                $("#details-config-bank").modal('show');
+                keyBank.value = parseInt(paramid);
+                nameBankConfig.textContent = paramnamebank;
+                numClientBank.value        = paramnclient;
+                numBillBank.value          = paramnbill;
+                numSquareBank.value        = paramsquare;
+                numClabeBank.value         = paramclab;
+                typeDispersionBank.value   = paramtypedis;
+                setTimeout(() => { numClientBank.focus(); }, 1000);
+            } else {
+                alert('Accion invalida!');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     // Funcion que muestra los detalles de el banco seleccionado
 
     fShowDetailsBank = (paramid, paramnombre, paramcliente, paramcuenta, paramplaza, paramclabe, paramcodigo, paraminterface) => {
@@ -137,13 +216,13 @@
             numBillBank.value = paramcuenta;
             numSquareBank.value = paramplaza;
             numClabeBank.value = paramclabe;
-            numCodeBank.value = paramcodigo;
-            if (paraminterface == 0) {
-                depositsInterbank.setAttribute('checked', 'true');
-            }
-            if (paraminterface == 1) {
-                depositsBank.setAttribute('checked', 'true');
-            }
+            //numCodeBank.value = paramcodigo;
+            //if (paraminterface == 0) {
+            //    depositsInterbank.setAttribute('checked', 'true');
+            //}
+            //if (paraminterface == 1) {
+            //    depositsBank.setAttribute('checked', 'true');
+            //}
         } catch (error) {
             if (error instanceof TypeError) {
                 console.error('TypeError: ', error.message);
@@ -165,16 +244,16 @@
         numBillBank.value = '';
         numSquareBank.value = '';
         numClabeBank.value = '';
-        numCodeBank.value = '';
-        depositsInterbank.removeAttribute('checked');
-        depositsBank.removeAttribute('checked');
+        //numCodeBank.value = '';
+        //depositsInterbank.removeAttribute('checked');
+        //depositsBank.removeAttribute('checked');
     }
 
     // Funcion que guarda los cambios actualizados en el banco
 
     fUpdateConfigBank = () => {
         try {
-            const arrInputs = [numClientBank, numBillBank, numSquareBank, numClabeBank, numCodeBank];
+            const arrInputs = [numClientBank, numBillBank, numSquareBank, numClabeBank];
             let validate = 0;
             for (let i = 0; i < arrInputs.length; i++) {
                 if (arrInputs[i].value == "") {
@@ -183,39 +262,44 @@
                     break;
                 }
             }
+            if (typeDispersionBank.value == 0) {
+                fshowtypealert('Atención', 'Selecciona una opcion de tipo', 'warning', typeDispersionBank, 0);
+                validate = 1
+            }
             if (validate == 0) {
-                const valueDis = $("input:radio[name=optionbank]:checked").val();
-                let valueSend = "";
-                if (valueDis == "0") {
-                    valueSend = 0;
-                } else if (valueDis == "1") {
-                    valueSend = 1;
-                }
+                ////const valueDis = $("input:radio[name=optionbank]:checked").val();
+                ////let valueSend = "";
+                ////if (valueDis == "0") {
+                ////    valueSend = 0;
+                ////} else if (valueDis == "1") {
+                ////    valueSend = 1;
+                ////}
                 const dataSend = {
                     keyBank: keyBank.value,
                     numClientBank: numClientBank.value,
                     numBillBank: numBillBank.value,
                     numSquareBank: numSquareBank.value,
                     numClabeBank: numClabeBank.value,
-                    numCodeBank: numCodeBank.value,
-                    interfaceGen: valueSend
+                    //numCodeBank: numCodeBank.value,
+                    interfaceGen: typeDispersionBank.value
                 };
                 $.ajax({
                     url: "../ConfigDataBank/UpdateConfigBank",
                     type: "POST",
                     data: dataSend,
                     beforeSend: () => {
-                        console.log('validando');
+                        btnSaveConfigBank.disabled = true;
                     }, success: (data) => {
                         if (data.Bandera == true && data.MensajeError == "none") {
+                            const tableData = $("#table-test").DataTable();
+                            tableData.destroy();
+                            setTimeout(() => { fLoadTableDataBanks(); }, 1000);
                             Swal.fire({
                                 title: "Correcto", text: "Datos actualizados!", icon: "success",
                                 showClass: { popup: 'animated fadeInDown faster' },
                                 hideClass: { popup: 'animated fadeOutUp faster' },
                                 confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false
                             }).then((acepta) => {
-                                tableDataBank.innerHTML = '';
-                                fLoadTableDataBanks();
                                 $("#details-config-bank").modal('hide');
                                 fClearFieldsConfigBank();
                             });
@@ -229,6 +313,11 @@
                                 location.reload();
                             });
                         }
+                        btnSaveConfigBank.disabled = false;
+                        setTimeout(() => {
+                            document.getElementById('body-init').style.paddingRight = '0px';
+                            //document.getElementById('body-init').removeAttribute("style");
+                        }, 2000);
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }

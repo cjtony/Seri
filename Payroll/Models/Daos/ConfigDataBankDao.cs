@@ -11,6 +11,34 @@ namespace Payroll.Models.Daos
 
     public class LoadDataTableDaoD : Conexion
     {
+
+        public List<CatalogoGeneralBean> sp_TiposDispersion_Retrieve_TiposDispersion()
+        {
+            List<CatalogoGeneralBean> lTypeDispersion = new List<CatalogoGeneralBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TiposDispersion_Retrieve_TiposDispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        CatalogoGeneralBean typeDispersion = new CatalogoGeneralBean();
+                        typeDispersion.iId = Convert.ToInt32(data["id"].ToString());
+                        typeDispersion.iCampoCatalogoId = Convert.ToInt32(data["Campos_Catalogo_id"].ToString());
+                        typeDispersion.iIdValor = Convert.ToInt32(data["IdValor"].ToString());
+                        typeDispersion.sValor = data["Valor"].ToString();
+                        typeDispersion.sDescripcion = data["Descripcion"].ToString();
+                        lTypeDispersion.Add(typeDispersion);
+                    }
+                }
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return lTypeDispersion;
+        }
+
         public List<LoadDataTableBean> sp_Carga_Bancos_Empresa(int keyBusiness)
         {
             List<LoadDataTableBean> lDataTableBean = new List<LoadDataTableBean>();
@@ -50,31 +78,20 @@ namespace Payroll.Models.Daos
             return lDataTableBean;
         }
 
-        public LoadDataTableBean sp_Actualiza_Banco_Empresa(int keyBusiness, int keyBank, string numClientBank, string numBillBank, string numSquareBank, string numClabeBank, int numCodeBank, int interfaceGen)
+        public LoadDataTableBean sp_Actualiza_Banco_Empresa(int keyBusiness, int keyBank, string numClientBank, string numBillBank, string numSquareBank, string numClabeBank, int interfaceGen)
         {
             LoadDataTableBean dataBankBean = new LoadDataTableBean();
             try
             {
                 this.Conectar();
-                int interbancarios;
-                if (interfaceGen == 1)
-                {
-                    interbancarios = 0;
-                }
-                else
-                {
-                    interbancarios = 1;
-                }
                 SqlCommand cmd = new SqlCommand("sp_Actualiza_Banco_Empresa", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
                 cmd.Parameters.Add(new SqlParameter("@IdBanco", keyBank));
                 cmd.Parameters.Add(new SqlParameter("@Cliente", numClientBank));
                 cmd.Parameters.Add(new SqlParameter("@Cuenta", numBillBank));
                 cmd.Parameters.Add(new SqlParameter("@Plaza", numSquareBank));
-                cmd.Parameters.Add(new SqlParameter("@Interface", interfaceGen));
                 cmd.Parameters.Add(new SqlParameter("@Clabe", numClabeBank));
-                cmd.Parameters.Add(new SqlParameter("@Interbancario", interbancarios));
-                cmd.Parameters.Add(new SqlParameter("@Codigo", numCodeBank));
+                cmd.Parameters.Add(new SqlParameter("@Interbancario", interfaceGen));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     dataBankBean.sMensaje = "update";

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace Payroll.Models.Daos
 {
@@ -1401,23 +1402,23 @@ namespace Payroll.Models.Daos
                             case 20:
                             case 21:
                             case 22:
-                                ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
+                                ls.IdMotivo_Baja = int.Parse(data["id"].ToString());
                                 ls.TipoEmpleado_id = 164;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 4:
                             case 5:
-                                ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
+                                ls.IdMotivo_Baja = int.Parse(data["id"].ToString());
                                 ls.TipoEmpleado_id = 165;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 18:
-                                ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
+                                ls.IdMotivo_Baja = int.Parse(data["id"].ToString());
                                 ls.TipoEmpleado_id = 168;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 19:
-                                ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
+                                ls.IdMotivo_Baja = int.Parse(data["id"].ToString());
                                 ls.TipoEmpleado_id = 27;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
@@ -1425,19 +1426,19 @@ namespace Payroll.Models.Daos
                             case 7:
                             case 8:
                             case 9:
-                                ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
+                                ls.IdMotivo_Baja = int.Parse(data["id"].ToString());
                                 ls.TipoEmpleado_id = 172;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 17:
                             case 23:
-                                ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
+                                ls.IdMotivo_Baja = int.Parse(data["id"].ToString());
                                 ls.TipoEmpleado_id = 30;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
                             case 1:
                             case 2:
-                                ls.IdMotivo_Baja = int.Parse(data["IdValor"].ToString());
+                                ls.IdMotivo_Baja = int.Parse(data["id"].ToString());
                                 ls.TipoEmpleado_id = 31;
                                 ls.Descripcion = data["Valor"].ToString();
                                 break;
@@ -1479,7 +1480,7 @@ namespace Payroll.Models.Daos
                     {
                         list.Add(data["Empleado_id"].ToString());
                         list.Add(data["Nombre"].ToString());
-                        list.Add(data["Salario_Mensual"].ToString());
+                        list.Add(string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["Salario_Mensual"]))));
                         list.Add(data["Fecha_Aumento"].ToString());
                         list.Add(data["Fecha_Antiguedad"].ToString());
                         list.Add(data["Fecha_Ingreso"].ToString());

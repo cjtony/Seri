@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using Payroll.Models.Beans;
@@ -66,12 +67,10 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@periodo", keyPeriodAct));
                 cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Inicio", dateStartPayment));
                 cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Fin", dateEndPayment));
-                if (cmd.ExecuteNonQuery() > 0)
-                {
+                cmd.Parameters.Add(new SqlParameter("@motivo_baja_id", idReasonsDown));
+                if (cmd.ExecuteNonQuery() > 0) {
                     downEmployee.sMensaje = "SUCCESS";
-                }
-                else
-                {
+                } else {
                     downEmployee.sMensaje = "ERRINSERT";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose();
@@ -86,6 +85,30 @@ namespace Payroll.Models.Daos
                 this.Conectar().Close();
             }
             return downEmployee;
+        }
+
+
+        public BajasEmpleadosBean sp_BajaEmpleado_Update_EmpleadoNomina(int keyEmployee, int keyBusiness, int keyTypeDown)
+        {
+            BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_BajaEmpleado_Update_EmpleadoNomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@TipoEmpleado", keyTypeDown));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    downEmployeeBean.sMensaje = "SUCCESSUPD";
+                } else {
+                    downEmployeeBean.sMensaje = "ERRUPDTE";
+                }
+            } catch (Exception exc){
+                downEmployeeBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return downEmployeeBean;
         }
 
         public List<BajasEmpleadosBean> sp_Finiquitos_Empleado(int keyEmployee, int keyBusiness, int keySettlement)
@@ -120,8 +143,8 @@ namespace Payroll.Models.Daos
                             iEstatus = Convert.ToInt32(data["Estatus"].ToString()),
                             sRFC = data["RFC"].ToString(),
                             iCentro_costo_id = Convert.ToInt32(data["Centro_costo_id"].ToString()),
-                            sSalario_diario = data["Salario_diario"].ToString(),
-                            sSalario_mensual = data["Salario_mensual"].ToString(),
+                            sSalario_diario = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["Salario_diario"]))),
+                            sSalario_mensual = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["Salario_mensual"]))),
                             sPuesto = data["NombrePuesto"].ToString(),
                             sPuesto_codigo = data["PuestoCodigo"].ToString(),
                             sCentro_costo = data["CentroCosto"].ToString(),
@@ -134,7 +157,8 @@ namespace Payroll.Models.Daos
                             sRegistroImss = data["RegistroImss"].ToString(),
                             sCta_Cheques = data["Cta_Cheques"].ToString(),
                             sFecha_Pago_Inicio = data["Fecha_Pago_Inicio"].ToString(),
-                            sFecha_Pago_Fin = data["Fecha_Pago_Fin"].ToString()
+                            sFecha_Pago_Fin = data["Fecha_Pago_Fin"].ToString(),
+                            sMotivo_baja = data["Motivo_baja"].ToString()
                         });
                     }
                 }

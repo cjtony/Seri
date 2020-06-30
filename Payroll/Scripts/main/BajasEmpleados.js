@@ -47,6 +47,7 @@
             success: (tipo) => {
                 document.getElementById('inMotivosBaja').innerHTML = "<option value='none'>Selecciona</option>";
                 for (var i = 0; i < tipo.length; i++) {
+                    console.log(tipo[i]);
                     console.log(t + " y " + tipo[i]["TipoEmpleado_id"]);
                     if (t == tipo[i]["TipoEmpleado_id"]) {
                         console.log(tipob + " y " + tipo[i]["TipoEmpleado_id"]);
@@ -61,7 +62,8 @@
     
 
     MostrarDatosEmpleado = (idE) => {
-        
+        document.getElementById('inputSearchEmpleados').value = "";
+        document.getElementById('resultSearchEmpleados').innerHTML = "";
         var txtIdEmpleado = { "IdEmpleado": idE };
         console.log(typeof txtIdEmpleado);
         console.log(txtIdEmpleado);
@@ -86,7 +88,7 @@
                         console.log(res);
                         document.getElementById('keyEmployee').value = res[0];
                         document.getElementById("id_emp").innerHTML = res[0] + " - " + res[1];
-                        document.getElementById("sueldo_emp").innerHTML = res[2].substring(0, res[2].length - 2);
+                        document.getElementById("sueldo_emp").innerHTML = "$ " + res[2];
                         document.getElementById("aumento_emp").innerHTML = res[3];
                         document.getElementById("antiguedad_emp").innerHTML = res[4];
                         document.getElementById("ingreso_emp").innerHTML = res[5];
@@ -272,7 +274,7 @@
                                     enabledPay    = "disabled";
                                     checked       = "checked";
                                     infoPaid = `<span class="badge ml-2 badge-warning"><i class="fas fa-clock mr-1"></i>Pendiente para pago</span>`;
-                                    btnPaidSucces = `<button onclick="fConfirmPaidSuccess(${data.DatosFiniquito[i].iIdFiniquito})" type="button" class="btn btn-sm btn-success" title="Marcar como pagado">
+                                    btnPaidSucces = `<button id="btnConfirmPaidSuc${data.DatosFiniquito[0].iIdFiniquito}" onclick="fConfirmPaidSuccess(${data.DatosFiniquito[i].iIdFiniquito})" type="button" class="btn btn-sm btn-success" title="Marcar como pagado">
                                             <i class="fas fa-check-circle"></i>
                                         </button>`;
                                 } else if (data.DatosFiniquito[i].iEstatus == 2) {
@@ -299,15 +301,15 @@
                                             <span style="font-size:14px;"><b>Tipo:</b> ${data.DatosFiniquito[i].sFiniquito_valor}.</span>
                                     </span>
                                     <span class="badge">
-                                        <a href="#" class="btn btn-sm btn-primary" title="Detalle"
+                                        <a href="#" class="btn btn-sm btn-primary" title="Detalle" id="btnGenerateReceipt${data.DatosFiniquito[i].iIdFiniquito}"
                                             onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"> 
                                             <i class="fas fa-eye"></i> 
                                         </a>
                                         ${btnPaidSucces}
-                                        <button ${validCancel} class="btn btn-sm btn-success" title="Guardar" ${actionSavePay}>
+                                        <button ${validCancel} class="btn btn-sm btn-success" title="Guardar" ${actionSavePay} id="btnSelectPay${data.DatosFiniquito[i].iIdFiniquito}">
                                             <i class="fas fa-check"></i>
                                         </button>
-                                        <button class="btn btn-sm ${colBtnCancel}" ${titleCancel} ${actionCancel}>
+                                        <button class="btn btn-sm ${colBtnCancel}" ${titleCancel} ${actionCancel} id="btnCancelSettlement${data.DatosFiniquito[i].iIdFiniquito}">
                                             ${icoCancel}
                                         </button>
                                     </span>
@@ -367,7 +369,7 @@
                         type: "POST",
                         data: { keySettlement: parseInt(paramid) },
                         beforeSend: () => {
-                            console.log('Guardando');
+                            document.getElementById('btnSelectPay' + String(paramid)).disabled = true;
                         }, success: (data) => {
                             if (data.Bandera == true && data.MensajeError == "none") {
                                 Swal.fire({
@@ -380,6 +382,7 @@
                             } else {
                                 fShowTypeAlert('Error', "Ocurrio un error al guardar la opcion para pago", "error", checkBoxSel, 0);
                             }
+                            document.getElementById('btnSelectPay' + String(paramid)).disabled = false;
                         }, error: (jqXHR, exception) => {
                             fcaptureaerrorsajax(jqXHR, exception);
                         }
@@ -412,9 +415,8 @@
                     type: "POST",
                     data: { keySettlement: parseInt(paramid), keyEmployee: parseInt(paramide) },
                     beforeSend: () => {
-                        console.log('Generando');
+                        document.getElementById('btnGenerateReceipt' + String(paramid)).disabled = true;
                     }, success: (data) => {
-                        console.log(data);
                         $("#window-data-down").modal("hide");
                         if (data.Bandera == true && data.MensajeError == "none") {
                             console.log('Imprimiendo datos del finiquito');
@@ -422,8 +424,8 @@
                             setTimeout(() => {
                                 $("#settlement-details").modal("show");
                             }, 1000);
-                            const salario_mensual = parseInt(data.InfoFiniquito[0].sSalario_mensual).toFixed(2);
-                            const salario_diario  = parseInt(data.InfoFiniquito[0].sSalario_diario).toFixed(2);
+                            const salario_mensual = data.InfoFiniquito[0].sSalario_mensual;
+                            const salario_diario  = data.InfoFiniquito[0].sSalario_diario;
                             if (data.InfoFiniquito[0].sCancelado == "True") {
                                 document.getElementById('div-details').innerHTML += `
                                     <div class="col-md-12">
@@ -480,11 +482,11 @@
                                         </li>  
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span><i class="fas fa-money-check-alt mr-1 col-ico"></i>Salario mensual</span>
-                                            <span class="badge bg-light text-primary font-weight-bold p-2">$${salario_mensual}</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">$ ${salario_mensual}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span><i class="fas fa-money-check-alt mr-1 col-ico"></i>Salario diario</span>
-                                            <span class="badge bg-light text-primary font-weight-bold p-2">$${salario_diario}</span>
+                                            <span class="badge bg-light text-primary font-weight-bold p-2">$ ${salario_diario}</span>
                                         </li> 
                                     </ul>
                                 </div>
@@ -497,13 +499,16 @@
                                     </a>
                                 </div>
                             `;
-                            document.getElementById("typeSettlement").textContent = data.InfoFiniquito[0].sFiniquito_valor;
-                            document.getElementById("typeSettlement").innerHTML += infoPaid;
+                            document.getElementById("typeSettlement").textContent = data.InfoFiniquito[0].sFiniquito_valor + " - ";
+                            const dataInfo = data.InfoFiniquito[0];
+                            document.getElementById('typeDown').textContent = dataInfo.sMotivo_baja;
+                            document.getElementById("headerSettlement").innerHTML += infoPaid;
                             document.getElementById("btnprint" + String(paramid)).setAttribute("download", data.NombrePDF);
                             document.getElementById("btnprint" + String(paramid)).setAttribute("href", "../../Content/" + data.NombreFolder + "/" + data.NombrePDF);
                             btnCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ", '" + data.NombreFolder + "')");
                             icoCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ", '"+ data.NombreFolder +"')");
                         }
+                        document.getElementById('btnGenerateReceipt' + String(paramid)).disabled = false;
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }
@@ -531,8 +536,10 @@
                 $.ajax({
                     url: "../BajasEmpleados/ConfirmPaidSuccess",
                     type: "POST",
-                    data: {keySettlement: parseInt(paramid)},
-                    success: (data) => {
+                    data: { keySettlement: parseInt(paramid) },
+                    beforeSend: () => {
+                        document.getElementById('btnConfirmPaidSuc' + String(paramid)).disabled = true;
+                    }, success: (data) => {
                         if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: "Correcto", text: "Opcion guardada", icon: "success",
@@ -545,6 +552,7 @@
                             const checkBoxSel = document.getElementById("radioSelect" + String(paramid));
                             fShowTypeAlert('Error', "Ocurrio un error al confirmar el pago", "error", checkBoxSel, 0);
                         }
+                        document.getElementById('btnConfirmPaidSuc' + String(paramid)).disabled = false;
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }
@@ -629,7 +637,7 @@
                     type: "POST",
                     data: { keySettlement: parseInt(paramid), typeCancel: parseInt(typecancel) },
                     beforeSend: () => {
-                        console.log('Cancelando...');
+                        document.getElementById('btnCancelSettlement' + String(paramid)).disabled = true;
                     }, success: (data) => {
                         if (data.Bandera == true && data.MensajeError == "none") {
                             Swal.fire({
@@ -647,6 +655,7 @@
                         } else {
                             alert("ERROR! al cancelar");
                         }
+                        document.getElementById('btnCancelSettlement' + String(paramid)).disabled = false;
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }
@@ -697,7 +706,9 @@
                                     url: "../BajasEmpleados/SendDataDownSettlement",
                                     type: "POST",
                                     data: dataSend,
-                                    success: (data) => {
+                                    beforeSend: () => {
+                                        btnGuardaBaja.disabled = true;
+                                    }, success: (data) => {
                                         if (data.Bandera == true && data.MensajeError == "none") {
                                             Swal.fire({
                                                 title: "Correcto",
@@ -721,6 +732,7 @@
                                         } else {
                                             alert("Ocurrio un error, reporte al área de TI");
                                         }
+                                        btnGuardaBaja.disabled = false;
                                     }, error: (jqXHR, exception) => {
                                         fcaptureaerrorsajax(jqXHR, exception);
                                     }
