@@ -57,20 +57,26 @@ namespace Payroll.Controllers
         public JsonResult UpdateConfigBank(int keyBank, string numClientBank, string numBillBank, string numSquareBank, string numClabeBank, int interfaceGen)
         {
             Boolean flag = false;
+            Boolean flagVal = false;
             String messageError = "none";
             LoadDataTableBean dataBankBean = new LoadDataTableBean();
             LoadDataTableDaoD dataBankDaoD = new LoadDataTableDaoD();
             try
             {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
-                dataBankBean = dataBankDaoD.sp_Actualiza_Banco_Empresa(keyBusiness, keyBank, numClientBank, numBillBank, numSquareBank, numClabeBank, interfaceGen);
-                flag = (dataBankBean.sMensaje == "update") ? true : false;
+                dataBankBean = dataBankDaoD.sp_Valida_TipoDispersion_Banco(keyBusiness, interfaceGen, keyBank);
+                if (dataBankBean.sMensaje == "CONTINUE") {
+                    dataBankBean = dataBankDaoD.sp_Actualiza_Banco_Empresa(keyBusiness, keyBank, numClientBank, numBillBank, numSquareBank, numClabeBank, interfaceGen);
+                    flag = (dataBankBean.sMensaje == "update") ? true : false;
+                } else if (dataBankBean.sMensaje == "EXISTS") {
+                    flagVal = true;
+                }
             }
             catch (Exception exc)
             {
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError });
+            return Json(new { Bandera = flag, Validacion = flagVal, MensajeError = messageError });
         }
     }
 }

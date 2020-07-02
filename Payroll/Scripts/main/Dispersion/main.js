@@ -19,6 +19,7 @@
     const labsearchempnom         = document.getElementById('labsearchempnom');
 
     const yeardis  = document.getElementById('yeardis');
+    const typeperiod = document.getElementById('typeperiod');
     const periodis = document.getElementById('periodis');
     const datedis  = document.getElementById('datedis');
 
@@ -75,11 +76,14 @@
                 type: "POST",
                 data: { yearAct: yearact },
                 success: (data) => {
+                    console.log('Datos periodo');
+                    console.log(data);
                     if (data.Bandera == true && data.MensajeError == "none") {
                         document.getElementById('typeperactnomemp').textContent = data.InfoPeriodo.iTipoPeriodo;
                         document.getElementById('peractnomemp').textContent = data.InfoPeriodo.iPeriodo;
                         document.getElementById('fechaspernomemp').textContent = data.InfoPeriodo.sFechaInicio + " - " + data.InfoPeriodo.sFechaFinal;
                         periodis.value = data.InfoPeriodo.iPeriodo;
+                        typeperiod.value = data.InfoPeriodo.iTipoPeriodo;
                     } else {
                         fShowTypeAlert('Atención!', 'No se ha cargado la informacion del periodo actual, contacte al área de TI indicando el siguiente código: #CODERRfLoadInfoPeriodPayrollMAINDIS#', 'error', navDispersion, 0);
                     }
@@ -357,13 +361,11 @@
         yeardis.value = d.getFullYear();
         yeardis.setAttribute('readonly', 'true');
         periodis.setAttribute('readonly', 'true');
-        const day = d.getDate();
-        let mth;
-        if ((d.getMonth() + 1) < 10) {
-            mth = "0" + String(d.getMonth() + 1);
-        } else { mth = d.getMonth() + 1; }
+        const day = (d.getDate() < 10) ? "0" + d.getDate() : d.getDate();
+        const mth = ((d.getMonth() + 1) < 10) ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
         const yer = d.getFullYear();
         datedis.value = yer + '-' + mth + '-' + day;
+        console.log("Día: " + day + " Mes: " + mth + " Año: " + yer);
     }
 
     fToDeployInfoDispersion = () => {
@@ -387,8 +389,9 @@
                     url: "../Dispersion/ToDeployDispersion",
                     type: "POST",
                     data: {
-                        yearDispersion: yeardis.value,
-                        periodDispersion: periodis.value,
+                        yearDispersion: parseInt(yeardis.value),
+                        typePeriodDisp: parseInt(typeperiod.value),
+                        periodDispersion: parseInt(periodis.value),
                         dateDispersion: datedis.value,
                         type: "test"
                     },

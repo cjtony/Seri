@@ -298,5 +298,48 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe });
         }
 
+        [HttpPost]
+        public JsonResult ReportBillsChecksDetailsTotals(string typeOption, int keyOptionSel, string typeReport, int yearSelect, int periodSelect, int typePSelect)
+        {
+            Boolean flag          = false;
+            String  messageError  = "none";
+            string pathSaveFile   = Server.MapPath("~/Content/");
+            string nameFolder     = "REPORTES";
+            string nameFolderRe   = (typeReport == "ABONO") ? "ABONO_DETALLE" : "ABONO_TOTAL";
+            string nameFileValid  = (typeReport == "ABONO") ? "ABONO" : "ABOTOTAL";
+            string nameFileRepr   = nameFileValid + "_E" + keyOptionSel.ToString() + "_A" + yearSelect.ToString() + "_P" + periodSelect.ToString() + "_T" + typePSelect.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale    = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable           = (typeReport == "ABONO") ? reportDao.sp_Datos_Reporte_Cuenta_Cheques_Detalle(typeOption, keyOptionSel, yearSelect, periodSelect, typePSelect) : reportDao.sp_Datos_Reporte_Cuenta_Cheques_Totales(typeOption, keyOptionSel, yearSelect, periodSelect, typePSelect); 
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        int columnsDataTable = dataTable.Columns.Count + 1;
+                        var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                        for (var i = 1; i < columnsDataTable; i++) {
+                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                            worksheet.Cells[1, i].Style.Font.Bold = true;
+                            worksheet.Cells[1, i].Style.WrapText = true;
+                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                        }
+                        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                        FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                        excel.SaveAs(excelFile);
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe });
+        }
+
     }
 }

@@ -555,6 +555,8 @@
                     await fGenerateReportEmployeesActiveWithSalary(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "CATEMPACSS") {
                     await fGenerateReportEmployeesActiveWithoutSalary(optionBusiness, keyBusinessOpt);
+                } else if (typeReport === "ABONO" || typeReport === "ABOTOTAL") {
+                    await fGenerateReportBillsChecksDetailsTotals(optionBusiness, keyBusinessOpt, typeReport);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -840,6 +842,65 @@
                     });
                 } else {
                     fShowTypeAlert('Atención!', 'Complete el campo Fecha del personal activo', 'warning', paramDate, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de abonos a cuenta de cheques detalle
+    fGenerateReportBillsChecksDetailsTotals = (option, keyOption, typeRep) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const urlTReport = (typeRep === "ABONO") ? "ReportBillsChecksDetails" : "ReportBillsChecksTotals";
+                const paramYear  = document.getElementById('paramYear');
+                const paramNper  = document.getElementById('paramNper');
+                const paramTper = document.getElementById('paramTper');
+                if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length === 4) {
+                    if (paramNper.value != "" && paramNper.value > 0) {
+                        if (paramTper.value != "" && paramTper.value > 0) {
+                            $.ajax({
+                                url: "../Reportes/ReportBillsChecksDetailsTotals",
+                                type: "POST",
+                                data: {
+                                    typeOption: option, keyOptionSel: parseInt(keyOption), typeReport: typeRep,
+                                    yearSelect: paramYear.value, periodSelect: paramNper.value, typePSelect: paramTper.value
+                                },
+                                beforeSend: () => {
+                                    fDisabledButtonsRep();
+                                }, success: (data) => {
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    console.log(data);
+                                    fEnabledButtonsRep();
+                                }, error: (jqXHR, exception) => {
+                                    fcaptureaerrorsajax(jqXHR, exception);
+                                }
+                            });
+                        } else {
+                            fShowTypeAlert('Atención!', 'Complete el campo tipo periodo correctamente', 'warning', paramTper, 2);
+                        }
+                    } else {
+                        fShowTypeAlert('Atención!', 'Complete el campo periodo correctamente', 'warning', paramNper, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención!', 'Complete el campo año correctamente', 'warning', paramYear, 2);
                 }
             } else {
                 alert('Accion invalida');

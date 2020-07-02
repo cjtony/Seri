@@ -290,12 +290,23 @@
                     beforeSend: () => {
                         btnSaveConfigBank.disabled = true;
                     }, success: (data) => {
-                        if (data.Bandera == true && data.MensajeError == "none") {
+                        console.log(data);
+                        if (data.Bandera == true && data.MensajeError == "none" && data.Validacion == false) {
                             const tableData = $("#table-test").DataTable();
                             tableData.destroy();
                             setTimeout(() => { fLoadTableDataBanks(); }, 1000);
                             Swal.fire({
                                 title: "Correcto", text: "Datos actualizados!", icon: "success",
+                                showClass: { popup: 'animated fadeInDown faster' },
+                                hideClass: { popup: 'animated fadeOutUp faster' },
+                                confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false
+                            }).then((acepta) => {
+                                $("#details-config-bank").modal('hide');
+                                fClearFieldsConfigBank();
+                            });
+                        } else if (data.Bandera == false && data.MensajeError == "none" && data.Validacion == true) {
+                            Swal.fire({
+                                title: "Atención!", text: "No puedes tener dos bancos interbancarios!", icon: "info",
                                 showClass: { popup: 'animated fadeInDown faster' },
                                 hideClass: { popup: 'animated fadeOutUp faster' },
                                 confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false

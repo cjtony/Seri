@@ -140,7 +140,7 @@ namespace Payroll.Controllers
 
         // Muestra informacion al desplegar la dispersion
         [HttpPost]
-        public JsonResult ToDeployDispersion(string yearDispersion, string periodDispersion, string dateDispersion, string type)
+        public JsonResult ToDeployDispersion(int yearDispersion, int typePeriodDisp, int periodDispersion, string dateDispersion, string type)
         {
             Boolean flag1 = false, flag2 = false;
             String messageError = "none";
@@ -150,7 +150,7 @@ namespace Payroll.Controllers
             try
             {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
-                daDepBankingBean = daDiBusinessDaoD.sp_Obtiene_Depositos_Bancarios(keyBusiness, yearDispersion, periodDispersion, type);
+                daDepBankingBean = daDiBusinessDaoD.sp_Obtiene_Depositos_Bancarios(keyBusiness, yearDispersion, typePeriodDisp, periodDispersion, type);
                 if (daDepBankingBean.Count > 0)
                 {
                     flag1 = true;

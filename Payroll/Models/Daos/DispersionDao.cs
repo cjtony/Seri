@@ -250,23 +250,17 @@ namespace Payroll.Models.Daos
     public class DataDispersionBusiness : Conexion
     {
 
-        public List<DataDepositsBankingBean> sp_Obtiene_Depositos_Bancarios(int keyBusiness, string yearDispersion, string periodDispersion, string type)
+        public List<DataDepositsBankingBean> sp_Obtiene_Depositos_Bancarios(int keyBusiness, int yearDispersion, int typePeriodDisp, int periodDispersion, string type)
         {
             List<DataDepositsBankingBean> listDaDepBankingBean = new List<DataDepositsBankingBean>();
             try
             {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Obtiene_Depositos_Bancarios", this.conexion) { CommandType = CommandType.StoredProcedure };
-                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", Convert.ToInt32(keyBusiness)));
-                cmd.Parameters.Add(new SqlParameter("@AnioAct", Convert.ToInt32(yearDispersion)));
-                if (type == "test")
-                {
-                    cmd.Parameters.Add(new SqlParameter("@Periodo", Convert.ToInt32(3)));
-                }
-                else
-                {
-                    cmd.Parameters.Add(new SqlParameter("@Periodo", Convert.ToInt32(periodDispersion)));
-                }
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@AnioAct", yearDispersion));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", periodDispersion));
+                cmd.Parameters.Add(new SqlParameter("@IdPeriodo", typePeriodDisp));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {
