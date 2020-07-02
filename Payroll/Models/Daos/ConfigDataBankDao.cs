@@ -78,6 +78,35 @@ namespace Payroll.Models.Daos
             return lDataTableBean;
         }
 
+        public LoadDataTableBean sp_Valida_TipoDispersion_Banco(int keyBusiness, int typeDis, int keyBank)
+        {
+            LoadDataTableBean dataBankBean = new LoadDataTableBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Valida_TipoDispersion_Banco", this.conexion) { CommandType  = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@TipoDispersion", typeDis));
+                cmd.Parameters.Add(new SqlParameter("@IdBanco", keyBank));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (data["Respuesta"].ToString() == "NONE") {
+                        dataBankBean.sMensaje = "CONTINUE";
+                    } else {
+                        dataBankBean.sMensaje = "EXISTS";
+                    }
+                } else {
+                    dataBankBean.sMensaje = "ERRVALIDATE";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                dataBankBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataBankBean;
+        }
+
         public LoadDataTableBean sp_Actualiza_Banco_Empresa(int keyBusiness, int keyBank, string numClientBank, string numBillBank, string numSquareBank, string numClabeBank, int interfaceGen)
         {
             LoadDataTableBean dataBankBean = new LoadDataTableBean();

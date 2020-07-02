@@ -182,5 +182,53 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
+        public DataTable sp_Datos_Reporte_Cuenta_Cheques_Detalle(string typeOption, int keyOptionSel, int year, int period, int typePeriod)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Cuenta_Cheques_Detalle", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                cmd.Parameters.Add(new SqlParameter("@TPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@TipoOpcion", typeOption));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
+        public DataTable sp_Datos_Reporte_Cuenta_Cheques_Totales(string typeOption, int keyOptionSel, int year, int period, int typePeriod)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Cuenta_Cheques_Totales", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                cmd.Parameters.Add(new SqlParameter("@TPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@TipoOpcion", typeOption));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
     }
 }
