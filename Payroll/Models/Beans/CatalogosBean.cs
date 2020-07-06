@@ -638,4 +638,38 @@ namespace Payroll.Models.Beans
         public string Tabulador { get; set; }
         public string fecha_alta { get; set; }
     }
+    public class TabBancosEmpresas
+    {
+        public string idBanco_Emp { get; set; }
+        public string Empresa_id { get; set; }
+        public string Banco_id { get; set; }
+        public string Descripcion { get; set; }
+        public string Num_cliente { get; set; }
+        public string Plaza { get; set; }
+        public string Num_Cta_Empresa { get; set; }
+        public string Clabe { get; set; }
+        public string tipo_banco_id { get; set; }
+        public string tipo_banco { get; set; }
+        public string Cancelado { get; set; }
+    }
+    public class DataUsersBean
+    {
+        public string IdUsuario { get; set; }
+        public string Usuario { get; set; }
+        public string Perfil_id { get; set; }
+        public string Ps { get; set; }
+        public string Alta_por { get; set; }
+        public string Fecha_Alta { get; set; }
+        public string Cancelado { get; set; }
+    }
+    public class DataProfilesBean
+    {
+        public string IdPerfil { get; set; }
+        public string Perfil { get; set; }
+        public string Cancelado { get; set; }
+        public string Alta_por { get; set; }
+        public string Fecha_Alta { get; set; }
+       
+    }
+
 }

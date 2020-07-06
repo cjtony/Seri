@@ -1,4 +1,4 @@
-﻿<div class="container col-md-10 bg-white p-4 shadow shadow-lg">
+﻿<div class="container col-md-10 bg-white p-4 shadow shadow-lg rounded ">
     <nav>
         <div class="nav nav-tabs font-weight-bold" id="nav-tab" role="tablist">
             <a class="nav-item nav-link text-danger" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Lista de Bancos</a>
@@ -7,7 +7,7 @@
     </nav>
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-            <table class="table table-sm font-labels">
+            <table class="table table-sm font-labels" id="tabbancos">
                 <thead>
                     <tr>
                         <th scope="col">Banco id</th>
@@ -17,22 +17,133 @@
                     </tr>
                 </thead>
                 <tbody id="tbody-bancos">
-
                 </tbody>
             </table>
         </div>
         <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-            <table class="table table-sm font-labels">
+            <table class="table table-sm font-labels" id="tabbancosempresa">
                 <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Empresa</th>
-                        <th scope="col">Acciones</th>
+                        <th class="col-md-12 row">
+                            <div class="col-md-4">Id</div>
+                            <div class="col-md-4">Empresa</div>
+                            <div class="col-md-4">Acciones</div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="tbody-bancos-empresas">
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+@*MODAL PARA NUEVO BANCO EN EMPRESA*@
+<div class="modal fade" id="modal-nuevo-bancoempresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo Banco a Empresa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formnewbanco">
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-6">
+                            <label>Empresa</label>
+                            <input class="form-control form-control-sm" id="newempresa" type="text" value="" readonly required />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Banco</label>
+                            <select id="newbanco" class="custom-select custom-select-sm">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label># Cliente</label>
+                            <input class="form-control form-control-sm input-number" id="newcliente" type="text" value="" required placeholder="Número de cliente"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Plaza</label>
+                            <input class="form-control form-control-sm input-number" id="newplaza" type="text" value="" required placeholder="Número"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label># Cuenta Empresa</label>
+                            <input class="form-control form-control-sm input-number" id="newcuentaempresa" type="text" value="" required placeholder="Número de cuenta empresa"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Clabe</label>
+                            <input class="form-control form-control-sm input-number" id="newclabe" type="text" value="" required placeholder="Número clabe"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Tipo de banco</label>
+                            <select id="newtipobanco" size="2" class="custom-select custom-select-sm" multiple required>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnnewbanco">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*MODAL PARA EDITAR BANCO EN EMPRESA*@
+<div class="modal fade" id="modal-editar-bancoempresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Banco a Empresa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formeditbanco">
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-4">
+                            <label>Empresa</label>
+                            <input class="form-control form-control-sm" id="editempresa" type="text" value="" readonly required />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Banco</label>
+                            <select id="editbanco" class="custom-select custom-select-sm">
+                                <option value="value">text</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label># Cliente</label>
+                            <input class="form-control form-control-sm" id="editcliente" type="text" value="" required placeholder="Número de cliente" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Plaza</label>
+                            <input class="form-control form-control-sm" id="editplaza" type="text" value="" required placeholder="Número" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label># Cuenta Empresa</label>
+                            <input class="form-control form-control-sm" id="editcuentaempresa" type="text" value="" required placeholder="Número de cuenta empresa" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Clabe</label>
+                            <input class="form-control form-control-sm" id="editclabe" type="text" value="" required placeholder="Número clabe" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Tipo de banco</label>
+                            <select id="edittipobanco" class="custom-select custom-select-sm" multiple required>
+                                <option value="value">text</option>
+                            </select>
+                        </div>
+                        <input id="editarid" type="hidden" value="" />
+                        <input id="editarcollapse" type="hidden" value="" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btneditarbanco">Actualizar</button>
+            </div>
         </div>
     </div>
 </div>

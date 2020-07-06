@@ -1,0 +1,95 @@
+﻿<div class="container col-md-10 shadow shadow-lg bg-white p-4">
+    <div class="col-md-12 row">
+        <label id="lbltitulo" class="font-buttons col-md-10"></label>
+        <div class="col-md-2"><div class='ml-1 btn badge badge-pill badge-primary' onclick='mostrarmodalnuevo(@Session["IdEmpresa"]);'>Agregar <i class='fas fa-plus'></i></div></div>
+        <div id="collapsebancos" class="collapse col-md-12 active show"></div>
+    </div>
+</div>
+@*MODAL PARA NUEVO BANCO EN EMPRESA*@
+<div class="modal fade" id="modal-nuevo-bancoempresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo Banco a Empresa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formnewbanco">
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-4">
+                            <label>Empresa</label>
+                            <input class="form-control form-control-sm" id="newempresa" type="text" value="@Session["IdEmpresa"]" readonly required />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Banco</label>
+                            <select id="newbanco" class="custom-select custom-select-sm">
+                                <option value="value">text</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Tipo de banco</label>
+                            <select id="newtipobanco" class="custom-select custom-select-sm" multiple required>
+                                <option value="value">text</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnnewbanco">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*MODAL PARA EDITAR BANCO EN EMPRESA*@
+<div class="modal fade" id="modal-editar-bancoempresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Banco a Empresa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formeditbanco">
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-4">
+                            <label>Empresa</label>
+                            <input class="form-control form-control-sm" id="editempresa" type="text" value="@Session["IdEmpresa"]" readonly required />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Banco</label>
+                            <select id="editbanco" class="custom-select custom-select-sm">
+                                <option value="value">text</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Tipo de banco</label>
+                            <select id="edittipobanco" class="custom-select custom-select-sm" multiple required>
+                                <option value="value">text</option>
+                            </select>
+                        </div>
+                        <input id="editarid" type="hidden" value="" />
+                        <input id="editarcollapse" type="hidden" value="" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btneditarbanco">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/main/Empre.js"></script>
+<script>
+    $(function () {
+        loadview();
+        loadbancosempresa("collapsebancos",@Session["IdEmpresa"]);
+        LoadSelectBancos(0);
+    });
+</script>

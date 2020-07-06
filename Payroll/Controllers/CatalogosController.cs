@@ -1,5 +1,6 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
@@ -98,6 +99,10 @@ namespace Payroll.Controllers
             return PartialView();
         }
         public PartialViewResult CBancos()
+        {
+            return PartialView();
+        }
+        public PartialViewResult CUsuarios()
         {
             return PartialView();
         }
@@ -310,7 +315,76 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Periodo(Empresa_id, editid, editano, editperiodo, editfinicio, editffinal, editfproceso, editfpago, editdiaspago);
             return Json(Lista);
         }
-        //[HttpPost]
-        //public JsonResult LoadEmpresasBancos
+        [HttpPost]
+        public JsonResult LoadBancosEmpresa(int Empresa_id)
+        {
+            List<TabBancosEmpresas> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_BancosEmpresas_Retrieve_Bancos(Empresa_id);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadTipoBanco()
+        {
+            List<InfDomicilioBean> Lista;
+            InfDomicilioDao Dao = new InfDomicilioDao();
+            Lista = Dao.sp_CatalogoGeneral_Retrieve_CatalogoGeneral(31);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult SaveNewBanco(int Empresa_id, int Banco_id, int TipoBanco, int Cliente, int Plaza, int CuentaEmp, int Clabe)
+        {
+            List<string> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_BancosEmpresas_Insert_Banco(Empresa_id, Banco_id, TipoBanco, Cliente, Plaza, CuentaEmp, Clabe);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult UpdateBancoEmpresa(int Banco_id, int TipoBanco, int Id, int Cliente, int Plaza, string CuentaEmp, string Clabe)
+        {
+            List<string> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_BancosEmpresas_updatebanco_Banco(Banco_id, TipoBanco, Id, Cliente, Plaza, CuentaEmp, Clabe);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult UpdateBanco(int key, int Id)
+        {
+            List<string> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_BancosEmpresas_updatestatus_Banco(key, Id);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadUsers()
+        {
+            List<DataUsersBean> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_CUsuarios_Retrieve_Users();
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadProfiles()
+        {
+            List<DataProfilesBean> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_CPerfiles_Retrieve_Perfiles();
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult Loadmainmenus(int Id)
+        {
+            List<MainMenuBean> Lista;
+            MainMenuDao Dao = new MainMenuDao();
+            Lista = Dao.sp_Retrieve_Menu_Paths(1);
+            return Json(Lista);
+        }
+        public JsonResult Loadonemenu(int Id)
+        {
+            List<MainMenuBean> Lista;
+            MainMenuDao Dao = new MainMenuDao();
+            Lista = Dao.Bring_Main_Menus(1,Id);
+            return Json(Lista);
+        }
     }
 }

@@ -439,6 +439,271 @@
             }
         });
     }
-    
-    
+    /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
+    // VISTA BANCOS
+    loadview = () => {
+        $("#lbltitulo").html("Bancos de la empresa " + $("#btnNameEmpresaSelected").html());
+    }
+    //
+    //CARGA BANCOS
+    LoadSelectBancos = (Banco_id) => {
+        $.ajax({
+            url: "../Empleados/LoadBanks",
+            type: "POST",
+            data: JSON.stringify({ keyban: Banco_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                
+                var select = document.getElementById("newbanco");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    
+                    select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
+                }
+
+            }
+        });
+    }
+    //
+    // CARGA TABLA DE BANCOS DE LA EMPRESA
+    loadbancosempresa = (collapse,Empresa_id) => {
+        $.ajax({
+            url: "../Catalogos/LoadBancosEmpresa",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                document.getElementById(collapse).innerHTML = "";
+                document.getElementById(collapse).innerHTML += "<table class='table table-sm table-in-fechas-periodos col-md-12 m-3'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th>Banco Id</th>" +
+                    "<th>Nombre Banco</th>" +
+                    "<th>Tipo Banco</th>" +
+                    "<th class='text-center'>Activo</th>" +
+                    "<th class=''>Acciones</th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + collapse + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]["Cancelado"] == "True") {
+                        document.getElementById("tab" + collapse).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["Banco_id"] + "</td>" +
+                            "<td>" + data[j]["Descripcion"] + "</td>" +
+                            "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
+                            "<td class='text-center'><div><i class='fas fa-eye-slash text-danger'></i> </div></td>" +
+                            "<td class='row'>" +
+                            "<div title='Activar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 3 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-check-circle fa-lg'></i></div>" +
+                            "<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
+                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
+                            "</td>" +
+                            "</tr>";
+                    } else {
+                        document.getElementById("tab" + collapse).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["Banco_id"] + "</td>" +
+                            "<td>" + data[j]["Descripcion"] + "</td>" +
+                            "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
+                            "<td class='text-center'><div><i class='fas fa-eye text-primary fa-lg'></i></div></td>" +
+                            "<td class='row'>" +
+                            "<div title='Desactivar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 1 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-times-circle fa-lg'></i></div>" +
+                            "<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
+                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
+                            "</td>" +
+                            "</tr>";
+                    }
+
+                }
+                //$(".collapse").collapse("hide");
+                //$("#" + collapse).collapse("toggle");
+            }
+        });
+    }
+    //
+    // MOSTRAR MODAL NUEVO BANCO EN EMPRESA
+    mostrarmodalnuevo = (Empresa_id) => {
+        $.ajax({
+            url: "../Catalogos/LoadTipoBanco",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var select = document.getElementById("newtipobanco");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    select.innerHTML += "<option value='" + data[i]["iId"] + "'>" + data[i]["sValor"] + "</option>";
+                }
+                $("#newempresa").val(Empresa_id);
+                $("#modal-nuevo-bancoempresa").modal("show");
+
+            }
+        });
+
+
+    }
+    //
+    // FUNCION QUE REINICIA EL MODAL NUEVO
+    $('#modal-nuevo-bancoempresa').on('hidden.bs.modal', function () {
+        document.getElementById("formnewbanco").classList.remove("was-validated");
+    });
+    //
+    // GUARDAR NUEVO BANCO EN EMPRESA
+    $("#btnnewbanco").on("click", function () {
+
+        var form = document.getElementById("formnewbanco");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+            var tb = document.getElementById("newtipobanco");
+            $.ajax({
+                url: "../Catalogos/SaveNewBanco",
+                type: "POST",
+                data: JSON.stringify({ Empresa_id: $("#newempresa").val(), Banco_id: $("#newbanco").val(), TipoBanco: tb.value }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    loadbancosempresa("collapsebancos", $("#newempresa").val());
+                    $("#modal-nuevo-bancoempresa").modal("hide");
+
+                }
+            });
+        }
+    });
+    //
+    // MOSTRAR MODAL EDITAR BANCO
+    mostrarmodaleditarbanco = (Empresa_id, Banco_id, TipoBanco, BancoEmp, collapse) => {
+        $.ajax({
+            url: "../Empleados/LoadBanks",
+            type: "POST",
+            data: JSON.stringify({ keyban: 0 }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                $("#editempresa").val(Empresa_id)
+                var select = document.getElementById("editbanco");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (Banco_id == data[i]["iIdBanco"]) {
+                        select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "' selected>" + data[i]["sNombreBanco"] + "</option>"
+                    } else {
+                        select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
+                    }
+                }
+                $.ajax({
+                    url: "../Catalogos/LoadTipoBanco",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: (data) => {
+                        console.log(data);
+                        var select = document.getElementById("edittipobanco");
+                        select.innerHTML = "";
+                        for (var j = 0; j < data.length; j++) {
+                            if (TipoBanco == data[j]["iId"]) {
+                                select.innerHTML += "<option value='" + data[j]["iId"] + "' selected>" + data[j]["sValor"] + "</option>";
+                            } else {
+                                select.innerHTML += "<option value='" + data[j]["iId"] + "'>" + data[j]["sValor"] + "</option>";
+                            }
+                        }
+                        $("#editarid").val(BancoEmp);
+                        $("#editarcollapse").val(collapse)
+                        $("#modal-editar-bancoempresa").modal("show");
+
+                    }
+                });
+            }
+        });
+    }
+    //
+    // GUARDAR ACTUALIZACION DE BANCO EN LA EMPRESA
+    $("#btneditarbanco").on("click", function () {
+        var form = document.getElementById("formeditbanco");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+            var tb = document.getElementById("edittipobanco");
+            $.ajax({
+                url: "../Catalogos/UpdateBancoEmpresa",
+                type: "POST",
+                data: JSON.stringify({ Banco_id: $("#editbanco").val(), TipoBanco: tb.value, Id: $("#editarid").val() }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    //$("#" + $("#editarcollapse").val()).collapse("hide");
+                    loadbancosempresa("collapsebancos", $("#newempresa").val());
+                    $("#modal-editar-bancoempresa").modal("hide");
+                }
+            });
+        }
+    });
+    //
+    // FUNCION QUE REINICIA EL MODAL NUEVO
+    $('#modal-editar-bancoempresa').on('hidden.bs.modal', function () {
+        document.getElementById("formeditbanco").classList.remove("was-validated");
+    });
+    //
+    // EDIT BANK TWO OPTIONS 
+    editarbanco = (key, Id, collapse) => {
+        var texto = "";
+        if (key == 1) {
+            texto = "El banco será desactivado de la empresa"
+        } else if (key == 2) {
+            texto = "El banco será eliminado de la empresa"
+        } else if (key == 3) {
+            texto = "El banco será activado en la empresa"
+        }
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: texto,
+            icon: 'warning',
+            showCancelButton: true,
+            CancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#98959B',
+            confirmButtonText: 'Confirmar'
+        }).then((result) => {
+            if (result.value) {
+
+                $.ajax({
+                    url: "../Catalogos/UpdateBanco",
+                    type: "POST",
+                    data: JSON.stringify({ key: key, Id: Id }),
+                    contentType: "application/json; charset=utf-8",
+                    success: (data) => {
+                        //$("#" + collapse).collapse("toggle");
+                        loadbancosempresa("collapsebancos", $("#newempresa").val());
+                        if (data[0] == 0) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Error!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        } else if (data[0] == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Hecho!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        } else if (data[0] == 2) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Hecho!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        } else if (data[0] == 3) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Hecho!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+
+    }
 });
