@@ -1,4 +1,4 @@
-﻿@*Temas*@
+﻿  @*Temas*@ 
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
@@ -62,14 +62,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <label for="NombEmpre" class="col-sm-4 col-form-label font-labels" id="NombEmpre" style="visibility:hidden; margin-top:-5px">
-                                        Empresa:
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="EjeEmpresa" style="visibility:hidden">
-                                            <option value="0">Selecciona</option>
-                                        </select>
-                                    </div>
+
                                 </div>
                                 <div class="form-group row">
                                     <label for="anoeje" class="col-sm-4 col-form-label font-labels">
@@ -79,7 +72,38 @@
                                         <input placeholder="Año" type="text" id="TbAño" class="form-control form-control-sm text-capitalize" readonly />
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label for="NombEmpre" class="col-sm-4 col-form-label font-labels" id="NombEmpre" style="visibility:hidden; margin-top:-5px">
+                                        Empresa:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="EjeEmpresa" style="visibility:hidden">
+                                            <option value="0">Selecciona</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row hidden"  >
+                                    <label for="NombreDe" class="col-sm-5 col-form-label font-labels" id="LaEmpleado" style="visibility:hidden">
+                                        Calculo por Empleado:
+                                    </label>
+                                    <input id="switchButtonEmple" style="en"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="Empleados" class="col-sm-4 col-form-label font-labels" id="Empleadoseje" style="visibility:hidden; margin-top:-5px">
+                                        Empleados:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <div>
+                                            <div style='float: left;' id='DropLitEmple'>
+                                            </div>
+                                            <div style="float: left; margin-left: 20px; font-size: 13px; font-family: Verdana;">
+                                                <div id="selectionlog"></div>
+                                                <div style='max-width: 300px; margin-top: 20px;' id="checkedItemsLog"></div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
@@ -413,7 +437,7 @@
         </div>
 
         @*Botones de flotantes*@
-    <div>
+         <div>
         
         <button class="flotante1 btn btn-primary btn-circle shadow" data-toggle="modal" title="Guardar" id="btnFloGuardar" type="button" value="1" style="visibility:hidden">
             <i class="fa fa-floppy-o"></i>

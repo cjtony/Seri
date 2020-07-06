@@ -1655,6 +1655,7 @@ namespace Payroll.Models.Daos
                             LP.sFechaInicio = data["Fecha_Inicio"].ToString();
                             LP.sFechaFinal = data["Fecha_Final"].ToString();
                             LP.sNominaCerrada = data["Nomina_Cerrada"].ToString();
+                            LP.sMensaje = "success";
                         };
 
                         list.Add(LP);
@@ -1662,7 +1663,12 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    list = null;
+                    CInicioFechasPeriodoBean LP = new CInicioFechasPeriodoBean();
+                    {
+                        LP.sMensaje = "error";
+                    }
+                    list.Add(LP);
+
                 }
 
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
@@ -1969,6 +1975,51 @@ namespace Payroll.Models.Daos
 
 
         }
+
+        /// List Elemento Nomina
+        public List<EmpleadosEmpresaBean> sp_EmpleadosDeEmpresa_Retreive_Templeados(int CtrliIdEmpresa)
+        {
+            List<EmpleadosEmpresaBean> list = new List<EmpleadosEmpresaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_EmpleadosDeEmpresa_Retreive_Templeados", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
+                        ls.iIdEmpleado = int.Parse(data["IdEmpleado"].ToString());
+                        ls.sNombreCompleto = data["NombreCompleto"].ToString();
+                        ls.sMensaje = "success";
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
+                    ls.sMensaje = "Error";
+                    list.Add(ls);
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+
+
+
     }
 }
 

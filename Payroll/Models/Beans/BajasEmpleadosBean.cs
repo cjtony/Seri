@@ -77,6 +77,7 @@ namespace Payroll.Models.Beans
         public int iNomina { get; set; }
         public string sNombre { get; set; }
         public string sLeyenda { get; set; }
+
     }
 
 }

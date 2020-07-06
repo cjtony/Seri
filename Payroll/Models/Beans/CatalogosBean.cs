@@ -689,7 +689,11 @@ namespace Payroll.Models.Beans
         public string Cancelado { get; set; }
         public string Alta_por { get; set; }
         public string Fecha_Alta { get; set; }
-       
+    }
+    public class SeccionReporte { 
+        public int iIdValor { get; set; }
+        public string SNombreReporte { get; set; }
+        public string sMensaje { get; set; }
     }
 
 }

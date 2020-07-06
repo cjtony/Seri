@@ -439,5 +439,46 @@ namespace Payroll.Controllers
             Lista = Dao.Bring_Main_Menus(1,Id);
             return Json(Lista);
         }
+        //Guarda los datos en la tabla Crenglones
+        [HttpPost]
+        public JsonResult SaveRenglon(int iIdEmpresa, int iIdRenglon, string sNombreRenglon,int iElementoNom, int iIdReporte
+           ,int IdAcumulado, int icancel,int iTipodeRenglon,int iEspejo,int idCalculo, string sCuentaCont,string sDespCuenta,
+            string sCargaCuenta,int iIdSat, int PenAlin)
+        {
+
+            CRenglonesBean bean = new CRenglonesBean();
+            ModCatalogosDao dao = new ModCatalogosDao();
+            bean = dao.ps_Renglon_Insert_CRenglones(iIdEmpresa, iIdRenglon, sNombreRenglon, iElementoNom, iIdReporte, IdAcumulado
+            ,icancel, iTipodeRenglon, iEspejo, idCalculo, sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
+            return Json(bean);
+        }
+
+
+        // Lista reporte
+        [HttpPost]
+        public JsonResult ListReporte()
+        {
+            List<SeccionReporte> LTcal = new List<SeccionReporte>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            LTcal = Dao.sp_SeccionReporte_Retrieve_Cgeneral();
+            return Json(LTcal);
+        }
+
+        //Actualiza los datos en la tabla Crenglones
+        [HttpPost]
+        public JsonResult UpdateRenglon(int iIdEmpresa, int iIdRenglon, string sNombreRenglon, int iElementoNom, int iIdReporte
+        , int IdAcumulado, int icancel, int iTipodeRenglon, int iEspejo, int idCalculo, string sCuentaCont, string sDespCuenta,
+         string sCargaCuenta, int iIdSat, int PenAlin)
+        {
+
+            CRenglonesBean bean = new CRenglonesBean();
+            ModCatalogosDao dao = new ModCatalogosDao();
+            bean = dao.ps_Renglon_Update_CRenglones(iIdEmpresa, iIdRenglon, sNombreRenglon, iElementoNom, iIdReporte, IdAcumulado
+            , icancel, iTipodeRenglon, iEspejo, idCalculo, sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
+            return Json(bean);
+        }
+
+ 
+
     }
 }

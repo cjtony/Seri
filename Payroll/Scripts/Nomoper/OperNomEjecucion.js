@@ -45,6 +45,11 @@
     const LanombreDef = document.getElementById('LanombreDef');
     const NombEmpre = document.getElementById('NombEmpre');
     const EjeEmpresa = document.getElementById('EjeEmpresa');
+    const Empleadoseje = document.getElementById('Empleadoseje');
+    const dropEmpledos = document.getElementById('DropLitEmple');
+    const LaEmplea = document.getElementById('LaEmpleado');
+    const switchButtonEmp = document.getElementById('switchButtonEmple');
+
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
@@ -65,23 +70,56 @@
     var NoEmpleado;
 
     // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
+    $("#switchButtonEmple").toggle();
+    LisEmpresa = (IdDrop ) => {
 
-    LisEmpresa = () => {
-
+        const dataSend2 = { iIdCalculosHd: IdDrop, iTipoPeriodo:0 , iPeriodo: 0, idEmpresa: 0, anio: 0 };
+        $("#EjeEmpresa").empty();
+        $('#EjeEmpresa').append('<option value="0" selected="selected">Selecciona</option>');
         $.ajax({
-            url: "../Nomina/LisEmpresas",
-            type: "POST",
-            data: JSON.stringify(),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                for (i = 0; i < data.length; i++) {
-                    document.getElementById("EjeEmpresa").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
-                }
-            }
-        });
+          url: "../Nomina/EmpresaCal",
+          type: "POST",
+           data: dataSend2,
+           success: (data) => {
+             for (i = 0; i < data.length; i++) {
 
+                 document.getElementById("EjeEmpresa").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].iIdEmpresa}  ${data[i].sNombreEmpresa} </option>`;
+             }
+           },
+        });
     };
-    LisEmpresa();
+    
+
+    EmpleadoDEmp = (IdEmpresa) => {
+
+        const dataSend2 = { iIdEmpresa: IdEmpresa };
+        $.ajax({
+            url: "../Nomina/ListEmplados",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                var source =
+                {
+                    localdata: data,
+                    datatype: "array",
+                    datafields:
+                        [
+                            { name: 'iIdEmpleado', type: 'int' },
+                            { name: 'sNombreCompleto', type: 'string' },
+                        
+                        ],
+                    datatype: "array",
+                    updaterow: function (rowid, rowdata) {
+                        // synchronize with the server - send update command   
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                $("#DropLitEmple").jqxDropDownList({ checkboxes: true, source: dataAdapter, displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 400, height: 30, });            
+
+            },
+        });
+    };
+
 
     FLlenaGrid = () => {
 
@@ -120,7 +158,6 @@
                         // synchronize with the server - send update command   
                     }
                 };
-
                 var dataAdapter = new $.jqx.dataAdapter(source);
 
                 $("#TpDefinicion").jqxGrid({
@@ -179,16 +216,22 @@
                     type: "POST",
                     data: dataSend2,
                     success: (data) => {
-                        //for (i = 0; i < data.length; i++) {
-                        document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
-                        periodo = data[0].iPeriodo;
-                        PeriodoCal.value = data[0].iPeriodo;
-                        /// si tiene calculos la definicion del periodo actual  los muestra  
-                        var empresa = 0;
-                        console.log('Empres: ' + empresa + ' periodo: ' + periodo);        
-                        FllenaCalculos(periodo, empresa, Tipoperiodocal);
-                       
-                        //}
+                        var dato = data[0].sMensaje;
+                      
+                        if (data[0].sMensaje == "success") {
+                            document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
+                            periodo = data[0].iPeriodo;
+                            PeriodoCal.value = data[0].iPeriodo;
+                            /// si tiene calculos la definicion del periodo actual  los muestra  
+                            var empresa = 0;
+                            console.log('Empres: ' + empresa + ' periodo: ' + periodo);
+                            FllenaCalculos(periodo, empresa, Tipoperiodocal);
+                        }
+                        if (data[0].sMensaje == "error") {
+
+                            fshowtypealert ('Ejecucion','Periodo actual no exite', 'warning')
+                        }
+                      
                     },
 
 
@@ -222,7 +265,7 @@
             },
         });
     
-        
+        LisEmpresa(IdDropList);
     });
 
     $("#TpDefinicion").jqxGrid('selectrow', 0);
@@ -693,7 +736,9 @@
     navNomCetab.addEventListener('click', Ftabopcion3);
     navVisNominatab.addEventListener('click', FTanopcion4);
 
-                   // Procesos de Ejecucion 
+
+
+    // Procesos de Ejecucion
 
     Fejecucion = () => {
         seconds = 60;
@@ -997,6 +1042,7 @@
 
                 // define tamaño del droplist
     $("#switchButton").jqxSwitchButton({ width: 60, height: 25 });
+    $("#switchButtonEmple").jqxSwitchButton({ width: 60, height: 25 });
     $("#jqxdropdownbutton2").jqxDropDownButton({
         width: 600, height: 30
     });
@@ -1438,6 +1484,12 @@
 
     });
     
+    $('#EjeEmpresa').change(function () {
+
+        EmpleadoDEmp(EjeEmpresa.value);
+
+    });
+
 
     // muestra calculos de nomina del empleado
     
@@ -1727,24 +1779,61 @@
        
         if (checked == true)
         {
-            console.log('desaparese' + checked);
-            jqxdropdown.style.visibility = 'hidden';
-            LanombreDef.style.visibility = 'hidden';
+            LaEmplea.style.visibility = 'visible';
+            $("#switchButtonEmple").toggle();
             NombEmpre.style.visibility = 'visible';
             EjeEmpresa.style.visibility = 'visible';
+
         }
         if (checked == false) {
-            jqxdropdown.style.visibility = 'visible';
-            LanombreDef.style.visibility = 'visible';
+            LaEmplea.style.visibility = 'hidden';
+            $("#switchButtonEmple").toggle();
+            switchButtonEmp.style.visibility = 'hidden';
             NombEmpre.style.visibility = 'hidden';
             EjeEmpresa.style.visibility = 'hidden';
+          
+          
+              
         }
   });
 
+    $('#switchButtonEmple').on('change', function (event) {
+        var checked2 = $('#switchButtonEmple').jqxSwitchButton('checked');
 
+        if (checked2 == true) {
+            
+            Empleadoseje.style.visibility = 'visible';
+            dropEmpledos.style.visibility = 'visible';
+        }
+        if (checked2 == false) {
+            Empleadoseje.style.visibility = 'hidden';
+            dropEmpledos.style.visibility = 'hidden';
+            $("#selectionlog").children().remove();
+        }
+    });
 
-
-
+    $("#DropLitEmple").on('checkChange', function (event) {
+        if (event.args) {
+            var item = event.args.item;
+            if (item) {
+                var valueelement = $("<div></div>");
+                valueelement.text("Value: " + item.value);
+                var labelelement = $("<div></div>");
+                labelelement.text("Label: " + item.label);
+                var checkedelement = $("<div></div>");
+                checkedelement.text("Checked: " + item.checked);
+                $("#selectionlog").children().remove();
+          
+                var items = $("#DropLitEmple").jqxDropDownList('getCheckedItems');
+                var checkedItems = "";
+                $.each(items, function (index) {
+                    checkedItems += this.label + ", ";
+                });
+                $("#checkedItemsLog").text(checkedItems);
+            }
+        }
+    });
+    
 });
 
 
