@@ -3,132 +3,130 @@
 <body class="bdefault">
     <div class="container bg-white">
         <div>
-            <button type="button" data-toggle="modal" data-target="#AgregaRenglon" class="flotante1 btn btn-primary btn-circle shadow" title="Agregar Renglón" id="AgregarRenglon">
+            <button type="button" data-toggle="modal" data-target="#AgregaRenglon" class="flotante1 btn btn-primary btn-circle shadow" title="Agregar Renglón" id="AgregarRenglon" style="visibility:hidden">
                 <i class="fa fa-plus-square-o"></i>
             </button>
+            <button type="button" data-toggle="modal" data-target="#AgregaRenglon" class="flotante1 btn btn-primary btn-circle shadow" title="Agregar Renglón" id="ActuRenglon" style="visibility:hidden">
+                <i class="fa fa-plus-square-o"></i>
+            </button>
+
         </div>
         <div style="margin-top:10px"></div>
-        <div class="col-sm-10 offset-1" style="margin-top:15px">
-            <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
-                <div class="text-center ;col-sm-10">
-                    <h5 class="col-ico">
-                        <b>
-                            Renglones
-                        </b>
-                    </h5>
-                    <hr />
-                </div>
-                <center>
-                    <div id="dTabCrenglones" style="margin-top:5%"> </div>
-                    <div style="visibility: hidden;" id="dialog">
-                        <div>Edit Dialog</div>
-                        <div style="overflow: hidden;">
-                            <table style="table-layout: fixed; border-style: none;">
-                                <tr>
-                                    <td align="right">
-                                        Order ID:
 
-                                    </td>
-                                    <td align="left">
-
-                                        <input id="orderID" type="text" disabled="disabled" />
-
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-
-                                    <td colspan="2" align="right">
-
-                                        <br />
-
-                                        <button id="save">Save</button> <button style="margin-left: 5px;" id="cancel">Cancel</button>
-                                    </td>
-
-                                </tr>
-                            </table>
+        <div class="row">
+            <div class="col-sm-10 offset-1">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active font-navs" id="nav-reporte-tab" data-toggle="tab" href="#nav-reporte" role="tab" aria-controls="nav-reporte" aria-selected="true">
+                            <i class="fas fa-file-contract mr-2"></i> Renglones
+                        </a>
+                    </div>
+                </nav>
+                <div class="tab-content bg-white" id="nav-tabContent">
+                    <div class="tab-pane fade show active p-3" id="nav-reporte" role="tabpanel" aria-labelledby="nav-reporte-tab">
+                        <div class="tab-content" id="nav-tabContent1">
+                            <div class="tab-pane fade show active p-3" id="nav-reporte" role="tabpanel" aria-labelledby="nav-reporte-tab">
+                                <div class="row mt-2">
+                                    <div id="div-most-alert-data-reporte" class="col-md-10 offset-3"></div>
+                                    <div class="form-group row" style="margin-left:2%">
+                                        <label for="LaEmpresa" class="col-sm-3 col-form-label font-labels" id="LaEmpresa2">
+                                            Empresa:
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="DropEmpresa2">                                             
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <center>
+                                        <div id="dTabCrenglones" style="margin-top:5%"> </div>
+                                        </div>
+                                    </center>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </center>
-
-                <div>
-
                 </div>
             </div>
         </div>
-   
+
 
         <!-- Pantalla de agregar Renglon -->
         <div class="modal fade" data-backdrop="static" id="AgregaRenglon" tabindex="-1" role="dialog" aria-labelledby="AgregaRenglon" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="AgrgarDefinicionlabel"> <i class="fas fa-book mr-2"></i> Nuevo Renglón </h5>
+                    <div>
+                        <div class="modal-header" style="visibility:visible">
+                            <h5 class="modal-title col-lg-10" id="AgrgarDefinicionlabel">
+                                <i class="fas fa-file-contract mr-2"></i> <label for="LaIdRenglon" class="col-sm-10 col-form-label font-labels" id="Latitu">
+                                </label>
+                            </h5>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
                             <div class="row mt-4">
                                 <div class="col-md-6">
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaIdRenglon" class="col-sm-3 col-form-label font-labels" id="LaIdRenglon">
+                                        <label for="LaIdRenglon" class="col-sm-5 col-form-label font-labels" id="LaIdRenglon">
                                             Id Renglón:
                                         </label>
-                                        <div class="col-sm-4">
-                                            <input placeholder="Id Renglón"  tvvisible="false" type="text" id="TxIdRenglon" class="form-control form-control-sm text-capitalize" />
+                                        <div class="col-sm-5">
+                                            <input placeholder="Id Renglón" tvvisible="false" type="text" id="TxIdRenglon" class="form-control form-control-sm text-capitalize" />
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaNomR" class="col-sm-3 col-form-label font-labels" id="LaNomReng">
+                                        <label for="LaNomR" class="col-sm-5 col-form-label font-labels" id="LaNomReng">
                                             Nombre de Renglón:
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-5">
                                             <input placeholder="Nombre de Renglón" tvvisible="false" type="text" id="txNomRenglon" class="form-control form-control-sm text-capitalize" />
                                         </div>
                                     </div>
-                                    <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaEmpresa" class="col-sm-3 col-form-label font-labels" id="LaEmpresa">
+                                    @*<div class="form-group row" style="margin-left:2%">
+                                        <label for="LaEmpresa" class="col-sm-5 col-form-label font-labels" id="LaEmpresa">
                                             Empresa:
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-5">
                                             <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="DropEmpresa">
                                                 <option value="0">Selecciona</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div>*@
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaTipoReng" class="col-sm-3 col-form-label font-labels" id="LaTipoReng">
+                                        <label for="LaTipoReng" class="col-sm-5 col-form-label font-labels" id="LaTipoReng">
                                             Tipo de renglón:
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-5">
                                             <select placeholder="Tipo de Renglón" tp-select="Tiporenglon" class="form-control form-control-sm" id="DropTipoReng">
                                                 <option value="0">Selecciona</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaNomi" class="col-sm-3 col-form-label font-labels" id="LaNomiReng">
+                                        <label for="LaNomi" class="col-sm-5 col-form-label font-labels" id="LaEleNom">
                                             Elemento de nomina:
                                         </label>
-                                        <div class="col-sm-4">
-                                            <select placeholder="Elemento de Nomina" tp-select="Tiporenglon" class="form-control form-control-sm" id="DropElemNom">
+                                        <div class="col-sm-5">
+                                            <select placeholder="Elemento de Nomina" tp-select="ElemNom" class="form-control form-control-sm" id="DropElemNom">
                                                 <option value="0">Selecciona</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaReport" class="col-sm-3 col-form-label font-labels" id="LaReporte">
-                                            Reporte:
+                                        <label for="LaReport" class="col-sm-5 col-form-label font-labels" id="LaReporte">
+                                            Secccion de reporte:
                                         </label>
-                                        <div class="col-sm-4">
-                                            <input placeholder="Reporte" tvvisible="false" type="text" id="txReporte" class="form-control form-control-sm text-capitalize" />
+                                        <div class="col-sm-5">
+                                            <select placeholder="Sección de Nomina" tp-select="SecReporte" class="form-control form-control-sm" id="DropReporte">
+                                                <option value="0">Selecciona</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaAcumu" class="col-sm-3 col-form-label font-labels" id="LaAcumu">
+                                        <label for="LaAcumu" class="col-sm-5 col-form-label font-labels" id="LaAcumu">
                                             Acumulado:
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-5">
                                             <select placeholder="Acumulado" tp-select="Acumulado" class="form-control form-control-sm" id="DropAcumulado">
                                                 <option value="0">Selecciona</option>
                                             </select>
@@ -138,51 +136,51 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LalisCalculo" class="col-sm-3 col-form-label font-labels" id="LalisCalculo">
+                                        <label for="LalisCalculo" class="col-sm-5 col-form-label font-labels" id="LalisCalculo">
                                             Lista calculo:
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-5">
                                             <select placeholder="Lista de calculo" tp-select="LaCalculo" class="form-control form-control-sm" id="DroplisCalculo">
                                                 <option value="0">Selecciona</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaCueCon" class="col-sm-3 col-form-label font-labels" id="LaCueCon">
+                                        <label for="LaCueCon" class="col-sm-5 col-form-label font-labels" id="LaCueCon">
                                             Cuenta Contable:
                                         </label>
-                                        <div class="col-sm-4">
-                                            <input placeholder="Cuenta Contable" tvvisible="false" type="text" id="txCueCont" class="form-control form-control-sm text-capitalize" />
+                                        <div class="col-sm-5">
+                                            <input placeholder="Cuenta Contable" tvvisible="false" maxlength="11" type="text" id="txCueCont" class="form-control form-control-sm text-capitalize" />
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaDesp" class="col-sm-3 col-form-label font-labels" id="LaDesp">
+                                        <label for="LaDesp" class="col-sm-5 col-form-label font-labels" id="LaDesp">
                                             Descripción de cuenta:
                                         </label>
-                                        <div class="col-sm-4">
-                                            <input placeholder="Descripción de cuenta" tvvisible="false" type="text" id="txDespCuent" class="form-control form-control-sm text-capitalize" />
+                                        <div class="col-sm-5">
+                                            <input placeholder="Descripción de cuenta" maxlength="50" tvvisible="false" type="text" id="txDespCuent" class="form-control form-control-sm text-capitalize" />
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LaCar" class="col-sm-3 col-form-label font-labels" id="LaCargo">
-                                            Carga de Cuenta:
+                                        <label for="LaCar" class="col-sm-5 col-form-label font-labels" id="LaCargo">
+                                            Cargo abono de Cuenta:
                                         </label>
-                                        <div class="col-sm-4">
-                                            <input placeholder="Carga de cuenta" tvvisible="false" type="text" id="txCargCuent" class="form-control form-control-sm text-capitalize" />
+                                        <div class="col-sm-5">
+                                            <input placeholder="Carga de cuenta" maxlength="1" tvvisible="false" type="text" id="txCargCuent" class="form-control form-control-sm text-capitalize" />
                                         </div>
                                     </div>
                                     <div class="form-group row" style="margin-left:2%">
-                                        <label for="LalisSat" class="col-sm-3 col-form-label font-labels" id="LalisSat">
+                                        <label for="LalisSat" class="col-sm-5 col-form-label font-labels" id="LalisSat">
                                             Id Sat:
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-5">
                                             <select placeholder="Id SAT" tp-select="LaCalculo" class="form-control form-control-sm" id="DroplisSat">
                                                 <option value="0">Selecciona</option>
                                             </select>
                                         </div>
                                     </div>
 
-                            
+
                                     <div class="form-group row" style="margin-left:2%">
                                         <div style='float: left; width: 400px; margin-top: 10px;'>
                                             <div id='ChecCancel' style='margin-left: 10px; float: left;'>
@@ -202,8 +200,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                 
-                        <button data-toggle="modal" data-target="#AgregaRenglon" type="button" class="btn btn-outline-success btn-sm" ng id="BtnAgreRe"><i class="fas fa-plus mr-2"></i> Agregar Renglón </button>
+                        <button data-toggle="modal" data-target="#AgregaRenglon" type="button" class="btn btn-outline-success btn-sm" ng id="BtnAgreRe" style="visibility:visible"><i class="fas fa-plus mr-2"></i>Agregar Renglón </button>
+                        <button data-toggle="modal" data-target="#AgregaRenglon" type="button" class="btn btn-outline-success btn-sm" ng id="BtnActualiza" style="visibility:hidden"><i class="fas fa-plus mr-2"></i>Actualizar Renglón </button>
                         <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierra"> <i class="fas fa-times mr-2"></i> Cerrar</button>
                     </div>
                 </div>

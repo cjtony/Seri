@@ -623,5 +623,15 @@ namespace Payroll.Controllers
             return Json(Dta);
         }
 
+        // Lista Empleado
+        [HttpPost]
+        public JsonResult ListEmplados(int iIdEmpresa)
+        {
+            List<EmpleadosEmpresaBean> LTEmp = new List<EmpleadosEmpresaBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LTEmp = Dao.sp_EmpleadosDeEmpresa_Retreive_Templeados(iIdEmpresa);
+            return Json(LTEmp);
+        }
+
     }
 }

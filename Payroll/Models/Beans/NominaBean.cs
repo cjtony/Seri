@@ -61,6 +61,7 @@ namespace Payroll.Models.Beans
         public int iIdElementoNomina { get; set; }
         public string sIdElementoNomina { get; set; }
         public int iIdSeccionReporte { get; set; }
+        public string sIdSeccionReporte { get; set; }
         public int iIdAcumulado { get; set; }
         public string sIdAcumulado { get; set; }
         public int iCancelado { get; set; }

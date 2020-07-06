@@ -1663,6 +1663,7 @@
 
     };
     BActudedu.addEventListener('click', FActualizaboton);
+
     BActudedu.style.visibility = 'hidden';
     // Funcion desaprece el boton de actualizar y aparece el boton de agregar
     Fagregarboton = () => {

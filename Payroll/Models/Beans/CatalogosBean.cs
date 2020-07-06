@@ -658,5 +658,11 @@ namespace Payroll.Models.Beans
 
     }
 
+    public class SeccionReporte { 
+        public int iIdValor { get; set; }
+        public string SNombreReporte { get; set; }
+        public string sMensaje { get; set; }
+
+    }
 
 }
