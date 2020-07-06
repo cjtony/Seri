@@ -25,7 +25,7 @@ namespace Payroll.Controllers
             List<MainMenuBean> MmenuBean;
             MainMenuDao MmenuDao = new MainMenuDao();
             int Sesion_IdUser = int.Parse(Session["iIdUsuario"].ToString());
-            MmenuBean = MmenuDao.sp_Retrieve_Menu_Paths(Sesion_IdUser);
+            MmenuBean = MmenuDao.sp_Retrieve_Menu_Paths(Sesion_IdUser); 
             string nav = "<nav class='nav nav-pills flex-column flex-sm-row sticky-top' >";
             string tabnav = "<div class='tab-content'>";
             string subnavs = "<ul class='nav nav-tabs flex-column flex-sm-row ' id='menuTab' role='tablist'>";

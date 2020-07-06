@@ -1003,6 +1003,8 @@
     <Content Include="Views\Catalogos\GruposEmpresas.cshtml" />
     <Content Include="Views\Catalogos\CGruposEmpresas.cshtml" />
     <Content Include="Views\Catalogos\CBancos.cshtml" />
+    <Content Include="Views\Empresas\Bancos.cshtml" />
+    <Content Include="Views\Catalogos\CUsuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

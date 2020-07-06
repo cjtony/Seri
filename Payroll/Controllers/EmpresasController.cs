@@ -119,11 +119,11 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult Insert_Empresa_FirstStep(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, int inColonia_empresa, string inDelegacion_Empresa, string inCalle_Empresa, string inAfiliacionIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, int inbancoin,string inregimss, int inclonar, int ingrupoe, int innoperiodo )
+        public JsonResult Insert_Empresa_FirstStep(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, int inColonia_empresa, string inDelegacion_Empresa, string inCalle_Empresa, string inAfiliacionIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
         {
             List<string> empresas = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            empresas = Dao.sp_Insert_FirstStep_Empresas(inNombre_empresa, inNomCorto_empresa, inRfc_empresa, inGiro_empresa, inRegimenFiscal_Empresa, inCodigo_postal, inEstado_empresa, inMunicipio_empresa, inCiudad_empresa, inDelegacion_Empresa, inColonia_empresa, inCalle_Empresa, inAfiliacionIMSS, inNombre_Afiliacion, inRiesgoTrabajo, int.Parse(Session["iIdUsuario"].ToString()), inClase, infinicio, inffinal, infpago, infproceso, indiaspagados, intipoperiodo, inbancoin, inregimss, inclonar, ingrupoe, innoperiodo);
+            empresas = Dao.sp_Insert_FirstStep_Empresas(inNombre_empresa, inNomCorto_empresa, inRfc_empresa, inGiro_empresa, inRegimenFiscal_Empresa, inCodigo_postal, inEstado_empresa, inMunicipio_empresa, inCiudad_empresa, inDelegacion_Empresa, inColonia_empresa, inCalle_Empresa, inAfiliacionIMSS, inNombre_Afiliacion, inRiesgoTrabajo, int.Parse(Session["iIdUsuario"].ToString()), inClase, infinicio, inffinal, infpago, infproceso, indiaspagados, intipoperiodo, inregimss, inclonar, ingrupoe, innoperiodo);
             return Json(empresas);
         }
         public PartialViewResult Registros_Patronales()
@@ -226,6 +226,10 @@ namespace Payroll.Controllers
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             Bean = Dao.sp_CEmpresas_Update_GrupoEmpresas(Empresa_id,Grupo_id);
             return Json(Bean);
+        }
+        public PartialViewResult Bancos()
+        {
+            return PartialView();
         }
     }
 }

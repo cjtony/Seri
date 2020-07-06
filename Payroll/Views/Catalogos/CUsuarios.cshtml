@@ -1,0 +1,60 @@
+﻿<div class="container col-md-10 bg-white shadow shadow-lg p-4 ">
+    <div class="col-md-12 border-left-primary border-right-primary m-auto rounded">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item col-md-6" role="presentation">
+                <a class="nav-link  col-md-12" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-users"></i> Usuarios </a>
+            </li>
+            <li class="nav-item col-md-6" role="presentation">
+                <a class="nav-link active col-md-12" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-user-shield"></i> Perfiles</a>
+            </li>
+        </ul>
+        <div class="tab-content rounded font-labels" id="myTabContent">
+            <div class="tab-pane fade mb-4" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <table class="table table-sm" id="tabUsers">
+                    <thead>
+                        <tr>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Perfil Id</th>
+                            <th scope="col">Password</th>
+                            <th scope="col">Activo</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabusersbody">
+                        
+                    </tbody>
+                </table>
+                <div class="col-md-12 mt-3 collapse" id="collapseUsers"></div>
+            </div>
+            <div class="tab-pane fade mb-4 show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <table class="table table-sm" id="tabProfiles">
+                    <thead>
+                        <tr>
+                            <th scope="col">Perfil</th>
+                            <th scope="col">Id</th>
+                            <th scope="col">Fecha de alta</th>
+                            <th scope="col">Activo</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabprofilesbody">
+                    </tbody>
+                </table>
+                <div class="col-md-12 mt-3 collapse" id="collapseProfiles">
+                    <label class="text-secondary">Menús que manejara el perfil</label>
+                    <br>
+                    <form id="frmProfiles" class="col-md-12">
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js"></script>
+<script>
+    $(function () {
+        loadtabusers();
+        loadtabprofiles();
+    });
+</script>
