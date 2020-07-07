@@ -1,5 +1,4 @@
 ﻿$(function () {
-    console.log('entrando a datos generales')
     // Comentar cuando el proyecto este en produccion \\
     //const idefectivo = 1115;
     //const idcuentach = 1116;
