@@ -11,6 +11,11 @@
     const idcajeroau = 220;
     const idcuentaah = 221;
 
+    const dateMain    = new Date();
+    const dayMain     = (dateMain.getDate() < 10) ? "0" + dateMain.getDate() : dateMain.getDate();
+    const monthMain   = ((dateMain.getMonth() + 1) < 10) ? "0" + (dateMain.getMonth() + 1) : (dateMain.getMonth() + 1);
+    const dateActMain = dateMain.getFullYear() + "-" + monthMain + "-" + dayMain;
+
     function someMethodIThinkMightBeSlow() {
         const startTime = performance.now();
         const duration  = performance.now() - startTime;
@@ -19,9 +24,22 @@
 
     someMethodIThinkMightBeSlow();
 
+    const dataLocStoSave = localStorage.getItem('modesave');
+    const dateLocStoSave = localStorage.getItem('datesave');
+
+    if (dataLocStoSave != null) {
+        if (dateLocStoSave != dateActMain) {
+            fclearlocsto(0);
+            localStorage.removeItem('modesave');
+            localStorage.removeItem('datesave');
+        }
+    } 
+
     const dateLocSto = localStorage.getItem("dateedit");
     const modeLocSto = localStorage.getItem("modeedit");
     if (modeLocSto != null) {
+        localStorage.removeItem('modesave');
+        localStorage.removeItem('datesave');
         const date = new Date();
         let fechAct;
         let day = date.getDay();
@@ -576,6 +594,15 @@
                     tipsan: tipsan.value, fecmat: fecmat.value
                 }
             };
+            if (localStorage.getItem("modesave") == null) {
+                localStorage.setItem("modesave", 1);
+                const date = new Date();
+                let fechAct;
+                const day   = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+                const month = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+                fechAct = date.getFullYear() + "-" + month + "-" + day;
+                localStorage.setItem("datesave", fechAct);
+            }
             document.getElementById('icouser').classList.remove('d-none');
             document.getElementById('nameuser').textContent = "Empleado: " + name.value + " " + apep.value + " " + apem.value + ".";
             objectDataTabDataGen.datagen = dataLocStoGen;

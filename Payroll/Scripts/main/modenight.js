@@ -19,11 +19,11 @@
     const fatherFooter = document.querySelector('footer.text-center');
     const childTxtFoot = fatherFooter.querySelector('p.title-font.font-size-footer');
 
-    console.log(childInput1);
-    console.log(childH1Frm1);
-    console.log(childLabel1);
-    console.log(childmenu);
-    console.log(iconMenu);
+    //console.log(childInput1);
+    //console.log(childH1Frm1);
+    //console.log(childLabel1);
+    //console.log(childmenu);
+    //console.log(iconMenu);
 
     modeNightCheck.addEventListener('click', () => {
         if (modeNightCheck.checked) {

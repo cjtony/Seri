@@ -599,6 +599,28 @@
         document.getElementById('btnGenerateReport').classList.add('btn-primary');
     }
 
+    // Funcion que muestra que no hay registros encontrados
+    fShowContentNoDataReport = (element) => {
+        element.innerHTML += `
+            <div class="card border-left-warning shadow h-100 py-2 animated fadeIn">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Atención!</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col">
+                                        <p>No se encontraron registros</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+    }
+
     // Funcion que muestra el apartado de descarga del archivo
     fShowContentDownloadFile = (element, folder, file) => {
         element.innerHTML += `
@@ -624,7 +646,6 @@
                         </div>
                     </div>
                 </div>`;
-        console.log('Desde funcion')
     }
 
     // Funcion que genera el reporte de la hoja de calculo
@@ -641,7 +662,11 @@
                     }, success: (data) => {
                         setTimeout(() => {
                             if (data.Bandera === true && data.MensajeError === "none") {
-                                fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
                             } else {
                                 alert('Algo fallo al realizar el reporte');
                                 location.reload();
@@ -686,7 +711,11 @@
                             }, success: (data) => {
                                 setTimeout(() => {
                                     if (data.Bandera === true && data.MensajeError === "none") {
-                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
                                     } else {
                                         alert('Algo fallo al realizar el reporte');
                                         location.reload();
@@ -736,9 +765,12 @@
                                 fDisabledButtonsRep();
                             }, success: (data) => {
                                 setTimeout(() => {
-                                    console.log(data);
                                     if (data.Bandera === true && data.MensajeError === "none") {
-                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
                                     } else {
                                         alert('Algo fallo al realizar el reporte');
                                         location.reload();
@@ -786,7 +818,11 @@
                             fDisabledButtonsRep();
                         }, success: (data) => {
                             if (data.Bandera === true && data.MensajeError === "none") {
-                                fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
                             } else {
                                 alert('Algo fallo al realizar el reporte');
                                 location.reload();
@@ -830,7 +866,11 @@
                             fDisabledButtonsRep();
                         }, success: (data) => {
                             if (data.Bandera === true && data.MensajeError === "none") {
-                                fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
                             } else {
                                 alert('Algo fallo al realizar el reporte');
                                 location.reload();
@@ -882,7 +922,11 @@
                                     fDisabledButtonsRep();
                                 }, success: (data) => {
                                     if (data.Bandera === true && data.MensajeError === "none") {
-                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
                                     } else {
                                         alert('Algo fallo al realizar el reporte');
                                         location.reload();
@@ -933,7 +977,8 @@
         btnClearParamsReports.disabled = true;
         oneRadioBusiness.disabled      = false;
         groupRadioBusiness.disabled    = false;
-        contentParameters.innerHTML    = "";
+        contentParameters.innerHTML = "";
+        $("html, body").animate({ scrollTop: $("#nav-reporte").offset().top - 50 }, 1000);
     }
 
     /*
