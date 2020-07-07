@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="-1" />
     <title>IPSNet</title>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <link rel="icon" type="image/png" href="~/Content/img/icon-payroll.png" />
@@ -13,9 +15,9 @@
     <link rel="stylesheet" href="~/Content/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Content/styles/main.css" />
     <link rel="stylesheet" href="~/Content/animate/animate.css" />
-    <!-- ESTILOS CSS NUEVOS --> 
+    <!-- ESTILOS CSS NUEVOS -->
     <link rel="stylesheet" href="~/Content/datatables-new/stylesTables.css" />
-    <link rel="stylesheet" href="~/Content/datatables-new/sb-admin-2.min.css"/>
+    <link rel="stylesheet" href="~/Content/datatables-new/sb-admin-2.min.css" />
     <link rel="stylesheet" href="~/Content/datatables-new/dataTables.bootstrap4.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -29,7 +31,7 @@
                 </h2>
             </a>
         </div>
-        <form class="form-inline ml-5">
+        <div class="form-inline ml-5">
             <div class="text-white font-menu-prin">
                 <i class="fas fa-user mr-ico-05"></i> @Session["sUsuario"]
             </div>
@@ -52,7 +54,7 @@
                     Salir <i class="fas fa-sign-out-alt ml-ico-05"></i>
                 </a>
             </div>
-        </form>
+        </div>
     </nav>
     <div class="body-content">
         @RenderBody()
