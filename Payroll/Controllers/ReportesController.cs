@@ -98,6 +98,7 @@ namespace Payroll.Controllers
             string  nameFilePrototype = "HCalculo_E" + keyOptionSel.ToString() + "_A" + DateTime.Now.Year + "_P" + periodActually.ToString() + "_A.xlsx" ;
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 0, columnsDataTable = 0;
             try {
                 Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFilePrototype);
                 if (createFolders) {
@@ -107,18 +108,22 @@ namespace Payroll.Controllers
                     dataTable           = reportDao.sp_Datos_Reporte_Nomina(keyOptionSel, periodActually);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFilePrototype));
-                        int columnsDataTable = dataTable.Columns.Count + 1;
-                        var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFilePrototype)];
-                        for (var i = 1; i < columnsDataTable; i++) {
-                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                            worksheet.Cells[1, i].Style.Font.Bold = true;
-                            worksheet.Cells[1, i].Style.WrapText  = true;
-                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                            worksheet.Cells[1, i].Style.VerticalAlignment   = ExcelVerticalAlignment.Top;
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable    = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFilePrototype)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFilePrototype);
+                            excel.SaveAs(excelFile);
                         }
-                        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-                        FileInfo excelFile = new FileInfo(pathComplete + nameFilePrototype);
-                        excel.SaveAs(excelFile);
+                        excel.Dispose();
                         flag = true;
                     }
                 }
@@ -126,7 +131,7 @@ namespace Payroll.Controllers
                 flag         = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFilePrototype, Folder = nameFolderRe });
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFilePrototype, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
         }
 
 
@@ -141,6 +146,7 @@ namespace Payroll.Controllers
             string nameFileRepr   = "ALTAS_EMPLEADOS.xlsx";
             ReportesDao reportDao = new ReportesDao(); 
             string pathComplete   = pathSaveFile + nameFolder +  @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 0, columnsDataTable = 0;
             try {
                 Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
                 if (createFolders) {
@@ -150,18 +156,22 @@ namespace Payroll.Controllers
                     dataTable                   = reportDao.sp_Datos_Reporte_Altas_Empleado_Fechas(typeOption, keyOptionSel, dateS, dateE);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
-                        int columnsDataTable  = dataTable.Columns.Count + 1;
-                        var worksheet         = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
-                        for (var i = 1; i < columnsDataTable; i++) {
-                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                            worksheet.Cells[1, i].Style.Font.Bold = true;
-                            worksheet.Cells[1, i].Style.WrapText  = true;
-                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                            worksheet.Cells[1, i].Style.VerticalAlignment   = ExcelVerticalAlignment.Top;
+                        columnsDataTable  = dataTable.Columns.Count + 1;
+                        rowsDataTable     = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
                         }
-                        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-                        FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
-                        excel.SaveAs(excelFile);
+                        excel.Dispose();
                         flag = true;
                     } 
                 }
@@ -169,7 +179,7 @@ namespace Payroll.Controllers
                 flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe });
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
         }
 
         [HttpPost]
@@ -183,6 +193,7 @@ namespace Payroll.Controllers
             string nameFileRepr   = "BAJA_FEC_F"+ dateS.Replace("-","") +"_F" + dateE.Replace("-","")+ ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 0, columnsDataTable = 0;
             try {
                 Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
                 if (createFolders) {
@@ -192,18 +203,22 @@ namespace Payroll.Controllers
                     dataTable                   = reportDao.sp_Datos_Reporte_Bajas_Empleados_Fechas(typeOption, keyOptionSel, dateS, dateE);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
-                        int columnsDataTable = dataTable.Columns.Count + 1;
-                        var worksheet        = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
-                        for (var i = 1; i < columnsDataTable; i++){
-                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                            worksheet.Cells[1, i].Style.Font.Bold = true;
-                            worksheet.Cells[1, i].Style.WrapText  = true;
-                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                            worksheet.Cells[1, i].Style.VerticalAlignment   = ExcelVerticalAlignment.Top;
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable    = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
                         }
-                        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-                        FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
-                        excel.SaveAs(excelFile);
+                        excel.Dispose();
                         flag = true;
                     }
                 }
@@ -211,7 +226,7 @@ namespace Payroll.Controllers
                 flag         = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe });
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
         }
 
         [HttpPost]
@@ -225,6 +240,7 @@ namespace Payroll.Controllers
             string nameFileRepr   = "CAT_EMP_AC_F" + dateActive.Replace("-","") + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 0, columnsDataTable = 0;
             try {
                 Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
                 if (createFolders) {
@@ -234,18 +250,22 @@ namespace Payroll.Controllers
                     dataTable                   = reportDao.sp_Datos_Reporte_Empleados_Activos_Con_Sueldo(typeOption, keyOptionSel, dateActive.Trim());
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
-                        int columnsDataTable = dataTable.Columns.Count + 1;
-                        var worksheet        = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
-                        for (var i = 1; i < columnsDataTable; i++) {
-                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                            worksheet.Cells[1, i].Style.Font.Bold = true;
-                            worksheet.Cells[1, i].Style.WrapText  = true;
-                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                            worksheet.Cells[1, i].Style.VerticalAlignment   = ExcelVerticalAlignment.Top;
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable     = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
                         }
-                        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-                        FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
-                        excel.SaveAs(excelFile);
+                        excel.Dispose();
                         flag = true;
                     }
                 }
@@ -253,7 +273,7 @@ namespace Payroll.Controllers
                 flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new {  Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe });
+            return Json(new {  Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
         }
 
         [HttpPost]
@@ -267,6 +287,7 @@ namespace Payroll.Controllers
             string nameFileRepr   = "CATEMPACSSF" + dateActive.Replace("-", "") + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 0, columnsDataTable = 0;
             try {
                 Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
                 if (createFolders) {
@@ -276,18 +297,22 @@ namespace Payroll.Controllers
                     dataTable = reportDao.sp_Datos_Reporte_Empleados_Activos_Sin_Sueldo(typeOption, keyOptionSel, dateActive.Trim());
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
-                        int columnsDataTable = dataTable.Columns.Count + 1;
-                        var worksheet        = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
-                        for (var i = 1; i < columnsDataTable; i++) {
-                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                            worksheet.Cells[1, i].Style.Font.Bold = true;
-                            worksheet.Cells[1, i].Style.WrapText  = true;
-                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                            worksheet.Cells[1, i].Style.VerticalAlignment   = ExcelVerticalAlignment.Top;
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable    = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
                         }
-                        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-                        FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
-                        excel.SaveAs(excelFile);
+                        excel.Dispose();
                         flag = true;
                     }
                 }
@@ -295,7 +320,7 @@ namespace Payroll.Controllers
                 flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe });
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
         }
 
         [HttpPost]
@@ -310,6 +335,7 @@ namespace Payroll.Controllers
             string nameFileRepr   = nameFileValid + "_E" + keyOptionSel.ToString() + "_A" + yearSelect.ToString() + "_P" + periodSelect.ToString() + "_T" + typePSelect.ToString() + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 0, columnsDataTable = 0;
             try {
                 Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
                 if (createFolders) {
@@ -319,18 +345,22 @@ namespace Payroll.Controllers
                     dataTable           = (typeReport == "ABONO") ? reportDao.sp_Datos_Reporte_Cuenta_Cheques_Detalle(typeOption, keyOptionSel, yearSelect, periodSelect, typePSelect) : reportDao.sp_Datos_Reporte_Cuenta_Cheques_Totales(typeOption, keyOptionSel, yearSelect, periodSelect, typePSelect); 
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
-                        int columnsDataTable = dataTable.Columns.Count + 1;
-                        var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
-                        for (var i = 1; i < columnsDataTable; i++) {
-                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                            worksheet.Cells[1, i].Style.Font.Bold = true;
-                            worksheet.Cells[1, i].Style.WrapText = true;
-                            worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                            worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable    = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
                         }
-                        worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-                        FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
-                        excel.SaveAs(excelFile);
+                        excel.Dispose();
                         flag = true;
                     }
                 }
@@ -338,7 +368,7 @@ namespace Payroll.Controllers
                 flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe });
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
         }
 
     }
