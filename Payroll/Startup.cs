@@ -161,7 +161,7 @@ namespace Payroll
             return fechajobs;
         }
 
-        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo)
+        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple)
         {
             string FechaProceso = Fecha();
 
@@ -175,7 +175,7 @@ namespace Payroll
                 int Idjobs = Convert.ToInt32(id[0].iId.ToString());
                 string StatusJobs = "En Cola";
                 string Nombrejobs = "CNomina1";
-                string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + "," + FechaProceso;
+                string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + ","+ idEmpresa + ","+ iCalxEmple + "," + FechaProceso;
                 Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros);
 
             }

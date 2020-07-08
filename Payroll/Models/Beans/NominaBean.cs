@@ -306,7 +306,17 @@ namespace Payroll.Models.Beans
     public class ListSatBean { 
        public int idSat { get; set; }
        public string sSat { get; set; }
-        public string sMensaje { get; set; }
+       public string sMensaje { get; set; }
+    }
+
+    public class ListEmpleadoNomBean { 
+       public int iIdEmpresa { get; set; }
+       public int iIdEmpleado { get; set; }
+       public int ianio { get; set; }
+       public int TipoPeriodo { get; set; }
+       public int Periodo { get; set; }
+       public string sMensaje { get; set; }
+
     }
 
 }

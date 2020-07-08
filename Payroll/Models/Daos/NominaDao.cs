@@ -1976,7 +1976,7 @@ namespace Payroll.Models.Daos
 
         }
 
-        /// List Elemento Nomina
+        /// List Empleados
         public List<EmpleadosEmpresaBean> sp_EmpleadosDeEmpresa_Retreive_Templeados(int CtrliIdEmpresa)
         {
             List<EmpleadosEmpresaBean> list = new List<EmpleadosEmpresaBean>();
@@ -2017,8 +2017,42 @@ namespace Payroll.Models.Daos
         }
 
 
+        /// Insert/update LisEmpleado
+        public ListEmpleadoNomBean sp_LisEmpleados_InsertUpdate_TlistaEmpladosNomina(int CtrloiIdEmpresa, int CtrliIdEmpleado,
+        int CtrliAnio, int CtrlTipoPeriodo, int CtrliPeriodo, int CltrliExite)
+        {
+            ListEmpleadoNomBean bean = new ListEmpleadoNomBean();
 
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_LisEmpleados_InsertUpdate_TlistaEmpladosNomina", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrloiIdEmpresa", CtrloiIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrlTipoPeriodo", CtrlTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CltrliExite", CltrliExite));
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
 
+            return bean;
+        }
 
     }
 }
