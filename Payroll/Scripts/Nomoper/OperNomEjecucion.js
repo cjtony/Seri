@@ -49,12 +49,13 @@
     const dropEmpledos = document.getElementById('DropLitEmple');
     const LaEmplea = document.getElementById('LaEmpleado');
     const switchButtonEmp = document.getElementById('switchButtonEmple');
+    const checkedItemsLog = document.getElementById('checkedItemsLog');
 
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
     var DatoEjeCerrada;
-    var IdDropList;
+    var IdDropList = 0;
     var IdDropList2;
     var AnioDropList;
     var Tipoperiodocal;
@@ -68,6 +69,9 @@
     var RosTabCountCalculo2;
     var NombreEmpleado;
     var NoEmpleado;
+    var CheckCalculoEmpresa = 0;
+    var checkCalculoEmplado = 0;
+    var checkedItemsIdEmpleados = "";
 
     // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
     $("#switchButtonEmple").toggle();
@@ -114,7 +118,7 @@
                     }
                 };
                 var dataAdapter = new $.jqx.dataAdapter(source);
-                $("#DropLitEmple").jqxDropDownList({ checkboxes: true, source: dataAdapter, displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 400, height: 30, });            
+                $("#DropLitEmple").jqxDropDownList({ checkboxes: true, source: dataAdapter, displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 300, height: 30, });            
 
             },
         });
@@ -741,6 +745,7 @@
     // Procesos de Ejecucion
 
     Fejecucion = () => {
+
         seconds = 60;
         IdDropList;
         AnioDropList;
@@ -754,7 +759,66 @@
 
         arreglosubcadena2 = periodo.split(separador, limite);
         const dataSend = { iIdDefinicionHd: IdDropList };
-        const dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0] };
+        var dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
+
+        if (CheckCalculoEmpresa == 0) {
+            if (IdDropList != 0) {
+                dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
+                FejecutarProceso(dataSend, dataSend2);
+            }
+            else {
+                fshowtypealert("Ejecucion", " Favor de seleccionar una definicion", "warning")
+            }
+        }
+        if (CheckCalculoEmpresa == 1)
+        {   
+            if (checkCalculoEmplado == 0) {
+                if (EjeEmpresa.value != 0) {
+                    dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: EjeEmpresa.value, iCalEmpleado: checkCalculoEmplado };
+                    FejecutarProceso(dataSend, dataSend2);
+                }
+                else {
+                    fshowtypealert("Ejecucion", " Favor de seleccionar una empresa", "warning")
+                }
+            }
+            if (checkCalculoEmplado == 1) {
+                var NumItemsEmpleado = checkedItemsIdEmpleados.length;
+                if (NumItemsEmpleado != 0) {
+                    dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: EjeEmpresa.value, iCalEmpleado: checkCalculoEmplado };
+                    const dataSend3 = { IdEmpresa: EjeEmpresa.value, sIdEmpleados: checkedItemsIdEmpleados, iAnio: AnioDropList, TipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0] }
+                    $.ajax({
+                        url: "../Nomina/SaveEmpleados",
+                        type: "POST",
+                        data: dataSend3,
+                        success: function (data) {
+                            if (data.sMensaje == "success"){
+                                console.log('correcto');
+                                FejecutarProceso(dataSend, dataSend2);
+                            }
+                            if (data.sMensaje == "error") {
+                                fshowtypealert("Ejecucion", " Contacte a sistemas", "warning")
+
+                            }
+                     
+                            
+                        }
+                    });
+                }
+                else {
+                    fshowtypealert("Ejecucion", " Favor de seleccionar por lo menos un empleado", "warning")
+                } 
+            }
+        }
+              
+        console.log(dataSend2);
+      
+        
+    };
+    btnFloEjecutar.addEventListener('click', Fejecucion);
+
+    /// Funcion de ejecucion 
+
+    FejecutarProceso = (dataSend,dataSend2) => {
         $.ajax({
             url: "../Nomina/CompruRegistroExit",
             type: "POST",
@@ -768,8 +832,8 @@
                         type: "POST",
                         data: dataSend2,
                         success: (data) => {
-                            FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip );
-                          
+                            FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
+
                         }
                     });
 
@@ -782,10 +846,10 @@
 
             },
         });
-
     };
-    btnFloEjecutar.addEventListener('click', Fejecucion);
-                  // Proceso para cerrar nomina
+
+
+    // Proceso para cerrar nomina
 
     FValorChec = () => {
        
@@ -1779,20 +1843,29 @@
        
         if (checked == true)
         {
+            CheckCalculoEmpresa = 1;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
             LaEmplea.style.visibility = 'visible';
             $("#switchButtonEmple").toggle();
             NombEmpre.style.visibility = 'visible';
             EjeEmpresa.style.visibility = 'visible';
-
+          
+            EmpleadoDEmp(EjeEmpresa.value);
+            Empleadoseje.style.visibility = 'hidden';
+            dropEmpledos.style.visibility = 'hidden';
         }
         if (checked == false) {
+            CheckCalculoEmpresa = 0;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
             LaEmplea.style.visibility = 'hidden';
             $("#switchButtonEmple").toggle();
             switchButtonEmp.style.visibility = 'hidden';
             NombEmpre.style.visibility = 'hidden';
             EjeEmpresa.style.visibility = 'hidden';
-          
-          
+            EmpleadoDEmp(EjeEmpresa.value);
+            Empleadoseje.style.visibility = 'hidden';
+            dropEmpledos.style.visibility = 'hidden';
+            
               
         }
   });
@@ -1801,14 +1874,17 @@
         var checked2 = $('#switchButtonEmple').jqxSwitchButton('checked');
 
         if (checked2 == true) {
-            
+            checkCalculoEmplado = 1;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
             Empleadoseje.style.visibility = 'visible';
             dropEmpledos.style.visibility = 'visible';
         }
         if (checked2 == false) {
+            checkCalculoEmplado = 0;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
             Empleadoseje.style.visibility = 'hidden';
             dropEmpledos.style.visibility = 'hidden';
-            $("#selectionlog").children().remove();
+            
         }
     });
 
@@ -1826,8 +1902,10 @@
           
                 var items = $("#DropLitEmple").jqxDropDownList('getCheckedItems');
                 var checkedItems = "";
+                checkedItemsIdEmpleados = "";
                 $.each(items, function (index) {
                     checkedItems += this.label + ", ";
+                    checkedItemsIdEmpleados += this.value + ",";
                 });
                 $("#checkedItemsLog").text(checkedItems);
             }

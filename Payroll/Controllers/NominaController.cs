@@ -18,6 +18,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Ajax.Utilities;
 using System.Globalization;
+using System.Linq;
 
 namespace Payroll.Controllers
 {
@@ -505,12 +506,12 @@ namespace Payroll.Controllers
             obj.ActBDTbJobs();
             return Json(LTbProc);
         }
-        public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo)
+        public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo,int iIdempresa,int iCalEmpleado)
 
         {
             Startup obj = new Startup();
             string NomProceso = "CNomina";
-            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo);
+            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado);
 
             return null;
         }
@@ -632,6 +633,28 @@ namespace Payroll.Controllers
             LTEmp = Dao.sp_EmpleadosDeEmpresa_Retreive_Templeados(iIdEmpresa);
             return Json(LTEmp);
         }
+
+        //Guarda Lista de Empleado en la tabla Lista_empleados_Nomina
+        [HttpPost]
+        public JsonResult SaveEmpleados(int IdEmpresa,string sIdEmpleados,
+        int iAnio, int TipoPeriodo, int iPeriodo )
+        {
+            int IdEmpleado=0;
+            int iExite = 0;
+            string[] IdEmpleados = sIdEmpleados.Split(',');
+            int numsId = IdEmpleados.Count();
+            ListEmpleadoNomBean bean = new ListEmpleadoNomBean();
+            FuncionesNomina dao = new FuncionesNomina();
+            for (int i = 0; i < numsId-1; i++) {
+                IdEmpleado =Convert.ToInt32(IdEmpleados[i].ToString());
+                bean = dao.sp_LisEmpleados_InsertUpdate_TlistaEmpladosNomina(IdEmpresa, IdEmpleado,iAnio,
+                      TipoPeriodo,iPeriodo, iExite);
+                if (bean.sMensaje == "error") { i = numsId + 2; }         
+            }
+
+            return Json(bean);
+        }
+
 
     }
 }
