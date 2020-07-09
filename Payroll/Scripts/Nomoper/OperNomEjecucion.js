@@ -75,6 +75,7 @@
 
     // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
     $("#switchButtonEmple").toggle();
+    $("#timerNotification").jqxNotification("closeLast");
     LisEmpresa = (IdDrop ) => {
 
         const dataSend2 = { iIdCalculosHd: IdDrop, iTipoPeriodo:0 , iPeriodo: 0, idEmpresa: 0, anio: 0 };
@@ -1791,6 +1792,7 @@
             //}
         });
     };
+
              /// Notificaciones
     $("#messageNotification").jqxNotification({
         theme: 'bootstrap',
@@ -1805,7 +1807,7 @@
 
     });
     var notificationWidth = 300;
-    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: false, showCloseButton: false, template: "time" });
+    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: false, template: "time" });
     $("#timeOutNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: true, autoClose: false, template: "time" });
     $("#timerNotification").on("close", function () {
 
