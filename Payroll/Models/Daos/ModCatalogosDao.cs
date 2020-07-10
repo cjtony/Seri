@@ -681,7 +681,6 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        
         public List<DataPuestosBean> sp_TPuestos_Retrieve_AllPuestos()
         {
 
@@ -758,7 +757,6 @@ namespace Payroll.Models.Daos
             }
             return lista;
         }
-
         public List<CRenglonesBean> sp_CRenglones_Retrieve_CRenglones(int IdEmpresa, int ctrliElemntoNOm)
         {
             List<CRenglonesBean> list = new List<CRenglonesBean>();
@@ -1019,7 +1017,7 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
-        public List<string> sp_BancosEmpresas_Insert_Banco(int Empresa_id, int Banco_id, int TipoBanco, int Cliente, int Plaza, int CuentaEmp, int Clabe)
+        public List<string> sp_BancosEmpresas_Insert_Banco(int Empresa_id, int Banco_id, int TipoBanco, int Cliente, int Plaza, string CuentaEmp, string Clabe)
         {
             List<string> listBean = new List<string>();
             try

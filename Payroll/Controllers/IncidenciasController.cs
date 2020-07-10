@@ -247,4 +247,4 @@ namespace Payroll.Controllers
             return Json(res);
         }
     }
-}
+}   

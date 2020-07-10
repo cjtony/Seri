@@ -58,6 +58,7 @@ namespace Payroll.Controllers
                 return PartialView();
             }
         }
+        [HttpPost]
         public JsonResult New_ClaveEmpresa()
         {
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
@@ -117,7 +118,6 @@ namespace Payroll.Controllers
             empresas = Dao.sp_CEmpresas_Retrieve_Empresa(IdEmpresa);
             return Json(empresas);
         }
-
         [HttpPost]
         public JsonResult Insert_Empresa_FirstStep(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, int inColonia_empresa, string inDelegacion_Empresa, string inCalle_Empresa, string inAfiliacionIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
         {
@@ -143,6 +143,7 @@ namespace Payroll.Controllers
             var data = new { data = RP };
             return Json(data);
         }
+        [HttpPost]
         public JsonResult LoadRegPat()
         {
             List<RegistroPatronalBean> RP = new List<RegistroPatronalBean>();
@@ -150,6 +151,7 @@ namespace Payroll.Controllers
             RP = Dao.sp_Registro_Patronal_Retrieve_Registros_Patronales(int.Parse(Session["IdEmpresa"].ToString()));
             return Json(RP);
         }
+        [HttpPost]
         public JsonResult LoadRegistroPatronal(int IdRegPat)
         {
             List<RegistroPatronalBean> RP = new List<RegistroPatronalBean>();
@@ -167,6 +169,7 @@ namespace Payroll.Controllers
             var data = new { data = RP };
             return Json(data);
         }
+        [HttpPost]
         public JsonResult LoadClasesRP()
         {
             List<CClases_RegPatBean> RP = new List<CClases_RegPatBean>();
@@ -174,6 +177,7 @@ namespace Payroll.Controllers
             RP = Dao.sp_CClases_RegPat();
             return Json(RP);
         }
+        [HttpPost]
         public JsonResult LoadRegimenesFiscales()
         {
             List<RegimenFiscalBean> RP = new List<RegimenFiscalBean>();
@@ -190,6 +194,7 @@ namespace Payroll.Controllers
             var data = new { data = RP };
             return Json(data);
         }
+        [HttpPost]
         public JsonResult LoadRegionalesEmp()
         {
             List<RegionalesBean> RP = new List<RegionalesBean>();
@@ -197,6 +202,7 @@ namespace Payroll.Controllers
             RP = Dao.sp_CRegionales_Retrieve_Regionales_xEmpresa(int.Parse(Session["IdEmpresa"].ToString()));
             return Json(RP);
         }
+        [HttpPost]
         public JsonResult LoadSucursales()
         {
             List<SucursalesBean> RP = new List<SucursalesBean>();
@@ -204,6 +210,7 @@ namespace Payroll.Controllers
             RP = Dao.sp_CSucursales_Retrieve_Sucursales();
             return Json(RP);
         }
+        [HttpPost]
         public JsonResult LoadZonaEconomica()
         {
             List<ZonaEconomicaBean> RP = new List<ZonaEconomicaBean>();
@@ -220,6 +227,7 @@ namespace Payroll.Controllers
             var data = new { data = RP };
             return Json(data);
         }
+        [HttpPost]
         public JsonResult UpdateGrupo(string Empresa_id,string Grupo_id)
         {
             List<string> Bean;
@@ -230,6 +238,13 @@ namespace Payroll.Controllers
         public PartialViewResult Bancos()
         {
             return PartialView();
+        }
+        public JsonResult Update_Registro_Patronal(int Id, string Afiliacion_IMSS, string NombreAfiliacion, int Empresa_id, string Riesgo_Trabajo, int ClasesRegPat, int Cancelado)
+        {
+            List<string> Bean;
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            Bean = Dao.sp_Registro_Patronal_Update_Registros_Patronales(Id, Afiliacion_IMSS,NombreAfiliacion, Empresa_id, Riesgo_Trabajo, ClasesRegPat, Cancelado);
+            return Json(Bean);
         }
     }
 }

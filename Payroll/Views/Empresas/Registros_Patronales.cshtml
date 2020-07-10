@@ -13,7 +13,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inNombreAfiliacionRP">Nombre Afiliación</label>
-                        <input class="form-control" type="text" name="inNombreAfiliacionRP" id="inNombreAfiliacionRP" placeholder="Nombre Afiliación" required>
+                        <input class="form-control" maxlength="50" type="text" name="inNombreAfiliacionRP" id="inNombreAfiliacionRP" placeholder="Nombre Afiliación" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inRiesgoTrabajoRP">Riesgo de trabajo</label>
@@ -35,8 +35,7 @@
                             <option value="">Selcciona</option>
                         </select>
                     </div>
-
-
+                    <input type="hidden" value="" id="IdRegPat" />
                     <div class="form-group col-md-12">
                         <div class="d-flex ">
                             <div class="custom-control custom-switch">
@@ -46,24 +45,28 @@
                         </div>
                     </div>
                     <div class="form-group col-md-4">
-                        <input class="btn btn-primary form-control" type="button" name="btnGuardarRP" id="btnGuardarRP" value="Guardar Registro" />
-
+                        <div class="btn btn-primary btn-sm btn-icon-split" id="btnGuardarRP">
+                            <span class="icon"><i class="fas fa-save"></i></span>
+                            <span class="text">Guardar </span>
+                        </div>
                     </div>
-                    <div class="form-group col-md-4 text-wrap">
-                        
-                        <div class="btn btn-warning font-labels form-control invisible" id="btnClearRP"><span class="fas fa-trash text-dark"></span> Limpiar</div>
+                    <div class="form-group col-md-4">
+                        <div class="btn btn-warning btn-sm btn-icon-split invisible" id="btnClearRP">
+                            <span class="icon"><i class="fas fa-trash"></i></span>
+                            <span class="text">Limpiar</span>
+                        </div>
                     </div>
                     <div class="form-group col-md-4">
 
-                        <input class="btn btn-success form-control invisible" type="button" name="btnUpdateRP" id="btnUpdateRP" value="Actualizar Registro" />
+                        <div class="btn btn-success btn-sm btn-icon-split invisible" id="btnUpdateRP">
+                            <span class="icon"><i class="fas fa-edit"></i></span>
+                            <span class="text">Actualizar</span>
+                        </div>
                     </div>
-
                 </div>
             </form>
         </div>
         <div class="col">
-            @*<div class="font-weight-bold pt-4 text-center">Listado</div>
-            <div class="dropdown-divider pb-2"></div>*@
             <table class="table table-sm table-striped text-center" id="tabRegistrosPatronales">
                 <thead class="">
                     <tr>

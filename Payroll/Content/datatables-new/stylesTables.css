@@ -772,6 +772,9 @@ body {
 .border-left-success {
     border-left: 0.25rem solid #1cc88a !important;
 }
+.border-right-success {
+    border-right: 0.25rem solid #1cc88a !important;
+}
 
 .text-success {
     color: #1cc88a !important;

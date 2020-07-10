@@ -332,7 +332,7 @@ namespace Payroll.Controllers
             return Json(Lista);
         }
         [HttpPost]
-        public JsonResult SaveNewBanco(int Empresa_id, int Banco_id, int TipoBanco, int Cliente, int Plaza, int CuentaEmp, int Clabe)
+        public JsonResult SaveNewBanco(int Empresa_id, int Banco_id, int TipoBanco, int Cliente, int Plaza, string CuentaEmp, string Clabe)
         {
             List<string> Lista;
             ModCatalogosDao Dao = new ModCatalogosDao();

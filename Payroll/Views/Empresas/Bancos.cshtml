@@ -1,6 +1,6 @@
-﻿<div class="container col-md-10 shadow shadow-lg bg-white p-4">
+﻿<div class="container col-md-10 shadow shadow-lg bg-white p-4 font-labels border-left-primary border-right-primary rounded">
     <div class="col-md-12 row">
-        <label id="lbltitulo" class="font-buttons col-md-10"></label>
+        <label id="lbltitulo" class="h6 col-md-10"></label>
         <div class="col-md-2"><div class='ml-1 btn badge badge-pill badge-primary' onclick='mostrarmodalnuevo(@Session["IdEmpresa"]);'>Agregar <i class='fas fa-plus'></i></div></div>
         <div id="collapsebancos" class="collapse col-md-12 active show"></div>
     </div>
@@ -17,21 +17,36 @@
             </div>
             <div class="modal-body">
                 <form id="formnewbanco">
-                    <div class="col-md-12 row">
-                        <div class="form-group col-md-4">
+                    <div class="col-md-12 row font-labels">
+                        <div class="form-group col-md-6">
                             <label>Empresa</label>
                             <input class="form-control form-control-sm" id="newempresa" type="text" value="@Session["IdEmpresa"]" readonly required />
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Banco</label>
                             <select id="newbanco" class="custom-select custom-select-sm">
                                 <option value="value">text</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
+                            <label># Cliente</label>
+                            <input class="form-control form-control-sm input-number" id="newcliente" type="text" value="" required placeholder="Número de cliente" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Plaza</label>
+                            <input class="form-control form-control-sm input-number" id="newplaza" type="text" value="" required placeholder="Número" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label># Cuenta Empresa</label>
+                            <input class="form-control form-control-sm input-number" id="newcuentaempresa" type="text" value="" required placeholder="Número de cuenta empresa" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Clabe</label>
+                            <input class="form-control form-control-sm input-number" id="newclabe" type="text" value="" required placeholder="Número clabe" />
+                        </div>
+                        <div class="form-group col-md-6">
                             <label>Tipo de banco</label>
                             <select id="newtipobanco" class="custom-select custom-select-sm" multiple required>
-                                <option value="value">text</option>
                             </select>
                         </div>
                     </div>
@@ -57,17 +72,33 @@
             <div class="modal-body">
                 <form id="formeditbanco">
                     <div class="col-md-12 row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Empresa</label>
                             <input class="form-control form-control-sm" id="editempresa" type="text" value="@Session["IdEmpresa"]" readonly required />
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Banco</label>
                             <select id="editbanco" class="custom-select custom-select-sm">
                                 <option value="value">text</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
+                            <label># Cliente</label>
+                            <input class="form-control form-control-sm" maxlength="10" id="editcliente" type="text" value="" required placeholder="Número de cliente" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Plaza</label>
+                            <input class="form-control form-control-sm" id="editplaza" maxlength="10" type="text" value="" required placeholder="Número" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label># Cuenta Empresa</label>
+                            <input class="form-control form-control-sm" id="editcuentaempresa" maxlength="20" type="text" value="" required placeholder="Número de cuenta empresa" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Clabe</label>
+                            <input class="form-control form-control-sm" id="editclabe" type="text" maxlength="20" value="" required placeholder="Número clabe" />
+                        </div>
+                        <div class="form-group col-md-6">
                             <label>Tipo de banco</label>
                             <select id="edittipobanco" class="custom-select custom-select-sm" multiple required>
                                 <option value="value">text</option>

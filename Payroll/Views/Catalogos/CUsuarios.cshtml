@@ -9,7 +9,7 @@
             </li>
         </ul>
         <div class="tab-content rounded font-labels" id="myTabContent">
-            <div class="tab-pane fade mb-4" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <table class="table table-sm" id="tabUsers">
                     <thead>
                         <tr>
@@ -21,13 +21,23 @@
                         </tr>
                     </thead>
                     <tbody id="tabusersbody">
-                        
                     </tbody>
                 </table>
                 <div class="col-md-12 mt-3 collapse" id="collapseUsers"></div>
             </div>
             <div class="tab-pane fade mb-4 show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <table class="table table-sm" id="tabProfiles">
+                <div class="col-md-12 my-3 text-right">
+                    <label class="h6">Lista de perfiles del Sistema</label>
+                    <button type="button" class="btn btn-sm btn-primary btn-icon-split font-labels" data-toggle="modal" data-target="#exampleModal">
+                        <span class="icon">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">
+                            Nuevo
+                        </span>
+                    </button>
+                </div>
+                <table class="table table-sm p-4" id="tabProfiles">
                     <thead>
                         <tr>
                             <th scope="col">Perfil</th>
@@ -40,11 +50,329 @@
                     <tbody id="tabprofilesbody">
                     </tbody>
                 </table>
-                <div class="col-md-12 mt-3 collapse" id="collapseProfiles">
-                    <label class="text-secondary">Menús que manejara el perfil</label>
-                    <br>
-                    <form id="frmProfiles" class="col-md-12">
-                    </form>
+                <div class="col-md-12 mt-3 show collapse" id="collapseProfiles">
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <label class="text-secondary text-gray-800 h6 font-weight-bold"> Menús que manejara el perfil</label>
+                                    <br>
+                                    <form id="frmProfiles" class="col-md-12 row">
+                                        <label class=" col-md-12 h6">Perfil </label>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+
+                                                <button class='btn btn-light btn-sm py-0' data-toggle="collapse" data-target=".collapse-empleados" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='1' name="empleados" id='menu-empleados'>
+                                                        <label class='custom-control-label' for='menu-empleados'>Empleados</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-empleados'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' id="empleados-registros" type='checkbox' value='2' name="empleados">
+                                                        <label class='custom-control-label' for='empleados-registros'>Registros</label>
+                                                    </div>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' id="empleados-recibos_nomina" type='checkbox' value='29' name="empleados">
+                                                        <label class='custom-control-label' for='empleados-recibos_nomina'>Recibos Nómina</label>
+                                                    </div>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='32' name="empleados">
+                                                        <label class='custom-control-label' for=''>Timbrados XML</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+                                                <div class='input-group-prepend'>
+                                                    <button class='btn btn-light btn-sm py-0 btn-collapse-check' data-toggle="collapse" data-target=".collapse-incidencias" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+                                                </div>
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='' id='menu-incidencias'>
+                                                        <label class='custom-control-label' for='menu-incidencias'>Incidencias</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-incidencias'>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Incidencias</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Ausentismos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Vacaciones</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Créditos Infonavit</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Pensión Alimentícia</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Registro de incidencias</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+                                                <div class='input-group-prepend'>
+                                                    <button class='btn btn-light btn-sm py-0' data-toggle="collapse" data-target=".collapse-nomina" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+                                                </div>
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='' id='menu-nomina'>
+                                                        <label class='custom-control-label' for='menu-nomina'>Nómina</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-nomina'>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Consulta / Modificación</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Ejecución</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Bajas Empleados</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Monitor de procesos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Dispersión</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+                                                <div class='input-group-prepend'>
+                                                    <button class='btn btn-light btn-sm py-0' data-toggle="collapse" data-target=".collapse-catalogos" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+                                                </div>
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='' id='menu-catalogos'>
+                                                        <label class='custom-control-label' for='menu-catalogos'>Catálogos</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-catalogos'>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Empleados</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Fechas - Periodos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Politicas Vacaciones</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Puestos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Centros Costos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Localidades</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Registro Patronal</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Regionales</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Grupos Empresas</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Bancos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Usuarios</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+                                                <div class='input-group-prepend'>
+                                                    <button class='btn btn-light btn-sm py-0' data-toggle="collapse" data-target=".collapse-reportes" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+                                                </div>
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='' id='menu-reportes'>
+                                                        <label class='custom-control-label' for='menu-reportes'>Reportes</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-reportes'>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Generar Reporte</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+                                                <div class='input-group-prepend'>
+                                                    <button class='btn btn-light btn-sm py-0' data-toggle="collapse" data-target=".collapse-kiosko" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+                                                </div>
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='' id='menu-kiosko'>
+                                                        <label class='custom-control-label' for='menu-kiosko'>Kiosko</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-kiosko'>
+                                                    <div class='form-check'>
+                                                        <input class='invisible form-check-input' type='checkbox' value=''>
+                                                        <label class='invisible form-check-label' for=''>Empleados</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+                                                <div class='input-group-prepend'>
+                                                    <button class='btn btn-light btn-sm py-0' data-toggle="collapse" data-target=".collapse-empresas" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+                                                </div>
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='' id='menu-empresas'>
+                                                        <label class='custom-control-label' for='menu-empresas'>Empresas</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-empresas'>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Empleados</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Datos Generales</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Registro Patronal</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Localidades</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Bancos</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class='input-group bg-light p-4 mt-2 border-left-success rounded btn-collapse-check'>
+                                                <div class='input-group-prepend'>
+                                                    <button class='btn btn-light btn-sm py-0' data-toggle="collapse" data-target=".collapse-consulta" type='button'><i class='fas fa-caret-down fa-lg'></i></button>
+                                                </div>
+                                                <div class='input-group-prepend mx-2'>
+                                                    <div class='custom-control custom-checkbox'>
+                                                        <input class='custom-control-input' type='checkbox' value='' id='menu-consulta'>
+                                                        <label class='custom-control-label' for='menu-consulta'>Consulta</label>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-12 collapse collapse-consulta'>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Empleados</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Fechas - Periodos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Politicas Vacaciones</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Puestos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Centros Costos</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Localidades</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Registro Patronal</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Regionales</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Sucursal</label>
+                                                    </div>
+                                                    <div class='form-check'>
+                                                        <input class='form-check-input' type='checkbox' value='' id=''>
+                                                        <label class='form-check-label' for=''>Grupos Empresas</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm btn-icon-split" data-dismiss="modal">
+                                            <span class="icon"><i class="fas fa-times"></i></span>
+                                            <span class="text">Cerrar</span>
+                                        </button>
+                                        <button type="button" id="btnnewperfil" class="btn btn-primary btn-sm btn-icon-split">
+                                            <span class="icon"><i class="fas fa-save"></i></span>
+                                            <span class="text">Guardar</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+
                     
                 </div>
             </div>

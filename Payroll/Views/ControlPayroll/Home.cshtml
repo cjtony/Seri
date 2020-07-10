@@ -51,7 +51,7 @@
                 data: JSON.stringify({ IdEmpresa: id, NombreEmpresa: nombre }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
+                    //console.log(data);
                     if (data[0] != "0") {
                         $.ajax({
                             url: "../Empresas/DefinePeriodoActual",
