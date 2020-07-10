@@ -9,37 +9,40 @@
 <div class="container mt-5">
 
     <div class="row">
-        <div class="col"></div>
-        <div class="col-md-8">
+        <div class="col-md-6 offset-md-3 animated fadeInDown">
             <div class="card shadow rounded">
                 <div class="card-body">
-                    <h1 class="card-title text-center login-title">
-                        <i class="fas fa-money-check-alt col-ico"></i> IPSNet
+                    <h1 class="card-title text-center login-title col-ico">
+                        <i class="fas fa-money-check-alt col-ico rotate-n-15"></i> IPSNet
                     </h1>
                     <hr />
-                    <div class="p-5">
+                    <h6 class="text-center mt-4 font-weight-bold text-primary animated fadeInDown delay-1s">¡ Bienvenido !</h6>
+                    <div class="p-4">
                         <div class="form-group row">
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 col-md-10 offset-1">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text " id="basic-addon1"><i class="fas fa-user col-ico mr-ico-05"></i></span>
+                                    <span class="input-group-text " id="basic-addon1"><i class="fas fa-user col-ico"></i></span>
                                 </div>
-                                <input autofocus type="text" class="form-control text-uppercase" id="username" placeholder="Ingresa tu usuario..." />
+                                <input autofocus type="text" class="form-control text-uppercase" id="username" placeholder="Usuario" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 col-md-10 offset-1">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text " id="basic-addon1"><i class="fas fa-key col-ico mr-ico-05"></i> </span>
+                                    <span class="input-group-text " id="basic-addon1"><i class="fas fa-key col-ico"></i> </span>
                                 </div>
-                                <input type="password" class="form-control" id="password" placeholder="INGRESA TU CONTRASEÑA..." />
+                                <input type="password" class="form-control" id="password" placeholder="CONTRASEÑA" />
                             </div>
                         </div>
-                        <div class="form-group text-center mt-5 mb-0 row">
-                            
-                                <button type="button" class="btn btn-sm btn-block col-btn-login font-button" id="btnlogin">
-                                    Ingresar <i class="fas fa-sign-in-alt ml-ico-05"></i>
+                        <div class="form-group text-center mt-3 mb-0 row">
+                            <div class="col-md-10 offset-1">
+                                <button type="button" class="btn col-btn-login btn-block font-button" id="btnlogin">
+                                    <span class="text">Ingresar <i class="fas fa-sign-in-alt ml-ico-05"></i></span>
                                 </button>
-                            
+                                @*<button type="button" class="btn btn-sm btn-block col-btn-login font-button" id="btnlogin">
+                        Ingresar <i class="fas fa-sign-in-alt ml-ico-05"></i>
+                    </button>*@
+                            </div>
                         </div>
                         <div class="form-group row mt-5 d-none" id="msjvalidateinfo">
                             <div class="col-md-12 text-center">
