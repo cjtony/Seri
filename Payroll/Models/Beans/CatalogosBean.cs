@@ -580,6 +580,7 @@ namespace Payroll.Models.Beans
         public int Plazos { get; set; }
         public string Descripcion { get; set; }
         public string Fecha_Aplicacion { get; set; }
+        public string NPeriodo { get; set; }
     }
     public class InicioFechasPeriodoBean
     {

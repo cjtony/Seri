@@ -1131,6 +1131,7 @@
                     "language": {
                         "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                     },
+                    ordering: false,
                     searching: false
                 });
             }
@@ -1174,7 +1175,7 @@
                             "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
                             "<td class='text-center'><div><i class='fas fa-eye-slash text-danger'></i> </div></td>" +
                             "<td class='row'>" +
-                            "<div title='Activar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 3 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-check-circle fa-lg'></i></div>" +
+                            "<div title='Activar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 3 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\","+data[j]["Empresa_id"]+");'><i class='far fa-check-circle fa-lg'></i></div>" +
                             //"<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
                             "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
                             "</td>" +
@@ -1190,7 +1191,7 @@
                             "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
                             "<td class='text-center'><div><i class='fas fa-eye text-primary fa-lg'></i></div></td>" +
                             "<td class='row'>" +
-                            "<div title='Desactivar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 1 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-times-circle fa-lg'></i></div>" +
+                            "<div title='Desactivar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 1 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Empresa_id"] +");'><i class='far fa-times-circle fa-lg'></i></div>" +
                             //"<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
                             "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Num_cliente"] + "," + data[j]["Plaza"] + "," + data[j]["Num_Cta_Empresa"] + "," + data[j]["Clabe"] +");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
                             "</td>" +
@@ -1241,23 +1242,41 @@
             form.classList.add("was-validated");
         } else {
             var tb = document.getElementById("newtipobanco");
+            //console.log($("#newplaza").val());
             $.ajax({
                 url: "../Catalogos/SaveNewBanco",
                 type: "POST",
                 data: JSON.stringify({
-                    Empresa_id: $("#newempresa").val()
-                    , Banco_id: $("#newbanco").val()
+                    Empresa_id: document.getElementById("newempresa").value
+                    , Banco_id: document.getElementById("newbanco").value
                     , TipoBanco: tb.value
-                    , Cliente: $("#newcliente").val()
-                    , Plaza: $("#newplaza").val()
-                    , CuentaEmp: $("#newcuentaempresa").val()
-                    , Clabe: $("#newclabe").val()
+                    , Cliente: document.getElementById("newcliente").value
+                    , Plaza: document.getElementById("newplaza").value
+                    , CuentaEmp: document.getElementById("newcuentaempresa").value
+                    , Clabe: document.getElementById("newclabe").value
                 }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
-                    $("#modal-nuevo-bancoempresa").modal("hide");
-                    $("div.collapse.show").collapse("hide");
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'warning',
+                            timer: 1000
+                        });
+                    } else {
+                        //console.log(data);
+                        $("#modal-nuevo-bancoempresa").modal("hide");
+                        $("div.collapse.show").collapse("hide");
+                        Swal.fire({
+                            title: 'Completo!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    }
+                    
+                    
                 }
             });
         }
@@ -1334,8 +1353,30 @@
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
                     console.log(data);
-                    $("#" + $("#editarcollapse").val()).collapse("hide");
-                    $("#modal-editar-bancoempresa").modal("hide");
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'danger'
+                        });
+                    } else if (data[0] == '1') {
+                        $("#" + $("#editarcollapse").val()).collapse("hide");
+                        $("#modal-editar-bancoempresa").modal("hide");
+                        Swal.fire({
+                            title: 'Correcto!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    } else if (data[0] == '2') {
+                        Swal.fire({
+                            title: 'Advertencia!',
+                            text: data[1],
+                            icon: 'warning'
+                        });
+                    }
+                    
+                    
                 }
             });
         }
@@ -1477,6 +1518,8 @@
                     "language": {
                         "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                     },
+                    searching: false,
+                    paging: false
                 });
             }
         });
@@ -1495,48 +1538,48 @@
     });
     //
     // FUNCION Doble CLICK EN EL ROW
-    loadtwo = (id) => {
-        console.log(id)
-        $.ajax({
-            url: "../Catalogos/Loadmainmenus",
-            type: "POST",
-            data: JSON.stringify({ Id: id }),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                console.log(data);
-                var form = document.getElementById("frmProfiles");
-                form.innerHTML = "";
-                for (var i = 0; i < data.length; i++) {
-                    form.innerHTML += "" +
-                        "<div class='input-group mt-2'>"+
-                            "<div class='input-group-prepend'>" +
-                                "<button class='btn btn-outline-secondary btn-sm py-0' type='button'><i class='fas fa-caret-down fa-lg'></i></button>"+
-                            "</div>" +
-                            "<div class='input-group-prepend pl-3 pt-1 text-inline'>"+
-                                "<div class='form-check'>" +
-                                    "<input class='form-check-input' type='checkbox' value='' id='check-"+data[i]["iIdItem"]+"'>" +
-                                    "<label class='form-check-label' for='check-" + data[i]["iIdItem"] +"'>" +
-                                        data[i]["sNombre"] +
-                                    "</label>" +
-                                "</div>" +
-                            "</div>" +
-                            "<div class='col-md-12 collapse collapse-"+data[i]["iIdItem"]+"'></div>"+
-                        "</div>";
+    //loadtwo = (id) => {
+    //    console.log(id)
+    //    $.ajax({
+    //        url: "../Catalogos/Loadmainmenus",
+    //        type: "POST",
+    //        data: JSON.stringify({ Id: id }),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            console.log(data);
+    //            var form = document.getElementById("frmProfiles");
+    //            form.innerHTML = "";
+    //            for (var i = 0; i < data.length; i++) {
+    //                form.innerHTML += "" +
+    //                    "<div class='input-group mt-2'>"+
+    //                        "<div class='input-group-prepend'>" +
+    //                            "<button class='btn btn-outline-secondary btn-sm py-0' type='button'><i class='fas fa-caret-down fa-lg'></i></button>"+
+    //                        "</div>" +
+    //                        "<div class='input-group-prepend pl-3 pt-1 text-inline'>"+
+    //                            "<div class='form-check'>" +
+    //                                "<input class='form-check-input' type='checkbox' value='' id='check-"+data[i]["iIdItem"]+"'>" +
+    //                                "<label class='form-check-label' for='check-" + data[i]["iIdItem"] +"'>" +
+    //                                    data[i]["sNombre"] +
+    //                                "</label>" +
+    //                            "</div>" +
+    //                        "</div>" +
+    //                        "<div class='col-md-12 collapse collapse-"+data[i]["iIdItem"]+"'></div>"+
+    //                    "</div>";
 
-                        //"<div class='form-check col-md-12'>" +
+    //                    //"<div class='form-check col-md-12'>" +
                         
-                        //"<input class='form-check-input' type='checkbox' name='cp" + data[i]["sNombre"] + "' onclick='loadcheck(" + data[i]["iIdItem"] + ",\"cp" + data[i]["iIdItem"]+"\");' id='cp"+data[i]["iIdItem"]+"'> " +
-                        //"<label class='form-check-label'>" + data[i]["sNombre"] + "</label>" +    
-                        //    "<div class='collapse' id='cp"+data[i]["iIdItem"]+"'></div>" +
-                        //"</div>";
-                }
-            }
-        });
+    //                    //"<input class='form-check-input' type='checkbox' name='cp" + data[i]["sNombre"] + "' onclick='loadcheck(" + data[i]["iIdItem"] + ",\"cp" + data[i]["iIdItem"]+"\");' id='cp"+data[i]["iIdItem"]+"'> " +
+    //                    //"<label class='form-check-label'>" + data[i]["sNombre"] + "</label>" +    
+    //                    //    "<div class='collapse' id='cp"+data[i]["iIdItem"]+"'></div>" +
+    //                    //"</div>";
+    //            }
+    //        }
+    //    });
 
 
-        //console.log("Perfil id " + name);
-        $("#collapseProfiles").collapse("show");
-    }
+    //    //console.log("Perfil id " + name);
+    //    $("#collapseProfiles").collapse("show");
+    //}
     //
     // FUNCION DE un CLICK EN EL ROW 
     loadone = ( id ) => {
@@ -1587,4 +1630,20 @@
         //console.log("no entro a nada");
         
     //}
+
+    //
+    // funcion para cambio de icono en boton de collapse de checks
+    //$(".btn-collapse-check").on("click", function () {
+    //    console.log(this);
+    //    if ($(this).find("button").html() == "<i class='fas fa-caret-down fa-lg'></i>") {
+    //        $(this).find("button").html("<i class='fas fa-caret-up fa-lg'></i>");
+    //    } else {
+    //        $(this).find("button").html("<i class='fas fa-caret-down fa-lg'></i>")
+    //    }
+        
+    //});
+    $("#btnnewperfil").on("click", function () {
+        var data = $("#frmProfiles").serialize();
+        console.log(data);
+    });
 });

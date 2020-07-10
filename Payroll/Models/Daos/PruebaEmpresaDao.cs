@@ -71,7 +71,6 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-
         public int sp_Retrieve_ClaveEmpresa()
         {
             this.Conectar();
@@ -531,7 +530,9 @@ namespace Payroll.Models.Daos
             }
             else
             {
-                lista = null;
+                RegionalesBean list = new RegionalesBean { sDescripcionRegional = "true" };
+                lista.Add(list);
+                
             }
             data.Close();
 
@@ -770,7 +771,6 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-
         public List<string> sp_TPeriodosDist_Insert_Periodo(int PerVacLn_id, string FechaInicio, string FechaFin, int Dias)
         {
             List<string> list = new List<string>();
@@ -849,6 +849,40 @@ namespace Payroll.Models.Daos
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlGrupo_id", Grupo_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    res.Add(data["iFlag"].ToString());
+                    res.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                res = null;
+            }
+            data.Close();
+
+            return res;
+        }
+        public List<string> sp_Registro_Patronal_Update_Registros_Patronales(int Id, string Afiliacion_IMSS, string NombreAfiliacion, int Empresa_id, string Riesgo_Trabajo, int ClasesRegPat, int Cancelado)
+        {
+            List<string> res = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Registro_Patronal_Update_Registros_Patronales", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrliIdRegistroPatronal", Id));
+            cmd.Parameters.Add(new SqlParameter("@ctrliEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlsAfiliacion_IMSS", Afiliacion_IMSS));
+            cmd.Parameters.Add(new SqlParameter("@ctrlsNombreAfiliacion", NombreAfiliacion));
+            cmd.Parameters.Add(new SqlParameter("@ctrlsRiesgo_Trabajo", Riesgo_Trabajo));
+            cmd.Parameters.Add(new SqlParameter("@ctrliClaseRegPat_id", ClasesRegPat));
+            cmd.Parameters.Add(new SqlParameter("@ctrliCancelado", Cancelado));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 

@@ -26,13 +26,14 @@
         ]
     });
     //Retorna los valores del reglon del registro patronal seleccionado para editar 
-    $("#tabRegistrosPatronales tbody").on('click', 'button', function () {
+    $("#tabRegistrosPatronales tbody").on('click', 'button.btneditar', function () {
         var dato = tabRP.row($(this).parents('tr')).data();
         console.log(dato);
         var Afrp = document.getElementById("inAfiliacionImssRP");
         var Emrp = document.getElementById("inEmpresaRP");
         var Rtrp = document.getElementById("inRiesgoTrabajoRP");
         var NomRP = document.getElementById("inNombreAfiliacionRP");
+        var id = document.getElementById("IdRegPat");
         Afrp.value = dato.Afiliacion_IMSS;
         $.ajax({
             url: "../Empresas/LoadRegistroPatronal",
@@ -43,6 +44,7 @@
                 console.log(data);
                 console.log(data[0]["Nombre_Afiliacion"]);
                 NomRP.value = data[0]["Nombre_Afiliacion"];
+                id.value = data[0]["IdRegPat"];
             }
         });
 
@@ -106,7 +108,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
+                document.getElementById("inClase").innerHTML = "";
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("inClase").innerHTML += `<option value='${data[i].IdClase}'>${data[i].Nombre_Clase}</option>`;
 
@@ -169,9 +171,24 @@
         var Emrp = document.getElementById("inEmpresaRP");
         var Rtrp = document.getElementById("inRiesgoTrabajoRP");
         //var riesgop = Rtrp.value.toString().replace(/\./g, ',');
+        var Nomrp = document.getElementById("inNombreAfiliacionRP");
         var Clrp = document.getElementById("inClase");
-        var Strp = document.getElementById("inStatusRP");
-        var datos = { Afiliacion_IMSS: Afrp.value, Empresa_id: Emrp.value, Riesgo_Trabajo: Rtrp.value, ClasesRegPat: Clrp.value, Cancelado: Strp.value };
+        var Strp;
+        if ($("#inStatusRP").prop("checked")) {
+            Strp = 1;
+        } else {
+            Strp = 0;
+        }
+        var id = document.getElementById("IdRegPat");
+        var datos = {
+            Id: id.value
+            , Afiliacion_IMSS: Afrp.value
+            , NombreAfiliacion: Nomrp.value
+            , Empresa_id: Emrp.value
+            , Riesgo_Trabajo: Rtrp.value
+            , ClasesRegPat: Clrp.value
+            , Cancelado: Strp
+        };
         var form = document.getElementById("frmRegistrosPatronales");
         if (form.checkValidity() === false) {
             alert("no valido");
@@ -179,41 +196,67 @@
         } else {
             console.log("valido");
             console.log(datos);
+            $.ajax({
+                url: "../Empresas/Update_Registro_Patronal",
+                type: "POST",
+                data: JSON.stringify(datos),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    if (data[0] == "1") {
+                        document.getElementById("frmRegistrosPatronales").reset();
+                        $.ajax({
+                            url: "../Empresas/LoadClasesRP",
+                            type: "POST",
+                            data: JSON.stringify(),
+                            contentType: "application/json; charset=utf-8",
+                            success: (data) => {
+                                var clase = document.getElementById("inClase");
+                                clase.innerHTML = "<option vlaue=''>Selecciona</option>";
+                                for (i = 0; i < data.length; i++) {
+                                    console.log(data[i].IdClase + '-' + dato.ClasesRegPat_id);
+                                    if (data[i].IdClase == dato.ClasesRegPat_id) {
+                                        clase.innerHTML += `<option selected value='${data[i].IdClase}'>${data[i].Nombre_Clase}</option>`;
+                                    }
+                                    else {
+                                        clase.innerHTML += `<option value='${data[i].IdClase}'>${data[i].Nombre_Clase}</option>`;
+                                    }
+                                }
+                            }
+                        });
+                        document.getElementById("btnGuardarRP").classList.remove("invisible");
+                        document.getElementById("btnUpdateRP").classList.add("invisible");
+                        document.getElementById("btnClearRP").classList.add("invisible");
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Correcto!',
+                            text: data[1]
+                        }, false).then(() => {
+
+                            setTimeout(function () {
+                                
+                                tabRP.ajax.reload();
+
+                            }, 500);
+                        });
+                    } else if (data[0] == "0") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Aviso',
+                            text: '' + data[1]
+                        }, false).then(() => {
+                            Afrp.focus();
+                            Afrp.classList.add("is-invalid");
+                            setTimeout(function () {
+                                Afrp.classList.remove("is-invalid");
+                            }, 5500);
+                        });
+                    }
+
+                }
+            });
         }
-        //$.ajax({
-        //    url: "../Empresas/Update_Registro_Patronal",
-        //    type: "POST",
-        //    data: JSON.stringify(datos),
-        //    contentType: "application/json; charset=utf-8",
-        //    success: (data) => {
-        //        console.log(data);
-        //        if (data[0] == "1") {
-        //            Swal.fire({
-        //                icon: 'success',
-        //                title: 'Correcto!',
-        //                text: 'Registro Patronal actualizado con exito!'
-        //            }, false).then(() => {
-
-        //                setTimeout(function () {
-        //                    $("#frmRegistrosPatronales").reset();
-        //                }, 500);
-        //            });
-        //        } else if (data[0] == "0") {
-        //            Swal.fire({
-        //                icon: 'error',
-        //                title: '',
-        //                text: '' + data[1]
-        //            }, false).then(() => {
-        //                Afrp.focus();
-        //                Afrp.classList.add("is-invalid");
-        //                setTimeout(function () {
-        //                    Afrp.classList.remove("is-invalid");
-        //                }, 5500);
-        //            });
-        //        }
-
-        //    }
-        //});
+        
     });
     //Funcionalidad boton Actualizar Localidad
     $("#btnSaveLocalidad").on("click", function() {
@@ -304,8 +347,10 @@
             dataSrc: "data",
             scrollY: true ,
             scrollX: true,
-            beforeSend: () => {
-                SelectLoaderFromLocalidades();
+            success: (data) => {
+                if (data == null) {
+                    console.log("si entro");
+                }
             }
         },
         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
@@ -335,12 +380,25 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 
-                var clase = document.getElementById("inRegLocalidad");
-                clase.innerHTML = "<option vlaue=''>Selecciona</option>";
-                for (i = 0; i < data.length; i++) {
-
-                    clase.innerHTML += `<option value='${data[i].iIdRegional}'>${data[i].iIdRegional + " - " + data[i].sDescripcionRegional}</option>`;
+                if (data[0]["sDescripcionRegional"] == "true") {
+                    $("#lbltitlelocalidades").html('<div class="alert alert-danger col-md-12" role="alert">No se tienen regionales registradas, para poder continuar con el registro de una localidad agrega al menos una regional desde el modulo de <strong>Catalogos-Regionales</strong> o desde el modulo de <strong>Empleado-Registro</strong></div>');
+                    Swal.fire({
+                        title: "Aviso!",
+                        icon: "warning",
+                        html: "<p>No se han encontrado Regionales para esta empresa, agrega al menos una para continuar y poder agregar <strong>Localidades</strong></p>"
+                        //timer: 2000
+                    });
+                    $("#btnSaveLocalidad").attr("disabled",true);
+                    document.getElementById("inRegLocalidad").innerHTML = "<option class='bg-danger text-dark' vlaue=''>Sin Regionales</option>";
+                } else {
+                    var clase = document.getElementById("inRegLocalidad");
+                    clase.innerHTML = "<option vlaue=''>Selecciona</option>";
+                    for (i = 0; i < data.length; i++) {
+                        clase.innerHTML += `<option value='${data[i].iIdRegional}'>${data[i].iIdRegional + " - " + data[i].sDescripcionRegional}</option>`;
+                    }
                 }
+                
+                
             }
         });
         //Sucursales
@@ -350,7 +408,7 @@
             data: {},
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
+                //console.log(data);
                 var sucursales = document.getElementById("inZoInLocalidad");
                 sucursales.innerHTML = '<option>Selecciona</option>';
                 for (i = 0; i < data.length; i++) {
@@ -403,7 +461,6 @@
             success: (data) => {
                 
                 var clase = document.getElementById("inAfImssLocalidad");
-                //clase.innerHTML = "<option vlaue=''>Selecciona</option>";
                 for (i = 0; i < data.length; i++) {
 
                     clase.innerHTML += `<option value='${data[i].IdRegPat}'>${data[i].Afiliacion_IMSS}</option>`;
@@ -430,7 +487,7 @@
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
+                document.getElementById("inClase").innerHTML = "<option vlaue=''>Selecciona</option>";
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("inClase").innerHTML += `<option value='${data[i].IdClase}'>${data[i].Nombre_Clase}</option>`;
 
@@ -480,6 +537,10 @@
                     "<tr>" +
                     "<th>Banco Id</th>" +
                     "<th>Nombre Banco</th>" +
+                    "<th># Cliente</th>" +
+                    "<th>Plaza</th>" +
+                    "<th># Cuenta Empresa</th>" +
+                    "<th>Clabe</th>" +
                     "<th>Tipo Banco</th>" +
                     "<th class='text-center'>Activo</th>" +
                     "<th class=''>Acciones</th>" +
@@ -491,11 +552,15 @@
                         document.getElementById("tab" + collapse).innerHTML += "<tr>" +
                             "<td class=''>" + data[j]["Banco_id"] + "</td>" +
                             "<td>" + data[j]["Descripcion"] + "</td>" +
+                            "<td>" + data[j]["Num_cliente"] + "</td>" +
+                            "<td>" + data[j]["Plaza"] + "</td>" +
+                            "<td>" + data[j]["Num_Cta_Empresa"] + "</td>" +
+                            "<td>" + data[j]["Clabe"] + "</td>" +
                             "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
                             "<td class='text-center'><div><i class='fas fa-eye-slash text-danger'></i> </div></td>" +
                             "<td class='row'>" +
-                            "<div title='Activar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 3 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-check-circle fa-lg'></i></div>" +
-                            "<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
+                            "<div title='Activar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 3 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Empresa_id"] + ");'><i class='far fa-check-circle fa-lg'></i></div>" +
+                            //"<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
                             "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
                             "</td>" +
                             "</tr>";
@@ -503,12 +568,16 @@
                         document.getElementById("tab" + collapse).innerHTML += "<tr>" +
                             "<td class=''>" + data[j]["Banco_id"] + "</td>" +
                             "<td>" + data[j]["Descripcion"] + "</td>" +
+                            "<td>" + data[j]["Num_cliente"] + "</td>" +
+                            "<td>" + data[j]["Plaza"] + "</td>" +
+                            "<td>" + data[j]["Num_Cta_Empresa"] + "</td>" +
+                            "<td>" + data[j]["Clabe"] + "</td>" +
                             "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
                             "<td class='text-center'><div><i class='fas fa-eye text-primary fa-lg'></i></div></td>" +
                             "<td class='row'>" +
-                            "<div title='Desactivar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 1 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-times-circle fa-lg'></i></div>" +
-                            "<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
-                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
+                            "<div title='Desactivar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 1 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Empresa_id"] + ");'><i class='far fa-times-circle fa-lg'></i></div>" +
+                            //"<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
+                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Num_cliente"] + "," + data[j]["Plaza"] + "," + data[j]["Num_Cta_Empresa"] + "," + data[j]["Clabe"] + ");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
                             "</td>" +
                             "</tr>";
                     }
@@ -557,12 +626,35 @@
             $.ajax({
                 url: "../Catalogos/SaveNewBanco",
                 type: "POST",
-                data: JSON.stringify({ Empresa_id: $("#newempresa").val(), Banco_id: $("#newbanco").val(), TipoBanco: tb.value }),
+                data: JSON.stringify({
+                    Empresa_id: document.getElementById("newempresa").value
+                    , Banco_id: document.getElementById("newbanco").value
+                    , TipoBanco: tb.value
+                    , Cliente: document.getElementById("newcliente").value
+                    , Plaza: document.getElementById("newplaza").value
+                    , CuentaEmp: document.getElementById("newcuentaempresa").value
+                    , Clabe: document.getElementById("newclabe").value
+                }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
-                    loadbancosempresa("collapsebancos", $("#newempresa").val());
-                    $("#modal-nuevo-bancoempresa").modal("hide");
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'warning',
+                            timer: 1000
+                        });
+                    } else {
+                        //console.log(data);
+                        $("#modal-nuevo-bancoempresa").modal("hide");
+                        $("div.collapse.show").collapse("hide");
+                        Swal.fire({
+                            title: 'Completo!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    }
 
                 }
             });
@@ -570,7 +662,7 @@
     });
     //
     // MOSTRAR MODAL EDITAR BANCO
-    mostrarmodaleditarbanco = (Empresa_id, Banco_id, TipoBanco, BancoEmp, collapse) => {
+    mostrarmodaleditarbanco = (Empresa_id, Banco_id, TipoBanco, BancoEmp, collapse, Cliente, Plaza, CuentaEmp, Clabe) => {
         $.ajax({
             url: "../Empleados/LoadBanks",
             type: "POST",
@@ -585,7 +677,7 @@
                     if (Banco_id == data[i]["iIdBanco"]) {
                         select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "' selected>" + data[i]["sNombreBanco"] + "</option>"
                     } else {
-                        select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
+                        //select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
                     }
                 }
                 $.ajax({
@@ -603,10 +695,13 @@
                                 select.innerHTML += "<option value='" + data[j]["iId"] + "'>" + data[j]["sValor"] + "</option>";
                             }
                         }
+                        $("#editcliente").val(Cliente);
+                        $("#editplaza").val(Plaza);
+                        $("#editcuentaempresa").val(CuentaEmp);
+                        $("#editclabe").val(Clabe);
                         $("#editarid").val(BancoEmp);
                         $("#editarcollapse").val(collapse)
                         $("#modal-editar-bancoempresa").modal("show");
-
                     }
                 });
             }
@@ -623,13 +718,40 @@
             $.ajax({
                 url: "../Catalogos/UpdateBancoEmpresa",
                 type: "POST",
-                data: JSON.stringify({ Banco_id: $("#editbanco").val(), TipoBanco: tb.value, Id: $("#editarid").val() }),
+                data: JSON.stringify({
+                    Banco_id: $("#editbanco").val()
+                    , TipoBanco: tb.value
+                    , Id: $("#editarid").val()
+                    , Cliente: $("#editcliente").val()
+                    , Plaza: $("#editplaza").val()
+                    , CuentaEmp: $("#editcuentaempresa").val()
+                    , Clabe: $("#editclabe").val()
+                }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
-                    //$("#" + $("#editarcollapse").val()).collapse("hide");
-                    loadbancosempresa("collapsebancos", $("#newempresa").val());
-                    $("#modal-editar-bancoempresa").modal("hide");
+                    //console.log(data);
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'danger'
+                        });
+                    } else if (data[0] == '1') {
+                        loadbancosempresa("collapsebancos", $("#editempresa").val());
+                        $("#modal-editar-bancoempresa").modal("hide");
+                        Swal.fire({
+                            title: 'Correcto!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    } else if (data[0] == '2') {
+                        Swal.fire({
+                            title: 'Advertencia!',
+                            text: data[1],
+                            icon: 'warning'
+                        });
+                    }
                 }
             });
         }
