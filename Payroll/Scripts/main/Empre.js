@@ -305,7 +305,7 @@
     });
     //Retorna los valores del reglon de la localidad seleccionada para editar 
     $("#tabLocalidades tbody").on('click', 'button', function () {
-        var datos = tabLc.row($(this).parents('tr')).data();
+        var datos = tabLoc.row($(this).parents('tr')).data();
         var DesLoc = document.getElementById("inDescLocalidad");
         var TaIvaLoc = document.getElementById("inTazaIvaLocalidad");
         var AfImssLoc = document.getElementById("inAfImssLocalidad");
@@ -314,28 +314,13 @@
         var ZoEcLoc = document.getElementById("inZoEcLocalidad");
         var EstLoc = document.getElementById("inEstLocalidad");
         DesLoc.value = datos.Descripcion;
-        $.ajax({
-            url: "../Empleados/LoadStates",
-            type: "POST",
-            data: {},
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-
-                for (i = 0; i < data.length; i++) {
-                    if (datos.Estado_id == data[i].iId) {
-                        EstLoc.innerHTML += `
-                                <option selected value="${data[i].iId}">${data[i].sValor}</option>
-                            `;
-                    } else {
-                        EstLoc.innerHTML += `
-                                <option value="${data[i].iId}">${data[i].sValor}</option>
-                            `;
-                    }
-                }
-            }
-        });
-
-        console.log(data);
+        TaIvaLoc.value = datos.Empresa_id;
+        $("#inZoEcLocalidad option[value='" + datos.ZonaEconomica_id + "']").attr("selected", true);
+        $("#inEstLocalidad option[value='" + datos.Estado_id + "']").attr("selected", true);
+        $("#inRegLocalidad option[value='" + datos.Regional_id + "']").attr("selected", true);
+        $("#inAfImssLocalidad option[value='" + datos.RegistroPatronal_id + "']").attr("selected", true);
+        $("#inZoInLocalidad option[value='" + datos.Sucursal_id + "']").attr("selected", true);
+        console.log(datos);
     });
     //DataTable de Localidades
     const tabLoc = $("#tabLocalidades").DataTable({
@@ -346,12 +331,7 @@
             dataType: "json",
             dataSrc: "data",
             scrollY: true ,
-            scrollX: true,
-            success: (data) => {
-                if (data == null) {
-                    console.log("si entro");
-                }
-            }
+            scrollX: true
         },
         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         "language": {
