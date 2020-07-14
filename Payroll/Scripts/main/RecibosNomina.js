@@ -314,11 +314,17 @@
             url: "../Empleados/XMLNomina",
             type: "POST",
             data: dataSend,
-            success: (data) => {
-
-                var url = '\\Archivos\\certificados\\ZipXML.zip';
-                window.open(url);
-          
+            success: function (data) {
+                console.log(data);
+                console.log(data[0].sMensaje);
+                if (data[0].sMensaje != "NorCert") {
+                    var url = '\\Archivos\\certificados\\ZipXML.zip';
+                    window.open(url);
+                }
+                else {
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                }
+            
             }
         });
  
@@ -338,6 +344,33 @@
 
     });
 
+    /* FUNCION QUE MUESTRA ALERTAS */
+    fshowtypealert = (title, text, icon) => {
+        Swal.fire({
+            title: title, text: text, icon: icon,
+            showClass: { popup: 'animated fadeInDown faster' },
+            hideClass: { popup: 'animated fadeOutUp faster' },
+            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+        }).then((acepta) => {
 
+            //  Nombrede.value       = '';
+            // Descripcionde.value  = '';
+            //iAnode.value         = '';
+            //cande.value          = '';
+            //$("html, body").animate({
+            //    scrollTop: $(`#${element.id}`).offset().top - 50
+            //}, 1000);
+            //if (clear == 1) {
+            //    setTimeout(() => {
+            //        element.focus();
+            //        setTimeout(() => { element.value = ""; }, 300);
+            //    }, 1200);
+            //} else {
+            //    setTimeout(() => {
+            //        element.focus();
+            //    }, 1200);
+            //}
+        });
+    };
     
 });

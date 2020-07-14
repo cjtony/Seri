@@ -387,15 +387,15 @@ namespace Payroll.Controllers
 
         //Actualiza los datos en la tabla Crenglones
         [HttpPost]
-        public JsonResult UpdateRenglon(int iIdEmpresa, int iIdRenglon, string sNombreRenglon, int iElementoNom, int iIdReporte
-        , int IdAcumulado, int icancel, int iTipodeRenglon, int iEspejo, int idCalculo, string sCuentaCont, string sDespCuenta,
+        public JsonResult UpdateRenglon(int iIdEmpresa, int iIdRenglon, string sNombreRenglon, int iIdReporte
+        , int IdAcumulado, int icancel,  int iEspejo, string sCuentaCont, string sDespCuenta,
          string sCargaCuenta, int iIdSat, int PenAlin)
         {
 
             CRenglonesBean bean = new CRenglonesBean();
             ModCatalogosDao dao = new ModCatalogosDao();
-            bean = dao.ps_Renglon_Update_CRenglones(iIdEmpresa, iIdRenglon, sNombreRenglon, iElementoNom, iIdReporte, IdAcumulado
-            , icancel, iTipodeRenglon, iEspejo, idCalculo, sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
+            bean = dao.ps_Renglon_Update_CRenglones(iIdEmpresa, iIdRenglon, sNombreRenglon, iIdReporte, IdAcumulado
+            , icancel, iEspejo,  sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
             return Json(bean);
         }
 

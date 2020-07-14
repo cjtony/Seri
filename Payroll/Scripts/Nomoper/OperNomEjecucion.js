@@ -73,9 +73,7 @@
     var checkCalculoEmplado = 0;
     var checkedItemsIdEmpleados = "";
 
-    // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
-    $("#switchButtonEmple").toggle();
-    $("#timerNotification").jqxNotification("closeLast");
+
     LisEmpresa = (IdDrop ) => {
 
         const dataSend2 = { iIdCalculosHd: IdDrop, iTipoPeriodo:0 , iPeriodo: 0, idEmpresa: 0, anio: 0 };
@@ -127,7 +125,11 @@
 
 
     FLlenaGrid = () => {
-
+        seconds = 60;
+        clearInterval(interval);
+        $("#timerNotification").jqxNotification("closeLast");
+        $(".timer").text(60);
+        
         for (var i = 0; i <= RowsGrid; i++) {
 
             $("#TpDefinicion").jqxGrid('deleterow', i);
@@ -1598,7 +1600,6 @@
                     {
                         theme: 'bootstrap',
                         width: 870,
-                        height: 200,
                         source: dataAdapter,
                         showfilterrow: true,
                         filterable: true,
@@ -1913,7 +1914,12 @@
             }
         }
     });
+
+    // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
+    $("#switchButtonEmple").toggle();
+    $("#timerNotification").jqxNotification("closeLast");
     
+ 
 });
 
 

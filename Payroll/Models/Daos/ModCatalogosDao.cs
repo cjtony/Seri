@@ -1268,9 +1268,9 @@ namespace Payroll.Models.Daos
         }
 
         public CRenglonesBean ps_Renglon_Update_CRenglones(int CtrliIdEmpresa, int CtrliIdRenglon,
-         string CtrlsNomRenglon, int CtrliElemtoNom, int CtrliIdReporte, int CtrliAcumulado,
-         int CtrliCancelado, int CtrliTipoRenglon, int CtrliEspejo,
-         int CtrliLisCalculo, string CtrlsCuntCont, string CtrlsDesCuen,
+         string CtrlsNomRenglon, int CtrliIdReporte, int CtrliAcumulado,
+         int CtrliCancelado, int CtrliEspejo,
+         string CtrlsCuntCont, string CtrlsDesCuen,
          string CtrlsCarAbo, int CtrliIdSAT, int CtrliPenAlim)
         {
 
@@ -1287,13 +1287,10 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdRenglon", CtrliIdRenglon));
                 cmd.Parameters.Add(new SqlParameter("@CtrlsNomRenglon", CtrlsNomRenglon));
-                cmd.Parameters.Add(new SqlParameter("@CtrliElemtoNom", CtrliElemtoNom));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdReporte", CtrliIdReporte));
                 cmd.Parameters.Add(new SqlParameter("@CtrliAcumulado", CtrliAcumulado));
                 cmd.Parameters.Add(new SqlParameter("@CtrliCancelado", CtrliCancelado));
-                cmd.Parameters.Add(new SqlParameter("@CtrliTipoRenglon", CtrliTipoRenglon));
                 cmd.Parameters.Add(new SqlParameter("@CtrliEspejo", CtrliEspejo));
-                cmd.Parameters.Add(new SqlParameter("@CtrliLisCalculo", CtrliLisCalculo));
                 cmd.Parameters.Add(new SqlParameter("@CtrlsCuntCont", CtrlsCuntCont));
                 cmd.Parameters.Add(new SqlParameter("@CtrlsDesCuen", CtrlsDesCuen));
                 cmd.Parameters.Add(new SqlParameter("@CtrlsCarAbo", CtrlsCarAbo));

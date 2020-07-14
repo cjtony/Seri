@@ -168,7 +168,7 @@ namespace Payroll
             if (NomProceso == "CNomina")
             {
                           
-                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, FechaProceso));
+                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso));
                  List<HangfireJobs> id = new List<HangfireJobs>();
                  FuncionesNomina Dao = new FuncionesNomina();
                  id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
@@ -182,10 +182,10 @@ namespace Payroll
 
         }
 
-        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, string fecha) {
+        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion,int IdEmpresa,int LisEmpleado, string fecha) {
 
             FuncionesNomina Dao2 = new FuncionesNomina();
-            Dao2.sp_CNomina_1(anio, TipoPeriodo, Periodo, IdDefinicion);
+            Dao2.sp_CNomina_1(anio, TipoPeriodo, Periodo, IdDefinicion,IdEmpresa,LisEmpleado);
 
 
         }

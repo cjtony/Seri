@@ -155,7 +155,7 @@ namespace Payroll.Controllers
             List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
             Dt = dao.sp_DefinicionesNomLn_Retrieve_DefinicionesNomLn(iIdDefinicionln);
-            if (Dt != null)
+            if (Dt[0].sMensaje == "success")
             {
                 for (int i = 0; i < Dt.Count; i++)
                 {
@@ -201,7 +201,7 @@ namespace Payroll.Controllers
             List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
             Dta = dao.sp_DefinicionesDeNomLn_Retrieve_DefinicionesDeNomLn(iIdDefinicionln);
-            if (Dta != null)
+            if (Dta[0].sMensaje == "success")
             {
                 for (int i = 0; i < Dta.Count; i++)
                 {

@@ -415,6 +415,7 @@ namespace Payroll.Models.Daos
                             LDN.iTipodeperiodo = data["Valor"].ToString();
                             LDN.iIdAcumulado = data["Acumulado_id"].ToString();
                             LDN.iEsespejo = data["Es_Espejo"].ToString();
+                            LDN.sMensaje = "success";
                         };
 
 
@@ -423,7 +424,9 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    list = null;
+                    NominaLnDatBean LDN = new NominaLnDatBean();
+                    LDN.sMensaje = "NotDat";
+                    list.Add(LDN);
                 }
 
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
@@ -503,6 +506,7 @@ namespace Payroll.Models.Daos
                             //LDN.iIdperiodo = data["Periodo_id"].ToString();
                             LDN.iIdAcumulado = data["Acumulado_id"].ToString();
                             LDN.iEsespejo = data["Es_Espejo"].ToString();
+                            LDN.sMensaje = "success";
 
                         };
 
@@ -512,7 +516,9 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    list = null;
+                    NominaLnDatBean LDN = new NominaLnDatBean();
+                    LDN.sMensaje = "NotDat";
+                    list.Add(LDN);
                 }
 
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
@@ -1500,7 +1506,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public TPProcesos sp_CNomina_1(int p_Ano, int p_Tipo_periodo, int p_Periodo, int p_IdDefinicion_Hd)
+        public TPProcesos sp_CNomina_1(int p_Ano, int p_Tipo_periodo, int p_Periodo, int p_IdDefinicion_Hd,int p_Empresa_id,int Por_lista_empleado)
         {
             TPProcesos bean = new TPProcesos();
             try
@@ -1515,6 +1521,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@p_Tipo_periodo", p_Tipo_periodo));
                 cmd.Parameters.Add(new SqlParameter("@p_Periodo", p_Periodo));
                 cmd.Parameters.Add(new SqlParameter("@p_IdDefinicion_Hd", p_IdDefinicion_Hd));
+                cmd.Parameters.Add(new SqlParameter("@p_Empresa_id", p_Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@Por_lista_empleado", Por_lista_empleado));
 
                 if (cmd.ExecuteNonQuery() > 0)
                 {

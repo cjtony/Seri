@@ -360,73 +360,144 @@
             url: "../Nomina/listdatosPercesiones",
             type: "POST",
             data: dataSend,
-            success: (data) => {
-
-                if (data.length > 0) {
-                    RosCountPer = data.length;
-                }
-                var source =
-                {
-                    localdata: data,
-                    datatype: "array",
-                    datafields:
-                        [
-                            { name: 'iIdDefinicionln', type: 'string' },
-                            { name: 'IdEmpresa', type: 'string' },
-                            { name: 'iRenglon', type: 'string' },
-                            { name: 'iTipodeperiodo', type: 'string' },
-                            { name: 'iIdAcumulado', type: 'string' },
-                            { name: 'iEsespejo', type: 'string' }
-                        ]
-                };
-
-                var dataAdapter = new $.jqx.dataAdapter(source);
-
-                $("#TbPercepciones").jqxGrid(
+            success: function (data) {
+                if (data.sMensaje == "success") {
+                    if (data.length > 0) {
+                        RosCountPer = data.length;
+                    }
+                    var source =
                     {
-                        width: 840,
-                        source: dataAdapter,
-                        selectionmode: 'multiplerowsextended',
-                        sortable: true,
-                        pageable: true,
-                        autoheight: true,
-                        autoloadstate: false,
-                        autosavestate: false,
-                        columnsresize: true,
-                        showtoolbar: true,
-                        rendertoolbar: function (statusbar) {
-                            var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
-                            var addButton = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
-                            var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
-                            var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
-                            container.append(addButton);
-                            container.append(ActuButton);
-                            container.append(DeletButton);
-                            statusbar.append(container);
-                            addButton.jqxButton({ template: "link", width: 40, height: 25 });
-                            ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
-                            DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
-                            addButton.click(function (event) {
-                                $("#BAgregarPer").click();
-                            });
-                            ActuButton.click(function (event) {
-                                $("#BActuPer").click();
-                            });
-                            DeletButton.click(function (event) {
-                                $("#BEliminarPer").click();
-                            });
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+
+                    $("#TbPercepciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton);
+                                container.append(ActuButton);
+                                container.append(DeletButton);
+                                statusbar.append(container);
+                                addButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton.click(function (event) {
+                                    $("#BAgregarPer").click();
+                                });
+                                ActuButton.click(function (event) {
+                                    $("#BActuPer").click();
+                                });
+                                DeletButton.click(function (event) {
+                                    $("#BEliminarPer").click();
+                                });
 
 
-                        },
-                        columns: [
-                            { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 75 },
-                            { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
-                            { text: 'Renglon', datafield: 'iRenglon', width: 180 },
-                            { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
-                            { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 200 },
-                            { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
-                        ]
-                    });
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 75 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 180 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 200 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+                }
+                if (data.sMensaje == "NotDat") {
+                    if (data.length > 0) {
+                        RosCountPer = data.length;
+                    }
+                    var source =
+                    {
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+
+                    $("#TbPercepciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton);
+                                container.append(ActuButton);
+                                container.append(DeletButton);
+                                statusbar.append(container);
+                                addButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton.click(function (event) {
+                                    $("#BAgregarPer").click();
+                                });
+                                ActuButton.click(function (event) {
+                                    $("#BActuPer").click();
+                                });
+                                DeletButton.click(function (event) {
+                                    $("#BEliminarPer").click();
+                                });
+
+
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 75 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 180 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 200 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+
+                }
+
+          
             }
         });
     };
@@ -1093,68 +1164,134 @@
             url: "../Nomina/listdatosDeducuiones",
             type: "POST",
             data: dataSend,
-            success: (data) => {
-                if (data.length > 0) {
-                    RosCountdedu = data.length;
-                }
-                var source =
-                {
-                    localdata: data,
-                    datatype: "array",
-                    datafields:
-                        [
-                            { name: 'iIdDefinicionln', type: 'string' },
-                            { name: 'IdEmpresa', type: 'string' },
-                            { name: 'iRenglon', type: 'string' },
-                            { name: 'iTipodeperiodo', type: 'string' },
-                            { name: 'iIdAcumulado', type: 'string' },
-                            { name: 'iEsespejo', type: 'string' }
-                        ]
-                };
-                var dataAdapter = new $.jqx.dataAdapter(source);
-                $("#TbDeducciones").jqxGrid(
+            success: (data) {
+                if (data.sMensaje == "success") {
+                    if (data.length > 0) {
+                        RosCountdedu = data.length;
+                    }
+                    var source =
                     {
-                        width: 840,
-                        source: dataAdapter,
-                        selectionmode: 'multiplerowsextended',
-                        sortable: true,
-                        pageable: true,
-                        autoheight: true,
-                        autoloadstate: false,
-                        autosavestate: false,
-                        columnsresize: true,
-                        showtoolbar: true,
-                        rendertoolbar: function (statusbar) {
-                            var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
-                            var addButton2 = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
-                            var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
-                            var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
-                            container.append(addButton2);
-                            container.append(ActuButton2);
-                            container.append(DeletButton2);
-                            statusbar.append(container);
-                            addButton2.jqxButton({ template: "link", width: 40, height: 25 });
-                            ActuButton2.jqxButton({ template: "link", width: 40, height: 25 });
-                            DeletButton2.jqxButton({ template: "link", width: 40, height: 25 });
-                            addButton2.click(function (event) {
-                                $("#BAgregardedu2").click();
-                            });
-                            ActuButton2.click(function (event) {
-                                $("#BActudedu").click();
-                            });
-                            DeletButton2.click(function (event) {
-                                $("#BEliminardedu").click();
-                            });
-                        },
-                        columns: [
-                            { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
-                            { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
-                            { text: 'Renglon', datafield: 'iRenglon', width: 200 },
-                            { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
-                            { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
-                            { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
-                        ]
-                    });
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#TbDeducciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton2 = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton2);
+                                container.append(ActuButton2);
+                                container.append(DeletButton2);
+                                statusbar.append(container);
+                                addButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton2.click(function (event) {
+                                    $("#BAgregardedu2").click();
+                                });
+                                ActuButton2.click(function (event) {
+                                    $("#BActudedu").click();
+                                });
+                                DeletButton2.click(function (event) {
+                                    $("#BEliminardedu").click();
+                                });
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 200 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+                }
+                if (data.sMensaje == "NotDat") {
+                    if (data.length > 0) {
+                        RosCountdedu = data.length;
+                    }
+                    var source =
+                    {
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#TbDeducciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton2 = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton2);
+                                container.append(ActuButton2);
+                                container.append(DeletButton2);
+                                statusbar.append(container);
+                                addButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton2.click(function (event) {
+                                    $("#BAgregardedu2").click();
+                                });
+                                ActuButton2.click(function (event) {
+                                    $("#BActudedu").click();
+                                });
+                                DeletButton2.click(function (event) {
+                                    $("#BEliminardedu").click();
+                                });
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 200 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+                }
+         
             }
         });
 

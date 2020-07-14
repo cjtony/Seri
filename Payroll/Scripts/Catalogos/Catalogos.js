@@ -5,11 +5,11 @@
     const txNomRenglon = document.getElementById('txNomRenglon');
     //const DropEmpresa = document.getElementById('DropEmpresa');
     const DropEmpresa2 = document.getElementById('DropEmpresa2');
-    const DropTipoReng = document.getElementById('DropTipoReng');
-    const DropElemNom = document.getElementById('DropElemNom');
+    //const DropTipoReng = document.getElementById('DropTipoReng');
+    //const DropElemNom = document.getElementById('DropElemNom');
     const txReporte = document.getElementById('txReporte');
     const DropAcumulado = document.getElementById('DropAcumulado');
-    const DroplisCalculo = document.getElementById('DroplisCalculo');
+    //const DroplisCalculo = document.getElementById('DroplisCalculo');
     const txCueCont = document.getElementById('txCueCont');
     const txDespCuent = document.getElementById('txDespCuent');
     const txCargCuent = document.getElementById('txCargCuent');
@@ -49,36 +49,36 @@
     };
     LisEmpresa();
      // Lista de renglon
-    TipoRenglon = () => {
-        $.ajax({
-            url: "../Catalogos/ListTipoRenglon",
-            type: "POST",
-            data: JSON.stringify(),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                for (i = 0; i < data.length; i++) {
-                    document.getElementById("DropTipoReng").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sTipoRenglon}</option>`;
-                }
-            }
-        });
-    };
-    TipoRenglon();
+    //TipoRenglon = () => {
+    //    $.ajax({
+    //        url: "../Catalogos/ListTipoRenglon",
+    //        type: "POST",
+    //        data: JSON.stringify(),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            for (i = 0; i < data.length; i++) {
+    //                document.getElementById("DropTipoReng").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sTipoRenglon}</option>`;
+    //            }
+    //        }
+    //    });
+    //};
+    //TipoRenglon();
 
      // List Elemeto Nomina
-    ElemNom = () => {
-        $.ajax({
-            url: "../Catalogos/ListEleNom",
-            type: "POST",
-            data: JSON.stringify(),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                for (i = 0; i < data.length; i++) {
-                    document.getElementById("DropElemNom").innerHTML += `<option value='${data[i].iIdValor}'>${data[i].sValor}</option>`;
-                }
-            }
-        });
-    };
-    ElemNom();
+    //ElemNom = () => {
+    //    $.ajax({
+    //        url: "../Catalogos/ListEleNom",
+    //        type: "POST",
+    //        data: JSON.stringify(),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            for (i = 0; i < data.length; i++) {
+    //                document.getElementById("DropElemNom").innerHTML += `<option value='${data[i].iIdValor}'>${data[i].sValor}</option>`;
+    //            }
+    //        }
+    //    });
+    //};
+    //ElemNom();
 
     // list reporte
     Lisreporte = () => {
@@ -96,28 +96,28 @@
     };
     Lisreporte();
 
-     // list Calculo
-    LisCalculo = () => {
-        $.ajax({
-            url: "../Catalogos/ListCalcu",
-            type: "POST",
-            data: JSON.stringify(),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                for (i = 0; i < data.length; i++) {
-                    document.getElementById("DroplisCalculo").innerHTML += `<option value='${data[i].iIdCalculo}'>${data[i].sNombreCalculo}</option>`;
-                }
-            }
-        });
-    };
-    LisCalculo();
+    // // list Calculo
+    //LisCalculo = () => {
+    //    $.ajax({
+    //        url: "../Catalogos/ListCalcu",
+    //        type: "POST",
+    //        data: JSON.stringify(),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            for (i = 0; i < data.length; i++) {
+    //                document.getElementById("DroplisCalculo").innerHTML += `<option value='${data[i].iIdCalculo}'>${data[i].sNombreCalculo}</option>`;
+    //            }
+    //        }
+    //    });
+    //};
+    //LisCalculo();
 
     /// Lista de Acumulados 
-    $('#DropElemNom').change(function () {
+    //$('#DropElemNom').change(function () {
 
-        LisAcumu(DropEmpresa2.value, DropElemNom.value);
+    //    LisAcumu(DropEmpresa2.value, DropElemNom.value);
 
-    });
+    //});
 
     $('#DropEmpresa2').change(function () {
         FTabCRenglones(DropEmpresa2.value,0);
@@ -213,9 +213,8 @@
         var op2 = espejo;
         const dataSend = {
             iIdRenglon: TxIdRenglon.value, sNombreRenglon: txNomRenglon.value,
-            iIdEmpresa: DropEmpresa2.value, iTipodeRenglon: DropTipoReng.value,
-            iElementoNom: DropElemNom.value, iIdReporte: DropReporte.value, IdAcumulado: DropAcumulado.value,
-            idCalculo: DroplisCalculo.value, sCuentaCont: txCueCont.value, sDespCuenta: txDespCuent.value,
+            iIdEmpresa: DropEmpresa2.value,  iIdReporte: DropReporte.value, IdAcumulado: DropAcumulado.value,
+             sCuentaCont: txCueCont.value, sDespCuenta: txDespCuent.value,
             sCargaCuenta: txCargCuent.value, iIdSat: DroplisSat.value, icancel: op1,
             iEspejo: espejo, PenAlin: 0
 
@@ -231,10 +230,10 @@
                     FTabCRenglones(DropEmpresa2.value, 0);
                     fshowtypealert('Renglon Actualizado!', 'Renglón actualizado ', 'success');
                 }
-                else {
-                } 
-                 fshowtypealert('Error', 'Contacte a sistemas', 'error');
-                
+                if (data.sMensaje == "error") {
+
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                }
              },
             error: function (jqXHR, exception) {
                 fcaptureaerrorsajax(jqXHR, exception);
@@ -375,106 +374,118 @@
         });                   
     };
     FTabCRenglones(0,0);
-    //$("#dTabCrenglones").on('rowDoubleClick', function (event) {
-    //    var args = event.args;
-    //    var index = args.index;
-    //    var row = args.row;
+    $("#dTabCrenglones").on('rowDoubleClick', function (event) {
+        var args = event.args;
+        var index = args.index;
+        var row = args.row;
 
-    //    $("#TxIdRenglon").attr("readonly", "readonly");
-    //    $("#txNomRenglon").attr("readonly", "readonly");
-    //    DropTipoReng.style.visibility = 'hidden';
-    //    DropElemNom.style.visibility = 'hidden';
-    //    DroplisCalculo.style.visibility = 'hidden';
-    //    LaTipoReng.style.visibility = 'hidden';
-    //    LaEleNom.style.visibility = 'hidden';
-    //    LalisCalculo.style.visibility = 'hidden';
-    //    //// update the widgets inside jqxWindow.
-    //    //$("#dialog").jqxWindow('setTitle', "Renglon: " + row.iIdRenglon);
-    //    titu = 'Actualizar Renglon';
+        $("#TxIdRenglon").attr("readonly", "readonly");
+        $("#txNomRenglon").attr("readonly", "readonly");
+        //DropTipoReng.style.visibility = 'hidden';
+        //DropElemNom.style.visibility = 'hidden';
+        //DroplisCalculo.style.visibility = 'hidden';
+        //LaTipoReng.style.visibility = 'hidden';
+        //LaEleNom.style.visibility = 'hidden';
+        //LalisCalculo.style.visibility = 'hidden';
+        //// update the widgets inside jqxWindow.
+        //$("#dialog").jqxWindow('setTitle', "Renglon: " + row.iIdRenglon);
+        titu = 'Actualizar Renglon';
      
 
-    //    var NombreRenglon = row.sNombreRenglon;
+        var NombreRenglon = row.sNombreRenglon;
       
-    //    separador = " ",
-    //    limite = 5,
-    //    arreglosubcadena = NombreRenglon.split(separador, limite);
-    //    TxIdRenglon.value = arreglosubcadena[0];
-    //    if (arreglosubcadena.length > 2) {
-    //        var text = arreglosubcadena[1]
-    //        i=2
-    //        for (i; i < arreglosubcadena.length; i++) {
-    //            text = text + " "+ arreglosubcadena[i];
-    //        }
-    //        console.log(text);
-    //        txNomRenglon.value = text;
-    //    }
-    //    else {
-    //        txNomRenglon.value = arreglosubcadena[1];
-    //    }
+        separador = " ",
+        limite = 5,
+        arreglosubcadena = NombreRenglon.split(separador, limite);
+        TxIdRenglon.value = arreglosubcadena[0];
+        if (arreglosubcadena.length > 2) {
+            var text = arreglosubcadena[1]
+            i=2
+            for (i; i < arreglosubcadena.length; i++) {
+                text = text + " "+ arreglosubcadena[i];
+            }
+            console.log(text);
+            txNomRenglon.value = text;
+        }
+        else {
+            txNomRenglon.value = arreglosubcadena[1];
+        }
        
-    //    for (var i = 0; i < DropTipoReng.length; i++) {
-    //        if (DropTipoReng.options[i].text == row.sTipodeperiodo) {
-    //            // seleccionamos el valor que coincide
-    //            DropTipoReng.selectedIndex = i;
-    //        }
+        //for (var i = 0; i < DropTipoReng.length; i++) {
+        //    if (DropTipoReng.options[i].text == row.sTipodeperiodo) {
+        //        // seleccionamos el valor que coincide
+        //        DropTipoReng.selectedIndex = i;
+        //    }
           
 
-    //    };
-    //    for (var i = 0; i < DropElemNom.length; i++) {
-    //        if (DropElemNom.options[i].text == row.sIdElementoNomina) {
-    //            // seleccionamos el valor que coincide
-    //            DropElemNom.selectedIndex = i;
-    //        }
+        //};
+        //for (var i = 0; i < DropElemNom.length; i++) {
+        //    if (DropElemNom.options[i].text == row.sIdElementoNomina) {
+        //        // seleccionamos el valor que coincide
+        //        DropElemNom.selectedIndex = i;
+        //    }
           
 
-    //    };
-    //    $('#Latitu').html(titu);
-    //    $("#ActuRenglon").click();
-    //    for (var i = 0; i < DropReporte.length; i++) {
-    //        if (DropReporte.options[i].text == row.sIdSeccionReporte) {
-    //            // seleccionamos el valor que coincide
-    //            DropReporte.selectedIndex = i;
-    //        }
-    //    };
-    //    //DropReporte.selectedIndex = row.iIdSeccionReporte;
-    //    LisAcumu(DropEmpresa2.value, DropElemNom.value);
-    //    for (var i = 0; i < DropAcumulado.length; i++) {
-    //        if (DropAcumulado.options[i].text == row.sIdAcumulado) {
-    //            // seleccionamos el valor que coincide
-    //            DropAcumulado.selectedIndex = i;
-    //        }
-    //    };
-    //    for (var i = 0; i < DroplisCalculo.length; i++) {
-    //        if (DroplisCalculo.options[i].text == row.slistCalculos) {
-    //            // seleccionamos el valor que coincide
-    //            DroplisCalculo.selectedIndex = i;
-    //        }
-    //    };
-    //    for (var i = 0; i < DroplisSat.length;) {
-    //        if (DroplisSat.options[i].text == row.sIdSat) {
-    //            // seleccionamos el valor que coincide
-    //            DroplisSat.selectedIndex = i;
-    //        }
-    //        i++;
-    //    };
+        //};
+        var elem = 0;
+        if (row.sIdElementoNomina == "Percepciones") {
+            elem = 1
+        }
+        if (row.sIdElementoNomina == "Deducciones") {
+            elem = 2
+        }
+        if (row.sIdElementoNomina == "Saldos") {
+            elem = 5
+        }
+        $('#Latitu').html(titu);
+        $("#ActuRenglon").click();
+        for (var i = 0; i < DropReporte.length; i++) {
+            if (DropReporte.options[i].text == row.sIdSeccionReporte) {
+                // seleccionamos el valor que coincide
+                DropReporte.selectedIndex = i;
+            }
+        };
+        //DropReporte.selectedIndex = row.iIdSeccionReporte;
+        LisAcumu(DropEmpresa2.value, elem);
+        for (var i = 0; i < DropAcumulado.length; i++) {
+            if (DropAcumulado.options[i].text == row.sIdAcumulado) {
+                // seleccionamos el valor que coincide
+                DropAcumulado.selectedIndex = i;
+            }
+        };
+        //for (var i = 0; i < DroplisCalculo.length; i++) {
+        //    if (DroplisCalculo.options[i].text == row.slistCalculos) {
+        //        // seleccionamos el valor que coincide
+        //        DroplisCalculo.selectedIndex = i;
+        //    }
+        //};
+        for (var i = 0; i < DroplisSat.length;) {
+            if (DroplisSat.options[i].text == row.sIdSat) {
+                // seleccionamos el valor que coincide
+                DroplisSat.selectedIndex = i;
+            }
+            i++;
+        };
 
-    //    txCueCont.value = row.sCuentaCont;
-    //    txDespCuent.value = row.sDespCuCont;
-    //    txCargCuent.value = row.sCargAbCuenta; 
+        txCueCont.value = row.sCuentaCont;
+        txDespCuent.value = row.sDespCuCont;
+        txCargCuent.value = row.sCargAbCuenta; 
+        console.log('EsEspejo' + row.sEspejo);
+        if (row.sEspejo == 0) {
+            $("#ChecEspejo").jqxCheckBox({  checked: false });
+        }
+        if (row.sEspejo == 1) {
+            $("#ChecEspejo").jqxCheckBox({ checked: true });
+        }
+        if (row.sCancelado == "False") {
+            $("#ChecEspejo").jqxCheckBox({ checked: false });
+        }
+        if (row.sCancelado == "True") {
+            $("#ChecEspejo").jqxCheckBox({ checked: true });
+        }
 
-    //    if (row.sEspejo = "0") {
-    //        $("#ChecEspejo").jqxCheckBox({  checked: false });
-    //    }
-    //    if (row.sEspejo = "1") {
-    //        $("#ChecEspejo").jqxCheckBox({ checked: true });
-    //    }
-    //    if (row.sCancelado = "False") {
-    //        $("#ChecEspejo").jqxCheckBox({ checked: false });
-    //    }
-    //    if (row.sCancelado = "True") {
-    //        $("#ChecEspejo").jqxCheckBox({ checked: true });
-    //    }
-    //});
+
+    });
 
     $("#ChecCancel").jqxCheckBox({ width: 120, height: 25 });
     $("#ChecCancel").bind('change', function (event) {
