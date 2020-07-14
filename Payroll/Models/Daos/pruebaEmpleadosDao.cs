@@ -146,7 +146,15 @@ namespace Payroll.Models.Daos
                     }
                     
                     listEmpleados.DiasDisfrutados = int.Parse(data["DiasDisfrutados"].ToString());
-                    listEmpleados.DiasRestantes = int.Parse(data["DiasRestantes"].ToString());
+                    if (data["DiasRestantes"].ToString() == null || data["DiasRestantes"].ToString() == "")
+                    {
+                        listEmpleados.DiasRestantes = 0;
+                    }
+                    else
+                    {
+                        listEmpleados.DiasRestantes = int.Parse(data["DiasRestantes"].ToString());
+                    }
+                    
 
                     list.Add(listEmpleados);
                 }
