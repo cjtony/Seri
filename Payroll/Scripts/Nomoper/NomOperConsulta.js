@@ -2,8 +2,8 @@
 
     //------------------------ Pantalla de Consulta --------------------------------------------//
     // declaracion de variables 
-    var DeNombre = document.getElementById('DeNombre');
-    var DeCancelados = document.getElementById('DeCancelados');
+    //var DeNombre = document.getElementById('DeNombre');
+    //var DeCancelados = document.getElementById('DeCancelados');
     var dato;
     var empresaSelect = document.getElementById("btnNameEmpresaSelected").innerHTML; 
 
@@ -17,26 +17,26 @@
 
     // Funcion llena listbox con los nombres de la definicion
 
-    FlistNombreDef = () => {
+    //FlistNombreDef = () => {
        
        
-        $.ajax({
-            url: "../Nomina/ListadoNomDefinicion",
-            type: "POST",
-            data: JSON.stringify(),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                var num = 0;
+    //    $.ajax({
+    //        url: "../Nomina/ListadoNomDefinicion",
+    //        type: "POST",
+    //        data: JSON.stringify(),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            var num = 0;
 
-                for (i = 0; i < data.length; i++) {
-                    num = num + 1;
-                    document.getElementById("DeNombre").innerHTML += `<option value='${num}'>${data[i].sNombreDefinicion}</option>`;
-                }
-            }
-        });
+    //            for (i = 0; i < data.length; i++) {
+    //                num = num + 1;
+    //                document.getElementById("DeNombre").innerHTML += `<option value='${num}'>${data[i].sNombreDefinicion}</option>`;
+    //            }
+    //        }
+    //    });
 
-    };
-    FlistNombreDef();
+    //};
+    //FlistNombreDef();
 
     // Funcion llena el grip de Nomina Definicion.
 
@@ -48,7 +48,6 @@
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data.sNombreDefinicion);
                 var source =
                 {
                     localdata: data,
@@ -183,17 +182,17 @@
 
     Fllenagrip();
 
-    $('#DeNombre').change(function () {
+    //$('#DeNombre').change(function () {
 
-        FRecargaGrip();
-        $("#TpDefinicion").jqxGrid('clearselection');
+    //    FRecargaGrip();
+    //    $("#TpDefinicion").jqxGrid('clearselection');
 
-    });
+    //});
 
-    $('#DeCancelados').change(function () {
+    //$('#DeCancelados').change(function () {
 
-        FRecargaGrip();
-    });
+    //    FRecargaGrip();
+    //});
 
 
     FSelectDefinicion = () => {
@@ -345,8 +344,8 @@
 
     const navPercepcionestab = document.getElementById('nav-Percepciones-tab');
     var RosCountPer;
-    FcargaPercepciones = () => {
 
+    FcargaPercepciones = () => {
 
         for (var i = 0; i <= RosCountPer; i++) {
 
@@ -361,7 +360,7 @@
             type: "POST",
             data: dataSend,
             success: function (data) {
-                if (data.sMensaje == "success") {
+                if (data[0].sMensaje == "success") {
                     if (data.length > 0) {
                         RosCountPer = data.length;
                     }
@@ -428,7 +427,7 @@
                             ]
                         });
                 }
-                if (data.sMensaje == "NotDat") {
+                if (data[0].sMensaje == "NotDat") {
                     if (data.length > 0) {
                         RosCountPer = data.length;
                     }
@@ -1164,8 +1163,8 @@
             url: "../Nomina/listdatosDeducuiones",
             type: "POST",
             data: dataSend,
-            success: (data) {
-                if (data.sMensaje == "success") {
+            success: function (data) {
+                if (data[0].sMensaje == "success") {
                     if (data.length > 0) {
                         RosCountdedu = data.length;
                     }
@@ -1228,7 +1227,7 @@
                             ]
                         });
                 }
-                if (data.sMensaje == "NotDat") {
+                if (data[0].sMensaje == "NotDat") {
                     if (data.length > 0) {
                         RosCountdedu = data.length;
                     }
