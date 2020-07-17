@@ -345,9 +345,10 @@ namespace Payroll.Models.Daos
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
-                    lista.Certificado_imss = data["Fecha_Ausentismo"].ToString();
-                    lista.Comentarios_imss = data["Fecha_Ausentismo"].ToString();
-                    lista.Causa_FaltaInjustificada = data["Fecha_Ausentismo"].ToString();
+                    lista.Certificado_imss = data["Certificado_imss"].ToString();
+                    lista.Comentarios_imss = data["Comentarios_imss"].ToString();
+                    lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
+                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
 
                     list.Add(lista);
                 }
@@ -512,7 +513,7 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.Add(new SqlParameter("@ctrlId", Tipo_Ausentismo_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlId", id));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", Tipo_Ausentismo_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));

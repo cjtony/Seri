@@ -152,6 +152,14 @@ namespace Payroll.Controllers
             return Json(RP);
         }
         [HttpPost]
+        public JsonResult LoadRegistrosPatronalesDetalle(int Empresa_id)
+        {
+            List<RegistroPatronalBean> RP = new List<RegistroPatronalBean>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            RP = Dao.sp_Registro_Patronal_Retrieve_Registros_Patronales(Empresa_id);
+            return Json(RP);
+        }
+        [HttpPost]
         public JsonResult LoadRegistroPatronal(int IdRegPat)
         {
             List<RegistroPatronalBean> RP = new List<RegistroPatronalBean>();
@@ -200,6 +208,14 @@ namespace Payroll.Controllers
             List<RegionalesBean> RP = new List<RegionalesBean>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             RP = Dao.sp_CRegionales_Retrieve_Regionales_xEmpresa(int.Parse(Session["IdEmpresa"].ToString()));
+            return Json(RP);
+        }
+        [HttpPost]
+        public JsonResult LoadRegionalesDetalle(int Empresa_id)
+        {
+            List<RegionalesBean> RP = new List<RegionalesBean>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            RP = Dao.sp_CRegionales_Retrieve_Regionales_xEmpresa(Empresa_id);
             return Json(RP);
         }
         [HttpPost]

@@ -8,6 +8,8 @@
     var coment = document.getElementById("inComentariosAusentismo");
     var btnc = document.getElementById("btnClear");
     var btnu = document.getElementById("btnUpdate");
+    var btnSave = document.getElementById("btnRegistroAusentismo");
+    
     certif.disabled = true;
     coment.disabled = true;
     //btnc.classList.add("invisible");
@@ -83,42 +85,27 @@
                 contentType: "application/json; charset=utf-8",
                 success: (data1) => {
                     
-                    $.ajax({
-                        method: "POST",
-                        url: "../Incidencias/LoadAusentismosTab",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: (data) => {
-                            //console.log(data);
-                            document.getElementById("tabody").innerHTML = "";
-                            for (var i = 0; i < data.length; i++) {
-                                //document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Tipo_Ausentismo_id"] + "</td><td>" + data[i]["Fecha_Ausentismo"] + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn btn-secondary btn-sm btn-editar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div></td></tr>";
-                                document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Nombre_Ausentismo"] + "</td><td>" + data[i]["Fecha_Ausentismo"].substring(0,10) + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn-group' role='group' aria-label='Basic example'><div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-danger btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div></div></td></tr>";
-                                console.log(data[i]["Tipo_Ausentismo_id"]);
-                            }
-                        }
-                    });
                     fechaa.value = "";
                     dias.value = "";
                     cau_falta.value = "";
 
-                    if (data1["iFlag"] == 0) {
+                    if (data1[0] == "0") {
                         Swal.fire({
                             icon: 'warning',
                             title: 'Error!',
-                            text: "" + data1["sRespuesta"]
-
+                            text: data1[1],
+                            timer:1000
                         });
-                    } else if (data1["iFlag"] == 1) {
+                    } else if (data1[0] == "1") {
                         Swal.fire({
                             icon: 'success',
                             title: 'Correcto!',
-                            text: "" + data1["sRespuesta"]
-
+                            text: data1[1],
+                            timer:1000
                         });
                     }
-                    $("#frmAusentismos").reset();
-
+                    form.reset();
+                    tabAusentismo();
                    
                 }
             });
@@ -191,16 +178,17 @@
             
             form.classList.add("was-validated");
             console.log(data);
+            console.log("no entro");
         } else {
             
-            console.log(data);
+            //console.log(data);
             if (certif.value.length != 0) { cer_imss = certif.value } else { cer_imss = "0" }
             if (coment.value.length != 0) { com_imss = coment.value } else { com_imss = "0" }
             if (causa.value.length != 0) { cau_falta = causa.value } else { cau_falta = "0" }
             $.ajax({
                 url: "../Incidencias/UpdateAusentismo",
                 type: "POST",
-                data: JSON.stringify({
+                data: JSON.stringify({  
                     Id: $("#btnUpdate").attr("btnupdate"),
                     Tipo_Ausentismo_id: motivo.value,
                     Recupera_Ausentismo: recup.value,
@@ -213,42 +201,32 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data1) => {
-
-                    $.ajax({
-                        method: "POST",
-                        url: "../Incidencias/LoadAusentismosTab",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: (data) => {
-                            console.log(data);
-                            document.getElementById("tabody").innerHTML = "";
-                            for (var i = 0; i < data.length; i++) {
-                                //document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Tipo_Ausentismo_id"] + "</td><td>" + data[i]["Fecha_Ausentismo"] + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn btn-secondary btn-sm btn-editar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div></td></tr>";
-                                document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Nombre_Ausentismo"] + "</td><td>" + data[i]["Fecha_Ausentismo"].substring(0, 10) + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn-group' role='group' aria-label='Basic example'><div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-secondary btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-trash-alt'></i></div></div></td></tr>";
-                                console.log(data[i]["Tipo_Ausentismo_id"]);
-                            }
-                        }
-                    });
+                    console.log(data1)
+                    
                     fechaa.value = "";
                     dias.value = "";
-                    cau_falta.value = "";
-                    if (data1["iFlag"] == 0) {
+                    causa.value = "";
+                    if (data1[0] == "0") {
                         Swal.fire({
                             icon: 'warning',
                             title: 'Error!',
-                            text: "" + data1["sRespuesta"]
-
+                            text: data1[1],
+                            timer:1000
                         });
-                    } else if (data1["iFlag"] == 1) {
+                    } else if (data1[0] == "1") {
                         Swal.fire({
                             icon: 'success',
                             title: 'Correcto!',
-                            text: "" + data1["sRespuesta"]
-
+                            text: data1[1],
+                            timer:1000
                         });
                     }
-
-
+                    tabAusentismo();
+                    $("#inRecuperacionAusentismo option[value='']").attr("selected", true);
+                    $("#inMotivoAusentismo option[value='']").attr("selected", true);
+                    $("#btnRegistroAusentismo").removeClass("invisible");
+                    $("#btnClear").addClass("invisible");
+                    $("#btnUpdate").addClass("invisible");
                 }
             });
 
@@ -259,134 +237,150 @@
         $("#modalLiveSearchEmpleado").modal("toggle");
     });
 
-});
-
-function MostrarDatosEmpleado(idE) {
-    var txtIdEmpleado = { "IdEmpleado": idE };
-    $.ajax({
-        url: "../Empleados/SearchEmpleado",
-        type: "POST",
-        data: JSON.stringify(txtIdEmpleado),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: (data) => {
-            console.log(data[0]["Nombre_Empleado"]);
-            document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
-            $("#modalLiveSearchEmpleado").modal("hide");
-            document.getElementById("resultSearchEmpleados").innerHTML = "";
-            document.getElementById("inputSearchEmpleados").value = "";
-            tabAusentismo();
-            //document.getElementById("nameuser").innerHTML = "<div class='text-uppercase'>" + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "<small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small></div>";
-        }
-    });
-    //Funcion para validar solo numeros 
-    $('.input-number').on('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
-}
-function tabAusentismo() {
-    $.ajax({
-        method: "POST",
-        url: "../Incidencias/LoadAusentismosTab",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: (data) => {
-            console.log(data);
-            document.getElementById("tabody").innerHTML = "";
-            for (var i = 0; i < data.length; i++) {
-                document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Nombre_Ausentismo"] + "</td><td>" + data[i]["Fecha_Ausentismo"].substring(0,10) + "</td><td>" + data[i]["Dias_Ausentismo"] + "</td><td><div class='btn-group' role='group' aria-label='Basic example'><div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-danger btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div></div></td></tr>";
-                console.log(data[i]["Tipo_Ausentismo_id"]);
+    MostrarDatosEmpleado = (idE) => {
+        var txtIdEmpleado = { "IdEmpleado": idE };
+        $.ajax({
+            url: "../Empleados/SearchEmpleado",
+            type: "POST",
+            data: JSON.stringify(txtIdEmpleado),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data[0]["Nombre_Empleado"]);
+                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
+                $("#modalLiveSearchEmpleado").modal("hide");
+                document.getElementById("resultSearchEmpleados").innerHTML = "";
+                document.getElementById("inputSearchEmpleados").value = "";
+                tabAusentismo();
+                //document.getElementById("nameuser").innerHTML = "<div class='text-uppercase'>" + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "<small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small></div>";
             }
-        }
-    });
-}
-
-function eliminarAusentismo(Ausentismo_id) {
-    console.log("boton eliminar: " + Ausentismo_id);
-    $.ajax({
-        url: "../Incidencias/DeleteAusentismo",
-        type: "POST",
-        data: JSON.stringify({ IdAusentismo : Ausentismo_id }),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: (data) => {
-            console.log(data);
-            if (data[0] == '0') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Error!',
-                    text: data[1]
-                });
-            } else if(data[0] == '1'){
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Correcto!',
-                    text: data[1]
-                });
-            }
-            tabAusentismo();
-        }
-    });
-}
-//Editar ausentismo
-function editarAusentismo(Ausentismo_id) {
-    var motivo = document.getElementById("inMotivoAusentismo");
-    //var recup = document.getElementById("inRecuperacionAusentismo");
-    var fechaa = document.getElementById("inFechaAusentismo");
-    var dias = document.getElementById("inDiasAusentismo");
-    var causa = document.getElementById("inCausaAusentismo");
-    var certif = document.getElementById("inCertificadoAusentismo");
-    var coment = document.getElementById("inComentariosAusentismo");
-
-    console.log("boton eliminar: " + Ausentismo_id);
-    $.ajax({
-        url: "../Incidencias/LoadAusentismo",
-        type: "POST",
-        data: JSON.stringify({ IdAusentismo: Ausentismo_id }),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: (data) => {
-            console.log(data);
-            dias.value = data[0].Dias_Ausentismo;
-            causa.value = data[0].Causa_FaltaInjustificada;
-            console.log(data[0].Fecha_Ausentismo + " _ " + data[0].RecuperaAusentismo);
-            fechaa.value = data[0].Fecha_Ausentismo;
-
-            $("#inRecuperacionAusentismo option[value='" + data[0].RecuperaAusentismo + "']").attr("selected", true);
-            console.log(data[0].Certificado_imss.length);
-            if (data[0].Certificado_imss.length != 0) {
-                certif.disabled = false;
-                coment.disabled = false;
-                certif.value = data[0].Certificado_imss;
-                coment.value = data[0].Comentarios_imss;
-            }
-            //Carga los tipos de ausentismos 
-            $.ajax({
-                url: "../Incidencias/LoadAusentismos",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: (data1) => {
+        });
+        //Funcion para validar solo numeros 
+        $('.input-number').on('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+    tabAusentismo = () => {
+        $.ajax({
+            method: "POST",
+            url: "../Incidencias/LoadAusentismosTab",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (data) => {
+                console.log(data);
+                document.getElementById("tabody").innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    document.getElementById("tabody").innerHTML += "" +
+                        "<tr>" +
+                        "<td>" + data[i]["Nombre_Ausentismo"] + "</td>" +
+                        "<td>" + data[i]["Fecha_Ausentismo"].substring(0, 10) + "</td>" +
+                        "<td>" + data[i]["Dias_Ausentismo"] + "</td>" +
+                        "<td>" + data[i]["RecuperaAusentismo"] + "</td>" +
+                        "<td>" + data[i]["Causa_FaltaInjustificada"] + "</td>" +
+                        "<td>" + data[i]["Certificado_imss"] + "</td>" +
+                        "<td>" + data[i]["Comentarios_imss"] + "</td>" +
+                        
+                        "<td>" +
+                        "<div class='btn-group' role='group' aria-label='Basic example'>" + "<div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-danger btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div></div>" +
+                        "</td>" +
+                        "</tr>";
                     
-                    motivo.innerHTML = "";
-                    for (var j = 0; j < data1.length; j++) {
-                        if (data1[j].iIdTipoAusentismo >= 21) {
+                }
+                
+            }
+        });
+    }
+    eliminarAusentismo = (Ausentismo_id) => {
+        console.log("boton eliminar: " + Ausentismo_id);
+        $.ajax({
+            url: "../Incidencias/DeleteAusentismo",
+            type: "POST",
+            data: JSON.stringify({ IdAusentismo: Ausentismo_id }),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                if (data[0] == '0') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Error!',
+                        text: data[1]
+                    });
+                } else if (data[0] == '1') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Correcto!',
+                        text: data[1]
+                    });
+                }
+                tabAusentismo();
+            }
+        });
+    }
+    //Editar ausentismo
+    editarAusentismo = (Ausentismo_id) => {
+        var motivo = document.getElementById("inMotivoAusentismo");
+        //var recup = document.getElementById("inRecuperacionAusentismo");
+        var fechaa = document.getElementById("inFechaAusentismo");
+        var dias = document.getElementById("inDiasAusentismo");
+        var causa = document.getElementById("inCausaAusentismo");
+        var certif = document.getElementById("inCertificadoAusentismo");
+        var coment = document.getElementById("inComentariosAusentismo");
 
-                        } else {
+        console.log("boton editar: " + Ausentismo_id);
+        $.ajax({
+            url: "../Incidencias/LoadAusentismo",
+            type: "POST",
+            data: JSON.stringify({ IdAusentismo: Ausentismo_id }),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                dias.value = data[0].Dias_Ausentismo;
+                causa.value = data[0].Causa_FaltaInjustificada;
+                console.log(data[0].Fecha_Ausentismo + " _ " + data[0].RecuperaAusentismo);
+                fechaa.value = data[0].Fecha_Ausentismo;
 
-                            if (data[0].Tipo_Ausentismo_id == data1[j].iIdTipoAusentismo) {
-                                motivo.innerHTML += `<option selected value='${data1[j].iIdTipoAusentismo}'> ${data1[j].sDescripcionAusentismo} </option>`
+                $("#inRecuperacionAusentismo option[value='" + data[0].RecuperaAusentismo + "']").attr("selected", true);
+                console.log(data[0].Certificado_imss.length);
+                if (data[0].Certificado_imss.length != 0) {
+                    certif.disabled = false;
+                    coment.disabled = false;
+                    certif.value = data[0].Certificado_imss;
+                    coment.value = data[0].Comentarios_imss;
+                }
+                //Carga los tipos de ausentismos 
+                $.ajax({
+                    url: "../Incidencias/LoadAusentismos",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: (data1) => {
+
+                        motivo.innerHTML = "<option value=''> Selecciona </option>";
+                        for (var j = 0; j < data1.length; j++) {
+                            if (data1[j].iIdTipoAusentismo >= 21) {
+
                             } else {
-                                motivo.innerHTML += `<option value='${data1[j].iIdTipoAusentismo}'> ${data1[j].sDescripcionAusentismo} </option>`
+
+                                if (data[0].Tipo_Ausentismo_id == data1[j].iIdTipoAusentismo) {
+                                    motivo.innerHTML += `<option selected value='${data1[j].iIdTipoAusentismo}'> ${data1[j].sDescripcionAusentismo} </option>`
+                                } else {
+                                    motivo.innerHTML += `<option value='${data1[j].iIdTipoAusentismo}'> ${data1[j].sDescripcionAusentismo} </option>`
+                                }
                             }
                         }
+                        $("#btnUpdate").attr("btnUpdate", Ausentismo_id);
+                        //btnSave.disabled = true;
+                        $("#btnRegistroAusentismo").addClass("invisible");
+                        $("#btnUpdate").removeClass("invisible");
+                        $("#btnClear").removeClass("invisible");
                     }
-                    $("#btnUpdate").attr("btnUpdate", Ausentismo_id);
-                }
-            });
+                });
 
-        }
-    });
-}
-function updateAusentismo() {
+            }
+        });
+    }
+    
 
-}
+});
+

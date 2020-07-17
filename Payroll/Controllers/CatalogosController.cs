@@ -386,5 +386,12 @@ namespace Payroll.Controllers
             Lista = Dao.Bring_Main_Menus(1,Id);
             return Json(Lista);
         }
+        public JsonResult LoadCentrosCostoDetalle(int Empresa_id)
+        {
+            List<DataCentrosCosto> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_TCentrosCostos_Retrieve_CentrosCostoxEmpresa(Empresa_id);
+            return Json(Lista);
+        }
     }
 }

@@ -1,18 +1,18 @@
-﻿<div class="container bg-white pb-3 rounded font-labels">
+﻿<div class="container bg-white pb-3 rounded font-labels shadow shadow-lg border-left-primary border-right-primary">
     <div class="border-bottom border-secondary pt-4 pb-2 font-weight-bold d-flex justify-content-between"><div>Registrar ausentismo a empleado : </div><strong class="font-button" id="EmpDes"></strong><div class="btn btn-info btn-sm font-labels" id="btn-cambiar-empleado" title="Cambia de usuario"><i class="fas fa-users"></i></div></div>
     <div class="row">
-        <div class="col-md-6  rounded">
+        <div class="col-md-12  rounded">
             <form action="#" method="post" class="bg-light px-3 py-3 rounded" id="frmAusentismos">
                 <div class="form-group row">
                     <div class="form-group col-md-12">
                         <label for="">Motivo del ausentismo</label>
                         <select class="form-control font-labels custom-select" id="inMotivoAusentismo" name="inMotivoAusentismo" required>
-                            <option>Selecciona</option>
+                            <option value="">Selecciona</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inRecuperacionAusentismo">Recupera ausentismo</label>
-                        <select class="form-control font-labels custom-select" id="inRecuperacionAusentismo" required>
+                        <select class="form-control font-labels custom-select custom-select-sm" id="inRecuperacionAusentismo" required>
                             <option value="">Selecciona</option>
                             <option value="Sexto y septimo dia">Sexto y septimo día</option>
                             <option value="Septimo dia">Septimo día</option>
@@ -22,7 +22,7 @@
                     <div class="form-group col-md-6">
                         <label for="inFechaAusentismo">Fecha</label>
                         <div class="input-group">
-                            <input type="text" name="inFechaAusentismo" id="inFechaAusentismo" class="form-control font-labels" placeholder="DD/MM/AAAA" required />
+                            <input type="text" name="inFechaAusentismo" id="inFechaAusentismo" class="form-control form-control-sm font-labels" placeholder="DD/MM/AAAA" required />
                             <div class="input-group-prepend">
                                 <div class="input-group-text " id=""><span class="far fa-calendar-alt"></span></div>
                             </div>
@@ -30,36 +30,50 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inDiasAusentismo">Dias</label>
-                        <input type="text" name="inDiasAusentismo" id="inDiasAusentismo" class="form-control input-number" placeholder="Escriba los dias de Ausentismo" min="1" maxlength="2" required />
+                        <input type="text" name="inDiasAusentismo" id="inDiasAusentismo" class="form-control input-number form-control-sm" placeholder="Escriba los dias de Ausentismo" min="1" maxlength="2" required />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inCausaAusentismo">Causa</label>
-                        <input type="text" name="inCausaAusentismo" id="inCausaAusentismo" value="" class="form-control" placeholder="Escriba la causa del Ausentismo" required />
+                        <input type="text" name="inCausaAusentismo" id="inCausaAusentismo" value="" class="form-control form-control-sm" placeholder="Escriba la causa del Ausentismo" required />
                     </div>
                     <div class="form-group imss col-md-6">
                         <label for="inCertificadoAusentismo">Certificado</label>
-                        <input type="text" name="inCertificadoAusentismo" id="inCertificadoAusentismo" value="" class="form-control" placeholder="Folio de certificado" required />
+                        <input type="text" name="inCertificadoAusentismo" id="inCertificadoAusentismo" value="" class="form-control form-control-sm" placeholder="Folio de certificado" required />
                     </div>
                     <div class="form-group imss col-md-6">
                         <label for="inComentariosAusentismo">Comentarios</label>
-                        <input type="text" name="inComentariosAusentismo" id="inComentariosAusentismo" value="" class="form-control" placeholder="Escriba un comentario" required />
+                        <input type="text" name="inComentariosAusentismo" id="inComentariosAusentismo" value="" class="form-control form-control-sm" placeholder="Escriba un comentario" required />
                     </div>
-                    <div class="form-group  col-md-12 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary m-1" id="btnRegistroAusentismo"><span class="fas fa-save"></span></button>
-                        <div class="btn btn-warning m-1" id="btnClear"><i class="fas fa-eraser"></i></div>
-                        <div class="btn btn-success m-1" id="btnUpdate" btnupdate=""><i class="far fa-edit"></i></div>
+                    <div class=" col-md-12 d-flex justify-content-end">
+                        <label class="sr-only"></label>
+                        <button type="button" class="btn btn-sm btn-primary mx-1 btn-icon-split font-labels" id="btnRegistroAusentismo">
+                            <span class="icon"><i class="fas fa-save"></i></span>
+                            <span class="text">Guardar</span>
+                        </button>
+                        <div class="btn btn-warning btn-sm mx-1 btn-icon-split invisible font-labels" id="btnClear">
+                            <span class="icon"><i class="fas fa-eraser"></i></span>
+                            <span class="text">Limpiar</span>
+                        </div>
+                        <div class="btn btn-success btn-sm mx-1 btn-icon-split invisible font-labels" id="btnUpdate" btnupdate="">
+                            <span class="icon"><i class="fas fa-edit"></i></span>
+                            <span class="text">Actualizar</span>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col-md-6">
-            <table class="table table-sm font-labels text-center table-striped border-bottom" id="tabAusentismos">
+        <div class="col-md-12 mt-3">
+            <table class="table table-sm font-labels text-center table-striped border-bottom border-top-primary" id="tabAusentismos">
                 <thead>
                     <tr>
                         <th scope="col">Motivo</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Dias</th>
+                        <th scope="col">Recupera</th>
                         <th scope="col">Causa</th>
+                        <th scope="col">Certificado IMSS</th>
+                        <th scope="col">Comentarios IMSS</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tabody">

@@ -1208,6 +1208,49 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
             }
             return listBean;
-        }   
+        }
+        // FUNCION PARA RETORNAR EL DETALLE DE LOS CENTROS DE COSTO
+        public List<DataCentrosCosto> sp_TCentrosCostos_Retrieve_CentrosCostoxEmpresa( int Empresa_id)
+        {
+            List<DataCentrosCosto> listBean = new List<DataCentrosCosto>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TCentrosCostos_Retrieve_CentrosCostoxEmpresa", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        DataCentrosCosto Bean = new DataCentrosCosto();
+
+                        Bean.IdCentroCosto = data["IdCentroCosto"].ToString();
+                        Bean.Empresa_id = data["Empresa_id"].ToString();
+                        Bean.NombreEmpresa = data["NombreEmpresa"].ToString();
+                        Bean.CentroCosto = data["CentroCosto"].ToString();
+                        Bean.Descripcion = data["Descripcion"].ToString();
+                        Bean.Estado = data["Estado"].ToString();
+                        Bean.Fecha_Alta = data["Fecha_Alta"].ToString();
+
+                        listBean.Add(Bean);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
     }
 }

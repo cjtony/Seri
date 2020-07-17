@@ -529,4 +529,277 @@
             }
         });
     }
+
+    ////////////////////////////////////////////
+    //////////  CENTROS DE COSTO  //////////////
+    ////////////////////////////////////////////
+    // CARGA TABLA DE EMPRESAS EN CENTROS DE COSTO
+    LoadCentrosCostos = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-centroscostos");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        empresa = data[i]["IdEmpresa"];
+                    }
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-2'>" + data[i]['IdEmpresa'] + "</label><label class='col-md-7'>" + data[i]['NombreEmpresa'] + " </label><div class='col-md-3'><div class='badge badge-success btn' onclick='LoadDetalleCentrosCostos(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["IdEmpresa"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse table-responsive collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
+                }
+                setTimeout(function () {
+                    $("#table_centros_costos").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 1000);
+            }
+        });
+    }
+    // CARGA TABLA DETALLE DE CADA EMPRESA CON SUS CENTROS DE COSTO
+    LoadDetalleCentrosCostos = (pilltab, Empresa_id) => {
+        $.ajax({
+            url: "../Catalogos/LoadCentrosCostoDetalle",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                console.log(pilltab);
+                document.getElementById(pilltab).innerHTML = "";
+                document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-centros-costos col-md-12 pb-4'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th class=''> Id </th>" +
+                    "<th class=''> Centro Costo </th>" +
+                    "<th class=''> Descripción </th>" +
+                    "<th class=''> Estatus </th>" +
+                    "<th class=''> Fecha Alta </th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]["Estado"] == "0") {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["IdCentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["CentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["Descripcion"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye text-primary'></i>" + "</td>" +
+                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0,10) + "</td>" +
+                            "</tr>";
+                    } else {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["IdCentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["CentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["Descripcion"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye-slash text-danger'></i>" + "</td>" +
+                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0,10) + "</td>" +
+                            "</tr>";
+                    }
+                }
+                $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
+                $("#" + pilltab).collapse("toggle");
+                setTimeout(function () {
+                    $(".table" + Empresa_id + "").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 100);   
+            }
+        });
+    }
+
+    ////////////////////////////////////////////
+    ////////  REGISTROS PATRONALES  ////////////
+    ////////////////////////////////////////////
+    // CARGA TABLA DE EMPRESAS EN REGISTROS PATRONALES
+    LoadRegistrosPatronales = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-registropatronal");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        empresa = data[i]["IdEmpresa"];
+                    }
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-2'>" + data[i]['IdEmpresa'] + "</label><label class='col-md-7'>" + data[i]['NombreEmpresa'] + " </label><div class='col-md-3'><div class='badge badge-success btn' onclick='LoadDetalleRegistrosPatronales(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["IdEmpresa"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse table-responsive collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
+                }
+                //setTimeout(function () {
+                //    $("#tab-registropatronal").DataTable({
+                //        "language": {
+                //            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                //        }
+                //    });
+                //}, 1000);
+            }
+        });
+    }
+    // CARGA TABLA DETALLE DE CADA EMPRESA CON SUS REGISTROS PATRONALES
+    LoadDetalleRegistrosPatronales = (pilltab, Empresa_id) => {
+        $.ajax({
+            url: "../Empresas/LoadRegistrosPatronalesDetalle",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                //console.log(data);
+                document.getElementById(pilltab).innerHTML = "";
+                document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-registros-patronales col-md-12 pb-4'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th class=''> Id </th>" +
+                    "<th class=''> Afiliacion IMSS </th>" +
+                    "<th class=''> Nombre Afiliación </th>" +
+                    "<th class=''> Riesgo de trabajo </th>" +
+                    "<th class=''> Clase </th>" +
+                    "<th class=''> Estatus </th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]["Estado"] == "0") {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["iIdRegional"] + "</td>" +
+                            "<td class=''>" + data[j]["Afiliacion_IMSS"] + "</td>" +
+                            "<td class=''>" + data[j]["Nombre_Afiliacion"] + "</td>" +
+                            "<td class=''>" + data[j]["Riesgo_Trabajo"] + "</td>" +
+                            "<td class=''>" + data[j]["ClasesRegPat_id"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye-slash text-danger' title='Inactivo'></i>" + "</td>" +
+                            "</tr>";
+                    } else {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["iIdRegional"] + "</td>" +
+                            "<td class=''>" + data[j]["Afiliacion_IMSS"] + "</td>" +
+                            "<td class=''>" + data[j]["Nombre_Afiliacion"] + "</td>" +
+                            "<td class=''>" + data[j]["Riesgo_Trabajo"] + "</td>" +
+                            "<td class=''>" + data[j]["ClasesRegPat_id"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye text-primary'  title='Activo'></i>" + "</td>" +
+                            "</tr>";
+                    }
+                }
+                $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
+                $("#" + pilltab).collapse("toggle");
+                setTimeout(function () {
+                    $(".table" + Empresa_id + "").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 100);
+            }
+        });
+    }
+    ////////////////////////////////////////////
+    /////////////  REGIONALES  /////////////////
+    ////////////////////////////////////////////
+    // CARGA TABLA DE EMPRESAS EN REGIONALES
+    LoadRegionales = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-regionales");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        empresa = data[i]["IdEmpresa"];
+                    }
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-2'>" + data[i]['IdEmpresa'] + "</label><label class='col-md-7'>" + data[i]['NombreEmpresa'] + " </label><div class='col-md-3'><div class='badge badge-success btn' onclick='LoadDetalleRegionales(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["IdEmpresa"] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse table-responsive collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
+                }
+                //setTimeout(function () {
+                //    $("#tab-registropatronal").DataTable({
+                //        "language": {
+                //            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                //        }
+                //    });
+                //}, 1000);
+            }
+        });
+    }
+    // CARGA TABLA DETALLE DE CADA EMPRESA CON SUS REGIONALES
+    LoadDetalleRegionales = (pilltab, Empresa_id) => {
+        $.ajax({
+            url: "../Empresas/LoadRegionalesDetalle",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                //console.log(data);
+                document.getElementById(pilltab).innerHTML = "";
+                document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-registros-patronales col-md-12 pb-4'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th class=''> Id </th>" +
+                    "<th class=''> Clave </th>" +
+                    "<th class=''> Descripción </th>" +
+                    "<th class=''> Fecha Alta </th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    //if (data[j]["Estado"] == "0") {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["iIdRegional"] + "</td>" +
+                            "<td class=''>" + data[j]["sClaveRegional"] + "</td>" +
+                            "<td class=''>" + data[j]["sDescripcionRegional"] + "</td>" +
+                            "<td class=''>" + data[j]["sFechaAlta"] + "</td>" +
+                            "</tr>";
+                    //} else {
+                    //    document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                    //        "<td class=''>" + data[j]["IdRegPat"] + "</td>" +
+                    //        "<td class=''>" + data[j]["sClaveRegional"] + "</td>" +
+                    //        "<td class=''>" + data[j]["sDescripcionRegional"] + "</td>" +
+                    //        "<td class=''>" + data[j]["sFechaAlta"] + "</td>" +
+                    //        "</tr>";
+                    //}
+                }
+                $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
+                $("#" + pilltab).collapse("toggle");
+                setTimeout(function () {
+                    $(".table" + Empresa_id + "").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 100);
+            }
+        });
+    }
 });

@@ -672,5 +672,15 @@ namespace Payroll.Models.Beans
         public string Fecha_Alta { get; set; }
        
     }
+    public class DataCentrosCosto
+    {
+        public string IdCentroCosto { get; set; }
+        public string Empresa_id { get; set; }
+        public string NombreEmpresa { get; set; }
+        public string CentroCosto { get; set; }
+        public string Descripcion { get; set; }
+        public string Estado { get; set; }
+        public string Fecha_Alta { get; set; }
+    }
 
 }
