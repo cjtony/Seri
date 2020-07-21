@@ -1,4 +1,4 @@
-﻿$(function () {
+﻿                                                                $(function () {
 
     /// Funcion de progres bar //
     var EnCola = 0;

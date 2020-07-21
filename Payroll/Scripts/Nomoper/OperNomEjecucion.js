@@ -231,7 +231,7 @@
                             PeriodoCal.value = data[0].iPeriodo;
                             /// si tiene calculos la definicion del periodo actual  los muestra  
                             var empresa = 0;
-                            console.log('Empres: ' + empresa + ' periodo: ' + periodo);
+                          
                             FllenaCalculos(periodo, empresa, Tipoperiodocal);
                         }
                         if (data[0].sMensaje == "error") {
@@ -407,7 +407,7 @@
 
                   /// llena tabla de calculo
     FllenaCalculos = (periodo, empresa,Tperiodo) => {   
-
+        $('#jqxLoader').jqxLoader('close');
       
         var empresaid = empresa;      
         
@@ -458,11 +458,13 @@
                             if (dato == "success") {
                                 if (data[0].sEstatusJobs == "En Cola") {
                                     $("#timerNotification").jqxNotification("open");
+                                    $('#jqxLoader').jqxLoader('open');
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
                                 if (data[0].sEstatusJobs == "Procesando") {
                                     $("#timerNotification").jqxNotification("open");
+                                    $('#jqxLoader').jqxLoader('open');
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
@@ -471,7 +473,6 @@
                         },
                     });                     
                 }
-
                 if (dato == "success") {
   
                      for (var i=0; i < data.length; i++) {
@@ -1774,23 +1775,7 @@
             confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
         }).then((acepta) => {
 
-            //  Nombrede.value       = '';
-            // Descripcionde.value  = '';
-            //iAnode.value         = '';
-            //cande.value          = '';
-            //$("html, body").animate({
-            //    scrollTop: $(`#${element.id}`).offset().top - 50
-            //}, 1000);
-            //if (clear == 1) {
-            //    setTimeout(() => {
-            //        element.focus();
-            //        setTimeout(() => { element.value = ""; }, 300);
-            //    }, 1200);
-            //} else {
-            //    setTimeout(() => {
-            //        element.focus();
-            //    }, 1200);
-            //}
+
         });
     };
 
@@ -1807,30 +1792,22 @@
         autoOpen: false, animationOpenDelay: 800, autoClose: true, autoCloseDelay: 3000, template: "info"
 
     });
+    $("#jqxLoader").jqxLoader({ text: "Realizando calculos", width: 160, height: 80 });
     var notificationWidth = 300;
-    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: false, template: "time" });
-    $("#timeOutNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: true, autoClose: false, template: "time" });
-    $("#timerNotification").on("close", function () {
-
-        if ($(".timer").text(seconds) = 1) {
-
-            $("#timeOutNotification").jqxNotification("open");
-
-        }
-
-    });
+    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: true, template: "time" });
+  
    
     var seconds = 60;
     var interval = setInterval(function () {
 
         if (seconds > 1) {
             seconds--;
-            $(".timer").text(seconds);
+         
 
         } else {
             clearInterval(interval);
             $("#timerNotification").jqxNotification("closeLast");
-            $(".timer").text(60);
+            $('#jqxLoader').jqxLoader('close');
             TipodePeridoDroplip = TxbTipoPeriodo.value;
             periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
             separador = " ",
