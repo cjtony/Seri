@@ -112,6 +112,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Usuario_id", keyUser));
+                cmd.Parameters.Add(new SqlParameter("@TipoOpcion", typeOption));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read()) {
                     if (data["Respuesta"].ToString() == "EXISTS") {
@@ -156,13 +157,40 @@ namespace Payroll.Models.Daos
             return flag;
         }
 
+
+        public Boolean sp_Refresca_Datos_Reporte_Nomina(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int keyUser)
+        {
+            Boolean flag = false;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Refresca_Datos_Reporte_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@TipoOpcion", typeOption));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_Id", keyUser));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    flag = true;
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+                flag = false;
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return flag;
+        }
+
         // CURSOR PARA GRUPO DE EMPRESAS
         public Boolean sp_Cursor_Genera_Datos_Reporte_Nomina_Grupo_Empresas(int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int keyUser)
         {
             Boolean flag = false;
             try {
                 this.Conectar();
-                SqlCommand cmd = new SqlCommand("sp_Cursor_Genera_Datos_Reporte_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                SqlCommand cmd = new SqlCommand("sp_Cursor_Genera_Datos_Reporte_Nomina_Grupo_Empresas", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
                 cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_Id", typePeriod));

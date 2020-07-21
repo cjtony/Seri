@@ -88,7 +88,7 @@ namespace Payroll.Controllers
         /* GENERACION DE REPORTES */
 
         [HttpPost]
-        public JsonResult ReportPayroll(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod)
+        public JsonResult ReportPayroll(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int refreshData)
         {
             Boolean flag         = false;
             Boolean ValidDataN   = false;
@@ -103,6 +103,9 @@ namespace Payroll.Controllers
             int rowsDataTable = 0, columnsDataTable = 0;
             try {
                 int keyUser  = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                if (refreshData == 1) {
+                    Boolean refresh = reportDao.sp_Refresca_Datos_Reporte_Nomina(typeOption, keyOptionSel, typePeriod, numberPeriod, yearPeriod, keyUser);
+                }
                 // VALIDAR QUE EXISTAN CALCULOS
                 ValidDataN = reportDao.sp_Comprueba_Existe_Calculos_Nomina(typeOption, keyOptionSel, typePeriod, numberPeriod, yearPeriod);
                 if (ValidDataN) {

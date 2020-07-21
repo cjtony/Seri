@@ -4,42 +4,42 @@
      * Constantes formulario
      */
 
-    const btnClearParamsReports    = document.getElementById('btn-clear-params-reports');
+    const btnClearParamsReports = document.getElementById('btn-clear-params-reports');
     btnClearParamsReports.disabled = true;
 
     //const btnContinueReport  = document.getElementById('btnContinueReport');
-    const typeReportselect   = document.getElementById('typeReportselect');
-    const contentParameters  = document.getElementById('contentParameters');
+    const typeReportselect = document.getElementById('typeReportselect');
+    const contentParameters = document.getElementById('contentParameters');
     const contentBtnGenerate = document.getElementById('contentBtnGenerate');
     const contentGenerateRep = document.getElementById('contentGenerateRep');
 
-    const parameterYear   = `<input type="number" class="form-control form-control-sm" id="paramYear"/>`;
-    const parameterNPer   = `<input type="number" class="form-control form-control-sm" id="paramNper"/>`;
-    const parameterTPer   = '<input type="number" class="form-control form-control-sm" id="paramTper"/>';
-    const parameterDate   = '<input type="date" class="form-control form-control-sm" id="paramDate"/>';
-    const parameterYears  = `<input type="number" class="form-control form-control-sm" id="paramYearS"/>`;
-    const parameterYearE  = `<input type="number" class="form-control form-control-sm" id="paramYearE"/>`;
-    const parameterNReng  = `<input type="number" class="form-control form-control-sm" id="paramNReng"/>`;
-    const parameterTEmpl  = `<input type="text" class="form-control form-control-sm" id="paramTEmpl"/>`;
-    const parameterDateS  = '<input type="date" class="form-control form-control-sm" id="paramDateS"/>';
-    const parameterDateE  = '<input type="date" class="form-control form-control-sm" id="paramDateE"/>';
+    const parameterYear = `<input type="number" class="form-control form-control-sm" id="paramYear"/>`;
+    const parameterNPer = `<input type="number" class="form-control form-control-sm" id="paramNper"/>`;
+    const parameterTPer = '<input type="number" class="form-control form-control-sm" id="paramTper"/>';
+    const parameterDate = '<input type="date" class="form-control form-control-sm" id="paramDate"/>';
+    const parameterYears = `<input type="number" class="form-control form-control-sm" id="paramYearS"/>`;
+    const parameterYearE = `<input type="number" class="form-control form-control-sm" id="paramYearE"/>`;
+    const parameterNReng = `<input type="number" class="form-control form-control-sm" id="paramNReng"/>`;
+    const parameterTEmpl = `<input type="text" class="form-control form-control-sm" id="paramTEmpl"/>`;
+    const parameterDateS = '<input type="date" class="form-control form-control-sm" id="paramDateS"/>';
+    const parameterDateE = '<input type="date" class="form-control form-control-sm" id="paramDateE"/>';
     const parameterPStart = `<input type="number" class="form-control form-control-sm" id="paramPStart"/>`;
-    const parameterPEnd   = `<input type="number" class="form-control form-control-sm" id="paramPEnd"/>`;
+    const parameterPEnd = `<input type="number" class="form-control form-control-sm" id="paramPEnd"/>`;
     const parameterPeriod = `<input type="number" class="form-control form-control-sm" id="paramPeriod"/>`;
     const parameterNPeriods = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
     const parameterNEmploye = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
 
-    const oneRadioBusiness    = document.getElementById('oneRadioBusiness');
-    const groupRadioBusiness  = document.getElementById('groupRadioBusiness');
-    const selectOneBusiness   = document.getElementById('selectOneBusiness');
+    const oneRadioBusiness = document.getElementById('oneRadioBusiness');
+    const groupRadioBusiness = document.getElementById('groupRadioBusiness');
+    const selectOneBusiness = document.getElementById('selectOneBusiness');
     const selectGroupBusiness = document.getElementById('selectGroupBusiness');
 
-    selectOneBusiness.disabled   = true;
+    selectOneBusiness.disabled = true;
     selectGroupBusiness.disabled = true;
-    typeReportselect.disabled    = true;
+    typeReportselect.disabled = true;
 
-    const nameBusinessGroup     = document.getElementById('nameBusinessGroup');
-    const containerBusiness     = document.getElementById('containerBusinessGroup');
+    const nameBusinessGroup = document.getElementById('nameBusinessGroup');
+    const containerBusiness = document.getElementById('containerBusinessGroup');
     const btnCloseBusinessGroup = document.getElementById('btnCloseBusinessGroup');
     const icoCloseBusinessGroup = document.getElementById('icoCloseBusinessGroup');
 
@@ -152,7 +152,7 @@
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
-                } 
+                }
             });
         } catch (error) {
             if (error instanceof RangeError) {
@@ -181,7 +181,7 @@
                     }, success: (data) => {
                         if (data.Bandera === true && data.MensajeError === "none") {
                             const lengthData = data.Datos.length;
-                            let   dataLength = 0;
+                            let dataLength = 0;
                             for (let i = 0; i < data.Datos.length; i++) {
                                 nameBusinessGroup.textContent = data.Datos[i].sNombreGrupo;
                                 containerBusiness.innerHTML += ` <div class="col-md-4 mb-4">
@@ -283,8 +283,8 @@
                 success: (data) => {
                     if (data.Bandera == true && data.MensajeError == "none") {
                         document.getElementById('typeperactnomemp').textContent = data.InfoPeriodo.iTipoPeriodo;
-                        document.getElementById('peractnomemp').textContent     = data.InfoPeriodo.iPeriodo;
-                        document.getElementById('fechaspernomemp').textContent  = data.InfoPeriodo.sFechaInicio + " - " + data.InfoPeriodo.sFechaFinal;
+                        document.getElementById('peractnomemp').textContent = data.InfoPeriodo.iPeriodo;
+                        document.getElementById('fechaspernomemp').textContent = data.InfoPeriodo.sFechaInicio + " - " + data.InfoPeriodo.sFechaFinal;
                         //periodis.value = data.InfoPeriodo.iPeriodo;
                         localStorage.setItem("period", data.InfoPeriodo.iPeriodo);
                     } else {
@@ -313,21 +313,21 @@
             typeReportselect.disabled = false;
         } else {
             typeReportselect.disabled = true;
-            typeReportselect.value    = "0";
+            typeReportselect.value = "0";
             contentBtnGenerate.innerHTML = "";
-            contentParameters.innerHTML  = "";
+            contentParameters.innerHTML = "";
         }
     }
 
     // Funcion que muestra los parametros a insertar dependiendo el tipo de reporte
     fShowParametersRequired = () => {
-        contentParameters.innerHTML  = "";
+        contentParameters.innerHTML = "";
         contentBtnGenerate.innerHTML = "";
         try {
             let btnDisabled = "";
             if (typeReportselect.value != 0) {
                 $("html, body").animate({ scrollTop: $(`#${contentParameters.id}`).offset().top - 50 }, 1000);
-                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS" || typeReportselect.value == "SABANA") {
+                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS") {
                     contentParameters.innerHTML += `
                     <div class="row mt-3 animated fadeInDown">
                         <div class="col-md-4">
@@ -452,6 +452,34 @@
                             </div>
                         </div>
                     `;
+                } else if (typeReportselect.value == "SABANA") {
+                    contentParameters.innerHTML += `
+                    <div class="row mt-3 animated fadeInDown">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label font-labels"> Año </label> ${parameterYear} 
+                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label font-labels"> Numero periodo </label> ${parameterNPer} 
+                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label font-labels"> Tipo periodo </label> ${parameterTPer} 
+                            </div> 
+                        </div>
+                        <div class="col-md-4 offset-4 text-center">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="1" id="paramRDat">
+                              <label class="form-check-label" for="paramRDat">
+                                Refrescar datos
+                              </label>
+                            </div>
+                        </div>
+                    </div>
+                    `;
                 }
                 contentBtnGenerate.innerHTML += `
                     <div class="text-center animated fadeIn delay-1s mt-2 mb-4">
@@ -561,15 +589,15 @@
 
     // Funcion que desabilita los botones
     fDisabledButtonsRep = () => {
-        document.getElementById('txtBtnGR').textContent       = "Generando...";
+        document.getElementById('txtBtnGR').textContent = "Generando...";
         document.getElementById('btnGenerateReport').disabled = true;
         document.getElementById('btnGenerateReport').classList.remove('btn-primary');
         document.getElementById('btnGenerateReport').classList.add('btn-info');
-        selectOneBusiness.disabled   = true;
+        selectOneBusiness.disabled = true;
         selectGroupBusiness.disabled = true;
-        typeReportselect.disabled    = true;
-        oneRadioBusiness.disabled    = true;
-        groupRadioBusiness.disabled  = true;
+        typeReportselect.disabled = true;
+        oneRadioBusiness.disabled = true;
+        groupRadioBusiness.disabled = true;
     }
 
     // Funcion que habilita los botones
@@ -637,6 +665,10 @@
                 const paramYear = document.getElementById('paramYear');
                 const paramNper = document.getElementById('paramNper');
                 const paramTper = document.getElementById('paramTper');
+                let paramRDat = 0;
+                if ($("input[id='paramRDat']:checkbox").is(':checked')) {
+                    paramRDat = 1;
+                }
                 if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
                     if (paramNper.value != "" && paramNper.value > 0) {
                         if (paramTper.value != "" && paramTper.value > 0) {
@@ -644,7 +676,7 @@
                             $.ajax({
                                 url: "../Reportes/ReportPayroll",
                                 type: "POST",
-                                data: { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value) },
+                                data: { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat) },
                                 beforeSend: (evt) => {
                                     fDisabledButtonsRep();
                                 }, success: (data) => {
