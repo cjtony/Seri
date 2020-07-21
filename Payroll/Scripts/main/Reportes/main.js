@@ -327,7 +327,7 @@
             let btnDisabled = "";
             if (typeReportselect.value != 0) {
                 $("html, body").animate({ scrollTop: $(`#${contentParameters.id}`).offset().top - 50 }, 1000);
-                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS") {
+                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS" || typeReportselect.value == "SABANA") {
                     contentParameters.innerHTML += `
                     <div class="row mt-3 animated fadeInDown">
                         <div class="col-md-4">
@@ -427,24 +427,6 @@
                             </div>
                         </div>
                     `;
-                //} else if (typeReportselect.value == "ALTAEMP") {
-                //    contentParameters.innerHTML += `
-                //        <div class="row mt-3 animated fadeInDown">
-                //            <div class="col-md-4 offset-2">
-                //                <div class="form-group">
-                //                    <label class="col-form-label font-labels">Año</label> ${parameterYear}
-                //                </div>
-                //            </div>
-                //            <div class="col-md-4">
-                //                <div class="form-group">
-                //                    <label class="col-form-label font-labels">Periodo</label> ${parameterPeriod}
-                //                </div>
-                //            </div>
-                //        </div>
-                //    `;
-                //    const d = new Date();
-                //    document.getElementById('paramYear').value = d.getFullYear();
-                //    document.getElementById('paramPeriod').value = localStorage.getItem("period");
                 } else if (typeReportselect.value == "ACUM_NOM") {
                     contentParameters.innerHTML += `
                         <div class="row mt-3 animated fadeInDown">
@@ -652,31 +634,50 @@
     fGenerateReportPayroll = (option, keyOption) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
-                const period = localStorage.getItem("period");
-                $.ajax({
-                    url: "../Reportes/ReportPayroll",
-                    type: "POST",
-                    data: { typeOption: option, keyOptionSel: parseInt(keyOption), periodActually: parseInt(period) },
-                    beforeSend: (evt) => {
-                        fDisabledButtonsRep();
-                    }, success: (data) => {
-                        setTimeout(() => {
-                            if (data.Bandera === true && data.MensajeError === "none") {
-                                if (data.Rows > 0) {
-                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
-                                } else {
-                                    fShowContentNoDataReport(contentGenerateRep);
+                const paramYear = document.getElementById('paramYear');
+                const paramNper = document.getElementById('paramNper');
+                const paramTper = document.getElementById('paramTper');
+                if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
+                    if (paramNper.value != "" && paramNper.value > 0) {
+                        if (paramTper.value != "" && paramTper.value > 0) {
+                            const period = localStorage.getItem("period");
+                            $.ajax({
+                                url: "../Reportes/ReportPayroll",
+                                type: "POST",
+                                data: { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value) },
+                                beforeSend: (evt) => {
+                                    fDisabledButtonsRep();
+                                }, success: (data) => {
+                                    setTimeout(() => {
+                                        if (data.Validacion === true) {
+                                            if (data.Bandera === true && data.MensajeError === "none") {
+                                                if (data.Rows > 0) {
+                                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                                } else {
+                                                    fShowContentNoDataReport(contentGenerateRep);
+                                                }
+                                            } else {
+                                                alert('Algo fallo al realizar el reporte');
+                                                location.reload();
+                                            }
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
+                                        fEnabledButtonsRep();
+                                    }, 2000);
+                                }, error: (jqXHR, exception) => {
+                                    fcaptureaerrorsajax(jqXHR, exception);
                                 }
-                            } else {
-                                alert('Algo fallo al realizar el reporte');
-                                location.reload();
-                            }
-                            fEnabledButtonsRep();
-                        }, 2000);
-                    }, error: (jqXHR, exception) => {
-                        fcaptureaerrorsajax(jqXHR, exception);
+                            });
+                        } else {
+                            fShowTypeAlert('Atención', 'Complete el campo Tipo de periodo', 'warning', paramTper, 2);
+                        }
+                    } else {
+                        fShowTypeAlert('Atención', 'Complete el campo Numero de periodo', 'warning', paramNper, 2);
                     }
-                });
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo Año, la longitud debe de ser 4 caracteres', 'warning', paramYear, 2);
+                }
             } else {
                 alert('Accion invalida');
                 location.reload();

@@ -7,6 +7,8 @@
     const navDispersion           = document.getElementById('nav-dispersion');
     const containerDataDeploy     = document.getElementById('container-data-deploy');
     const tableDataDeposits       = document.getElementById('table-data-deposits');
+    const alertDataDeposits       = document.getElementById('alert-data-deposits');
+    const containerBtnsProDepBank = document.getElementById('container-btns-process-deposits-bank');
     const btndesplegartab         = document.getElementById('btn-desplegar-tab');
     const btnretnominaemp         = document.getElementById('btn-ret-nomina-employe');
     const searchemployekeynom     = document.getElementById('searchemployekeynom');
@@ -369,11 +371,11 @@
     }
 
     fToDeployInfoDispersion = () => {
-        btndesplegartab.innerHTML = `
-                            <i class="fas fa-play-circle mr-2"></i> Desplegar `;
+        btndesplegartab.innerHTML = `<i class="fas fa-play-circle mr-2"></i> Desplegar `;
         btndesplegartab.classList.remove('active');
         tableDataDeposits.classList.remove('animated', 'fadeIn');
         tableDataDeposits.innerHTML = '';
+        alertDataDeposits.innerHTML = '';
         try {
             const arrInput = [yeardis, periodis, datedis];
             let validate = 0;
@@ -405,15 +407,24 @@
                     },
                     success: (data) => {
                         btndesplegartab.classList.add('active');
-                        btndesplegartab.innerHTML = `
-                            <i class="fas fa-check-circle mr-2"></i> Desplegado
-                        `;
+                        btndesplegartab.innerHTML = `<i class="fas fa-play mr-2"></i> Desplegar`;
                         btndesplegartab.disabled = false;
                         if (data.BanderaDispersion == true) {
                             if (data.BanderaBancos == true) {
                                 if (data.MensajeError == "none") {
-                                    tableDataDeposits.classList.add('animated', 'fadeIn');
-                                    tableDataDeposits.innerHTML += `
+                                    if (data.DatosDepositos.length > 0) {
+                                        alertDataDeposits.innerHTML += `
+                                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                              <strong> 
+                                                <i class="fas fa-info-circle mr-1"></i> Correcto!
+                                              </strong> La información bancaria ha sido desplegada.
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                        `;
+                                        tableDataDeposits.classList.add('animated', 'fadeIn');
+                                        tableDataDeposits.innerHTML += `
                                         <thead>
                                             <tr>
                                                 <th scope="col">Banco</th>
@@ -424,31 +435,71 @@
                                         </thead>
                                         <tbody id="table-body-data"></tbody>
                                     `;
-                                    for (let i = 0; i < data.DatosDepositos.length; i++) {
-                                        let nomBanco = "";
-                                        for (let j = 0; j < data.DatosBancos.length; j++) {
-                                            if (data.DatosBancos[j].iIdBanco === data.DatosDepositos[i].iIdBanco) {
-                                                nomBanco = "[" + data.DatosBancos[j].sSufijo + "] " + data.DatosBancos[j].sNombreBanco;
+                                        for (let i = 0; i < data.DatosDepositos.length; i++) {
+                                            let nomBanco = "";
+                                            for (let j = 0; j < data.DatosBancos.length; j++) {
+                                                if (data.DatosBancos[j].iIdBanco === data.DatosDepositos[i].iIdBanco) {
+                                                    nomBanco = "[" + data.DatosBancos[j].sSufijo + "] " + data.DatosBancos[j].sNombreBanco;
+                                                }
                                             }
+                                            document.getElementById("table-body-data").innerHTML += `
+                                                <tr>
+                                                    <th scope="row">
+                                                        <i class="fas fa-university mr-2 text-primary"></i>
+                                                        ${data.DatosDepositos[i].iIdBanco}
+                                                    </th>
+                                                    <td>
+                                                        <i class="fas fa-file-alt mr-2 text-primary"></i>
+                                                        ${nomBanco}
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-calculator mr-2 text-primary"></i>
+                                                        ${data.DatosDepositos[i].iDepositos}
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-money-bill mr-2 text-success"></i>
+                                                        $ ${data.DatosDepositos[i].sImporte}
+                                                    </td>
+                                                </tr>
+                                            `;
                                         }
-                                        document.getElementById("table-body-data").innerHTML += `
-                                            <tr>
-                                                <th scope="row"><i class="fas fa-university mr-2 text-primary"></i>${data.DatosDepositos[i].iIdBanco}</th>
-                                                <td><i class="fas fa-file-alt mr-2 text-primary"></i>${nomBanco}</td>
-                                                <td><i class="fas fa-calculator mr-2 text-primary"></i> ${data.DatosDepositos[i].iDepositos}</td>
-                                                <td> <i class="fas fa-money-bill mr-2 text-success"></i> $ ${data.DatosDepositos[i].sImporte}</td>
-                                            </tr>
+                                        containerBtnsProDepBank.innerHTML += `
+                                            <div class="row animated fadeInDown delay-1s mt-4">
+                                                <div class="col-md-6 text-center">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow">
+                                                            <span class="icon text-white">
+                                                                <i class="fas fa-play mr-1"></i>
+                                                                <i class="fas fa-money-check-alt"></i>
+                                                            </span>
+                                                            <span class="text">Procesar Depósitos Interbancarios</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 text-center">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow">
+                                                            <span class="icon text-white">
+                                                                <i class="fas fa-play mr-1"></i>
+                                                                <i class="fas fa-money-bill-wave"></i>
+                                                            </span>
+                                                            <span class="text">Procesar Depósitos de Nomina</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         `;
-                                        console.log("dato", data.DatosDepositos[i]);
-                                     }
+                                    } else {
+                                        fShowTypeAlert('Atención!', 'No se encontraron depositos', 'warning', btndesplegartab, 0);
+                                    }
                                 } else {
-                                    alert('error');
+                                    fShowTypeAlert('Error!', 'Ocurrio un problema con el despliege de información, contacte al area de TI', 'error', btndesplegartab, 0);
                                 }
                             } else {
-                                alert('sin bancos');
+                                fShowTypeAlert('Atención!', 'No hay bancos definidos', 'warning', btndesplegartab, 0);
                             }
                         } else {
-                            alert('sin depositos');
+                            fShowTypeAlert('Atención!', 'No se encontraron depositos', 'warning', btndesplegartab, 0);
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);

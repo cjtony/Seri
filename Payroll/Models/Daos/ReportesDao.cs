@@ -70,17 +70,155 @@ namespace Payroll.Models.Daos
     }
     public class ReportesDao : Conexion
     {
-        
-        public DataTable sp_Datos_Reporte_Nomina(int keyOptionSel, int periodActually)
+
+        public Boolean sp_Comprueba_Existe_Calculos_Nomina(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            Boolean flag = false;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Comprueba_Existe_Calculos_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@TipoOpcion", typeOption.Trim()));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (data["Bandera"].ToString() == "EXISTS") {
+                        flag = true;
+                    } else {
+                        flag = false;
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+                flag = false;
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return flag;
+        }
+
+        public Boolean sp_Consulta_Existe_Reporte_Nomina(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int keyUser)
+        {
+            Boolean flag = false;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Consulta_Existe_Reporte_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@IdPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_id", keyUser));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (data["Respuesta"].ToString() == "EXISTS") {
+                        flag = true;
+                    } else {
+                        flag = false;
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+                flag = false;
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return flag;
+        }
+
+        public Boolean sp_Cursor_Genera_Datos_Reporte_Nomina(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int keyUser)
+        {
+            Boolean flag = false;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Cursor_Genera_Datos_Reporte_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_Id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_Id", keyUser));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    flag = true;
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+                flag = false;
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return flag;
+        }
+
+        // CURSOR PARA GRUPO DE EMPRESAS
+        public Boolean sp_Cursor_Genera_Datos_Reporte_Nomina_Grupo_Empresas(int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int keyUser)
+        {
+            Boolean flag = false;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Cursor_Genera_Datos_Reporte_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_Id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_Id", keyUser));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    flag = true;
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+                flag = false;
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return flag;
+        }
+
+        public DataTable sp_Datos_Reporte_Nomina(string typeOption,int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int keyUser)
         {
             DataTable dataTable = new DataTable();
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
-                cmd.Parameters.Add(new SqlParameter("@Periodo", periodActually));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_id", keyUser));
                 SqlDataAdapter dataAdapter = new SqlDataAdapter();
                 dataAdapter.SelectCommand  = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
+        public DataTable sp_Datos_Reporte_Nomina_Grupo_Empresas(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod, int keyUser)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Nomina_Grupo_Empresas", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_id", keyUser));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
                 dataAdapter.Fill(dataTable);
                 cmd.Parameters.Clear(); cmd.Dispose();
             } catch (Exception exc) {
