@@ -265,11 +265,15 @@
 
         });
     }
-    //LLENADO DE EMPRESAS EN VISTA EMPLEADO
+    ////////////////////////////////////////////
+    ////////////     EMPLEADO     //////////////
+    ////////////////////////////////////////////
+    //LLENADO DE EMPRESAS CON NUEMRO DE EMPLEADOS EN VISTA EMPLEADOS
     LoadBodyCards = () => {
         $.ajax({
             url: "../Catalogos/LoadEmpresasNEmpleados",
             type: "POST",
+            cache: false,
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
@@ -279,7 +283,7 @@
                     tab.innerHTML += "<div class='col-md-12 row'>"
                         //+ "<div class=' p-0 row'>"
                         + "<small class='col-md-8'>"+ data[i]["Empresa_id"] + " " + data[i]["NombreEmpresa"] +"</small>"
-                        + "<small class=''><span class='badge badge-primary'><i class='fas fa-users'></i>&nbsp;&nbsp;&nbsp;" + data[i]["No"] + "</span></small>"
+                        + "<small class='col-md-4'><span class='badge badge-primary col-md-12'><i class='fas fa-users'></i>&nbsp;" + data[i]["No"] + "</span></small>"
                         //+ "</div>"
                         + "</div>";
                 }
@@ -308,12 +312,12 @@
         var txt = $("#inSearch").val();
         var Empresa_id = $("#inEmpresa").val();
         if ($("#inSearch").val() != "") {
-            var txtSearch = { "txtSearch": txt, "Empresa_id": Empresa_id };
+            //var txtSearch = { "txtSearch": txt, "Empresa_id": Empresa_id };
             $.ajax({
                 url: "../Empleados/SearchEmpleadosM",
                 type: "POST",
                 cache: false,
-                data: JSON.stringify(txtSearch),
+                data: JSON.stringify({ "txtSearch": txt, "Empresa_id": Empresa_id }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
@@ -321,7 +325,7 @@
                     $("#result").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
-                            $("#result").append("<button class='text-left list-group-item list-group-item-action font-labels' onclick='MostrarDataEmpleado("+ Empresa_id +","+ data[i]["IdEmpleado"] + ")'><i class='far fa-user-circle text-primary'></i> " + data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "<br><small><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + " - " + data[i]["DescripcionPuesto"] + "</small></button>");
+                            $("#result").append("<button type='button' class='text-left list-group-item list-group-item-action font-labels' onclick='MostrarDataEmpleado("+ Empresa_id +","+ data[i]["IdEmpleado"] + ")'><i class='far fa-user-circle text-primary'></i> " + data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "<br><small><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + " - " + data[i]["DescripcionPuesto"] + "</small></button>");
                         }
                     }
                     else {
@@ -338,8 +342,8 @@
         $.ajax({
             url: "../Empleados/SearchDataEmpleado",
             type: "POST",
-            cache: "false",
-            data: JSON.stringify({Empresa_id:Empresa_id,Empleado_id:Empleado_id}),
+            cache: false,
+            data: JSON.stringify({ Empresa_id: Empresa_id, Empleado_id: Empleado_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data.length);
@@ -348,11 +352,25 @@
                     var j = i + 1;
                     $(".lbl-" + j).val(data[i]);
                 }
-                $(".collapseDataEmp").collapse("show");
+                //$(".collapseDataEmp").collapse("show");
                 $("#modalBusquedaEmpleado").modal("hide");
             }
         });
     }
+    $(".tabs").on("click", function () {
+        if ($(".lbl-1").val() == "") {
+            
+            Swal.fire({
+                icon: 'warning',
+                title: 'Aviso!',
+                text: 'Seleccione un empleado para continuar.',
+                timer: 1000
+            });
+        }
+    });
+    ////////////////////////////////////////////
+    ////////////     PUESTOS     ///////////////
+    ////////////////////////////////////////////
     //CARGA TABLA DE EMPRESAS Y NUMERO DE PUESTOS
     LoadTabPuestos = () => {
         $.ajax({
@@ -481,7 +499,9 @@
         exportCSVFile(headers, data, 'Lista de Puestos');
 
     });
-
+    ////////////////////////////////////////////
+    ////////     GRUPOS EMPRESAS     ///////////
+    ////////////////////////////////////////////
     //LLENA GRUPOS EMPRESAS HEADER
     LoadAcordeonGrupos = () => {
         $.ajax({
@@ -493,17 +513,19 @@
                 var acordeon = document.getElementById("accordionGruposEmpresas");
                 acordeon.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
+
                     acordeon.innerHTML += ""
-                        + "<div class='card'>"
-                        + "<div class='card-header' id='heading" + data[i][0] +"'>"
-                        + "<h2 class='mb-0'>"
-                        + "<button class='btn btn-link btn-block d-flex justify-content-between aling-items-center' onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] +"\",\"ul"+data[i][0]+"\",\"collapse"+data[i][0]+"\")' type='button'>"
-                        + "" + data[i][1] + ""
-                        + "</button>"
-                        + "</h2>"
+                        + "<div class='card border-0 pb-1 my-1 font-labels'>"
+                        + "<div class='card-header bg-white btn btn-light font-labels btn-icon-split col-md-12 text-left p-0'  onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] + "\",\"ul" + data[i][0] + "\",\"collapse" + data[i][0] +"\")' id='heading" + data[i][0] +"'>"
+                        //+ "<h2 class='mb-0'>"
+                        //+ "<button class='btn p-0' type='button'>"
+                        + "<span class='icon'><i class='fas fa-eye text-info'></i></span>"
+                        + "<span class='text col '>" + data[i][1] + "</span>"
+                        //+ "</button>"
+                        //+ "</h2>"
                         + "</div>"
-                        + "<div id='collapse" + data[i][0] + "' class='collapse' aria-labelledby='heading" + data[i][0] +"' data-parent='#accordionGruposEmpresas'>"
-                        + "<ul id='ul"+data[i][0]+"' class='list-group list-group-flush'>"
+                        + "<div id='collapse" + data[i][0] + "' class='collapse p-0' aria-labelledby='heading" + data[i][0] +"' data-parent='#accordionGruposEmpresas'>"
+                        + "<ul id='ul" + data[i][0] + "' class='list-group list-group-flush border-top-0'>"
                         + "</ul>"
                         + "</div>"
                         + "</div >";
@@ -523,7 +545,7 @@
                 var lista = document.getElementById(ul)
                 lista.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    lista.innerHTML += "<li class='list-group-item list-group-item-secondary'>" + data[i][0] + " - " + data[i][1] + "</li>";
+                    lista.innerHTML += "<li class='list-group-item '>" + data[i][0] + " - " + data[i][1] + "</li>";
                 }
                 $("#" + collapse).collapse("toggle");
             }
@@ -621,7 +643,6 @@
             }
         });
     }
-
     ////////////////////////////////////////////
     ////////  REGISTROS PATRONALES  ////////////
     ////////////////////////////////////////////
@@ -799,6 +820,40 @@
                         }
                     });
                 }, 100);
+            }
+        });
+    }
+    ////////////////////////////////////////////
+    /////////////  SUCURSALES  /////////////////
+    ////////////////////////////////////////////
+    // CARGA SUCURSALES EN VISTA SUCURSALES
+    LoadTabSucursales = () => {
+        $.ajax({
+            url: "../Empresas/LoadSucursales",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var tab = document.getElementById("bodytab-sucursales");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td>" + data[i]["iIdSucursal"] + "</td>" +
+                        "<td>" + data[i]["sClaveSucursal"] + "</td>" +
+                        "<td>" + data[i]["sDescripcionSucursal"] + "</td>" +
+                        "<td>" + data[i]["sFechaAlta"] + "</td>" +
+                        "</tr >";
+                }
+                setTimeout(function () {
+                    $("#tab-sucursales").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 1000);
             }
         });
     }

@@ -55,7 +55,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_Templeado_Retrieve_DatosEmpleado(int Empresa_id, int Empleado_id)
+        public List<string> sp_Templeado_Retrieve_DatosEmpleado(int Empresa_id, int Empleado_id, int Perfil_id)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -65,12 +65,14 @@ namespace Payroll.Models.Daos
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPerfil_id", Perfil_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
             {
                 while (data.Read())
                 {
+                    //DATOS GENERALES
                     list.Add(data["Empleado_id"].ToString());
                     list.Add(data["Nombre_Empleado"].ToString());
                     list.Add(data["Apellido_Paterno_Empleado"].ToString());
@@ -92,10 +94,39 @@ namespace Payroll.Models.Daos
                     list.Add(data["Correo_Electronico"].ToString());
                     list.Add(data["Fecha_Matrimonio"].ToString());
                     list.Add(data["Tipo_Sangre"].ToString());
-                    list.Add(data["Fecha_Alta"].ToString());
-                    list.Add(data["CURP"].ToString());
+                    list.Add(data["Fecha_Alta_Emp"].ToString());
+                    //IMSS
+                    list.Add(data["Effdt_imss"].ToString());
                     list.Add(data["RegistroImss"].ToString());
                     list.Add(data["RFC"].ToString());
+                    list.Add(data["CURP"].ToString());
+                    list.Add(data["NivelEstudio"].ToString());
+                    list.Add(data["NivelSocioeconomico"].ToString());
+                    list.Add(data["Fecha_Alta_imss"].ToString());
+                    list.Add(data["IdNomina"].ToString());
+                    list.Add(data["Effdt_Nom"].ToString());
+                    list.Add(data["Tipo_Periodo"].ToString());
+                    list.Add(data["SalarioMensual"].ToString());
+                    list.Add(data["TipoEmpleado"].ToString());
+                    list.Add(data["NivelEmpleado"].ToString());
+                    list.Add(data["TipoJornada"].ToString());
+                    list.Add(data["TipoContrato"].ToString());
+                    list.Add(data["TipoContratacion"].ToString());
+                    list.Add(data["MotivoIncremento"].ToString());
+                    list.Add(data["FechaIngreso"].ToString());
+                    list.Add(data["FechaAntiguedad"].ToString());
+                    list.Add(data["VencimientoContrato"].ToString());
+                    list.Add(data["TipoPago"].ToString());
+                    list.Add(data["Banco"].ToString());
+                    list.Add(data["Cta_Cheques"].ToString());
+                    list.Add(data["Fecha_Alta_Nom"].ToString());
+                    list.Add(data["Ult_sdi"].ToString());
+                    list.Add(data["PosicionCodigo"].ToString());
+                    list.Add(data["NombreLocalidad"].ToString());
+                    list.Add(data["CodDepartamento"].ToString());
+                    list.Add(data["Afiliacion_IMSS"].ToString());
+                    list.Add(data["NomPuesto"].ToString());
+                    list.Add(data["ReportaA"].ToString());
                 }
             }
             else
@@ -287,7 +318,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<CreditosBean> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, int SeguroVivienda, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
+        public List<string> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, int SeguroVivienda, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
         {
             if (FechaBaja == null)
             {
@@ -297,7 +328,7 @@ namespace Payroll.Models.Daos
             {
                 FechaReinicio = "";
             }
-            List<CreditosBean> list = new List<CreditosBean>();
+            List<string> list = new List<string>();
             this.Conectar();
             SqlCommand cmd = new SqlCommand("sp_TCreditos_Insert_Credito", this.conexion)
             {
@@ -315,7 +346,18 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", FechaReinicio));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
-
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
             data.Close();
 
             return list;
@@ -817,6 +859,35 @@ namespace Payroll.Models.Daos
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlIncidencia_id", Incidencias_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlIncidenciaP_id", IncidenciaP_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
+        public List<string> sp_TCreditos_delete_Credito(int Empresa_id, int Empleado_id, int Credito_id)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TCreditos_delete_Credito", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCredito_id", Credito_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)

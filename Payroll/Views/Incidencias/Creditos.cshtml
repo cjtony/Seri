@@ -9,11 +9,12 @@
                         <label for="">Tipo de descuento</label>
                         <select class="form-control font-labels custom-select" id="inTipoDescuento" name="inMotivoAusentismo" required>
                             <option value="">Selecciona</option>
-                            <option value="Cueota Fija">Cuota Fija</option>
+                            <option value="Cuota Fija">Cuota Fija</option>
                             <option value="Porcentaje">Porcentaje</option>
                             <option value="N veces el Sal. Minimo">N veces el Sal. Minimo</option>
                             <option value="Cuota fija sobre UMA">Cuota fija sobre UMA</option>
                         </select>
+                        <small class="font-labelspt-1 text-black-50"> **Para cualquier opción seleccionada se tendra que calcular el monto e ingresarlo en el apartado de descuento. </small>
                     </div>
                 </div>
                 <div class="form-group">
@@ -35,13 +36,8 @@
                 </div>
                 <div class="form-group row">
                     <div class="form-group col-md-6">
-                        <label for="inFechaAprovacionCredito">Fecha de aprovación del crédito</label>
-                        <div class="input-group">
-                            <input type="date" name="inFechaAprovacionCredito" id="inFechaAprovacionCredito" class="form-control font-labels" required />
-                            <div class="input-group-prepend">
-                                <div class="input-group-text " id=""><span class="far fa-calendar-alt"></span></div>
-                            </div>
-                        </div>
+                        <label for="inFechaAprovacionCredito">Fecha de aprobación del crédito</label>
+                        <input type="date" name="inFechaAprovacionCredito" id="inFechaAprovacionCredito" class="form-control font-labels" required />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inDescontar">Descontar</label>
@@ -57,21 +53,11 @@
                 <div class="form-group row">
                     <div class="form-group col-md-6">
                         <label for="inFechaAusentismo">Fecha de baja del crédito</label>
-                        <div class="input-group">
-                            <input type="date" name="inFechaBajaCredito" id="inFechaBajaCredito" value="" class="form-control font-labels" required />
-                            <div class="input-group-prepend">
-                                <div class="input-group-text " id=""><span class="far fa-calendar-alt"></span></div>
-                            </div>
-                        </div>
+                        <input type="date" name="inFechaBajaCredito" id="inFechaBajaCredito" value="" class="form-control font-labels" required />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inFechaAusentismo">Fecha de reinicio del crédito</label>
-                        <div class="input-group">
-                            <input type="date" name="inFechaReinicioCredito" id="inFechaReinicioCredito" value="" class="form-control font-labels" required />
-                            <div class="input-group-prepend">
-                                <div class="input-group-text " id=""><span class="far fa-calendar-alt"></span></div>
-                            </div>
-                        </div>
+                        <input type="date" name="inFechaReinicioCredito" id="inFechaReinicioCredito" value="" class="form-control font-labels" />
                     </div>
                     <div class="form-group col-md-12">
                         <div class="btn btn-primary font-labels col-md-12" id="btnSaveCredito">Registrar credito <i class="far fa-edit"></i></div>

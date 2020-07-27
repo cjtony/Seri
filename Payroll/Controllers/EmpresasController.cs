@@ -46,7 +46,6 @@ namespace Payroll.Controllers
         {
             @Session["Periodo_id"] = IdPeriodo;
         }
-
         public PartialViewResult Datos_Generales()
         {
             if (Session["iIdUsuario"] == null)
@@ -199,8 +198,8 @@ namespace Payroll.Controllers
             List<string> RP = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             RP = Dao.sp_Registro_Patronal_Insert_Registros_Patronales(Empresa_id, Afiliacion_IMSS, Nombre_Afiliacion, Riesgo_Trabajo, ClasesRegPat, Status);
-            var data = new { data = RP };
-            return Json(data);
+            //var data = new { data = RP };
+            return Json(RP);
         }
         [HttpPost]
         public JsonResult LoadRegionalesEmp()
@@ -241,7 +240,7 @@ namespace Payroll.Controllers
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             RP = Dao.sp_TLocalidades_Insert_Localidades(int.Parse(Session["IdEmpresa"].ToString()), Descripcion, TasaIva, Afiliacion_IMSS, Regional_id, ZonaEconomica_id, Sucursal_id, Estado_id);
             var data = new { data = RP };
-            return Json(data);
+            return Json(RP);
         }
         [HttpPost]
         public JsonResult UpdateGrupo(string Empresa_id,string Grupo_id)
@@ -261,6 +260,14 @@ namespace Payroll.Controllers
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             Bean = Dao.sp_Registro_Patronal_Update_Registros_Patronales(Id, Afiliacion_IMSS,NombreAfiliacion, Empresa_id, Riesgo_Trabajo, ClasesRegPat, Cancelado);
             return Json(Bean);
+        }
+        [HttpPost]
+        public JsonResult LoadSucursalesSearch(string txt )
+        {
+            List<SucursalesBean> RP = new List<SucursalesBean>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            RP = Dao.sp_CSucursales_Retrieve_Sucursales();
+            return Json(RP);
         }
     }
 }

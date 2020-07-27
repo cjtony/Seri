@@ -1252,5 +1252,42 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
+        // FUNCION PARA TRAER DE Cgeneral LOS TIPOS DE DESCUENTO
+        public List<TipoDescuentoBean> sp_TipoDescuento_Retrieve_TipoDescuentos()
+        {
+            List<TipoDescuentoBean> Bean = new List<TipoDescuentoBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TipoDescuento_Retrieve_TipoDescuentos", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                //cmd.Parameters.Add(new SqlParameter("@ctrlCatalogoId", catalogid));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TipoDescuentoBean list = new TipoDescuentoBean();
+                        list.Id = data["id"].ToString();
+                        list.Nombre = data["Valor"].ToString();
+                        list.Descripcion = data["Descripcion"].ToString();
+                        Bean.Add(list);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "CatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return Bean;
+        }
     }
 }

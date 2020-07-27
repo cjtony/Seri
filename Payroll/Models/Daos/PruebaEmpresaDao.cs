@@ -557,7 +557,9 @@ namespace Payroll.Models.Daos
                     {
                         iIdSucursal = int.Parse(data["IdSucursal"].ToString()),
                         sDescripcionSucursal = data["Descripcion_Sucursal"].ToString(),
-                        sClaveSucursal = data["Clave_Sucursal"].ToString()
+                        sClaveSucursal = data["Clave_Sucursal"].ToString(),
+                        sFechaAlta = data["Fecha_Alta"].ToString()
+
                     };
                     lista.Add(list);
                 }

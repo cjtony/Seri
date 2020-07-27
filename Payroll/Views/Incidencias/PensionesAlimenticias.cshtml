@@ -26,25 +26,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group imss col-md-6">
-                        <label for="inBanco">Banco</label>
-                        <select class="form-control font-labels custom-select" name="inBanco" id="inBanco">
-                            <option value="0">No aplica</option>
-                            <option value="1">Percepciones sujetas a inpuestos</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inSucursal">Sucursal</label>
-                        <div class="input-group">
-                            <input type="text" name="inSucursal" id="inSucursal" class="form-control font-labels" />
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inTVales">Tarjeta vales de despensa</label>
-                        <div class="input-group">
-                            <input type="text" name="inTVales" id="inTVales" class="form-control font-labels" />
-                        </div>
-                    </div>
                     <div class="form-group col-md-6">
                         <label for="inNOficio">No. Oficio</label>
                         <input type="text" name="inNOficio" id="inNOficio" class="form-control" placeholder="No de Oficio" required />
@@ -58,7 +39,7 @@
                         <label for="inTCalculo">Tipo de calculo </label>
                         <select class="form-control font-labels custom-select" name="inTCalculo" id="inTCalculo" required>
                             <option value="">Selecciona</option>
-                            <option value="1">Percepciones sujetas a inpuestos</option>
+                            <option value="1">Percepciones sujetas a impuestos</option>
                         </select>
                     </div>
                     <div class="form-group col-md-12"></div>
@@ -80,7 +61,7 @@
                     </div>
                     <div class="form-group imss col-md-6">
                         <label for="inFBaja">Fecha de baja</label>
-                        <input type="date" name="inFBaja" id="inFBaja" class="form-control" placeholder="Escriba un comentario" />
+                        <input type="date" name="inFBaja" id="inFBaja" class="form-control" placeholder="Escriba un comentario" required/>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inBeneficiaria">Beneficiaria</label>
@@ -88,10 +69,38 @@
                             <input type="text" name="inBeneficiaria" id="inBeneficiaria" class="form-control font-labels" placeholder="Escriba el nombre del beneficiario" />
                         </div>
                     </div>
-                    <div class="d-flex form-group col-md-12">
-                        <button type="button" class="btn btn-primary col-md-4 font-labels btn-sm form-control" id="btn-save-pension"><i class="far fa-edit"></i> Registrar</button>
-                        <button type="reset" class="btn btn-warning col-md-4 font-labels btn-sm"><i class="fas fa-paint-brush"></i> Limpiar</button>
-                        <button type="button" class="btn btn-success col-md-4 font-labels btn-sm"><i class="fas fa-exchange-alt"></i> Actualizar</button>
+                    <div class="form-group imss col-md-6">
+                        <label for="inBanco">Banco</label>
+                        <select class="form-control font-labels custom-select" name="inBanco" id="inBanco">
+                            <option value="0">No aplica</option>
+                            <option value="1">Percepciones sujetas a inpuestos</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inSucursal">Sucursal</label>
+                        <div class="input-group">
+                            <input type="text" name="inSucursal" id="inSucursal" class="form-control font-labels" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inTVales">Tarjeta vales de despensa</label>
+                        <div class="input-group">
+                            <input type="text" name="inTVales" id="inTVales" class="form-control font-labels" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 text-right">
+                        <button type="button" class="btn btn-primary btn-icon-split font-labels btn-sm " id="btn-save-pension">
+                            <span class="icon"><i class="far fa-edit"></i></span>
+                            <span class="text"> Registrar </span>
+                        </button>
+                        <button type="reset" class="btn btn-warning btn-icon-split invisible font-labels btn-sm">
+                            <span class="icon"><i class="fas fa-paint-brush"></i></span>
+                            <span class="text"> Limpiar </span>
+                        </button>
+                        <button type="button" class="btn btn-success btn-icon-split invisible font-labels btn-sm">
+                            <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                            <span class="text"> Actualizar </span>
+                        </button>
                     </div>
                 </div>
             </form>

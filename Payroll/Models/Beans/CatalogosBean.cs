@@ -682,5 +682,10 @@ namespace Payroll.Models.Beans
         public string Estado { get; set; }
         public string Fecha_Alta { get; set; }
     }
-
+    public class TipoDescuentoBean
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+    }
 }

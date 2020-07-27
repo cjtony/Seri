@@ -48,7 +48,6 @@
             }
         });
 
-
         $.ajax({
             url: "../Empresas/LoadClasesRP",
             type: "POST",
@@ -114,6 +113,7 @@
 
                     //document.getElementById("btnUpdateRP").classList.add("invisible");
                 }
+                document.getElementById("frmRegistrosPatronales").classList.remove("was-validated");
             }
         });
         document.getElementById("btnGuardarRP").classList.remove("invisible");
@@ -157,8 +157,24 @@
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
                     console.log(data);
-                    tabRP.ajax.reload();
-                    form.reset();
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Aviso!',
+                            text: data[1]
+                        });
+                    } else if (data[0] == '1') {
+                        tabRP.ajax.reload();
+                        form.reset();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Hecho!',
+                            text: data[1],
+                            timer: 1000
+                        });
+                    }
+                   
+                    
                     
                 }
             });
@@ -279,21 +295,22 @@
                 data: JSON.stringify(datos),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data[0]);
                     if (data[0] == "1") {
                         tabLoc.ajax.reload();
+                        form2.reset();
+                        $("#inZoInLocalidad").html("");
                         Swal.fire({
                             icon: 'success',
                             title: 'Correcto!',
-                            text: '' + data[1]
-                            
+                            html: '<p>' + data[1] + "<br/><small>El registro se mostrara al final de la tabla.</small>",
+                            timer: 2000
                         });
                     } else if (data[1] == "0") {
                         Swal.fire({
-                            icon: 'error',
-                            title: '',
+                            icon: 'warning',
+                            title: 'Aviso!',
                             text: '' + data[1]
-                        
+                            
                         });
                     }
                     
@@ -377,27 +394,27 @@
                         clase.innerHTML += `<option value='${data[i].iIdRegional}'>${data[i].iIdRegional + " - " + data[i].sDescripcionRegional}</option>`;
                     }
                 }
-                
+                    
                 
             }
         });
         //Sucursales
-        $.ajax({
-            url: "../Empresas/LoadSucursales",
-            type: "POST",
-            data: {},
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                //console.log(data);
-                var sucursales = document.getElementById("inZoInLocalidad");
-                sucursales.innerHTML = '<option>Selecciona</option>';
-                for (i = 0; i < data.length; i++) {
+        //$.ajax({
+        //    url: "../Empresas/LoadSucursales",
+        //    type: "POST",
+        //    data: {},
+        //    contentType: "application/json; charset=utf-8",
+        //    success: (data) => {
+        //        //console.log(data);
+        //        var sucursales = document.getElementById("inZoInLocalidad");
+        //        sucursales.innerHTML = "<option value=''> Selecciona </option>";
+        //        for (i = 0; i < data.length; i++) {
 
-                    sucursales.innerHTML += `<option value="${data[i].iIdSucursal}">${data[i].sClaveSucursal + " - " + data[i].sDescripcionSucursal}</option>`;
+        //            sucursales.innerHTML += `<option value="${data[i].iIdSucursal}">${data[i].sClaveSucursal + " - " + data[i].sDescripcionSucursal}</option>`;
 
-                }
-            }
-        });
+        //        }
+        //    }
+        //});
         //Zona Economica
         $.ajax({
             url: "../Empresas/LoadZonaEconomica",
@@ -407,7 +424,7 @@
             success: (data) => {
                 
                 var sucursales = document.getElementById("inZoEcLocalidad");
-                sucursales.innerHTML = '<option>Selecciona</option>';
+                sucursales.innerHTML = '<option value=""> Selecciona </option>';
                 for (i = 0; i < data.length; i++) {
 
                     sucursales.innerHTML += `<option value="${data[i].iIdZonaEconomica}">${data[i].iIdZonaEconomica + " - " + data[i].sDescripcion}</option>`;
@@ -424,7 +441,7 @@
             success: (data) => {
                 
                 var estados = document.getElementById("inEstLocalidad");
-                estados.innerHTML = '<option>Selecciona</option>';
+                estados.innerHTML = '<option value=""> Selecciona </option>';
                 for (i = 0; i < data.length; i++) {
 
                     estados.innerHTML += `<option value="${data[i].iId}">${data[i].sValor}</option>`;
@@ -627,7 +644,7 @@
                     } else {
                         //console.log(data);
                         $("#modal-nuevo-bancoempresa").modal("hide");
-                        $("div.collapse.show").collapse("hide");
+                        loadbancosempresa("collapsebancos", document.getElementById("newempresa").value);
                         Swal.fire({
                             title: 'Completo!',
                             text: data[1],
@@ -808,4 +825,48 @@
 
 
     }
+
+    // CLICK AL BOTON BUSCAR SUCURSAL 
+    $("#btnbuscarsucursal").on("click", function () {
+        $("#modalbuscarsucursal").modal("show");
+    });
+    //Busqueda de sucursales
+    $("#inputsearchsucursal").on("keyup", function () {
+        $("#inputsearchsucursal").empty();
+        var txt = $("#inputsearchsucursal").val();
+        if ($("#inputsearchsucursal").val() != "") {
+            //var txtSearch = { "txtSearch": txt };
+            $.ajax({
+                url: "../SearchDataCat/SearchOffices",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify({ wordsearch: txt}),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+
+                    //console.log(data[0]["iFlag"]);
+                    $("#resultSearchSucursales").empty();
+                    if (data.length != 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("#resultSearchSucursales").append("<div class='list-group-item list-group-item-action btnListEmpleados shadow-sm font-labels  font-weight-bold' onclick='seleccionaSuc(" + data[i]["iIdSucursal"] + ",\"" + data[i]["sClaveSucursal"] + " : " + data[i]["sDescripcionSucursal"] + "\")'> <i class='far fa-user-circle text-primary'></i> " + data[i]["sClaveSucursal"] + " : " + data[i]["sDescripcionSucursal"] + "</div>");
+                        }
+                    }
+                    else {
+                        $("#resultSearchSucursales").append("<button type='button' class='list-group-item list-group-item-action btnListEmpleados font-labels'  >" + "No se encontraron Sucursales" + "<br><small class='text-muted'>" + "Intente buscando con otra clave o nombre de sucursal" + "</small> </button>");
+                    }
+                }
+            });
+        } else {
+            $("#resultSearchSucursales").empty();
+        }
+    });
+    seleccionaSuc = (Id,Descripcion) => {
+        $("#inZoInLocalidad").html("<option value='" + Id + "'>" + Descripcion + "</option>");
+        $("#modalbuscarsucursal").modal("hide");
+    }
+    $('#modalbuscarsucursal').on('hidden.bs.modal', function (e) {
+        $("#inputsearchsucursal").val("");
+        $("#resultSearchSucursales").html("");
+    })
 });

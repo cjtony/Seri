@@ -1,8 +1,8 @@
-﻿<div class="container bg-white pt-3 font-labels">
-    <div class="font-weight-bold">Localidades</div>
+﻿<div class="container rounded shadow-lg bg-white pt-3 font-labels">
+    <div class="font-weight-bold h6 my-3">Localidades</div>
     <div class="dropdown-divider"></div>
     <div class="form-row">
-        <div class="col-md-12 form-group order-12">
+        <div class="col-md-12 form-group order-12 rounded p-4  border-left-primary border-right-primary ">
             <div class="dropdown-divider pb-2"></div>
             <table class="table table-sm table-striped" id="tabLocalidades">
                 <thead class="">
@@ -23,7 +23,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-12 form-group">
+        <div class="col-md-12 form-group rounded border-left-primary border-right-primary">
             <form id="frmLocalidades" name="frmLocalidades" class=" bg-light p-4 rounded">
                 <div id="lbltitlelocalidades" class="font-weight-bold pt-1 col-md-12 text-center">Nuevo</div>
                 <div class="dropdown-divider pb-2"></div>
@@ -42,8 +42,18 @@
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inZonaImpLocalidad">Sucursal</label>
-                        <select class="form-control font-labels custom-select" name="inZoInLocalidad" id="inZoInLocalidad" required></select>
+                        <label class="col-md-12" for="inZonaImpLocalidad">Sucursal</label>
+                        <div class="input-group md-3">
+                            <select class="form-control font-labels custom-select" name="inZoInLocalidad" id="inZoInLocalidad" required></select>
+                            <div class="input-group-append">
+                                <div class="btn btn-info btn-sm btn-icon-split" id="btnbuscarsucursal">
+                                    <span class="icon"><i class="fas fa-search"></i></span>
+                                    <span class="text"> Buscar </span>
+                                </div>
+                            </div>
+                        </div>
+
+                            
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inRegionalLocalidad">Regional</label>
@@ -69,45 +79,68 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalbuscarsucursal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Selecciona la sucursal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group col-md-12">
+                    <label> Escribe el nombre o la clave de la sucursal </label>
+                    <input type="text" id="inputsearchsucursal" class="form-control" />
+                </div>
+                <div id="resultSearchSucursales" name="resultSearchSucursales" class="list-group col-md-12"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Cerrar </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/main/Empre.js"></script>
 <script>
-    //Funcion para validar los puntos decimales 
-    function filterFloat(evt,input){
-    // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
-    var key = window.Event ? evt.which : evt.keyCode;    
-    var chark = String.fromCharCode(key);
-    var tempValue = input.value+chark;
-    if(key >= 48 && key <= 57){
-        if(filter(tempValue)=== false){
-            return false;
-        }else{       
-            return true;
-        }
-    }else{
-          if(key == 8 || key == 13 || key == 0) {     
-              return true;              
-          }else if(key == 46){
-                if(filter(tempValue)=== false){
+    //Funcion para validar los puntos decimales
+    function filterFloat(evt, input) {
+        // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
+        var key = window.Event ? evt.which : evt.keyCode;
+        var chark = String.fromCharCode(key);
+        var tempValue = input.value + chark;
+        if (key >= 48 && key <= 57) {
+            if (filter(tempValue) === false) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if (key == 8 || key == 13 || key == 0) {
+                return true;
+            } else if (key == 46) {
+                if (filter(tempValue) === false) {
                     return false;
-                }else{       
+                } else {
                     return true;
                 }
-          }else{
-              return false;
-          }
+            } else {
+                return false;
+            }
+        }
     }
-}
-function filter(__val__){
-    var preg = /^([0-9]+\.?[0-9]{0,8})$/; 
-    if(preg.test(__val__) === true){
-        return true;
-    }else{
-       return false;
-    }
+    function filter(__val__) {
+        var preg = /^([0-9]+\.?[0-9]{0,8})$/;
+        if (preg.test(__val__) === true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     $(function () {
         SelectLoaderFromLocalidades();
     });
-    
+
 </script>
-<script src="~/Scripts/main/Empre.js"></script>
