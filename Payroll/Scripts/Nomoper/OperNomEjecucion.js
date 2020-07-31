@@ -739,6 +739,7 @@
         btnFloEjecutar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'visible';
     };
+
     navEjecuciontab.addEventListener('click', Ftabopcion1);
     navVisCalculotab.addEventListener('click', Ftabopcion2);
     navNomCetab.addEventListener('click', Ftabopcion3);

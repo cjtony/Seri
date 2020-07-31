@@ -48,7 +48,7 @@ namespace Payroll.Models.Beans
     {
         public int iId { get; set; }
         public string sValor { get; set; }
-
+       
         public string sMensaje { get; set; }
     }
 
@@ -294,6 +294,7 @@ namespace Payroll.Models.Beans
         public string Rfcprov { get; set; }
         public string sNoCertificado { get; set; }
         public string Fechatimbrado { get; set; }
+        public string Fecha { get; set; }
         public string sMensaje { get; set; }
     }
     public class ElementoNominaBean
@@ -319,4 +320,14 @@ namespace Payroll.Models.Beans
 
     }
 
+    public class ControlEjecucionBean { 
+      public int iIdContro { get; set; }
+      public int iIdempresa { get; set; }
+      public int iInactivo { get; set; }
+      public int sfecha { get; set; } 
+    
+    }
+
+
+    
 }

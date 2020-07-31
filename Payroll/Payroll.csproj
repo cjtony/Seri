@@ -876,6 +876,7 @@
     <Content Include="Scripts\main\Creditos.js" />
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
+    <Content Include="Scripts\main\EmisionRecibos.js" />
     <Content Include="Scripts\main\employes.js" />
     <Content Include="Scripts\main\Empre.js" />
     <Content Include="Scripts\ferros\errajax.js" />
@@ -908,7 +909,6 @@
     <Content Include="Scripts\main\main.js" />
     <Content Include="Scripts\Catalogos\ModuloCatalogos.js" />
     <Content Include="Scripts\main\modenight.js" />
-    
     <Content Include="Scripts\main\PensionesAlimenticias.js" />
     <Content Include="Scripts\main\positions.js" />
     <Content Include="Scripts\main\puestos.js" />
@@ -1003,6 +1003,7 @@
     <Content Include="Views\Catalogos\VistaRenglones.cshtml" />
     <Content Include="Views\Catalogos\GruposEmpresas.cshtml" />
     <Content Include="Views\Catalogos\CGruposEmpresas.cshtml" />
+    <Content Include="Views\Empleados\EmisionRecibos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

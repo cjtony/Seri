@@ -99,7 +99,7 @@
 
     DgridTBProcesos = () => {       
         $.ajax({
-            url: "../Nomina/ListTBProcesosJobs",
+            url: "../Nomina/ListTBProcesosJobs  ",
             type: "POST",
             data: JSON.stringify(),
             success: (data) => {

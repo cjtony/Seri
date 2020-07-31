@@ -818,7 +818,7 @@ namespace Payroll.Models.Daos
                             string sRegistroPatronal = ListDatEmisor[0].sAfiliacionIMSS;
                             string sNumSeguridadSocial = ListDatEmisor[0].sRegistroImss;
                             fechaValida = DateTime.TryParse(ListDatEmisor[0].sFechaIngreso, culture, styles, out dt3);
-                            string sFechaInicioRelLaboral = String.Format("{0:yyyy-MM-dd}", dt3); ;
+                            string sFechaInicioRelLaboral = String.Format("{0:yyyy-MM-dd}", dt3); 
                             string ticontrato = "0" + ListDatEmisor[0].sTipoContrato;
                             string[] contrato = ticontrato.Split(' ');
                             string scontrato = contrato[0].ToString();
@@ -1201,6 +1201,68 @@ namespace Payroll.Models.Daos
             return zips;
         }
 
+        /// trae datos de sello del Sat
+
+        public List<SelloSatBean> sp_DatosSat_Retrieve_TSellosSat(int CtrliIdEmpresa, int Ctrlianio, int CtrliTipoPeriodo, int CtrliPeriodo, int CtrliIdEmpleado) {
+            List<SelloSatBean> Lsat = new List<SelloSatBean>();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_DatosSat_Retrieve_TSellosSat", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Ctrlianio", Ctrlianio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPeriodo", CtrliTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+            
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+
+
+                    while (data.Read())
+                    {
+                        SelloSatBean ls = new SelloSatBean();
+                        {
+                            ls.sSelloSat = data["Sello_sat"].ToString();
+                            ls.Fecha = data["Fecha"].ToString();
+                            ls.sUUID = data["UUID"].ToString();
+                            ls.sSelloCFD = data["SelloCFD"].ToString();
+                            ls.Rfcprov = data["RfcProvCertif"].ToString();
+                            ls.sNoCertificado = data["NoCertificadoSAT"].ToString();
+                            ls.Fechatimbrado = data["FechaTimbrado"].ToString();
+                            
+                        }
+
+                        Lsat.Add(ls);
+                    }
+
+                }
+                else
+                {
+                    Lsat = null;
+                }
+                data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+
+            return Lsat;
+        }
+
+    // 
+
+        /// insertar ccontro de ejecucuion 
+        
+        
     }
 
 

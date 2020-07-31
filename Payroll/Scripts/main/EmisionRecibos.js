@@ -1,0 +1,270 @@
+﻿$(function () {
+    //// Delcaracion de variables
+
+    const DropGrup = document.getElementById('DropGrup');
+    const DropContEje = document.getElementById('DropContEje');
+    const TextDEesp = document.getElementById('TextDEesp');
+    const TextSelecEmpre = document.getElementById('TextSelecEmpre');
+    const CheckEmpresa = document.getElementById('CheckEmpresa');
+    const TextBTotalEmple = document.getElementById('TextBTotalEmple');
+    const DroTipoPeriodo = document.getElementById('DroTipoPeriodo');
+    const DropPerido = document.getElementById('DropPerido');
+    const btnGeneraPDF = document.getElementById('btn-GeneraPDF');
+    const TextBAnioProce = document.getElementById('TextBAnioProce');
+    const DroTipoRecibo = document.getElementById('DroTipoRecibo');
+
+    var VarCheckEmpresa = document.getElementById('CheckEmpresa');
+    var Empresas;
+    
+    DropGrup.value = 1;
+    DropContEje.value = 1;
+    $('#DropContEje').change(function () {
+        var descrip;
+      //  console.log(DropContEje.value);
+        if (DropContEje.value == "1") {
+            LisEmpresa();
+            descrip = DropContEje.options[DropContEje.selectedIndex].text;
+            document.getElementById("TextDEesp").innerHTML += descrip;
+        }
+     
+    });
+       /// Llena el DropEmpresa con el listado de empresas correspondientes
+    LisEmpresa = () => {
+
+        $.ajax({
+            url: "../Nomina/LisEmpresas",
+            type: "POST",
+            data: JSON.stringify(),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {           
+                var source =
+                {
+                    localdata: data,
+                    datatype: "array",
+                    datafields:
+                        [
+                            { name: 'iIdEmpresa', type: 'int' },
+                            { name: 'sNombreEmpresa', type: 'string' },
+
+                        ],
+                    datatype: "array",
+                    updaterow: function (rowid, rowdata) {
+                        // synchronize with the server - send update command   
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                $("#DropEmpresa").jqxDropDownList({ placeHolder: "Selecciona", autoOpen: true,checkboxes: true, source: dataAdapter, displayMember: "sNombreEmpresa", valueMember: "iIdEmpresa", width: 335, height: 30, });            
+                //$("#DropEmpresa").jqxDropDownList('checkAll');
+
+            }
+        });
+
+    };
+    LisEmpresa();
+    $("#DropEmpresa").on('checkChange', function (event) {
+        if (event.args) {
+            var item = event.args.item;
+            if (item) {
+                var valueelement = $("<div></div>");
+                valueelement.text("Value: " + item.value);
+                var labelelement = $("<div></div>");
+                labelelement.text("Label: " + item.label);
+                var checkedelement = $("<div></div>");
+                checkedelement.text("Checked: " + item.checked);
+              //  $("#selectionlog").children().remove();
+
+                var items = $("#DropEmpresa").jqxDropDownList('getCheckedItems');
+                var checkedItems = "";
+                var checkids = "";
+                checkedItemsIdEmpleados = "";
+                $.each(items, function (index) {
+                    checkids += this.value + " ";
+                    checkedItems += this.label + "\n";
+                    //checkedItemsIdEmpleados += this.value + ",";
+                });
+                console.log(checkedItems);
+                limpTextarea();
+                document.getElementById("TextSelecEmpre").innerHTML += checkedItems;
+                Empresas = checkids;
+                FNoEmpeleados(checkids);
+                FTipodePeriodo(checkids, 0);
+                FPeriodo(checkids, 1);
+            }
+        }
+    });
+
+
+    /// Limpias el campo de Texttarea
+    limpTextarea = () => {
+        var text = " ";
+        var lines = $('#TextSelecEmpre').val().split('\n');
+
+        lines = lines.filter(function (val) {
+            if (val.match(text)) return false
+            else return true
+
+        })
+
+        $('#TextSelecEmpre').text(lines.join('\n'))
+
+    };
+
+    FValorChec = () => {
+       
+        if (VarCheckEmpresa.checked == true) {
+            
+             $("#DropEmpresa").jqxDropDownList('checkAll');
+        }
+        if (VarCheckEmpresa.checked == false) {
+      
+            $("#DropEmpresa").jqxDropDownList('uncheckAll');
+
+        }
+
+    };
+    CheckEmpresa.checked = false;
+    CheckEmpresa.addEventListener('click', FValorChec);
+
+     // suma el numero de empleados de las Empresas selecionadas
+    FNoEmpeleados = (Empresas) => {
+        const dataSend = { IdEmpresas: Empresas };
+
+        $.ajax({
+            url: "../Nomina/NoEmpleados",
+            type: "POST",
+            data: dataSend,
+            success: function (data){
+                TextBTotalEmple.value = data[0].iNoEmpleados;
+            },
+        });
+
+    };
+
+    // Verifica que todas las empresas contengan el mismo tipo de periodo y lo llena el drop
+    FTipodePeriodo = (sdEMpresa, op) => {
+        const dataSend = { IdEmpresas: sdEMpresa, OP: op };
+        $("#DroTipoPeriodo").empty();
+        $('#DroTipoPeriodo').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/TipoPPeriodoEmision",
+            type: "POST",
+            data: dataSend,
+            success: function (data) {
+                console.log(data);
+                for (i = 0; i < data.length; i++) {
+                    console.log(data[i].iId);
+                    console.log(data[i].sValor);
+                    document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${data[i].iId}'>${data[i].iId} ${data[i].sValor} </option>`;
+                }
+            },
+        });
+
+    };
+
+
+    FPeriodo = (sEmpresas, op) => {
+        const dataSend = { IdEmpresas: sEmpresas, OP: op };
+        $("#DropPerido").empty();
+        $('#DropPerido').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/TipoPPeriodoEmision",
+            type: "POST",
+            data: dataSend,
+            success: function (data) {
+                for (i = 0; i < data.length; i++) {
+                 
+                    document.getElementById("DropPerido").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo}  de ${data[i].sFechaInicio} al ${data[i].sFechaFinal} </option>`;
+                }
+            },
+        });
+
+
+    };
+
+
+    FGeneraPDF = () => {
+
+        if (TextBAnioProce.value != "" && TextBAnioProce.value != " " ) {
+
+            if (DroTipoPeriodo.value > 0) {
+
+                if (DropPerido.value > 0) {
+
+                    if (Empresas.length > 0) {
+                        FCargamasibaPDF(TextBAnioProce.value, DroTipoPeriodo.value, DropPerido.value, Empresas)
+
+                    }
+                    else {
+                        fshowtypealert('Emisión de recibos', "seleccionar una empresa por lo menos", 'warning');
+
+                    }
+
+                }
+                else {
+                    fshowtypealert('Emisión de recibos', "seleccionar un periodo", 'warning');
+
+                }
+                
+            }
+            //&&  && && 
+            else {
+
+                fshowtypealert('Emisión de recibos', "seleccionar un tipo de periodo", 'warning');
+            }
+      
+        }
+        else {
+            
+            fshowtypealert('Emisión de recibos', "agregar año", 'warning');
+        }
+
+
+
+    };
+    btnGeneraPDF.addEventListener('click',FGeneraPDF);
+
+    FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas) => {
+        console.log('genera pdf');
+        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value };
+        $.ajax({
+            url: "../Empleados/GenPDF",
+            type: "POST",
+            data: dataSend,
+            success: function (data) {
+                 
+            },
+        });
+    };
+
+
+    /* FUNCION QUE MUESTRA ALERTAS */
+    fshowtypealert = (title, text, icon) => {
+        Swal.fire({
+            title: title, text: text, icon: icon,
+            showClass: { popup: 'animated fadeInDown faster' },
+            hideClass: { popup: 'animated fadeOutUp faster' },
+            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+        }).then((acepta) => {
+
+            //  Nombrede.value       = '';
+            // Descripcionde.value  = '';
+            //iAnode.value         = '';
+            //cande.value          = '';
+            //$("html, body").animate({
+            //    scrollTop: $(`#${element.id}`).offset().top - 50
+            //}, 1000);
+            //if (clear == 1) {
+            //    setTimeout(() => {
+            //        element.focus();
+            //        setTimeout(() => { element.value = ""; }, 300);
+            //    }, 1200);
+            //} else {
+            //    setTimeout(() => {
+            //        element.focus();
+            //    }, 1200);
+            //}
+        });
+    };
+
+});
+

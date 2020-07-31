@@ -1,0 +1,211 @@
+﻿
+@*Temas*@
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
+
+<body>
+    <div class="container bg-white">
+        @*cuerpo de pantalla*@
+
+        <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+            <div id="div-most-alert-data-gen" class="col-md-8 offset-2"></div>
+            <div class="col-md-6">
+                <div class="text-left">
+                    <h6 class="col-ico font-nav-child">
+                        <b>
+                            <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                            Emision de Recibos
+                        </b>
+                    </h6>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr />
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-4 col-form-label font-labels" id="laNom">
+                        Nombre:
+                    </label>
+                    <div class="col-sm-8">
+                        <select placeholder="Grupo" tp-select="Grupo" class="form-control form-control-sm" id="DropGrup">
+                            <option value="0">Seleccionan</option>
+                            <option value="1">IPSNet</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="laContEje" class="col-sm-4 col-form-label font-labels" id="laContEje">
+                        Control de Ejecución:
+                    </label>
+                    <div class="col-sm-8">
+                        <select placeholder="Titulo" tp-select="Titulo" class="form-control form-control-sm" id="DropContEje">
+                            <option value="0">Seleccionan</option>
+                            <option value="1">Seri</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="apemat" class="col-sm-4 col-form-label font-labels" id="label-matern">
+                        Catalogo Empresas:
+                    </label>
+                    <div class="col-sm-8">
+                        <div style='float: left;' id="DropEmpresa"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="sex" class="col-sm-4 col-form-label font-labels" id="label-genero">
+                        Seleccion de empresas:
+                    </label>
+                    <div class="col-sm-4">
+                        <textarea placeholder="Muestra Empresas" id="TextSelecEmpre" class="form-control form-control-sm text-capitalize" rows="3"></textarea>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-sm-8 col-form-label font-labels"><input type="checkbox" id="CheckEmpresa"> Selecciona todas las Empresas</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="sex" class="col-sm-4 col-form-label font-labels" id="label-genero">
+                        Descripcion:
+                    </label>
+                    <div class="col-sm-8">
+                        <textarea placeholder="Descripcion" id="TextDEesp" class="form-control form-control-sm text-capitalize" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="sex" class="col-sm-4 col-form-label font-labels" id="label-genero">
+                        año de Procesamiento:
+                    </label>
+                    <div class="col-sm-8">
+                      <input placeholder="Año de Procesamiento" title="Año de Procesamiento" type="number" id="TextBAnioProce"  min="1900" max="2060" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="TotalEmple" class="col-sm-4 col-form-label font-labels" id="laTotalEmple">
+                        Total de Empleados:
+                    </label>
+                    <div class="col-sm-8">
+                        <input placeholder="Total de Empleados" title="Total Empleados" type="text" id="TextBTotalEmple" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="TotalEmple" class="col-sm-4 col-form-label font-labels" id="laRuta">
+                        Ruta:
+                    </label>
+                    <div class="col-sm-8">
+                        <input placeholder="Ruta" title="Ruta" type="text" id="TextBRuta" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label for="TotalEmple" class="col-sm-3 col-form-label font-labels" id="laTotalEmple">
+                        Tipo de Recibo:
+                    </label>
+                    <div class="col-sm-8">
+                        <select placeholder="Tipo de Recibo" tp-select="Tipo de Recibo" class="form-control form-control-sm" id="DroTipoRecibo">
+                            <option value="0">Selecciona</option>
+                            <option value="1">Recibo Simple</option>
+                            <option value="2">Recibo Fiscal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="laTipoPerido" class="col-sm-3 col-form-label font-labels" id="laTipoPerido">
+                        Tipo de Periodo:
+                    </label>
+                    <div class="col-sm-8">
+                        <select placeholder="Tipo de Periodo" tp-select="Tipo de Periodo" class="form-control form-control-sm" id="DroTipoPeriodo">
+                            <option value="0">Selecciona</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Laperidod" class="col-sm-3 col-form-label font-labels" id="laperiodo">
+                        Periodo:
+                    </label>
+                    <div class="col-sm-8">
+                        <select placeholder="Periodo" tp-select="Periodo" class="form-control form-control-sm" id="DropPerido">
+                            <option value="0">Selecciona</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="nacion" class="col-sm-3 col-form-label font-labels" id="label-nationality">
+                        Procesados:
+                    </label>
+                    <div class="col-sm-3">
+                        <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-sm-3">
+                        <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados2" readonly class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-sm-3">
+                        <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados2" readonly class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-8 col-form-label font-labels"><input type="checkbox" id="ChNCerrada"> Borrar la ultima ejecución activa ?</label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-5">
+                        <button id="btn-GeneraPDF" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                            <i class="far fa-file-pdf mr-2"></i> Generar Recibos PDF
+                        </button>
+                    </div>
+                    @*<div class="col-sm-5">
+                        <button id="btn-GeneXML" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                            <i class="far fa-file-code"></i> Generar XML Timbrados
+                        </button>
+                    </div>*@
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-5">
+                        <button id="btn-VerEje" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                            <i class="fa fa-eye"></i> Ver ultima ejecución
+                        </button>
+                    </div>
+                    <div class="col-sm-5">
+                        <button id="btn-EnviCorre" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                            <i class="fa fa-envelope-o"></i> Envio de Correos
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-5">
+                        <button id="btn-ReplicarApp" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                            <i class="fa fa-repeat"></i> Replicar para App
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Botones de flotantes*@
+        @*<div>
+
+                <button class="flotante1 btn btn-primary btn-circle shadow" data-toggle="modal" title="Guardar" id="btnFloGuardar" type="button" value="1" style="visibility:hidden">
+                    <i class="fa fa-floppy-o"></i>
+                </button>
+                <button class="flotante2 rounded btn btn-outline-danger" title="Limpiar todos los campos" id="btnlimpDat" type="button" btvisible="true" value="1" style="visibility:visible">
+                   <i class="fas fa-eraser"></i>
+                </button>
+                <button class="flotante1 btn btn-primary btn-circle shadow" title="Ejecutar" id="btnFloEjecutar" data-toggle="modal" type="button" btvisible="true" value="1" style="visibility:visible">
+                    <i class="far fa-caret-square-right"></i>
+                </button>
+                <button class="flotante2 btn-primary btn-circle shadow" title="Buscar" id="btnFloBuscar" type="button" btvisible="true" style="visibility:hidden">
+                    <i class="fas fa-search"></i>
+                </button>
+
+            </div>*@
+    </div>
+</body>
+<script src="~/Scripts/main/EmisionRecibos.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxlistbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdropdownlist.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqwidgets/jqxcheckbox.js"></script>
