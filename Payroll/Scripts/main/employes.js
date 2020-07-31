@@ -103,6 +103,7 @@
     fclearsearchresults = () => {
         searchemployekey.value = '';
         resultemployekey.innerHTML = '';
+        document.getElementById('noresultssearchemployees').innerHTML = "";
     }
     /* EJECUCION DE FUNCION QUE LIMPIA LA CAJA DE BUSQUEDA Y LA LISTA DE RESULTADOS */
     icoclosesearchemployesbtn.addEventListener('click', fclearsearchresults);
@@ -216,7 +217,7 @@
             }
         };
         document.getElementById('icouser').classList.remove('d-none');
-        document.getElementById('nameuser').textContent = "Editando al empleado: " + name.value + " " + apepat.value + " " + apemat.value + ".";
+        document.getElementById('nameuser').textContent = clvemp.value + " - " + name.value + " " + apepat.value + " " + apemat.value + ".";
         objectDataTabDataGen.datagen = dataLocStoGen;
         localStorage.setItem('objectTabDataGen', JSON.stringify(objectDataTabDataGen));
         localStorage.setItem('tabSelected', 'imss');
@@ -271,6 +272,22 @@
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedataall.classList.add('d-none');
                             btnsaveeditdataest.classList.remove('d-none');
+                            document.getElementById('content-new-inpt-fechmovi').innerHTML = `
+                                <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                                    Fecha de movimiento
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="date" id="fechmovi" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
+                                </div>
+                            `;
+                            document.getElementById('content-new-inpt-motmovi').innerHTML = `
+                                <label for="motmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
+                                    Motivo del movimiento
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="motmovi" class="form-control form-control-sm" placeholder="Motivo del movimiento"/>
+                                </div>
+                            `;
                         }
                     } else {
                         document.getElementById('div-most-alert-data-estructure').innerHTML += `
@@ -462,8 +479,9 @@
                         tipsan.value   = data.Datos.sTipoSangre;
                         fecmat.value   = data.Datos.sFechaMatrimonio;
                         fvalidatestatecodpost(0, data.Datos.iEstado_id);
+                        console.log("Colonia: " + data.Datos.sColonia);
                         setTimeout(() => {
-                            colony.value = data.Datos.sColonia;
+                            colony.value = data.Datos.sColonia.toUpperCase();
                             floaddatatabimss(paramid);
                             flocalstodatatabimss();
                             flocalstodatatabgen();
@@ -499,17 +517,12 @@
             }
         }
     }
-    const date = new Date();
-    let fechAct;
-    let day = date.getDay();
-    if (date.getDay() < 10) {
-        day = "0" + date.getDay();
-    }
-    if (date.getMonth() + 1 < 10) {
-        fechAct = date.getFullYear() + "-" + "0" + (date.getMonth() + 1) + "-" + day;
-    } else {
-        fechAct = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + day;
-    }
+    const date    = new Date();
+    const dayG    = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+    const monthG  = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth();
+    const fechAct = date.getFullYear() + "-" + monthG + "-" + dayG;
+    console.log('Asignando fecha de inicio');
+    console.log(fechAct);
     fechinipos.value = fechAct;
     /* FUNCION QUE CARGA LOS DATOS DEL EMPLEADO SELECCIONADO */
     fselectemploye = (paramid, paramstr) => {
@@ -549,9 +562,9 @@
                         console.log('Generando localstorage')
                         const date = new Date();
                         let fechAct;
-                        let day = date.getDay();
-                        if (date.getDay() < 10) {
-                            day = "0" + date.getDay();
+                        let day = date.getDate();
+                        if (date.getDate() < 10) {
+                            day = "0" + date.getDate();
                         }
                         if (date.getMonth() + 1 < 10) {
                             fechAct = date.getFullYear() + "-" + "0" + (date.getMonth() + 1) + "-" + day;
@@ -577,8 +590,8 @@
     fselectfilterdsearchemploye = () => {
         const filtered = $("input:radio[name=filtroemp]:checked").val();
         if (filtered == "numero") {
-            searchemployekey.placeholder = "NUMERO DEL EMPLEADO";
-            labsearchemp.textContent     = "Numero";
+            searchemployekey.placeholder = "NOMINA DEL EMPLEADO";
+            labsearchemp.textContent     = "Nomina";
         } else if (filtered == "nombre") {
             searchemployekey.placeholder = "NOMBRE DEL EMPLEADO";
             labsearchemp.textContent     = "Nombre";
@@ -587,6 +600,17 @@
         resultemployekey.innerHTML = "";
         setTimeout(() => { searchemployekey.focus() }, 500);
     }
+
+    searchemployekey.style.transition = "1s";
+    searchemployekey.style.cursor     = "pointer";
+    filtroname.style.cursor           = "pointer";
+    filtronumber.style.cursor         = "pointer";
+    document.getElementById('labelfiltronumber').style.cursor   = "pointer";
+    document.getElementById('labelfiltroname').style.cursor     = "pointer";
+    document.getElementById('labelsearchemployee').style.cursor = "pointer";
+    searchemployekey.addEventListener('mouseover', () => { searchemployekey.classList.add('shadow'); });
+    searchemployekey.addEventListener('mouseleave', () => { searchemployekey.classList.remove('shadow'); });
+
     /* EJECUCION DE FUNCION QUE APLICA FILTRO A LA BUSQUEDA DE LOS EMPLEADOS */
     filtroname.addEventListener('click', fselectfilterdsearchemploye);
     filtronumber.addEventListener('click', fselectfilterdsearchemploye);
@@ -595,6 +619,7 @@
         const filtered = $("input:radio[name=filtroemp]:checked").val();
         try {
             resultemployekey.innerHTML = '';
+            document.getElementById('noresultssearchemployees').innerHTML = "";
             if (searchemployekey.value != "") {
                 $.ajax({
                     url: "../SearchDataCat/SearchEmploye",
@@ -602,6 +627,7 @@
                     data: { wordsearch: searchemployekey.value, filtered: filtered.trim() },
                     success: (data) => {
                         resultemployekey.innerHTML = '';
+                        document.getElementById('noresultssearchemployees').innerHTML = "";
                         if (data.length > 0) {
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
@@ -614,6 +640,12 @@
                                        </span>
                                     </button>`;
                             }
+                        } else {
+                            document.getElementById('noresultssearchemployees').innerHTML += `
+                                <div class="alert alert-danger" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron Empleados activos con el termino: <b class="text-uppercase">${searchemployekey.value}</b>
+                                </div>
+                            `;
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -661,8 +693,10 @@
                     if (arrInput[a].hasAttribute('tp-date')) {
                         const attrdate = arrInput[a].getAttribute('tp-date');
                         if (arrInput[a].value != "" && attrdate == 'less') {
-                            const ds = new Date();
-                            const fechAct = ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + ds.getDate();
+                            const ds      = new Date();
+                            const dayI    = (ds.getDate() < 10) ? "0" + ds.getDate() : ds.getDate();
+                            const monthI  = ((ds.getMonth() + 1) < 10) ? "0" + (ds.getMonth() + 1) : ds.getMonth();
+                            const fechAct = ds.getFullYear() + "-" + monthI + "-" + dayI;
                             if (arrInput[a].value > fechAct) {
                                 fshowtypealert('Atencion', 'La fecha de nacimiento ' + arrInput[a].value + ' es incorrecta, no debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
                                 validatedatagen = 1;
@@ -1011,22 +1045,19 @@
     fsaveeditdataest = () => {
         try {
             if (clvstract.value != clvstr.value) {
-                const arrInput = [clvstr, fechefectpos, fechinipos];
+                const fechmovi = document.getElementById('fechmovi');
+                const motmovi = document.getElementById('motmovi');
+                let fechActE;
+                const arrInput = [clvstr, fechefectpos, fechinipos, motmovi, fechmovi];
                 let validateSend = 0;
                 for (let a = 0; a < arrInput.length; a++) {
                     if (arrInput[a].hasAttribute('tp-date')) {
                         const attrdate = arrInput[a].getAttribute('tp-date');
                         if (arrInput[a].value != "" && attrdate == 'higher') {
-                            const ds = new Date();
-                            let fechAct, datetod;
-                            if (ds.getDate() < 10) {
-                                datetod = "0" + ds.getDate();
-                            } else { datetod = ds.getDate(); }
-                            if (ds.getMonth() + 1 < 10) {
-                                fechAct = ds.getFullYear() + "-" + "0" + (ds.getMonth() + 1) + "-" + datetod;
-                            } else {
-                                fechAct = ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + datetod;
-                            }
+                            const dsE     = new Date();
+                            const dayE    = (dsE.getDate() < 10) ? "0" + dsE.getDate() : dsE.getDate();
+                            const monthE  = ((dsE.getMonth() + 1) < 10) ? "0" + dsE.getMonth() + 1 : dsE.getMonth();
+                            fechActE      = dsE.getFullYear() + "-" + monthE + "-" + dayE;
                             //if (arrInput[a].value < fechAct) {
                             //    console.log(arrInput[a].value);
                             //    console.log(fechAct);
@@ -1049,9 +1080,9 @@
                     }
                 }
                 const dataSend = {
-                    clvstr: clvstr.value, fechefectpos: fechefectpos.value, fechinipos: fechinipos.value, clvemp: clvemp.value,
-                    //clvposasig: clvposasig.value,
-                    clvnom: clvnom.value,
+                    clvstr: clvstr.value, fechefectpos: fechefectpos.value,
+                    fechinipos: fechinipos.value, clvemp: clvemp.value,
+                    clvnom: clvnom.value, fechmovi: fechmovi.value, motmovi: motmovi.value
                 };
                 if (validateSend == 0) {
                     $.ajax({

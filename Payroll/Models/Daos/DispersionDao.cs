@@ -273,7 +273,6 @@ namespace Payroll.Models.Daos
                             iIdRenglon = Convert.ToInt32(data["Renglon_id"].ToString()),
                             iDepositos = Convert.ToInt32(data["depositos"].ToString()),
                             sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["importe"])))
-                            //Convert.ToDecimal(data["importe"].ToString())
                         });
                     }
                 }
@@ -326,6 +325,352 @@ namespace Payroll.Models.Daos
             return listBankDetailsBean;
         }
 
+        public DatosEmpresaBeanDispersion sp_Datos_Empresa_Dispersion(int keyBusiness)
+        {
+            DatosEmpresaBeanDispersion datosEmpresaBeanDispersion = new DatosEmpresaBeanDispersion();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Empresa_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    datosEmpresaBeanDispersion.sNombreEmpresa = data["NombreEmpresa"].ToString();
+                    datosEmpresaBeanDispersion.sCalle         = data["Calle"].ToString();
+                    datosEmpresaBeanDispersion.sColonia       = data["Colonia"].ToString();
+                    datosEmpresaBeanDispersion.sCodigoPostal  = data["CodigoPostal"].ToString();
+                    datosEmpresaBeanDispersion.sCiudad        = data["Ciudad"].ToString();
+                    datosEmpresaBeanDispersion.sRfc           = data["RFC"].ToString();
+                    datosEmpresaBeanDispersion.iRegimen_Fiscal_id = Convert.ToInt32(data["Regimen_Fiscal_id"].ToString());
+                    datosEmpresaBeanDispersion.sDelegacion    = data["Delegacion"].ToString();
+                    datosEmpresaBeanDispersion.iBanco_id      = Convert.ToInt32(data["Banco_id"].ToString());
+                    datosEmpresaBeanDispersion.sDescripcion   = data["Descripcion"].ToString();
+                    datosEmpresaBeanDispersion.sMensaje       = "SUCCESS";
+                } else {
+                    datosEmpresaBeanDispersion.sMensaje = "NOTDATA";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+                datosEmpresaBeanDispersion.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosEmpresaBeanDispersion;
+        }
+
+        public List<DatosDepositosBancariosBean> sp_Procesa_Cheques_Total_Nomina(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosDepositosBancariosBean> datosDepositosBancariosBean = new List<DatosDepositosBancariosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Total_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosDepositosBancariosBean bancariosBean = new DatosDepositosBancariosBean();
+                        bancariosBean.iIdBanco   = Convert.ToInt32(data["Banco"].ToString());
+                        bancariosBean.iCantidad  = Convert.ToInt32(data["Cantidad"].ToString());
+                        bancariosBean.sImporte   = data["Importe"].ToString().Replace(",","");
+                        datosDepositosBancariosBean.Add(bancariosBean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosDepositosBancariosBean;
+        }
+
+        public List<DatosDepositosBancariosBean> sp_Procesa_Cheques_Total_Nomina_Espejo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosDepositosBancariosBean> datosDepositosBancariosBean = new List<DatosDepositosBancariosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Total_Nomina_Espejo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosDepositosBancariosBean bancariosBean = new DatosDepositosBancariosBean();
+                        bancariosBean.iIdBanco  = Convert.ToInt32(data["Banco"].ToString());
+                        bancariosBean.iCantidad = Convert.ToInt32(data["Cantidad"].ToString());
+                        bancariosBean.sImporte  = data["Importe"].ToString().Replace(",", "");
+                        datosDepositosBancariosBean.Add(bancariosBean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosDepositosBancariosBean;
+        }
+
+        public List<DatosProcesaChequesNominaBean> sp_Procesa_Cheques_Nomina(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosProcesaChequesNominaBean> datosProcesaChequesNominaBeans = new List<DatosProcesaChequesNominaBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
+                        datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
+                        datosProcesaCheques.sBanco   = data["Banco"].ToString();
+                        datosProcesaCheques.iIdEmpresa = Convert.ToInt32(data["Empresa"].ToString());
+                        datosProcesaCheques.sNomina    = data["Nomina"].ToString();
+                        datosProcesaCheques.sCuenta    = data["Cuenta"].ToString();
+                        datosProcesaCheques.dImporte   = Convert.ToDecimal(data["Importe"].ToString());
+                        datosProcesaCheques.sNombre    = data["Nombre"].ToString();
+                        datosProcesaCheques.sPaterno   = data["Paterno"].ToString();
+                        datosProcesaCheques.sMaterno   = data["Materno"].ToString();
+                        datosProcesaCheques.sRfc       = data["RFC"].ToString();
+                        datosProcesaCheques.iTipoPago  = Convert.ToInt32(data["TipoPago"].ToString());
+                        datosProcesaChequesNominaBeans.Add(datosProcesaCheques);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosProcesaChequesNominaBeans;
+        }
+
+        public List<DatosProcesaChequesNominaBean> sp_Procesa_Cheques_Nomina_Espejo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosProcesaChequesNominaBean> datosProcesaChequesNominaBeans = new List<DatosProcesaChequesNominaBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Nomina_Espejo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
+                        datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
+                        datosProcesaCheques.sBanco = data["Banco"].ToString();
+                        datosProcesaCheques.iIdEmpresa = Convert.ToInt32(data["Empresa"].ToString());
+                        datosProcesaCheques.sNomina = data["Nomina"].ToString();
+                        datosProcesaCheques.sCuenta = data["Cuenta"].ToString();
+                        datosProcesaCheques.dImporte = Convert.ToDecimal(data["Importe"].ToString());
+                        datosProcesaCheques.sNombre = data["Nombre"].ToString();
+                        datosProcesaCheques.sPaterno = data["Paterno"].ToString();
+                        datosProcesaCheques.sMaterno = data["Materno"].ToString();
+                        datosProcesaCheques.sRfc = data["RFC"].ToString();
+                        datosProcesaCheques.iTipoPago = Convert.ToInt32(data["TipoPago"].ToString());
+                        datosProcesaChequesNominaBeans.Add(datosProcesaCheques);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosProcesaChequesNominaBeans;
+        }
+
+        public DatosCuentaClienteBancoEmpresaBean sp_Cuenta_Cliente_Banco_Empresa(int keyBusiness, int bankResult)
+        {
+            DatosCuentaClienteBancoEmpresaBean datosCuentaCliente = new DatosCuentaClienteBancoEmpresaBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Cuenta_Cliente_Banco_Empresa", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdBanco", bankResult));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    datosCuentaCliente.sNumeroCliente = data["NumeroCliente"].ToString();
+                    datosCuentaCliente.sNumeroCuenta  = data["NumeroCuenta"].ToString();
+                    datosCuentaCliente.sVacio         = data["Vacio"].ToString();
+                    datosCuentaCliente.iPlaza   = Convert.ToInt32(data["Plaza"].ToString());
+                    datosCuentaCliente.sClabe   = data["Clabe"].ToString();
+                    datosCuentaCliente.iTipo    = Convert.ToInt32(data["Tipo"].ToString());
+                    datosCuentaCliente.iCodigo  = Convert.ToInt32(data["Codigo"].ToString());
+                    datosCuentaCliente.sMensaje = "SUCCESS";
+                } else {
+                    datosCuentaCliente.sMensaje = "NOTDATA";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosCuentaCliente;
+        }
+
+        // INTERBANCARIOS
+
+        public List<DatosDepositosBancariosBean> sp_Procesa_Cheques_Total_Interbancarios(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosDepositosBancariosBean> datosDepositosBancariosBean = new List<DatosDepositosBancariosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Total_Interbancarios", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosDepositosBancariosBean bancariosBean = new DatosDepositosBancariosBean();
+                        bancariosBean.iCantidad = Convert.ToInt32(data["Cantidad"].ToString());
+                        bancariosBean.sImporte  = data["Importe"].ToString().Replace(",", "");
+                        datosDepositosBancariosBean.Add(bancariosBean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosDepositosBancariosBean;
+        }
+
+        public List<DatosDepositosBancariosBean> sp_Procesa_Cheques_Total_Interbancarios_Espejo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosDepositosBancariosBean> datosDepositosBancarios = new List<DatosDepositosBancariosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Total_Interbancarios_Espejo", this.conexion)
+                { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosDepositosBancariosBean bancariosBean = new DatosDepositosBancariosBean();
+                        bancariosBean.iCantidad = Convert.ToInt32(data["Cantidad"].ToString());
+                        bancariosBean.sImporte = data["Importe"].ToString().Replace(",", "");
+                        datosDepositosBancarios.Add(bancariosBean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosDepositosBancarios;
+        }
+
+        public List<DatosProcesaChequesNominaBean> sp_Procesa_Cheques_Interbancarios(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosProcesaChequesNominaBean> datosProcesaChequesNominaBeans = new List<DatosProcesaChequesNominaBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Interbancarios", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
+                        datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
+                        datosProcesaCheques.sBanco = data["Banco"].ToString();
+                        datosProcesaCheques.iIdEmpresa = Convert.ToInt32(data["Empresa"].ToString());
+                        datosProcesaCheques.sNomina = data["Nomina"].ToString();
+                        datosProcesaCheques.sCuenta = data["Cuenta"].ToString();
+                        datosProcesaCheques.dImporte = Convert.ToDecimal(data["Importe"].ToString());
+                        datosProcesaCheques.sNombre = data["Nombre"].ToString();
+                        datosProcesaCheques.sPaterno = data["Paterno"].ToString();
+                        datosProcesaCheques.sMaterno = data["Materno"].ToString();
+                        datosProcesaCheques.sRfc = data["RFC"].ToString();
+                        datosProcesaCheques.iTipoPago = Convert.ToInt32(data["TipoPago"].ToString());
+                        datosProcesaChequesNominaBeans.Add(datosProcesaCheques);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosProcesaChequesNominaBeans;
+        }
+
+        public List<DatosProcesaChequesNominaBean> sp_Procesa_Cheques_Interbancarios_Espejo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        {
+            List<DatosProcesaChequesNominaBean> datosProcesaChequesNominaBeans = new List<DatosProcesaChequesNominaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Interbancarios_Espejo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
+                        datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
+                        datosProcesaCheques.sBanco = data["Banco"].ToString();
+                        datosProcesaCheques.iIdEmpresa = Convert.ToInt32(data["Empresa"].ToString());
+                        datosProcesaCheques.sNomina = data["Nomina"].ToString();
+                        datosProcesaCheques.sCuenta = data["Cuenta"].ToString();
+                        datosProcesaCheques.dImporte = Convert.ToDecimal(data["Importe"].ToString());
+                        datosProcesaCheques.sNombre = data["Nombre"].ToString();
+                        datosProcesaCheques.sPaterno = data["Paterno"].ToString();
+                        datosProcesaCheques.sMaterno = data["Materno"].ToString();
+                        datosProcesaCheques.sRfc = data["RFC"].ToString();
+                        datosProcesaCheques.iTipoPago = Convert.ToInt32(data["TipoPago"].ToString());
+                        datosProcesaChequesNominaBeans.Add(datosProcesaCheques);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosProcesaChequesNominaBeans;
+        }
+
     }
+
 
 }

@@ -61,6 +61,12 @@
         $("#searchsucursales").modal('show');
         setTimeout(() => { searchofficekey.focus(); }, 1000);
     }
+
+    searchofficekey.style.transition = "1s";
+    searchofficekey.style.cursor     = "pointer";
+    searchofficekey.addEventListener('mouseover',  () => { searchofficekey.classList.add('shadow'); });
+    searchofficekey.addEventListener('mouseleave', () => { searchofficekey.classList.remove('shadow'); });
+
     /* EJECUCION DE FUNCION QUE LIMPIA LOS CAMPOS DE REGISTRO DE UNA SUCURSAL AL CERRAR LA VENTANA MODAL */
     btnclearfieldssucursal.addEventListener('click', fclearfieldssucursal);
     icoclearfieldssucursal.addEventListener('click', fclearfieldssucursal);

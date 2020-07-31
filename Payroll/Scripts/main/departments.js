@@ -12,7 +12,13 @@
     const noresultdepartamentsnew = document.getElementById('noresultdepartamentsnew');
     /* CONSTANTES DEL FORMULARIO QUE HACE LA BUSQUEDA EN TIEMPO REAL */
     const searchdepartmentkey = document.getElementById('searchdepartmentkey');
-    const resultdepartments   = document.getElementById('resultdepartments');
+    const resultdepartments = document.getElementById('resultdepartments');
+
+    searchdepartmentkey.style.transition = "1s";
+    searchdepartmentkey.style.cursor     = "pointer";
+    searchdepartmentkey.addEventListener('mouseover', () =>  { searchdepartmentkey.classList.add('shadow'); });
+    searchdepartmentkey.addEventListener('mouseleave', () => { searchdepartmentkey.classList.remove('shadow'); });
+
     /* CONSTANTES DEL FORMULARIO QUE HACE LA BUSQUEDA EN TIEMPO REAL 2 */
     const searchdepartmentkeyadd = document.getElementById('searchdepartmentkeyadd');
     const resultdepartmentsadd = document.getElementById('resultdepartmentsadd');

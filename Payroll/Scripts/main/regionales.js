@@ -36,6 +36,12 @@
     /* CONSTANTES BUSQUEDA DE REGIONALES */
     const searchregionalkey = document.getElementById('searchregionalkey');
     const resultregionales = document.getElementById('resultregionales');
+
+    searchregionalkey.style.transition = "1s";
+    searchregionalkey.style.cursor = "pointer";
+    searchregionalkey.addEventListener('mouseover',  () => { searchregionalkey.classList.add('shadow'); });
+    searchregionalkey.addEventListener('mouseleave', () => { searchregionalkey.classList.remove('shadow'); });
+
     /* CONSTANTES DE EDICION DE REGIONALES */
     const clvregion = document.getElementById('clvregion');
     const descregionedit = document.getElementById('descregionedit');

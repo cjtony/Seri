@@ -290,7 +290,6 @@
                     beforeSend: () => {
                         btnSaveConfigBank.disabled = true;
                     }, success: (data) => {
-                        console.log(data);
                         if (data.Bandera == true && data.MensajeError == "none" && data.Validacion == false) {
                             const tableData = $("#table-test").DataTable();
                             tableData.destroy();

@@ -240,6 +240,11 @@
     const btnCloseSearchLocaliBtn = document.getElementById('btn-close-search-localitys-btn');
     const icoCloseSearchLocaliBtn = document.getElementById('ico-close-search-localitys-btn');
 
+    keysearchlocalityadd.style.transition = "1s";
+    keysearchlocalityadd.style.cursor     = "pointer";
+    keysearchlocalityadd.addEventListener('mouseover',  () => { keysearchlocalityadd.classList.add('shadow'); });
+    keysearchlocalityadd.addEventListener('mouseleave', () => { keysearchlocalityadd.classList.remove('shadow'); });
+
     /*
      * Edicion 
      */

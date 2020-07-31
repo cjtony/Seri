@@ -205,6 +205,8 @@
                     type: "POST",
                     data: { searchEmployee: searchemployekeynom.value, filter: filtered },
                     success: (data) => {
+                        console.log('Busqueda de empleado');
+                        console.log(data);
                         const quantity = data.length;
                         if (quantity > 0) {
                             let number = 0;
@@ -376,6 +378,11 @@
         tableDataDeposits.classList.remove('animated', 'fadeIn');
         tableDataDeposits.innerHTML = '';
         alertDataDeposits.innerHTML = '';
+        containerBtnsProDepBank.innerHTML = "";
+        document.getElementById('divbtndownzip').innerHTML    = "";
+        document.getElementById('div-controls').innerHTML     = "";
+        document.getElementById('divbtndownzipint').innerHTML = "";
+        document.getElementById('div-controls-int').innerHTML = "";
         try {
             const arrInput = [yeardis, periodis, datedis];
             let validate = 0;
@@ -467,7 +474,8 @@
                                             <div class="row animated fadeInDown delay-1s mt-4">
                                                 <div class="col-md-6 text-center">
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow">
+                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow"
+                                                            onclick="fValidateBankInterbank('INT');" id="btn-process-deposits-interbank">
                                                             <span class="icon text-white">
                                                                 <i class="fas fa-play mr-1"></i>
                                                                 <i class="fas fa-money-check-alt"></i>
@@ -478,7 +486,7 @@
                                                 </div>
                                                 <div class="col-md-6 text-center">
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow">
+                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow"                                      onclick="fValidateBankInterbank('NOM');" id="btn-process-deposits-payroll">
                                                             <span class="icon text-white">
                                                                 <i class="fas fa-play mr-1"></i>
                                                                 <i class="fas fa-money-bill-wave"></i>
@@ -499,7 +507,7 @@
                                 fShowTypeAlert('Atención!', 'No hay bancos definidos', 'warning', btndesplegartab, 0);
                             }
                         } else {
-                            fShowTypeAlert('Atención!', 'No se encontraron depositos', 'warning', btndesplegartab, 0);
+                            fShowTypeAlert('Atención!', 'Ocurrio un problema', 'error', btndesplegartab, 0);
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -515,6 +523,261 @@
                 console.log('TypeError ', error);
             } else {
                 console.log('Error ', error);
+            }
+        }
+    }
+
+    // Funcion valida banco interbancario existe
+    fValidateBankInterbank = (paramcode) => {
+        try {
+            $.ajax({
+                url: "../Dispersion/ValidateBankInterbank",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+                    console.log('validando');
+                }, success: (data) => {
+                    console.log(data);
+                    if (data.Bandera === true && data.MensajeError == "none") {
+                        if (String(paramcode) == "INT") {
+                            fProcessDepositsInterbank();
+                        } else if (String(paramcode) == "NOM") {
+                            fProcessDepositsPayroll();
+                        } else {
+                            alert('Accion invalida');
+                        }
+                    } else {
+                        fShowTypeAlert('Atención!', 'No hay bancos interbancarios definidos, defina uno para continuar', 'warning', btndesplegartab, 0);
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion payroll
+    fProcessDepositsPayroll = () => {
+        try {
+            document.getElementById('divbtndownzip').innerHTML = "";
+            document.getElementById('div-controls').innerHTML  = "";
+            const btnProcessDepositsPayroll   = document.getElementById('btn-process-deposits-payroll');
+            const btnProcessDepositsInterbank = document.getElementById('btn-process-deposits-interbank');
+            const dataSendProcessDepPayroll = {
+                yearPeriod: parseInt(yeardis.value),
+                numberPeriod: parseInt(periodis.value),
+                typePeriod: parseInt(typeperiod.value),
+                dateDeposits: datedis.value
+            };
+            $.ajax({
+                url: "../Dispersion/ProcessDepositsPayroll",
+                type: "POST",
+                data: dataSendProcessDepPayroll,
+                beforeSend: () => {
+                    btnProcessDepositsPayroll.disabled   = true;
+                    btnProcessDepositsInterbank.disabled = true;
+                    document.getElementById('div-show-alert-loading').innerHTML = `
+                        <div class="text-center">
+                            <div class="spinner-grow text-info" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <h6 class="font-weight-bold text-info">Generando...</h6>
+                        </div>
+                    `;
+                }, success: (data) => {
+                    document.getElementById('div-show-alert-loading').innerHTML = '';
+                    if (data.Bandera == true) {
+                        document.getElementById('divbtndownzip').innerHTML += `
+                            <div class="card border-left-success shadow h-100 py-2 animated fadeInRight delay-2s">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">${data.Zip}.zip</div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a title="Descargar archivo ${data.Zip}.zip" id="btn-down-txt" download="${data.Zip}.zip" href="/DispersionZIP/${data.Anio}/NOMINAS/${data.Zip}.zip" ><i class="fas fa-download fa-2x text-gray-300"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        document.getElementById('div-controls').innerHTML += `
+                            <div class="animated fadeInDown delay-1s">
+                                <h6 class="text-primary font-weight-bold"> <i class="fas fa-check-circle mr-2"></i> Depositos de nomina generados!</h6>
+                                <hr />
+                                <button id="btn-restart-to-deploy" class="btn btn-sm btn-primary" type="button" onclick="fRestartToDeploy('${data.Zip}',${data.Anio}, 'NOM');"> <i class="fas fa-undo mr-2"></i> Activar botones </button>
+                            </div>
+                        `;
+                    } else {
+                        fShowTypeAlert('Atención!', 'No se encontraron depositos', 'warning', btnProcessDepositsPayroll, 0);
+                        btnProcessDepositsPayroll.disabled = false;
+                        btnProcessDepositsInterbank.disabled = false;
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion Restart ToDeploy
+    fRestartToDeploy = (paramname, paramyear, paramcode) => {
+        try {
+            if (String(paramname) != "" && String(paramcode) != "" && String(paramname).length > 0 && String(paramcode).length > 0) {
+                if (parseInt(paramyear) != 0 && String(paramyear).length == 4) {
+                    const btnProcessDepositsPayroll   = document.getElementById('btn-process-deposits-payroll');
+                    const btnProcessDepositsInterbank = document.getElementById('btn-process-deposits-interbank');
+                    const btnRestartToDeploy          = document.getElementById('btn-restart-to-deploy');
+                    const dataSend = {
+                        paramNameFile: String(paramname),
+                        paramYear: parseInt(paramyear),
+                        paramCode: String(paramcode)
+                    };
+                    $.ajax({
+                        url: "../Dispersion/RestartToDeploy",
+                        type: "POST",
+                        data: dataSend,
+                        beforeSend: () => {
+                            btnRestartToDeploy.disabled = true;
+                        }, success: (data) => {
+                            btnProcessDepositsPayroll.disabled   = false;
+                            btnProcessDepositsInterbank.disabled = false;
+                            document.getElementById('divbtndownzip').innerHTML = "";
+                            document.getElementById('div-controls').innerHTML = "";
+                            document.getElementById('divbtndownzipint').innerHTML = "";
+                            document.getElementById('div-controls-int').innerHTML = "";
+                            $("html, body").animate({ scrollTop: $('#btn-desplegar-tab').offset().top - 50 }, 1000);
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    })
+                } else {
+                    alert('Accion invalida');
+                    location.reload();
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion Interbancarios
+    fProcessDepositsInterbank = () => {
+        try {
+            const btnProcessDepositsPayroll   = document.getElementById('btn-process-deposits-payroll');
+            const btnProcessDepositsInterbank = document.getElementById('btn-process-deposits-interbank');
+            const dataSend = {
+                yearPeriod: parseInt(yeardis.value),
+                numberPeriod: parseInt(periodis.value),
+                typePeriod: parseInt(typeperiod.value),
+                dateDeposits: datedis.value
+            };
+            $.ajax({
+                url: "../Dispersion/ProcessDepositsInterbank",
+                type: "POST",
+                data: dataSend,
+                beforeSend: () => {
+                    btnProcessDepositsPayroll.disabled = true;
+                    btnProcessDepositsInterbank.disabled = true;
+                    document.getElementById('div-show-alert-loading').innerHTML = `
+                        <div class="text-center">
+                            <div class="spinner-grow text-info" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <h6 class="font-weight-bold text-info">Generando...</h6>
+                        </div>
+                    `;
+                }, success: (data) => {
+                    document.getElementById('div-show-alert-loading').innerHTML = '';
+                    if (data.Bandera == true) {
+                        document.getElementById('divbtndownzipint').innerHTML += `
+                            <div class="card border-left-success shadow h-100 py-2 animated fadeInLeft delay-2s">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">${data.Zip}.zip</div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a title="Descargar archivo ${data.Zip}.zip" id="btn-down-txt" download="${data.Zip}.zip" href="/DispersionZIP/${data.Anio}/INTERBANCARIOS/${data.Zip}.zip" ><i class="fas fa-download fa-2x text-gray-300"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        document.getElementById('div-controls-int').innerHTML += `
+                            <div class="animated fadeInDown delay-1s">
+                                <h6 class="text-primary font-weight-bold"> <i class="fas fa-check-circle mr-2"></i> Depositos interbancarios generados!</h6>
+                                <hr />
+                                <button id="btn-restart-to-deploy" class="btn btn-sm btn-primary" type="button" onclick="fRestartToDeploy('${data.Zip}',${data.Anio}, 'INT');"> <i class="fas fa-undo mr-2"></i> Activar botones </button>
+                            </div>
+                        `;
+                    } else {
+                        fShowTypeAlert('Atención!', 'No se encontraron depositos', 'warning', btnProcessDepositsPayroll, 0);
+                        btnProcessDepositsPayroll.disabled   = false;
+                        btnProcessDepositsInterbank.disabled = false;
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
             }
         }
     }

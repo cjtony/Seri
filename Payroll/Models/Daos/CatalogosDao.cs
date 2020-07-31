@@ -201,11 +201,11 @@ namespace Payroll.Models.Daos
                     while (data.Read())
                     {
                         NivelEstudiosBean nivEstBean = new NivelEstudiosBean();
-                        nivEstBean.iIdNivelEstudio = Convert.ToInt32(data["IdNivelEstudio"].ToString());
-                        nivEstBean.sNombreNivelEstudio = data["NombreNivelEstudio"].ToString();
-                        nivEstBean.iEstadoNivelEstudio = Convert.ToInt32(data["EstadoNivelEstudio"].ToString());
-                        nivEstBean.iUsuarioAltaId = Convert.ToInt32(data["Usuario_Alta_id"].ToString());
-                        nivEstBean.sFechaAlta = data["Fecha_Alta"].ToString();
+                        nivEstBean.iIdNivelEstudio = Convert.ToInt32(data["ID"].ToString());
+                        nivEstBean.sNombreNivelEstudio = data["Valor"].ToString();
+                        //nivEstBean.iEstadoNivelEstudio = Convert.ToInt32(data["EstadoNivelEstudio"].ToString());
+                        //nivEstBean.iUsuarioAltaId = Convert.ToInt32(data["Usuario_Alta_id"].ToString());
+                        //nivEstBean.sFechaAlta = data["Fecha_Alta"].ToString();
                         listNivEstBean.Add(nivEstBean);
                     }
                 }

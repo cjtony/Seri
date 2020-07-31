@@ -418,6 +418,7 @@
         if (codpost.value.length === 5) {
             document.getElementById('load-spinner').classList.remove('d-none');
             btnVerifCodPost.classList.add('d-none');
+            let flag = false;
             setTimeout(() => {
                 $.ajax({
                     url: "../Empleados/LoadInformationHome",
@@ -426,7 +427,7 @@
                     success: (data) => {
                         if (data.length > 0) {
                             fdisabledfields(false);
-                            let colonyd;
+                            let colonyd = "none";
                             for (t in getDataTabDataGen) {
                                 if (getDataTabDataGen[t].key === "general") {
                                     colonyd = getDataTabDataGen[t].data.colony;
@@ -435,7 +436,7 @@
                             for (i = 0; i < data.length; i++) {
                                 city.value = data[i].sCiudad;
                                 if (data[i].sColonia != "") {
-                                    if (data[i].sColonia.toUpperCase() == colonyd) {
+                                    if (data[i].sColonia.toUpperCase() == colonyd.toUpperCase()) {
                                         colony.innerHTML += `<option selected value="${data[i].sColonia.toUpperCase()}">${data[i].sColonia}</option>`;
                                     } else {
                                         colony.innerHTML += `<option value="${data[i].sColonia.toUpperCase()}">${data[i].sColonia}</option>`;
@@ -683,6 +684,8 @@
         }
     }
 
+    fchangetippag();
+
     if (JSON.parse(localStorage.getItem('objectDataTabNom')) != null) {
         for (i in getDataTabNom) {
             if (getDataTabNom[i].key === "nom") {
@@ -709,6 +712,14 @@
     });
 
     $("#telfij").keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
+
+    $("#codpost").keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
+
+    $("#numberst").keyup(function () {
         this.value = (this.value + '').replace(/[^0-9]/g, '');
     });
 

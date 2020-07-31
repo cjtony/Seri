@@ -67,4 +67,57 @@
         public string sSufijo { get; set; }
     }
 
+    public class DatosEmpresaBeanDispersion
+    {
+        public string sNombreEmpresa { get; set; }
+        public string sCalle { get; set; }
+        public string sColonia { get; set; }
+        public string sCodigoPostal { get; set; }
+        public string sCiudad { get; set; }
+        public string sRfc { get; set; }
+        public int iRegimen_Fiscal_id { get; set; }
+        public string sDelegacion { get; set; }
+        public int iBanco_id { get; set; }
+        public string sDescripcion { get; set; }
+        public string sMensaje { get; set; }
+    }
+
+    public class DatosDepositosBancariosBean
+    {
+        public int iIdBanco { get; set; }
+        public int iCantidad { get; set; }
+        public string sImporte { get; set; }
+    }
+
+    public class DatosProcesaChequesNominaBean
+    {
+        public int iIdBanco { get; set; }
+        public string sBanco { get; set; }
+        public int iIdEmpresa { get; set; }
+        public string sNomina { get; set; }
+        public string sCuenta { get; set; }
+        public decimal dImporte { get; set; }
+        public string sNombre { get; set; }
+        public string sPaterno { get; set; }
+        public string sMaterno { get; set; }
+        public string sRfc { get; set; }
+        public int iTipoPago { get; set; }
+    }
+
+    public class DatosCuentaClienteBancoEmpresaBean
+    {
+        public string sNumeroCliente { get; set; }
+        public string sNumeroCuenta { get; set; }
+        public string sVacio { get; set; }
+        public int iPlaza { get; set; }
+        public string sClabe { get; set; }
+        public int iTipo { get; set; }
+        public int iCodigo { get; set; }
+        public string sMensaje { get; set; }
+    }
+
+    public class DatosDispersionArchivosBanamex {
+        public string nameFile { get; set; }
+    }
+
 }

@@ -20,7 +20,7 @@
         <button class="flotante-clear btn-circle btn btn-danger" title="Limpiar todos los campos" id="btn-clear-localstorage">
             <i class="fas fa-backspace"></i>
         </button>
-        <button type="button" data-toggle="modal" data-target="#btnsearchnivestructure" class="flotante0 btn-circle btn btn-primary" title="Niveles de estructura shadow" id="btn-modal-search-niv-estructure">
+        <button type="button" data-toggle="modal" data-target="#btnsearchnivestructure" class="flotante0 btn-circle btn btn-primary shadow" title="Niveles de estructura" id="btn-modal-search-niv-estructure">
             <i class="fas fa-network-wired"></i>
         </button>
         <button type="button" data-toggle="modal" data-target="#btnsearchcentrscost" class="flotante1 btn-circle btn btn-primary" title="Centros de costo" id="btn-modal-search-centr-cost">
@@ -92,14 +92,14 @@
                                 </a>
                                 <a class="nav-item nav-link disabled" id="name-employee-action" data-toggle="tab" role="tab" aria-controls="nav-estructure" aria-selected="false">
                                     <div class="text-right">
-                                        <i class="fas fa-user-edit text-primary mr-ico-05 d-none" id="icouser"></i>
+                                        <i class="fas fa-user-edit text-primary d-none" id="icouser"></i>
                                         <span id="nameuser" class="text-capitalize" style="font-size:13px;"></span>
                                     </div>
                                 </a>
                                 <a class="nav-item nav-link rounded border-left-primary shadow border-top-primary border-right-primary" id="mode-night">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="modeNightCheck" value="1">
-                                        <label id="label-mode-night" class="form-check-label font-navs" for="modeNightCheck"><i id="ico-mode-night" class="fas fa-moon mr-2 ml-2"></i> Modo Oscuro</label>
+                                        <label id="label-mode-night" class="form-check-label font-navs" for="modeNightCheck"><i id="ico-mode-night" class="fas fa-moon mr-1 ml-1"></i> M.O</label>
                                     </div>
                                 </a>
                                 @*<div class="switch-button">
@@ -248,7 +248,7 @@
                                                 C. postal:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Codigo postal" type="number" id="codpost" class="form-control form-control-sm" />
+                                                <input title="Longitud 7 caracteres numericos" placeholder="Codigo postal" maxlength="7" type="text" id="codpost" class="form-control form-control-sm" />
                                             </div>
                                             <div class="offset-4 col-sm-8 mt-2">
                                                 <button class="btn btn-sm btn-block" id="btn-verif-codpost">
@@ -296,7 +296,7 @@
                                                 N. calle:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Numero de calle" maxlength="10" type="text" id="numberst" class="form-control form-control-sm" />
+                                                <input title="Longitud 5 caracteres numericos." placeholder="Numero de calle" maxlength="5" type="text" id="numberst" class="form-control form-control-sm" />
                                             </div>
                                         </div>
                                     </div>
@@ -319,7 +319,7 @@
                                                 Telefono fijo:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Telefono fijo" maxlength="10" class="form-control form-control-sm" id="telfij" type="text" />
+                                                <input title="Longitud 10 caracteres numericos" placeholder="Telefono fijo" maxlength="10" class="form-control form-control-sm" id="telfij" type="text" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -327,7 +327,7 @@
                                                 Telefono movil:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Telefono movil" maxlength="10" pattern="[0-9]{10}" class="form-control form-control-sm" id="telmov" type="text" />
+                                                <input title="Longitud 10 caracteres numericos" placeholder="Telefono movil" maxlength="10" pattern="[0-9]{10}" class="form-control form-control-sm" id="telmov" type="text" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -787,6 +787,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group row" id="content-new-inpt-motmovi">
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
@@ -812,6 +814,8 @@
                                             <div class="col-sm-8">
                                                 <input type="text" id="report" class="form-control form-control-sm" placeholder="Reporta a" disabled />
                                             </div>
+                                        </div>
+                                        <div class="form-group row" id="content-new-inpt-fechmovi">
                                         </div>
                                     </div>
                                     <div class="offset-3 col-md-6 mt-3">
@@ -966,7 +970,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-city mr-2"></i> Departamentos </h5>
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-city mr-2 col-ico"></i> Departamentos </h5>
                 <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-search-departament-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -976,8 +980,8 @@
                     <div class="row">
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
-                                <label for="searchdepartmentkey" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i> Código departamento:
+                                <label for="searchdepartmentkey" class="col-form-label col-md-5 font-weight-bold">
+                                    <i class="fas fa-terminal mr-1 col-ico"></i> Código departamento:
                                 </label>
                                 <div class="col-md-7">
                                     <input type="text" class="form-control form-control-sm text-uppercase" id="searchdepartmentkey" placeholder="Ingresa el código" />
@@ -1088,8 +1092,8 @@
                     <div class="row">
                         <div class="offset-2 col-md-8">
                             <div class="form-group row">
-                                <label for="keysearchlocalityadd" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i>
+                                <label for="keysearchlocalityadd" class="col-form-label col-md-5 font-weight-bold">
+                                    <i class="fas fa-terminal mr-1 col-ico"></i>
                                     Localidad:
                                 </label>
                                 <div class="col-md-7">
@@ -1433,7 +1437,7 @@
                     <div class="row">
                         <div class="offset-2 col-md-8">
                             <div class="form-group row">
-                                <label for="searchpuestokey" class="col-form-label col-md-5">
+                                <label for="searchpuestokey" class="col-form-label col-md-5 font-weight-bold">
                                     <i class="fas fa-terminal mr-1 col-ico"></i>
                                     Nombre puesto
                                 </label>
@@ -2161,29 +2165,29 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group row mb-4">
-                                <div class="col-md-12 mb-3">
-                                    <h6 class="text-center">Aplicar filtro</h6>
+                            <div class="form-group row mb-4 p-2 border-left-primary border-right-primary rounded shadow">
+                                <div class="col-md-4 mt-2">
+                                    <h6 class="text-center">Buscar por: </h6>
                                 </div>
-                                <div class="col-md-6 text-center">
+                                <div class="col-md-4 text-center mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="filtroemp" id="filtronumber" value="numero" />
-                                        <label class="form-check-label" for="filtronumber">Buscar por numero de empleado.</label>
+                                        <label class="form-check-label font-weight-bold" for="filtronumber" id="labelfiltronumber">Nomina</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6 text-center">
+                                <div class="col-md-4 text-center mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="filtroemp" id="filtroname" value="nombre" checked />
-                                        <label class="form-check-label" for="filtroname">Buscar por nombre del empleado.</label>
+                                        <label class="form-check-label font-weight-bold" for="filtroname" id="labelfiltroname">Nombre</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
-                                <label for="searchemployekey" class="col-form-label col-md-5 text-center">
-                                    <i class="fas fa-terminal mr-1 col-ico"></i> <span id="labsearchemp">Nombre:</span>
+                                <label for="searchemployekey" class="col-form-label col-md-4 text-center" id="labelsearchemployee">
+                                    <i class="fas fa-user mr-2 col-ico"></i> <span id="labsearchemp">Nombre:</span>
                                 </label>
-                                <div class="col-md-7">
-                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchemployekey" placeholder="NOMBRE DEL EMPLEADO" onkeypress="return check(event)" />
+                                <div class="col-md-8">
+                                    <input type="text" autocomplete="off" class="form-control form-control-sm text-uppercase" id="searchemployekey" placeholder="NOMBRE DEL EMPLEADO" onkeypress="return check(event)" />
                                 </div>
                             </div>
                         </div>
@@ -2192,6 +2196,7 @@
                         <div class="col-md-12">
                             <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultemployekey">
                             </div>
+                            <div class="animated fadeIn" id="noresultssearchemployees"></div>
                         </div>
                     </div>
                 </div>
@@ -2237,7 +2242,7 @@
                     <div class="row">
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
-                                <label for="searchpositionkey" class="col-form-label col-md-5">
+                                <label for="searchpositionkey" class="col-form-label col-md-5 font-weight-bold">
                                     <i class="fas fa-terminal mr-1"></i> Código posicion:
                                 </label>
                                 <div class="col-md-7">
@@ -2343,7 +2348,7 @@
                     <div class="row">
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
-                                <label for="searchpositionkeybtn" class="col-form-label col-md-5">
+                                <label for="searchpositionkeybtn" class="col-form-label col-md-5 font-weight-bold">
                                     <i class="fas fa-terminal mr-1 col-ico"></i> Código posicion:
                                 </label>
                                 <div class="col-md-7">
@@ -2667,8 +2672,8 @@
                     <div class="row">
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
-                                <label for="searchregionalkey" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i> Código regional:
+                                <label for="searchregionalkey" class="col-form-label col-md-5 font-weight-bold">
+                                    <i class="fas fa-terminal mr-1 col-ico"></i> Código regional:
                                 </label>
                                 <div class="col-md-7">
                                     <input type="text" class="form-control form-control-sm text-uppercase" id="searchregionalkey" placeholder="Ingresa el código" />
@@ -2783,7 +2788,7 @@
                     <div class="row">
                         <div class="offset-2 col-md-8">
                             <div class="form-group row">
-                                <label for="searchofficekeydynamic" class="col-form-label col-md-5">
+                                <label for="searchofficekeydynamic" class="col-form-label col-md-5 font-weight-bold">
                                     <i class="fas fa-terminal mr-1"></i> Código sucursal:
                                 </label>
                                 <div class="col-md-7">
@@ -2983,8 +2988,8 @@
                     <div class="row">
                         <div class="offset-2 col-md-8">
                             <div class="form-group row">
-                                <label for="searchofficekey" class="col-form-label col-md-5">
-                                    <i class="fas fa-terminal mr-1"></i> Código sucursal:
+                                <label for="searchofficekey" class="col-form-label col-md-5 font-weight-bold">
+                                    <i class="fas fa-terminal mr-1 col-ico"></i> Código sucursal:
                                 </label>
                                 <div class="col-md-7">
                                     <input type="text" class="form-control form-control-sm text-uppercase" id="searchofficekey" placeholder="Ingresa el código" />
@@ -3455,7 +3460,7 @@
                     <div class="row">
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
-                                <label for="searchcentrcosts" class="col-form-label col-md-5">
+                                <label for="searchcentrcosts" class="col-form-label col-md-5 font-weight-bold">
                                     <i class="fas fa-terminal mr-1 col-ico"></i> Centro de costo:
                                 </label>
                                 <div class="col-md-7">
@@ -3681,6 +3686,7 @@
 
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
 <script type="text/javascript" src="~/Scripts/main/main.js"></script>
+<script src="~/Scripts/main/animationsmain.js"></script>
 <script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js"></script>
 <script type="text/javascript" src="~/Scripts/main/puestos.js"></script>
 <script type="text/javascript" src="~/Scripts/main/positions.js"></script>
@@ -3707,6 +3713,9 @@
                         } else {
                             document.getElementById('banuse').disabled = true;
                             document.getElementById('cunuse').disabled = true;
+                        }
+                        if (getDataTabNom1[i].data.banuse != "") {
+                            document.getElementById('banuse').value = getDataTabNom1[i].data.banuse;
                         }
                     }
                 }

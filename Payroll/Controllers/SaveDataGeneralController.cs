@@ -248,7 +248,7 @@ namespace Payroll.Controllers
 
         // Guarda los datos de la estructura al editar el empleado
         [HttpPost]
-        public JsonResult DataEstructuraEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom)
+        public JsonResult DataEstructuraEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom, string fechmovi, string motmovi)
         {
             Boolean flag          = false;
             String  messageError  = "none";

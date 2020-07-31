@@ -12,6 +12,32 @@ namespace Payroll.Models.Daos
     public class LoadDataTableDaoD : Conexion
     {
 
+        public LoadDataTableBean sp_Valida_Existencia_Banco_Interbancario(int keyBusiness)
+        {
+            LoadDataTableBean loadDataTable = new LoadDataTableBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Valida_Existencia_Banco_Interbancario", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (data["Respuesta"].ToString() == "EXISTS") {
+                        loadDataTable.sMensaje = "SUCCESS";
+                    } else {
+                        loadDataTable.sMensaje = "WARNING";
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+                loadDataTable.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return loadDataTable;
+        }
+
         public List<CatalogoGeneralBean> sp_TiposDispersion_Retrieve_TiposDispersion()
         {
             List<CatalogoGeneralBean> lTypeDispersion = new List<CatalogoGeneralBean>();

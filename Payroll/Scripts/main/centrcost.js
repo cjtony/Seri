@@ -33,6 +33,11 @@
         localStorage.setItem("centrcostregdep", 1);
     });
 
+    keysearchcentrcosts.style.transition = "1s";
+    keysearchcentrcosts.style.cursor     = "pointer";
+    keysearchcentrcosts.addEventListener('mouseover',  () => { keysearchcentrcosts.classList.add('shadow'); });
+    keysearchcentrcosts.addEventListener('mouseleave', () => { keysearchcentrcosts.classList.remove('shadow'); });
+
     /*
      * Funciones
      */

@@ -868,6 +868,7 @@
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.web.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.windowsphone.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.base.css" />
+    <Content Include="Scripts\main\animationsmain.js" />
     <Content Include="Scripts\main\Ausentismos.js" />
     <Content Include="Scripts\main\BajasEmpleados.js" />
     <Content Include="Scripts\main\branchoffices.js" />
@@ -908,7 +909,6 @@
     <Content Include="Scripts\main\main.js" />
     <Content Include="Scripts\Catalogos\ModuloCatalogos.js" />
     <Content Include="Scripts\main\modenight.js" />
-    
     <Content Include="Scripts\main\PensionesAlimenticias.js" />
     <Content Include="Scripts\main\positions.js" />
     <Content Include="Scripts\main\puestos.js" />

@@ -180,6 +180,12 @@
         resultpositionsbtn.innerHTML = '';
         document.getElementById('noresultpositions3').innerHTML = '';
     }
+
+    searchpositionkeybtn.style.transition = "1s";
+    searchpositionkeybtn.style.cursor     = "pointer";
+    searchpositionkeybtn.addEventListener('mouseover', () =>  { searchpositionkeybtn.classList.add('shadow'); });
+    searchpositionkeybtn.addEventListener('mouseleave', () => { searchpositionkeybtn.classList.remove('shadow'); });
+
     localStorage.removeItem('modalbtnpositions');
     /* EJECUCION DE FUNCION */
     icoclosesearchpositionsbtn.addEventListener('click', () => {
@@ -546,8 +552,6 @@
                     type: "POST",
                     data: { clvposition: paramid },
                     success: (data) => {
-                        console.log(data);
-                        alert('entrando');
                         $("#editposition").modal('show');
                         clvposition.value = data.iIdPosicion;
                         codtxtinf.textContent = data.sPosicionCodigo;

@@ -42,15 +42,9 @@
         localStorage.removeItem('datesave');
         const date = new Date();
         let fechAct;
-        let day = date.getDay();
-        if (date.getDay() < 10) {
-            day = "0" + date.getDay();
-        }
-        if (date.getMonth() + 1 < 10) {
-            fechAct = date.getFullYear() + "-" + "0" + (date.getMonth() + 1) + "-" + day;
-        } else {
-            fechAct = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + day;
-        }
+        const day = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+        const month = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        fechAct = date.getFullYear() + "-" + month + "-" + day;
         if (dateLocSto != null) {
             if (dateLocSto != fechAct) {
                 setTimeout(() => {
@@ -62,7 +56,7 @@
 
     const dateact = document.getElementById('dateact');
     let d = new Date();
-    let monthact = d.getMonth() + 1, dayact = d.getDay(), montlet = "", daylet = "";
+    let monthact = d.getMonth() + 1, dayact = d.getDate(), montlet = "", daylet = "";
     const months = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
     for (let i = 0; i < months.length; i++) {
@@ -206,8 +200,24 @@
         if (localStorage.getItem('tabSelected') === null) {
             localStorage.setItem('tabSelected', 'none');
         }
-        if (localStorage.getItem('modedit') != null) {
+        if (localStorage.getItem('modeedit') != null) {
             document.getElementById('btn-save-data-all').disabled = false;
+            document.getElementById('content-new-inpt-fechmovi').innerHTML = `
+                <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                    Fecha de movimiento
+                </label>
+                <div class="col-sm-8">
+                    <input type="date" id="fechmovi" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
+                </div>
+            `;
+            document.getElementById('content-new-inpt-motmovi').innerHTML = `
+                <label for="motmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
+                    Motivo del movimiento
+                </label>
+                <div class="col-sm-8">
+                    <input type="text" id="motmovi" class="form-control form-control-sm" placeholder="Motivo del movimiento"/>
+                </div>
+            `;
         }
     }
 
@@ -300,9 +310,9 @@
             }
             document.getElementById('icouser').classList.remove('d-none');
             if (localStorage.getItem('modeedit') != null) {
-                document.getElementById('nameuser').textContent = "Editando al Empleado: " + clvemp.value + " - " + name.value + " " + apep.value + " " + apem.value + ".";
+                document.getElementById('nameuser').textContent = clvemp.value + " - " + name.value + " " + apep.value + " " + apem.value + ".";
             } else {
-                document.getElementById('nameuser').textContent = "Empleado: " + name.value + " " + apep.value + " " + apem.value + ".";
+                document.getElementById('nameuser').textContent = name.value + " " + apep.value + " " + apem.value + ".";
                 //setTimeout(() => { colony.value = dcolony; }, 1500);
             }
         }

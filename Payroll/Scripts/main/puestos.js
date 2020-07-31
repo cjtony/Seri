@@ -110,6 +110,12 @@
     /* CONSTANTES DE LA BUSQUEDA EN TIEMPO REAL DE PUESTOS */
     const searchpuestokey   = document.getElementById('searchpuestokey');
     const resultpuestos     = document.getElementById('resultpuestos');
+
+    searchpuestokey.style.transition = "1s";
+    searchpuestokey.style.cursor   = "pointer";
+    searchpuestokey.addEventListener('mouseover', () =>  { searchpuestokey.classList.add('shadow'); });
+    searchpuestokey.addEventListener('mouseleave', () => { searchpuestokey.classList.remove('shadow'); });
+
     /* CONSTANTES DE LA BUSQUEDA EN TIEMPO REAL DE PUESTOS AL MOMENTO DE REGISTRAR UNA NUEVA POSICION */
     const searchpuestokeyadd = document.getElementById('searchpuestokeyadd');
     const resultpuestosadd   = document.getElementById('resultpuestosadd');
