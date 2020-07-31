@@ -507,7 +507,7 @@
                                 fShowTypeAlert('Atención!', 'No hay bancos definidos', 'warning', btndesplegartab, 0);
                             }
                         } else {
-                            fShowTypeAlert('Atención!', 'Ocurrio un problema', 'error', btndesplegartab, 0);
+                            fShowTypeAlert('Atención!', 'No se encontro informacion bancaria', 'warning', btndesplegartab, 0);
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
