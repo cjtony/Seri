@@ -379,6 +379,7 @@ namespace Payroll.Controllers
             Lista = Dao.sp_Retrieve_Menu_Paths(1);
             return Json(Lista);
         }
+        [HttpPost]
         public JsonResult Loadonemenu(int Id)
         {
             List<MainMenuBean> Lista;
@@ -386,6 +387,7 @@ namespace Payroll.Controllers
             Lista = Dao.Bring_Main_Menus(1,Id);
             return Json(Lista);
         }
+        [HttpPost]
         public JsonResult LoadCentrosCostoDetalle(int Empresa_id)
         {
             List<DataCentrosCosto> Lista;
@@ -393,5 +395,50 @@ namespace Payroll.Controllers
             Lista = Dao.sp_TCentrosCostos_Retrieve_CentrosCostoxEmpresa(Empresa_id);
             return Json(Lista);
         }
+        [HttpPost]
+        public JsonResult SaveNewCentrosCostos(int Empresa_id, string nombre, string descripcion)
+        {
+            List<string> Lista = new List<string>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            int Usuario_id = int.Parse(Session["iIdUsuario"].ToString());
+            Lista = Dao.sp_Catalogos_Insert_Centro_Costo(Empresa_id, nombre.Trim().ToUpper(), descripcion.Trim().ToUpper(), Usuario_id);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult SaveNewRegionales(string ClaveRegion, string Descripcion)
+        {
+            List<string> Lista = new List<string>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            int Usuario_id = int.Parse(Session["iIdUsuario"].ToString());
+            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+            Lista = Dao.sp_CRegionales_Insert_Regional(Empresa_id, ClaveRegion.Trim().ToUpper(), Descripcion.Trim().ToUpper(), Usuario_id);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult SaveNewRegionalesCatalogo(int Empresa_id, string ClaveRegion, string Descripcion)
+        {
+            List<string> Lista = new List<string>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            int Usuario_id = int.Parse(Session["iIdUsuario"].ToString());
+            Lista = Dao.sp_CRegionales_Insert_Regional(Empresa_id, ClaveRegion.Trim().ToUpper(), Descripcion.Trim().ToUpper(), Usuario_id);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult ChangestatusRegistroPatronal(int Empresa_id, int RegPat_id, int Status)
+        {
+            List<string> Lista = new List<string>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_TRegistroPatronal_update_Status(Empresa_id, RegPat_id, Status);
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult SaveNewRegistroPatronal(int Empresa_id, string Afiliacion_IMSS, string NombreAfiliacion, string RiesgoTrabajo, int Clase)
+        {
+            List<string> Lista = new List<string>();
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            Lista = Dao.sp_TRegistroPatronal_insert_RegistroPatronal(Empresa_id, Afiliacion_IMSS, NombreAfiliacion, RiesgoTrabajo, Clase);
+            return Json(Lista);
+        }
+
     }
 }

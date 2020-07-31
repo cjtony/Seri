@@ -1,1 +1,78 @@
-﻿
+﻿<div class="container col-md-10 bg-white shadow shadow-lg font-labels p-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active h6" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-list-ul"></i> Registros Patronales</a>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <table class="table table-sm mt-2" id="tab-registropatronal">
+                <thead>
+                    <tr>
+                        <th class="">ID</th>
+                        <th class="">Nombre Empresa</th>
+                        <th class="">Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody id="bodytab-registropatronal">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@* modal nuevo centro de costos  *@
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-nuevo-registropatronal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo Centro de Costos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body font-labels">
+                <form id="frmnuevoregistropatronal" class="row">
+                    <div class="form-group col-md-6">
+                        <label class="">Empresa</label>
+                        <input class="form-control form-control-sm" type="text" id="newempresa" required placeholder="" readonly />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Afiliación IMSS</label>
+                        <input class="form-control form-control-sm" type="text" id="newafiliacion" required placeholder="" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Nombre Afiliación</label>
+                        <input class="form-control form-control-sm" type="text" id="newnombre" required placeholder="" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Riesgo de trabajo</label>
+                        <input class="form-control form-control-sm" type="text" id="newriesgotrabajo" required placeholder="" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Clase</label>
+                        <select id="newclase" class="custom-select custom-select-sm">
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm btn-icon-split" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text">Cerrar</span>
+                </button>
+                <button type="button" id="btnsaveregistropatronal" class="btn btn-primary btn-sm">
+                    <span class="icon"><i class="fas fa-save"></i></span>
+                    <span class="text">Guardar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js"></script>
+<script>
+    $(function () {
+        LoadRegistrosPatronales();
+    });
+</script>

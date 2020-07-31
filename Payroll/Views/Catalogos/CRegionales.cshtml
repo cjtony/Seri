@@ -1,1 +1,67 @@
-﻿
+﻿<div class="container col-md-10 bg-white shadow shadow-lg font-labels p-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active h6" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-list-ul"></i> Regionales </a>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <table class="table table-sm mt-2" id="tab-regionales">
+                <thead>
+                    <tr>
+                        <th class="">ID</th>
+                        <th class="">Nombre Empresa</th>
+                        <th class="">Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody id="bodytab-regionales">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Modal nueva regional-->
+<div class="modal fade" id="modalnuevaregional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content px-5 font-labels">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nueva Regional</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row px-5 rounded shadow-lg border-left-primary">
+                <form id="frmnewregional" class="col-md-12 row">
+                    <div class="form-group col-md-6">
+                        <label class="font-weight-bold"> Clave </label>
+                        <input type="text" id="newinputclave" class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="font-weight-bold"> Descripción </label>
+                        <input type="text" id="newinputdescripcion" class="form-control form-control-sm" />
+                    </div>
+                    <input type="hidden" id="newinputempresa" class="form-control form-control-sm" />
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text">Cerrar</span>
+                </button>
+                <div class="btn btn-primary btn-sm btn-icon-split" id="btnnewregional">
+                    <span class="icon"><i class="fas fa-save"></i></span>
+                    <span class="text">Guardar</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js"></script>
+<script>
+    $(function () {
+        LoadRegionales();
+    });
+</script>

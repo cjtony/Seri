@@ -1289,5 +1289,150 @@ namespace Payroll.Models.Daos
             }
             return Bean;
         }
+        public List<string> sp_Catalogos_Insert_Centro_Costo(int Empresa_id, string Nombre, string Descripcion, int Usuario_id)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Catalogos_Insert_Centro_Costo", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlNombre", Nombre));
+                cmd.Parameters.Add(new SqlParameter("@ctrlDescripcion", Descripcion));
+                cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sMensaje"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<string> sp_CRegionales_Insert_Regional(int Empresa_id, string ClaveRegion, string Descripcion, int Usuario_id)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CRegionales_Insert_Regional", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlDescripcion", Descripcion));
+                cmd.Parameters.Add(new SqlParameter("@ctrlClaveRegion", ClaveRegion));
+                cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sMensaje"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<string> sp_TRegistroPatronal_update_Status(int Empresa_id, int RegPat_id, int Status)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TRegistroPatronal_update_Status", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlRegPat_id", RegPat_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlStatus", Status));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sMensaje"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+        public List<string> sp_TRegistroPatronal_insert_RegistroPatronal(int Empresa_id, string Afiliacion_IMSS, string NombreAfiliacion, string RiesgoTrabajo, int Clase)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TRegistroPatronal_insert_RegistroPatronal", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlAfiliacion", Afiliacion_IMSS));
+                cmd.Parameters.Add(new SqlParameter("@ctrlNombreAfiliacion", NombreAfiliacion));
+                cmd.Parameters.Add(new SqlParameter("@ctrlRiesgoTrabajo", RiesgoTrabajo));
+                cmd.Parameters.Add(new SqlParameter("@ctrlClase", Clase));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sMensaje"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
+
     }
 }

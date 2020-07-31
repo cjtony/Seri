@@ -326,14 +326,17 @@ namespace Payroll.Models.Beans
         public string Descripcion { get; set; }
         public string TasaIva { get; set; }
         public int RegistroPatronal_id { get; set; }
+        public string NombreRegistroPatronal { get; set; }
         public int Regional_id { get; set; }
         public string ClaveRegional { get; set; }
         public string DescripcionRegional { get; set; }
         public int ZonaEconomica_id { get; set; }
+        public string NombreZonaEconomica { get; set; }
         public int Sucursal_id { get; set; }
         public string ClaveSucursal { get; set; }
         public string DescripcionSucursal { get; set; }
         public int Estado_id { get; set; }
+        public string NombreEstado { get; set;}
         public string sMensaje { get; set; }
     }
     public class LocalidadesBean2

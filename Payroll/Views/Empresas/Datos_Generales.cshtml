@@ -38,10 +38,8 @@
             <label class="text-left col-md-4" id="l-12"></label>
             <label class="font-weight-bold col-md-2">Regimen Fiscal : </label>
             <label class="text-left col-md-4" id="l-13"></label>
-            <label class="font-weight-bold col-md-2">Banco Interbancarios : </label>
-            <label class="text-left col-md-4" id="l-14"></label>
             <label class="font-weight-bold col-md-2">Registro IMSS : </label>
-            <label class="text-left col-md-4" id="l-15"></label>
+            <label class="text-left col-md-4" id="l-14"></label>
         </small>
         <div class="col-md-6 font-labels d-flex justify-content-end"><div id="btnEditarEmpresa" class="btn btn-outline-success font-weight-bold" style="font-size:12px;">Editar  <i class="pl-1 far fa-edit"></i> </div></div>
     </div>
@@ -504,8 +502,7 @@
             document.getElementById("l-11").innerHTML = data[10];
             document.getElementById("l-12").innerHTML = data[11].substring(0, 10);
             document.getElementById("l-13").innerHTML = data[12];
-            document.getElementById("l-14").innerHTML = data[13] + " - " + data[14];
-            document.getElementById("l-15").innerHTML = data[15];
+            document.getElementById("l-14").innerHTML = data[13];
         }
     });
     $.ajax({

@@ -13,8 +13,6 @@
                     if (i == 0) {
                         empresa = data[i]["Empresa_id"];
                     }
-                    console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                    console.log(data[i]);
                     tab.innerHTML += "" +
                         "<tr>" +
                         "<td colspan='3' >" +
@@ -44,8 +42,6 @@
                         empresa = data[i]["Empresa_id"];
                     }
                     if (data[i]["Empresa_id"] == empresa) {
-                        //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                        //console.log(data[i]);
                         tab.innerHTML += "" +
                             "<tr>" +
                             "<td colspan='3' >" +
@@ -59,7 +55,6 @@
                     } else {
                         empresa = data[i]["Empresa_id"];
                         if (data[i]["Empresa_id"] == empresa) {
-                            //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
                             tab.innerHTML += "" +
                                 "<tr>" +
                                 "<td colspan='3' >" +
@@ -92,8 +87,6 @@
                         empresa = data[i]["Empresa_id"];
                     }
                     if (data[i]["Empresa_id"] == empresa) {
-                        //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                        //console.log(data[i]);
                         tab.innerHTML += "" +
                             "<tr>" +
                             "<td colspan='3' >" +
@@ -108,7 +101,6 @@
                     } else {
                         empresa = data[i]["Empresa_id"];
                         if (data[i]["Empresa_id"] == empresa) {
-                            //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
                             tab.innerHTML += "" +
                                 "<tr>" +
                                 "<td colspan='3' >" +
@@ -133,8 +125,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-                console.log(pilltab);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table-in-fechas-periodos text-center col-md-12'>" +
                     "<thead class='col-md-12'>" +
@@ -171,14 +161,10 @@
                             "<td class=''>" + data[j]["Dias_Efectivos"] + "</td>" +
                             "</tr>";
                     }
-
-
-
                 }
                 $(".collapse").collapse("hide");
                 $("#" + pilltab).collapse("toggle");
             }
-
         });
     }
     //MUESTRA LAS POLITICAS POR EMPRESA
@@ -189,8 +175,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
-                //console.log(pilltab);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table-in-politicas-vacaciones col-md-8'>" +
                     "<thead class='col-md-12'>" +
@@ -204,7 +188,6 @@
                     "<tbody id='tabp" + pilltab + "'></tbody>" + "</table>";
                 for (var j = 0; j < data.length; j++) {
                     if (j == 0) {
-                        console.log("NOMBRE EMPRESA " + data[j]["NombreEmpresa"]);
                         document.getElementById("politicas-modal-title").innerHTML = data[j]["NombreEmpresa"];
                     }
                     document.getElementById("tabp" + pilltab).innerHTML += "<tr>" +
@@ -214,13 +197,9 @@
                         "<td class=''>" + data[j]["Dias_Aguinaldo"] + "</td>" +
                         "</tr>";
                 }
-                //console.log($("#tabp" + pilltab).html());
                 document.getElementById("modal-body-politicas").innerHTML = $("#" + pilltab).html();
-                //$("#" + pilltab).collapse("toggle");
-
                 $("#modalMostrarPoliticas").modal("show");
             }
-
         });
     }
     //LLENADO DE POLITICAS POR EMPRESA Y EFFDT 
@@ -231,8 +210,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id, Effdt: Effdt }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
-                //console.log(pilltab);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table-in-politicas-vacaciones col-md-8'>" +
                     "<thead class='col-md-12'>" +
@@ -246,7 +223,6 @@
                     "<tbody id='tabp" + pilltab + "'></tbody>" + "</table>";
                 for (var j = 0; j < data.length; j++) {
                     if (j == 0) {
-                        console.log("NOMBRE EMPRESA " + data[j]["NombreEmpresa"]);
                         document.getElementById("politicas-modal-title").innerHTML = data[j]["NombreEmpresa"];
                     }
                     document.getElementById("tabp" + pilltab).innerHTML += "<tr>" +
@@ -256,13 +232,9 @@
                         "<td class=''>" + data[j]["Dias_Aguinaldo"] + "</td>" +
                         "</tr>";
                 }
-                //console.log($("#tabp" + pilltab).html());
                 document.getElementById("modal-body-politicas").innerHTML = $("#" + pilltab).html();
-                //$("#" + pilltab).collapse("toggle");
-
                 $("#modalMostrarPoliticas").modal("show");
             }
-
         });
     }
     ////////////////////////////////////////////
@@ -276,15 +248,12 @@
             cache: false,
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var tab = document.getElementById("body-cards-empresas");
                 tab.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     tab.innerHTML += "<div class='col-md-12 row'>"
-                        //+ "<div class=' p-0 row'>"
                         + "<small class='col-md-8'>"+ data[i]["Empresa_id"] + " " + data[i]["NombreEmpresa"] +"</small>"
                         + "<small class='col-md-4'><span class='badge badge-primary col-md-12'><i class='fas fa-users'></i>&nbsp;" + data[i]["No"] + "</span></small>"
-                        //+ "</div>"
                         + "</div>";
                 }
             }
@@ -297,7 +266,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var select = document.getElementById("inEmpresa");
                 select.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
@@ -312,7 +280,6 @@
         var txt = $("#inSearch").val();
         var Empresa_id = $("#inEmpresa").val();
         if ($("#inSearch").val() != "") {
-            //var txtSearch = { "txtSearch": txt, "Empresa_id": Empresa_id };
             $.ajax({
                 url: "../Empleados/SearchEmpleadosM",
                 type: "POST",
@@ -321,7 +288,6 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
                     $("#result").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -346,20 +312,16 @@
             data: JSON.stringify({ Empresa_id: Empresa_id, Empleado_id: Empleado_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data.length);
-                //$("#collapseEmp").html(data);
                 for (var i = 0; i < data.length; i++) {
                     var j = i + 1;
                     $(".lbl-" + j).val(data[i]);
                 }
-                //$(".collapseDataEmp").collapse("show");
                 $("#modalBusquedaEmpleado").modal("hide");
             }
         });
     }
     $(".tabs").on("click", function () {
         if ($(".lbl-1").val() == "") {
-            
             Swal.fire({
                 icon: 'warning',
                 title: 'Aviso!',
@@ -379,7 +341,6 @@
             cache: false,
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var tab = document.getElementById("bodytab-puestos");
                 tab.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
@@ -411,7 +372,6 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
                     $("#resultPuesto").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -435,7 +395,6 @@
                 data: JSON.stringify({ Empresa_id: Empresa_id, Puesto_id: Puesto_id }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    
                     $("#inp-0").val(data[0]["PuestoCodigo"]);
                     $("#inp-1").val(data[0]["NombrePuesto"]);
                     $("#inp-2").val(data[0]["DescripcionPuesto"]);
@@ -452,51 +411,49 @@
                 }
             });
         }
-        //SELECCIONAR LA EMPRESA CON LA QUE SE QUIERE BUSCAR
-        irabuscar = (Empresa_id) => {
-            $("#inEmpresa option[value='" + Empresa_id + "']").attr("selected", true);
-            $("#inSearchPuesto").focus();
-        }
+        
     });
+    //SELECCIONAR LA EMPRESA CON LA QUE SE QUIERE BUSCAR
+    irabuscar = (Empresa_id) => {
+        $("#inEmpresa option[value='" + Empresa_id + "']").attr("selected", true);
+        $("#inSearchPuesto").focus();
+    }
     // BOTON QUE EXPORTA LOS PUESTOS A UN ARCHIVO CSV 
     $("#btnExportToCSV").on("click", function () {
-
-        const headers = {
-            id: 'Id Puesto',
-            empresa_id: 'Empresa',
-            codigo: 'Codigo Puesto',
-            nombre: 'Nombre del puesto',
-            descripcion: 'Descripcion',
-            profecion: 'Profesion',
-            clasificacion: 'Clasificacion',
-            colectivo: 'Colectivo',
-            nivel_jerarquico: 'Nivel Jerarquico',
-            performance: 'Performance Manager',
-            tabulador: 'Tabulador',
-            fecha_alta: 'Fecha Alta'
-        };
-        //
-        $.ajax({
-            url: "../Catalogos/LoadAllPuestos",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                console.log(data);
+        //const headers = {
+        //    id: 'Id Puesto',
+        //    empresa_id: 'Empresa',
+        //    codigo: 'Codigo Puesto',
+        //    nombre: 'Nombre del puesto',
+        //    descripcion: 'Descripcion',
+        //    profecion: 'Profesion',
+        //    clasificacion: 'Clasificacion',
+        //    colectivo: 'Colectivo',
+        //    nivel_jerarquico: 'Nivel Jerarquico',
+        //    performance: 'Performance Manager',
+        //    tabulador: 'Tabulador',
+        //    fecha_alta: 'Fecha Alta'
+        //};
+        ////
+        //$.ajax({
+        //    url: "../Catalogos/LoadAllPuestos",
+        //    type: "POST",
+        //    contentType: "application/json; charset=utf-8",
+        //    success: (data) => {
                 
-            }
-        });
+        //    }
+        //});
+        ////
+        //const data = [
+        //    {
+        //        id: '1', empresa_id: '2', codigo: 'Emp23', nombre: 'Puesto1',
+        //        descripcion: 'Descripcion', profecion: 'Profesion', clasificacion: 'Clasificacion', colectivo: 'Colectivo',
+        //        nivel_jerarquico: 'Nivel Jerarquico', performance: 'Performance Manager', tabulador: 'Tabulador', fecha_alta: 'Fecha Alta'
+        //    }
 
-        //
-        const data = [
-            {
-                id: '1', empresa_id: '2', codigo: 'Emp23', nombre: 'Puesto1',
-                descripcion: 'Descripcion', profecion: 'Profesion', clasificacion: 'Clasificacion', colectivo: 'Colectivo',
-                nivel_jerarquico: 'Nivel Jerarquico', performance: 'Performance Manager', tabulador: 'Tabulador', fecha_alta: 'Fecha Alta'
-            }
+        //];
 
-        ];
-
-        exportCSVFile(headers, data, 'Lista de Puestos');
+        //exportCSVFile(headers, data, 'Lista de Puestos');
 
     });
     ////////////////////////////////////////////
@@ -509,20 +466,14 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var acordeon = document.getElementById("accordionGruposEmpresas");
                 acordeon.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-
                     acordeon.innerHTML += ""
                         + "<div class='card border-0 pb-1 my-1 font-labels'>"
                         + "<div class='card-header bg-white btn btn-light font-labels btn-icon-split col-md-12 text-left p-0'  onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] + "\",\"ul" + data[i][0] + "\",\"collapse" + data[i][0] +"\")' id='heading" + data[i][0] +"'>"
-                        //+ "<h2 class='mb-0'>"
-                        //+ "<button class='btn p-0' type='button'>"
                         + "<span class='icon'><i class='fas fa-eye text-info'></i></span>"
                         + "<span class='text col '>" + data[i][1] + "</span>"
-                        //+ "</button>"
-                        //+ "</h2>"
                         + "</div>"
                         + "<div id='collapse" + data[i][0] + "' class='collapse p-0' aria-labelledby='heading" + data[i][0] +"' data-parent='#accordionGruposEmpresas'>"
                         + "<ul id='ul" + data[i][0] + "' class='list-group list-group-flush border-top-0'>"
@@ -541,7 +492,6 @@
             data: JSON.stringify({ Grupo_id: Grupo_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var lista = document.getElementById(ul)
                 lista.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
@@ -598,8 +548,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-                console.log(pilltab);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-centros-costos col-md-12 pb-4'>" +
                     "<thead class='col-md-12'>" +
@@ -671,13 +619,6 @@
                         "</td >" +
                         "</tr >";
                 }
-                //setTimeout(function () {
-                //    $("#tab-registropatronal").DataTable({
-                //        "language": {
-                //            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                //        }
-                //    });
-                //}, 1000);
             }
         });
     }
@@ -689,7 +630,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-registros-patronales col-md-12 pb-4'>" +
                     "<thead class='col-md-12'>" +
@@ -764,13 +704,6 @@
                         "</td >" +
                         "</tr >";
                 }
-                //setTimeout(function () {
-                //    $("#tab-registropatronal").DataTable({
-                //        "language": {
-                //            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                //        }
-                //    });
-                //}, 1000);
             }
         });
     }
@@ -782,7 +715,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-registros-patronales col-md-12 pb-4'>" +
                     "<thead class='col-md-12'>" +
@@ -795,21 +727,12 @@
                     "</thead>" +
                     "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
                 for (var j = 0; j < data.length; j++) {
-                    //if (data[j]["Estado"] == "0") {
-                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
-                            "<td class=''>" + data[j]["iIdRegional"] + "</td>" +
-                            "<td class=''>" + data[j]["sClaveRegional"] + "</td>" +
-                            "<td class=''>" + data[j]["sDescripcionRegional"] + "</td>" +
-                            "<td class=''>" + data[j]["sFechaAlta"] + "</td>" +
-                            "</tr>";
-                    //} else {
-                    //    document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
-                    //        "<td class=''>" + data[j]["IdRegPat"] + "</td>" +
-                    //        "<td class=''>" + data[j]["sClaveRegional"] + "</td>" +
-                    //        "<td class=''>" + data[j]["sDescripcionRegional"] + "</td>" +
-                    //        "<td class=''>" + data[j]["sFechaAlta"] + "</td>" +
-                    //        "</tr>";
-                    //}
+                    document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                        "<td class=''>" + data[j]["iIdRegional"] + "</td>" +
+                        "<td class=''>" + data[j]["sClaveRegional"] + "</td>" +
+                        "<td class=''>" + data[j]["sDescripcionRegional"] + "</td>" +
+                        "<td class=''>" + data[j]["sFechaAlta"] + "</td>" +
+                        "</tr>";
                 }
                 $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
                 $("#" + pilltab).collapse("toggle");
@@ -833,12 +756,10 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var tab = document.getElementById("bodytab-sucursales");
                 tab.innerHTML = "";
                 var empresa;
                 for (var i = 0; i < data.length; i++) {
-                    
                     tab.innerHTML += "" +
                         "<tr>" +
                         "<td>" + data[i]["iIdSucursal"] + "</td>" +

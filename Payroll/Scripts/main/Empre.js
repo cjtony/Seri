@@ -574,7 +574,7 @@
                             "<td class='row'>" +
                             "<div title='Desactivar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 1 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Empresa_id"] + ");'><i class='far fa-times-circle fa-lg'></i></div>" +
                             //"<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
-                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Num_cliente"] + "," + data[j]["Plaza"] + "," + data[j]["Num_Cta_Empresa"] + "," + data[j]["Clabe"] + ");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
+                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
                             "</td>" +
                             "</tr>";
                     }
@@ -619,6 +619,16 @@
         if (form.checkValidity() === false) {
             form.classList.add("was-validated");
         } else {
+
+            var cliente, plaza;
+
+            if (document.getElementById("newcliente").value == "") {
+                cliente = "0";
+            }
+            if (document.getElementById("newplaza").value == "") {
+                plaza = "0";
+            }
+
             var tb = document.getElementById("newtipobanco");
             $.ajax({
                 url: "../Catalogos/SaveNewBanco",
@@ -627,8 +637,8 @@
                     Empresa_id: document.getElementById("newempresa").value
                     , Banco_id: document.getElementById("newbanco").value
                     , TipoBanco: tb.value
-                    , Cliente: document.getElementById("newcliente").value
-                    , Plaza: document.getElementById("newplaza").value
+                    , Cliente: cliente
+                    , Plaza: plaza
                     , CuentaEmp: document.getElementById("newcuentaempresa").value
                     , Clabe: document.getElementById("newclabe").value
                 }),
@@ -659,7 +669,7 @@
     });
     //
     // MOSTRAR MODAL EDITAR BANCO
-    mostrarmodaleditarbanco = (Empresa_id, Banco_id, TipoBanco, BancoEmp, collapse, Cliente, Plaza, CuentaEmp, Clabe) => {
+    mostrarmodaleditarbanco = (Empresa_id, Banco_id, TipoBanco, BancoEmp, collapse) => {
         $.ajax({
             url: "../Empleados/LoadBanks",
             type: "POST",
@@ -682,7 +692,6 @@
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     success: (data) => {
-                        console.log(data);
                         var select = document.getElementById("edittipobanco");
                         select.innerHTML = "";
                         for (var j = 0; j < data.length; j++) {
@@ -692,13 +701,30 @@
                                 select.innerHTML += "<option value='" + data[j]["iId"] + "'>" + data[j]["sValor"] + "</option>";
                             }
                         }
-                        $("#editcliente").val(Cliente);
-                        $("#editplaza").val(Plaza);
-                        $("#editcuentaempresa").val(CuentaEmp);
-                        $("#editclabe").val(Clabe);
-                        $("#editarid").val(BancoEmp);
-                        $("#editarcollapse").val(collapse)
-                        $("#modal-editar-bancoempresa").modal("show");
+                        
+                        
+                        $.ajax({
+                            url: "../Catalogos/LoadBancosEmpresa",
+                            type: "POST",
+                            data: JSON.stringify({ Empresa_id: Empresa_id }),
+                            contentType: "application/json; charset=utf-8",
+                            success: (data) => {
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i]["Empresa_id"] == Empresa_id && data[i]["Banco_id"] == Banco_id) {
+                                        $("#editcliente").val(data[i]["Num_cliente"]);
+                                        $("#editplaza").val(data[i]["Plaza"]);
+                                        $("#editcuentaempresa").val(data[i]["Num_Cta_Empresa"]);
+                                        $("#editclabe").val(data[i]["Clabe"]);
+                                       
+                                    }
+                                }
+                                $("#editarid").val(BancoEmp);
+                                $("#editarcollapse").val(collapse);
+                                $("#modal-editar-bancoempresa").modal("show");
+
+                            }
+                        });
+                        
                     }
                 });
             }
@@ -711,6 +737,20 @@
         if (form.checkValidity() === false) {
             form.classList.add("was-validated");
         } else {
+
+            var cliente = "", plaza = "";
+            if ($("#editcliente").val() == "") {
+                cliente = "0";
+            } else {
+                cliente = $("#editcliente").val();
+            }
+
+            if ($("#editplaza").val() == "") {
+                plaza = "0";
+            } else {
+                plaza = $("#editplaza").val();
+            }
+
             var tb = document.getElementById("edittipobanco");
             $.ajax({
                 url: "../Catalogos/UpdateBancoEmpresa",
@@ -719,14 +759,13 @@
                     Banco_id: $("#editbanco").val()
                     , TipoBanco: tb.value
                     , Id: $("#editarid").val()
-                    , Cliente: $("#editcliente").val()
-                    , Plaza: $("#editplaza").val()
+                    , Cliente: cliente
+                    , Plaza: plaza
                     , CuentaEmp: $("#editcuentaempresa").val()
                     , Clabe: $("#editclabe").val()
                 }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    //console.log(data);
                     if (data[0] == '0') {
                         Swal.fire({
                             title: 'Error!',
@@ -868,5 +907,53 @@
     $('#modalbuscarsucursal').on('hidden.bs.modal', function (e) {
         $("#inputsearchsucursal").val("");
         $("#resultSearchSucursales").html("");
-    })
+    });
+    // mostrar nueva regional 
+    $("#btnagregarnewregional").on("click", function() {
+        $("#modalnuevaregional").modal("show");
+    });
+    // FUNCION QUE REINICIA EL MODAL NUEVO
+    $('#modalnuevaregional').on('hidden.bs.modal', function () {
+        $("#newinputclave").val("");
+        $("#newinputdescripcion").val("");
+    });
+    // guardar la nueva regional 
+    $("#btnnewregional").on("click", function () {
+        var form = document.getElementById("frmnewregional");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+
+            $.ajax({
+                url: "../Catalogos/SaveNewRegionales",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify({
+                    ClaveRegion: $("#newinputclave").val()
+                    , Descripcion: $("#newinputdescripcion").val()
+                }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'warning',
+                            timer: 1000
+                        });
+                    } else {
+                        SelectLoaderFromLocalidades();
+                        $("#modalnuevaregional").modal("hide");
+                        Swal.fire({
+                            title: 'Completo!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    }
+                }
+            });
+        }
+    });
 });

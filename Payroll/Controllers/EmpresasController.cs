@@ -269,5 +269,13 @@ namespace Payroll.Controllers
             RP = Dao.sp_CSucursales_Retrieve_Sucursales();
             return Json(RP);
         }
+        [HttpPost]
+        public JsonResult LoadLocalidadesCatalogos(int Empresa_id)
+        {
+            List<LocalidadesBean> RP = new List<LocalidadesBean>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            RP = Dao.sp_TLocalicades_Retrieve_Localidades(Empresa_id);
+            return Json(RP);
+        }
     }
 }

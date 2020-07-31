@@ -46,18 +46,24 @@
                         <div class="input-group md-3">
                             <select class="form-control font-labels custom-select" name="inZoInLocalidad" id="inZoInLocalidad" required></select>
                             <div class="input-group-append">
-                                <div class="btn btn-info btn-sm btn-icon-split" id="btnbuscarsucursal">
+                                <div class="btn btn-secondary btn-sm btn-icon-split" id="btnbuscarsucursal">
                                     <span class="icon"><i class="fas fa-search"></i></span>
-                                    <span class="text"> Buscar </span>
+                                    <span class="text font-labels"> Buscar </span>
                                 </div>
                             </div>
                         </div>
-
-                            
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inRegionalLocalidad">Regional</label>
-                        <select class="custom-select font-labels" name="inRegLocalidad" id="inRegLocalidad" required></select>
+                        <label class="col-md-12" for="inRegionalLocalidad">Regional</label>
+                        <div class="input-group  md-3">
+                            <select class="custom-select font-labels" name="inRegLocalidad" id="inRegLocalidad" required></select>
+                            <div class="input-group-append">
+                                <div class="btn btn-secondary btn-sm btn-icon-split" id="btnagregarnewregional">
+                                    <span class="icon"><i class="fas fa-plus"></i></span>
+                                    <span class="text font-labels">Agregar</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inZonaEcoLocalidad">Zona Economica</label>
@@ -79,7 +85,7 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
+<!-- Modal buscar sucursal-->
 <div class="modal fade" id="modalbuscarsucursal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -98,6 +104,42 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"> Cerrar </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal nueva regional-->
+<div class="modal fade" id="modalnuevaregional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content px-5 font-labels">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nueva Regional</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row px-5 rounded shadow-lg border-left-primary">
+                <form id="frmnewregional" class="col-md-12 row">
+                    <div class="form-group col-md-6">
+                        <label class="font-weight-bold"> Clave </label>
+                        <input type="text" id="newinputclave" class="form-control form-control-sm" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="font-weight-bold"> Descripción </label>
+                        <input type="text" id="newinputdescripcion" class="form-control form-control-sm" />
+                    </div>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text">Cerrar</span>
+                </button>
+                <div class="btn btn-primary btn-sm btn-icon-split" id="btnnewregional">
+                    <span class="icon"><i class="fas fa-save"></i></span>
+                    <span class="text">Guardar</span>
+                </div>
             </div>
         </div>
     </div>

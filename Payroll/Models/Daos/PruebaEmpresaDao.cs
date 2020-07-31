@@ -154,8 +154,6 @@ namespace Payroll.Models.Daos
                     empresa.Add(data["RFC"].ToString());
                     empresa.Add(data["FechaAlta"].ToString());
                     empresa.Add(data["Descripcion"].ToString());
-                    empresa.Add(data["banco_interbancarios"].ToString());
-                    empresa.Add(data["NombreBanco"].ToString());
                     empresa.Add(data["reg_imss_empresa"].ToString());
 
                 }
@@ -361,37 +359,24 @@ namespace Payroll.Models.Daos
                     list.Descripcion = data["Descripcion"].ToString();
                     list.TasaIva = data["TazaIva"].ToString();
 
-                    if (data["RegistroPatronal_id"].ToString().Length != 0) { list.RegistroPatronal_id = int.Parse(data["RegistroPatronal_id"].ToString()); }
-                    else
-                    {
-                        list.RegistroPatronal_id = 0;
+                    if (data["RegistroPatronal_id"].ToString().Length != 0) 
+                    { 
+                        list.RegistroPatronal_id = int.Parse(data["RegistroPatronal_id"].ToString());
+                        list.NombreRegistroPatronal = data["Afiliacion_IMSS"].ToString() + " - " + data["NombreRegistroPatronal"].ToString();
                     }
+                    else { list.RegistroPatronal_id = 0; }
 
                     if (data["Regional_id"].ToString().Length != 0) { list.Regional_id = int.Parse(data["Regional_id"].ToString()); }
-                    else
-                    {
-                        list.Regional_id = 0;
-                    }
+                    else { list.Regional_id = 0; }
 
                     if (data["ZonaEconomica_id"].ToString().Length != 0) { list.ZonaEconomica_id = int.Parse(data["ZonaEconomica_id"].ToString()); }
-                    else
-                    {
-
-                        list.ZonaEconomica_id = 0;
-                    }
+                    else { list.ZonaEconomica_id = 0; }
 
                     if (data["Sucursal_id"].ToString().Length != 0) { list.Sucursal_id = int.Parse(data["Sucursal_id"].ToString()); }
-                    else
-                    {
-                        list.Sucursal_id = 0;
-                    }
+                    else { list.Sucursal_id = 0; }
 
                     if (data["Cg_Estado_id"].ToString().Length != 0) { list.Estado_id = int.Parse(data["Cg_Estado_id"].ToString()); }
-                    else
-                    {
-
-                        list.Estado_id = 0;
-                    }
+                    else { list.Estado_id = 0; } 
 
                     lista.Add(list);
                 }
