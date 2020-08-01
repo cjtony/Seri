@@ -16,13 +16,6 @@
     var CCheques = document.getElementById("inCCheques");
     var FBaja = document.getElementById("inFBaja");
 
-    
-    //$("#inBanco").on("change", function () {
-    //    switch ($("#inBanco").val) {
-    //        case: '1' 
-    //        default:
-    //    }
-    //});
     $("#modalLiveSearchEmpleado").modal("show");
     
     $("#btn-save-pension").on("click", function (evt) {
@@ -39,11 +32,8 @@
         if (form.checkValidity() === false) {
             evt.preventDefault();
             form.classList.add("was-validated");
-            console.log("there are fields without data ");
-            console.log(data);
         } else {
             
-            console.log("all ok with the fields ");
             var benef;
             if (Beneficiaria.value == "") { benef = 0;  } else {    benef = Beneficiaria.value; }
             $.ajax({
@@ -69,16 +59,29 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
-                    //Refresca la tabla 
-                    tabPensiones();
-                    //
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Completado!',
-                        text: 'Credito agregado con éxito'
-                    });
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Aviso!',
+                            text: data[1]
+                        });
+                    }
+                    else {
+                        tabPensiones();
+                        form.reset();
+                        setTimeout(() => {
+                            
+                            CFija.focus();
+                        }, 1200);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Completado!',
+                            text: data[1],
+                            timer: 1000
+                        });
+                    }
+                    
+                    
 
 
                     
@@ -140,6 +143,7 @@
     $('.input-number').on('input', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
+
     tabPensiones = () => {
         $.ajax({
             method: "POST",
@@ -150,8 +154,8 @@
                 console.log(data);
                 $("#tabody").empty();
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Beneficiaria"] + "</td><td>" + data[i]["No_Oficio"] + "</td><td>" + data[i]["Fecha_Oficio"] + "</td><td>$ " + data[i]["Cuota_Fija"] + " - % " + data[i]["Porcentaje"] + "</td><td><div class='btn badge badge-danger btn-editar-pensiones ' onclick='eliminarPension( " + data[i]["IdIdPension"] + " );'><i class='fas fa-minus'></i></div></td></tr>";
-                    console.log(data[i]["Tipo_Ausentismo_id"]);
+                    document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Beneficiaria"] + "</td><td>" + data[i]["No_Oficio"] + "</td><td>" + data[i]["Fecha_Oficio"] + "</td><td>$ " + data[i]["Cuota_Fija"] + " - % " + data[i]["Porcentaje"] + "</td><td><div class='btn badge badge-danger btn-editar-pensiones ' onclick='eliminarPension( " + data[i]["IdPension"] + "," + data[i]["IncidenciaProgramada_id"] + ");'><i class='fas fa-minus'></i></div></td></tr>";
+                    
                 }
                 
 
@@ -177,4 +181,53 @@
         });
     }
     LoadSelectBancos(0);
+    // ELIMINAR (DESACTIVA) PENSION ALIMENTARIA
+    eliminarPension = (Pension_id, IncidenciaP_id) => {
+        Swal.fire({
+            title: 'Quieres eliminar la Pensión?',
+            text: "No podras recuperarla!",
+            icon: 'warning',
+            showCancelButton: true, 
+            confirmButtonColor: '#A52A0F',
+            cancelButtonColor: 'secondary',
+            confirmButtonText: 'Eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "POST",
+                    data: JSON.stringify({ Pension_id: Pension_id, IncidenciaP_id: IncidenciaP_id }),
+                    url: "../Incidencias/DeletePension",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (data) => {
+                        
+                        if (data[0] == '0') {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data[1],
+                                icon: 'warning',
+                                timer: 1000
+                            });
+                        } else {
+                            document.getElementById("tabody").innerHTML = "";
+                            tabPensiones();
+                            
+                            setTimeout(() => {
+                                
+                                CFija.focus();
+                            }, 1200);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Borrado!',
+                                text: data[1],
+                                timer: 1000
+                            });
+
+                        }
+                    }
+                });
+            }
+        });
+    }
 });

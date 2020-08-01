@@ -262,5 +262,12 @@ namespace Payroll.Controllers
             res = Dao.sp_TCreditos_delete_Credito(int.Parse(Session["IdEmpresa"].ToString()), int.Parse(Session["Empleado_id"].ToString()), Credito_id);
             return Json(res);
         }
+        public JsonResult DeletePension(int Pension_id, int IncidenciaP_id)
+        {
+            List<string> res;
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            res = Dao.sp_TPensiones_Alimenticias_Delete_Pension(int.Parse(Session["IdEmpresa"].ToString()), int.Parse(Session["Empleado_id"].ToString()), Pension_id, IncidenciaP_id);
+            return Json(res);
+        }
     }
 }   

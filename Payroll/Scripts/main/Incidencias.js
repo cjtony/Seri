@@ -10,7 +10,6 @@
     var inffinal = document.getElementById("inffinal");
 
     $("#modalLiveSearchEmpleado").modal("show");
-
     //Busqueda de empleado
     $("#inputSearchEmpleados").on("keyup", function () {
         $("#inputSearchEmpleados").empty();

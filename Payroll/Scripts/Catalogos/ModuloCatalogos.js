@@ -6,25 +6,17 @@
     });
     $(".btntab").hover(
         function () {
-            $(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-white').addClass('bg-secondary');
-            //alert('si');
+            $(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark'); 
         },
         function () {
-            $(this).children('.btntittle').removeClass('bg-dark').addClass('bg-primary'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-secondary').addClass('bg-white');
-            //alert('no');
+            $(this).children('.btntittle').removeClass('bg-dark').addClass('bg-primary');
         }
     );
     $(".badge-dark").hover(
         function () {
-            //$(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-white').addClass('bg-secondary');
             alert('si');
         },
         function () {
-            //$(this).children('.btntittle').removeClass('bg-dark').addClass('bg-primary'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-secondary').addClass('bg-white');
             alert('no');
         }
     );
@@ -59,16 +51,13 @@
         LoadTabPoliticasVacaciones();
     });
     $("#v-pills-editar-tab").on("click", function (evt) {
-
         if ($("#bodybotonagregar").html() == '') {
             $("#v-pills-lista-tab").click();
-
             Swal.fire({
                 icon: 'warning',
                 title: 'Atención!',
                 text: 'Debe seleccionar una empresa dentro de un catalogo para editar antes de entrar'
             });
-            //$("#v-pills-lista-tab").click();
         } else {
 
         }
@@ -124,9 +113,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-
                 var select = document.getElementById(select_id);
-                //select.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     select.innerHTML += "<option value='" + data[i]["IdEmpresa"] + "'>" + data[i]["IdEmpresa"] + " " + data[i]["NombreEmpresa"] + "</option>"
                 }
@@ -169,7 +156,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-
                 var tab = document.getElementById("bodytab-politicas-vacaciones");
                 tab.innerHTML = "";
                 var empresa;
@@ -178,7 +164,6 @@
                         empresa = data[i]["Empresa_id"];
                     }
                     if (data[i]["Empresa_id"] == empresa) {
-
                         tab.innerHTML += "" +
                             "<tr>" +
                             "<td colspan='3' >" +
@@ -189,11 +174,9 @@
                             "</div>" +
                             "</td >" +
                             "</tr >";
-
                     } else {
                         empresa = data[i]["Empresa_id"];
                         if (data[i]["Empresa_id"] == empresa) {
-
                             tab.innerHTML += "" +
                                 "<tr>" +
                                 "<td colspan='3' >" +
@@ -207,7 +190,6 @@
                         }
                     }
                 }
-
                 LoadPoliticasVacacionesFuturas();
             }
         });
@@ -219,7 +201,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-
                 var tab = document.getElementById("bodytab-politicas-vacaciones-futuras");
                 tab.innerHTML = "";
                 var empresa;
@@ -228,7 +209,6 @@
                         empresa = data[i]["Empresa_id"];
                     }
                     if (data[i]["Empresa_id"] == empresa) {
-
                         tab.innerHTML += "" +
                             "<tr>" +
                             "<td colspan='3' >" +
@@ -239,11 +219,9 @@
                             "</div>" +
                             "</td >" +
                             "</tr >";
-
                     } else {
                         empresa = data[i]["Empresa_id"];
                         if (data[i]["Empresa_id"] == empresa) {
-
                             tab.innerHTML += "" +
                                 "<tr>" +
                                 "<td colspan='3' >" +
@@ -257,7 +235,6 @@
                         }
                     }
                 }
-
             }
         });
     }

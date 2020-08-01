@@ -521,6 +521,7 @@ namespace Payroll.Models.Beans
         public string Tarjeta_vales { get; set; }
         public string Cuenta_cheques { get; set; }
         public string Fecha_baja { get; set; }
+        public string IncidenciaProgramada_id {get;set;}
     }
     public class CapturaErroresBean
     {

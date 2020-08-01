@@ -665,7 +665,7 @@ namespace Payroll.Models.Daos
                     if (data["Tarjeta_vales"].ToString().Length == 0) { list.Tarjeta_vales = ""; } else { list.Tarjeta_vales = data["Tarjeta_vales"].ToString(); }
                     if (data["Cuenta_cheques"].ToString().Length == 0) { list.Cuenta_cheques = ""; } else { list.Cuenta_cheques = data["Cuenta_cheques"].ToString(); }
                     if (data["Fecha_baja"].ToString().Length == 0) { list.Fecha_baja = ""; } else { list.Fecha_baja = data["Fecha_baja"].ToString().Substring(0, 10); }
-
+                    list.IncidenciaProgramada_id = data["IncidenciaProgramada_id"].ToString();
                     lista.Add(list);
 
                 }
@@ -888,6 +888,35 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlCredito_id", Credito_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+            return list;
+        }
+        public List<string> sp_TPensiones_Alimenticias_Delete_Pension(int Empresa_id, int Empleado_id, int Pension_id, int IncidenciaP_id)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPensiones_Alimenticias_Delete_Pension", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPension_id", Pension_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlIncidenciaP_id", IncidenciaP_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
