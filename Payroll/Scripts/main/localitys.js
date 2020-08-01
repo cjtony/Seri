@@ -406,7 +406,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultregionalesdynamic.innerHTML += `<button onclick="fselectregionallocalitydy(${data[i].iIdRegional}, '${data[i].sClaveRegional}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sClaveRegional} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
+                                resultregionalesdynamic.innerHTML += `<button title="Seleccionar" onclick="fselectregionallocalitydy(${data[i].iIdRegional}, '${data[i].sClaveRegional}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sClaveRegional} - ${data[i].sDescripcionRegional} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             noresultsregionales1dynamic.innerHTML = `
@@ -513,7 +513,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultofficesdynamic.innerHTML += `<button onclick="fselectofficedynamic(${data[i].iIdSucursal}, '${data[i].sClaveSucursal}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
+                                resultofficesdynamic.innerHTML += `<button title="Seleccionar" onclick="fselectofficedynamic(${data[i].iIdSucursal}, '${data[i].sClaveSucursal}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} - ${data[i].sDescripcionSucursal} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             noresultoffices1dynamic.innerHTML = `

@@ -100,7 +100,8 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultoffices.innerHTML += `<button onclick="fselectoffice(${data[i].iIdSucursal})" class="animated fadeIn border-left-primary list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} <i class="fas fa-edit ml-2 text-warning fa-lg"></i> </button>`;
+                                console.log(data[i]);
+                                resultoffices.innerHTML += `<button title="Editar" onclick="fselectoffice(${data[i].iIdSucursal})" class="animated fadeIn border-left-primary list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} - ${data[i].sDescripcionSucursal} <i class="fas fa-edit ml-2 text-warning fa-lg"></i> </button>`;
                             }
                         } else {
                             document.getElementById('noresultoffices1').innerHTML = `
