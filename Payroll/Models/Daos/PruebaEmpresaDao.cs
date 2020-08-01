@@ -71,7 +71,6 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-
         public int sp_Retrieve_ClaveEmpresa()
         {
             this.Conectar();
@@ -155,8 +154,6 @@ namespace Payroll.Models.Daos
                     empresa.Add(data["RFC"].ToString());
                     empresa.Add(data["FechaAlta"].ToString());
                     empresa.Add(data["Descripcion"].ToString());
-                    empresa.Add(data["banco_interbancarios"].ToString());
-                    empresa.Add(data["NombreBanco"].ToString());
                     empresa.Add(data["reg_imss_empresa"].ToString());
 
                 }
@@ -211,7 +208,7 @@ namespace Payroll.Models.Daos
 
             return empresa;
         }
-        public List<string> sp_Insert_FirstStep_Empresas(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, int inbanco, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
+        public List<string> sp_Insert_FirstStep_Empresas(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
         {
             List<string> res = new List<string>();
             this.Conectar();
@@ -235,20 +232,16 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlsNombre_Afiliacion", inNombre_Afiliacion));
             cmd.Parameters.Add(new SqlParameter("@ctrliRiesgoTrabajo", inRiesgoTrabajo));
             cmd.Parameters.Add(new SqlParameter("@ctrliClaseRP", inClase));
-
             cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo_id", intipoperiodo));
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Inicio", infinicio));
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Final", inffinal));
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Proceso", infpago));
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Pago", infproceso));
             cmd.Parameters.Add(new SqlParameter("@ctrlDias_Pagados", indiaspagados));
-
-            cmd.Parameters.Add(new SqlParameter("@ctrlBanco_id", inbanco));
             cmd.Parameters.Add(new SqlParameter("@ctrlRegimms", inregimss));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresaClon_id", inclonar));
             cmd.Parameters.Add(new SqlParameter("@ctrlGrupoEmpresa", ingrupoe));
             cmd.Parameters.Add(new SqlParameter("@ctrlNoPeriodo", innoperiodo));
-
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -366,37 +359,24 @@ namespace Payroll.Models.Daos
                     list.Descripcion = data["Descripcion"].ToString();
                     list.TasaIva = data["TazaIva"].ToString();
 
-                    if (data["RegistroPatronal_id"].ToString().Length != 0) { list.RegistroPatronal_id = int.Parse(data["RegistroPatronal_id"].ToString()); }
-                    else
-                    {
-                        list.RegistroPatronal_id = 0;
+                    if (data["RegistroPatronal_id"].ToString().Length != 0) 
+                    { 
+                        list.RegistroPatronal_id = int.Parse(data["RegistroPatronal_id"].ToString());
+                        list.NombreRegistroPatronal = data["Afiliacion_IMSS"].ToString() + " - " + data["NombreRegistroPatronal"].ToString();
                     }
+                    else { list.RegistroPatronal_id = 0; }
 
                     if (data["Regional_id"].ToString().Length != 0) { list.Regional_id = int.Parse(data["Regional_id"].ToString()); }
-                    else
-                    {
-                        list.Regional_id = 0;
-                    }
+                    else { list.Regional_id = 0; }
 
                     if (data["ZonaEconomica_id"].ToString().Length != 0) { list.ZonaEconomica_id = int.Parse(data["ZonaEconomica_id"].ToString()); }
-                    else
-                    {
-
-                        list.ZonaEconomica_id = 0;
-                    }
+                    else { list.ZonaEconomica_id = 0; }
 
                     if (data["Sucursal_id"].ToString().Length != 0) { list.Sucursal_id = int.Parse(data["Sucursal_id"].ToString()); }
-                    else
-                    {
-                        list.Sucursal_id = 0;
-                    }
+                    else { list.Sucursal_id = 0; }
 
                     if (data["Cg_Estado_id"].ToString().Length != 0) { list.Estado_id = int.Parse(data["Cg_Estado_id"].ToString()); }
-                    else
-                    {
-
-                        list.Estado_id = 0;
-                    }
+                    else { list.Estado_id = 0; } 
 
                     lista.Add(list);
                 }
@@ -535,7 +515,9 @@ namespace Payroll.Models.Daos
             }
             else
             {
-                lista = null;
+                RegionalesBean list = new RegionalesBean { sDescripcionRegional = "true" };
+                lista.Add(list);
+                
             }
             data.Close();
 
@@ -560,7 +542,9 @@ namespace Payroll.Models.Daos
                     {
                         iIdSucursal = int.Parse(data["IdSucursal"].ToString()),
                         sDescripcionSucursal = data["Descripcion_Sucursal"].ToString(),
-                        sClaveSucursal = data["Clave_Sucursal"].ToString()
+                        sClaveSucursal = data["Clave_Sucursal"].ToString(),
+                        sFechaAlta = data["Fecha_Alta"].ToString()
+
                     };
                     lista.Add(list);
                 }
@@ -774,7 +758,6 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-
         public List<string> sp_TPeriodosDist_Insert_Periodo(int PerVacLn_id, string FechaInicio, string FechaFin, int Dias)
         {
             List<string> list = new List<string>();
@@ -842,6 +825,69 @@ namespace Payroll.Models.Daos
             data.Close();
 
             return periodo;
+        }
+        public List<string> sp_CEmpresas_Update_GrupoEmpresas(string Empresa_id, string Grupo_id)
+        {
+            List<string> res = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_CEmpresas_Update_GrupoEmpresas", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlGrupo_id", Grupo_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    res.Add(data["iFlag"].ToString());
+                    res.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                res = null;
+            }
+            data.Close();
+
+            return res;
+        }
+        public List<string> sp_Registro_Patronal_Update_Registros_Patronales(int Id, string Afiliacion_IMSS, string NombreAfiliacion, int Empresa_id, string Riesgo_Trabajo, int ClasesRegPat, int Cancelado)
+        {
+            List<string> res = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Registro_Patronal_Update_Registros_Patronales", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrliIdRegistroPatronal", Id));
+            cmd.Parameters.Add(new SqlParameter("@ctrliEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlsAfiliacion_IMSS", Afiliacion_IMSS));
+            cmd.Parameters.Add(new SqlParameter("@ctrlsNombreAfiliacion", NombreAfiliacion));
+            cmd.Parameters.Add(new SqlParameter("@ctrlsRiesgo_Trabajo", Riesgo_Trabajo));
+            cmd.Parameters.Add(new SqlParameter("@ctrliClaseRegPat_id", ClasesRegPat));
+            cmd.Parameters.Add(new SqlParameter("@ctrliCancelado", Cancelado));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    res.Add(data["iFlag"].ToString());
+                    res.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                res = null;
+            }
+            data.Close();
+
+            return res;
         }
     }
 }

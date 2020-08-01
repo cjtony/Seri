@@ -1,1 +1,30 @@
-﻿
+﻿<div class="container bg-white col-md-10 font-labels shadow-lg border-left-primary border-right-primary p-4 rounded">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active h6" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-list-ul"></i> Sucursales </a>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active pt-3" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <table class="table table-sm" id="tab-sucursales">
+                <thead>
+                    <tr>
+                        <th class="">ID</th>
+                        <th class="">Clave</th>
+                        <th class="">Descripción</th>
+                        <th class="">Fecha Alta</th>
+                    </tr>
+                </thead>
+                <tbody id="bodytab-sucursales">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/Consulta.js"></script>
+<script>
+    $(function () {
+        LoadTabSucursales();
+    });
+</script>

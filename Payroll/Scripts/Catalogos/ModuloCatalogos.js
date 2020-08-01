@@ -6,25 +6,17 @@
     });
     $(".btntab").hover(
         function () {
-            $(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-white').addClass('bg-secondary');
-            //alert('si');
+            $(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark'); 
         },
         function () {
-            $(this).children('.btntittle').removeClass('bg-dark').addClass('bg-primary'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-secondary').addClass('bg-white');
-            //alert('no');
+            $(this).children('.btntittle').removeClass('bg-dark').addClass('bg-primary');
         }
     );
     $(".badge-dark").hover(
         function () {
-            //$(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-white').addClass('bg-secondary');
             alert('si');
         },
         function () {
-            //$(this).children('.btntittle').removeClass('bg-dark').addClass('bg-primary'); /*.css("background-color", "pink");*/
-            //$(this).removeClass('bg-secondary').addClass('bg-white');
             alert('no');
         }
     );
@@ -59,18 +51,15 @@
         LoadTabPoliticasVacaciones();
     });
     $("#v-pills-editar-tab").on("click", function (evt) {
-        
         if ($("#bodybotonagregar").html() == '') {
             $("#v-pills-lista-tab").click();
-            console.log($("#bodybotonagregar").html());
             Swal.fire({
                 icon: 'warning',
                 title: 'Atención!',
                 text: 'Debe seleccionar una empresa dentro de un catalogo para editar antes de entrar'
             });
-            //$("#v-pills-lista-tab").click();
         } else {
-            
+
         }
     });
     // Mostar Modal Agregar NEW EFFDT 
@@ -79,7 +68,7 @@
         var day = ("0" + now.getDate()).slice(-2);
         var month = ("0" + (now.getMonth() + 1)).slice(-2);
         var today = now.getFullYear() + "-" + (month) + "-" + (day);
-        $("#newEffdtFecha").attr("min",today);
+        $("#newEffdtFecha").attr("min", today);
         LoadSelectEmpresas_sid("newEffdtEmpresa");
         $("#modalAgregarNewEffdtPoliticas").modal("show");
     });
@@ -124,9 +113,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(select_id);
                 var select = document.getElementById(select_id);
-                //select.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     select.innerHTML += "<option value='" + data[i]["IdEmpresa"] + "'>" + data[i]["IdEmpresa"] + " " + data[i]["NombreEmpresa"] + "</option>"
                 }
@@ -140,7 +127,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
                 var tab = document.getElementById("bodytab-fechas-periodos");
                 tab.innerHTML = "";
                 var empresa;
@@ -148,38 +134,18 @@
                     if (i == 0) {
                         empresa = data[i]["Empresa_id"];
                     }
-                    if (data[i]["Empresa_id"] == empresa && data[i]["Periodo"] == 1) {
-                        console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                        console.log(data[i]);
-                        tab.innerHTML += "" +
-                            "<tr>" +
-                            "<td colspan='3' >" +
-                            "<div class='col-md-12 row'>" +
-                            "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='ml-1 badge badge-primary btn' onclick='mostrarModalNuevoPeriodo(" + data[i]["Empresa_id"] + ","+ data[i]["Anio"] +");'>Nuevo <i class='fas fa-calendar-check'></i></div></div>" +
-                            "<div id='collapse-"+data[i]["NombreEmpresa"]+"' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
-                            "</div>" +
-                            "</div>" +
-                            "</td >" +
-                            "</tr >";
-                        
-                    } else {
-                        empresa = data[i]["Empresa_id"];
-                        if (data[i]["Empresa_id"] == empresa && data[i]["Periodo"] == 1) {
-                            //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                            tab.innerHTML += "" +
-                                "<tr>" +
-                                "<td colspan='3' >" +
-                                "<div class='col-md-12 row'>" +
-                                "<label class='col-md-1'>" + data[i]['Empresa_id'] + " </label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='ml-1 badge badge-primary btn' onclick='mostrarModalNuevoPeriodo(" + data[i]["Empresa_id"] + "," + data[i]["Anio"] +");'>Nuevo <i class='fas fa-calendar-check'></i></div></div>" +
-                                "<div id='collapse-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
-                                "</div>" +
-                                "</div>" +
-                                "</td >" +
-                                "</tr >";
-                        }
-                    }
+                    console.log(data[i]["NombreEmpresa"].replace(/ /g, ""));
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='ml-1 badge badge-primary btn' onclick='mostrarModalNuevoPeriodo(" + data[i]["Empresa_id"] + "," + data[i]["Anio"] + ");'>Nuevo <i class='fas fa-calendar-check'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
                 }
-                //$("#v-pills-FechasPeriodos-tab").click();
             }
         });
     }
@@ -190,7 +156,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-
                 var tab = document.getElementById("bodytab-politicas-vacaciones");
                 tab.innerHTML = "";
                 var empresa;
@@ -199,8 +164,6 @@
                         empresa = data[i]["Empresa_id"];
                     }
                     if (data[i]["Empresa_id"] == empresa) {
-                        //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                        //console.log(data[i]);
                         tab.innerHTML += "" +
                             "<tr>" +
                             "<td colspan='3' >" +
@@ -211,11 +174,9 @@
                             "</div>" +
                             "</td >" +
                             "</tr >";
-
-                    } else { 
+                    } else {
                         empresa = data[i]["Empresa_id"];
                         if (data[i]["Empresa_id"] == empresa) {
-                            //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
                             tab.innerHTML += "" +
                                 "<tr>" +
                                 "<td colspan='3' >" +
@@ -229,7 +190,6 @@
                         }
                     }
                 }
-                //$("#v-pills-FechasPeriodos-tab").click();
                 LoadPoliticasVacacionesFuturas();
             }
         });
@@ -241,7 +201,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-
                 var tab = document.getElementById("bodytab-politicas-vacaciones-futuras");
                 tab.innerHTML = "";
                 var empresa;
@@ -250,28 +209,24 @@
                         empresa = data[i]["Empresa_id"];
                     }
                     if (data[i]["Empresa_id"] == empresa) {
-                        //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
-                        //console.log(data[i]);
                         tab.innerHTML += "" +
                             "<tr>" +
                             "<td colspan='3' >" +
                             "<div class='col-md-12 row'>" +
-                            "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]["Effdt"] + "</label><div class='col-md-5'><div class='badge badge-secondary btn' onclick='LoadPoliticasVacaciones_Futuras_Detalle(\"collapsetab-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ", \"" + data[i]["Effdt"] +"\");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-primary ml-2' onclick='editarPoliticasFuturas(" + data[i]["Empresa_id"] + ",\""+ data[i]["Effdt"] +"\");'>Editar <i class='fas fa-edit'></i></div></div>" +
+                            "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]["Effdt"] + "</label><div class='col-md-5'><div class='badge badge-secondary btn' onclick='LoadPoliticasVacaciones_Futuras_Detalle(\"collapsetab-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ", \"" + data[i]["Effdt"] + "\");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-primary ml-2' onclick='editarPoliticasFuturas(" + data[i]["Empresa_id"] + ",\"" + data[i]["Effdt"] + "\");'>Editar <i class='fas fa-edit'></i></div></div>" +
                             "<div id='collapsetab-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
                             "</div>" +
                             "</div>" +
                             "</td >" +
                             "</tr >";
-
                     } else {
                         empresa = data[i]["Empresa_id"];
                         if (data[i]["Empresa_id"] == empresa) {
-                            //console.log(data[i]["Empresa_id"] + " - " + data[i]["Periodo"]);
                             tab.innerHTML += "" +
                                 "<tr>" +
                                 "<td colspan='3' >" +
                                 "<div class='col-md-12 row'>" +
-                                "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]["Effdt"] + "</label><div class='col-md-5'><div class='badge badge-secondary btn' onclick='LoadPoliticasVacaciones_Futuras_Detalle(\"collapsetab-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ", \"" + data[i]["Effdt"] + "\");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-primary ml-2' onclick='editarPoliticasFuturas(" + data[i]["Empresa_id"] + ",\"" + data[i]["Effdt"] +"\");'>Editar <i class='fas fa-edit'></i></div></div>" +
+                                "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]["Effdt"] + "</label><div class='col-md-5'><div class='badge badge-secondary btn' onclick='LoadPoliticasVacaciones_Futuras_Detalle(\"collapsetab-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ", \"" + data[i]["Effdt"] + "\");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-primary ml-2' onclick='editarPoliticasFuturas(" + data[i]["Empresa_id"] + ",\"" + data[i]["Effdt"] + "\");'>Editar <i class='fas fa-edit'></i></div></div>" +
                                 "<div id='collapsetab-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
                                 "</div>" +
                                 "</div>" +
@@ -280,12 +235,11 @@
                         }
                     }
                 }
-                //$("#v-pills-FechasPeriodos-tab").click();
             }
         });
     }
 
-    LoadDetalleFechasPeriodo = (pilltab,Empresa_id) => {
+    LoadDetalleFechasPeriodo = (pilltab, Empresa_id) => {
         $.ajax({
             url: "../Catalogos/LoadFechasPeriodosDetalle",
             type: "POST",
@@ -293,7 +247,7 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
-                console.log(pilltab);
+                console.log(pilltab.replace(/ /g, ""));
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table-in-fechas-periodos text-center col-md-12'>" +
                     "<thead class='col-md-12'>" +
@@ -330,12 +284,12 @@
                             "<td class=''>" + data[j]["Fecha_Proceso"] + "</td>" +
                             "<td class=''>" + data[j]["Fecha_Pago"] + "</td>" +
                             "<td class=''>" + data[j]["Dias_Efectivos"] + "</td>" +
-                            "<td class=''><div class='btn badge badge-info' onclick='MostrarEditarPeriodo("+data[j]["Empresa_id"]+",\""+data[j]["id"]+"\");'>Editar <i class='fas fa-edit'></i></div></td>" +
+                            "<td class=''><div class='btn badge badge-info' onclick='MostrarEditarPeriodo(" + data[j]["Empresa_id"] + ",\"" + data[j]["id"] + "\");'>Editar <i class='fas fa-edit'></i></div></td>" +
                             "</tr>";
                     }
 
 
-                    
+
                 }
                 $(".collapse").collapse("hide");
                 $("#" + pilltab).collapse("toggle");
@@ -379,7 +333,7 @@
                 //console.log($("#tabp" + pilltab).html());
                 document.getElementById("modal-body-politicas").innerHTML = $("#" + pilltab).html();
                 //$("#" + pilltab).collapse("toggle");
-                
+
                 $("#modalMostrarPoliticas").modal("show");
             }
 
@@ -492,7 +446,7 @@
                     }
 
 
-                    
+
                 }
 
                 $("#v-pills-editar-tab").click();
@@ -509,7 +463,7 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
+
                 $("#lblEdicion").html("Politicas Vacaciones " + data[0]["NombreEmpresa"]);
                 $("#Empresa_id_editar").val(data[0]["Empresa_id"]);
                 $("#infoEditar").addClass("invisible");
@@ -533,16 +487,16 @@
                     "</table>");
                 document.getElementById("bodytabPoliticas").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    
-                        document.getElementById("bodytabPoliticas").innerHTML += "" +
-                            "<tr>" +
-                            "<td>" + data[i]["Anos"] + "</td>" +
-                            "<td>" + data[i]["Dias"] + "</td>" +
-                            "<td>" + data[i]["Prima_Vacacional_Porcen"] + "</td>" +
-                            "<td>" + data[i]["Dias_Aguinaldo"] + "</td>" +
-                            "<td><div class='badge badge-success btn mx-1' title='Editar' onclick='cargaModalEditarPolitica(" + Empresa_id + ",\"" + Effdt + "\"," + data[i]["Anos"] + ");'> <i class='fas fa-edit'></i></div><div class='badge badge-danger btn mx-1' title='Eliminar' onclick='eliminarPolitica(" + Empresa_id + ",\"" + Effdt + "\"," + data[i]["Anos"] + ");'><i class='fas fa-minus'></i></div></td>" +
-                            "</tr>";
-                    
+
+                    document.getElementById("bodytabPoliticas").innerHTML += "" +
+                        "<tr>" +
+                        "<td>" + data[i]["Anos"] + "</td>" +
+                        "<td>" + data[i]["Dias"] + "</td>" +
+                        "<td>" + data[i]["Prima_Vacacional_Porcen"] + "</td>" +
+                        "<td>" + data[i]["Dias_Aguinaldo"] + "</td>" +
+                        "<td><div class='badge badge-success btn mx-1' title='Editar' onclick='cargaModalEditarPolitica(" + Empresa_id + ",\"" + Effdt + "\"," + data[i]["Anos"] + ");'> <i class='fas fa-edit'></i></div><div class='badge badge-danger btn mx-1' title='Eliminar' onclick='eliminarPolitica(" + Empresa_id + ",\"" + Effdt + "\"," + data[i]["Anos"] + ");'><i class='fas fa-minus'></i></div></td>" +
+                        "</tr>";
+
 
 
 
@@ -607,7 +561,7 @@
 
     }
     //mostrarModalNuevoPeriodo 
-    mostrarModalNuevoPeriodo = (Empresa_id,Anio) => {
+    mostrarModalNuevoPeriodo = (Empresa_id, Anio) => {
         llenaMinAnios();
         $("#modalAgregarFechaPeriodo").modal("show");
         $("#inanio").val(Anio);
@@ -625,17 +579,18 @@
     }
     // Reinicia el formulario de agregado de fechas periodo
     $('#modalAgregarFechaPeriodo').on('hidden.bs.modal', function (e) {
-        document.getElementById("frmAddFechasPeriodos").reset();
+        document.getElementById("frmNewFechasPeriodos").reset();
     });
 
     // Guardar Fecha - Periodo
-    //$("#btnsavefechaperiodo").on("click", function () {
-    savenew = () => { 
-        var form = document.getElementById("frmAddFechasPeriodos");
+    $("#btnsavefechaperiodo").on("click", function () {
+        //savenew = () => { 
+        console.log("si entra");
+        var form = document.getElementById("frmNewFechasPeriodos");
         if (form.checkValidity() === false) {
 
             form.classList.add("was-validated");
-            
+
         } else {
             var inano = document.getElementById("inano");
             var inperiodo = document.getElementById("inperiodo");
@@ -680,15 +635,15 @@
                         });
                         editarFechasPeriodos(inEmpresa_id.value);
                         $("#modalAgregarFechaPeriodo").modal("hide");
-                        document.getElementById("frmAddFechasPeriodos").reset();
+                        document.getElementById("frmNewFechasPeriodos").reset();
                     }
 
 
                 }
             });
         }
-    }
-    //});
+        //}
+    });
 
     // Guardar nueva politica
     $("#btnsavenewpolitica").on("click", function () {
@@ -739,7 +694,7 @@
                         } else {
                             editarPoliticasFuturas($("#Empresa_id_editar").val(), $("#Effdt_editar").val());
                         }
-                        
+
                         $("#modalNewPolitica").modal("hide");
                         form.reset();
                     }
@@ -788,20 +743,16 @@
                                 icon: 'success',
                                 text: data[1],
                                 timer: 1500
-                            });        
+                            });
                         }
                     }
                 });
             }
         });
-
-
-
-        
     }
 
     // Eliminar una Fecha - Periodo
-    eliminarPolitica = (Empresa_id,Effdt,Anio) => {
+    eliminarPolitica = (Empresa_id, Effdt, Anio) => {
         Swal.fire({
             title: 'Estas seguro?',
             text: "El registro sera borrado definitivamente!",
@@ -813,7 +764,7 @@
             confirmButtonText: 'Confirmar'
         }).then((result) => {
             if (result.value) {
-                
+
                 $.ajax({
                     url: "../Catalogos/DeletePolitica",
                     type: "POST",
@@ -842,10 +793,6 @@
                 });
             }
         });
-
-
-
-
     }
 
     //LLENA GRUPOS EMPRESAS HEADER
@@ -856,7 +803,7 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
-                var acordeon = document.getElementById("accordionGruposEmpresas");
+                var acordeon = document.getElementById("accordeonGruposEmpresas");
                 acordeon.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     acordeon.innerHTML += ""
@@ -868,7 +815,7 @@
                         + "</button>"
                         + "</h2>"
                         + "</div>"
-                        + "<div id='collapse" + data[i][0] + "' class='collapse' aria-labelledby='heading" + data[i][0] + "' data-parent='#accordionGruposEmpresas'>"
+                        + "<div id='collapse" + data[i][0] + "' class='collapse' aria-labelledby='heading" + data[i][0] + "' data-parent='#accordeonGruposEmpresas'>"
                         + "<ul id='ul" + data[i][0] + "' class='list-group list-group-flush'>"
                         + "</ul>"
                         + "</div>"
@@ -911,26 +858,10 @@
             }
         });
     }
-    //LLENA SELECT GRUPOS
-    LoadSelectGrupos = () => {
-            $.ajax({
-                url: "../Catalogos/LoadGruposEmpresas",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: (data) => {
-                    console.log(data);
-                    var select = document.getElementById("inGrupos");
-                    select.innerHTML = "";
-                    for (var i = 0; i < data.length; i++) {
-                        select.innerHTML += "<option value='" + data[i][0] + "'>" + data[i][1] + "</option>";
-                    }
-                }
-            });
-        }
+
     //CAMBIO DE SELECT GRUPOS
     $("#inGrupos").on("change", function () {
-        console.log($(this).val());
-        console.val('valor del grupo');
+
     });
     // CARGA MODAL DE EDITAR POLITICAS
     cargaModalEditarPolitica = (Empresa_id, Effdt, Anio) => {
@@ -952,7 +883,7 @@
         });
     }
     $("#btnSaveEditPolitica").on("click", function () {
-        
+
         $.ajax({
             url: "../Catalogos/UpdatePolitica",
             type: "POST",
@@ -990,13 +921,13 @@
                     });
 
                 }
-                
+
 
             }
         });
     });
     // MOSTRAR EDITAR PERIODO
-    MostrarEditarPeriodo = (Empresa_id,Id) => {
+    MostrarEditarPeriodo = (Empresa_id, Id) => {
         $.ajax({
             url: "../Catalogos/LoadPeriodo",
             type: "POST",
@@ -1019,7 +950,7 @@
     }
 
     $("#btnUpdatefechaperiodo").on("click", function () {
-        
+
         $.ajax({
             url: "../Catalogos/UpdatePeriodo",
             type: "POST",
@@ -1032,13 +963,1288 @@
                 editffinal: $("#editffinal").val(),
                 editfproceso: $("#editfproceso").val(),
                 editfpago: $("#editfpago").val(),
-                editdiaspago: $("#editdiaspago").val()}),
+                editdiaspago: $("#editdiaspago").val()
+            }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
+                $(".collapse").collapse("hide");
+                $("#modalEditarFechaPeriodo").modal("hide");
             }
         });
 
     });
-    
+
+    /////////////////////////////////////////////////////
+    ////////////////    GRUPOS EMPRESAS    //////////////
+    ////////////////////////////////////////////////////
+    // LLENA SELECT GRUPOS
+    LoadSelectGrupos = () => {
+        $.ajax({
+            url: "../Catalogos/LoadGruposEmpresas",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var select = document.getElementById("inGrupos");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    select.innerHTML += "<option value='" + data[i][0] + "'>" + data[i][1] + "</option>";
+                }
+            }
+        });
+    }
+    //
+    // ACTUALIZA GRUPO EMPRESA
+    updateGroup = () => {
+        var grupo = document.getElementById("inGrupos");
+        var empresa = document.getElementById("inEmpresa");
+        $.ajax({
+            url: '../Empresas/UpdateGrupo',
+            type: 'POST',
+            data: JSON.stringify({
+                Empresa_id: $("#inEmpresa").val(),
+                Grupo_id: $("#inGrupos").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                if (data[0] == 0) {
+                    Swal.fire({
+                        timer: 1500,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        title: 'Error!',
+                        icon: 'error',
+                        text: data[1],
+                        width: 400,
+                        height: 200
+                    });
+                } else if (data[0] == 1) {
+                    Swal.fire({
+                        timer: 1500,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        title: 'Correcto!',
+                        icon: 'success',
+                        text: data[1],
+                        width: 400,
+                        iconHeight: 200
+                    });
+                } else if (data[0] == 2) {
+                    Swal.fire({
+                        timer: 1500,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        title: 'Aviso!',
+                        icon: 'warning',
+                        text: data[1],
+                        width: 400,
+                        height: 200
+                    });
+                }
+            }
+        });
+    }
+    //
+    /////////////////////////////////////////////////////
+    ///////////////        BANCOS         ///////////////
+    /////////////////////////////////////////////////////
+    // LLENA TABLA BANCOS
+    LoadSelectBancos = (Banco_id) => {
+        $.ajax({
+            url: "../Empleados/LoadBanks",
+            type: "POST",
+            data: JSON.stringify({ keyban: Banco_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("tbody-bancos");
+                tab.innerHTML = "";
+                var select = document.getElementById("newbanco");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    tab.innerHTML += ""
+                        + "<tr>"
+                        + "<td>" + data[i]["iIdBanco"] + "</td>"
+                        + "<td>" + data[i]["sNombreBanco"] + "</td>"
+                        + "<td></td>"
+                        + "<td>" + data[i]["iClave"] + "</td>"
+                        + "</tr>";
+                    select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
+                }
+                $('#tabbancos').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+
+                });
+            }
+        });
+    }
+    //
+    // LLENA TABLA EMPRESAS TABLA EMPRESAS - BANCOS
+    LoadEmpresasBancos = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+
+                var tab = document.getElementById("tbody-bancos-empresas");
+                tab.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    tab.innerHTML += ""
+                        + "<td colspan='3' class='col-md-12 row'>"
+                        + "<div class='col-md-4'>" + data[i]["IdEmpresa"] + "</div>"
+                        + "<div class='col-md-4'>" + data[i]["NombreEmpresa"] + "</div>"
+                        + "<div class='col-md-4'>"
+                        + "<div class='ml-1 btn badge badge-pill badge-success' onclick='mostrarbancosempresa(" + "\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\"," + data[i]["IdEmpresa"] + ");'> Ver <i class='fas fa-search-dollar' ></i></div>"
+                        + "<div class='ml-1 btn badge badge-pill badge-primary' onclick='mostrarmodalnuevo(" + data[i]["IdEmpresa"] + ");'>Agregar <i class='fas fa-plus'></i></div>"
+                        + "</div>"
+                        + "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='col-md-12 collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "'></div>"
+                        + "</td> ";
+                }
+                $('#tabbancosempresa').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+                    ordering: false,
+                    searching: false
+                });
+            }
+        });
+    }
+    //
+    // LLENA LOS BANCOS QUE TIENE PARA NOMINA CADA UNA DE LAS EMPRESAS
+    mostrarbancosempresa = (collapse, Empresa_id) => {
+        $.ajax({
+            url: "../Catalogos/LoadBancosEmpresa",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                document.getElementById(collapse).innerHTML = "";
+                document.getElementById(collapse).innerHTML += "<table class='table table-sm table-in-fechas-periodos col-md-12 m-3'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th>Banco Id</th>" +
+                    "<th>Nombre Banco</th>" +
+                    "<th># Cliente</th>" +
+                    "<th>Plaza</th>" +
+                    "<th># Cuenta Empresa</th>" +
+                    "<th>Clabe</th>" +
+                    "<th>Tipo Banco</th>" +
+                    "<th class='text-center'>Activo</th>" +
+                    "<th class=''>Acciones</th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + collapse + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]["Cancelado"] == "True") {
+                        document.getElementById("tab" + collapse).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["Banco_id"] + "</td>" +
+                            "<td>" + data[j]["Descripcion"] + "</td>" +
+                            "<td>" + data[j]["Num_cliente"] + "</td>" +
+                            "<td>" + data[j]["Plaza"] + "</td>" +
+                            "<td>" + data[j]["Num_Cta_Empresa"] + "</td>" +
+                            "<td>" + data[j]["Clabe"] + "</td>" +
+                            "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
+                            "<td class='text-center'><div><i class='fas fa-eye-slash text-danger'></i> </div></td>" +
+                            "<td class='row'>" +
+                            "<div title='Activar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 3 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Empresa_id"] + ");'><i class='far fa-check-circle fa-lg'></i></div>" +
+                            //"<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
+                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
+                            "</td>" +
+                            "</tr>";
+                    } else {
+                        document.getElementById("tab" + collapse).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["Banco_id"] + "</td>" +
+                            "<td>" + data[j]["Descripcion"] + "</td>" +
+                            "<td>" + data[j]["Num_cliente"] + "</td>" +
+                            "<td>" + data[j]["Plaza"] + "</td>" +
+                            "<td>" + data[j]["Num_Cta_Empresa"] + "</td>" +
+                            "<td>" + data[j]["Clabe"] + "</td>" +
+                            "<td class=''>" + data[j]["tipo_banco"] + "</td>" +
+                            "<td class='text-center'><div><i class='fas fa-eye text-primary fa-lg'></i></div></td>" +
+                            "<td class='row'>" +
+                            "<div title='Desactivar' class='ml-1 badge badge-pill badge-dark btn btn-sm' onclick='editarbanco(" + 1 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\"," + data[j]["Empresa_id"] + ");'><i class='far fa-times-circle fa-lg'></i></div>" +
+                            //"<div title='Eliminar' class='ml-1 badge badge-pill badge-danger btn' onclick='editarbanco(" + 2 + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='far fa-trash-alt fa-lg'></i></div>" +
+                            "<div class='ml-1 badge badge-pill badge-info btn' onclick='mostrarmodaleditarbanco(" + data[j]["Empresa_id"] + "," + data[j]["Banco_id"] + "," + data[j]["tipo_banco_id"] + "," + data[j]["idBanco_Emp"] + ",\"" + collapse + "\");'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
+                            "</td>" +
+                            "</tr>";
+                    }
+
+                }
+                $(".collapse").collapse("hide");
+                $("#" + collapse).collapse("toggle");
+            }
+        });
+    }
+    //
+    // MOSTRAR MODAL NUEVO BANCO EN EMPRESA
+    mostrarmodalnuevo = (Empresa_id) => {
+        $.ajax({
+            url: "../Catalogos/LoadTipoBanco",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var select = document.getElementById("newtipobanco");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    //if ( data[i]["iId"] == 285 || data[i]["iId"] == 286 ) {
+                    select.innerHTML += "<option value='" + data[i]["iId"] + "'>" + data[i]["sValor"] + "</option>";
+                    //}
+
+                }
+                $("#newempresa").val(Empresa_id);
+                $("#modal-nuevo-bancoempresa").modal("show");
+
+            }
+        });
+
+
+    }
+    //
+    // FUNCION QUE REINICIA EL MODAL NUEVO
+    $('#modal-nuevo-bancoempresa').on('hidden.bs.modal', function () {
+        document.getElementById("formnewbanco").classList.remove("was-validated").reset();
+    });
+    //
+    // GUARDAR NUEVO BANCO EN EMPRESA
+    $("#btnnewbanco").on("click", function () {
+
+        var form = document.getElementById("formnewbanco");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+
+            var cliente, plaza;
+
+            if (document.getElementById("newcliente").value == "") {
+                cliente = "0";
+            }
+            if (document.getElementById("newplaza").value == "") {
+                plaza = "0";
+            }
+
+            var tb = document.getElementById("newtipobanco");
+            //console.log($("#newplaza").val());
+            $.ajax({
+                url: "../Catalogos/SaveNewBanco",
+                type: "POST",
+                data: JSON.stringify({
+                    Empresa_id: document.getElementById("newempresa").value
+                    , Banco_id: document.getElementById("newbanco").value
+                    , TipoBanco: tb.value
+                    , Cliente: cliente
+                    , Plaza: plaza
+                    , CuentaEmp: document.getElementById("newcuentaempresa").value
+                    , Clabe: document.getElementById("newclabe").value
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'warning',
+                            timer: 1000
+                        });
+                    } else {
+                        $("#modal-nuevo-bancoempresa").modal("hide");
+                        $("div.collapse.show").collapse("hide");
+                        Swal.fire({
+                            title: 'Completo!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    }
+
+
+                }
+            });
+        }
+    });
+    //
+    // MOSTRAR MODAL EDITAR BANCO
+    mostrarmodaleditarbanco = (Empresa_id, Banco_id, TipoBanco, BancoEmp, collapse) => {
+        $.ajax({
+            url: "../Empleados/LoadBanks",
+            type: "POST",
+            data: JSON.stringify({ keyban: 0 }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                $("#editempresa").val(Empresa_id)
+                var select = document.getElementById("editbanco");
+                select.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (Banco_id == data[i]["iIdBanco"]) {
+                        select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "' selected>" + data[i]["sNombreBanco"] + "</option>"
+                    } else {
+                        //select.innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
+                    }
+                }
+                $.ajax({
+                    url: "../Catalogos/LoadTipoBanco",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: (data) => {
+                        console.log(data);
+                        var select = document.getElementById("edittipobanco");
+                        select.innerHTML = "";
+                        for (var j = 0; j < data.length; j++) {
+                            if (TipoBanco == data[j]["iId"]) {
+                                select.innerHTML += "<option value='" + data[j]["iId"] + "' selected>" + data[j]["sValor"] + "</option>";
+                            } else {
+                                select.innerHTML += "<option value='" + data[j]["iId"] + "'>" + data[j]["sValor"] + "</option>";
+                            }
+                        }
+
+                        $.ajax({
+                            url: "../Catalogos/LoadBancosEmpresa",
+                            type: "POST",
+                            data: JSON.stringify({ Empresa_id: Empresa_id }),
+                            contentType: "application/json; charset=utf-8",
+                            success: (data) => {
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i]["Empresa_id"] == Empresa_id && data[i]["Banco_id"] == Banco_id) {
+                                        $("#editcliente").val(data[i]["Num_cliente"]);
+                                        $("#editplaza").val(data[i]["Plaza"]);
+                                        $("#editcuentaempresa").val(data[i]["Num_Cta_Empresa"]);
+                                        $("#editclabe").val(data[i]["Clabe"]);
+
+                                    }
+                                }
+                                $("#editarid").val(BancoEmp);
+                                $("#editarcollapse").val(collapse);
+                                $("#modal-editar-bancoempresa").modal("show");
+
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    }
+    //
+    // GUARDAR ACTUALIZACION DE BANCO EN LA EMPRESA
+    $("#btneditarbanco").on("click", function () {
+        var form = document.getElementById("formeditbanco");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+
+            var cliente = "", plaza = "";
+            if ($("#editcliente").val() == "") {
+                cliente = "0";
+            } else {
+                cliente = $("#editcliente").val();
+            }
+            if ($("#editplaza").val() == "") {
+                plaza = "0";
+            } else {
+                plaza = $("#editplaza").val();
+            }
+
+            var tb = document.getElementById("edittipobanco");
+            $.ajax({
+                url: "../Catalogos/UpdateBancoEmpresa",
+                type: "POST",
+                data: JSON.stringify({
+                    Banco_id: $("#editbanco").val()
+                    , TipoBanco: tb.value
+                    , Id: $("#editarid").val()
+                    , Cliente: cliente
+                    , Plaza: plaza
+                    , CuentaEmp: $("#editcuentaempresa").val()
+                    , Clabe: $("#editclabe").val()
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'danger'
+                        });
+                    } else if (data[0] == '1') {
+                        $("#" + $("#editarcollapse").val()).collapse("hide");
+                        $("#modal-editar-bancoempresa").modal("hide");
+                        Swal.fire({
+                            title: 'Correcto!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    } else if (data[0] == '2') {
+                        Swal.fire({
+                            title: 'Advertencia!',
+                            text: data[1],
+                            icon: 'warning'
+                        });
+                    }
+
+
+                }
+            });
+        }
+    });
+    //
+    // FUNCION QUE REINICIA EL MODAL NUEVO
+    $('#modal-editar-bancoempresa').on('hidden.bs.modal', function () {
+        document.getElementById("formeditbanco").classList.remove("was-validated");
+    });
+    //
+    // EDIT BANK TWO OPTIONS 
+    editarbanco = (key, Id, collapse) => {
+        var texto = "";
+        if (key == 1) {
+            texto = "El banco será desactivado de la empresa"
+        } else if (key == 2) {
+            texto = "El banco será eliminado de la empresa"
+        } else if (key == 3) {
+            texto = "El banco será activado en la empresa"
+        }
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: texto,
+            icon: 'warning',
+            showCancelButton: true,
+            CancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#98959B',
+            confirmButtonText: 'Confirmar'
+        }).then((result) => {
+            if (result.value) {
+
+                $.ajax({
+                    url: "../Catalogos/UpdateBanco",
+                    type: "POST",
+                    data: JSON.stringify({ key: key, Id: Id }),
+                    contentType: "application/json; charset=utf-8",
+                    success: (data) => {
+                        $("#" + collapse).collapse("toggle");
+                        if (data[0] == 0) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Error!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        } else if (data[0] == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Hecho!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        } else if (data[0] == 2) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Hecho!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        } else if (data[0] == 3) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Hecho!',
+                                text: data[1],
+                                timer: 3000
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+    //
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    //////////////////////     CATALOGO USUARIOS     //////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    //
+    // Carga tabla de Usuarios disponibles
+    loadtabusers = () => {
+
+        $.ajax({
+            url: "../Catalogos/LoadUsers",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("tabusersbody");
+                tab.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td>" + data[i]["Usuario"] + "</td>" +
+                        "<td>" + data[i]["Perfil_id"] + "</td>" +
+                        "<td>" + data[i]["Ps"] + "</td>" +
+                        "<td>" + data[i]["Cancelado"] + "</td>" +
+                        "<td> <div class='badge badge-info btn '><i class='fas fa-edit fa-lg'></i> Editar</div></td>" +
+                        "</tr>";
+                }
+                $('#tabUsers').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+                });
+            }
+        });
+    }
+    //
+    // Carga tabla de Perfiles de usuarios
+    loadtabprofiles = () => {
+
+        $.ajax({
+            url: "../Catalogos/LoadProfiles",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("tabprofilesbody");
+                tab.innerHTML = "";
+                var text = "";
+                var btns = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i]["Cancelado"] == "True") {
+                        text = "<i class='fas fa-eye-slash fa-lg text-danger'></i>";
+                        btns = "<div class='badge badge-light btn btns border'><i class='fas fa-eye fa-lg text-primary'></i> Activar</div>";
+                    } else {
+                        text = "<i class='fas fa-eye fa-lg text-primary'></i>";
+                        btns = "<div class='badge badge-light btn btns border'><i class='fas fa-eye-slash fa-lg text-danger'></i> Desactivar</div>";
+                    }
+                    tab.innerHTML += "" +
+                        "<tr ondblclick='loadtwo(" + data[i]["IdPerfil"] + ");' onclick=''>" +
+                        "<td>" + data[i]["IdPerfil"] + "</td>" +
+                        "<td>" + data[i]["Perfil"] + "</td>" +
+                        "<td>" + data[i]["Fecha_Alta"] + "</td>" +
+                        "<td>" + text + "</td>" +
+                        "<td> " + btns + "<div class='badge badge-info btn '><i class='fas fa-edit fa-lg'></i> Editar</div></td>" +
+                        "</tr>";
+                }
+                $('#tabProfiles').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+                    searching: false,
+                    paging: false
+                });
+            }
+        });
+    }
+    //
+    // FUNCION PARA HACER SECUENCIA PARA DAR MOVIEMIENTO A LOS BADGES
+    $(".btns").hover(function () {
+        $('.btns').removeClass('badge-light').addClass('badge-dark'); /*.css("background-color", "pink");*/
+        //$(this).removeClass('bg-white').addClass('bg-secondary');
+        console.log('si');
+    }, function () {
+        $('.btns').removeClass('badge-dark').addClass('badge-light'); /*.css("background-color", "pink");*/
+        //$(this).removeClass('bg-secondary').addClass('bg-white');
+        console.log('no');
+    });
+    //
+    // FUNCION Doble CLICK EN EL ROW
+    //loadtwo = (id) => {
+    //    console.log(id)
+    //    $.ajax({
+    //        url: "../Catalogos/Loadmainmenus",
+    //        type: "POST",
+    //        data: JSON.stringify({ Id: id }),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            console.log(data);
+    //            var form = document.getElementById("frmProfiles");
+    //            form.innerHTML = "";
+    //            for (var i = 0; i < data.length; i++) {
+    //                form.innerHTML += "" +
+    //                    "<div class='input-group mt-2'>"+
+    //                        "<div class='input-group-prepend'>" +
+    //                            "<button class='btn btn-outline-secondary btn-sm py-0' type='button'><i class='fas fa-caret-down fa-lg'></i></button>"+
+    //                        "</div>" +
+    //                        "<div class='input-group-prepend pl-3 pt-1 text-inline'>"+
+    //                            "<div class='form-check'>" +
+    //                                "<input class='form-check-input' type='checkbox' value='' id='check-"+data[i]["iIdItem"]+"'>" +
+    //                                "<label class='form-check-label' for='check-" + data[i]["iIdItem"] +"'>" +
+    //                                    data[i]["sNombre"] +
+    //                                "</label>" +
+    //                            "</div>" +
+    //                        "</div>" +
+    //                        "<div class='col-md-12 collapse collapse-"+data[i]["iIdItem"]+"'></div>"+
+    //                    "</div>";
+
+    //                    //"<div class='form-check col-md-12'>" +
+
+    //                    //"<input class='form-check-input' type='checkbox' name='cp" + data[i]["sNombre"] + "' onclick='loadcheck(" + data[i]["iIdItem"] + ",\"cp" + data[i]["iIdItem"]+"\");' id='cp"+data[i]["iIdItem"]+"'> " +
+    //                    //"<label class='form-check-label'>" + data[i]["sNombre"] + "</label>" +    
+    //                    //    "<div class='collapse' id='cp"+data[i]["iIdItem"]+"'></div>" +
+    //                    //"</div>";
+    //            }
+    //        }
+    //    });
+
+
+    //    //console.log("Perfil id " + name);
+    //    $("#collapseProfiles").collapse("show");
+    //}
+    //
+    // FUNCION DE un CLICK EN EL ROW 
+    loadone = (id) => {
+        //console.log("Perfil id " + id);
+    }
+    //
+    // carga los checks que pertenecen a cada menu principal
+    loadcheck = (id) => {
+        //console.log(menu);
+        console.log(id);
+        if ($('#check-' + id).prop('checked')) {
+            document.getElementById("check-" + id).innerHTML = "";
+            $(".collapse-" + id).collapse("hide");
+        } else {
+
+
+            $.ajax({
+                url: "../Catalogos/Loadonemenu",
+                type: "POST",
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    var form = document.getElementById(id);
+                    form.innerHTML = "";
+                    for (var i = 0; i < data.length; i++) {
+                        form.innerHTML += "" +
+                            "<div class='form-check'>" +
+                            "<input class='form-check-input' type='radio' name='gridRadios' value=''>" +
+                            "<label class='form-check-label' for='gridRadios1'>" + i + " radio</label>" +
+                            "</div>";
+
+                    }
+                    $("#" + menu).collapse("show");
+
+                }
+            });
+        }
+    }
+    //
+    // carga los checks pertenecientes a cada menu dependiendo el cambio de estado del check
+    //$("input[type=checkbox]").on("click", function () {
+    //if ($(this).prop("checked")  == true ) {
+    //    console.log("entro al check activo");
+    //} else {
+    //    console.log("salio de la activacion");
+    //}
+    //console.log("no entro a nada");
+
+    //}
+
+    //
+    // funcion para cambio de icono en boton de collapse de checks
+    //$(".btn-collapse-check").on("click", function () {
+    //    console.log(this);
+    //    if ($(this).find("button").html() == "<i class='fas fa-caret-down fa-lg'></i>") {
+    //        $(this).find("button").html("<i class='fas fa-caret-up fa-lg'></i>");
+    //    } else {
+    //        $(this).find("button").html("<i class='fas fa-caret-down fa-lg'></i>")
+    //    }
+
+    //});
+    $("#btnnewperfil").on("click", function () {
+        var data = $("#frmProfiles").serialize();
+        console.log(data);
+    });
+    ////////////////////////////////////////////
+    //////////  CENTROS DE COSTO  //////////////
+    ////////////////////////////////////////////
+    // CARGA TABLA DE EMPRESAS EN CENTROS DE COSTO
+    LoadCentrosCostos = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-centroscostos");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        empresa = data[i]["IdEmpresa"];
+                    }
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3'>" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-2'>" + data[i]['IdEmpresa'] + "</label>" +
+                        "<label class='col-md-7'>" + data[i]['NombreEmpresa'] + " </label>" +
+                        "<div class='col-md-3'>" +
+                        "<div class='badge badge-success btn' onclick='LoadDetalleCentrosCostos(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["IdEmpresa"] + ");'> Ver <i class='fas fa-eye'></i></div>" +
+                        "<div class='badge badge-info btn mx-1' onclick='LoadModalNuevoCentrosCostos(" + data[i]["IdEmpresa"] + ");'> Nuevo <i class='fas fa-plus'></i></div>" +
+                        "</div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
+                }
+                //setTimeout(function () {
+                //    $("#table-centros-costos").DataTable({
+                //        "language": {
+                //            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                //        }
+                //    });
+                //}, 1000);
+            }
+        });
+    }
+    // CARGA TABLA DETALLE DE CADA EMPRESA CON SUS CENTROS DE COSTO
+    LoadDetalleCentrosCostos = (pilltab, Empresa_id) => {
+        $.ajax({
+            url: "../Catalogos/LoadCentrosCostoDetalle",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                document.getElementById(pilltab).innerHTML = "";
+                document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-centros-costos col-md-12 pb-4'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th class=''> Id </th>" +
+                    "<th class=''> Centro Costo </th>" +
+                    "<th class=''> Descripción </th>" +
+                    "<th class=''> Estatus </th>" +
+                    "<th class=''> Fecha Alta </th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]["Estado"] == "0") {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["IdCentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["CentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["Descripcion"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye text-primary'></i>" + "</td>" +
+                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0, 10) + "</td>" +
+                            "</tr>";
+                    } else {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["IdCentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["CentroCosto"] + "</td>" +
+                            "<td class=''>" + data[j]["Descripcion"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye-slash text-danger'></i>" + "</td>" +
+                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0, 10) + "</td>" +
+                            "</tr>";
+                    }
+                }
+                $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
+                $("#" + pilltab).collapse("toggle");
+                setTimeout(function () {
+                    $(".table" + Empresa_id + "").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 100);
+            }
+        });
+    }
+    // carga modal nuevo centro costo
+    LoadModalNuevoCentrosCostos = (Empresa_id) => {
+        $("#newempresa").val(Empresa_id);
+        $("#modal-nuevo-centrocostos").modal("show");
+    }
+    // GUARDA NUEVO CENTRO COSTO
+    $("#btnsavecentrocosto").on("click", function () {
+        var form = document.getElementById("frmnuevocentrocostos");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+
+            $.ajax({
+                url: "../Catalogos/SaveNewCentrosCostos",
+                type: "POST",
+                data: JSON.stringify({
+                    Empresa_id: document.getElementById("newempresa").value
+                    , Nombre: document.getElementById("newnombre").value
+                    , Descripcion: document.getElementById("newdescripcion").value
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'warning'
+                        });
+                    } else {
+                        $("#modal-nuevo-centrocostos").modal("hide");
+                        $("div.collapse.show").collapse("hide");
+                        Swal.fire({
+                            title: 'Completo!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    }
+
+
+                }
+            });
+        }
+    });
+    ////////////////////////////////////////////
+    ////////  REGISTROS PATRONALES  ////////////
+    ////////////////////////////////////////////
+    // CARGA TABLA DE EMPRESAS EN REGISTROS PATRONALES
+    LoadRegistrosPatronales = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-registropatronal");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        empresa = data[i]["IdEmpresa"];
+                    }
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-2'>" + data[i]['IdEmpresa'] + "</label><label class='col-md-7'>" + data[i]['NombreEmpresa'] + " </label><div class='col-md-3'>" +
+                        "<div class='badge badge-success btn' onclick='LoadDetalleRegistrosPatronales(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["IdEmpresa"] + ");'>Ver <i class='fas fa-eye'></i></div>" +
+                        "<div class='badge badge-info btn mx-1' onclick='LoadModalNuevoRegistrosPatronales(" + data[i]["IdEmpresa"] + ");'> Nuevo <i class='fas fa-plus'></i></div>" +
+                        "</div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse table-responsive collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
+                }
+
+            }
+        });
+    }
+    // CARGA TABLA DETALLE DE CADA EMPRESA CON SUS REGISTROS PATRONALES
+    LoadDetalleRegistrosPatronales = (pilltab, Empresa_id) => {
+        $.ajax({
+            url: "../Empresas/LoadRegistrosPatronalesDetalle",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                document.getElementById(pilltab).innerHTML = "";
+                document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-registros-patronales col-md-12 pb-4'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th class=''> Id </th>" +
+                    "<th class=''> Afiliacion IMSS </th>" +
+                    "<th class=''> Nombre Afiliación </th>" +
+                    "<th class=''> Riesgo de trabajo </th>" +
+                    "<th class=''> Clase </th>" +
+                    "<th class=''> Estatus </th>" +
+                    "<th class=''> Acciones </th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]["Cancelado"] == "True") {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["IdRegPat"] + "</td>" +
+                            "<td class=''>" + data[j]["Afiliacion_IMSS"] + "</td>" +
+                            "<td class=''>" + data[j]["Nombre_Afiliacion"] + "</td>" +
+                            "<td class=''>" + data[j]["Riesgo_Trabajo"] + "</td>" +
+                            "<td class=''>" + data[j]["ClasesRegPat_id"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye-slash text-danger' title='Inactivo'></i>" + "</td>" +
+                            "<th class=''>" +
+                            "<div class='badge badge-success btn mx-1' title='Editar' onclick='editarregistropatronal(" + Empresa_id + "," + data[j]["IdRegPat"] + ");'> Editar <i class='fas fa-edit'></i></div>" +
+                            "<div class='badge badge-success btn' title='Activar' onclick='editarestatusregistropatronal(" + Empresa_id + "," + data[j]["IdRegPat"] + ",0,\"" + pilltab + "\");'><i class='fas fa-check'></i></div>" +
+                            "</th>" +
+                            "</tr>";
+                    } else {
+                        document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                            "<td class=''>" + data[j]["IdRegPat"] + "</td>" +
+                            "<td class=''>" + data[j]["Afiliacion_IMSS"] + "</td>" +
+                            "<td class=''>" + data[j]["Nombre_Afiliacion"] + "</td>" +
+                            "<td class=''>" + data[j]["Riesgo_Trabajo"] + "</td>" +
+                            "<td class=''>" + data[j]["ClasesRegPat_id"] + "</td>" +
+                            "<td class=''>" + "<i class='fas fa-eye text-primary' title='Activo'></i>" + "</td>" +
+                            "<th class=''>" +
+                            "<div class='badge badge-success btn mx-1' title='Editar' onclick='editarregistropatronal(" + Empresa_id + "," + data[j]["IdRegPat"] + ");'> Editar <i class='fas fa-edit'></i></div>" +
+                            "<div class='badge badge-warning btn' title='Desactivar' onclick='editarestatusregistropatronal(" + Empresa_id + "," + data[j]["IdRegPat"] + ",1,\"" + pilltab + "\");'><i class='fas fa-times fa-lg'></i></div>" +
+                            "</th>" +
+                            "</tr>";
+                    }
+                }
+                $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
+                $("#" + pilltab).collapse("toggle");
+                setTimeout(function () {
+                    $(".table" + Empresa_id + "").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 100);
+            }
+        });
+    }
+    LoadModalNuevoRegistrosPatronales = (Empresa_id) => {
+        loadClases();
+        $("#modal-nuevo-registropatronal").modal("show");
+
+        $("#newempresa").val(Empresa_id);
+
+    }
+    editarestatusregistropatronal = (Empresa_id, RegPat_id, Status, collapse) => {
+        //alert("entra");
+        //Swal.fire({
+        //    title: 'Estas seguro?',
+        //    text: "El registro sera borrado definitivamente!",
+        //    icon: 'warning',
+        //    showCancelButton: true,
+        //    CancelButtonText: 'Cancelar',
+        //    confirmButtonColor: '#d33',
+        //    cancelButtonColor: '#98959B',
+        //    confirmButtonText: 'Confirmar'
+        //}).then((result) => {
+        //    if (result.value) {
+        $.ajax({
+            url: "../Catalogos/ChangestatusRegistroPatronal",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                Empresa_id: Empresa_id
+                , RegPat_id: RegPat_id
+                , Status: Status
+            }),
+            success: (data) => {
+                if (data[0] == '0') {
+                    Swal.fire({
+                        title: 'Aviso!',
+                        icon: 'warning',
+                        text: data[1]
+                    });
+                } else if (data[0] == '1') {
+                    $("#" + collapse).collapse("toggle");
+                    Swal.fire({
+                        title: 'Correcto',
+                        icon: 'success',
+                        text: data[1]
+                    });
+                }
+            }
+        });
+        //    }
+        //});
+
+
+    }
+
+    editarregistropatronal = (Empresa_id, RegPat_id) => {
+        alert("si");
+    }
+    //Carga catalogo Clases 
+    loadClases = () => {
+        $.ajax({
+            url: "../Empresas/LoadClasesRP",
+            type: "POST",
+            data: JSON.stringify(),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                document.getElementById("newclase").innerHTML = "<option vlaue=''>Selecciona</option>";
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("newclase").innerHTML += `<option value='${data[i].IdClase}'>${data[i].Nombre_Clase}</option>`;
+
+                    //document.getElementById("btnUpdateRP").classList.add("invisible");
+                }
+            }
+        });
+    }
+    // Guardar nuevo registro patronal
+    $("#btnsaveregistropatronal").on("click", function () {
+        var form = document.getElementById("frmnuevoregistropatronal");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+
+            $.ajax({
+                url: "../Catalogos/SaveNewRegistroPatronal",
+                type: "POST",
+                data: JSON.stringify({
+                    Empresa_id: $("#newempresa").val()
+                    , Afiliacion_IMSS: $("#newafiliacion").val()
+                    , NombreAfiliacion: $("#newnombre").val()
+                    , RiesgoTrabajo: $("#newriesgotrabajo").val()
+                    , Clase: document.getElementById("newclase").value
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Aviso!',
+                            icon: 'warning',
+                            text: data[1]
+                        });
+                    } else if (data[0] == '1') {
+                        $("div.collapse.show").collapse("hide");
+                        Swal.fire({
+                            title: 'Correcto',
+                            icon: 'success',
+                            text: data[1]
+                        });
+                    }
+                }
+            });
+        }
+    });
+    ////////////////////////////////////////////
+    /////////////  REGIONALES  /////////////////
+    ////////////////////////////////////////////
+    // CARGA TABLA DE EMPRESAS EN REGIONALES
+    LoadRegionales = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-regionales");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        empresa = data[i]["IdEmpresa"];
+                    }
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-2'>" + data[i]['IdEmpresa'] + "</label><label class='col-md-7'>" + data[i]['NombreEmpresa'] + " </label><div class='col-md-3'><div class='badge badge-success btn' onclick='LoadDetalleRegionales(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["IdEmpresa"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='badge badge-info btn mx-1' onclick='mostrarmodalnuevaregional(" + data[i]["IdEmpresa"] + ");'> Nuevo <i class='fas fa-plus'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse table-responsive collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
+                }
+            }
+        });
+    }
+    // CARGA TABLA DETALLE DE CADA EMPRESA CON SUS REGIONALES
+    LoadDetalleRegionales = (pilltab, Empresa_id) => {
+        $.ajax({
+            url: "../Empresas/LoadRegionalesDetalle",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                document.getElementById(pilltab).innerHTML = "";
+                document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-registros-patronales col-md-12 pb-4'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th class=''> Id </th>" +
+                    "<th class=''> Clave </th>" +
+                    "<th class=''> Descripción </th>" +
+                    "<th class=''> Fecha Alta </th>" +
+                    "<th class=''> Acciones </th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
+                for (var j = 0; j < data.length; j++) {
+                    document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                        "<td class=''>" + data[j]["iIdRegional"] + "</td>" +
+                        "<td class=''>" + data[j]["sClaveRegional"] + "</td>" +
+                        "<td class=''>" + data[j]["sDescripcionRegional"] + "</td>" +
+                        "<td class=''>" + data[j]["sFechaAlta"] + "</td>" +
+                        "<td class=''></td>" +
+                        "</tr>";
+                }
+                $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
+                $("#" + pilltab).collapse("toggle");
+                setTimeout(function () {
+                    $(".table" + Empresa_id + "").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 100);
+            }
+        });
+    }
+    // MUESTA EL MODAL DE NUEVA REGIONAL 
+    mostrarmodalnuevaregional = (Empresa_id) => {
+        $("#modalnuevaregional").modal("show");
+        $("#newinputempresa").val(Empresa_id);
+    }
+    // GUARDA LA NUEVA REGIONAL 
+    $("#btnnewregional").on("click", function () {
+        var form = document.getElementById("frmnewregional");
+        if (form.checkValidity() === false) {
+            form.classList.add("was-validated");
+        } else {
+
+            $.ajax({
+                url: "../Catalogos/SaveNewRegionalesCatalogo",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify({
+                    Empresa_id: $("#newinputempresa").val()
+                    , ClaveRegion: $("#newinputclave").val()
+                    , Descripcion: $("#newinputdescripcion").val()
+                }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data[1],
+                            icon: 'warning',
+                            timer: 1000
+                        });
+                    } else {
+                        $("div.collapse.show").collapse("hide");
+                        $("#modalnuevaregional").modal("hide");
+                        Swal.fire({
+                            title: 'Completo!',
+                            text: data[1],
+                            icon: 'success',
+                            timer: 1000
+                        });
+                    }
+                }
+            });
+        }
+    });
+    ////////////////////////////////////////////
+    /////////////  SUCURSALES  /////////////////
+    ////////////////////////////////////////////
+    // CARGA SUCURSALES EN VISTA SUCURSALES
+    LoadTabSucursales = () => {
+        $.ajax({
+            url: "../Empresas/LoadSucursales",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-sucursales");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td>" + data[i]["iIdSucursal"] + "</td>" +
+                        "<td>" + data[i]["sClaveSucursal"] + "</td>" +
+                        "<td>" + data[i]["sDescripcionSucursal"] + "</td>" +
+                        "<td>" + data[i]["sFechaAlta"] + "</td>" +
+                        "</tr >";
+                }
+                setTimeout(function () {
+                    $("#tab-sucursales").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 1000);
+            }
+        });
+    }
+
+    ////////////////////////////////////////////
+    /////////////  LOCALIDADES  ////////////////
+    ////////////////////////////////////////////
+    // CARGA EMPRESAS EN VISTA SUCURSALES
+    LoadLocalidades = () => {
+        $.ajax({
+            url: "../Empresas/LoadSEmp",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                var tab = document.getElementById("bodytab-localidades");
+                tab.innerHTML = "";
+                var empresa;
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        empresa = data[i]["IdEmpresa"];
+                    }
+                    tab.innerHTML += "" +
+                        "<tr>" +
+                        "<td colspan='3' >" +
+                        "<div class='col-md-12 row'>" +
+                        "<label class='col-md-2'>" + data[i]['IdEmpresa'] + "</label><label class='col-md-7'>" + data[i]['NombreEmpresa'] + " </label><div class='col-md-3'><div class='badge badge-success btn' onclick='LoadDetalleLocalidades(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["IdEmpresa"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='badge badge-info btn mx-1' onclick='mostrarmodalnuevalocalidad(" + data[i]["IdEmpresa"] + ");'> Nuevo <i class='fas fa-plus'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse table-responsive collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td >" +
+                        "</tr >";
+                }
+            }
+        });
+    }
+    // CARGA TABLA DE LOCALIDADES POR EMPRESA
+    LoadDetalleLocalidades = (pilltab, Empresa_id) => {
+        $.ajax({
+            url: "../Empresas/LoadLocalidadesCatalogos",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+
+                document.getElementById(pilltab).innerHTML = "";
+                document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-localidades col-md-12 pb-4'>" +
+                    "<thead class='col-md-12'>" +
+                    "<tr>" +
+                    "<th class=''> Id </th>" +
+                    "<th class=''> Codigo </th>" +
+                    "<th class=''> Descripción </th>" +
+                    "<th class=''> Tasa IVA </th>" +
+                    "<th class=''> Registro Patronal </th>" +
+                    "<th class=''> Regional </th>" +
+                    "<th class=''> Zona Economica </th>" +
+                    "<th class=''> Sucursal </th>" +
+                    "<th class=''> Estado </th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
+                for (var i = 0; i < data.length; i++) {
+                    
+                    document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
+                        "<td>" + data[i]["IdLocalidad"] + "</td>" +
+                        "<td>" + data[i]["Codigo_Localidad"] + "</td>" +
+                        "<td>" + data[i]["Descripcion"] + "</td>" +
+                        "<td>" + data[i]["TasaIva"] + "</td>" +
+                        "<td>" + data[i]["NombreRegistroPatronal"] + "</td>" +
+                        "<td>" + data[i]["Regional_id"] + "</td>" +
+                        "<td>" + data[i]["ZonaEconomica_id"] + "</td>" +
+                        "<td>" + data[i]["Sucursal_id"] + "</td>" +
+                        "<td>" + data[i]["Estado_id"] + "</td>" +
+                        "<td class=''>" + data[i]["Fecha_Alta"].substr(0, 10) + "</td>" +
+                        "</tr>";
+                    
+                }
+                $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
+                $("#" + pilltab).collapse("toggle");
+                setTimeout(function () {
+                    $(".table" + Empresa_id + "").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        }
+                    });
+                }, 100);
+            }
+        });
+
+
+        
+    }
+    // MOSTRAR MODAL NUEVA LOCALIDAD 
+    mostrarmodalnuevalocalidad = () => {
+        $("#modalnuevalocalidad").modal("show");
+
+    }
 });

@@ -15,51 +15,57 @@
         var fechab = document.getElementById("inFechaBajaCredito");
         var fechar = document.getElementById("inFechaReinicioCredito");
         var aseg;
-        if ($("#inAplicaSeguro").is(":checked")) {
-            aseg = 1;
+        var form = document.getElementById("frmCreditos");
+        if (form.checkValidity() == false) {
+            form.classList.add("was-validated");
+            setTimeout(() => {
+                form.classList.remove("was-validated");
+            }, 5000);
         } else {
-            aseg = 0;
-        }
-        $.ajax({
-            url: "../Incidencias/SaveCredito",
-            data: JSON.stringify({
-                TipoDescuento: tdescuento.value,
-                SeguroVivienda: aseg,
-                Descuento: descuento.value,
-                NoCredito: ncredito.value,
-                FechaAprovacion: fechaa.value,
-                Descontar: descontar.value,
-                FechaBaja: fechab.value,
-                FechaReinicio: fechar.value
-            }),
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                //Refresca la tabla
-                //$.ajax({
-                //    method: "POST",
-                //    url: "../Incidencias/LoadCreditosEmpleado",
-                //    contentType: "application/json; charset=utf-8",
-                //    dataType: "json",
-                //    success: (data) => {
-                //        document.getElementById("tcbody").innerHTML = "";
-                //        for (var i = 0; i < data.length; i++) {
-                //            document.getElementById("tcbody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"] + "</td><td><div class='btn badge badge-danger'><i class='far fa-check-circle' tittle='Desactivar' ></i></div></td></tr>";
-                //        }
-                //    }
-                //});
-                createTab();
-
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Completado!',
-                    text: 'Credito agregado con éxito'
-                });
+            if ($("#inAplicaSeguro").is(":checked")) {
+                aseg = 1;
+            } else {
+                aseg = 0;
             }
-        });
+            $.ajax({
+                url: "../Incidencias/SaveCredito",
+                data: JSON.stringify({
+                    TipoDescuento: tdescuento.value,
+                    SeguroVivienda: aseg,
+                    Descuento: descuento.value,
+                    NoCredito: ncredito.value,
+                    FechaAprovacion: fechaa.value,
+                    Descontar: descontar.value,
+                    FechaBaja: fechab.value,
+                    FechaReinicio: fechar.value
+                }),
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    console.log(data);
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Aviso!',
+                            text: data[1]
+                        });
+                    } else if (data[0] == '1') {
+                        createTab();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Completado!',
+                            text: data[1],
+                            timer: 1000
+                        });
+                        form.reset();
+                    } 
 
-
+                    
+                    
+                    
+                }
+            });
+        }
     });
     //Busqueda de empleado
     $("#inputSearchEmpleados").on("keyup", function () {
@@ -123,11 +129,11 @@
             dataType: "json",
             success: (data) => {
                 //console.log(data["data"][0]["Empresa_id"]);
-                console.log(data[0]["Empresa_id"]);
+                console.log(data);
                 //$("#tcbody").empty();
                 document.getElementById("tcbody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tcbody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"] + "</td><td><div class='btn badge badge-danger text-center' data-toggle='tooltip' data-placement='left' title='Desactivar'><i class='fas fa-minus'></i> </div></td></tr>";
+                    document.getElementById("tcbody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"] + "</td><td><div class='btn badge badge-danger text-center' onclick='deleteCredito("+data[i]["IdCredito"]+");' title='Desactivar'><i class='fas fa-minus'></i> </div></td></tr>";
                 }
 
 
@@ -135,5 +141,64 @@
         });
 
     }
+    LoadSelectTipoDescuento = () => {
+        $.ajax({
+            method: "POST",
+            url: "../Incidencias/LoadTipoDescuento",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (data) => {
+                var select = document.getElementById("inTipoDescuento");
+                select.innerHTML = "<option value=''> Selecciona </option>";
+                for (var i = 0; i < data.length; i++) {
+                    select.innerHTML += "<option value='" + data[i]["Id"] + "'>"+data[i]["Nombre"]+"</option>"
+                }
 
+
+            }
+        });
+    }
+    LoadSelectTipoDescuento();
+    deleteCredito = (Credito_id) => {
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: "El crédito sera borrado definitivamente!",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#98959B',
+            confirmButtonText: 'Confirmar'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "POST",
+                    url: "../Incidencias/DeleteCredito",
+                    data: JSON.stringify({ Credito_id: Credito_id }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (data) => {
+                        console.log(data);
+                        if (data[0] == '0') {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Aviso!',
+                                text: data[1]
+                            });
+                        } else if (data[0] == '1') {
+                            document.getElementById("tcbody").innerHTML = "";
+                            createTab();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Completado!',
+                                text: data[1],
+                                timer: 1000
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
 });

@@ -118,7 +118,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult SaveCredito(string TipoDescuento, int SeguroVivienda, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
         {
-            List<CreditosBean> lista = new List<CreditosBean>();
+            List<string> lista = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
@@ -207,14 +207,14 @@ namespace Payroll.Controllers
             return Json(res);
         }
         [HttpPost]
-        public JsonResult SaveRegistroIncidencia(int inRenglon, int inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
+        public JsonResult SaveRegistroIncidencia(int inRenglon, int inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA, string infinicio, string inffinal)
         {
             List<string> res = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
             int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
+            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo, infinicio, inffinal);
             return Json(res);
         }
         [HttpPost]
@@ -246,5 +246,28 @@ namespace Payroll.Controllers
             res = Dao.sp_TRegistro_Incidencias_Delete_Incidencias(Incidencia_id,IncidenciaP_id);
             return Json(res);
         }
+        [HttpPost]
+        public JsonResult LoadTipoDescuento()
+        {
+            List<TipoDescuentoBean> res;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+            res = Dao.sp_TipoDescuento_Retrieve_TipoDescuentos();
+            return Json(res);
+        }
+        [HttpPost]
+        public JsonResult DeleteCredito(int Credito_id)
+        {
+            List<string> res;
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            res = Dao.sp_TCreditos_delete_Credito(int.Parse(Session["IdEmpresa"].ToString()), int.Parse(Session["Empleado_id"].ToString()), Credito_id);
+            return Json(res);
+        }
+        public JsonResult DeletePension(int Pension_id, int IncidenciaP_id)
+        {
+            List<string> res;
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            res = Dao.sp_TPensiones_Alimenticias_Delete_Pension(int.Parse(Session["IdEmpresa"].ToString()), int.Parse(Session["Empleado_id"].ToString()), Pension_id, IncidenciaP_id);
+            return Json(res);
+        }
     }
-}
+}   

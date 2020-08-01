@@ -55,7 +55,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_Templeado_Retrieve_DatosEmpleado(int Empresa_id, int Empleado_id)
+        public List<string> sp_Templeado_Retrieve_DatosEmpleado(int Empresa_id, int Empleado_id, int Perfil_id)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -65,12 +65,14 @@ namespace Payroll.Models.Daos
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPerfil_id", Perfil_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
             {
                 while (data.Read())
                 {
+                    //DATOS GENERALES
                     list.Add(data["Empleado_id"].ToString());
                     list.Add(data["Nombre_Empleado"].ToString());
                     list.Add(data["Apellido_Paterno_Empleado"].ToString());
@@ -92,10 +94,39 @@ namespace Payroll.Models.Daos
                     list.Add(data["Correo_Electronico"].ToString());
                     list.Add(data["Fecha_Matrimonio"].ToString());
                     list.Add(data["Tipo_Sangre"].ToString());
-                    list.Add(data["Fecha_Alta"].ToString());
-                    list.Add(data["CURP"].ToString());
+                    list.Add(data["Fecha_Alta_Emp"].ToString());
+                    //IMSS
+                    list.Add(data["Effdt_imss"].ToString());
                     list.Add(data["RegistroImss"].ToString());
                     list.Add(data["RFC"].ToString());
+                    list.Add(data["CURP"].ToString());
+                    list.Add(data["NivelEstudio"].ToString());
+                    list.Add(data["NivelSocioeconomico"].ToString());
+                    list.Add(data["Fecha_Alta_imss"].ToString());
+                    list.Add(data["IdNomina"].ToString());
+                    list.Add(data["Effdt_Nom"].ToString());
+                    list.Add(data["Tipo_Periodo"].ToString());
+                    list.Add(data["SalarioMensual"].ToString());
+                    list.Add(data["TipoEmpleado"].ToString());
+                    list.Add(data["NivelEmpleado"].ToString());
+                    list.Add(data["TipoJornada"].ToString());
+                    list.Add(data["TipoContrato"].ToString());
+                    list.Add(data["TipoContratacion"].ToString());
+                    list.Add(data["MotivoIncremento"].ToString());
+                    list.Add(data["FechaIngreso"].ToString());
+                    list.Add(data["FechaAntiguedad"].ToString());
+                    list.Add(data["VencimientoContrato"].ToString());
+                    list.Add(data["TipoPago"].ToString());
+                    list.Add(data["Banco"].ToString());
+                    list.Add(data["Cta_Cheques"].ToString());
+                    list.Add(data["Fecha_Alta_Nom"].ToString());
+                    list.Add(data["Ult_sdi"].ToString());
+                    list.Add(data["PosicionCodigo"].ToString());
+                    list.Add(data["NombreLocalidad"].ToString());
+                    list.Add(data["CodDepartamento"].ToString());
+                    list.Add(data["Afiliacion_IMSS"].ToString());
+                    list.Add(data["NomPuesto"].ToString());
+                    list.Add(data["ReportaA"].ToString());
                 }
             }
             else
@@ -136,9 +167,26 @@ namespace Payroll.Models.Daos
                     listEmpleados.Fecha_Aniversario = data["FechaAntiguedad"].ToString();
                     listEmpleados.Id_Per_Vac_Ln = int.Parse(data["IdPer_Vac_Ln"].ToString());
                     listEmpleados.Anio = int.Parse(data["Anio"].ToString());
-                    listEmpleados.DiasPrima = (data["DiasPrima"].ToString().Length > 0) ? int.Parse(data["DiasPrima"].ToString()) : 0;
-                    listEmpleados.DiasDisfrutados = (data["DiasDisfrutados"].ToString().Length > 0) ? int.Parse(data["DiasDisfrutados"].ToString()) : 0;
-                    listEmpleados.DiasRestantes = (data["DiasRestantes"].ToString().Length > 0) ? int.Parse(data["DiasRestantes"].ToString()) : 0;
+
+                    if (data["DiasPrima"].ToString() == null || data["DiasPrima"].ToString() == "")
+                    {
+                        listEmpleados.DiasPrima = 0;
+                    }
+                    else
+                    {
+                        listEmpleados.DiasPrima = int.Parse(data["DiasPrima"].ToString());
+                    }
+                    
+                    listEmpleados.DiasDisfrutados = int.Parse(data["DiasDisfrutados"].ToString());
+                    if (data["DiasRestantes"].ToString() == null || data["DiasRestantes"].ToString() == "")
+                    {
+                        listEmpleados.DiasRestantes = 0;
+                    }
+                    else
+                    {
+                        listEmpleados.DiasRestantes = int.Parse(data["DiasRestantes"].ToString());
+                    }
+                    
                     list.Add(listEmpleados);
                 }
             }
@@ -270,7 +318,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<CreditosBean> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, int SeguroVivienda, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
+        public List<string> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, int SeguroVivienda, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
         {
             if (FechaBaja == null)
             {
@@ -280,7 +328,7 @@ namespace Payroll.Models.Daos
             {
                 FechaReinicio = "";
             }
-            List<CreditosBean> list = new List<CreditosBean>();
+            List<string> list = new List<string>();
             this.Conectar();
             SqlCommand cmd = new SqlCommand("sp_TCreditos_Insert_Credito", this.conexion)
             {
@@ -298,7 +346,18 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", FechaReinicio));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
-
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
             data.Close();
 
             return list;
@@ -328,9 +387,10 @@ namespace Payroll.Models.Daos
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
-                    lista.Certificado_imss = data["Fecha_Ausentismo"].ToString();
-                    lista.Comentarios_imss = data["Fecha_Ausentismo"].ToString();
-                    lista.Causa_FaltaInjustificada = data["Fecha_Ausentismo"].ToString();
+                    lista.Certificado_imss = data["Certificado_imss"].ToString();
+                    lista.Comentarios_imss = data["Comentarios_imss"].ToString();
+                    lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
+                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
 
                     list.Add(lista);
                 }
@@ -495,7 +555,7 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.Add(new SqlParameter("@ctrlId", Tipo_Ausentismo_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlId", id));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", Tipo_Ausentismo_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
@@ -605,7 +665,7 @@ namespace Payroll.Models.Daos
                     if (data["Tarjeta_vales"].ToString().Length == 0) { list.Tarjeta_vales = ""; } else { list.Tarjeta_vales = data["Tarjeta_vales"].ToString(); }
                     if (data["Cuenta_cheques"].ToString().Length == 0) { list.Cuenta_cheques = ""; } else { list.Cuenta_cheques = data["Cuenta_cheques"].ToString(); }
                     if (data["Fecha_baja"].ToString().Length == 0) { list.Fecha_baja = ""; } else { list.Fecha_baja = data["Fecha_baja"].ToString().Substring(0, 10); }
-
+                    list.IncidenciaProgramada_id = data["IncidenciaProgramada_id"].ToString();
                     lista.Add(list);
 
                 }
@@ -647,7 +707,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, int Cantidad, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo)
+        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, int Cantidad, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo, string infinicio, string inffinal)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -664,6 +724,8 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaAplicacion", Fecha_Aplicacion));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaInicio", infinicio));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaFinal", inffinal));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -736,7 +798,7 @@ namespace Payroll.Models.Daos
                     lista.Plazos = int.Parse(data["Plazos"].ToString());
                     lista.Descripcion = data["Descripcion"].ToString();
                     lista.Fecha_Aplicacion = data["Fecha_Aplicacion"].ToString();
-
+                    lista.NPeriodo = data["NPeriodo"].ToString();
                     list.Add(lista);
                 }
             }
@@ -796,6 +858,64 @@ namespace Payroll.Models.Daos
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlIncidencia_id", Incidencias_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlIncidenciaP_id", IncidenciaP_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
+        public List<string> sp_TCreditos_delete_Credito(int Empresa_id, int Empleado_id, int Credito_id)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TCreditos_delete_Credito", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCredito_id", Credito_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+            return list;
+        }
+        public List<string> sp_TPensiones_Alimenticias_Delete_Pension(int Empresa_id, int Empleado_id, int Pension_id, int IncidenciaP_id)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPensiones_Alimenticias_Delete_Pension", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPension_id", Pension_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlIncidenciaP_id", IncidenciaP_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();

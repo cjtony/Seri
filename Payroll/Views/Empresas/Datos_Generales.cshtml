@@ -38,10 +38,8 @@
             <label class="text-left col-md-4" id="l-12"></label>
             <label class="font-weight-bold col-md-2">Regimen Fiscal : </label>
             <label class="text-left col-md-4" id="l-13"></label>
-            <label class="font-weight-bold col-md-2">Banco Interbancarios : </label>
-            <label class="text-left col-md-4" id="l-14"></label>
             <label class="font-weight-bold col-md-2">Registro IMSS : </label>
-            <label class="text-left col-md-4" id="l-15"></label>
+            <label class="text-left col-md-4" id="l-14"></label>
         </small>
         <div class="col-md-6 font-labels d-flex justify-content-end"><div id="btnEditarEmpresa" class="btn btn-outline-success font-weight-bold" style="font-size:12px;">Editar  <i class="pl-1 far fa-edit"></i> </div></div>
     </div>
@@ -95,13 +93,20 @@
 
                             </div>
                         </div>
-                        <div class="form-group col-md-6">
+                        @*<div class="form-group col-md-6">
                             <label for="inGiro_empresa">Banco Interbancarios</label>
                             <select type="text" class="form-control font-labels" name="inRBanco_interbancarios" id="inRBanco_interbancarios" required>
                             </select>
                             <div class="valid-feedback">
                             </div>
-                        </div>
+                        </div>*@
+                        @*<div class="form-group col-md-6">
+                            <label for="inGiro_empresa">Banco Nómina</label>
+                            <select type="text" class="form-control font-labels" name="inBanco_nomina" id="inBanco_nomina" required>
+                            </select>
+                            <div class="valid-feedback">
+                            </div>
+                        </div>*@
                         <div class="form-group col-md-6">
                             <label for="inGiro_empresa">Registro IMSS</label>
                             <input type="text" class="form-control font-labels" name="inRegistro_imss" id="inRegistro_imss" placeholder="Registro IMMS" required>
@@ -407,23 +412,25 @@
             }
         }
 
-        LoadSelectBancos = (Banco_id) => {
-            $.ajax({
-                url: "../Empleados/LoadBanks",
-                type: "POST",
-                data: JSON.stringify({ keyban: Banco_id }),
-                contentType: "application/json; charset=utf-8",
-                success: (data) => {
-                    document.getElementById("inRBanco_interbancarios").innerHTML = "";
-                    for (var i = 0; i < data.length; i++) {
-                        document.getElementById("inRBanco_interbancarios").innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
-                    }
+        //LoadSelectBancos = (Banco_id) => {
+        //    $.ajax({
+        //        url: "../Empleados/LoadBanks",
+        //        type: "POST",
+        //        data: JSON.stringify({ keyban: Banco_id }),
+        //        contentType: "application/json; charset=utf-8",
+        //        success: (data) => {
+        //            //document.getElementById("inRBanco_interbancarios").innerHTML = "";
+        //            document.getElementById("inBanco_nomina").innerHTML = "";
+        //            for (var i = 0; i < data.length; i++) {
+        //                //document.getElementById("inRBanco_interbancarios").innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>";
+        //                document.getElementById("inBanco_nomina").innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
+        //            }
 
-                }
-            });
-        }
-
-        LoadSelectBancos(0);
+        //        }
+        //    });
+        //}
+        //
+        //LoadSelectBancos(0);
     });
     document.getElementById("btnClear").classList.add("invisible");
     document.getElementById("btnUpdate").classList.add("invisible");
@@ -495,8 +502,7 @@
             document.getElementById("l-11").innerHTML = data[10];
             document.getElementById("l-12").innerHTML = data[11].substring(0, 10);
             document.getElementById("l-13").innerHTML = data[12];
-            document.getElementById("l-14").innerHTML = data[13] + " - " + data[14];
-            document.getElementById("l-15").innerHTML = data[15];
+            document.getElementById("l-14").innerHTML = data[13];
         }
     });
     $.ajax({
@@ -575,6 +581,7 @@
             var regimss = document.getElementById("inRegistro_imss");
             var clonar = document.getElementById("inclonar");
             var grupoe = document.getElementById("inGrupo_empresa");
+            var banco_nom = document.getElementById("inBanco_nomina");
             //Variables para primer fecha periodo
             var finicio = document.getElementById("finicio");
             var ffinal = document.getElementById("ffinal");
@@ -608,7 +615,6 @@
                 , infproceso: fproceso.value
                 , indiaspagados: diaspagados.value
                 , intipoperiodo: 3
-                , inbancoin: bancoin.value
                 , inregimss: regimss.value
                 , inclonar: clonar.value
                 , ingrupoe: grupoe.value

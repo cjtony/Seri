@@ -19,6 +19,7 @@
                             <option value="1">Nomina</option>
                         </select>
                     </div>
+
                     <div class="form-group col-md-12">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" name="inDescFiniquito" id="inDescFiniquito">
@@ -26,6 +27,51 @@
                         </div>
                     </div>
 
+                    <div class="form-group col-md-6">
+                        <label for="inNOficio">No. Oficio</label>
+                        <input type="text" name="inNOficio" id="inNOficio" class="form-control" placeholder="No de Oficio" required />
+                    </div>
+
+
+                    <div class="form-group imss col-md-6">
+                        <label for="inTCalculo">Tipo de calculo </label>
+                        <select class="form-control font-labels custom-select" name="inTCalculo" id="inTCalculo" required>
+                            <option value="">Selecciona</option>
+                            <option value="1">Percepciones sujetas a impuestos</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inFOficio">Fecha de oficio</label>
+                        <input type="date" name="inFOficio" id="inFOficio" value="" class="form-control" placeholder="Escriba la causa del Ausentismo" required />
+                    </div>
+                    <div class="form-group imss col-md-6">
+                        <label for="inFBaja">Fecha de baja</label>
+                        <input type="date" name="inFBaja" id="inFBaja" class="form-control" placeholder="Escriba un comentario" required />
+                    </div>
+                    <div class="form-group col-md-12"></div>
+                    <div class="form-group col-md-6">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" name="inAumentoSegunSMG" id="inAumentoSegunSMG">
+                            <label class="custom-control-label" for="inAumentoSegunSMG">Aumentar segun Salario Minimo General</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" name="inAumentarSegunAs" id="inAumentarSegunAs">
+                            <label class="custom-control-label" for="inAumentarSegunAs">Aumentar segun aumento de sueldo </label>
+                        </div>
+                    </div>
+                    <div class="form-group imss col-md-6">
+                        <label for="inCCheques">Cuenta de cheques</label>
+                        <input type="text" name="inCCheques" id="inCCheques" class="form-control" placeholder="Escriba un comentario" />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="inBeneficiaria">Beneficiaria</label>
+                        <div class="input-group">
+                            <input type="text" name="inBeneficiaria" id="inBeneficiaria" class="form-control font-labels" placeholder="Escriba el nombre del beneficiario" />
+                        </div>
+                    </div>
                     <div class="form-group imss col-md-6">
                         <label for="inBanco">Banco</label>
                         <select class="form-control font-labels custom-select" name="inBanco" id="inBanco">
@@ -45,53 +91,19 @@
                             <input type="text" name="inTVales" id="inTVales" class="form-control font-labels" />
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inNOficio">No. Oficio</label>
-                        <input type="text" name="inNOficio" id="inNOficio" class="form-control" placeholder="No de Oficio" required />
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inFOficio">Fecha de oficio</label>
-                        <input type="date" name="inFOficio" id="inFOficio" value="" class="form-control" placeholder="Escriba la causa del Ausentismo" required />
-                    </div>
-
-                    <div class="form-group imss col-md-6">
-                        <label for="inTCalculo">Tipo de calculo </label>
-                        <select class="form-control font-labels custom-select" name="inTCalculo" id="inTCalculo" required>
-                            <option value="">Selecciona</option>
-                            <option value="1">Percepciones sujetas a inpuestos</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-12"></div>
-                    <div class="form-group col-md-6">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" name="inAumentoSegunSMG" id="inAumentoSegunSMG">
-                            <label class="custom-control-label" for="inAumentoSegunSMG">Aumentar segun Salario Minimo General</label>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" name="inAumentarSegunAs" id="inAumentarSegunAs">
-                            <label class="custom-control-label" for="inAumentarSegunAs">Aumentar segun aumento de sueldo </label>
-                        </div>
-                    </div>
-                    <div class="form-group imss col-md-6">
-                        <label for="inCCheques">Cuenta de cheques</label>
-                        <input type="text" name="inCCheques" id="inCCheques" class="form-control" placeholder="Escriba un comentario" />
-                    </div>
-                    <div class="form-group imss col-md-6">
-                        <label for="inFBaja">Fecha de baja</label>
-                        <input type="date" name="inFBaja" id="inFBaja" class="form-control" placeholder="Escriba un comentario" />
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inBeneficiaria">Beneficiaria</label>
-                        <div class="input-group">
-                            <input type="text" name="inBeneficiaria" id="inBeneficiaria" class="form-control font-labels" placeholder="Escriba el nombre del beneficiario" />
-                        </div>
-                    </div>
-                    <div class="d-flex form-group col-md-12">
-                        <button type="button" class="btn btn-primary col-md-4 font-labels btn-sm form-control" id="btn-save-pension"><i class="far fa-edit"></i> Registrar</button>
-                        <button type="reset" class="btn btn-warning col-md-4 font-labels btn-sm"><i class="fas fa-paint-brush"></i> Limpiar</button>
-                        <button type="button" class="btn btn-success col-md-4 font-labels btn-sm"><i class="fas fa-exchange-alt"></i> Actualizar</button>
+                    <div class="form-group col-md-12 text-right">
+                        <button type="button" class="btn btn-primary btn-icon-split font-labels btn-sm " id="btn-save-pension">
+                            <span class="icon"><i class="far fa-edit"></i></span>
+                            <span class="text"> Registrar </span>
+                        </button>
+                        <button type="reset" class="btn btn-warning btn-icon-split invisible font-labels btn-sm">
+                            <span class="icon"><i class="fas fa-paint-brush"></i></span>
+                            <span class="text"> Limpiar </span>
+                        </button>
+                        <button type="button" class="btn btn-success btn-icon-split invisible font-labels btn-sm">
+                            <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                            <span class="text"> Actualizar </span>
+                        </button>
                     </div>
                 </div>
             </form>

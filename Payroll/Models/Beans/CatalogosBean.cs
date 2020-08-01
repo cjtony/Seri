@@ -326,14 +326,17 @@ namespace Payroll.Models.Beans
         public string Descripcion { get; set; }
         public string TasaIva { get; set; }
         public int RegistroPatronal_id { get; set; }
+        public string NombreRegistroPatronal { get; set; }
         public int Regional_id { get; set; }
         public string ClaveRegional { get; set; }
         public string DescripcionRegional { get; set; }
         public int ZonaEconomica_id { get; set; }
+        public string NombreZonaEconomica { get; set; }
         public int Sucursal_id { get; set; }
         public string ClaveSucursal { get; set; }
         public string DescripcionSucursal { get; set; }
         public int Estado_id { get; set; }
+        public string NombreEstado { get; set;}
         public string sMensaje { get; set; }
     }
     public class LocalidadesBean2
@@ -518,6 +521,7 @@ namespace Payroll.Models.Beans
         public string Tarjeta_vales { get; set; }
         public string Cuenta_cheques { get; set; }
         public string Fecha_baja { get; set; }
+        public string IncidenciaProgramada_id {get;set;}
     }
     public class CapturaErroresBean
     {
@@ -580,6 +584,7 @@ namespace Payroll.Models.Beans
         public int Plazos { get; set; }
         public string Descripcion { get; set; }
         public string Fecha_Aplicacion { get; set; }
+        public string NPeriodo { get; set; }
     }
     public class InicioFechasPeriodoBean
     {
@@ -637,5 +642,54 @@ namespace Payroll.Models.Beans
         public string PerformanceManager { get; set; }
         public string Tabulador { get; set; }
         public string fecha_alta { get; set; }
+    }
+    public class TabBancosEmpresas
+    {
+        public string idBanco_Emp { get; set; }
+        public string Empresa_id { get; set; }
+        public string Banco_id { get; set; }
+        public string Descripcion { get; set; }
+        public string Num_cliente { get; set; }
+        public string Plaza { get; set; }
+        public string Num_Cta_Empresa { get; set; }
+        public string Clabe { get; set; }
+        public string tipo_banco_id { get; set; }
+        public string tipo_banco { get; set; }
+        public string Cancelado { get; set; }
+    }
+    public class DataUsersBean
+    {
+        public string IdUsuario { get; set; }
+        public string Usuario { get; set; }
+        public string Perfil_id { get; set; }
+        public string Ps { get; set; }
+        public string Alta_por { get; set; }
+        public string Fecha_Alta { get; set; }
+        public string Cancelado { get; set; }
+    }
+    public class DataProfilesBean
+    {
+        public string IdPerfil { get; set; }
+        public string Perfil { get; set; }
+        public string Cancelado { get; set; }
+        public string Alta_por { get; set; }
+        public string Fecha_Alta { get; set; }
+       
+    }
+    public class DataCentrosCosto
+    {
+        public string IdCentroCosto { get; set; }
+        public string Empresa_id { get; set; }
+        public string NombreEmpresa { get; set; }
+        public string CentroCosto { get; set; }
+        public string Descripcion { get; set; }
+        public string Estado { get; set; }
+        public string Fecha_Alta { get; set; }
+    }
+    public class TipoDescuentoBean
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
     }
 }
