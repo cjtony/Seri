@@ -422,8 +422,8 @@ namespace Payroll.Models.Daos
                     posicionBean.iPuesto_id = Convert.ToInt32(data["Puesto_id"].ToString());
                     posicionBean.sNombrePuesto = data["NombrePuesto"].ToString();
                     posicionBean.iDepartamento_id = Convert.ToInt32(data["Departamento_id"].ToString());
-                    posicionBean.sNombreDepartamento = data["Depto_Codigo"].ToString();
-                    posicionBean.iIdReportaAPosicion = Convert.ToInt32(data["Reporta_A_Posicion_id"].ToString());
+                    posicionBean.sNombreDepartamento = data["DescripcionDepartamento"].ToString();
+                    posicionBean.iIdReportaAPosicion = Convert.ToInt32(data["CodRep"].ToString());
                     posicionBean.iIdReportaAEmpresa = Convert.ToInt32(data["Reporta_A_Empresa"].ToString());
                     posicionBean.iIdRegistroPat = Convert.ToInt32(data["IdRegPat"].ToString());
                     posicionBean.sRegistroPat = data["Afiliacion_IMSS"].ToString();

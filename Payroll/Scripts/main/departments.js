@@ -919,7 +919,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                resultcentrcosts.innerHTML += `<button onclick="fselectcentrcost(${data[i].iIdCentroCosto},'${data[i].sCentroCosto}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sCentroCosto} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
+                                resultcentrcosts.innerHTML += `<button onclick="fselectcentrcost(${data[i].iIdCentroCosto},'${data[i].sCentroCosto}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].iIdCentroCosto} - ${data[i].sCentroCosto} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
                             }
                         } else {
                             noresultscentrcostsearch1.innerHTML = `
