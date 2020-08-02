@@ -155,17 +155,23 @@
         tipemp = document.getElementById('tipemp'), nivemp = document.getElementById('nivemp'),
         tipjor = document.getElementById('tipjor'), tipcon = document.getElementById('tipcon'),
         fecing = document.getElementById('fecing'), fecant = document.getElementById('fecant'),
-        vencon = document.getElementById('vencon'),
+        vencon = document.getElementById('vencon'), tippag = document.getElementById('tippag'),
+        banuse = document.getElementById('banuse'),
+        cunuse = document.getElementById('cunuse'),
         //estats = document.getElementById('estats'),
         tipcontra = document.getElementById('tipcontra');
         //motinc = document.getElementById('motinc')
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
 
-    const vardatanomina = [clvnom, fechefectact, fecefecnom, tipper, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra];
+    const vardatanomina = [clvnom, fechefectact, fecefecnom, tipper, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse];
     fclearfieldsvar3 = () => {
         for (let i = 0; i < vardatanomina.length; i++) {
             if (vardatanomina[i].getAttribute('tp-select') != null) {
-                vardatanomina[i].value = "0";
+                if (vardatanomina[i].id == 'tipper') {
+                    vardatanomina[i].value = "n";
+                } else {
+                    vardatanomina[i].value = "0";
+                }
             } else {
                 vardatanomina[i].value = "";
             }
@@ -178,8 +184,6 @@
         depaid = document.getElementById('depaid'), puesid = document.getElementById('puesid'),
         emprep = document.getElementById('emprep'), report = document.getElementById('report'),
         depart = document.getElementById('depart'), pueusu = document.getElementById('pueusu'),
-        tippag = document.getElementById('tippag'), banuse = document.getElementById('banuse'),
-        cunuse = document.getElementById('cunuse'),
         //clvbank = document.getElementById('clvbank'),
         localty = document.getElementById('localty'), fechefectpos = document.getElementById('fechefectpos');
     fechinipos = document.getElementById('fechinipos'); fechefecposact = document.getElementById('fechefecposact');
@@ -425,8 +429,13 @@
         localStorage.removeItem('objectTabDataGen'); localStorage.removeItem('objectDataTabImss');
         localStorage.removeItem('objectDataTabNom'); localStorage.removeItem('objectDataTabEstructure');
         localStorage.removeItem('modedit');
-        fchecklocalstotab(); fselectlocalstotab(); floaddatatabs();
-        fclearfieldsvar1(); fclearfieldsvar2(); fclearfieldsvar3(); fclearfieldsvar4();
+        fchecklocalstotab();
+        fselectlocalstotab();
+        floaddatatabs();
+        fclearfieldsvar1();
+        fclearfieldsvar2();
+        fclearfieldsvar3();
+        fclearfieldsvar4();
         document.getElementById('icouser').classList.add('d-none');
         document.getElementById('nameuser').textContent = '';
         colony.innerHTML = "<option value='0'>Selecciona</option>";
@@ -434,6 +443,10 @@
         colony.disabled  = true;
         street.disabled  = true;
         numberst.disabled = true;
+        banuse.disabled = true;
+        cunuse.disabled = true;
+        document.getElementById('infobankch').classList.add("d-none");
+        document.getElementById('infobankct').classList.add("d-none");
         fvalidatebuttonsactionmain();
         if (type == 1) {
             Swal.fire({
