@@ -161,31 +161,31 @@ namespace Payroll
             return fechajobs;
         }
 
-        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo)
+        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple)
         {
             string FechaProceso = Fecha();
 
             if (NomProceso == "CNomina")
             {
                           
-                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, FechaProceso));
+                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso));
                  List<HangfireJobs> id = new List<HangfireJobs>();
                  FuncionesNomina Dao = new FuncionesNomina();
                  id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
                 int Idjobs = Convert.ToInt32(id[0].iId.ToString());
                 string StatusJobs = "En Cola";
                 string Nombrejobs = "CNomina1";
-                string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + "," + FechaProceso;
+                string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + ","+ idEmpresa + ","+ iCalxEmple + "," + FechaProceso;
                 Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros);
 
             }
 
         }
 
-        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, string fecha) {
+        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion,int IdEmpresa,int LisEmpleado, string fecha) {
 
             FuncionesNomina Dao2 = new FuncionesNomina();
-            Dao2.sp_CNomina_1(anio, TipoPeriodo, Periodo, IdDefinicion);
+            Dao2.sp_CNomina_1(anio, TipoPeriodo, Periodo, IdDefinicion,IdEmpresa,LisEmpleado);
 
 
         }

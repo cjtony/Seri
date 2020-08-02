@@ -18,6 +18,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Ajax.Utilities;
 using System.Globalization;
+using System.Linq;
 
 namespace Payroll.Controllers
 {
@@ -80,6 +81,7 @@ namespace Payroll.Controllers
 
             return Json(LE);
         }
+
         // regresa el listado del periodo
         [HttpPost]
         public JsonResult LisTipPeriodo(int IdEmpresa)
@@ -154,7 +156,7 @@ namespace Payroll.Controllers
             List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
             Dt = dao.sp_DefinicionesNomLn_Retrieve_DefinicionesNomLn(iIdDefinicionln);
-            if (Dt != null)
+            if (Dt[0].sMensaje == "success")
             {
                 for (int i = 0; i < Dt.Count; i++)
                 {
@@ -200,7 +202,7 @@ namespace Payroll.Controllers
             List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
             Dta = dao.sp_DefinicionesDeNomLn_Retrieve_DefinicionesDeNomLn(iIdDefinicionln);
-            if (Dta != null)
+            if (Dta[0].sMensaje == "success")
             {
                 for (int i = 0; i < Dta.Count; i++)
                 {
@@ -505,12 +507,12 @@ namespace Payroll.Controllers
             obj.ActBDTbJobs();
             return Json(LTbProc);
         }
-        public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo)
+        public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo,int iIdempresa,int iCalEmpleado)
 
         {
             Startup obj = new Startup();
             string NomProceso = "CNomina";
-            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo);
+            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado);
 
             return null;
         }
@@ -622,6 +624,220 @@ namespace Payroll.Controllers
             Dta = dao.sp_StatusProceso_Retrieve_TPProceso(Parametro);
             return Json(Dta);
         }
+
+        // Lista Empleado
+        [HttpPost]
+        public JsonResult ListEmplados(int iIdEmpresa)
+        {
+            List<EmpleadosEmpresaBean> LTEmp = new List<EmpleadosEmpresaBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LTEmp = Dao.sp_EmpleadosDeEmpresa_Retreive_Templeados(iIdEmpresa);
+            return Json(LTEmp);
+        }
+
+        //Guarda Lista de Empleado en la tabla Lista_empleados_Nomina
+        [HttpPost]
+        public JsonResult SaveEmpleados(int IdEmpresa,string sIdEmpleados,
+        int iAnio, int TipoPeriodo, int iPeriodo )
+        {
+            int IdEmpleado=0;
+            int iExite = 0;
+            string[] IdEmpleados = sIdEmpleados.Split(',');
+            int numsId = IdEmpleados.Count();
+            ListEmpleadoNomBean bean = new ListEmpleadoNomBean();
+            FuncionesNomina dao = new FuncionesNomina();
+            for (int i = 0; i < numsId-1; i++) {
+                IdEmpleado =Convert.ToInt32(IdEmpleados[i].ToString());
+                bean = dao.sp_LisEmpleados_InsertUpdate_TlistaEmpladosNomina(IdEmpresa, IdEmpleado,iAnio,
+                      TipoPeriodo,iPeriodo, iExite);
+                if (bean.sMensaje == "error") { i = numsId + 2; }         
+            }
+
+            return Json(bean);
+        }
+
+        // No de Empleado de Empresas
+        [HttpPost]
+        public JsonResult NoEmpleados(String IdEmpresas)
+        {
+            List<EmpresasBean> LE = new List<EmpresasBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            if (IdEmpresas != "")
+            {
+              
+                int idEmpresa = 0, Noempresa = 0, rows = 0;
+                string[] valores = IdEmpresas.Split(' ');
+                rows = valores.Length - 1;
+                for (int i = 0; i < rows; i++)
+                {
+                    idEmpresa = Convert.ToInt32(valores[i]);
+                    LE = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa,0);
+                    if (LE.Count > 0)
+                    {
+                        Noempresa = Noempresa + LE[0].iNoEmpleados;
+                    }
+
+                }
+
+
+                LE[0].iNoEmpleados = Noempresa;
+
+            }
+            else {
+                EmpresasBean ls = new EmpresasBean
+                {
+                    iNoEmpleados = 0,
+                };
+                LE.Add(ls);
+        }
+     
+
+            return Json(LE);
+        }
+
+        // Tipo de Perido y Perido de empresas Emision facturas
+        [HttpPost]
+        public JsonResult TipoPPeriodoEmision(String IdEmpresas,int OP)
+        {
+           
+            string Validacion=" ";
+            List<CInicioFechasPeriodoBean> LE = new List<CInicioFechasPeriodoBean>();
+            List<CInicioFechasPeriodoBean> LE2 = new List<CInicioFechasPeriodoBean>();
+            List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
+            List<CTipoPeriodoBean> LE3 = new List<CTipoPeriodoBean>();
+            LE = null;
+            LE3 = null;
+            FuncionesNomina Dao = new FuncionesNomina();
+            if (IdEmpresas != "")
+            {
+                if (OP == 0) {
+                    int idEmpresa = 0, rows = 0;
+                    string[] valores = IdEmpresas.Split(' ');
+                    rows = valores.Length - 1;
+                    for (int i = 0; i < rows; i++)
+                    {
+                        idEmpresa = Convert.ToInt32(valores[i]);
+                        LE = Dao.sp_TipoPPEmision_Retrieve_CInicioPeriodo(idEmpresa, OP);
+                        if (LE.Count > 0)
+                        {
+                            Validacion = "Correcta";
+                            for (int x = 1; x < valores.Length - 1; x++)
+                            {
+                                idEmpresa = Convert.ToInt32(valores[x]);
+                                LE2 = Dao.sp_TipoPPEmision_Retrieve_CInicioPeriodo(idEmpresa, OP);
+                                for (int a = 0; a < LE.Count - 1; a++)
+                                {
+                                    int correc = 0;
+
+                                    for (int b = 0; b < 0; b++)
+                                    {
+                                        if (LE[i].iTipoPeriodo == LE2[x].iTipoPeriodo)
+                                        {
+                                            correc = correc + 1;
+                                        }
+                                    }
+
+                                    if (correc > 0)
+                                    {
+                                        Validacion = "Correcta";
+
+                                    }
+                                    else
+                                    {
+
+                                        Validacion = "Incorrecta";
+                                    }
+                                }
+                            }
+                        }
+                        if (Validacion == "Correcta")
+                        {
+                            idEmpresa = Convert.ToInt32(valores[0]);
+                            LE3 = Dao.sp_CTipoPeriod_Retrieve_TiposPeriodos(idEmpresa);
+                        };
+                    }
+                }
+                if (OP == 1) {
+                 
+                    int idEmpresa = 0,periodo=0;
+                    string[] valores = IdEmpresas.Split(' ');
+                    int i = 0; 
+                        idEmpresa = Convert.ToInt32(valores[i]);
+                        LE = Dao.sp_TipoPPEmision_Retrieve_CInicioPeriodo(idEmpresa, OP);
+                        if (LE.Count > 0) {
+                            for (int a = 0; a < LE.Count ; a++) {
+                                if (valores.Length - 1 == 1)
+                                {
+                                    LPe = LE;
+                                }
+                                else {
+                                    periodo = 0;
+                                    for (int x = 1; x < valores.Length - 1; x++)
+                                    {
+
+                                        idEmpresa = Convert.ToInt32(valores[x]);
+                                        LE2 = Dao.sp_TipoPPEmision_Retrieve_CInicioPeriodo(idEmpresa, OP);
+                                        if (LE2.Count > 0)
+                                        {
+                                            if (LE[a].iPeriodo == LE2[a].iPeriodo)
+                                            {
+                                                Validacion = "Correcta";
+                                                
+                                            }
+                                            else
+                                            {
+                                                Validacion = "incorrecta";
+                                                x = 99;
+                                            }
+                                        };
+                                        
+
+                                    };
+                                    if (Validacion == "Correcta")
+                                    {
+                                        CInicioFechasPeriodoBean ls = new CInicioFechasPeriodoBean();
+                                        ls.iIdEmpresesas = LE[a].iIdEmpresesas;
+                                        ls.iTipoPeriodo = LE[a].iTipoPeriodo;
+                                        ls.iPeriodo = LE[a].iPeriodo;
+                                        ls.sFechaInicio = LE[a].sFechaInicio;
+                                        ls.sFechaFinal = LE[a].sFechaFinal;
+                                        LPe.Add(ls);
+                                    }
+                                }
+                             
+                            }
+                        }
+                    
+                   
+                   
+                }
+            }
+            else
+            {
+                
+                    CTipoPeriodoBean ls = new CTipoPeriodoBean();
+                    {
+                        ls.iId = 0;
+                        ls.sValor = "Nodatos";
+
+                    };
+                    LE3.Add(ls);
+                            
+            }
+            if (OP == 0)
+            {
+                return Json(LE3);
+            }
+            if (OP == 1)
+            {
+                return Json(LPe);
+            }
+            else {
+                return Json(LE3);
+            }
+          
+        }
+
 
     }
 }

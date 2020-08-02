@@ -877,6 +877,7 @@
     <Content Include="Scripts\main\Creditos.js" />
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
+    <Content Include="Scripts\main\EmisionRecibos.js" />
     <Content Include="Scripts\main\employes.js" />
     <Content Include="Scripts\main\Empre.js" />
     <Content Include="Scripts\ferros\errajax.js" />
@@ -1006,6 +1007,7 @@
     <Content Include="Views\Catalogos\CBancos.cshtml" />
     <Content Include="Views\Empresas\Bancos.cshtml" />
     <Content Include="Views\Catalogos\CUsuarios.cshtml" />
+    <Content Include="Views\Empleados\EmisionRecibos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

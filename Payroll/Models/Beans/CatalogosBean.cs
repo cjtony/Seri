@@ -150,6 +150,7 @@ namespace Payroll.Models.Beans
         public int iEstadoEmpresa { get; set; }
         public string sUsuarioRegistro { get; set; }
         public string sFechaRegistro { get; set; }
+        public int iNoEmpleados { get; set; }
         public string sMensaje { get; set; }
     }
     public class CentrosCostosBean
@@ -691,5 +692,31 @@ namespace Payroll.Models.Beans
         public string Id { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+    }
+
+    public class TipoRenglonBean { 
+         
+        public int iIdRenglon { get; set; }
+        public String sTipoRenglon { get; set; }
+        public string sMensaje { get; set; }
+
+
+    }
+
+    public class ListaCalculoBean
+    {
+
+        public int iIdCalculo { get; set; }
+        public String sNombreCalculo { get; set; }
+        public string sMensaje { get; set; }
+
+
+    }
+
+    public class SeccionReporte { 
+        public int iIdValor { get; set; }
+        public string SNombreReporte { get; set; }
+        public string sMensaje { get; set; }
+
     }
 }

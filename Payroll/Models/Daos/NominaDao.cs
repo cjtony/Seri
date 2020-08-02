@@ -416,6 +416,7 @@ namespace Payroll.Models.Daos
                             LDN.iTipodeperiodo = data["Valor"].ToString();
                             LDN.iIdAcumulado = data["Acumulado_id"].ToString();
                             LDN.iEsespejo = data["Es_Espejo"].ToString();
+                            LDN.sMensaje = "success";
                         };
 
 
@@ -424,7 +425,9 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    list = null;
+                    NominaLnDatBean LDN = new NominaLnDatBean();
+                    LDN.sMensaje = "NotDat";
+                    list.Add(LDN);
                 }
 
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
@@ -504,6 +507,7 @@ namespace Payroll.Models.Daos
                             //LDN.iIdperiodo = data["Periodo_id"].ToString();
                             LDN.iIdAcumulado = data["Acumulado_id"].ToString();
                             LDN.iEsespejo = data["Es_Espejo"].ToString();
+                            LDN.sMensaje = "success";
 
                         };
 
@@ -513,7 +517,9 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    list = null;
+                    NominaLnDatBean LDN = new NominaLnDatBean();
+                    LDN.sMensaje = "NotDat";
+                    list.Add(LDN);
                 }
 
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
@@ -1501,7 +1507,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public TPProcesos sp_CNomina_1(int p_Ano, int p_Tipo_periodo, int p_Periodo, int p_IdDefinicion_Hd)
+        public TPProcesos sp_CNomina_1(int p_Ano, int p_Tipo_periodo, int p_Periodo, int p_IdDefinicion_Hd,int p_Empresa_id,int Por_lista_empleado)
         {
             TPProcesos bean = new TPProcesos();
             try
@@ -1516,6 +1522,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@p_Tipo_periodo", p_Tipo_periodo));
                 cmd.Parameters.Add(new SqlParameter("@p_Periodo", p_Periodo));
                 cmd.Parameters.Add(new SqlParameter("@p_IdDefinicion_Hd", p_IdDefinicion_Hd));
+                cmd.Parameters.Add(new SqlParameter("@p_Empresa_id", p_Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@Por_lista_empleado", Por_lista_empleado));
 
                 if (cmd.ExecuteNonQuery() > 0)
                 {
@@ -1655,6 +1663,7 @@ namespace Payroll.Models.Daos
                             LP.sFechaInicio = data["Fecha_Inicio"].ToString();
                             LP.sFechaFinal = data["Fecha_Final"].ToString();
                             LP.sNominaCerrada = data["Nomina_Cerrada"].ToString();
+                            LP.sMensaje = "success";
                         };
 
                         list.Add(LP);
@@ -1662,7 +1671,12 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    list = null;
+                    CInicioFechasPeriodoBean LP = new CInicioFechasPeriodoBean();
+                    {
+                        LP.sMensaje = "error";
+                    }
+                    list.Add(LP);
+
                 }
 
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
@@ -1969,6 +1983,222 @@ namespace Payroll.Models.Daos
 
 
         }
+
+        /// List Empleados
+        public List<EmpleadosEmpresaBean> sp_EmpleadosDeEmpresa_Retreive_Templeados(int CtrliIdEmpresa)
+        {
+            List<EmpleadosEmpresaBean> list = new List<EmpleadosEmpresaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_EmpleadosDeEmpresa_Retreive_Templeados", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
+                        ls.iIdEmpleado = int.Parse(data["IdEmpleado"].ToString());
+                        ls.sNombreCompleto = data["NombreCompleto"].ToString();
+                        ls.sMensaje = "success";
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
+                    ls.sMensaje = "Error";
+                    list.Add(ls);
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+        /// Insert/update LisEmpleado
+        public ListEmpleadoNomBean sp_LisEmpleados_InsertUpdate_TlistaEmpladosNomina(int CtrloiIdEmpresa, int CtrliIdEmpleado,
+        int CtrliAnio, int CtrlTipoPeriodo, int CtrliPeriodo, int CltrliExite)
+        {
+            ListEmpleadoNomBean bean = new ListEmpleadoNomBean();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_LisEmpleados_InsertUpdate_TlistaEmpladosNomina", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrloiIdEmpresa", CtrloiIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrlTipoPeriodo", CtrlTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CltrliExite", CltrliExite));
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
+        ///NumeroEmpresas
+        public List<EmpresasBean> sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(int CtrliIdEmpresa, int Ctrliop)
+        {
+            List<EmpresasBean> list = new List<EmpresasBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Ctrliop", Ctrliop));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                       
+                            EmpresasBean ls = new EmpresasBean
+                            {
+                                iNoEmpleados = int.Parse(data["NoEmple"].ToString()),
+
+                            };
+                            list.Add(ls);
+                        
+                       
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+        // Tipo Peridod y Peridodo de empresa 
+        public List<CInicioFechasPeriodoBean> sp_TipoPPEmision_Retrieve_CInicioPeriodo(int CtrliEmpresa, int CtrliOpcion)
+        { 
+            List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TipoPPEmision_Retrieve_CInicioPeriodo", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliEmpresa", CtrliEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliOpcion", CtrliOpcion));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CInicioFechasPeriodoBean ls = new CInicioFechasPeriodoBean();
+                        {
+                            if (CtrliOpcion == 0)
+                            {
+                                ls.iIdEmpresesas = int.Parse(data["IdEmpresa"].ToString());
+                                ls.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
+                            }
+                            if (CtrliOpcion == 1)
+                            {
+                                ls.iIdEmpresesas = int.Parse(data["Empresa_id"].ToString());
+                                ls.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
+                                ls.iPeriodo = int.Parse(data["Periodo"].ToString());
+                                ls.sFechaInicio = data["Fecha_Inicio"].ToString();
+                                ls.sFechaFinal = data["Fecha_final"].ToString();
+
+                            }
+                        
+           
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+        ///empleados de Empresas
+        public List<EmpleadosBean> sp_EmpleadosEmpresa_Retrieve_TempleadoNomina(int CtrliIdEmpresa, int Ctrliop)
+        {
+            List<EmpleadosBean> list = new List<EmpleadosBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Ctrliop", Ctrliop));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmpleadosBean ls = new EmpleadosBean();
+                        ls.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
+                        ls.iNumeroNomina = int.Parse(data["IdNomina"].ToString());
+                        ls.sNombreEmpleado = data["Nombre_Empleado"].ToString();
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
     }
 }
 

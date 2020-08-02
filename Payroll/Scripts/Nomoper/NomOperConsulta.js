@@ -2,10 +2,9 @@
 
     //------------------------ Pantalla de Consulta --------------------------------------------//
     // declaracion de variables 
-    var DeNombre = document.getElementById('DeNombre');
-    var DeCancelados = document.getElementById('DeCancelados');
+    //var DeNombre = document.getElementById('DeNombre');
+    //var DeCancelados = document.getElementById('DeCancelados');
     var dato;
-    console.log('empresa selecionada');
     var empresaSelect = document.getElementById("btnNameEmpresaSelected").innerHTML; 
 
 
@@ -18,26 +17,26 @@
 
     // Funcion llena listbox con los nombres de la definicion
 
-    FlistNombreDef = () => {
+    //FlistNombreDef = () => {
        
        
-        $.ajax({
-            url: "../Nomina/ListadoNomDefinicion",
-            type: "POST",
-            data: JSON.stringify(),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                var num = 0;
+    //    $.ajax({
+    //        url: "../Nomina/ListadoNomDefinicion",
+    //        type: "POST",
+    //        data: JSON.stringify(),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            var num = 0;
 
-                for (i = 0; i < data.length; i++) {
-                    num = num + 1;
-                    document.getElementById("DeNombre").innerHTML += `<option value='${num}'>${data[i].sNombreDefinicion}</option>`;
-                }
-            }
-        });
+    //            for (i = 0; i < data.length; i++) {
+    //                num = num + 1;
+    //                document.getElementById("DeNombre").innerHTML += `<option value='${num}'>${data[i].sNombreDefinicion}</option>`;
+    //            }
+    //        }
+    //    });
 
-    };
-    FlistNombreDef();
+    //};
+    //FlistNombreDef();
 
     // Funcion llena el grip de Nomina Definicion.
 
@@ -49,7 +48,6 @@
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var source =
                 {
                     localdata: data,
@@ -65,12 +63,21 @@
                 };
 
                 var dataAdapter = new $.jqx.dataAdapter(source);
-
+                var items = new Array();
+                if (data.length > 0) {
+                    for (i = 0; i < data.length;i++) {
+                        items.push(data[i].sNombreDefinicion);
+                    }
+                }
+                
+               
                 $("#TpDefinicion").jqxGrid(
                     {
-                        width: 980,
+                        theme:'bootstrap',
+                        width: 880,
                         source: dataAdapter,
-                        selectionmode: 'multiplerowsextended',
+                        showfilterrow: true,
+                        filterable: true,
                         sortable: true,
                         pageable: true,
                         autoheight: true,
@@ -90,8 +97,8 @@
                         },
                         columns: [
                             { text: 'No. Registro', datafield: 'iIdDefinicionhd', width: 50 },
-                            { text: 'Nombre de Definición', datafield: 'sNombreDefinicion', width: 230 },
-                            { text: 'Descripción ', datafield: 'sDescripcion', width: 500 },
+                            { text: 'Nombre de Definición', filtertype: 'list', filteritems: items, datafield: 'sNombreDefinicion', width: 230 },
+                            { text: 'Descripción ', datafield: 'sDescripcion', width: 350 },
                             { text: 'año', datafield: 'iAno', whidt: 80 },
                             { text: 'Cancelado', datafield: 'iCancelado', whidt: 25 },
                         ]
@@ -175,17 +182,17 @@
 
     Fllenagrip();
 
-    $('#DeNombre').change(function () {
+    //$('#DeNombre').change(function () {
 
-        FRecargaGrip();
-        $("#TpDefinicion").jqxGrid('clearselection');
+    //    FRecargaGrip();
+    //    $("#TpDefinicion").jqxGrid('clearselection');
 
-    });
+    //});
 
-    $('#DeCancelados').change(function () {
+    //$('#DeCancelados').change(function () {
 
-        FRecargaGrip();
-    });
+    //    FRecargaGrip();
+    //});
 
 
     FSelectDefinicion = () => {
@@ -337,8 +344,8 @@
 
     const navPercepcionestab = document.getElementById('nav-Percepciones-tab');
     var RosCountPer;
-    FcargaPercepciones = () => {
 
+    FcargaPercepciones = () => {
 
         for (var i = 0; i <= RosCountPer; i++) {
 
@@ -352,73 +359,144 @@
             url: "../Nomina/listdatosPercesiones",
             type: "POST",
             data: dataSend,
-            success: (data) => {
-
-                if (data.length > 0) {
-                    RosCountPer = data.length;
-                }
-                var source =
-                {
-                    localdata: data,
-                    datatype: "array",
-                    datafields:
-                        [
-                            { name: 'iIdDefinicionln', type: 'string' },
-                            { name: 'IdEmpresa', type: 'string' },
-                            { name: 'iRenglon', type: 'string' },
-                            { name: 'iTipodeperiodo', type: 'string' },
-                            { name: 'iIdAcumulado', type: 'string' },
-                            { name: 'iEsespejo', type: 'string' }
-                        ]
-                };
-
-                var dataAdapter = new $.jqx.dataAdapter(source);
-
-                $("#TbPercepciones").jqxGrid(
+            success: function (data) {
+                if (data[0].sMensaje == "success") {
+                    if (data.length > 0) {
+                        RosCountPer = data.length;
+                    }
+                    var source =
                     {
-                        width: 980,
-                        source: dataAdapter,
-                        selectionmode: 'multiplerowsextended',
-                        sortable: true,
-                        pageable: true,
-                        autoheight: true,
-                        autoloadstate: false,
-                        autosavestate: false,
-                        columnsresize: true,
-                        showtoolbar: true,
-                        rendertoolbar: function (statusbar) {
-                            var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
-                            var addButton = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
-                            var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
-                            var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
-                            container.append(addButton);
-                            container.append(ActuButton);
-                            container.append(DeletButton);
-                            statusbar.append(container);
-                            addButton.jqxButton({ template: "link", width: 40, height: 25 });
-                            ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
-                            DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
-                            addButton.click(function (event) {
-                                $("#BAgregarPer").click();
-                            });
-                            ActuButton.click(function (event) {
-                                $("#BActuPer").click();
-                            });
-                            DeletButton.click(function (event) {
-                                $("#BEliminarPer").click();
-                            });
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+
+                    $("#TbPercepciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton);
+                                container.append(ActuButton);
+                                container.append(DeletButton);
+                                statusbar.append(container);
+                                addButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton.click(function (event) {
+                                    $("#BAgregarPer").click();
+                                });
+                                ActuButton.click(function (event) {
+                                    $("#BActuPer").click();
+                                });
+                                DeletButton.click(function (event) {
+                                    $("#BEliminarPer").click();
+                                });
 
 
-                        },
-                        columns: [
-                            { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
-                            { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
-                            { text: 'Renglon', datafield: 'iRenglon', width: 250 },
-                            { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
-                            { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
-                            { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
-                        ]
-                    });
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 75 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 180 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 200 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+                }
+                if (data[0].sMensaje == "NotDat") {
+                    if (data.length > 0) {
+                        RosCountPer = data.length;
+                    }
+                    var source =
+                    {
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+
+                    $("#TbPercepciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton);
+                                container.append(ActuButton);
+                                container.append(DeletButton);
+                                statusbar.append(container);
+                                addButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton.click(function (event) {
+                                    $("#BAgregarPer").click();
+                                });
+                                ActuButton.click(function (event) {
+                                    $("#BActuPer").click();
+                                });
+                                DeletButton.click(function (event) {
+                                    $("#BEliminarPer").click();
+                                });
+
+
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 75 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 180 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 200 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+
+                }
+
+          
             }
         });
     };
@@ -1085,68 +1163,134 @@
             url: "../Nomina/listdatosDeducuiones",
             type: "POST",
             data: dataSend,
-            success: (data) => {
-                if (data.length > 0) {
-                    RosCountdedu = data.length;
-                }
-                var source =
-                {
-                    localdata: data,
-                    datatype: "array",
-                    datafields:
-                        [
-                            { name: 'iIdDefinicionln', type: 'string' },
-                            { name: 'IdEmpresa', type: 'string' },
-                            { name: 'iRenglon', type: 'string' },
-                            { name: 'iTipodeperiodo', type: 'string' },
-                            { name: 'iIdAcumulado', type: 'string' },
-                            { name: 'iEsespejo', type: 'string' }
-                        ]
-                };
-                var dataAdapter = new $.jqx.dataAdapter(source);
-                $("#TbDeducciones").jqxGrid(
+            success: function (data) {
+                if (data[0].sMensaje == "success") {
+                    if (data.length > 0) {
+                        RosCountdedu = data.length;
+                    }
+                    var source =
                     {
-                        width: 980,
-                        source: dataAdapter,
-                        selectionmode: 'multiplerowsextended',
-                        sortable: true,
-                        pageable: true,
-                        autoheight: true,
-                        autoloadstate: false,
-                        autosavestate: false,
-                        columnsresize: true,
-                        showtoolbar: true,
-                        rendertoolbar: function (statusbar) {
-                            var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
-                            var addButton2 = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
-                            var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
-                            var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
-                            container.append(addButton2);
-                            container.append(ActuButton2);
-                            container.append(DeletButton2);
-                            statusbar.append(container);
-                            addButton2.jqxButton({ template: "link", width: 40, height: 25 });
-                            ActuButton2.jqxButton({ template: "link", width: 40, height: 25 });
-                            DeletButton2.jqxButton({ template: "link", width: 40, height: 25 });
-                            addButton2.click(function (event) {
-                                $("#BAgregardedu2").click();
-                            });
-                            ActuButton2.click(function (event) {
-                                $("#BActudedu").click();
-                            });
-                            DeletButton2.click(function (event) {
-                                $("#BEliminardedu").click();
-                            });
-                        },
-                        columns: [
-                            { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
-                            { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
-                            { text: 'Renglon', datafield: 'iRenglon', width: 200 },
-                            { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
-                            { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
-                            { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
-                        ]
-                    });
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#TbDeducciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton2 = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton2);
+                                container.append(ActuButton2);
+                                container.append(DeletButton2);
+                                statusbar.append(container);
+                                addButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton2.click(function (event) {
+                                    $("#BAgregardedu2").click();
+                                });
+                                ActuButton2.click(function (event) {
+                                    $("#BActudedu").click();
+                                });
+                                DeletButton2.click(function (event) {
+                                    $("#BEliminardedu").click();
+                                });
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 200 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+                }
+                if (data[0].sMensaje == "NotDat") {
+                    if (data.length > 0) {
+                        RosCountdedu = data.length;
+                    }
+                    var source =
+                    {
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdDefinicionln', type: 'string' },
+                                { name: 'IdEmpresa', type: 'string' },
+                                { name: 'iRenglon', type: 'string' },
+                                { name: 'iTipodeperiodo', type: 'string' },
+                                { name: 'iIdAcumulado', type: 'string' },
+                                { name: 'iEsespejo', type: 'string' }
+                            ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#TbDeducciones").jqxGrid(
+                        {
+                            width: 840,
+                            source: dataAdapter,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
+                            pageable: true,
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var addButton2 = $("<div style='float: left; '><img style='position: relative;' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-plus.png'/></div>");
+                                var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                                container.append(addButton2);
+                                container.append(ActuButton2);
+                                container.append(DeletButton2);
+                                statusbar.append(container);
+                                addButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                ActuButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton2.jqxButton({ template: "link", width: 40, height: 25 });
+                                addButton2.click(function (event) {
+                                    $("#BAgregardedu2").click();
+                                });
+                                ActuButton2.click(function (event) {
+                                    $("#BActudedu").click();
+                                });
+                                DeletButton2.click(function (event) {
+                                    $("#BEliminardedu").click();
+                                });
+                            },
+                            columns: [
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 200 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                            ]
+                        });
+                }
+         
             }
         });
 
@@ -1655,6 +1799,7 @@
 
     };
     BActudedu.addEventListener('click', FActualizaboton);
+
     BActudedu.style.visibility = 'hidden';
     // Funcion desaprece el boton de actualizar y aparece el boton de agregar
     Fagregarboton = () => {

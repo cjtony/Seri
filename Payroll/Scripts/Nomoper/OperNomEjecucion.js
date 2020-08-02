@@ -41,11 +41,21 @@
     //const btnVerNomina = document.getElementById('btnVerNomina');
     const EmpresaNom = document.getElementById('EmpresaNom');
     const BntBusRecibo = document.getElementById('btnFloBuscar');
+    const jqxdropdown = document.getElementById('jqxdropdownbutton');
+    const LanombreDef = document.getElementById('LanombreDef');
+    const NombEmpre = document.getElementById('NombEmpre');
+    const EjeEmpresa = document.getElementById('EjeEmpresa');
+    const Empleadoseje = document.getElementById('Empleadoseje');
+    const dropEmpledos = document.getElementById('DropLitEmple');
+    const LaEmplea = document.getElementById('LaEmpleado');
+    const switchButtonEmp = document.getElementById('switchButtonEmple');
+    const checkedItemsLog = document.getElementById('checkedItemsLog');
+
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
     var DatoEjeCerrada;
-    var IdDropList;
+    var IdDropList = 0;
     var IdDropList2;
     var AnioDropList;
     var Tipoperiodocal;
@@ -59,11 +69,67 @@
     var RosTabCountCalculo2;
     var NombreEmpleado;
     var NoEmpleado;
+    var CheckCalculoEmpresa = 0;
+    var checkCalculoEmplado = 0;
+    var checkedItemsIdEmpleados = "";
 
-    // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
+
+    LisEmpresa = (IdDrop ) => {
+
+        const dataSend2 = { iIdCalculosHd: IdDrop, iTipoPeriodo:0 , iPeriodo: 0, idEmpresa: 0, anio: 0 };
+        $("#EjeEmpresa").empty();
+        $('#EjeEmpresa').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+          url: "../Nomina/EmpresaCal",
+          type: "POST",
+           data: dataSend2,
+           success: (data) => {
+             for (i = 0; i < data.length; i++) {
+
+                 document.getElementById("EjeEmpresa").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].iIdEmpresa}  ${data[i].sNombreEmpresa} </option>`;
+             }
+           },
+        });
+    };
+    
+
+    EmpleadoDEmp = (IdEmpresa) => {
+
+        const dataSend2 = { iIdEmpresa: IdEmpresa };
+        $.ajax({
+            url: "../Nomina/ListEmplados",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                var source =
+                {
+                    localdata: data,
+                    datatype: "array",
+                    datafields:
+                        [
+                            { name: 'iIdEmpleado', type: 'int' },
+                            { name: 'sNombreCompleto', type: 'string' },
+                        
+                        ],
+                    datatype: "array",
+                    updaterow: function (rowid, rowdata) {
+                        // synchronize with the server - send update command   
+                    }
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                $("#DropLitEmple").jqxDropDownList({ checkboxes: true, source: dataAdapter, displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 300, height: 30, });            
+
+            },
+        });
+    };
+
 
     FLlenaGrid = () => {
-
+        seconds = 60;
+        clearInterval(interval);
+        $("#timerNotification").jqxNotification("closeLast");
+        $(".timer").text(60);
+        
         for (var i = 0; i <= RowsGrid; i++) {
 
             $("#TpDefinicion").jqxGrid('deleterow', i);
@@ -99,7 +165,6 @@
                         // synchronize with the server - send update command   
                     }
                 };
-
                 var dataAdapter = new $.jqx.dataAdapter(source);
 
                 $("#TpDefinicion").jqxGrid({
@@ -158,16 +223,22 @@
                     type: "POST",
                     data: dataSend2,
                     success: (data) => {
-                        //for (i = 0; i < data.length; i++) {
-                        document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
-                        periodo = data[0].iPeriodo;
-                        PeriodoCal.value = data[0].iPeriodo;
-                        /// si tiene calculos la definicion del periodo actual  los muestra  
-                        var empresa = 0;
-                        console.log('Empres: ' + empresa + ' periodo: ' + periodo);        
-                        FllenaCalculos(periodo, empresa, Tipoperiodocal);
-                       
-                        //}
+                        var dato = data[0].sMensaje;
+                      
+                        if (data[0].sMensaje == "success") {
+                            document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
+                            periodo = data[0].iPeriodo;
+                            PeriodoCal.value = data[0].iPeriodo;
+                            /// si tiene calculos la definicion del periodo actual  los muestra  
+                            var empresa = 0;
+                          
+                            FllenaCalculos(periodo, empresa, Tipoperiodocal);
+                        }
+                        if (data[0].sMensaje == "error") {
+
+                            fshowtypealert ('Ejecucion','Periodo actual no exite', 'warning')
+                        }
+                      
                     },
 
 
@@ -201,7 +272,7 @@
             },
         });
     
-        
+        LisEmpresa(IdDropList);
     });
 
     $("#TpDefinicion").jqxGrid('selectrow', 0);
@@ -336,7 +407,7 @@
 
                   /// llena tabla de calculo
     FllenaCalculos = (periodo, empresa,Tperiodo) => {   
-
+        $('#jqxLoader').jqxLoader('close');
       
         var empresaid = empresa;      
         
@@ -373,8 +444,6 @@
                RosTabCountCalculo = data.length;
                var dato = data[0].sMensaje;
                 if (dato == "No hay datos") {
-                   
-            
                     $.ajax({
                         url: "../Nomina/Statusproc",
                         type: "POST",
@@ -389,21 +458,21 @@
                             if (dato == "success") {
                                 if (data[0].sEstatusJobs == "En Cola") {
                                     $("#timerNotification").jqxNotification("open");
+                                    $('#jqxLoader').jqxLoader('open');
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
                                 if (data[0].sEstatusJobs == "Procesando") {
                                     $("#timerNotification").jqxNotification("open");
+                                    $('#jqxLoader').jqxLoader('open');
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
                             }
                          
                         },
-                    });                 
-     
+                    });                     
                 }
-
                 if (dato == "success") {
   
                      for (var i=0; i < data.length; i++) {
@@ -670,15 +739,19 @@
         btnFloEjecutar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'visible';
     };
+
     navEjecuciontab.addEventListener('click', Ftabopcion1);
     navVisCalculotab.addEventListener('click', Ftabopcion2);
     navNomCetab.addEventListener('click', Ftabopcion3);
     navVisNominatab.addEventListener('click', FTanopcion4);
 
-                   // Procesos de Ejecucion 
+
+
+    // Procesos de Ejecucion
 
     Fejecucion = () => {
-          
+
+        seconds = 60;
         IdDropList;
         AnioDropList;
         TipodePeridoDroplip = TxbTipoPeriodo.value;
@@ -691,7 +764,66 @@
 
         arreglosubcadena2 = periodo.split(separador, limite);
         const dataSend = { iIdDefinicionHd: IdDropList };
-        const dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0] };
+        var dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
+
+        if (CheckCalculoEmpresa == 0) {
+            if (IdDropList != 0) {
+                dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
+                FejecutarProceso(dataSend, dataSend2);
+            }
+            else {
+                fshowtypealert("Ejecucion", " Favor de seleccionar una definicion", "warning")
+            }
+        }
+        if (CheckCalculoEmpresa == 1)
+        {   
+            if (checkCalculoEmplado == 0) {
+                if (EjeEmpresa.value != 0) {
+                    dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: EjeEmpresa.value, iCalEmpleado: checkCalculoEmplado };
+                    FejecutarProceso(dataSend, dataSend2);
+                }
+                else {
+                    fshowtypealert("Ejecucion", " Favor de seleccionar una empresa", "warning")
+                }
+            }
+            if (checkCalculoEmplado == 1) {
+                var NumItemsEmpleado = checkedItemsIdEmpleados.length;
+                if (NumItemsEmpleado != 0) {
+                    dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: EjeEmpresa.value, iCalEmpleado: checkCalculoEmplado };
+                    const dataSend3 = { IdEmpresa: EjeEmpresa.value, sIdEmpleados: checkedItemsIdEmpleados, iAnio: AnioDropList, TipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0] }
+                    $.ajax({
+                        url: "../Nomina/SaveEmpleados",
+                        type: "POST",
+                        data: dataSend3,
+                        success: function (data) {
+                            if (data.sMensaje == "success"){
+                                console.log('correcto');
+                                FejecutarProceso(dataSend, dataSend2);
+                            }
+                            if (data.sMensaje == "error") {
+                                fshowtypealert("Ejecucion", " Contacte a sistemas", "warning")
+
+                            }
+                     
+                            
+                        }
+                    });
+                }
+                else {
+                    fshowtypealert("Ejecucion", " Favor de seleccionar por lo menos un empleado", "warning")
+                } 
+            }
+        }
+              
+        console.log(dataSend2);
+      
+        
+    };
+    btnFloEjecutar.addEventListener('click', Fejecucion);
+
+    /// Funcion de ejecucion 
+
+    FejecutarProceso = (dataSend,dataSend2) => {
         $.ajax({
             url: "../Nomina/CompruRegistroExit",
             type: "POST",
@@ -705,8 +837,8 @@
                         type: "POST",
                         data: dataSend2,
                         success: (data) => {
-                            FLimpiaCamp();
-          
+                            FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
+
                         }
                     });
 
@@ -719,10 +851,10 @@
 
             },
         });
-
     };
-    btnFloEjecutar.addEventListener('click', Fejecucion);
-                  // Proceso para cerrar nomina
+
+
+    // Proceso para cerrar nomina
 
     FValorChec = () => {
        
@@ -978,7 +1110,8 @@
     FLlenaGrid2();
 
                 // define tamaño del droplist
-
+    $("#switchButton").jqxSwitchButton({ width: 60, height: 25 });
+    $("#switchButtonEmple").jqxSwitchButton({ width: 60, height: 25 });
     $("#jqxdropdownbutton2").jqxDropDownButton({
         width: 600, height: 30
     });
@@ -1419,10 +1552,16 @@
         });
 
     });
+    
+    $('#EjeEmpresa').change(function () {
+
+        EmpleadoDEmp(EjeEmpresa.value);
+
+    });
 
 
-                 // muestra calculos de nomina del empleado
-
+    // muestra calculos de nomina del empleado
+    
 
     FBusNom = () => {
         console.log('buscar recibo');
@@ -1462,21 +1601,22 @@
                 $("#TbCalculosNom").jqxGrid(
                     {
                         theme: 'bootstrap',
-                        width: 750,
-                        height: 200,
+                        width: 870,
                         source: dataAdapter,
-                        //groupable: true,
+                        showfilterrow: true,
+                        filterable: true,
+                        sortable: true,
+                        pageable: true,
+                        autoloadstate: false,
+                        autosavestate: false,
                         columnsresize: true,
-                        //selectionmode: 'singlecell',
                         showgroupaggregates: true,
                         showstatusbar: true,
                         showaggregates: true,
                         statusbarheight: 25,
-                        //groups: ['price'],
                         columns: [
-                            { text: 'Concepto', datafield: 'sConcepto', width: 300 },
-                            {
-                                text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                            { text: 'Concepto', datafield: 'sConcepto', width: 250 },
+                            { text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1485,16 +1625,14 @@
                                     }
 
                                 },
-
-                                aggregatesrenderer: function (aggregates, column, element) {
+                               aggregatesrenderer: function (aggregates, column, element) {
 
                                     var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
                                     return renderstring;
 
                                 }},
-                            {
-                                text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                            { text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1638,25 +1776,10 @@
             confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
         }).then((acepta) => {
 
-            //  Nombrede.value       = '';
-            // Descripcionde.value  = '';
-            //iAnode.value         = '';
-            //cande.value          = '';
-            //$("html, body").animate({
-            //    scrollTop: $(`#${element.id}`).offset().top - 50
-            //}, 1000);
-            //if (clear == 1) {
-            //    setTimeout(() => {
-            //        element.focus();
-            //        setTimeout(() => { element.value = ""; }, 300);
-            //    }, 1200);
-            //} else {
-            //    setTimeout(() => {
-            //        element.focus();
-            //    }, 1200);
-            //}
+
         });
     };
+
              /// Notificaciones
     $("#messageNotification").jqxNotification({
         theme: 'bootstrap',
@@ -1670,29 +1793,112 @@
         autoOpen: false, animationOpenDelay: 800, autoClose: true, autoCloseDelay: 3000, template: "info"
 
     });
+    $("#jqxLoader").jqxLoader({ text: "Realizando calculos", width: 160, height: 80 });
     var notificationWidth = 300;
-    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: false, showCloseButton: false, template: "time" });
-    $("#timeOutNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: true, autoClose: false, template: "time" });
-    $("#timerNotification").on("close", function () {
-
-        if ($(".timer").text(seconds) = 1) {
-
-            $("#timeOutNotification").jqxNotification("open");
-
-        }
-
-    });
+    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: true, template: "time" });
+  
    
     var seconds = 60;
     var interval = setInterval(function () {
 
         if (seconds > 1) {
             seconds--;
-            $(".timer").text(seconds);
+         
+
         } else {
             clearInterval(interval);
             $("#timerNotification").jqxNotification("closeLast");
+            $('#jqxLoader').jqxLoader('close');
+            TipodePeridoDroplip = TxbTipoPeriodo.value;
+            periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+            separador = " ",
+            limite = 2,
+            arreglosubcadena2 = periodo.split(separador, limite);
+            FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
         }
 
     }, 1000);
+
+    $('#switchButton').on('change', function (event) {
+        var checked = $('#switchButton').jqxSwitchButton('checked');
+       
+        if (checked == true)
+        {
+            CheckCalculoEmpresa = 1;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
+            LaEmplea.style.visibility = 'visible';
+            $("#switchButtonEmple").toggle();
+            NombEmpre.style.visibility = 'visible';
+            EjeEmpresa.style.visibility = 'visible';
+          
+            EmpleadoDEmp(EjeEmpresa.value);
+            Empleadoseje.style.visibility = 'hidden';
+            dropEmpledos.style.visibility = 'hidden';
+        }
+        if (checked == false) {
+            CheckCalculoEmpresa = 0;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
+            LaEmplea.style.visibility = 'hidden';
+            $("#switchButtonEmple").toggle();
+            switchButtonEmp.style.visibility = 'hidden';
+            NombEmpre.style.visibility = 'hidden';
+            EjeEmpresa.style.visibility = 'hidden';
+            EmpleadoDEmp(EjeEmpresa.value);
+            Empleadoseje.style.visibility = 'hidden';
+            dropEmpledos.style.visibility = 'hidden';
+            
+              
+        }
+  });
+
+    $('#switchButtonEmple').on('change', function (event) {
+        var checked2 = $('#switchButtonEmple').jqxSwitchButton('checked');
+
+        if (checked2 == true) {
+            checkCalculoEmplado = 1;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
+            Empleadoseje.style.visibility = 'visible';
+            dropEmpledos.style.visibility = 'visible';
+        }
+        if (checked2 == false) {
+            checkCalculoEmplado = 0;
+            $("#DropLitEmple").jqxDropDownList('uncheckAll');
+            Empleadoseje.style.visibility = 'hidden';
+            dropEmpledos.style.visibility = 'hidden';
+            
+        }
+    });
+
+    $("#DropLitEmple").on('checkChange', function (event) {
+        if (event.args) {
+            var item = event.args.item;
+            if (item) {
+                var valueelement = $("<div></div>");
+                valueelement.text("Value: " + item.value);
+                var labelelement = $("<div></div>");
+                labelelement.text("Label: " + item.label);
+                var checkedelement = $("<div></div>");
+                checkedelement.text("Checked: " + item.checked);
+                $("#selectionlog").children().remove();
+          
+                var items = $("#DropLitEmple").jqxDropDownList('getCheckedItems');
+                var checkedItems = "";
+                checkedItemsIdEmpleados = "";
+                $.each(items, function (index) {
+                    checkedItems += this.label + ", ";
+                    checkedItemsIdEmpleados += this.value + ",";
+                });
+                $("#checkedItemsLog").text(checkedItems);
+            }
+        }
+    });
+
+    // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
+    $("#switchButtonEmple").toggle();
+    $("#timerNotification").jqxNotification("closeLast");
+    
+ 
 });
+
+
+

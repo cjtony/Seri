@@ -1,82 +1,85 @@
-﻿<div class="container bg-white">
-    @*Botones Flotantes*@
-    <div>
-        <button class="flotante rounded btn btn-outline-success" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
-            <i class="fas fa-search"></i>
-        </button>
-        <button class="flotante2 rounded btn btn-outline-danger" title="Limpiar todos los campos" id="btnFloLimpiar" type="button" btvisible="true" value="1">
-            <i class="fas fa-eraser"></i>
-        </button>
-    </div>
-    <div>
-        <div class="text-center">
-            <h5 class="col-ico">
-                <b>
-                    Consulta De Recibos De Nomina
-                </b>
-            </h5>
-            <hr />
-        </div>
+﻿<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
 
-    </div>
+<div class="container bg-white">
+    @*Botones Flotantes*@
+ 
     <div class="container-fluid">
-        <div class="row mt-4">
+  
+        <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+            <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
             <div class="col-md-6">
-                <div class="form-group row" style="margin-left:2%">
-                    <label for="EmpresaNom" class="col-sm-3 col-form-label font-labels">
-                        Empresa:
-                    </label>
-                    <div class="col-sm-4">
-                        <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="EmpresaNom">
-                            <option value="0">Selecciona</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row" style="margin-left:2%">
-                    <label for="anoNom" class="col-sm-3 col-form-label font-labels">
-                        Año:
-                    </label>
-                    <div class="col-sm-4">
-                        <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="anoNom" class="form-control form-control-sm text-capitalize" />
-                    </div>
-                </div>
-                <div class="form-group row" style="margin-left:2%">
-                    <label for="TipoPerido" class="col-sm-3 col-form-label font-labels">
-                        Tipo de Periodo:
-                    </label>
-                    <div class="col-sm-4">
-                        <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="TipodePerdioRec">
-                            <option value="0">Selecciona</option>
-                        </select>
-                    </div>
+                <div class="text-left">
+                    <h6 class="col-ico font-nav-child">
+                        <b>
+                            <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                            Recibos de Nomina
+                        </b>
+                    </h6>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group row">
-                    <label for="peridoNom" class="col-sm-2 col-form-label font-labels">
-                        Perido:
-                    </label>
-                    <div class="col-sm-8">
-                        <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="PeridoNom">
-                            <option value="0">Selecciona</option>
-                        </select>
+            <div class="col-md-12">
+                <hr />
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="form-group row" style="margin-left:2%">
+                        <label for="EmpresaNom" class="col-sm-4 col-form-label font-labels">
+                            Empresa:
+                        </label>
+                        <div class="col-sm-6">
+                            <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="EmpresaNom">
+                                <option value="0">Selecciona</option>
+                            </select>
+                        </div>
                     </div>
-                    <label for="FechaPeriodo" class="col-sm-4 col-form-label font-labels" id="FechaPeridod"></label>
-                </div>
-                <div class="form-group row">
-                    <label for="EmpleadoNom" class="col-sm-2 col-form-label font-labels">
-                        Empleados:
-                    </label>
-                    <div class="col-sm-8">
-                        <div id='content'>
-                            <input id="jqxInput" />
+                    <div class="form-group row" style="margin-left:2%">
+                        <label for="anoNom" class="col-sm-4 col-form-label font-labels">
+                            Año:
+                        </label>
+                        <div class="col-sm-6">
+                            <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="anoNom" class="form-control form-control-sm text-capitalize" />
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:2%">
+                        <label for="TipoPerido" class="col-sm-4 col-form-label font-labels">
+                            Tipo de Periodo:
+                        </label>
+                        <div class="col-sm-6">
+                            <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="TipodePerdioRec">
+                                <option value="0">Selecciona</option>
+                            </select>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="peridoNom" class="col-sm-3 col-form-label font-labels">
+                            Perido:
+                        </label>
+                        <div class="col-sm-9">
+                            <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="PeridoNom">
+                                <option value="0">Selecciona</option>
+                            </select>
+                        </div>
+                        <label for="FechaPeriodo" class="col-sm-12 col-form-label font-labels" id="FechaPeridod"></label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="EmpleadoNom" class="col-sm-3 col-form-label font-labels">
+                            Empleados:
+                        </label>
+                        <div class="col-sm-8">
+                            <div id='content'>
+                                <input id="jqxInput" />
+                            </div>
+                        </div>
+                    </div>
 
 
+                </div>
             </div>
         </div>
+
 
         <!-- Pantalla De Recibos de nomina  -->
 
@@ -144,10 +147,21 @@
             </div>
         </div>
 
+        @*Botones de flotantes*@
+        <div>
+
+            <button class="flotante1 btn btn-primary btn-circle shadow"  title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="flotante2 btn btn-primary btn-circle shadow" title="Limpiar todos los campos" id="btnFloLimpiar" type="button" btvisible="true" value="1">
+                <i class="fas fa-eraser"></i>
+            </button>
+          
+
+        </div>
     </div>
 </div>
-<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
+
 <script src="~/Scripts/main/RecibosNomina.js"></script>
 <script src="~/Scripts/jqxGrid/jqwidgets/jspdf.min.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>

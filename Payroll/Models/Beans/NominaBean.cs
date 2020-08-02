@@ -48,21 +48,26 @@ namespace Payroll.Models.Beans
     {
         public int iId { get; set; }
         public string sValor { get; set; }
-
+       
         public string sMensaje { get; set; }
     }
 
     public class CRenglonesBean
     {
         public int iIdEmpresa { get; set; }
+        public string sIdEmpresa { get; set; }
         public int iIdRenglon { get; set; }
         public string sNombreRenglon { get; set; }
         public int iIdElementoNomina { get; set; }
+        public string sIdElementoNomina { get; set; }
         public int iIdSeccionReporte { get; set; }
+        public string sIdSeccionReporte { get; set; }
         public int iIdAcumulado { get; set; }
+        public string sIdAcumulado { get; set; }
         public int iCancelado { get; set; }
         public string sCancelado { get; set; }
         public int iTipodeRenglon { get; set; }
+        public string sTipodeRenglon { get; set; }
         public int iEspejo { get; set; }
         public string sEspejo { get; set; }
         public int ilistCalclos { get; set; }
@@ -289,6 +294,40 @@ namespace Payroll.Models.Beans
         public string Rfcprov { get; set; }
         public string sNoCertificado { get; set; }
         public string Fechatimbrado { get; set; }
+        public string Fecha { get; set; }
         public string sMensaje { get; set; }
     }
+    public class ElementoNominaBean
+    {
+        public int iIdValor { get; set; }
+        public string sValor { get; set; }
+        public string sMensaje { get; set; }
+    }
+
+    public class ListSatBean { 
+       public int idSat { get; set; }
+       public string sSat { get; set; }
+       public string sMensaje { get; set; }
+    }
+
+    public class ListEmpleadoNomBean { 
+       public int iIdEmpresa { get; set; }
+       public int iIdEmpleado { get; set; }
+       public int ianio { get; set; }
+       public int TipoPeriodo { get; set; }
+       public int Periodo { get; set; }
+       public string sMensaje { get; set; }
+
+    }
+
+    public class ControlEjecucionBean { 
+      public int iIdContro { get; set; }
+      public int iIdempresa { get; set; }
+      public int iInactivo { get; set; }
+      public int sfecha { get; set; } 
+    
+    }
+
+
+    
 }

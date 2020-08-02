@@ -1,4 +1,4 @@
-﻿$(function () {
+﻿                                                                $(function () {
 
     /// Funcion de progres bar //
     var EnCola = 0;
@@ -99,7 +99,7 @@
 
     DgridTBProcesos = () => {       
         $.ajax({
-            url: "../Nomina/ListTBProcesosJobs",
+            url: "../Nomina/ListTBProcesosJobs  ",
             type: "POST",
             data: JSON.stringify(),
             success: (data) => {
