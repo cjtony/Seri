@@ -1262,7 +1262,39 @@ namespace Payroll.Models.Daos
 
         /// insertar ccontro de ejecucuion 
         
-        
+        public ControlEjecucionBean ps_ControlEje_Insert_CControlEjecEmpr(int CtrliIdusuario, string CtrlsDescripcion, int CtrliInactivo)
+        {
+            ControlEjecucionBean bean = new ControlEjecucionBean();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("ps_ControlEje_Insert_CControlEjecEmpr", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdusuario", CtrliIdusuario));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsDescripcion", CtrlsDescripcion));
+                cmd.Parameters.Add(new SqlParameter("@CtrliInactivo", CtrliInactivo));
+           
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
     }
 
 

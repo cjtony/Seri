@@ -205,49 +205,7 @@
         TbAño.value = AnioDropList;     
         const dataSend = { IdDefinicionHD: IdDropList, iperiodo: 0 };
 
-        /// saca el tipo de periodo de la definicion
-         $.ajax({
-            url: "../Nomina/TipoPeriodo",
-            type: "POST",
-            data: dataSend,
-            success: (data) => {
-                Tipoperiodocal = data[0].iId + " " + data[0].sValor;
-                TxbTipoPeriodo.value = data[0].iId + " " + data[0].sValor;
-                TipoPeridoCal.value = data[0].iId + " " + data[0].sValor;
-                ///// saca el periodo actual de la definicion
-                const dataSend2 = { IdDefinicionHD: IdDropList, iperiodo: 0, NomCerr: 0 };
-                $("#PeridoEje").empty();
-                //$('#PeridoEje').append('<option value="0" selected="selected">Selecciona</option>');
-                $.ajax({
-                    url: "../Nomina/ListPeriodoEmpresa",
-                    type: "POST",
-                    data: dataSend2,
-                    success: (data) => {
-                        var dato = data[0].sMensaje;
-                      
-                        if (data[0].sMensaje == "success") {
-                            document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
-                            periodo = data[0].iPeriodo;
-                            PeriodoCal.value = data[0].iPeriodo;
-                            /// si tiene calculos la definicion del periodo actual  los muestra  
-                            var empresa = 0;
-                          
-                            FllenaCalculos(periodo, empresa, Tipoperiodocal);
-                        }
-                        if (data[0].sMensaje == "error") {
-
-                            fshowtypealert ('Ejecucion','Periodo actual no exite', 'warning')
-                        }
-                      
-                    },
-
-
-                });
-            },
-            error: function (jqXHR, exception) {
-                fcaptureaerrorsajax(jqXHR, exception);
-            }
-         });
+      
 
         /// comprueba si la definicion selecionada esta guardada en tbCalculos Hd
 
@@ -262,6 +220,51 @@
                  
                     btnFloEjecutar.style.visibility = 'visible';
                     btnFloGuardar.style.visibility = 'hidden';
+                    /// saca el tipo de periodo de la definicion
+                    $.ajax({
+                        url: "../Nomina/TipoPeriodo",
+                        type: "POST",
+                        data: dataSend,
+                        success: (data) => {
+                            Tipoperiodocal = data[0].iId + " " + data[0].sValor;
+                            TxbTipoPeriodo.value = data[0].iId + " " + data[0].sValor;
+                            TipoPeridoCal.value = data[0].iId + " " + data[0].sValor;
+                            ///// saca el periodo actual de la definicion
+                            const dataSend2 = { IdDefinicionHD: IdDropList, iperiodo: 0, NomCerr: 0 };
+                            $("#PeridoEje").empty();
+                            //$('#PeridoEje').append('<option value="0" selected="selected">Selecciona</option>');
+                            $.ajax({
+                                url: "../Nomina/ListPeriodoEmpresa",
+                                type: "POST",
+                                data: dataSend2,
+                                success: (data) => {
+                                    var dato = data[0].sMensaje;
+
+                                    if (data[0].sMensaje == "success") {
+                                        document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
+                                        periodo = data[0].iPeriodo;
+                                        PeriodoCal.value = data[0].iPeriodo;
+                                        /// si tiene calculos la definicion del periodo actual  los muestra  
+                                        var empresa = 0;
+
+                                        FllenaCalculos(periodo, empresa, Tipoperiodocal);
+                                    }
+                                    if (data[0].sMensaje == "error") {
+
+                                        fshowtypealert('Ejecucion', 'Periodo actual no exite', 'warning')
+                                    }
+
+                                },
+
+
+                            });
+                        },
+                        error: function (jqXHR, exception) {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+
+
                 }
 
                 if (data[0].iIdCalculosHd == 0) {
