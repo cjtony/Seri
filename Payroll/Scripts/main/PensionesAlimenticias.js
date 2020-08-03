@@ -201,7 +201,6 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: (data) => {
-                        
                         if (data[0] == '0') {
                             Swal.fire({
                                 title: 'Error!',
@@ -212,9 +211,7 @@
                         } else {
                             document.getElementById("tabody").innerHTML = "";
                             tabPensiones();
-                            
                             setTimeout(() => {
-                                
                                 CFija.focus();
                             }, 1200);
                             Swal.fire({
@@ -223,7 +220,6 @@
                                 text: data[1],
                                 timer: 1000
                             });
-
                         }
                     }
                 });

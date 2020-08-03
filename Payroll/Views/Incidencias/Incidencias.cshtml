@@ -9,12 +9,12 @@
                         <div class="form-group row">
                             <div class="form-group col-md-6">
                                 <label>Concepto *</label>
-                                <select class="custom-select custom-select-sm font-labels" id="inConcepto_incidencia" name="inConcepto_incidencia">
+                                <select class="custom-select custom-select-sm font-labels" id="inConcepto_incidencia" name="inConcepto_incidencia" required >
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Renglón *</label>
-                                <input type="text" name="inRenglon" id="inRenglon" class="form-control form-control-sm disabled" readonly placeholder="#"/>
+                                <input type="text" name="inRenglon" id="inRenglon" class="form-control form-control-sm disabled" readonly placeholder="#" required />
                             </div>
                             <div class="form-group col-md-6">
                                 <label id="lblCantidad">Cantidad *</label>
@@ -44,7 +44,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Fecha de Aplicacion *</label>
-                                <input type="date" name="inFechaA" id="inFechaA" class="form-control form-control-sm" />
+                                <input type="date" name="inFechaA" id="inFechaA" class="form-control form-control-sm" required />
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="text-muted" style="font-size:smaller;">* Campos obligatorios</label>
