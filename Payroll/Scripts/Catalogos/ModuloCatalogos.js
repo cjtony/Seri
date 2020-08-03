@@ -2223,7 +2223,7 @@
                         "<td>" + data[i]["ZonaEconomica_id"] + "</td>" +
                         "<td>" + data[i]["Sucursal_id"] + "</td>" +
                         "<td>" + data[i]["Estado_id"] + "</td>" +
-                        "<td class=''>" + data[i]["Fecha_Alta"].substr(0, 10) + "</td>" +
+                        //"<td class=''>" + data[i]["Fecha_Alta"].substr(0, 10) + "</td>" +
                         "</tr>";
                     
                 }
@@ -2245,6 +2245,22 @@
     // MOSTRAR MODAL NUEVA LOCALIDAD 
     mostrarmodalnuevalocalidad = () => {
         $("#modalnuevalocalidad").modal("show");
-
     }
+    // funcion al cerrar el modal de buscar sucursal
+    $('#modalbuscarsucursal').on('hidden.bs.modal', function (e) {
+        mostrarmodalnuevalocalidad();
+    });
+    // funcion al cerrar el modal de crear regional
+    $('#modalnuevaregional').on('hidden.bs.modal', function (e) {
+        mostrarmodalnuevalocalidad();
+    });
+    // funcion al abrir el modal de crear regional
+    $('#modalnuevaregional').on('show.bs.modal', function (e) {
+        $("#modalnuevalocalidad").modal("hide");
+    });
+    // funcion al abrir el modal de buscar sucursal
+    $('#modalbuscarsucursal').on('show.bs.modal', function (e) {
+        $("#modalnuevalocalidad").modal("hide");
+    });
+
 });
