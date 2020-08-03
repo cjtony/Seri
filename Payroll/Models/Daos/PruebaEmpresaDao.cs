@@ -199,7 +199,7 @@ namespace Payroll.Models.Daos
                     empresa.Add(data["RFC"].ToString());
                     empresa.Add(data["FechaAlta"].ToString());
                     empresa.Add(data["Regimen_Fiscal_id"].ToString());
-                    empresa.Add(data["banco_interbancarios"].ToString());
+                    //empresa.Add(data["banco_interbancarios"].ToString());
                     empresa.Add(data["reg_imss_empresa"].ToString());
                 }
             }
