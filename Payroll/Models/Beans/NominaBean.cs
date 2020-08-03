@@ -233,6 +233,7 @@ namespace Payroll.Models.Beans
         public String sCtaCheques { get; set; }
         public int iRegimenFiscal { get; set; }
         public int iIdNomina { get; set; }
+        public string sUrl {get;set;}
         public string sMensaje { get; set; }
 
     }
@@ -324,8 +325,8 @@ namespace Payroll.Models.Beans
       public int iIdContro { get; set; }
       public int iIdempresa { get; set; }
       public int iInactivo { get; set; }
-      public int sfecha { get; set; } 
-    
+      public int sfecha { get; set; }
+      public string sMensaje { get; set; }
     }
 
 

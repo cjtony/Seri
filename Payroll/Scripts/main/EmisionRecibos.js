@@ -12,6 +12,7 @@
     const btnGeneraPDF = document.getElementById('btn-GeneraPDF');
     const TextBAnioProce = document.getElementById('TextBAnioProce');
     const DroTipoRecibo = document.getElementById('DroTipoRecibo');
+    const TextBRuta = document.getElementById('TextBRuta');
 
     var VarCheckEmpresa = document.getElementById('CheckEmpresa');
     var Empresas;
@@ -191,7 +192,7 @@
                 if (DropPerido.value > 0) {
 
                     if (Empresas.length > 0) {
-                        FCargamasibaPDF(TextBAnioProce.value, DroTipoPeriodo.value, DropPerido.value, Empresas)
+                        FCargamasibaPDF(TextBAnioProce.value, DroTipoPeriodo.value, DropPerido.value, Empresas, TextDEesp.value)
 
                     }
                     else {
@@ -223,15 +224,18 @@
     };
     btnGeneraPDF.addEventListener('click',FGeneraPDF);
 
-    FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas) => {
+    FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas,descrip) => {
+    
+        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value, sDEscripcion: descrip };
         console.log('genera pdf');
-        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value };
         $.ajax({
             url: "../Empleados/GenPDF",
             type: "POST",
             data: dataSend,
             success: function (data) {
-                 
+            
+                TextBRuta.value = data[0].sUrl;
+
             },
         });
     };
