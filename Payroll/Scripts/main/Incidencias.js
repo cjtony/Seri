@@ -148,6 +148,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
+                console.log(data);
                 document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     document.getElementById("tabIncidenciasBody").innerHTML += ""+
@@ -158,7 +159,7 @@
                             "<td class='text-center'>" + data[i]["Plazos"] + "</td>" +
                             "<td class='text-center'>" + data[i]["Descripcion"] + "</td>" +
                             "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
-                            "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
+                            "<td class='text-center'>" + data[i]["NPeriodo"] + "</td>" +
                             "<td class='text-center'>" +
                                 "<div class='badge badge-danger btn' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Eliminar'><i class='fas fa-minus'></i></div>" +
                             "</td>" +

@@ -882,6 +882,7 @@
             }
         });
     }
+
     $("#btnSaveEditPolitica").on("click", function () {
 
         $.ajax({
@@ -1081,7 +1082,6 @@
             }
         });
     }
-    //
     // LLENA TABLA EMPRESAS TABLA EMPRESAS - BANCOS
     LoadEmpresasBancos = () => {
         $.ajax({
@@ -1114,7 +1114,6 @@
             }
         });
     }
-    //
     // LLENA LOS BANCOS QUE TIENE PARA NOMINA CADA UNA DE LAS EMPRESAS
     mostrarbancosempresa = (collapse, Empresa_id) => {
         $.ajax({
@@ -1181,7 +1180,6 @@
             }
         });
     }
-    //
     // MOSTRAR MODAL NUEVO BANCO EN EMPRESA
     mostrarmodalnuevo = (Empresa_id) => {
         $.ajax({
@@ -1205,12 +1203,10 @@
 
 
     }
-    //
     // FUNCION QUE REINICIA EL MODAL NUEVO
     $('#modal-nuevo-bancoempresa').on('hidden.bs.modal', function () {
         document.getElementById("formnewbanco").classList.remove("was-validated").reset();
     });
-    //
     // GUARDAR NUEVO BANCO EN EMPRESA
     $("#btnnewbanco").on("click", function () {
 
@@ -1267,7 +1263,6 @@
             });
         }
     });
-    //
     // MOSTRAR MODAL EDITAR BANCO
     mostrarmodaleditarbanco = (Empresa_id, Banco_id, TipoBanco, BancoEmp, collapse) => {
         $.ajax({
@@ -1330,7 +1325,6 @@
             }
         });
     }
-    //
     // GUARDAR ACTUALIZACION DE BANCO EN LA EMPRESA
     $("#btneditarbanco").on("click", function () {
         var form = document.getElementById("formeditbanco");
@@ -1471,7 +1465,6 @@
     //
     // Carga tabla de Usuarios disponibles
     loadtabusers = () => {
-
         $.ajax({
             url: "../Catalogos/LoadUsers",
             type: "POST",
@@ -1486,7 +1479,10 @@
                         "<td>" + data[i]["Perfil_id"] + "</td>" +
                         "<td>" + data[i]["Ps"] + "</td>" +
                         "<td>" + data[i]["Cancelado"] + "</td>" +
-                        "<td> <div class='badge badge-info btn '><i class='fas fa-edit fa-lg'></i> Editar</div></td>" +
+                        "<td>" +
+                        "<div class='badge badge-success btn'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
+                        "<div class='badge badge-info btn mx-1'><i class='fas fa-plus fa-lg'></i> Nuevo</div>" +
+                        "</td>" +
                         "</tr>";
                 }
                 $('#tabUsers').DataTable({
