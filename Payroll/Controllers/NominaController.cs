@@ -462,13 +462,13 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa)
+        public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa,int Anio)
         {
             List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
             
             //List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa);
+            Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa, Anio);
             if (Dta.Count > 1) {
                 for (int i = 0; i < Dta.Count; i++) {
                     Dta[i].sTotal="$ "+ string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Dta[i].dTotal);
@@ -526,11 +526,11 @@ namespace Payroll.Controllers
             return Json(LTP);
         }
         [HttpPost]
-        public JsonResult ListPeriodoEmpresa(int IdDefinicionHD, int iperiodo, int NomCerr)
+        public JsonResult ListPeriodoEmpresa(int IdDefinicionHD, int iperiodo, int NomCerr, int Anio)
         {
             List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            LPe = dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(IdDefinicionHD, iperiodo,NomCerr);
+            LPe = dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(IdDefinicionHD, iperiodo,NomCerr, Anio);
             return Json(LPe);
 
         }

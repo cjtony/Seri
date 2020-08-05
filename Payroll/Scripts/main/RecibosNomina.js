@@ -16,6 +16,9 @@
     const LaTotalPer = document.getElementById('LaTotalPer');
     const LaTotalDedu = document.getElementById('LaTotalDedu');
     const LaTotalNom = document.getElementById('LaTotalNom');
+    const btnPDFms = document.getElementById('btnPDFms');
+    const btnXmlms = document.getElementById('btnXmlms');
+
 
     var EmpresNom;
     var IdEmpresa;
@@ -106,22 +109,25 @@
 
     });
 
-     $('#PeridoNom').change(function () {
+    $('#PeridoNom').change(function () {
+        btnPDFms.style.visibility = 'hidden';
+        btnXmlms.style.visibility = 'hidden';
 
          IdEmpresa = EmpresaNom.value;
          Tipodeperiodo = TipodePerdioRec.value;
          var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
-         if (periodo == "Selecciona") {
+         if (PeridoNom.value == 0) {
              $("#jqxInput").empty();
              $("#jqxInput").jqxInput({ source: null, placeHolder: "Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+           
+             
          }
          if (periodo != "Selecciona") {
              separador = " ",
-                 limite = 2,
-                 arreglosubcadena = periodo.split(separador, limite);
+             limite = 2,
+             arreglosubcadena = periodo.split(separador, limite);
 
-             const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0] };
-            
+             const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0] };           
             $.ajax({
                  url: "../Empleados/DataListEmpleado",
                  type: "POST",
@@ -165,6 +171,9 @@
 
                  }
              });
+
+             btnPDFms.style.visibility = 'visible';
+             btnXmlms.style.visibility = 'visible';
 
          }
         
@@ -343,6 +352,12 @@
 
 
     });
+
+
+
+    /// Genera Pdf de los recibos de nomina masivos
+
+
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {

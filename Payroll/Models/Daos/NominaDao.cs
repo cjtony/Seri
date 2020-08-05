@@ -1139,7 +1139,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public List<TpCalculosCarBean> sp_Caratula_Retrieve_TPlantilla_Calculos(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa)
+        public List<TpCalculosCarBean> sp_Caratula_Retrieve_TPlantilla_Calculos(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa,int CtrliAnio)
         {
             List<TpCalculosCarBean> list = new List<TpCalculosCarBean>();
             try
@@ -1153,6 +1153,9 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliTipodePerido", CrtliIdTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CrtliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", Idempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                
+
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -1634,7 +1637,7 @@ namespace Payroll.Models.Daos
         }
 
 
-        public List<CInicioFechasPeriodoBean> sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(int CrtliIdDeficionHd,int CrtliPeriodo, int CtrliNomCerr)
+        public List<CInicioFechasPeriodoBean> sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(int CrtliIdDeficionHd,int CrtliPeriodo, int CtrliNomCerr, int CrtliAnio)
         {
             List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
             try
@@ -1649,6 +1652,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CrtliIdEmpresa", CrtliIdEmpresa));
                 cmd.Parameters.Add(new SqlParameter("@CrtliPeriodo", CrtliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNomCerr", CtrliNomCerr));
+                cmd.Parameters.Add(new SqlParameter("@CrtliAnio", CrtliAnio));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
