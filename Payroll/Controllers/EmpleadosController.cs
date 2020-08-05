@@ -1138,7 +1138,7 @@ namespace Payroll.Controllers
             int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, Version=12,Folio=0;
             Folio = Anio * 100000 + TipoPeriodo * 10000 + Perido * 10;
             var fileName = "";
-            string PathPDF = Server.MapPath("Archivos\\certificados\\PDF2\\");
+            string PathPDF = Server.MapPath("Archivos\\certificados\\PDF2\\IPSNet");
             string PathZip = Server.MapPath("Archivos\\certificados\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             PathZip = PathZip.Replace("\\Empleados", "");
@@ -1151,7 +1151,8 @@ namespace Payroll.Controllers
             rows = valores.Length - 1;
             int idempleado = 0;
             string urlpdf;
-
+            //CreateActionInvoker caroeta
+            //DirectoryInfo di = Directory.CreateDirectory(PathPDF);
             for (int i = 0; i < rows; i++)
             {
                 idEmpresa = Convert.ToInt32(valores[i]);
@@ -1972,6 +1973,16 @@ namespace Payroll.Controllers
 
             return Json(url);
         }
+
+        /// generacion de pdf para impresion
+
+        public JsonResult GenPDFmv(int Anio, int TipoPeriodo, int iIdperiodo, int iIdempresa) {
+
+            List<EmisorReceptorBean> LisEmpresa = new List<EmisorReceptorBean>();
+            return Json(LisEmpresa);
+
+        }
+        
 
 
     }

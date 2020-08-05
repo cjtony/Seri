@@ -153,8 +153,7 @@
             success: function (data) {
                 console.log(data);
                 for (i = 0; i < data.length; i++) {
-                    console.log(data[i].iId);
-                    console.log(data[i].sValor);
+                   
                     document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${data[i].iId}'>${data[i].iId} ${data[i].sValor} </option>`;
                 }
             },
