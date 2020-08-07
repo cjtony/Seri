@@ -1545,7 +1545,7 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
-        public List<ReciboNominaBean> sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(int CtrliIdEmpresa, int CtrliIdemplado, int CtrliPeriodo)
+        public List<ReciboNominaBean> sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(int CtrliIdEmpresa, int CtrliIdemplado, int CtrliPeriodo, int CtrliTipodeperiodo, int Ctrlianio,int ctriliEspejo)
         {
             List<ReciboNominaBean> list = new List<ReciboNominaBean>();
             try
@@ -1557,7 +1557,10 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdemplado", CtrliIdemplado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipodeperiodo", CtrliTipodeperiodo));
+                cmd.Parameters.Add(new SqlParameter("@Ctrlianio", Ctrlianio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@ctriliEspejo", ctriliEspejo));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
