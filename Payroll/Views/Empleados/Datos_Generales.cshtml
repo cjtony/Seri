@@ -55,23 +55,11 @@
                 <nav class="">
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <a class="nav-item nav-link active font-navs" id="nav-empleado-tab" data-toggle="tab" href="#nav-empleado" role="tab" aria-controls="nav-home" aria-selected="true">
-                            Empleado
+                            <i class="fas fa-user col-ico mr-2"></i>Empleado
                         </a>
-                        @*<a class="nav-item nav-link font-navs" id="nav-inicidencias-tab" data-toggle="tab" href="#nav-inicidencias" role="tab" aria-controls="nav-profile" aria-selected="false">
-                                Ausentismo/Incidencias
-                            </a>
-                            <a class="nav-item nav-link font-navs" id="nav-nomina-tab" data-toggle="tab" href="#nav-nomina" role="tab" aria-controls="nav-contact" aria-selected="false">
-                                Nomina
-                            </a>
-                            <a class="nav-item nav-link font-navs" id="nav-catalogos-tab" data-toggle="tab" href="#nav-catalogos" role="tab" aria-controls="nav-contact" aria-selected="false">
-                                Catalogos
-                            </a>
-                            <a class="nav-item nav-link font-navs" id="nav-reportes-tab" data-toggle="tab" href="#nav-reportes" role="tab" aria-controls="nav-contact" aria-selected="false">
-                                Reportes
-                            </a>
-                            <a class="nav-item nav-link font-navs" id="nav-kiosko-tab" data-toggle="tab" href="#nav-kiosko" role="tab" aria-controls="nav-kiosko" aria-selected="false">
-                                Kiosko
-                            </a>*@
+                        <a class="nav-item nav-link font-navs" id="nav-up-masive-employee" data-toggle="tab" href="#nav-tab-up-masive-employee" role="tab" aria-controls="nav-up" aria-selected="false">
+                            <i class="fas fa-users col-ico mr-2"></i> Carga Masiva
+                        </a>
                     </div>
                 </nav>
                 <div class="tab-content bg-white" id="nav-tabContent">
@@ -102,12 +90,6 @@
                                         <label id="label-mode-night" class="form-check-label font-navs" for="modeNightCheck"><i id="ico-mode-night" class="fas fa-moon mr-1 ml-1"></i> M.O</label>
                                     </div>
                                 </a>
-                                @*<div class="switch-button">
-                                     Checkbox 
-                                    <input type="checkbox" name="switch-button" id="switch-label" class="switch-button__checkbox">
-                                     Botón 
-                                    <label for="switch-label" class="switch-button__label"></label>
-                                </div>*@
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -141,7 +123,7 @@
                                                 Nombre:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Nombre" maxlength="30" type="text" id="name" class="form-control form-control-sm text-capitalize" />
+                                                <input autocomplete="off" placeholder="Nombre" maxlength="30" type="text" id="name" class="form-control form-control-sm text-capitalize" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -149,7 +131,7 @@
                                                 Apellido Paterno:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Apellido paterno" maxlength="30" type="text" id="apepat" class="form-control form-control-sm text-capitalize" />
+                                                <input autocomplete="off" placeholder="Apellido paterno" maxlength="30" type="text" id="apepat" class="form-control form-control-sm text-capitalize" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -157,7 +139,7 @@
                                                 Apellido Materno:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Apellido materno" maxlength="30" type="text" id="apemat" class="form-control form-control-sm text-capitalize" />
+                                                <input autocomplete="off" placeholder="Apellido materno" maxlength="30" type="text" id="apemat" class="form-control form-control-sm text-capitalize" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -187,7 +169,7 @@
                                                 Fecha de Nacimiento:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input tp-date="less" placeholder="Fecha de nacimiento" title="Fecha nacimiento" type="date" id="fnaci" class="form-control form-control-sm" />
+                                                <input autocomplete="off" tp-date="less" placeholder="Fecha de nacimiento" title="Fecha nacimiento" type="date" id="fnaci" class="form-control form-control-sm" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -195,7 +177,7 @@
                                                 Lugar de Nacimiento:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Lugar de nacimiento" maxlength="70" type="text" id="lnaci" class="form-control form-control-sm text-capitalize" />
+                                                <input autocomplete="off" placeholder="Lugar de nacimiento" maxlength="70" type="text" id="lnaci" class="form-control form-control-sm text-capitalize" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -248,7 +230,7 @@
                                                 C. postal:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input title="Longitud 7 caracteres numericos" placeholder="Codigo postal" maxlength="7" type="text" id="codpost" class="form-control form-control-sm" />
+                                                <input autocomplete="off" title="Longitud 7 caracteres numericos" placeholder="Codigo postal" maxlength="7" type="text" id="codpost" class="form-control form-control-sm" />
                                             </div>
                                             <div class="offset-4 col-sm-8 mt-2">
                                                 <button class="btn btn-sm btn-block" id="btn-verif-codpost">
@@ -288,7 +270,7 @@
                                                 Calle:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Calle" maxlength="50" type="text" id="street" class="form-control form-control-sm text-capitalize" />
+                                                <input autocomplete="off" placeholder="Calle" maxlength="50" type="text" id="street" class="form-control form-control-sm text-capitalize" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -296,7 +278,7 @@
                                                 N. calle:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input title="Longitud 5 caracteres numericos." placeholder="Numero de calle" maxlength="5" type="text" id="numberst" class="form-control form-control-sm" />
+                                                <input autocomplete="off" title="Longitud 5 caracteres numericos." placeholder="Numero de calle" maxlength="5" type="text" id="numberst" class="form-control form-control-sm" />
                                             </div>
                                         </div>
                                     </div>
@@ -319,7 +301,7 @@
                                                 Telefono fijo:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input title="Longitud 10 caracteres numericos" placeholder="Telefono fijo" maxlength="10" class="form-control form-control-sm" id="telfij" type="text" />
+                                                <input autocomplete="off" title="Longitud 10 caracteres numericos" placeholder="Telefono fijo" maxlength="10" class="form-control form-control-sm" id="telfij" type="text" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -327,7 +309,7 @@
                                                 Telefono movil:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input title="Longitud 10 caracteres numericos" placeholder="Telefono movil" maxlength="10" pattern="[0-9]{10}" class="form-control form-control-sm" id="telmov" type="text" />
+                                                <input autocomplete="off" title="Longitud 10 caracteres numericos" placeholder="Telefono movil" maxlength="10" pattern="[0-9]{10}" class="form-control form-control-sm" id="telmov" type="text" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -335,7 +317,7 @@
                                                 Correo electronico:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Correo electronico" maxlength="40" class="form-control form-control-sm" id="mailus" type="email" />
+                                                <input autocomplete="off" placeholder="Correo electronico" maxlength="40" class="form-control form-control-sm" id="mailus" type="email" />
                                                 <div class="invalid-feedback">
                                                     Introduzca una correo valido.
                                                 </div>
@@ -346,7 +328,7 @@
                                                 Tipo de sangre:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Tipo de sangre" maxlength="10" class="form-control form-control-sm" id="tipsan" type="text" />
+                                                <input autocomplete="off" placeholder="Tipo de sangre" maxlength="10" class="form-control form-control-sm" id="tipsan" type="text" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -414,7 +396,7 @@
                                                 Registro IMSS:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="Numero de registro" maxlength="11" type="text" id="regimss" class="form-control form-control-sm" />
+                                                <input autocomplete="off" placeholder="Numero de registro" maxlength="11" type="text" id="regimss" class="form-control form-control-sm" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -432,7 +414,7 @@
                                                 R.F.C:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="R.F.C" maxlength="13" type="text" id="rfc" class="form-control form-control-sm text-uppercase" />
+                                                <input autocomplete="off" placeholder="R.F.C" maxlength="13" type="text" id="rfc" class="form-control form-control-sm text-uppercase" />
                                                 <div class="invalid-feedback">
                                                     Los 10 primeros caracteres de tu rfc deben de concordar con los primeros 10 caracteres de tu curp.
                                                 </div>
@@ -443,7 +425,7 @@
                                                 C.U.R.P:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input placeholder="C.U.R.P" type="text" id="curp" class="form-control form-control-sm text-uppercase" maxlength="18" />
+                                                <input autocomplete="off" placeholder="C.U.R.P" type="text" id="curp" class="form-control form-control-sm text-uppercase" maxlength="18" />
                                                 <div class="d-none" id="divcurpinvalid">
                                                     <p id="textcurpinvalid"></p>
                                                 </div>
@@ -677,7 +659,7 @@
                                             </label>
                                             <div class="col-sm-8">
                                                 <select tp-select="Banco" id="banuse" class="form-control form-control-sm">
-                                                    <option value="0">Selecciona</option>
+                                                    <option value="none">Selecciona</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -902,11 +884,64 @@
                             </div>
                         </div>
                     </div>
-                    @*<div class="tab-pane fade p-3" id="nav-inicidencias" role="tabpanel" aria-labelledby="nav-inicidencias-tab">Opcion2</div>
-                        <div class="tab-pane fade p-3" id="nav-nomina" role="tabpanel" aria-labelledby="nav-nomina-tab">Opcion3</div>
-                        <div class="tab-pane fade p-3" id="nav-catalogos" role="tabpanel" aria-labelledby="nav-catalogos-tab">Opcion4</div>
-                        <div class="tab-pane fade p-3" id="nav-reportes" role="tabpanel" aria-labelledby="nav-reportes-tab">Opcion5</div>
-                        <div class="tab-pane fade p-3" id="nav-kiosko" role="tabpanel" aria-labelledby="nav-kiosko-tab">Opcion6</div>*@
+                    <div class="tab-pane fade p-4" id="nav-tab-up-masive-employee" role="tabpanel" aria-labelledby="nav-nomina-tab">
+
+                        <div class="row border-right-primary border-left-primary rounded shadow p-3">
+
+                            <div class="col-md-6 mt-2">
+                                <div class="text-left">
+                                    <h6 class="col-ico font-nav-child">
+                                        <b>
+                                            <i class="fas fa-file-excel mr-ico-05"></i>
+                                            Archivos permitidos con extension .xlsx
+                                        </b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-download-file-masive-up">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-download"></i>
+                                        </span>
+                                        <span class="text">Descargar layout de ejemplo</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+                            <div class="col-md-8 offset-2 mt-2">
+                                <div class="card shadow rounded p-2 border-right-primary border-left-primary">
+                                    <div class="text-center mt-3 mb-3">
+                                        <h6 class="card-title text-primary font-weight-bold">
+                                            Selecciona tu archivo .xlsx
+                                        </h6>
+                                        <hr />
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <label for="file-upload-masive-up" id="label-file-upload-mu" class="btn-primary btn rounded shadow p-1">
+                                            <i class="fas fa-search"></i> Buscar archivo
+                                        </label>
+                                        <input id="file-upload-masive-up" type="file" style='display: none;' />
+                                        <div class="mt-2 animated">
+                                            <span class="badge animated font-weight-bold badge-light badge-pill p-2" id="name-file-up-masive"></span>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-save-file-masive-up">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-file-upload"></i>
+                                            </span>
+                                            <span class="text">Subir archivo</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -3684,21 +3719,21 @@
     </div>
 </div>
 
-<script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
-<script type="text/javascript" src="~/Scripts/main/main.js"></script>
-<script src="~/Scripts/main/animationsmain.js"></script>
-<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js"></script>
-<script type="text/javascript" src="~/Scripts/main/puestos.js"></script>
-<script type="text/javascript" src="~/Scripts/main/positions.js"></script>
-<script type="text/javascript" src="~/Scripts/main/regionales.js"></script>
-<script type="text/javascript" src="~/Scripts/main/branchoffices.js"></script>
-<script type="text/javascript" src="~/Scripts/main/departments.js"></script>
-<script type="text/javascript" src="~/Scripts/main/estructura.js"></script>
-<script type="text/javascript" src="~/Scripts/main/localitys.js"></script>
-<script type="text/javascript" src="~/Scripts/main/centrcost.js"></script>
-<script type="text/javascript" src="~/Scripts/main/savedatageneral.js"></script>
-<script type="text/javascript" src="~/Scripts/main/employes.js"></script>
-<script src="~/Scripts/main/modenight.js"></script>
+<script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/main.js?n=1"></script>
+<script language="JavaScript" src="~/Scripts/main/animationsmain.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/puestos.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/positions.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/regionales.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/branchoffices.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/departments.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/estructura.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/localitys.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/centrcost.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/main/employes.js?n=1"></script>
+<script src="~/Scripts/main/modenight.js?n=1"></script>
 <script type="text/javascript">
     $(function () {
         setTimeout(() => {
@@ -3747,3 +3782,5 @@
         return patron.test(tecla_final);
     }
 </script>
+
+<script type="text/javascript" src="~/Scripts/main/CargasMasivas/main.js"></script>

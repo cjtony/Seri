@@ -6,6 +6,10 @@
             <i class="fas fa-users"></i>
         </button>
 
+        <button type="button" class="flotante1 btn btn-warning btn-circle shadow" title="Buscar empleado" id="btn-modal-search-changes-incidences">
+            <i class="fas fa-book"></i>
+        </button>
+
     </div>
     <div class="row">
         <div class="col-md-10 offset-1">
@@ -23,12 +27,6 @@
                     <a class="nav-item nav-link font-navs" id="nav-estructure-tab" data-toggle="tab" href="#nav-bmasivas" role="tab" aria-controls="nav-estructure" aria-selected="false">
                         <i class="fas fa-project-diagram col-ico mr-ico-05"></i> Bajas Masivas
                     </a>
-                    @*<a class="nav-item nav-link " id="nav-estructure-tab" data-toggle="tab" href="#nav-estructure" role="tab" aria-controls="nav-estructure" aria-selected="false">
-                        <div class="text-right">
-                            <i class="fas fa-user-edit text-danger mr-ico-05" id="icouser"></i>
-                            <span id="nameuser" class="text-capitalize text-dark"> </span>
-                        </div>
-                    </a>*@
                 </div>
             </nav>
             <div class="tab-content bg-white">
@@ -47,9 +45,6 @@
                                 </div>
                             </div>
                             <div class="row mb-4 d-none shadow rounded border-left-primary border-right-primary p-3" id="info-employee">
-                                @*<div class="col-md-12">
-                                    <h5 class="text-center title-font mb-4"> <i class="fas fa-id-card mr-2"></i> Datos del empleado</h5>
-                                </div>*@
                                 <div class="col-md-6">
                                     <ul class="list-group">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -94,7 +89,17 @@
                                 </div>
                             </div>
                             <div id="frmbajas" class="shadow rounded border-left-primary border-right-primary p-3 row">
-                                    <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold" for="down-settlement">
+                                        Baja con finiquito
+                                    </label>
+                                    <select id="down-settlement" class="form-control form-control-sm">
+                                        <option value="none">Selecciona</option>
+                                        <option value="1">Si</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                    <div class="form-group col-md-3">
                                         <input type="hidden" readonly id="keyEmployee" />
                                         <input type="hidden" readonly id="dateAntiquityEmp" />
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Tipo de Baja</label>
@@ -102,27 +107,27 @@
                                             <option value="none">Selecciona</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-3">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Motivos de Baja</label>
                                         <select id="inMotivosBaja" class="form-control form-control-sm">
                                             <option value="">Selecciona</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-3">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Fecha Baja</label>
                                         <input type="date" class="form-control form-control-sm" id="dateDownEmp" />
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-4 animated" id="div-content-param1">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Dias pendientes</label>
                                         <input type="number" class="form-control form-control-sm" id="daysPendings" value="0" min="0" pattern="^[0-9]+" />
                                     </div>
-                                    <div class="col-md-4 form-group">
+                                    <div class="col-md-4 form-group animated" id="div-content-param2">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Fecha a usar</label>
                                         <select class="form-control form-control-sm" id="dateSendDown">
                                             <option value="none">Selecciona</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-4 form-group">
+                                    <div class="col-md-4 form-group animated" id="div-content-param3">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Con compensacion especial</label>
                                         <select class="form-control form-control-sm" id="compSendEsp">
                                             <option value="none" selected>Selecciona</option>
@@ -137,9 +142,6 @@
                                             </span>
                                             <span class="text">Guardar</span>
                                         </button>
-                                        @*<button class="btn btn-primary font-button btn-sm" id="btnGuardaBaja" type="button">
-                                            <i class="fas fa-check-circle mr-2"></i>Guardar
-                                        </button>*@
                                     </div>
                             </div>
                         </div>
@@ -237,12 +239,9 @@
                     </span>
                     <span class="text">Cerrar</span>
                 </button>
-                @*<button type="button" class="btn btn-outline-danger btn-sm shadow" id="btnCloseSettlementSelect">
-                    <i class="fas fa-times-circle mr-1"></i> Cerrar
-                </button>*@
             </div>
         </div>
     </div>
 </div>
 
-<script src="~/Scripts/main/BajasEmpleados.js"></script>
+<script src="~/Scripts/main/BajasEmpleados.js?n=1"></script>
