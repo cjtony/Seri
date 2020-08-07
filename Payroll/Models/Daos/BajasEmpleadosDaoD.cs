@@ -87,6 +87,35 @@ namespace Payroll.Models.Daos
             return downEmployee;
         }
 
+        public BajasEmpleadosBean sp_Crea_Baja_Sin_Baja_Calculos(int keyBusiness, int keyEmployee, string dateDownEmp, int idTypeDown, int idReasonsDown, int yearAct, int keyPeriodAct)
+        {
+            BajasEmpleadosBean bajasEmpleadosBean = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Crea_Baja_Sin_Baja_Calculos", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@FechaEfect", dateDownEmp));
+                cmd.Parameters.Add(new SqlParameter("@FechaBaja", dateDownEmp));
+                cmd.Parameters.Add(new SqlParameter("@TipoFiniquito", idTypeDown));
+                cmd.Parameters.Add(new SqlParameter("@MotivoBaja", idReasonsDown));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearAct));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", keyPeriodAct));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    bajasEmpleadosBean.sMensaje = "SUCCESS";
+                } else {
+                    bajasEmpleadosBean.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); 
+            } catch (Exception exc) {
+                bajasEmpleadosBean.sMensaje = exc.Message.ToString();
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bajasEmpleadosBean;
+        }
 
         public BajasEmpleadosBean sp_BajaEmpleado_Update_EmpleadoNomina(int keyEmployee, int keyBusiness, int keyTypeDown)
         {
@@ -114,51 +143,48 @@ namespace Payroll.Models.Daos
         public List<BajasEmpleadosBean> sp_Finiquitos_Empleado(int keyEmployee, int keyBusiness, int keySettlement)
         {
             List<BajasEmpleadosBean> listDataDownEmpBean = new List<BajasEmpleadosBean>();
-            try
-            {
+            try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Finiquitos_Empleado", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
                 cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySettlement));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows)
-                {
-                    while (data.Read())
-                    {
-                        listDataDownEmpBean.Add(new BajasEmpleadosBean
-                        {
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        listDataDownEmpBean.Add(new BajasEmpleadosBean {
                             iIdFiniquito = Convert.ToInt32(data["IdFiniquito"].ToString()),
-                            sEffdt = data["Effdt"].ToString(),
+                            sEffdt       = data["Effdt"].ToString(),
                             sFecha_antiguedad = data["Fecha_antiguedad"].ToString(),
                             sFecha_ingreso = data["Fecha_ingreso"].ToString(),
-                            sFecha_baja = data["Fecha_baja"].ToString(),
+                            sFecha_baja    = data["Fecha_baja"].ToString(),
                             iAnios = Convert.ToInt32(data["Anios"].ToString()),
-                            sDias = data["Dias"].ToString(),
+                            sDias  = data["Dias"].ToString(),
                             iTipo_finiquito_id = Convert.ToInt32(data["Tipo_finiquito_id"].ToString()),
-                            sFiniquito_valor = data["Finiquito_valor"].ToString(),
-                            iEmpleado_id = Convert.ToInt32(data["Empleado_id"].ToString()),
+                            sFiniquito_valor   = data["Finiquito_valor"].ToString(),
+                            iEmpleado_id  = Convert.ToInt32(data["Empleado_id"].ToString()),
                             sFecha_recibo = data["Fecha_recibo"].ToString(),
                             sEmpresa = data["NombreEmpresa"].ToString(),
                             iEstatus = Convert.ToInt32(data["Estatus"].ToString()),
-                            sRFC = data["RFC"].ToString(),
-                            iCentro_costo_id = Convert.ToInt32(data["Centro_costo_id"].ToString()),
-                            sSalario_diario = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["Salario_diario"]))),
+                            sRFC     = data["RFC"].ToString(),
+                            iCentro_costo_id = (data["Centro_costo_id"].ToString() != "") ? Convert.ToInt32(data["Centro_costo_id"].ToString()) : 0,
+                            sSalario_diario  = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["Salario_diario"]))),
                             sSalario_mensual = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["Salario_mensual"]))),
                             sPuesto = data["NombrePuesto"].ToString(),
                             sPuesto_codigo = data["PuestoCodigo"].ToString(),
-                            sCentro_costo = data["CentroCosto"].ToString(),
-                            sDepartamento = data["DescripcionDepartamento"].ToString(),
-                            sDepto_codigo = data["Depto_Codigo"].ToString(),
-                            iAnioPeriodo = Convert.ToInt32(data["Anio"].ToString()),
-                            iPeriodo = Convert.ToInt32(data["Periodo"].ToString()),
+                            sCentro_costo  = data["CentroCosto"].ToString(),
+                            sDepartamento  = data["DescripcionDepartamento"].ToString(),
+                            sDepto_codigo  = data["Depto_Codigo"].ToString(),
+                            iAnioPeriodo   = Convert.ToInt32(data["Anio"].ToString()),
+                            iPeriodo       = Convert.ToInt32(data["Periodo"].ToString()),
                             iDias_Pendientes = Convert.ToInt32(data["Dias_pendientes"].ToString()),
-                            sCancelado = data["Cancelado"].ToString(),
+                            sCancelado    = data["Cancelado"].ToString(),
                             sRegistroImss = data["RegistroImss"].ToString(),
-                            sCta_Cheques = data["Cta_Cheques"].ToString(),
+                            sCta_Cheques  = data["Cta_Cheques"].ToString(),
                             sFecha_Pago_Inicio = data["Fecha_Pago_Inicio"].ToString(),
-                            sFecha_Pago_Fin = data["Fecha_Pago_Fin"].ToString(),
-                            sMotivo_baja = data["Motivo_baja"].ToString()
+                            sFecha_Pago_Fin    = data["Fecha_Pago_Fin"].ToString(),
+                            sMotivo_baja = data["Motivo_baja"].ToString(),
+                            iMotivo_baja = Convert.ToInt32(data["Cg_motivo_baja_id"].ToString())
                         });
                     }
                 }

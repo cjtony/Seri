@@ -11,6 +11,25 @@
     const idcajeroau = 220;
     const idcuentaah = 221;
 
+    fshowtypealert = (title, text, icon, element, clear) => {
+        Swal.fire({
+            title: title, text: text, icon: icon,
+            showClass: { popup: 'animated fadeInDown faster' },
+            hideClass: { popup: 'animated fadeOutUp faster' },
+            confirmButtonText: "Aceptar",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+        }).then((acepta) => {
+            $("html, body").animate({ scrollTop: $(`#${element.id}`).offset().top - 50 }, 1000);
+            if (clear == 1) {
+                setTimeout(() => { element.focus(); setTimeout(() => { element.value = ""; }, 300); }, 1200);
+            } else {
+                setTimeout(() => { element.focus(); }, 1200);
+            }
+        });
+    };
+
     // ** Configuracion toastrjs ** \\
 
     toastr.options = {
@@ -171,7 +190,7 @@
                             }
                         }
                     } else {
-                        console.error('Ocurrio un problema al cargar');
+                        fshowtypealert("Atencion!", "Ocurrio un problema al cargar alguno de los catalogos " + element.placeholder, "warning", element,  0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -254,7 +273,7 @@
                             }
                         }
                     } else {
-                        console.log('No hay registros');
+                        fshowtypealert("Atencion!", "Ocurrio un problema al cargar el catalogo de Nacionalidades ", "warning", nacion, 0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -303,7 +322,7 @@
                             }
                         }
                     } else {
-                        console.log('No hay registros');
+                        fshowtypealert("Atencion!", "Ocurrio un problema al cargar el catalogo de Tipos de periodos ", "warning", tipper, 0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -354,6 +373,8 @@
                                 `;
                             }
                         }
+                    } else {
+                        fshowtypealert("Atencion!", "Ocurrio un problema al cargar el catalogo de Estados ", "warning", state, 0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -537,6 +558,8 @@
                                 nivest.innerHTML += `<option value="${data[i].iIdNivelEstudio}">${data[i].sNombreNivelEstudio}</option>`;
                             }
                         }
+                    } else {
+                        fshowtypealert("Atencion!", "Ocurrio un problema al cargar el catalogo de nivel de estudios ", "warning", nivest, 0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -633,7 +656,7 @@
                             }
                         }
                     } else {
-                        console.error('No se encontro ningun registro');
+                        fshowtypealert("Atencion!", "Ocurrio un problema al cargar el catalogo de nivel de Bancos ", "warning", banuse, 0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -778,18 +801,18 @@
         //Contamos todos los trozos de cadenas que existen
         var numeroPalabras = textoTroceado.length;
         //Mostramos el número de palabras
-        console.log(numeroPalabras);
+        //console.log(numeroPalabras);
         len = texto.split(' ');
         ape = apep.split('');
         lon = ''
         for (i = 0; i < len.length; i++) {
             lon += len[i].substring(0, 1);
-            console.log(len[i].substring(0, 1));
+            //console.log(len[i].substring(0, 1));
         }
-        console.log(apep.substring(0, 1));
-        console.log(apem.substring(0, 1)); 
-        console.log(lon.reverse());
-        console.log(apep.substring(0, 1) + apem.substring(0, 1) + lon.reverse());
+        //console.log(apep.substring(0, 1));
+        //console.log(apem.substring(0, 1)); 
+        //console.log(lon.reverse());
+        //console.log(apep.substring(0, 1) + apem.substring(0, 1) + lon.reverse());
     }
 
 
@@ -837,12 +860,10 @@
             valueSexEmployee = "H";
         }
         const curpFormatDataEmpl = lyricsFirtsSurname + lyricsSecondSurname + lyricsNameEmployee + yearBirthEmployee + monthBirthEmployee + dayBirthEmployee + valueSexEmployee;
-        console.log('Prototipo curp: ' + curpFormatDataEmpl);
         const divCurpInvalid = document.getElementById('divcurpinvalid');
         const txtCurpInvalid = document.getElementById('textcurpinvalid');
         if (curp.length > 0) {
             const letterCurp = curp.substring(0, 11);
-            console.log("Extracion: " + letterCurp);
             if (letterCurp == curpFormatDataEmpl) {
                 divCurpInvalid.classList.add('d-none');
                 txtCurpInvalid.classList.textContent = '';

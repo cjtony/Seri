@@ -351,12 +351,7 @@
                     if (getDataTabNom[i].data.banuse != 999) {
                         banuse.disabled = false;
                         cunuse.disabled = false;
-                        console.log('Entro');
-                    } else {
-                        console.log('Fallo');
-                    }
-                    //cunuse.value = "2312312312";
-                    //console.log("Cuenta: " + getDataTabNom[i].data.cunuse.length);
+                    } 
                     if (getDataTabNom[i].data.tippag == idcuentach) {
                         cunuse.setAttribute("maxlength", 11);
                     } else if (getDataTabNom[i].data.tippag == idcuentaah) {
@@ -675,13 +670,11 @@
             valueSexEmployee = "H";
         }
         const curpFormatDataEmpl = lyricsFirtsSurname + lyricsSecondSurname + lyricsNameEmployee + yearBirthEmployee + monthBirthEmployee + dayBirthEmployee + valueSexEmployee;
-        console.log('Prototipo curp: ' + curpFormatDataEmpl);
         const divCurpInvalid = document.getElementById('divcurpinvalid');
         const txtCurpInvalid = document.getElementById('textcurpinvalid');
         let flagReturn;
         if (curp.length > 0) {
             const letterCurp = curp.substring(0, 11);
-            console.log("Extracion: " + letterCurp);
             if (letterCurp == curpFormatDataEmpl) {
                 flagReturn = true;
                 divCurpInvalid.classList.add('d-none');

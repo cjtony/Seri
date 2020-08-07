@@ -245,15 +245,12 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DE LA POSICION ASIGNADA A LA ESTRUCTURA */
     floaddatatabstructure = (paramid) => {
-        console.log("Estructura");
         try {
             $.ajax({
                 url: "../Empleados/DataTabStructureEmploye",
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log("Imprimiendo los datos de la estructura");
-                    console.log(data);
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvstract.value = data.Datos.iIdPosicion;
                         numpla.value    = data.Datos.sPosicionCodigo;
@@ -316,15 +313,12 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DE NOMINA DEL EMPLEADO SELECCIONADO A EDICION */
     floaddatatabnomina = (paramid) => {
-        console.log("Nomina");
         try {
             $.ajax({
                 url: "../Empleados/DataTabNominaEmploye",
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log("Imprimiendo los datos de nomina");
-                    console.log(data);
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvnom.value       = data.Datos.iIdNomina;
                         fechefectact.value = data.Datos.sFechaEfectiva;
@@ -380,15 +374,12 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DEL IMSS DEL EMPLEADO SELECCIONADO A EDICION */
     floaddatatabimss = (paramid) => {
-        console.log("IMSS");
         try {
             $.ajax({
                 url: "../Empleados/DataTabImssEmploye",
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log('Imprimiendo los datos del IMSS')
-                    console.log(data);
                     if (localStorage.getItem('modeedit') != null) {
                         btnsaveeditdataimss.classList.remove('d-none');
                         btnsavedataimss.classList.add('d-none');
@@ -451,8 +442,6 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log("Imprimiendo los datos generales");
-                    console.log(data);
                     if (localStorage.getItem("modeedit") != null) {
                         btnsaveeditdatagen.classList.remove('d-none');
                         btnsavedatagen.classList.add('d-none');
@@ -479,7 +468,6 @@
                         tipsan.value   = data.Datos.sTipoSangre;
                         fecmat.value   = data.Datos.sFechaMatrimonio;
                         fvalidatestatecodpost(0, data.Datos.iEstado_id);
-                        console.log("Colonia: " + data.Datos.sColonia);
                         setTimeout(() => {
                             colony.value = data.Datos.sColonia.toUpperCase();
                             floaddatatabimss(paramid);
@@ -521,8 +509,6 @@
     const dayG    = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
     const monthG  = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth();
     const fechAct = date.getFullYear() + "-" + monthG + "-" + dayG;
-    console.log('Asignando fecha de inicio');
-    console.log(fechAct);
     fechinipos.value = fechAct;
     /* FUNCION QUE CARGA LOS DATOS DEL EMPLEADO SELECCIONADO */
     fselectemploye = (paramid, paramstr) => {
@@ -559,7 +545,6 @@
                     if (result.dismiss === Swal.DismissReason.timer) {
                         floaddatatabgeneral(paramid);
                         localStorage.setItem('modeedit', 1);
-                        console.log('Generando localstorage')
                         const date = new Date();
                         let fechAct;
                         let day = date.getDate();
@@ -571,7 +556,6 @@
                         } else {
                             fechAct = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + day;
                         }
-                        console.log(fechAct);
                         localStorage.setItem('dateedit', fechAct);
                         setTimeout(() => {
                             $("#nav-datagen-tab").click();
@@ -739,8 +723,6 @@
                     type: "POST",
                     data: dataSendGenEdit,
                     success: (data) => {
-                        console.log('Editando datos generales');
-                        console.log(data);
                         if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos generales actualizados", icon: 'success',
@@ -788,7 +770,6 @@
             const dataSendImssEdit = {
                 regimss: regimss.value, fecefe: fecefe.value, rfc: rfc.value, curp: curp.value, nivest: nivest.value, nivsoc: nivsoc.value, clvimss: clvimss.value, fecefeact: fechefecactimss.value, keyemployee: clvemp.value
             };
-            console.log(dataSendImssEdit);
             let validatedataimss = 0;
             const arrInput = [regimss, fecefe, rfc, curp, nivest, nivsoc];
             for (let i = 0; i < arrInput.length; i++) {
@@ -837,8 +818,6 @@
                     type: "POST",
                     data: dataSendImssEdit,
                     success: (data) => {
-                        console.log('Editando datos del imss');
-                        console.log(data);
                         if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos del imss actualizados", icon: 'success',
@@ -999,7 +978,6 @@
                     type: "POST",
                     data: datasend,
                     success: (data) => {
-                        console.log(data);
                         if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos de nomina actualizados", icon: 'success',
