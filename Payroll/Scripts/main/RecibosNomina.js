@@ -243,45 +243,50 @@
          arreglosubcadena = periodo.split(separador, limite);
          NoEmpleado;
          const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, iPeriodo: arreglosubcadena[0] };
-         $.ajax({
-             url: "../Empleados/ReciboNomina",
-             type: "POST",
-             data: dataSend2,
-             success: (data) => {
-                 console.log(data);         
-                 var source =
-                 {
-                     localdata: data,
-                     datatype: "array",
-                     datafields:
-                         [
-                             { name: 'sConcepto', type: 'string' },
-                             { name: 'dPercepciones', type: 'string' },
-                             { name: 'dDeducciones', type: 'decimal' },
-                             { name: 'dSaldos', type: 'decimal' },
-                             { name: 'dInformativos', type: 'decimal' }
-                         ]
-                 };
+         FGridRecibos(dataSend2);
 
-                 var dataAdapter = new $.jqx.dataAdapter(source);
-                 $("#TbRecibosNomina").jqxGrid(
-                     {
-                         
-                         width: 720, 
-                         height:250,
-                         source: dataAdapter,
-                         columnsresize: true,
-                         columns: [
-                             { text: 'Concepto', datafield: 'sConcepto', width: 300 },
-                             { text: 'Percepciones', datafield: 'dPercepciones', width: 100 },
-                             { text: 'Deducciones ', datafield: 'dDeducciones', width: 100 },
-                             { text: 'Saldos', datafield: 'dSaldos', width: 100 },
-                             { text: 'Informativos', datafield: 'dInformativos', width: 100 }
-                         ]
-                     });
-             }
-         });    
-         $.ajax({
+    };
+
+    FGridRecibos = (dataSend2) => {
+        $.ajax({
+            url: "../Empleados/ReciboNomina",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                console.log(data);
+                var source =
+                {
+                    localdata: data,
+                    datatype: "array",
+                    datafields:
+                        [
+                            { name: 'sConcepto', type: 'string' },
+                            { name: 'dPercepciones', type: 'string' },
+                            { name: 'dDeducciones', type: 'decimal' },
+                            { name: 'dSaldos', type: 'decimal' },
+                            { name: 'dInformativos', type: 'decimal' }
+                        ]
+                };
+
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                $("#TbRecibosNomina").jqxGrid(
+                    {
+
+                        width: 720,
+                        height: 250,
+                        source: dataAdapter,
+                        columnsresize: true,
+                        columns: [
+                            { text: 'Concepto', datafield: 'sConcepto', width: 300 },
+                            { text: 'Percepciones', datafield: 'dPercepciones', width: 100 },
+                            { text: 'Deducciones ', datafield: 'dDeducciones', width: 100 },
+                            { text: 'Saldos', datafield: 'dSaldos', width: 100 },
+                            { text: 'Informativos', datafield: 'dInformativos', width: 100 }
+                        ]
+                    });
+            }
+        });
+        $.ajax({
             url: "../Empleados/TotalesRecibo",
             type: "POST",
             data: dataSend2,
@@ -290,25 +295,23 @@
                 if (data.length > 0) {
                     for (i = 0; i < data.length; i++) {
                         if (data[i].iIdRenglon == 990) {
-                            TotalPercep= data[i].dSaldo
-                            $('#LaTotalPer').html(TotalPercep); 
+                            TotalPercep = data[i].dSaldo
+                            $('#LaTotalPer').html(TotalPercep);
                         }
                         if (data[i].iIdRenglon == 1990) {
 
-                            TotalDedu =  data[i].dSaldo
-                            $('#LaTotalDedu').html(TotalDedu);   
+                            TotalDedu = data[i].dSaldo
+                            $('#LaTotalDedu').html(TotalDedu);
                         }
                     }
                     Total = TotalPercep - TotalDedu;
                     $('#LaTotalNom').html(Total);
-                    
-                }   
+
+                }
             }
         }); 
 
     };
-
-
 
 
 

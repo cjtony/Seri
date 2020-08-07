@@ -763,7 +763,7 @@ namespace Payroll.Models.Daos
 
                     List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
                     ListTotales = sp_SaldosTotales_Retrieve_TPlantillasCalculos(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo);
-                    LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id, LFechaPerido[0].iPeriodo);
+                    //LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id, LFechaPerido[0].iPeriodo);
                     IdCalcHD = LisTRecibo[0].iIdCalculoshd;
                     //Partidas
                     string tipoNom = " ";

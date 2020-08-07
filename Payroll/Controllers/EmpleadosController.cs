@@ -337,13 +337,13 @@ namespace Payroll.Controllers
 
         [HttpPost]
 
-        public JsonResult ReciboNomina(int iIdEmpresa, int iIdEmpleado, int iPeriodo)
+        public JsonResult ReciboNomina(int iIdEmpresa, int iIdEmpleado, int ianio, int iTipodePerido,  int iPeriodo,int iespejo)
         {
 
             List<ReciboNominaBean> LCRecibo = new List<ReciboNominaBean>();
             List<TablaNominaBean> LsTabla = new List<TablaNominaBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            LCRecibo = dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(iIdEmpresa, iIdEmpleado, iPeriodo);
+            LCRecibo = dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(iIdEmpresa, iIdEmpleado, iPeriodo, iTipodePerido,ianio, iespejo);
 
             if (LCRecibo != null)
             {
@@ -1588,7 +1588,7 @@ namespace Payroll.Controllers
                             // dias Efectivos 
 
                             List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
-                            LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido);
+                            //LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido);
                             decimal iTdias = LFechaPerido[0].iDiasEfectivos;
                             int TDias = 0;
                             string Dias = LisTRecibo[0].sNombre_Renglon;

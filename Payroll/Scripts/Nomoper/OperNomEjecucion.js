@@ -50,12 +50,13 @@
     const LaEmplea = document.getElementById('LaEmpleado');
     const switchButtonEmp = document.getElementById('switchButtonEmple');
     const checkedItemsLog = document.getElementById('checkedItemsLog');
- 
+    const CheckRecibo2 = document.getElementById('CheckRecibo2');
 
 
   
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
+    var valorCheckRec = document.getElementById('CheckRecibo2')
     var DatoEjeCerrada;
     var IdDropList = 0;
     var IdDropList2;
@@ -1189,7 +1190,16 @@
         limite = 2,
         arreglosubcadena = periodo.split(separador, limite);
         NoEmpleado;
-        const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, iPeriodo: arreglosubcadena[0] };
+        TipodePeridoDroplip = TxbTipoPeriodo.value;
+        separador = " ",
+        limite = 2,
+        arreglosubcadena3 = TipodePeridoDroplip.split(separador, limite);
+        const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: AnioDropList, iTipodePerido: arreglosubcadena3[0], iPeriodo: arreglosubcadena[0], iespejo:0 };
+        FGridCalculos(dataSend2);
+
+    };
+
+    FGridCalculos = (dataSend2) => {
         $.ajax({
             url: "../Empleados/ReciboNomina",
             type: "POST",
@@ -1229,7 +1239,8 @@
                         statusbarheight: 25,
                         columns: [
                             { text: 'Concepto', datafield: 'sConcepto', width: 250 },
-                            { text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                            {
+                                text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1238,14 +1249,16 @@
                                     }
 
                                 },
-                               aggregatesrenderer: function (aggregates, column, element) {
+                                aggregatesrenderer: function (aggregates, column, element) {
 
                                     var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
                                     return renderstring;
 
-                                }},
-                            { text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                                }
+                            },
+                            {
+                                text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1261,7 +1274,8 @@
 
                                     return renderstring;
 
-                                } },
+                                }
+                            },
                             {
                                 text: 'Saldos', datafield: 'dSaldos', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
@@ -1279,7 +1293,8 @@
 
                                     return renderstring;
 
-                                }  },
+                                }
+                            },
                             {
                                 text: 'Informativos', datafield: 'dInformativos', aggregates: ["sum"], width: 150, cellsformat: 'c2',
                                 cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
@@ -1332,8 +1347,30 @@
             }
         }); 
 
+
     };
+
+
+
     BntBusRecibo.addEventListener('click', FBusNom)
+
+    /// llena  grid de calculos recibo dos
+    FRecibo2 = () => {
+        if (valorCheckRec.checked == true) {
+            const dataSend2 = { iIdEmpresa: EmpresaNom.value, iIdEmpleado: NoEmpleado, ianio: AnioDropList, iTipodePerido: arreglosubcadena3[0], iPeriodo: arreglosubcadena[0], iespejo: 1 };
+            FGridCalculos(dataSend2);
+           
+        }
+
+        if (valorCheckRec.checked == false) {
+            const dataSend2 = { iIdEmpresa: EmpresaNom.value, iIdEmpleado: NoEmpleado, ianio: AnioDropList, iTipodePerido: arreglosubcadena3[0], iPeriodo: arreglosubcadena[0], iespejo: 0 };
+            FGridCalculos(dataSend2);
+           
+        }
+
+    };
+
+    CheckRecibo2.addEventListener('click',FRecibo2)
 
 
                /* muestra los calculos en pantalla */
