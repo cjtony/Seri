@@ -1694,7 +1694,7 @@ namespace Payroll.Models.Daos
 
         }
 
-        public CInicioFechasPeriodoBean sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(int CrtliIdDeficionHd, int CtrliPeriodo, int CtrliNominaCerrada)
+        public CInicioFechasPeriodoBean sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(int CrtliIdDeficionHd, int CtrliPeriodo, int CtrliNominaCerrada,int CtrliAnio)
         {
             CInicioFechasPeriodoBean bean = new CInicioFechasPeriodoBean();
             try
@@ -1709,6 +1709,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNominaCerrada", CtrliNominaCerrada));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     bean.sMensaje = "success";
@@ -2200,6 +2202,56 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
             }
             return list;
+        }
+
+        ///Consulta calculos de empresa 
+
+        public List<TpCalculosHd> sp_ExitCalculo_Retreve_TPlantillaCalculos(int CtrliIdempresa, int CtrliAnio,int CtrliTipoperiodo,int CtrliPeriodo)
+        {
+            List<TpCalculosHd> list = new List<TpCalculosHd>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ExitCalculo_Retreve_TPlantillaCalculos", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoperiodo", CtrliTipoperiodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+             
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TpCalculosHd ls = new TpCalculosHd();
+                        {
+                            ls.iIdDefinicionHd = int.Parse(data["Definicion_Hd_id"].ToString());
+                            ls.sMensaje = "success";
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    TpCalculosHd ls = new TpCalculosHd();
+                    {
+                        ls.sMensaje = "error";
+
+                    };
+                    list.Add(ls);
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
         }
 
 

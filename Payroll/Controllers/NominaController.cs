@@ -19,6 +19,7 @@ using iTextSharp.text.pdf;
 using Microsoft.Ajax.Utilities;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Payroll.Controllers
 {
@@ -534,11 +535,11 @@ namespace Payroll.Controllers
             return Json(LPe);
 
         }
-        public JsonResult UpdateCInicioFechasPeriodo(int iIdDefinicionHd, int iPerido, int iNominaCerrada)
+        public JsonResult UpdateCInicioFechasPeriodo(int iIdDefinicionHd, int iPerido, int iNominaCerrada,int Anio)
         {
             CInicioFechasPeriodoBean bean = new CInicioFechasPeriodoBean();
             FuncionesNomina dao = new FuncionesNomina();
-            bean = dao.sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(iIdDefinicionHd, iPerido, iNominaCerrada);
+            bean = dao.sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(iIdDefinicionHd, iPerido, iNominaCerrada,Anio);
             return Json(bean);
         }
         [HttpPost]
@@ -838,6 +839,38 @@ namespace Payroll.Controllers
           
         }
 
+        /// Consulta su Exite 
+
+        public JsonResult ExitCalculos(string Idempresas, int anio, int Tipodeperido, int Periodo,int IdDefinicionHD) {
+            List<TpCalculosHd> list = new List<TpCalculosHd>();
+            List<TpCalculosHd> LiExit = new List<TpCalculosHd>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            string Correcto = "success";
+            if (Idempresas != "") {
+                int idEmpresa = 0;
+                string[] valores = Idempresas.Split(',');            
+                for (int i = 1; i < valores.Length - 1; i++)
+                {
+                    idEmpresa = Convert.ToInt32(valores[i]);
+                    list = Dao.sp_ExitCalculo_Retreve_TPlantillaCalculos(idEmpresa, anio, Tipodeperido, Periodo);
+                    if (list[0].sMensaje == "success")
+                    {
+                        if (list[0].iIdDefinicionHd != IdDefinicionHD) {
+                            Correcto = "error";
+                        }
+                    }
+
+                    if (Correcto == "error") { i = valores.Length + 2; }
+                }            
+            }
+            TpCalculosHd ls = new TpCalculosHd();
+            {
+                ls.sMensaje = Correcto;
+
+            };
+            LiExit.Add(ls);
+            return Json(LiExit);
+        }
 
     }
 }
