@@ -18,8 +18,9 @@
     const LaTotalNom = document.getElementById('LaTotalNom');
     const btnPDFms = document.getElementById('btnPDFms');
     const btnXmlms = document.getElementById('btnXmlms');
-
-
+    const ChecRecibo2 = document.getElementById('CheckRecibo2');
+   
+    var ValorChek = document.getElementById('CheckRecibo2');
     var EmpresNom;
     var IdEmpresa;
     var NombreEmpleado;
@@ -279,9 +280,8 @@
                          ]
                      });
              }
-         });
-     
-        $.ajax({
+         });    
+         $.ajax({
             url: "../Empleados/TotalesRecibo",
             type: "POST",
             data: dataSend2,
@@ -306,7 +306,11 @@
             }
         }); 
 
-     };
+    };
+
+
+
+
 
      btnFloBuscar.addEventListener('click', FBuscar);
     /// Genera archivo XML
@@ -355,9 +359,23 @@
 
 
 
-    /// Genera Pdf de los recibos de nomina masivos
+    /// muestra el Recibo 2
 
+    FValorChec = () => {
+     
+        if (ValorChek.checked == true) {
 
+            console.log('recibo2');
+        }
+
+        if (ValorChek.checked == false) {
+            console.log('Recibo1');
+            FBuscar();
+        }
+
+    };
+
+    ChecRecibo2.addEventListener('click', FValorChec);
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
