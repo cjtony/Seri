@@ -187,7 +187,7 @@
         //clvbank = document.getElementById('clvbank'),
         localty = document.getElementById('localty'), fechefectpos = document.getElementById('fechefectpos');
     fechinipos = document.getElementById('fechinipos'); fechefecposact = document.getElementById('fechefecposact');
-    const btnsavedataall = document.getElementById('btn-save-data-all');
+    //const btnsavedataall = document.getElementById('btn-save-data-all');
     const btnsaveeditdataest = document.getElementById('btn-save-edit-dataest');
     const vardataestructure = [clvstract, clvposasig, clvstr, numpla, depaid, puesid, emprep, report, depart, pueusu, localty, fechefectpos, fechinipos, fechefecposact];
     fclearfieldsvar4 = () => {
@@ -205,7 +205,7 @@
             localStorage.setItem('tabSelected', 'none');
         }
         if (localStorage.getItem('modeedit') != null) {
-            document.getElementById('btn-save-data-all').disabled = false;
+            //document.getElementById('btn-save-data-all').disabled = false;
             document.getElementById('content-new-inpt-fechmovi').innerHTML = `
                 <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
                     Fecha de movimiento

@@ -319,6 +319,7 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
+                    console.log(data);
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvnom.value       = data.Datos.iIdNomina;
                         fechefectact.value = data.Datos.sFechaEfectiva;

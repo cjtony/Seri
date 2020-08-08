@@ -459,7 +459,7 @@ namespace Payroll.Controllers
             BajasEmpleadosDaoD dataDownEmplDaoD = new BajasEmpleadosDaoD();
             string nameEmployee = "";
             try
-            {
+            { 
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
                 dataDownEmployee = dataDownEmplDaoD.sp_Finiquitos_Empleado(keyEmployee, keyBusiness, keySettlement);
                 if (dataDownEmployee.Count > 0)
