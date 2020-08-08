@@ -272,6 +272,7 @@
                         Descripcionde.value = '';
                         iAnode.value = '';
                         cande.value = '';
+                        Fllenagrip();
                         FRecargaGrip();
 
                     } else {
@@ -323,13 +324,14 @@
                 success: function (data) {
                     if (data.sMensaje == "success") {
                         fshowtypealert('Actualizacion correcta!', 'Definicion plantilla actualizada', 'success');
+                        Fllenagrip();
                         FRecargaGrip();
 
                     } else {
                         fshowtypealert('Error', 'Contacte a sistemas', 'error');
                     }
                 },
-                error: function (jqXHR, exception) {
+                error: function (jqXHR, exception) {    
                     fcaptureaerrorsajax(jqXHR, exception);
                 }
             });

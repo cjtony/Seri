@@ -412,7 +412,7 @@ namespace Payroll.Models.Daos
             }
             return posicionBean;
         }
-        public List<EmpleadosEmpresaBean> sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(int CtrliIdEmpresa,int CtrliTipoPeriodo,int CtrliPeriodo)
+        public List<EmpleadosEmpresaBean> sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(int CtrliIdEmpresa,int CtrliTipoPeriodo,int CtrliPeriodo,int Ctrlianio)
         {
             List<EmpleadosEmpresaBean> list = new List<EmpleadosEmpresaBean>();
             try
@@ -423,6 +423,7 @@ namespace Payroll.Models.Daos
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Ctrlianio", Ctrlianio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliTipoPeriodo", CtrliTipoPeriodo));
                 SqlDataReader data = cmd.ExecuteReader();

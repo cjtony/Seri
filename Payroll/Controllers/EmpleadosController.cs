@@ -305,11 +305,11 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult DataListEmpleado(int iIdEmpresa, int TipoPeriodo,int periodo)
+        public JsonResult DataListEmpleado(int iIdEmpresa,int TipoPeriodo,int periodo, int Anio)
         {
             List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-            ListEmple = Dao.sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(iIdEmpresa, TipoPeriodo, periodo);
+            ListEmple = Dao.sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(iIdEmpresa, TipoPeriodo, periodo, Anio);
             return Json(ListEmple);
         }
         [HttpPost]
