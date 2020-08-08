@@ -306,6 +306,12 @@
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
+                                if (data[0].sEstatusJobs == "Terminado") {
+                                    fshowtypealert('Vista de Calculo', 'No contiene ningun calculo en la Definicion: ' + DefinicionCal.value + ', en el periodo: ' + PeriodoCal.value, 'warning');
+                                    $("#nav-VisCalculo-tab").addClass("disabled");
+                                    $("#nav-VisNomina-tab").addClass("disabled");
+
+                                }
                             }
 
                         },
@@ -492,7 +498,7 @@
                                             limite = 2,
                                             arreglosubcadena2 = periodo.split(separador, limite);
 
-                                        const dataSend5 = { iIdEmpresa: data[0].iIdEmpresa, TipoPeriodo: arreglosubcadena[0], periodo: arreglosubcadena2[0] };
+                                        const dataSend5 = { iIdEmpresa: data[0].iIdEmpresa, TipoPeriodo: arreglosubcadena[0], periodo: arreglosubcadena2[0], Anio: TbAño.value };
                                       
                                         $.ajax({
                                             url: "../Empleados/DataListEmpleado",
@@ -1113,7 +1119,7 @@
         separador = " ",
             limite = 2,
             arreglosubcadena = tipoPeriodo.split(separador, limite);
-        const dataSend5 = { iIdEmpresa: EmpresaNom.value, TipoPeriodo: arreglosubcadena[0], periodo: PeriodoCal.value };
+        const dataSend5 = { iIdEmpresa: EmpresaNom.value, TipoPeriodo: arreglosubcadena[0], periodo: PeriodoCal.value, Anio: TbAño.value };
         console.log('datos de consulta de nombre' + dataSend5);
         $.ajax({
             url: "../Empleados/DataListEmpleado",
@@ -1684,22 +1690,8 @@
 
                         $("#EmpresaNoCe").empty();
                         $('#EmpresaNoCe').append('<option value="0" selected="selected">Selecciona</option>');
-
-                        $.ajax({
-                            url: "../Nomina/EmpresaCal",
-                            type: "POST",
-                            data: dataSend2,
-                            success: (data) => {
-
-                                console.log(data);
-                                for (i = 0; i < data.length; i++) {
-                                    document.getElementById("EmpresaNoCe").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].iIdEmpresa}  ${data[i].sNombreEmpresa} </option>`;
-
-                                }
-                            },
-
-
-                        });
+                        LisEmpresaNoce(IdDropList2);
+                      
                     }
                 }
 
@@ -1904,7 +1896,22 @@
         });
 
     });
-   
+    LisEmpresaNoce = (IdDropList2) => {
+        
+        const dataSend2 = { iIdCalculosHd: IdDropList2, iTipoPeriodo: 0, iPeriodo: 0, idEmpresa: 0, anio: 0 };
+  
+        $.ajax({
+            url: "../Nomina/EmpresaCal",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("EmpresaNoCe").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].iIdEmpresa}  ${data[i].sNombreEmpresa} </option>`;
+                    
+                }
+            },
+        });
+    };
 
 
 

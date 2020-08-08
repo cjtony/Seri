@@ -128,7 +128,7 @@
              limite = 2,
              arreglosubcadena = periodo.split(separador, limite);
 
-             const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0] };           
+             const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0], Anio: anoNom.value };           
             $.ajax({
                  url: "../Empleados/DataListEmpleado",
                  type: "POST",
@@ -241,8 +241,9 @@
          separador = " ",
          limite = 2,
          arreglosubcadena = periodo.split(separador, limite);
-         NoEmpleado;
-         const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, iPeriodo: arreglosubcadena[0] };
+        NoEmpleado;
+        const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0 };
+
          FGridRecibos(dataSend2);
 
     };
@@ -261,7 +262,7 @@
                     datafields:
                         [
                             { name: 'sConcepto', type: 'string' },
-                            { name: 'dPercepciones', type: 'string' },
+                            { name: 'dPercepciones', type: 'decimal' },
                             { name: 'dDeducciones', type: 'decimal' },
                             { name: 'dSaldos', type: 'decimal' },
                             { name: 'dInformativos', type: 'decimal' }
@@ -365,15 +366,29 @@
     /// muestra el Recibo 2
 
     FValorChec = () => {
-     
+        var TotalPercep = 0;
+        var TotalDedu = 0;
+        var Total = 0;
+        IdEmpresa = EmpresaNom.value;
+        NombreEmpleado;
+        var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
+        separador = " ",
+            limite = 2,
+            arreglosubcadena = periodo.split(separador, limite);
         if (ValorChek.checked == true) {
 
-            console.log('recibo2');
+      
+            const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 1 };
+            FGridRecibos(dataSend2);
+
+
         }
 
         if (ValorChek.checked == false) {
-            console.log('Recibo1');
-            FBuscar();
+          
+            const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0 };
+
+            FGridRecibos(dataSend2);
         }
 
     };
