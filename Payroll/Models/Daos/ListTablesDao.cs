@@ -205,7 +205,11 @@ namespace Payroll.Models.Daos
                     imssBean.iEmpleado_id = Convert.ToInt32(data["Empleado_id"].ToString());
                     imssBean.iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
                     // (String.IsNullOrEmpty(data["Effdt"].ToString())) ? "" : data["Effdt"].ToString();
-                    imssBean.sFechaEfectiva = Convert.ToDateTime(data["Effdt"].ToString()).ToString("yyyy-MM-dd");
+                    if (data["Effdt"].ToString() != "") {
+                        imssBean.sFechaEfectiva = Convert.ToDateTime(data["Effdt"].ToString()).ToString("yyyy-MM-dd");
+                    } else {
+                        imssBean.sFechaEfectiva = "";
+                    }
                     imssBean.sRegistroImss = (String.IsNullOrEmpty(data["RegistroImss"].ToString())) ? "" : data["RegistroImss"].ToString();
                     imssBean.sRfc = (String.IsNullOrEmpty(data["RFC"].ToString())) ? "" : data["RFC"].ToString();
                     imssBean.sCurp = (String.IsNullOrEmpty(data["CURP"].ToString())) ? "" : data["CURP"].ToString();
@@ -254,7 +258,11 @@ namespace Payroll.Models.Daos
                     nominaBean.iIdNomina = Convert.ToInt32(data["IdNomina"].ToString());
                     nominaBean.iEmpleado_id = Convert.ToInt32(data["Empleado_id"].ToString());
                     nominaBean.iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
-                    nominaBean.sFechaEfectiva = Convert.ToDateTime(data["Effdt"].ToString()).ToString("yyyy-MM-dd");
+                    if (data["Effdt"].ToString() != "") {
+                        nominaBean.sFechaEfectiva = Convert.ToDateTime(data["Effdt"].ToString()).ToString("yyyy-MM-dd");
+                    } else {
+                        nominaBean.sFechaEfectiva = "";
+                    }
                     if (data["Tipo_Periodo"].ToString().Length != 0) {
                         nominaBean.iTipoPeriodo = Convert.ToInt32(data["Tipo_Periodo"].ToString());
                     } else {
@@ -311,7 +319,11 @@ namespace Payroll.Models.Daos
                     }
                     nominaBean.sFechaIngreso = Convert.ToDateTime(data["FechaIngreso"].ToString()).ToString("yyyy-MM-dd");
                     nominaBean.sFechaAntiguedad = Convert.ToDateTime(data["FechaAntiguedad"].ToString()).ToString("yyyy-MM-dd");
-                    nominaBean.sVencimientoContrato = Convert.ToDateTime(data["VencimientoContrato"].ToString()).ToString("yyyy-MM-dd");
+                    if (data["VencimientoContrato"].ToString() != "") {
+                        nominaBean.sVencimientoContrato = Convert.ToDateTime(data["VencimientoContrato"].ToString()).ToString("yyyy-MM-dd");
+                    } else {
+                        nominaBean.sVencimientoContrato = "";
+                    }
                     if (data["Posicion_id"].ToString().Length != 0)
                     {
                         nominaBean.iPosicion_id = Convert.ToInt32(data["Posicion_id"].ToString());

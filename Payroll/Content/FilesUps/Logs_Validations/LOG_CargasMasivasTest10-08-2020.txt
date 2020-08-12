@@ -1,0 +1,2 @@
+﻿* -- Errores de validaciones -- *
+[*] Fila = 3, [*] Empresa = 17,  [*] Mensaje = Errores de validacion: La fecha 15-05-199 contiene una longitud menor a 10 caracteres. El valor ingresado 622 en la columna titulo no es valido. 
