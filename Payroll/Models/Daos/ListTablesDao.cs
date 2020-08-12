@@ -1313,6 +1313,46 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
+        /// consulta los emplados que tengan finiquito
+        public List<EmpleadosEmpresaBean> sp_EmpleadosFiniquito_Retrieve_Tfiniquito_hst(int CtrliIdEmpresa, int CtrliPeriodo, int Ctrlianio)
+        {
+            List<EmpleadosEmpresaBean> list = new List<EmpleadosEmpresaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_EmpleadosFiniquito_Retrieve_Tfiniquito_hst", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Ctrlianio", Ctrlianio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
+
+                        ls.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
+                        ls.sNombreCompleto = data["Nombre_Empleado"].ToString();
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
     }
 
 

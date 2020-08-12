@@ -136,7 +136,7 @@ namespace Payroll.Controllers
             return Json(empleados);
         }
         [HttpPost]
-        public JsonResult SearchEmpleadosM(string txtSearch,string Empresa_id)
+        public JsonResult SearchEmpleadosM(string txtSearch, string Empresa_id)
         {
             List<DescEmpleadoVacacionesBean> empleados = new List<DescEmpleadoVacacionesBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
@@ -156,12 +156,12 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataTabGenEmploye(int keyemploye)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
-            EmpleadosBean empleadoBean       = new EmpleadosBean();
+            Boolean flag = false;
+            String messageError = "none";
+            EmpleadosBean empleadoBean = new EmpleadosBean();
             ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
             try {
-                int keyemp   = int.Parse(Session["IdEmpresa"].ToString());
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 empleadoBean = listEmpleadoDao.sp_Empleados_Retrieve_Empleado(keyemploye, keyemp);
                 if (empleadoBean.sMensaje != "success") {
                     messageError = empleadoBean.sMensaje;
@@ -169,7 +169,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = empleadoBean });
@@ -178,20 +178,20 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataTabImssEmploye(int keyemploye)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
-            ImssBean imssBean                = new ImssBean();
+            Boolean flag = false;
+            String messageError = "none";
+            ImssBean imssBean = new ImssBean();
             ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
             try {
                 int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-                imssBean   = listEmpleadoDao.sp_Imss_Retrieve_ImssEmpleado(keyemploye, keyemp);
+                imssBean = listEmpleadoDao.sp_Imss_Retrieve_ImssEmpleado(keyemploye, keyemp);
                 if (imssBean.sMensaje != "success") {
                     messageError = imssBean.sMensaje.ToString();
                 } else {
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = imssBean });
@@ -200,12 +200,12 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataTabNominaEmploye(int keyemploye)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
-            DatosNominaBean datoNominaBean   = new DatosNominaBean();
+            Boolean flag = false;
+            String messageError = "none";
+            DatosNominaBean datoNominaBean = new DatosNominaBean();
             ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
             try {
-                int keyemp     = int.Parse(Session["IdEmpresa"].ToString());
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 datoNominaBean = listEmpleadoDao.sp_Nominas_Retrieve_NominaEmpleado(keyemploye, keyemp);
                 if (datoNominaBean.sMensaje != "success") {
                     messageError = datoNominaBean.sMensaje;
@@ -213,7 +213,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = datoNominaBean });
@@ -222,10 +222,10 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataTabStructureEmploye(int keyemploye)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
+            Boolean flag = false;
+            String messageError = "none";
             DatosPosicionesBean datoPosicionBean = new DatosPosicionesBean();
-            ListEmpleadosDao listEmpleadoDao     = new ListEmpleadosDao();
+            ListEmpleadosDao listEmpleadoDao = new ListEmpleadosDao();
             try {
                 int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 datoPosicionBean = listEmpleadoDao.sp_Posiciones_Retrieve_PosicionEmpleado(keyemploye, keyemp);
@@ -236,7 +236,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = true, MensajeError = messageError, Datos = datoPosicionBean });
@@ -305,7 +305,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult DataListEmpleado(int iIdEmpresa,int TipoPeriodo,int periodo, int Anio)
+        public JsonResult DataListEmpleado(int iIdEmpresa, int TipoPeriodo, int periodo, int Anio)
         {
             List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
@@ -322,7 +322,7 @@ namespace Payroll.Controllers
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             ListDatEmisor = Dao.sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
-           
+
             return Json(ListDatEmisor);
         }
 
@@ -337,13 +337,13 @@ namespace Payroll.Controllers
 
         [HttpPost]
 
-        public JsonResult ReciboNomina(int iIdEmpresa, int iIdEmpleado, int ianio, int iTipodePerido,  int iPeriodo,int iespejo)
+        public JsonResult ReciboNomina(int iIdEmpresa, int iIdEmpleado, int ianio, int iTipodePerido, int iPeriodo, int iespejo)
         {
 
             List<ReciboNominaBean> LCRecibo = new List<ReciboNominaBean>();
             List<TablaNominaBean> LsTabla = new List<TablaNominaBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            LCRecibo = dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(iIdEmpresa, iIdEmpleado, iPeriodo, iTipodePerido,ianio, iespejo);
+            LCRecibo = dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(iIdEmpresa, iIdEmpleado, iPeriodo, iTipodePerido, ianio, iespejo);
 
             if (LCRecibo != null)
             {
@@ -395,13 +395,13 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult TimbXML(int Anio, int TipoPeriodo, int Perido, int Version, string NomArchivo)
         {
-            string CadeSat,UUID,RfcEmi,RfcRep, SelloCF, RfcProv,Nomcer,fechatem,selloemisor;
-            int NumEmpleado, anios= Anio, Tipodeperido= TipoPeriodo;
+            string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
+            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo;
             var fileName = NomArchivo;
-            string PathPDF=Server.MapPath("Archivos\\certificados\\PDF\\");
+            string PathPDF = Server.MapPath("Archivos\\certificados\\PDF\\");
             string PathZip = Server.MapPath("Archivos\\certificados\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
-             PathZip = PathZip.Replace("\\Empleados", "");
+            PathZip = PathZip.Replace("\\Empleados", "");
             PathZip = PathZip + NomArchivo;
             string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
             path = path.Replace("\\Empleados", "");
@@ -430,7 +430,7 @@ namespace Payroll.Controllers
                 iTextSharp.text.Font TexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(pathxml);
-                                ////////Cabecera 
+                ////////Cabecera 
                 XmlNode nodo = xmlDoc.GetElementsByTagName("cfdi:Emisor").Item(0);
                 string Palabra = nodo.Attributes.GetNamedItem("Nombre").Value;
                 Paragraph Empresa = new Paragraph(50, Palabra, TTexNeg);
@@ -444,7 +444,7 @@ namespace Payroll.Controllers
                 Rfc.IndentationLeft = 112;
                 Paragraph Rfcpatron = new Paragraph(-1, Palabra, TexNom);
                 Rfcpatron.IndentationLeft = 132;
-               
+
                 Paragraph TrfcPatron = new Paragraph("R.F.C. Patron:", TexNeg);
                 TrfcPatron.IndentationLeft = 90;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Emisor").Item(0);
@@ -452,19 +452,19 @@ namespace Payroll.Controllers
                 Paragraph TRegPat = new Paragraph("Reg.Pat:", TexNeg);
                 TRegPat.IndentationLeft = 90;
                 Paragraph RegPat = new Paragraph(-1, Palabra, TexNom);
-               
+
                 Paragraph TfolioFis = new Paragraph(-50, "Folio Fiscal:", TexNeg);
                 TfolioFis.IndentationLeft = 412;
                 nodo = xmlDoc.GetElementsByTagName("tfd:TimbreFiscalDigital").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("UUID").Value;
                 CadeSat = "||" + Palabra + "|";
                 UUID = Palabra;
-                 Paragraph folioFis = new Paragraph(-1, Palabra, TexNom);
+                Paragraph folioFis = new Paragraph(-1, Palabra, TexNom);
                 folioFis.IndentationLeft = 450;
                 RegPat.IndentationLeft = 115;
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("NoCertificado").Value;
-               
+
                 Paragraph TNumCertEmi = new Paragraph("No. de serie del Emisor:", TexNeg);
                 TNumCertEmi.IndentationLeft = 380;
                 Paragraph NumCertEmi = new Paragraph(-1, Palabra, TexNom);
@@ -479,7 +479,7 @@ namespace Payroll.Controllers
                 nodo = xmlDoc.GetElementsByTagName("tfd:TimbreFiscalDigital").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("FechaTimbrado").Value;
                 CadeSat = CadeSat + Palabra + "|";
-                 Paragraph FechaCertifi = new Paragraph(-1, Palabra, TexNom);
+                Paragraph FechaCertifi = new Paragraph(-1, Palabra, TexNom);
                 FechaCertifi.IndentationLeft = 450;
                 Paragraph TRegimenFis = new Paragraph("Regimen fiscal:", TexNeg);
                 TRegimenFis.IndentationLeft = 403;
@@ -499,14 +499,14 @@ namespace Payroll.Controllers
                 Paragraph SerieFolio = new Paragraph(-1, Palabra, TexNom);
                 SerieFolio.FirstLineIndent = 450;
 
-                   ////////// Info Personal
+                ////////// Info Personal
                 Paragraph Espacio = new Paragraph(20, " ");
                 Paragraph table1 = new Paragraph();
                 table1.IndentationLeft = 50;
                 PdfPTable table = new PdfPTable(1);
                 table.HorizontalAlignment = 0;
                 table.PaddingTop = 10;
-                table.TotalWidth=200;
+                table.TotalWidth = 200;
                 table.LockedWidth = true;
                 BaseFont bf2 = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
                 iTextSharp.text.Font TexHatable = new iTextSharp.text.Font(bf2, 8, 1, BaseColor.WHITE);
@@ -520,11 +520,11 @@ namespace Payroll.Controllers
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("NumEmpleado").Value;
                 NumEmpleado = int.Parse(Palabra);
-                Paragraph TNoEmpleado = new Paragraph(10,"No.Empleado :", TTexNegCuerpo);
+                Paragraph TNoEmpleado = new Paragraph(10, "No.Empleado :", TTexNegCuerpo);
                 TNoEmpleado.IndentationLeft = 50;
                 Paragraph NoEmpleado = new Paragraph(-1, Palabra, TexNegCuerpo);
                 NoEmpleado.IndentationLeft = 108;
-                Paragraph TNommbre = new Paragraph( "Nombre:", TTexNegCuerpo);
+                Paragraph TNommbre = new Paragraph("Nombre:", TTexNegCuerpo);
                 TNommbre.IndentationLeft = 50;
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Receptor").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("Nombre").Value;
@@ -537,7 +537,7 @@ namespace Payroll.Controllers
                 Palabra = nodo.Attributes.GetNamedItem("Curp").Value;
                 Paragraph Curp = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Curp.IndentationLeft = 73;
-            
+
                 Paragraph TrfcEmp = new Paragraph("R.F.C.:", TTexNegCuerpo);
                 TrfcEmp.IndentationLeft = 50;
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Receptor").Item(0);
@@ -547,7 +547,7 @@ namespace Payroll.Controllers
                 rfcEmp.IndentationLeft = 78;
 
                 Paragraph TNSS = new Paragraph("NSS:", TTexNegCuerpo);
-                TNSS.IndentationLeft = 50; 
+                TNSS.IndentationLeft = 50;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("NumSeguridadSocial").Value;
                 Paragraph NSS = new Paragraph(-1, Palabra, TexNegCuerpo);
@@ -556,7 +556,7 @@ namespace Payroll.Controllers
                 Paragraph TRegimen = new Paragraph("Regimen:", TTexNegCuerpo);
                 TRegimen.IndentationLeft = 50;
                 Palabra = nodo.Attributes.GetNamedItem("TipoRegimen").Value;
-                if(Palabra=="02"){ Palabra = Palabra + "-Sueldos"; }
+                if (Palabra == "02") { Palabra = Palabra + "-Sueldos"; }
                 Paragraph Regimen = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Regimen.IndentationLeft = 83;
 
@@ -569,15 +569,15 @@ namespace Payroll.Controllers
                 table2.PaddingTop = 10;
                 table2.TotalWidth = 200;
                 table2.LockedWidth = true;
-                        ///////// Info Laboral
-                        
+                ///////// Info Laboral
+
                 PdfPCell Cell2 = new PdfPCell();
                 Cell2.BackgroundColor = BaseColor.BLACK;
                 Cell2.AddElement(new Chunk("INFORMACION LABORAL", TexHatable));
                 table2.AddCell(Cell2);
                 table3.Add(table2);
 
-                Paragraph TPuesto = new Paragraph(10,"Puesto:", TTexNegCuerpo);
+                Paragraph TPuesto = new Paragraph(10, "Puesto:", TTexNegCuerpo);
                 TPuesto.IndentationLeft = 350;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("Puesto").Value;
@@ -599,7 +599,7 @@ namespace Payroll.Controllers
                 Paragraph TAntiguedad = new Paragraph("Antigüedad:", TTexNegCuerpo);
                 TAntiguedad.IndentationLeft = 350;
                 Palabra = nodo.Attributes.GetNamedItem("Antigüedad").Value;
-                Paragraph Antiguedad = new Paragraph(-1,Palabra+ "(Semanas)", TexNegCuerpo);
+                Paragraph Antiguedad = new Paragraph(-1, Palabra + "(Semanas)", TexNegCuerpo);
                 Antiguedad.IndentationLeft = 390;
 
                 Paragraph TJornada = new Paragraph("Jornada:", TTexNegCuerpo);
@@ -618,20 +618,20 @@ namespace Payroll.Controllers
                 /////////////// tipo de pago 
                 ///
 
-                 Paragraph Espacio3 = new Paragraph(20, " ");
-                 Paragraph table6 = new Paragraph();
-                 table6.IndentationLeft = 50;
-                 PdfPTable table7 = new PdfPTable(1);
-                 table7.HorizontalAlignment = 0;
-                 table7.PaddingTop = 10;
-                 table7.TotalWidth = 500;
-                 table7.LockedWidth = true;
+                Paragraph Espacio3 = new Paragraph(20, " ");
+                Paragraph table6 = new Paragraph();
+                table6.IndentationLeft = 50;
+                PdfPTable table7 = new PdfPTable(1);
+                table7.HorizontalAlignment = 0;
+                table7.PaddingTop = 10;
+                table7.TotalWidth = 500;
+                table7.LockedWidth = true;
 
-                  PdfPCell Cell3 = new PdfPCell();
-                  Cell3.BackgroundColor = BaseColor.BLACK;
-                  Cell3.AddElement(new Chunk("INFORMACION DE PAGO", TexHatable));
-                  table7.AddCell(Cell3);
-                  table6.Add(table7);
+                PdfPCell Cell3 = new PdfPCell();
+                Cell3.BackgroundColor = BaseColor.BLACK;
+                Cell3.AddElement(new Chunk("INFORMACION DE PAGO", TexHatable));
+                table7.AddCell(Cell3);
+                table6.Add(table7);
 
                 Paragraph TFecPago = new Paragraph("Fecha de Pago:", TTexNegCuerpo);
                 TFecPago.IndentationLeft = 50;
@@ -656,34 +656,34 @@ namespace Payroll.Controllers
                     sbanco = Palabra;
                 }
                 else {
-                    sbanco = Palabra.Substring(0, 3); 
+                    sbanco = Palabra.Substring(0, 3);
                 }
                 List<EmisorReceptorBean> ListEmisor = new List<EmisorReceptorBean>();
                 ListEmpleadosDao Dao = new ListEmpleadosDao();
                 ListEmisor = Dao.sp_EmisorReceptor_Retrieve_EmisorReceptor(0, NumEmpleado);
                 if (ListEmisor != null) {
-                  
+
                     sbanco = sbanco + " " + ListEmisor[0].sDescripcion;
                 }
-                 
+
                 Paragraph Banco = new Paragraph(-1, sbanco, TexNegCuerpo);
                 Banco.IndentationLeft = 75;
 
-                Paragraph TPeriodo = new Paragraph(-22,"Periodo:", TTexNegCuerpo);
+                Paragraph TPeriodo = new Paragraph(-22, "Periodo:", TTexNegCuerpo);
                 TPeriodo.IndentationLeft = 200;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("PeriodicidadPago").Value;
                 Paragraph Periodo = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Periodo.IndentationLeft = 227;
 
-               
 
 
-                Paragraph TLugarExp = new Paragraph(-10,"Lugar de Expedicion:", TTexNegCuerpo);
+
+                Paragraph TLugarExp = new Paragraph(-10, "Lugar de Expedicion:", TTexNegCuerpo);
                 TLugarExp.IndentationLeft = 380;
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("LugarExpedicion").Value;
-                Paragraph LugarExp = new Paragraph(-1," Cp: "+ Palabra, TexNegCuerpo);
+                Paragraph LugarExp = new Paragraph(-1, " Cp: " + Palabra, TexNegCuerpo);
                 LugarExp.IndentationLeft = 453;
 
                 Paragraph TDiasPag = new Paragraph("Dias pagados:", TTexNegCuerpo);
@@ -692,12 +692,12 @@ namespace Payroll.Controllers
                 Palabra = nodo.Attributes.GetNamedItem("NumDiasPagados").Value;
                 Paragraph DiasPag = new Paragraph(-1, Palabra, TexNegCuerpo);
                 DiasPag.IndentationLeft = 98;
-                Paragraph espacio4 = new Paragraph(50," ",TexNegCuerpo);
+                Paragraph espacio4 = new Paragraph(50, " ", TexNegCuerpo);
 
                 Paragraph table8 = new Paragraph();
                 table8.IndentationLeft = 50;
 
-                PdfPTable table9= new PdfPTable(1);
+                PdfPTable table9 = new PdfPTable(1);
                 table9.HorizontalAlignment = 0;
                 table9.PaddingTop = 10;
                 table9.TotalWidth = 350;
@@ -816,10 +816,10 @@ namespace Payroll.Controllers
                 int a = 0;
                 string Palabra2;
                 decimal valor;
-                decimal per=0;
+                decimal per = 0;
                 decimal ded = 0;
                 decimal total;
-                for (int i = 0;i < 4;){   nodo = xmlDoc.GetElementsByTagName("nomina12:Percepcion").Item(a);     
+                for (int i = 0; i < 4;) { nodo = xmlDoc.GetElementsByTagName("nomina12:Percepcion").Item(a);
                     if (nodo != null) {
                         Palabra = nodo.Attributes.GetNamedItem("Concepto").Value;
                         Palabra2 = nodo.Attributes.GetNamedItem("ImporteGravado").Value;
@@ -827,17 +827,17 @@ namespace Payroll.Controllers
                         per = per + valor;
                         Paragraph TLeyenda = new Paragraph(Palabra, TexNegCuerpo);
                         TLeyenda.IndentationLeft = 75;
-                        Paragraph TPercep = new Paragraph(-1,Palabra2, TexNegCuerpo);
+                        Paragraph TPercep = new Paragraph(-1, Palabra2, TexNegCuerpo);
                         TPercep.IndentationLeft = 375;
                         documento.Add(TLeyenda);
                         documento.Add(TPercep);
                         a = a + 1;
                     }
-                    else{
+                    else {
                         i = 5;
-                    }         
+                    }
                 }
-                a = 0;          
+                a = 0;
                 for (int i = 0; i < 4;)
                 {
                     nodo = xmlDoc.GetElementsByTagName("nomina12:Deduccion").Item(a);
@@ -863,14 +863,14 @@ namespace Payroll.Controllers
                     }
 
                 }
-                Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0f, 100f,BaseColor.BLACK, Element.ALIGN_LEFT,0.2f)));
+                Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0f, 100f, BaseColor.BLACK, Element.ALIGN_LEFT, 0.2f)));
                 p.IndentationLeft = 50;
                 p.IndentationRight = 50;
                 documento.Add(p);
-                Paragraph Ttotal = new Paragraph("Total:",TTexNegCuerpo);
+                Paragraph Ttotal = new Paragraph("Total:", TTexNegCuerpo);
                 Ttotal.IndentationLeft = 350;
                 string perp = per.ToString();
-                Paragraph Tper = new Paragraph(-1,perp, TTexNegCuerpo);
+                Paragraph Tper = new Paragraph(-1, perp, TTexNegCuerpo);
                 Tper.IndentationLeft = 375;
 
                 Paragraph Tper2 = new Paragraph(-1, perp, TTexNegCuerpo);
@@ -923,7 +923,7 @@ namespace Payroll.Controllers
                 table15.AddCell(SelloEmi);
                 table14.Add(table15);
 
-               
+
 
                 Paragraph table16 = new Paragraph();
                 table16.IndentationLeft = 50;
@@ -967,13 +967,13 @@ namespace Payroll.Controllers
                 nodo = xmlDoc.GetElementsByTagName("tfd:TimbreFiscalDigital").Item(0);
                 RfcProv = nodo.Attributes.GetNamedItem("RfcProvCertif").Value;
                 Nomcer = nodo.Attributes.GetNamedItem("NoCertificadoSAT").Value;
-                fechatem= nodo.Attributes.GetNamedItem("FechaTimbrado").Value;
-               
-                CadeSat = CadeSat+ nodo.Attributes.GetNamedItem("RfcProvCertif").Value+"|"+ selloemi + "|" + nodo.Attributes.GetNamedItem("NoCertificadoSAT").Value+"||";
+                fechatem = nodo.Attributes.GetNamedItem("FechaTimbrado").Value;
+
+                CadeSat = CadeSat + nodo.Attributes.GetNamedItem("RfcProvCertif").Value + "|" + selloemi + "|" + nodo.Attributes.GetNamedItem("NoCertificadoSAT").Value + "||";
                 Paragraph CaSelloSAT = new Paragraph(CadeSat, TexNegCuerpo);
                 table19.AddCell(CaSelloSAT);
                 table18.Add(table19);
-              
+
 
                 documento.Add(Ttotal);
                 documento.Add(Tper);
@@ -993,8 +993,8 @@ namespace Payroll.Controllers
                 /// imagen Qr
                 /// 
 
-               
-                string QrSat= "https://verificacfdi.facturaelectronica.sat.gob.mx/Defaul.aspx?id="+UUID+"&re="+ RfcEmi+"&rr="+ RfcRep+"&tt="+ Rtotal+"&fe=" + selloemi.Substring(selloemi.Length - 8, 8);
+
+                string QrSat = "https://verificacfdi.facturaelectronica.sat.gob.mx/Defaul.aspx?id=" + UUID + "&re=" + RfcEmi + "&rr=" + RfcRep + "&tt=" + Rtotal + "&fe=" + selloemi.Substring(selloemi.Length - 8, 8);
                 QRCodeEncoder encoder = new QRCodeEncoder();
                 Bitmap img = encoder.Encode(QrSat);
                 System.Drawing.Image QR = (System.Drawing.Image)img;
@@ -1006,7 +1006,7 @@ namespace Payroll.Controllers
 
                     iTextSharp.text.Image imgQr = iTextSharp.text.Image.GetInstance(ms.ToArray());
                     imgQr.BorderWidth = 0;
-                    imgQr.SetAbsolutePosition(400,150);
+                    imgQr.SetAbsolutePosition(400, 150);
                     float porcentaje = 0.0f;
                     porcentaje = 100 / imgQr.Width;
                     imgQr.ScalePercent(porcentaje * 100);
@@ -1017,7 +1017,7 @@ namespace Payroll.Controllers
 
                 documento.Close();
                 FuncionesNomina Daos = new FuncionesNomina();
-                Daos.sp_Tsellos_InsertUPdate_TSellosSat(1,0,0, NumEmpleado, anios, Tipodeperido, Perido," ", selloemisor, UUID, SelloCF, RfcProv, Nomcer, fechatem);
+                Daos.sp_Tsellos_InsertUPdate_TSellosSat(1, 0, 0, NumEmpleado, anios, Tipodeperido, Perido, " ", selloemisor, UUID, SelloCF, RfcProv, Nomcer, fechatem);
             };
             string pathxm = path;
             path = path.Replace("\\XmlZip", "");
@@ -1053,7 +1053,7 @@ namespace Payroll.Controllers
                 foreach (string f in xmlList)
                 {
                     System.IO.File.Delete(f);
-                  
+
                 }
             }
             catch (DirectoryNotFoundException dirNotFound)
@@ -1094,7 +1094,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo) 
+        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo)
         {
             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
@@ -1119,13 +1119,13 @@ namespace Payroll.Controllers
 
         /// generar Pdf
         [HttpPost]
-        public JsonResult GenPDF(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas,int iRecibo, string sDEscripcion)
+        public JsonResult GenPDF(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion)
         {
 
             int Idusuario = Convert.ToInt32(Session["iIdUsuario"]);
             int inactivo = 0;
-      
-           
+
+
             List<EmpresasBean> NoEmple = new List<EmpresasBean>();
             List<EmpleadosBean> Empleados = new List<EmpleadosBean>();
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
@@ -1135,7 +1135,7 @@ namespace Payroll.Controllers
             //Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario,sDEscripcion,inactivo);
 
             string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
-            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, Version=12,Folio=0;
+            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, Version = 12, Folio = 0;
             Folio = Anio * 100000 + TipoPeriodo * 10000 + Perido * 10;
             var fileName = "";
             string PathPDF = Server.MapPath("Archivos\\certificados\\PDF2\\IPSNet");
@@ -1156,19 +1156,19 @@ namespace Payroll.Controllers
             for (int i = 0; i < rows; i++)
             {
                 idEmpresa = Convert.ToInt32(valores[i]);
-                NoEmple = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa,0);
+                NoEmple = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 0);
                 Empleados = Dao.sp_EmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 1);
                 // con QR
-                  
+
                 for (int a = 0; a < NoEmple[0].iNoEmpleados; a++) {
                     //nombre y unicacion del PDF
                     Nombrearc = PathPDF;
                     if (iRecibo == 1) {
-                        Nombrearc = Nombrearc+ "Recibo_E" + idEmpresa + "_N" + Empleados[a].iNumeroNomina + "_F" + Folio+ ".pdf";
+                        Nombrearc = Nombrearc + "Recibo_E" + idEmpresa + "_N" + Empleados[a].iNumeroNomina + "_F" + Folio + ".pdf";
                     }
                     if (iRecibo == 2)
                     {
-                        Nombrearc = Nombrearc+"ReciboFiscal_E" + idEmpresa + "_N" + Empleados[a].iNumeroNomina + "_F" + Folio+ ".pdf";
+                        Nombrearc = Nombrearc + "ReciboFiscal_E" + idEmpresa + "_N" + Empleados[a].iNumeroNomina + "_F" + Folio + ".pdf";
                     }
                     int valido = 0;
                     idempleado = Empleados[a].iIdEmpleado;
@@ -1194,7 +1194,7 @@ namespace Payroll.Controllers
 
                         };
                     };
-                      
+
 
                     if (valido == 1) {
                         ListDatEmisor[0].sUrl = PathPDF;
@@ -1960,11 +1960,11 @@ namespace Payroll.Controllers
 
                         }
                     }
-                 
+
 
                 }
             }
-           
+
             EmisorReceptorBean ls = new EmisorReceptorBean();
             {
                 ls.sUrl = PathPDF;
@@ -1982,7 +1982,19 @@ namespace Payroll.Controllers
             return Json(LisEmpresa);
 
         }
+
+        [HttpPost]
         
+        /// Lista empleado Finiquito
+        public JsonResult ListEmpleadoFin(int iIdEmpresa, int TipoPeriodo, int periodo, int Anio)
+        {
+            List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            ListEmple = Dao.sp_EmpleadosFiniquito_Retrieve_Tfiniquito_hst(iIdEmpresa, periodo, Anio);
+            return Json(ListEmple);
+        }
+
+
 
 
     }

@@ -26,11 +26,12 @@ namespace Payroll
         public void Configuration(IAppBuilder app)
         {
             // Para obtener más información sobre cómo configurar la aplicación, visite https://go.microsoft.com/fwlink/?LinkID=316888
-             GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
+            // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
             // Desarrollo
-            //  GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet_original; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
+             // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
+             GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet_original; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
             // Produccion
-            //GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GSERIPROD01; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
+           // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GSERIPROD01; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
             app.UseHangfireDashboard();
             app.UseHangfireServer();
         }
@@ -46,7 +47,7 @@ namespace Payroll
             List<HangfireJobs> id = new List<HangfireJobs>();
             FuncionesNomina Dao = new FuncionesNomina();
             id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
-            int Idjobs = Convert.ToInt16(id[0].iId.ToString());
+            int Idjobs = Convert.ToInt32(id[0].iId.ToString());
             string StatusJobs = "En Cola";
             string Nombrejobs = "ConsultaTpJobs";
             string Parametros =  op +","+ iIdjobs+"," + iIdTarea+","+ FechaProceso;
