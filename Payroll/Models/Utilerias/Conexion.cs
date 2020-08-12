@@ -12,12 +12,12 @@ namespace Payroll.Models.Utilerias
         //static readonly string Pass = "IPSNet2";
         //*
         //static readonly string Server = "192.168.51.9";
-        static readonly string Db = "IPSNet";
+       // static readonly string Db = "IPSNet";
         //static readonly string User = "IPSNet";
         //static readonly string Pass = "IPSNet2";
 
         static readonly string Server = "201.149.34.185,15002";
-       // static readonly string Db = "IPSNet_original";
+        static readonly string Db = "IPSNet_original";
         static readonly string User = "IPSNet";
         static readonly string Pass = "IPSNet2";
         protected SqlConnection conexion { get; set; }

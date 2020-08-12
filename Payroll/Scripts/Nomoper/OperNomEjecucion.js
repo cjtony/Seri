@@ -76,11 +76,11 @@
     var checkCalculoEmplado = 0;
     var checkedItemsIdEmpleados = "";
     var empresas="";
-    var seconds = 60;
+    var seconds = 0;
     //// llenad el grid de Definicion 
 
     FLlenaGrid = () => {
-        //seconds = 60;
+        //seconds = 15;
         //clearInterval(interval);
         //$("#timerNotification").jqxNotification("closeLast");
         //$(".timer").text(60);
@@ -137,7 +137,7 @@
     };
     FLlenaGrid();
 
-
+    $('#jqxLoader').jqxLoader('close');
 
     $("#jqxdropdownbutton").jqxDropDownButton({
         width: 600, height: 30
@@ -146,8 +146,8 @@
   // seleccion de linea de grip y la guarda en el droplist y carga los datos de tipo de perio y llena el drop de periodo
 
     $("#TpDefinicion").on('rowselect', function (event) {
-       
-       
+        seconds = 0;
+        $('#jqxLoader').jqxLoader('close');
         var args = event.args;
         var row = $("#TpDefinicion").jqxGrid('getrowdata', args.rowindex);
         IdDropList = row.iIdDefinicionhd;
@@ -235,15 +235,15 @@
     //$("#TpDefinicion").jqxGrid('selectrow', 0);
 
 
-
                      /// tab Calculo
 
 
                   /// llena tabla de calculo
-    FllenaCalculos = (periodo, empresa,Tperiodo) => {   
+    FllenaCalculos = (periodo, empresa, Tperiodo) => {  
+        
         $('#jqxLoader').jqxLoader('close');
         btnFloEjecutar.style.visibility = 'visible';
-        seconds = 60;
+        seconds = 15;
         
         var empresaid = empresa;      
 
@@ -293,6 +293,7 @@
                             }
                             if (dato == "success") {
                                 if (data[0].sEstatusJobs == "En Cola") {
+                                    seconds = 15;
                                     $("#timerNotification").jqxNotification("open");
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
@@ -300,6 +301,7 @@
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
                                 if (data[0].sEstatusJobs == "Procesando") {
+                                    seconds = 15;
                                     $("#timerNotification").jqxNotification("open");
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
@@ -307,6 +309,7 @@
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
                                 if (data[0].sEstatusJobs == "Terminado") {
+                                    seconds = 0;
                                     fshowtypealert('Vista de Calculo', 'No contiene ningun calculo en la Definicion: ' + DefinicionCal.value + ', en el periodo: ' + PeriodoCal.value, 'warning');
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
@@ -339,17 +342,20 @@
                         success: (data) => {
                             var dato = data[0].sMensaje;
                             if (dato == "success") {
-                                if (data[0].sEstatusJobs == "Terminado") {                         
+                                if (data[0].sEstatusJobs == "Terminado") {
+                                    seconds = 0;
                                     $("#messageNotification").jqxNotification("open");
                                 }
 
                                 if (data[0].sEstatusJobs == "En Cola") {
+                                    seconds = 15;
                                     $("#timerNotification").jqxNotification("open");
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
 
                                 }
                                 if (data[0].sEstatusJobs == "Procesando") {
+                                    seconds = 15;
                                     $("#timerNotification").jqxNotification("open");
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
@@ -911,7 +917,7 @@
         const dataSend = { iIdDefinicionHd: IdDropList };
         var dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
         var dataSend3 = { Idempresas: empresa, anio: AnioDropList, Tipodeperido: arreglosubcadena3[0], Periodo: arreglosubcadena2[0], IdDefinicionHD: IdDropList };
-        console.log('Valores:' + dataSend3);
+   
 
         if (CheckCalculoEmpresa == 0) {
             if (IdDropList != 0) {
@@ -984,7 +990,7 @@
                             success: (data) => {
 
                                 if (data[0].iIdCalculosHd == 1) {
-                                    fshowtypealert("Ejecucion", "Los calculos de la nomina se estan realizando", "Right")
+                                    fshowtypealert("Ejecucion", "Los calculos de la nomina se estan realizando", "success")
                                     $.ajax({
                                         url: "../Nomina/ProcesosPots",
                                         type: "POST",
@@ -1024,7 +1030,7 @@
                                     success: (data) => {
 
                                         if (data[0].iIdCalculosHd == 1) {
-                                            fshowtypealert("Ejecucion", "Los calculos de la nomina se estan realizando", "Right")
+                                            fshowtypealert("Ejecucion", "Los calculos de la nomina se estan realizando", "success")
                                             $.ajax({
                                                 url: "../Nomina/ProcesosPots",
                                                 type: "POST",
@@ -1046,7 +1052,7 @@
                                 });
                             }
                             else {
-                                fshowtypealert("Ejecucion", "Los cálculos de la nómina se han cancelado exitosamente", "Right")
+                                fshowtypealert("Ejecucion", "Los cálculos de la nómina se han cancelado exitosamente", "success")
 
                             }
                         });
@@ -1202,6 +1208,8 @@
         arreglosubcadena3 = TipodePeridoDroplip.split(separador, limite);
         const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: AnioDropList, iTipodePerido: arreglosubcadena3[0], iPeriodo: arreglosubcadena[0], iespejo:0 };
         FGridCalculos(dataSend2);
+        btnFloGuardar.style.visibility = 'hidden';
+        btnFloEjecutar.style.visibility = 'hidden';
 
     };
 
@@ -1509,7 +1517,7 @@
         });
     }); 
 
-    $("#TpDefinicion2").jqxGrid('selectrow', 0);   
+    //$("#TpDefinicion2").jqxGrid('selectrow', 0);   
   ////////////////////////////////////////////////////////////////////////
 
 
@@ -1952,28 +1960,32 @@
     $("#timerNotification").jqxNotification("closeLast");
     $("#jqxLoader").jqxLoader({ text: "Realizando calculos", width: 160, height: 80 });
     var notificationWidth = 300;
-    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: true, template: "time" });
+    $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: true, template: "seconds"});
 
   
-   
+  
     var interval = setInterval(function () {
-
+        console.log(seconds);
         if (seconds > 1) {
             seconds--;
+            console.log(seconds);
 
-
-        } else {
+        }
+        if (seconds == 1) {
+            
             btnFloEjecutar.style.visibility = 'visible';
-            clearInterval(interval);
             $('#jqxLoader').jqxLoader('close');
             TipodePeridoDroplip = TxbTipoPeriodo.value;
-            periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+            periodo = PeridoEje.value;      /* PeridoEje.options[PeridoEje.selectedIndex].text;*/
             separador = " ",
-            limite = 2,
-            arreglosubcadena2 = periodo.split(separador, limite);
+                limite = 2,
+                arreglosubcadena2 = TipodePeridoDroplip.split(separador, limite);
+            console.log('tipodperiodo' + TipodePeridoDroplip + ' ' + 'Periodo:' + arreglosubcadena2[0])
             FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
-           
+            seconds--;
+
         }
+ 
 
     }, 1000);
 
