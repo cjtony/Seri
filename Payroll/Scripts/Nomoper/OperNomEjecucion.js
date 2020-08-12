@@ -1976,12 +1976,14 @@
             btnFloEjecutar.style.visibility = 'visible';
             $('#jqxLoader').jqxLoader('close');
             TipodePeridoDroplip = TxbTipoPeriodo.value;
-            periodo = PeridoEje.value;      /* PeridoEje.options[PeridoEje.selectedIndex].text;*/
+            periodo =  PeridoEje.options[PeridoEje.selectedIndex].text;
             separador = " ",
                 limite = 2,
-                arreglosubcadena2 = TipodePeridoDroplip.split(separador, limite);
+                arreglosubcadena2 = periodo.split(separador, limite);
             console.log('tipodperiodo' + TipodePeridoDroplip + ' ' + 'Periodo:' + arreglosubcadena2[0])
-            FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
+            console.log()
+            FllenaCalculos( arreglosubcadena2[0], 0, TipodePeridoDroplip);
+            
             seconds--;
 
         }
