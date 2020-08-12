@@ -915,13 +915,14 @@
                                 <div class="card shadow rounded p-2 border-right-primary border-left-primary">
                                     <div class="text-center mt-3 mb-3">
                                         <h6 class="card-title text-primary font-weight-bold">
+                                            <i class="fas fa-file-excel mr-2"></i>
                                             Selecciona tu archivo .xlsx
                                         </h6>
                                         <hr />
                                     </div>
                                     <div class="form-group text-center">
                                         <label for="file-upload-masive-up" id="label-file-upload-mu" class="btn-primary btn rounded shadow p-1 font-labels">
-                                            <i class="fas fa-search"></i> Buscar archivo
+                                            <i class="fas fa-search mr-2"></i> Buscar archivo
                                         </label>
                                         <input id="file-upload-masive-up" type="file" style='display: none;' />
                                         <div class="mt-2 animated">
@@ -936,8 +937,16 @@
                                             </span>
                                             <span class="text">Subir archivo</span>
                                         </button>
+                                        <div class="mt-4 animated" id="div-show-load-file"></div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-md-4 offset-2 mt-3 animated" id="div-content-load-info-1">
+                            </div>
+                            <div class="col-md-4 mt-3 animated" id="div-content-load-info-2">
+                            </div>
+                            <div class="col-md-6 offset-3 mt-3" id="div-content-download-log-file">
+                                @*<a class="btn btn-primary" id="download-file-log">Descargar</a>*@
                             </div>
                         </div>
 
@@ -3719,21 +3728,21 @@
     </div>
 </div>
 
-<script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/main.js?n=1"></script>
-<script language="JavaScript" src="~/Scripts/main/animationsmain.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/puestos.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/positions.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/regionales.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/branchoffices.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/departments.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/estructura.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/localitys.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/centrcost.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=1"></script>
-<script type="text/javascript" src="~/Scripts/main/employes.js?n=1"></script>
-<script src="~/Scripts/main/modenight.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/main.js?n=2"></script>
+<script language="JavaScript" src="~/Scripts/main/animationsmain.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/puestos.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/positions.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/regionales.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/branchoffices.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/departments.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/estructura.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/localitys.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/centrcost.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/employes.js?n=2"></script>
+<script src="~/Scripts/main/modenight.js?n=2"></script>
 <script type="text/javascript">
     $(function () {
         setTimeout(() => {
@@ -3783,4 +3792,4 @@
     }
 </script>
 
-<script type="text/javascript" src="~/Scripts/main/CargasMasivas/main.js"></script>
+<script type="text/javascript" src="~/Scripts/main/CargasMasivas/main.js?n=3"></script>
