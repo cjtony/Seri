@@ -2258,6 +2258,64 @@ namespace Payroll.Models.Daos
         }
 
 
+        // Consulta los renglones del finiquito del empleado 
+        public List<ReciboNominaBean> sp_TpCalculoFiniEmpleado_Retrieve_TFiniquito(int CtrliIdempresa, int CtrliIdempleado, int CtrliPeriodo, int CtrliAnio,int CtrliTipoFiniquito)
+        {
+            List<ReciboNominaBean> list = new List<ReciboNominaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TpCalculoFiniEmpleado_Retrieve_TFiniquito", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdempleado", CtrliIdempleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoFiniquito", CtrliTipoFiniquito));
+
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+
+
+                    while (data.Read())
+                    {
+                        ReciboNominaBean ls = new ReciboNominaBean();
+                        {
+
+                            //ls.iIdCalculoshd = int.Parse(data["Calculos_Hd_id"].ToString());
+                            ls.iIdFiniquito = int.Parse(data["Idfiniquito"].ToString());
+                            ls.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
+                            ls.sNombre_Renglon = data["Nombre_Renglon"].ToString();
+                            ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
+                            //ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
+                            //ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
+                            ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
+                            ls.sValor = data["Valor"].ToString();
+                        }
+
+                        list.Add(ls);
+                    }
+
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+         
     }
 }
 

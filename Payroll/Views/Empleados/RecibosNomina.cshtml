@@ -115,11 +115,22 @@
                                 </label>
                                 <label for="Emisor" class="col-sm-11 col-form-label font-labels " style="font-size:12px" id="Emisor"></label>
                             </div>
-                            <div class="custom-control custom-switch" style="margin-left:80%">
-                                <input type="checkbox" class="custom-control-input" id="CheckRecibo2">
-                                <label class="custom-control-label" for="CheckRecibo2">
-                                   Recibo 2
+                       
+                            <div class="form-group row" style="margin-left:2%">
+                                <label for="Tipofiniquito" class="col-sm-2 col-form-label font-labels" id="LaDropFiniquito" style="visibility:hidden">
+                                    Tipo de finiquito :
                                 </label>
+                                <div class="col-sm-4">
+                                    <select placeholder="Tipo de finiquito" tp-select="Tipote finiquito" class="form-control form-control-sm" id="dropFiniquito" style="visibility:hidden">
+                                        <option value="0">Selecciona</option>
+                                    </select>
+                                </div>
+                                <div class="custom-control custom-switch" style="margin-left:80%" >
+                                    <input type="checkbox" class="custom-control-input" id="CheckRecibo2" style="visibility:visible">
+                                    <label class="custom-control-label" for="CheckRecibo2" id="LachecRecibo2" style="visibility:visible">
+                                        Recibo 2
+                                    </label>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
@@ -161,7 +172,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button data-toggle="modal" data-target="#GeneraPDF" type="button" class="btn btn-outline-success btn-sm" id="BtbGeneraPDF" style="visibility:visible"> <i class="far fa-file-pdf mr-2"></i>Generar PDF</button>
+                        <button data-toggle="modal" data-target="#GeneraPDF" type="button" class="btn btn-outline-success btn-sm" id="BtbGeneraPDF" style="visibility:visible" value="0"> <i class="far fa-file-pdf mr-2"></i>Generar PDF</button>
                         <button data-toggle="modal" data-target="#GeneraXML" type="button" class="btn btn-outline-success btn-sm " id="BtbGeneraXML" style="visibility:visible"> <i class="far fa-file-code "></i>Generar XML</button>
                         <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierraRecibio"> <i class="fas fa-times mr-2"></i> Cerrar</button>
                     </div>

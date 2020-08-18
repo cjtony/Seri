@@ -247,7 +247,8 @@ namespace Payroll.Models.Beans
 
     public class ReciboNominaBean
     {
-
+        public int iIdFiniquito { get; set; } 
+        public int iIdEmpleado { get; set; }
         public int iIdRenglon { get; set; }
         public int iIdTipoPeriodo { get; set; }
         public string sNombre_Renglon { get; set; }
@@ -329,6 +330,13 @@ namespace Payroll.Models.Beans
       public string sMensaje { get; set; }
     }
 
+    public class TipoFiniquito {
 
+        public int iIdTipoFiniquito { get; set; }
+        public string sNombreFiniquito { get; set; }
+     
+        public string sMensaje { get; set; }
+
+    }
     
 }

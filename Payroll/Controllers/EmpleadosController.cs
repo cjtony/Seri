@@ -1093,6 +1093,7 @@ namespace Payroll.Controllers
             return Json(new { Value = true, Message = "Archivo cargado se procedera el timbrado" }, JsonRequestBehavior.AllowGet);
         }
 
+
         [HttpPost]
         public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo)
         {
@@ -1994,8 +1995,96 @@ namespace Payroll.Controllers
             return Json(ListEmple);
         }
 
+        // Lsita de Calculo Finiquito 
+
+        [HttpPost]
+
+        public JsonResult ReciboFiniquito(int iIdEmpresa, int iIdEmpleado, int ianio, int iPeriodo,int idTipFiniquito)
+        {
+            
+            List<ReciboNominaBean> LCRecibo = new List<ReciboNominaBean>();
+            List<TablaNominaBean> LsTabla = new List<TablaNominaBean>();
+            List<ReciboNominaBean> LsTotal = new List<ReciboNominaBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LCRecibo = dao.sp_TpCalculoFiniEmpleado_Retrieve_TFiniquito(iIdEmpresa, iIdEmpleado, iPeriodo, ianio, idTipFiniquito);
+
+            if (LCRecibo != null)
+            {
+                if (LCRecibo.Count > 0)
+                {
+                    for (int i = 0; i < LCRecibo.Count; i++)
+                    {
+                        if (LCRecibo[i].iIdRenglon != 990 && LCRecibo[i].iIdRenglon != 1990) {
+                            TablaNominaBean ls = new TablaNominaBean();
+                            {
+                                ls.sConcepto = LCRecibo[i].sNombre_Renglon;
+
+                                if (LCRecibo[i].sValor == "Percepciones")
+                                {
+                                    ls.dPercepciones = LCRecibo[i].dSaldo.ToString("#.##");
+                                    ls.dDeducciones = "0";
+                                }
+                                if (LCRecibo[i].sValor == "Deducciones")
+                                {
+                                    ls.dPercepciones = "0";
+                                    ls.dDeducciones = LCRecibo[i].dSaldo.ToString();
+                                }
+
+                            }
+                            ls.dSaldos = "0";
+                            ls.dInformativos = "0";
+                            LsTabla.Add(ls);
+
+                        }
+                        if (LCRecibo[i].iIdRenglon == 990 || LCRecibo[i].iIdRenglon == 1990) {
+                            ReciboNominaBean ls2 = new ReciboNominaBean();
+                            ls2.iIdEmpleado = LCRecibo[i].iIdEmpleado;
+                            ls2.iIdFiniquito = LCRecibo[i].iIdFiniquito;
+                            ls2.iIdRenglon = LCRecibo[i].iIdRenglon;
+                            ls2.dSaldo = LCRecibo[i].dSaldo;
+                            ls2.sNombre_Renglon = LCRecibo[i].sNombre_Renglon;
+                            LsTotal.Add(ls2);
+                        }
+                    }
+
+                }
 
 
+            }
+            var result = new { Result = LsTabla, LsTotal };
+
+            return Json(result);
+
+        }
+
+        /// Lista de tipo de Finiquito por empleado
+        public JsonResult ListFiniquito(int iIdEmpresa, int iIdEmpleado,  int Anio,int  periodo)
+        {
+            List<TipoFiniquito> ListFini = new List<TipoFiniquito>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            ListFini = Dao.sp_TpFiniquitosEmpleado_Retrieve_TFiniquito(iIdEmpresa, iIdEmpleado, Anio, periodo);
+            return Json(ListFini);
+        }
+
+
+        /// Elimina archivo 
+
+        public JsonResult deletArchivo( string path)
+        {
+            List<TipoFiniquito> archivo = new List<TipoFiniquito>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            string PathArchivo = Server.MapPath(path);
+            PathArchivo = PathArchivo.Replace("\\Empleados", "");
+            if (System.IO.File.Exists(PathArchivo))
+            {
+                System.IO.File.Delete(PathArchivo);
+                TipoFiniquito ls = new TipoFiniquito();
+                ls.sMensaje = "archivoborrado";
+                archivo.Add(ls);
+
+            }
+            return Json(archivo);
+        }
 
     }
 }
