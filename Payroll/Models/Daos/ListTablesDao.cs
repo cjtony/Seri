@@ -1336,6 +1336,54 @@ namespace Payroll.Models.Daos
             return list;
         }
 
+        /// consulta llista de finiquito 
+        /// 
+        /// consulta los emplados que tengan finiquito
+        public List<TipoFiniquito> sp_TpFiniquitosEmpleado_Retrieve_TFiniquito(int CtrliIdEmpresa,int CtrliIdEmpleado,  int CtrliAnio, int CtrliPeriodo)
+        {
+            List<TipoFiniquito> list = new List<TipoFiniquito>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TpFiniquitosEmpleado_Retrieve_TFiniquito", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TipoFiniquito ls = new TipoFiniquito();
+
+                        ls.iIdTipoFiniquito = int.Parse(data["Tipo_finiquito_id"].ToString());
+                        ls.sNombreFiniquito = data["Descripcion"].ToString();
+                        ls.sMensaje= "success";
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    TipoFiniquito ls = new TipoFiniquito();
+                    ls.sMensaje = "error";
+                    list.Add(ls);
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+
     }
 
 

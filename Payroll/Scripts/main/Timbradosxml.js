@@ -61,10 +61,7 @@
                                 type: "POST",
                                 data: dataSend,
                                 success: (data) => {
-                                    console.log(data.length);
-                                    console.log(data);
                                     if (data[0].sMensaje !=null) {
-                                        console.log('descarga');
                                         var url = '\\Archivos\\certificados\\Pdfzio.zip';
                                         window.open(url);
                                     }

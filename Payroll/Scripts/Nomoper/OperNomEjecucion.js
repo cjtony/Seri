@@ -4,11 +4,8 @@
 
     // Declaracion de variables 
 
-    //const EjeNombreDef = document.getElementById('EjeNombreDef');
-    //const EjeCerrada = document.getElementById('EjeCerrada');
     const TxtBInicioClculo = document.getElementById('TxtBInicioClculo');
     const TxtBFinClculo = document.getElementById('TxtBFinClculo');
-    //const btnlimpDat = document.getElementById('btnlimpDat');
     const btnFloGuardar = document.getElementById('btnFloGuardar');
     const navEjecuciontab = document.getElementById('nav-Ejecucion-tab');
     const navVisCalculotab = document.getElementById('nav-VisCalculo-tab');
@@ -38,7 +35,6 @@
     const LaTotalNomCe = document.getElementById('LaTotalNomCe');
     const LaEmpresaNoCe = document.getElementById('LaEmpresaNoCe');
     const EmpresaNoCe = document.getElementById('EmpresaNoCe');
-    //const btnVerNomina = document.getElementById('btnVerNomina');
     const EmpresaNom = document.getElementById('EmpresaNom');
     const BntBusRecibo = document.getElementById('btnFloBuscar');
     const jqxdropdown = document.getElementById('jqxdropdownbutton');
@@ -51,7 +47,7 @@
     const switchButtonEmp = document.getElementById('switchButtonEmple');
     const checkedItemsLog = document.getElementById('checkedItemsLog');
     const CheckRecibo2 = document.getElementById('CheckRecibo2');
-
+    const btnFloActualiza = document.getElementById('btnFloActualiza');
 
   
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
@@ -287,29 +283,29 @@
                         success: (data) => {
                             var dato = data[0].sMensaje;
                             if (dato == "No hay datos") {
+                                btnFloActualiza.style.visibility = 'hidden';
                                 fshowtypealert('Vista de Calculo', 'No contiene ningun calculo en la Definicion: ' + DefinicionCal.value + ', en el periodo: ' + PeriodoCal.value, 'warning');                         
                                 $("#nav-VisCalculo-tab").addClass("disabled"); 
                                 $("#nav-VisNomina-tab").addClass("disabled");
                             }
                             if (dato == "success") {
                                 if (data[0].sEstatusJobs == "En Cola") {
-                                    seconds = 15;
-                                    $("#timerNotification").jqxNotification("open");
+                                     
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
+                                    btnFloActualiza.style.visibility = 'visible';
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
                                 if (data[0].sEstatusJobs == "Procesando") {
-                                    seconds = 15;
-                                    $("#timerNotification").jqxNotification("open");
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
+                                    btnFloActualiza.style.visibility = 'visible';
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
                                 }
                                 if (data[0].sEstatusJobs == "Terminado") {
-                                    seconds = 0;
+                                    btnFloActualiza.style.visibility = 'hidden';
                                     fshowtypealert('Vista de Calculo', 'No contiene ningun calculo en la Definicion: ' + DefinicionCal.value + ', en el periodo: ' + PeriodoCal.value, 'warning');
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
@@ -343,20 +339,18 @@
                             var dato = data[0].sMensaje;
                             if (dato == "success") {
                                 if (data[0].sEstatusJobs == "Terminado") {
-                                    seconds = 0;
+                                    btnFloActualiza.style.visibility = 'hidden';
                                     $("#messageNotification").jqxNotification("open");
                                 }
 
                                 if (data[0].sEstatusJobs == "En Cola") {
-                                    seconds = 15;
-                                    $("#timerNotification").jqxNotification("open");
+                                    btnFloActualiza.style.visibility = 'visible';
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
 
                                 }
                                 if (data[0].sEstatusJobs == "Procesando") {
-                                    seconds = 15;
-                                    $("#timerNotification").jqxNotification("open");
+                                    btnFloActualiza.style.visibility = 'visible';
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
                                 }
@@ -709,6 +703,21 @@
     };
     btnFloGuardar.addEventListener('click', Fguardar);
 
+    ///Cehca si termina de realizar la ejecucion
+
+    Frefresh = () => {
+            btnFloEjecutar.style.visibility = 'visible';
+            $('#jqxLoader').jqxLoader('close');
+            TipodePeridoDroplip = TxbTipoPeriodo.value;
+            periodo =  PeridoEje.options[PeridoEje.selectedIndex].text;
+            separador = " ",
+            limite = 2,
+            arreglosubcadena2 = periodo.split(separador, limite);
+            FllenaCalculos( arreglosubcadena2[0], 0, TipodePeridoDroplip);
+    };
+
+
+    btnFloActualiza.addEventListener('click', Frefresh)
 
 
     /* desaparece botones de ejecucion dependiendo el tab que se eligan */
@@ -1964,32 +1973,23 @@
 
   
   
-    var interval = setInterval(function () {
-        console.log(seconds);
-        if (seconds > 1) {
-            seconds--;
-            console.log(seconds);
+    //var interval = setInterval(function () {
+    //    console.log(seconds);
+    //    if (seconds > 1) {
+    //        seconds--;
+    //        console.log(seconds);
 
-        }
-        if (seconds == 1) {
+    //    }
+    //    if (seconds == 1) {
             
-            btnFloEjecutar.style.visibility = 'visible';
-            $('#jqxLoader').jqxLoader('close');
-            TipodePeridoDroplip = TxbTipoPeriodo.value;
-            periodo =  PeridoEje.options[PeridoEje.selectedIndex].text;
-            separador = " ",
-                limite = 2,
-                arreglosubcadena2 = periodo.split(separador, limite);
-            console.log('tipodperiodo' + TipodePeridoDroplip + ' ' + 'Periodo:' + arreglosubcadena2[0])
-            console.log()
-            FllenaCalculos( arreglosubcadena2[0], 0, TipodePeridoDroplip);
+    //       
             
-            seconds--;
+    //        seconds--;
 
-        }
+    //    }
  
 
-    }, 1000);
+    //}, 1000);
 
     $("#switchButton").jqxSwitchButton({ width: 60, height: 25 });
     $("#switchButtonEmple").jqxSwitchButton({ width: 60, height: 25 });
