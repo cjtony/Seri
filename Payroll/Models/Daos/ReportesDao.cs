@@ -169,7 +169,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Tipo_periodo_id", typePeriod));
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
-                cmd.Parameters.Add(new SqlParameter("@Usuario_Id", keyUser));
+                cmd.Parameters.Add(new SqlParameter("@Usuario", keyUser));
                 if (cmd.ExecuteNonQuery() > 0) {
                     flag = true;
                 }

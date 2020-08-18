@@ -1,0 +1,6 @@
+﻿* -- Bajas correctas -- *
+[*] Fila = 2, [*] Empresa = 4, [*] Nomina = 10000
+
+* -- Errores de validaciones -- *
+[*] Fila = 3, [*] Empresa = 4. Nomina = 10001,  [*] Mensaje = Errores de validacion: [*] El valor ingresado 189 en la columna tipo de baja no es valido. [*] El valor ingresado 456 en la columna motivo de baja no es valido. [*] La fecha de baja 10-08-202 debe contener 10 caracteres. 
+

@@ -345,6 +345,33 @@ namespace Payroll.Models.Daos
     }
     public class DatosNominaDao : Conexion
     {
+        public InfoPositionInsert sp_Valida_Posicion_Carga_Masiva(int keyBusiness, int codePosition)
+        {
+            InfoPositionInsert infoPositionInsert = new InfoPositionInsert();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Valida_Posicion_Carga_Masiva", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@ctrlCodigo", codePosition));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (data["Respuesta"].ToString() == "SUCCESS") {
+                        infoPositionInsert.iPosicion = Convert.ToInt32(data["IdPosicion"].ToString());
+                        infoPositionInsert.sMensaje  = "SUCCESS";
+                    } else {
+                        infoPositionInsert.iPosicion = 0;
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return infoPositionInsert;
+        }
+
         public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp)
         {
             DatosNominaBean datoNominaBean = new DatosNominaBean();
@@ -738,6 +765,54 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
             }
             return datoPosicionBean;
+        }
+
+    }
+
+
+    public class ListasAltasBajasMasivasDao : Conexion
+    {
+
+        public List<CatalogoGeneralBean> UpsAndDownsCatalogs(int keyField, string typeCat, int inCGen)
+        {
+            List<CatalogoGeneralBean> catalogoGenerals = new List<CatalogoGeneralBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Catalogos_Altas_Bajas_Masivas", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdCampo", keyField));
+                cmd.Parameters.Add(new SqlParameter("@TipoCam", typeCat));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while(data.Read()) {
+                        CatalogoGeneralBean catalogo = new CatalogoGeneralBean();
+                        if (typeCat == "Nacionalidades" && inCGen == 0) {
+                            catalogo.iId          = Convert.ToInt32(data["IdNacionalidad"]);
+                            catalogo.sDescripcion = data["Descripcion"].ToString();
+                        }
+                        if (typeCat == "Bancos" && inCGen == 0) {
+                            catalogo.iId          = Convert.ToInt32(data["IdBanco"]);
+                            catalogo.sDescripcion = data["Descripcion"].ToString();
+                        }
+                        if (inCGen == 1) {
+                            if (typeCat == "TipoPe") {
+                                catalogo.iId          = Convert.ToInt32(data["IdValor"]);
+                                catalogo.sDescripcion = data["Valor"].ToString();
+                            } else {
+                                catalogo.iId          = Convert.ToInt32(data["id"]);
+                                catalogo.sDescripcion = data["Valor"].ToString();
+                            }
+                        }
+                        catalogoGenerals.Add(catalogo);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return catalogoGenerals;
         }
 
     }

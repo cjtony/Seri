@@ -213,6 +213,12 @@ namespace Payroll.Models.Beans
         public string sFechaAlta { get; set; }
         public string sMensaje { get; set; }
     }
+
+    public class InfoPositionInsert
+    {
+        public int iPosicion { get; set; }
+        public string sMensaje { get; set; }
+    }
     public class EmpleadosBean
     {
         public int iIdEmpleado { get; set; }

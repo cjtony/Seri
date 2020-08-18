@@ -92,9 +92,9 @@
                     fShowTypeAlert("Atencion", "El archivo no es valido", "warning", fileUploadMasiveUp, 0);
                 } else {
                     const selectFile = ($("#file-upload-masive-up"))[0].files[0];
-                    let dataString   = new FormData();
+                    let dataString = new FormData();
                     dataString.append("fileUpload", selectFile);
-                    dataString.append("typeFile", "CARGA");
+                    dataString.append("typeFile", "BAJA");
                     $.ajax({
                         url: "/MassiveUpsAndDowns/UploadFileMasiveUpEmployees",
                         type: "POST",
@@ -104,7 +104,7 @@
                         async: false,
                         beforeSend: () => {
                             btnSaveFileMasiveUp.disabled = true;
-                            fileUploadMasiveUp.disabled  = true;
+                            fileUploadMasiveUp.disabled = true;
                             divShowLoadFile.classList.remove('fadeOut');
                             divShowLoadFile.classList.add('fadeIn');
                             divShowLoadFile.innerHTML = `
@@ -127,7 +127,7 @@
                                             <div class="card shadow p-2 border-left-primary">
                                                 <b class="card-title text-center font-weight-bold text-success mt-3 mb-3"> <i class="fas fa-check-circle mr-2"></i> Carga correcta! </b>
                                                 <hr class="mb-0 mt-0" />
-                                                <p class="mt-0 text-center font-weight-bold text-info mt-3">Los datos estan siendo insertados. </p>
+                                                <p class="mt-0 text-center font-weight-bold text-info mt-3">Los datos estan siendo leídos. </p>
                                             </div>
                                         `;
                                         divContentLoadInfo2.classList.add('fadeInDown');
@@ -135,14 +135,14 @@
                                             <div class="card shadow p-2 border-right-primary">
                                                 <b class="card-title text-center font-weight-bold text-success mt-3 mb-3"> <i class="fas fa-file-excel mr-2"></i> ${data.ArchivoCarga} </b>
                                                 <hr class="mb-0 mt-0" />
-                                                <p class="mt-0 text-center font-weight-bold text-info mt-3">Estado del registro: 
+                                                <p class="mt-0 text-center font-weight-bold text-info mt-3">Estado de la lectura: 
                                                     <span class="badge badge-info p-1" id="status-load">En proceso...</span>
                                                 </p>
                                             </div>
                                         `;
                                         // Ejecutar funcion para la insercion
                                         setTimeout(() => {
-                                            fInsertDataFileMasiveUps(String(data.ArchivoCarga), parseInt(data.Llave));
+                                            fReadDataFileMasiveDowns(String(data.ArchivoCarga), parseInt(data.Llave));
                                         }, 2000);
                                     }, 1000);
                                 } else {
@@ -150,7 +150,7 @@
                                         divContentLoadInfo1.classList.add('fadeInDown');
                                         divContentLoadInfo1.innerHTML = `
                                             <div class="card shadow p-2 border-left-primary">
-                                                <b class="card-title text-center font-weight-bold text-danger mt-3 mb-3"> <i class="fas fa-times-circle mr-2"></i> Error en carga </b>
+                                                <b class="card-title text-center font-weight-bold text-danger mt-3 mb-3"> <i class="fas fa-times-circle mr-2"></i> Error de lectura </b>
                                                 <hr class="mb-0 mt-0" />
                                                 <p class="mt-0 text-center font-weight-bold text-info mt-3"> <i class="fas fa-laptop-code mr-2"></i> Contacte al área de TI </p>
                                             </div>
@@ -192,19 +192,18 @@
     }
 
     // Funcion que realiza la insercion masiva
-    fInsertDataFileMasiveUps = (paramstr, paramint) => {
+    fReadDataFileMasiveDowns = (paramstr, paramint) => {
         try {
             if (String(paramstr) != "" && parseInt(paramint) != 0) {
                 const dataSend = { nameFile: String(paramstr), keyFile: parseInt(paramint) };
                 $.ajax({
-                    url: "../MassiveUpsAndDowns/InsertDataFileMasiveUps",
+                    url: "../MassiveUpsAndDowns/ReadDataFileMasiveDowns",
                     type: "POST",
                     data: dataSend,
                     beforeSend: () => {
 
                     }, success: (data) => {
-                        //fileUploadMasiveUp.disabled  = false;
-                        //btnSaveFileMasiveUp.disabled = false;
+                        console.log(data);
                         if (data.BanderaBusqueda == true && data.Bandera == true) {
                             if (data.BanderaH == true && data.BanderaC == true) {
                                 $("html, body").animate({ scrollTop: $('#div-content-download-log-file').offset().top - 10 }, 1000);
@@ -235,7 +234,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <a href="/Content/FilesUps/${data.FolderLog}/${data.ArchivoLog}" download="${data.ArchivoLog}"><i class="fas fa-download fa-2x text-gray-300"></i></a>
+                                                    <a href="/Content/FilesDowns/${data.FolderLog}/${data.ArchivoLog}" download="${data.ArchivoLog}"><i class="fas fa-download fa-2x text-gray-300"></i></a>
                                                 </div>
                                             </div>
                                             <div class="row mt-3">
@@ -246,7 +245,7 @@
                                                         <span class="badge badge-primary badge-pill">${data.FilasIn}</span>
                                                       </li>
                                                       <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                        <b> <i class="fas fa-check-circle mr-2 text-success"></i> Filas insertadas</b>
+                                                        <b> <i class="fas fa-check-circle mr-2 text-success"></i> Bajas correctas</b>
                                                         <span class="badge badge-success badge-pill">${data.FilasOk}</span>
                                                       </li>
                                                       <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -295,7 +294,7 @@
 
     // Funcion que limpia el formulario
     fClearFormFileUp = () => {
-        document.getElementById('div-content-download-log-file').classList.add('animated','fadeOut');
+        document.getElementById('div-content-download-log-file').classList.add('animated', 'fadeOut');
         setTimeout(() => {
             document.getElementById('div-content-download-log-file').innerHTML = "";
             document.getElementById('div-content-download-log-file').classList.remove("animated", "fadeOut", "delay-1s");
@@ -311,7 +310,7 @@
                 fileUploadMasiveUp.value = "";
                 document.getElementById('name-file-up-masive').innerHTML = "";
                 $("html, body").animate({ scrollTop: $('#body-init').offset().top - 50 }, 1000);
-                fileUploadMasiveUp.disabled  = false;
+                fileUploadMasiveUp.disabled = false;
                 btnSaveFileMasiveUp.disabled = false;
             }, 1000);
         }, 1000);

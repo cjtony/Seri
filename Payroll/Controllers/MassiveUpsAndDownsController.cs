@@ -12,6 +12,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.OleDb;
 using ExcelDataReader;
+using System.Text.RegularExpressions;
 
 namespace Payroll.Controllers
 {
@@ -42,7 +43,7 @@ namespace Payroll.Controllers
                     nameLogUploadFile = "LOG_FILE_UP_";
                     Session["nameFileUp" + keyUser.ToString()] = fileUpload.FileName;
                 } else if (typeFile == "BAJA") {
-                    pathUploadFile    = "FilesDownS";
+                    pathUploadFile    = "FilesDowns";
                     nameLogUploadFile = "LOG_FILE_DOWN_";
                     Session["nameFileDown" + keyUser.ToString()] = fileUpload.FileName;
                 } else {
@@ -88,6 +89,14 @@ namespace Payroll.Controllers
             public string sNombre { get; set; }
         }
 
+        public class ExceptionsBean
+        {
+            public string sTipo { get; set; }
+            public string sMensaje { get; set; }
+            public int iFilaExc { get; set; }
+            public string sExcepcion { get; set; }
+        }
+
         [HttpPost]
         public JsonResult InsertDataFileMasiveUps(string nameFile, int keyFile)
         {
@@ -97,6 +106,7 @@ namespace Payroll.Controllers
             Boolean flagCodeCorrect = false;
             Boolean flagSearch   = false;
             Boolean flagInsert   = false;
+            Boolean flagSqlExc   = false;
             String  messageError = "none";
             String showMessageErVal = "";
             String  nameFileSession = Session["nameFileUp" + keyFile.ToString()].ToString();
@@ -105,15 +115,42 @@ namespace Payroll.Controllers
             String nameFileLogMessage = "LOG_" + Path.GetFileNameWithoutExtension(nameFile) + DateTime.Now.ToString("dd-MM-yyy") + ".txt";
             String  pathCompleteSearch   = Server.MapPath("~/Content/" + pathUploadFile + "/");
             StringBuilder validationErMe = new StringBuilder("Errores de validacion: ");
+            StringBuilder errMessage     = new StringBuilder();
             int cantReg = 0;
             int rowReco = 0;
             int rowActu = 1;
+            int rowInsert = 0;
+            int rowErrVal = 0;
             List<ErrorDataLoadBean> errorDataLoadBeans         = new List<ErrorDataLoadBean>();
             List<CorrectDataInsertBean> correctDataInsertBeans = new List<CorrectDataInsertBean>();
-            EmpleadosBean empleadosBean = new EmpleadosBean();
-            EmpleadosDao empleadosDao   = new EmpleadosDao();
-            ImssBean imssBean = new ImssBean();
-            ImssDao  imssDao  = new ImssDao();
+            List<ExceptionsBean> exceptionsBeans               = new List<ExceptionsBean>();
+            EmpleadosBean empleadosBean     = new EmpleadosBean();
+            EmpleadosBean validaEmpleado    = new EmpleadosBean(); 
+            EmpleadosDao empleadosDao       = new EmpleadosDao();
+            ImssBean imssBean               = new ImssBean();
+            ImssDao  imssDao                = new ImssDao();
+            DatosNominaBean datosNominaBean = new DatosNominaBean();
+            DatosNominaDao  datosNominaDao  = new DatosNominaDao();
+            InfoPositionInsert infoPositionInsert = new InfoPositionInsert();
+            DatosPosicionesBean addPosicionBean   = new DatosPosicionesBean();
+            DatosPosicionesDao datoPosicionDao    = new DatosPosicionesDao();
+            List<CatalogoGeneralBean> listNationalities = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listGenereEmploye = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listStateCEmploye = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listTittleEmploye = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listStatesAvailab = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listLevelOStudies = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listLevelSociEcon = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listTypePeriodsAv = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listTypeEmployees = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listLevelEmployee = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listDayTpEmployee = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listTContrac1Empl = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listTContrac2Empl = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listTypePaymentEm = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listBankAvailable = new List<CatalogoGeneralBean>();
+
+            ListasAltasBajasMasivasDao listUpsAndDowns  = new ListasAltasBajasMasivasDao();
             try {
                 if (nameFileSession == nameFile) {
                     flag = true;
@@ -125,26 +162,26 @@ namespace Payroll.Controllers
                 }
                 if (flagSearch) {
                     // Listas de datos aceptables en la carga masiva
-                    int[] listNationalityEmp = new int[] {484};
-                    int[] listGenereEmployee = new int[] {55, 56};
-                    int[] listStateCEmployee = new int[] {50, 51, 52, 53, 54};
-                    int[] listTitleEmployee  = new int[] {57, 58, 59, 60, 61, 62, 63, 64, 180};
-                    int[] listStatesAviables = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 };
-                    int[] listLevelOfStudies = new int[] {181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199 };
-                    int[] listLevelSocioecon = new int[] {69, 70, 71};
-                    int[] listTypePeriod     = new int[] {0, 2, 3};
-                    int[] listTypeEmployee   = new int[] {75, 76, 77, 155, 156};
-                    int[] listLevelEmployee  = new int[] {72, 73, 74};
-                    int[] listDayType        = new int[] {80, 81, 82, 83};
-                    int[] listContractType   = new int[] {89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99};
-                    int[] listContractType2  = new int[] {140, 141, 142, 150, 283};
-                    int[] listPaymentType    = new int[] {218, 219, 220, 221};
-                    int[] listOptionsBanks   = new int[] {0, 2,6,9,12,14,19,21,30,32,36,37,42,44,58,59,60,62,72,102,103,106,108,110,112,113,116,124,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,143,145,166,168,600,601,602,605,606,607,608,610,614,615,616,617,618,619,620,621,622,623,626,627,628,629,630,631,632,633,634,636,637,638,640,642,646,647,648,649,651, 652,653,655,656,659,670,901,902,999};
+                    listNationalities = listUpsAndDowns.UpsAndDownsCatalogs(1, "Nacionalidades", 0);
+                    listGenereEmploye = listUpsAndDowns.UpsAndDownsCatalogs(7, "Genero", 1);
+                    listStateCEmploye = listUpsAndDowns.UpsAndDownsCatalogs(6, "EstadoC", 1);
+                    listTittleEmploye = listUpsAndDowns.UpsAndDownsCatalogs(8, "Titulo", 1);
+                    listStatesAvailab = listUpsAndDowns.UpsAndDownsCatalogs(1, "Estados", 1);
+                    listLevelOStudies = listUpsAndDowns.UpsAndDownsCatalogs(20, "NivelE", 1);
+                    listLevelSociEcon = listUpsAndDowns.UpsAndDownsCatalogs(10, "NivelS", 1);
+                    listTypePeriodsAv = listUpsAndDowns.UpsAndDownsCatalogs(2, "TipoPe", 1);
+                    listTypeEmployees = listUpsAndDowns.UpsAndDownsCatalogs(12, "TipoEm", 1);
+                    listLevelEmployee = listUpsAndDowns.UpsAndDownsCatalogs(11, "NivelEm", 1);
+                    listDayTpEmployee = listUpsAndDowns.UpsAndDownsCatalogs(13, "TipoJo", 1);
+                    listTContrac1Empl = listUpsAndDowns.UpsAndDownsCatalogs(14, "TipoContrato", 1);
+                    listTContrac2Empl = listUpsAndDowns.UpsAndDownsCatalogs(19, "TipoContratacion", 1);
+                    listTypePaymentEm = listUpsAndDowns.UpsAndDownsCatalogs(22, "TipoPago", 1);
+                    listBankAvailable = listUpsAndDowns.UpsAndDownsCatalogs(0, "Bancos", 0);
                     using (var stream = System.IO.File.Open(pathCompleteSearch + nameFile, FileMode.Open, FileAccess.Read)) {
                         using (var reader = ExcelReaderFactory.CreateReader(stream)) {
-                            var result      = reader.AsDataSet(); 
+                            var result = reader.AsDataSet();
                             DataTable table = result.Tables[0];
-                            DataRow   row   = table.Rows[0];
+                            DataRow row = table.Rows[0];
                             // Comprobamos que la hoja tenga el nombre correcto
                             if (table.TableName == "IPSNet Cargas") {
                                 flagSpreadSheet = true;
@@ -175,22 +212,22 @@ namespace Payroll.Controllers
                                                 flagVE = true;
                                             }
                                             // Validamos que el valor del titulo sea valido
-                                            if (!listTitleEmployee.Any(x => x == Convert.ToInt32(dr[9]))) {
+                                            if (!listTittleEmploye.Any(x => x.iId == Convert.ToInt32(dr[9]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[9].ToString() + " en la columna titulo no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos que el valor del genero sea valido
-                                            if (!listGenereEmployee.Any(x => x == Convert.ToInt32(dr[10]))) {
+                                            if (!listGenereEmploye.Any(x => x.iId == Convert.ToInt32(dr[10]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[10].ToString() + " en la columna genero no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos que el valor de la nacionalidad sea valido
-                                            if (!listNationalityEmp.Any(x => x == Convert.ToInt32(dr[11]))) {
+                                            if (!listNationalities.Any(x => x.iId == Convert.ToInt32(dr[11]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[11].ToString() + " en la columna nacionalidad no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos que el valor del estado civil sea valido
-                                            if (!listStateCEmployee.Any(x => x == Convert.ToInt32(dr[12]))) {
+                                            if (!listStateCEmploye.Any(x => x.iId == Convert.ToInt32(dr[12]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[12].ToString() + " en la columna estado civil no es valido. ");
                                                 flagVE = true;
                                             }
@@ -200,7 +237,7 @@ namespace Payroll.Controllers
                                                 flagVE = true;
                                             }
                                             // Validamos que el valor del estado sea valido 
-                                            if (!listStatesAviables.Any(x => x == Convert.ToInt32(dr[14]))) {
+                                            if (!listStatesAvailab.Any(x => x.iId == Convert.ToInt32(dr[14]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[14].ToString() + " en la columna estado id no es valido. ");
                                                 flagVE = true;
                                             }
@@ -274,13 +311,22 @@ namespace Payroll.Controllers
                                                 validationErMe.Append("[*] La curp " + dr[27].ToString() + " debe de contener una longitud de 18 caracteres. ");
                                                 flagVE = true;
                                             }
+                                            // Validar que la curp sea valida
+                                            // Definimos la expresion regular
+                                            Regex regex = new Regex(@"[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$");
+                                            if (dr[27].ToString().Length == 18) {
+                                                if (!regex.IsMatch(dr[27].ToString())) {
+                                                    validationErMe.Append("[*] El formato de la curp " + dr[27].ToString() + " no es valido. ");
+                                                    flagVE = true;
+                                                }
+                                            }
                                             // Validamos que el nivel de estudios sea un nivel valido
-                                            if (!listLevelOfStudies.Any(x => x == Convert.ToInt32(dr[28]))) {
+                                            if (!listLevelOStudies.Any(x => x.iId == Convert.ToInt32(dr[28]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[28].ToString() + " en la columna nivel estudios no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos que el nivel socioeconomico sea un nivel valido
-                                            if (!listLevelSocioecon.Any(x => x == Convert.ToInt32(dr[29]))) {
+                                            if (!listLevelSociEcon.Any(x => x.iId == Convert.ToInt32(dr[29]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[29].ToString() + " en la columna nivel socioeconomico no es valido. ");
                                                 flagVE = true;
                                             }
@@ -289,39 +335,39 @@ namespace Payroll.Controllers
                                             if (dr[30].ToString() == "" || dr[30].ToString().Length == 0) {
                                                 validationErMe.Append("[*] La fecha efectiva nomina no puede ir vacío, tiene que contener un valor. ");
                                                 flagVE = true;
-                                            } else { 
+                                            } else {
                                                 if (dr[30].ToString().Length > 10 || dr[30].ToString().Length < 10) {
                                                     validationErMe.Append("[*] La fecha efectiva nomina " + dr[30].ToString() + " debe de contener una longitud de 10 caracteres. ");
                                                     flagVE = true;
                                                 }
                                             }
                                             // Validamos el tipo de periodo sea valido
-                                            if (!listTypePeriod.Any(x => x == Convert.ToInt32(dr[32]))) {
+                                            if (!listTypePeriodsAv.Any(x => x.iId == Convert.ToInt32(dr[32]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[32].ToString() + " en la columna tipo periodo no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos el tipo de empleado sea valido
-                                            if (!listTypeEmployee.Any(x => x == Convert.ToInt32(dr[33]))) {
+                                            if (!listTypeEmployees.Any(x => x.iId == Convert.ToInt32(dr[33]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[33].ToString() + " en la columna tipo empleado no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos el nivel de empleado sea valido
-                                            if (!listLevelEmployee.Any(x => x == Convert.ToInt32(dr[34]))) {
+                                            if (!listLevelEmployee.Any(x => x.iId == Convert.ToInt32(dr[34]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[34].ToString() + " en la columna nivel empleado no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos el tipo de jornada sea valido
-                                            if (!listDayType.Any(x => x == Convert.ToInt32(dr[35]))) {
+                                            if (!listDayTpEmployee.Any(x => x.iId == Convert.ToInt32(dr[35]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[35].ToString() + " en la columna tipo jornada no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos el tipo de contato sea valido
-                                            if (!listContractType.Any(x => x == Convert.ToInt32(dr[36]))) {
+                                            if (!listTContrac1Empl.Any(x => x.iId == Convert.ToInt32(dr[36]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[36].ToString() + " en la columna tipo contrato no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos el tipo de contratacion sea valido
-                                            if (!listContractType2.Any(x => x == Convert.ToInt32(dr[37]))) {
+                                            if (!listTContrac2Empl.Any(x => x.iId == Convert.ToInt32(dr[37]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[37].ToString() + " en la columna tipo contratacion no es valido. ");
                                                 flagVE = true;
                                             }
@@ -338,7 +384,7 @@ namespace Payroll.Controllers
                                             // Validamos la fecha de antiguedad
                                             if (dr[39].ToString() == "" || dr[39].ToString().Length == 0) {
                                                 validationErMe.Append("[*]  La fecha de antiguedad no puede ir vacío, debe contener un valor. ");
-                                                flagVE = true; 
+                                                flagVE = true;
                                             } else {
                                                 if (dr[39].ToString().Length > 10 || dr[39].ToString().Length < 10) {
                                                     validationErMe.Append("[*] La fecha de antiguedad " + dr[39].ToString() + " debe contener 10 caracteres. ");
@@ -353,39 +399,62 @@ namespace Payroll.Controllers
                                                 }
                                             }
                                             // Validamos los tipos de pago
-                                            if (!listPaymentType.Any(x => x == Convert.ToInt32(dr[41]))) {
+                                            if (!listTypePaymentEm.Any(x => x.iId == Convert.ToInt32(dr[41]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[41].ToString() + " en la columna tipo de pago no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos el banco seleccionado
-                                            if (!listOptionsBanks.Any(x => x == Convert.ToInt32(dr[42]))) {
+                                            if (!listBankAvailable.Any(x => x.iId == Convert.ToInt32(dr[42]))) {
                                                 validationErMe.Append("[*] El valor ingresado " + dr[42].ToString() + " en la columna banco no es valido. ");
                                                 flagVE = true;
                                             }
                                             // Validamos la longitud de la cuenta dependiendo el tipo de pago
                                             if (Convert.ToInt32(dr[41].ToString()) == 221) {
                                                 if (dr[43].ToString().Length != 18) {
-                                                    validationErMe.Append("[*] La cuenta " + dr[43].ToString() + " debe contener 18 caracteres. ");
+                                                    validationErMe.Append("[*] La cuenta " + dr[43].ToString() + " debe contener 18 caracteres ya que se indico una cuenta de cheques clabe. ");
                                                     flagVE = true;
                                                 }
                                             }
                                             if (Convert.ToInt32(dr[41].ToString()) == 219) {
                                                 if (dr[43].ToString().Length != 10) {
-                                                    validationErMe.Append("[*] La cuenta " + dr[43].ToString() + " debe contener 10 caracteres. ");
+                                                    validationErMe.Append("[*] La cuenta " + dr[43].ToString() + " debe contener 10 caracteres ya que se indico una cuenta de cheques. ");
                                                     flagVE = true;
                                                 }
                                             }
+                                            // Validamos que la posicion no venga vacia
+                                            if (dr[44].ToString().Length == 0 || dr[44].ToString() == "") {
+                                                validationErMe.Append("[*] El valor de posicion id no puede ir vacío, debe contener un valor");
+                                                flagVE = true;
+                                            }
+                                            // Definimos el valor de la empresa
+                                            int empresa = Convert.ToInt32(dr[3].ToString());
+                                            int posicionid = 0;
+                                            // Validamos que la posicion exista y este disponible en la base de datos
+                                            infoPositionInsert = datosNominaDao.sp_Valida_Posicion_Carga_Masiva(empresa, Convert.ToInt32(dr[44]));
+                                            if (infoPositionInsert.iPosicion != 0 && infoPositionInsert.sMensaje == "SUCCESS") {
+                                                posicionid = infoPositionInsert.iPosicion;
+                                            } else {
+                                                validationErMe.Append("[*] El codigo de posicion " + dr[44].ToString() + " ingresado no existe o no esta disponible. ");
+                                                flagVE = true;
+                                            }
+                                            // Validamos que el empleado no exista
+                                            validaEmpleado = empleadosDao.sp_Empleados_Validate_DatosImss(empresa, dr[27].ToString(), dr[26].ToString() ,0);
+                                            if (validaEmpleado.sMensaje != "continue") {
+                                                validationErMe.Append("[*] Los datos curp " + dr[27].ToString() + " o rfc " + dr[26].ToString() + " ya se encuentran registrados. ");
+                                                flagVE = true;
+                                            }
                                             // Si hay errores integramos los datos a la lista
                                             if (flagVE) {
-                                                errorDataLoadBeans.Add(new ErrorDataLoadBean { 
+                                                errorDataLoadBeans.Add(new ErrorDataLoadBean {
                                                     iFilaError = rowActu, sEmpresa = dr[3].ToString(), sErrores = validationErMe.ToString()
                                                 });
                                                 validationErMe.Clear();
                                                 validationErMe.Append("Errores de validacion: ");
+                                                rowErrVal += 1;
                                                 continue;
                                             }
                                             // Variables, TEmpleado
-                                            int empresa    = Convert.ToInt32(dr[3].ToString());
+                                            //int empresa = Convert.ToInt32(dr[3].ToString());
                                             string nombre  = dr[4].ToString().ToUpper();
                                             string paterno = dr[5].ToString().ToUpper();
                                             string materno = dr[6].ToString().ToUpper();
@@ -428,15 +497,23 @@ namespace Payroll.Controllers
                                             string fechvco = dr[40].ToString();
                                             int tipopagoem = Convert.ToInt32(dr[41].ToString());
                                             int bancopagoe = Convert.ToInt32(dr[42].ToString());
-                                            // Insertamos el registro en TEmpleado
-                                            //empleadosBean = empleadosDao.sp_Empleados_Insert_Empleado(nombre, paterno, materno, genero_id, estado_id, fechaNa, lugarNa, titulo_id, nacion_id.ToString(), estadod_id, codigop, ciudad, colonia, calle, numeroc, telefof, telefom, correoe, usuario_id, empresa, tiposan, fechama);
-                                            //// Insertamos el registro en TEmpleado_imss
-                                            //imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, 0);
+                                            string cuentau = dr[43].ToString();
+                                            //int posicionid = Convert.ToInt32(dr[44].ToString());
+                                            //Insertamos el registro en TEmpleado
+                                            empleadosBean = empleadosDao.sp_Empleados_Insert_Empleado(nombre, paterno, materno, genero_id, estado_id, fechaNa, lugarNa, titulo_id, nacion_id.ToString(), estadod_id, codigop, ciudad, colonia, calle, numeroc, telefof, telefom, correoe, usuario_id, empresa, tiposan, fechama);
+                                            // Insertamos el registro en TEmpleado_imss
+                                            imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, 0);
+                                            // Insertamos el registro en TEmpleado_nomina
+                                            datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0);
+                                            // Insertamos el registro en TPosiciones_asig
+                                            addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(posicionid, fechaen, fechaen, nombre, paterno, materno, fechaNa, usuario_id, empresa);
                                             // Validamos que los registros se hayan hecho correctamente
-                                            //if (empleadosBean.sMensaje == "success" && imssBean.sMensaje == "success") {
-                                            //    correctDataInsertBeans.Add(new CorrectDataInsertBean { iFilaInsert = rowActu, sEmpresa = dr[3].ToString(), sNombre = nombre + " " + paterno + " " + materno });
-                                            //    flagInsert = true;
-                                            //}
+                                            if (empleadosBean.sMensaje == "success" && imssBean.sMensaje == "success" && datosNominaBean.sMensaje == "success" && addPosicionBean.sMensaje == "success")
+                                            {
+                                                correctDataInsertBeans.Add(new CorrectDataInsertBean { iFilaInsert = rowActu, sEmpresa = dr[3].ToString(), sNombre = nombre + " " + paterno + " " + materno });
+                                                flagInsert = true;
+                                                rowInsert += 1;
+                                            }
                                         }
                                     }
                                 }
@@ -447,28 +524,266 @@ namespace Payroll.Controllers
                     if (!Directory.Exists(pathCompleteSearch + pathLogsErVFile)) {
                         Directory.CreateDirectory(pathCompleteSearch + pathLogsErVFile);
                     }
-                    using (StreamWriter fileLog = new StreamWriter(pathCompleteSearch + pathLogsErVFile + @"\\" + nameFileLogMessage, false, Encoding.UTF8)) {
-                        if (errorDataLoadBeans.Count > 0) {
-                            fileLog.Write("* -- Errores de validaciones -- *\n");
-                            foreach (ErrorDataLoadBean data in errorDataLoadBeans) {
-                                fileLog.Write("[*] Fila = " + data.iFilaError.ToString() + ", [*] Empresa = " + data.sEmpresa + ",  [*] Mensaje = " + data.sErrores + "\n");
-                            }
-                        }
-                        fileLog.Write("\n");
-                        if (correctDataInsertBeans.Count > 0) {
-                            fileLog.Write("* -- Datos insertados -- *\n");
-                            foreach (CorrectDataInsertBean data in correctDataInsertBeans) {
-                                fileLog.Write("[*] Fila = " + data.iFilaInsert.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nombre = " + data.sNombre + "\n");
-                            }
-                        }
-                        fileLog.Close();
-                    }
                 }
+            } catch (SqlException sqlExc) {
+                errMessage.Clear();
+                for (int i = 0; i < sqlExc.Errors.Count; i++) {
+                    errMessage.Append("Index #" + i + "\n" + "Mensaje: " + sqlExc.Errors[i].Message + "\n"
+                        + "Numero de linea: " + sqlExc.Errors[i].LineNumber + "\n" + "Origen: " + sqlExc.Errors[i].Source + "\n" + "Procedimiento: " + sqlExc.Errors[i].Procedure + "\n");
+                }
+                exceptionsBeans.Add(new ExceptionsBean { sTipo = sqlExc.GetType().ToString(), sMensaje = errMessage.ToString(), iFilaExc = rowActu, sExcepcion = "SQL" });
+                flagSqlExc = true;
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
-                flag         = false;
+                exceptionsBeans.Add(new ExceptionsBean { sTipo = exc.GetType().ToString(), sMensaje = messageError, iFilaExc = rowActu, sExcepcion = "General" });
+                flag = false;
             }
-            return Json(new { Bandera = flag, BanderaInsercion = flagInsert, BanderaBusqueda = flagSearch, BanderaH = flagSpreadSheet, BanderaC = flagCodeCorrect, BanderaVE = flagVE, MensajeError = messageError, Sesion = nameFileSession, Errores = showMessageErVal, FolderLog = pathLogsErVFile, ArchivoLog = nameFileLogMessage });
+            using (StreamWriter fileLog = new StreamWriter(pathCompleteSearch + pathLogsErVFile + @"\\" + nameFileLogMessage, false, Encoding.UTF8)) {
+                if (correctDataInsertBeans.Count > 0) {
+                    fileLog.Write("* -- Datos insertados -- *\n");
+                    foreach (CorrectDataInsertBean data in correctDataInsertBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaInsert.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nombre = " + data.sNombre + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                if (errorDataLoadBeans.Count > 0) {
+                    fileLog.Write("* -- Errores de validaciones -- *\n");
+                    foreach (ErrorDataLoadBean data in errorDataLoadBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaError.ToString() + ", [*] Empresa = " + data.sEmpresa + ",  [*] Mensaje = " + data.sErrores + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                if (exceptionsBeans.Count > 0) {
+                    fileLog.Write("* -- Excepciones -- *");
+                    foreach(ExceptionsBean data in exceptionsBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaExc.ToString() + ", [*] Excepcion = " + data.sExcepcion + ", [*] Tipo = " + data.sTipo + ", [*] Mensaje = " + data.sMensaje + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                fileLog.Close();
+            }
+            Session.Remove(nameFileSession);
+            return Json(new { Bandera = flag, BanderaInsercion = flagInsert, BanderaBusqueda = flagSearch, BanderaH = flagSpreadSheet, BanderaC = flagCodeCorrect, BanderaVE = flagVE, MensajeError = messageError, Sesion = nameFileSession, Errores = showMessageErVal, FolderLog = pathLogsErVFile, ArchivoLog = nameFileLogMessage, FilasOk = rowInsert, FilasEr = rowErrVal, FilasIn = cantReg });
+        }
+
+
+        [HttpPost]
+        public JsonResult ReadDataFileMasiveDowns(string nameFile, int keyFile)
+        {
+            Boolean flag   = false;
+            Boolean flagVE = false;
+            Boolean flagSpreadSheet = false;
+            Boolean flagCodeCorrect = false;
+            Boolean flagSearch  = false;
+            Boolean flagInsert  = false;
+            Boolean flagSqlExc  = false;
+            String messageError = "none";
+            String showMessageErVal = "";
+            String nameFileSession  = Session["nameFileDown" + keyFile.ToString()].ToString();
+            String pathUploadFile   = "FilesDowns";
+            String pathLogsErVFile  = "Logs_Validations";
+            String nameFileLogMessage = "LOG_" + Path.GetFileNameWithoutExtension(nameFile) + DateTime.Now.ToString("dd-MM-yyy") + ".txt";
+            String pathCompleteSearch = Server.MapPath("~/Content/" + pathUploadFile + "/");
+            StringBuilder validationErMe = new StringBuilder("Errores de validacion: ");
+            StringBuilder errMessage     = new StringBuilder();
+            int cantReg   = 0;
+            int rowReco   = 0;
+            int rowActu   = 1;
+            int rowInsert = 0;
+            int rowErrVal = 0;
+            string dateStartPayment = "";
+            string dateEndPayment   = "";
+            int yearAct = Convert.ToInt32(DateTime.Now.Year);
+            List<ErrorDataLoadBean> errorDataLoadBeans         = new List<ErrorDataLoadBean>();
+            List<CorrectDataInsertBean> correctDataInsertBeans = new List<CorrectDataInsertBean>();
+            List<ExceptionsBean> exceptionsBeans               = new List<ExceptionsBean>();
+            List<CatalogoGeneralBean> listTypesDownsEmployee   = new List<CatalogoGeneralBean>();
+            List<CatalogoGeneralBean> listMotiveDownEmployee   = new List<CatalogoGeneralBean>();
+            ListasAltasBajasMasivasDao listUpsAndDowns         = new ListasAltasBajasMasivasDao();
+            BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
+            BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
+            PeriodoActualBean periodActBean     = new PeriodoActualBean();
+            try {
+                if (nameFileSession == nameFile) {
+                    flag = true;
+                }
+                if (flag) {
+                    if (System.IO.File.Exists(pathCompleteSearch + nameFile)) {
+                        flagSearch = true;
+                    }
+                }
+                if (flagSearch) {
+                    listTypesDownsEmployee = listUpsAndDowns.UpsAndDownsCatalogs(12, "TipoBaja", 1);
+                    listMotiveDownEmployee = listUpsAndDowns.UpsAndDownsCatalogs(29, "MotivoBaja", 1);
+                    using (var stream = System.IO.File.Open(pathCompleteSearch + nameFile, FileMode.Open, FileAccess.Read)) {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream)) {
+                            var result = reader.AsDataSet();
+                            DataTable table = result.Tables[0];
+                            DataRow row = table.Rows[0];
+                            // Comprobamos que la hoja tenga el nombre correcto
+                            if (table.TableName == "IPSNet Bajas") {
+                                flagSpreadSheet = true;
+                            }
+                            // Comprobamos que el codigo sea correcto
+                            if (row[1].ToString() == "DATA" && row[2].ToString() == "MassiveDowns") {
+                                flagCodeCorrect = true;
+                            }
+                            cantReg = Convert.ToInt32(row[0].ToString().Trim());
+                            if (flagSpreadSheet && flagCodeCorrect) {
+                                string Server = "201.149.34.185,15002";
+                                string Db = "IPSNet_original";
+                                string User = "IPSNet";
+                                string Pass = "IPSNet2";
+                                string conexionDB = "Data Source=" + Server + ";Initial Catalog=" + Db + ";User ID=" + User + ";Password=" + Pass + ";Integrated Security=False;MultipleActiveResultSets=True";
+                                using (SqlConnection con = new SqlConnection(conexionDB))
+                                {
+                                    foreach (DataRow dr in table.Rows) {
+                                        if (dr[1].ToString().Trim() != "DATA") {
+                                            rowReco += 1;
+                                            if ((cantReg + 1) == rowReco) {
+                                                break;
+                                            }
+                                            rowActu += 1;
+                                            // Validamos que la empresa no venga vacio
+                                            if (dr[3].ToString().Length == 0 || dr[3].ToString() == "") {
+                                                validationErMe.Append("[*] El campo Empresa no puede ir vacío, debe contener un valor. ");
+                                                flagVE = true;
+                                            }
+                                            // Validamos que la nomina no venga vacio
+                                            if (dr[4].ToString().Length == 0 || dr[4].ToString() == "") {
+                                                validationErMe.Append("[*] El campo Nomina no puede ir vacío, debe contener un valor. ");
+                                                flagVE = true;
+                                            }
+                                            // Validamos que el tipo de baja no venga vacio y que sea valido
+                                            if (dr[5].ToString().Length == 0 || dr[5].ToString() == "") {
+                                                validationErMe.Append("[*] El campo Tipo de baja no puede ir vacío, debe contener un valor. ");
+                                                flagVE = true;
+                                            } else { 
+                                                // Validamos que el tipo de baja sea valido
+                                                if (!listTypesDownsEmployee.Any(x => x.iId == Convert.ToInt32(dr[5].ToString()))) {
+                                                    validationErMe.Append("[*] El valor ingresado " + dr[5].ToString() + " en la columna tipo de baja no es valido. ");
+                                                    flagVE = true;
+                                                }
+                                            }
+                                            // Validamos que el Motivo de baja no venga vacio y que sea valido
+                                            if (dr[6].ToString().Length == 0 || dr[6].ToString() == "") {
+                                                validationErMe.Append("[*] El campo Motivo de baja no puede ir vacío, debe contener un valor");
+                                                flagVE = true;
+                                            } else {
+                                                // Validamos que el motivo de baja sea valido
+                                                if (!listMotiveDownEmployee.Any(x => x.iId == Convert.ToInt32(dr[6].ToString()))) {
+                                                    validationErMe.Append("[*] El valor ingresado " + dr[6].ToString() + " en la columna motivo de baja no es valido. ");
+                                                    flagVE = true;
+                                                }
+                                            }
+                                            // Validamos que la Fecha de baja no venga vacio y que sea valida
+                                            if (dr[7].ToString().Length == 0 || dr[6].ToString() == "") {
+                                                validationErMe.Append("[*] El campo Fecha de baja no puede ir vacío, debe contener un valor. ");
+                                                flagVE = true;
+                                            } else {
+                                                if (dr[7].ToString().Length != 10) {
+                                                    validationErMe.Append("[*] La fecha de baja " + dr[7].ToString() + " debe contener 10 caracteres. ");
+                                                    flagVE = true;
+                                                }
+                                            }
+                                            // Si hay errores integramos los datos a la lista
+                                            if (flagVE) {
+                                                errorDataLoadBeans.Add(new ErrorDataLoadBean {
+                                                    iFilaError = rowActu,
+                                                    sEmpresa = dr[3].ToString() + ". Nomina = " + dr[4].ToString(),
+                                                    sErrores = validationErMe.ToString()
+                                                });
+                                                validationErMe.Clear();
+                                                validationErMe.Append("Errores de validacion: ");
+                                                rowErrVal += 1;
+                                                continue;
+                                            }
+                                            // Guardamos los valores en variables
+                                            int empresa  = Convert.ToInt32(dr[3].ToString());
+                                            int empleado = Convert.ToInt32(dr[4].ToString());
+                                            int tipobaja = Convert.ToInt32(dr[5].ToString());
+                                            int motivobj = Convert.ToInt32(dr[6].ToString());
+                                            string fechabaja = Convert.ToDateTime(dr[7].ToString()).ToString("dd/MM/yyyy");
+                                            // Insertamos el registro en finiquitos sin calculo
+                                            int keyPeriodAct = 0;
+                                            periodActBean = downEmployeeDaoD.sp_Load_Info_Periodo_Empr(empresa, yearAct);
+                                            if (periodActBean.sMensaje == "success") {
+                                                keyPeriodAct = periodActBean.iPeriodo;
+                                                yearAct = periodActBean.iAnio;
+                                                dateStartPayment = periodActBean.sFecha_Inicio;
+                                                dateEndPayment = periodActBean.sFecha_Final;
+                                            }
+                                            downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(empresa, empleado, fechabaja, tipobaja, motivobj, yearAct, keyPeriodAct);
+                                            if (downEmployeeBean.sMensaje == "SUCCESS") {
+                                                downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(empleado, empresa, tipobaja);
+                                                if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
+                                                    correctDataInsertBeans.Add(new CorrectDataInsertBean { iFilaInsert = rowActu, sEmpresa = dr[3].ToString(), sNombre = empleado.ToString() });
+                                                    flagInsert = true;
+                                                    rowInsert += 1;
+                                                } else {
+                                                    errorDataLoadBeans.Add(new ErrorDataLoadBean {
+                                                        iFilaError = rowActu,
+                                                        sEmpresa = dr[3].ToString() + ". Nomina = " + dr[4].ToString(),
+                                                        sErrores = "Error al actualizar el tipo de empleado. "
+                                                    });
+                                                }
+                                            } else {
+                                                errorDataLoadBeans.Add(new ErrorDataLoadBean {
+                                                    iFilaError = rowActu,
+                                                    sEmpresa = dr[3].ToString() + ". Nomina = " + dr[4].ToString(),
+                                                    sErrores = "Error al insertar la baja sin calculos. "
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    showMessageErVal = validationErMe.ToString();
+                    if (!Directory.Exists(pathCompleteSearch + pathLogsErVFile)) {
+                        Directory.CreateDirectory(pathCompleteSearch + pathLogsErVFile);
+                    }
+                }
+            } catch (SqlException sqlExc) {
+                errMessage.Clear();
+                for (int i = 0; i < sqlExc.Errors.Count; i++) {
+                    errMessage.Append("Index #" + i + "\n" + "Mensaje: " + sqlExc.Errors[i].Message + "\n"
+                        + "Numero de linea: " + sqlExc.Errors[i].LineNumber + "\n" + "Origen: " + sqlExc.Errors[i].Source + "\n" + "Procedimiento: " + sqlExc.Errors[i].Procedure + "\n");
+                }
+                exceptionsBeans.Add(new ExceptionsBean { sTipo = sqlExc.GetType().ToString(), sMensaje = errMessage.ToString(), iFilaExc = rowActu, sExcepcion = "SQL" });
+                flagSqlExc = true;
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+                exceptionsBeans.Add(new ExceptionsBean { sTipo = exc.GetType().ToString(), sMensaje = messageError, iFilaExc = rowActu, sExcepcion = "General" });
+                flag = false;
+            }
+            using (StreamWriter fileLog = new StreamWriter(pathCompleteSearch + pathLogsErVFile + @"\\" + nameFileLogMessage, false, Encoding.UTF8)) {
+                if (correctDataInsertBeans.Count > 0) {
+                    fileLog.Write("* -- Bajas correctas -- *\n");
+                    foreach (CorrectDataInsertBean data in correctDataInsertBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaInsert.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nomina = " + data.sNombre + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                if (errorDataLoadBeans.Count > 0) {
+                    fileLog.Write("* -- Errores de validaciones -- *\n");
+                    foreach (ErrorDataLoadBean data in errorDataLoadBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaError.ToString() + ", [*] Empresa = " + data.sEmpresa + ",  [*] Mensaje = " + data.sErrores + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                if (exceptionsBeans.Count > 0) {
+                    fileLog.Write("* -- Excepciones -- *");
+                    foreach (ExceptionsBean data in exceptionsBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaExc.ToString() + ", [*] Excepcion = " + data.sExcepcion + ", [*] Tipo = " + data.sTipo + ", [*] Mensaje = " + data.sMensaje + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                fileLog.Close();
+            }
+            Session.Remove(nameFileSession);
+            return Json(new { Bandera = flag, BanderaInsercion = flagInsert, BanderaBusqueda = flagSearch, BanderaH = flagSpreadSheet, BanderaC = flagCodeCorrect, BanderaVE = flagVE, MensajeError = messageError, Sesion = nameFileSession, Errores = showMessageErVal, FolderLog = pathLogsErVFile, ArchivoLog = nameFileLogMessage, FilasOk = rowInsert, FilasEr = rowErrVal, FilasIn = cantReg });
         }
 
     }

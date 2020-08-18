@@ -378,6 +378,7 @@
     <Content Include="Archivos\certificados\CSD_SAB130411LY6_20160129_122824.key" />
     <Content Include="Archivos\certificados\CSD_SAL150418PD1_20170113_121928.sdg" />
     <Content Include="Archivos\certificados\CSD_unidad_CGA1511196P4_20160128_134059.key" />
+    <Content Include="Content\Download\CargaMasiva.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
@@ -879,6 +880,7 @@
     <Content Include="Scripts\main\animationsmain.js" />
     <Content Include="Scripts\main\Ausentismos.js" />
     <Content Include="Scripts\main\BajasEmpleados.js" />
+    <Content Include="Scripts\main\BajasMasivas\main.js" />
     <Content Include="Scripts\main\branchoffices.js" />
     <Content Include="Scripts\main\CargasMasivas\main.js" />
     <Content Include="Scripts\main\catalogos.js" />

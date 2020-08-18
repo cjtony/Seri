@@ -168,7 +168,7 @@
                     if (quantity > 0) {
                         if (element.id == "tipemp") {
                             for (i = 0; i < data.length; i++) {
-                                if (data[i].iId === 75 || data[i].iId === 76 || data[i].iId === 77 || data[i].iId === 155 || data[i].iId === 156) {
+                                if (data[i].iId === 75 || data[i].iId === 76 || data[i].iId === 77 || data[i].iId === 155 || data[i].iId === 156 || data[i].iId === 159) {
                                     if (fieldval == data[i].iId) {
                                         element.innerHTML += `<option selected value="${data[i].iId}">${data[i].sValor}</option>`;
                                     } else {

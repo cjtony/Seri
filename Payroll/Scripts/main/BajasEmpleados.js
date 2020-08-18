@@ -85,16 +85,15 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: (res) => {
-                        console.log(res);
-                        document.getElementById('keyEmployee').value = res[0];
-                        document.getElementById("id_emp").innerHTML = res[0] + " - " + res[1];
-                        document.getElementById("sueldo_emp").innerHTML = "$ " + res[2];
-                        document.getElementById("aumento_emp").innerHTML = res[3];
+                        document.getElementById('keyEmployee').value        = res[0];
+                        document.getElementById("id_emp").innerHTML         = res[0] + " - " + res[1];
+                        document.getElementById("sueldo_emp").innerHTML     = "$ " + res[2];
+                        document.getElementById("aumento_emp").innerHTML    = res[3];
                         document.getElementById("antiguedad_emp").innerHTML = res[4];
-                        document.getElementById("ingreso_emp").innerHTML = res[5];
-                        document.getElementById("nivel_emp").innerHTML = res[6];
-                        document.getElementById("posicion_emp").innerHTML = res[7];
-                        document.getElementById('dateAntiquityEmp').value = res[4];
+                        document.getElementById("ingreso_emp").innerHTML    = res[5];
+                        document.getElementById("nivel_emp").innerHTML      = res[6];
+                        document.getElementById("posicion_emp").innerHTML   = res[7];
+                        document.getElementById('dateAntiquityEmp').value   = res[4];
                         dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
                         dateSendDown.innerHTML += `<option value="1">Fecha de ingreso    - ${res[5]}</option>`;
                         document.getElementById('info-employee').classList.remove('d-none');
