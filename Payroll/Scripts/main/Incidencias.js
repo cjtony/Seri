@@ -24,6 +24,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
+                    console.log(data);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -52,7 +53,7 @@
         success: (data) => {
             document.getElementById("inConcepto_incidencia").innerHTML = "<option class='' value=''> Selecciona </option>"
             for (var i = 0; i < data.length; i++) {
-                document.getElementById("inConcepto_incidencia").innerHTML += "<option class='' value='" + data[i]["Ren_incid_id"] + "'> " + data[i]["Descripcion"] + "</option>";
+                document.getElementById("inConcepto_incidencia").innerHTML += "<option class='' value='" + data[i]["Ren_incid_id"] + "'> " + data[i]["Ren_incid_id"] + " : " + data[i]["Descripcion"] + "</option>";
             }
         }
     });
@@ -124,7 +125,6 @@
         }
     });
 
-
     //Funciones
     MostrarDatosEmpleado = (idE) => {
         var txtIdEmpleado = { "IdEmpleado": idE, Empresa_id: 0 };
@@ -135,6 +135,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                console.log(data);
                 createTab();
                 document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "";
                 $("#modalLiveSearchEmpleado").modal("hide");

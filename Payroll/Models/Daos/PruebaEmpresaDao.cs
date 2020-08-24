@@ -668,7 +668,6 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrliIdEmpleado", IdEmpleado));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
-
             if (data.HasRows)
             {
                 while (data.Read())

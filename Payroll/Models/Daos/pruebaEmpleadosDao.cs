@@ -707,7 +707,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, int Cantidad, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo, string infinicio, string inffinal)
+        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, decimal Cantidad, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo, string infinicio, string inffinal)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -836,7 +836,8 @@ namespace Payroll.Models.Daos
                     lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
                     lista.Renglon_id = int.Parse(data["Renglon_id"].ToString());
                     lista.Monto_aplicar = data["Monto_aplicar"].ToString();
-                    lista.Numero_dias = int.Parse(data["Numero_dias"].ToString());
+                    if (data["Numero_dias"].ToString().Length == 0) { lista.Numero_dias = 0; } else { lista.Numero_dias = int.Parse(data["Numero_dias"].ToString()); }
+                    //lista.Numero_dias = int.Parse(data["Numero_dias"].ToString());
 
                     list.Add(lista);
                 }

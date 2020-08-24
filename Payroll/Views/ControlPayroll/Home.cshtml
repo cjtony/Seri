@@ -11,7 +11,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Selecciona la empresa</h4>
-        
+
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -111,7 +111,7 @@
                 focus: true
             });
         });
-        function loadBtnsEmpresas() {
+        loadBtnsEmpresas = () => {
             try {
                 $.ajax({
                     url: "../Empresas/LoadEmpresas",
@@ -137,7 +137,7 @@
 
         loadBtnsEmpresas();
 
-        function MostrarBtnsEmpresa(idE) {
+        MostrarBtnsEmpresa = (idE) => {
             var txtIdEmpresa = { "IdEmpresa": idE };
             $.ajax({
                 url: "../Empresas/SearchEmpresas",
@@ -166,3 +166,41 @@
 
 <script src="~/Scripts/main/startMenu.js"></script>
 <script src="~/Scripts/main/Empresas.js"></script>
+<script type="text/javascript">
+
+    var idleTime = 0; $(document).ready(function () {
+        //Increment the idle time counter every minute.
+        var idleInterval = setInterval(timerIncrement, 60000);
+        // 1 minute
+
+        //Zero the idle timer on mouse movement.
+        $(this).mousemove(function () {
+            idleTime = 0;
+        });
+
+        $(this).keypress(function () {
+            idleTime = 0;
+        });
+    });
+
+    timerIncrement = () => {
+        idleTime = idleTime + 1;
+        if (idleTime == 5) { // 20 minutes
+            Swal.fire({
+                title: 'Tu sesión a terminado!',
+                text: "Tienes que iniciar nuevamente.",
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                backdrop: true,
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = "../Login/Logout";
+                }
+            });
+        }
+    }
+</script>
