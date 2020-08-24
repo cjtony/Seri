@@ -133,7 +133,7 @@
                 //$("#tcbody").empty();
                 document.getElementById("tcbody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tcbody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"] + "</td><td><div class='btn badge badge-danger text-center' onclick='deleteCredito("+data[i]["IdCredito"]+");' title='Desactivar'><i class='fas fa-minus'></i> </div></td></tr>";
+                    document.getElementById("tcbody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"].substr(0,10) + "</td><td><div class='btn badge badge-danger text-center' onclick='deleteCredito("+data[i]["IdCredito"]+");' title='Desactivar'><i class='fas fa-minus'></i> </div></td></tr>";
                 }
 
 

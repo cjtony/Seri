@@ -6,7 +6,7 @@
     });
     $(".btntab").hover(
         function () {
-            $(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark'); 
+            $(this).children('.btntittle').removeClass('bg-primary').addClass('bg-dark');
         },
         function () {
             $(this).children('.btntittle').removeClass('bg-dark').addClass('bg-primary');
@@ -1473,15 +1473,23 @@
                 var tab = document.getElementById("tabusersbody");
                 tab.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
+                    if (data[i]["Cancelado"] == "True") {
+                        text = "<i class='fas fa-eye-slash fa-lg text-danger'></i>";
+                        btns = "<a class='badge badge-light btn btns border'><i class='fas fa-eye fa-lg text-primary'></i> Activar</a>";
+                    } else {
+                        text = "<i class='fas fa-eye fa-lg text-primary'></i>";
+                        btns = "<a class='badge badge-light btn btns border'><i class='fas fa-eye-slash fa-lg text-danger'></i> Desactivar</a>";
+                    }
                     tab.innerHTML += "" +
                         "<tr>" +
                         "<td>" + data[i]["Usuario"] + "</td>" +
                         "<td>" + data[i]["Perfil_id"] + "</td>" +
                         "<td>" + data[i]["Ps"] + "</td>" +
-                        "<td>" + data[i]["Cancelado"] + "</td>" +
+                        "<td>" + text + "</td>" +
                         "<td>" +
                         "<div class='badge badge-success btn'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
-                        "<div class='badge badge-info btn mx-1'><i class='fas fa-plus fa-lg'></i> Nuevo</div>" +
+                        "<div class='badge badge-info btn mx-1' onclick='mostarmodalnewusuario();'><i class='fas fa-plus fa-lg'></i> Nuevo</div>" +
+                        btns +
                         "</td>" +
                         "</tr>";
                 }
@@ -1544,66 +1552,32 @@
         //$(this).removeClass('bg-secondary').addClass('bg-white');
         console.log('no');
     });
-    //
-    // FUNCION Doble CLICK EN EL ROW
-    //loadtwo = (id) => {
-    //    console.log(id)
-    //    $.ajax({
-    //        url: "../Catalogos/Loadmainmenus",
-    //        type: "POST",
-    //        data: JSON.stringify({ Id: id }),
-    //        contentType: "application/json; charset=utf-8",
-    //        success: (data) => {
-    //            console.log(data);
-    //            var form = document.getElementById("frmProfiles");
-    //            form.innerHTML = "";
-    //            for (var i = 0; i < data.length; i++) {
-    //                form.innerHTML += "" +
-    //                    "<div class='input-group mt-2'>"+
-    //                        "<div class='input-group-prepend'>" +
-    //                            "<button class='btn btn-outline-secondary btn-sm py-0' type='button'><i class='fas fa-caret-down fa-lg'></i></button>"+
-    //                        "</div>" +
-    //                        "<div class='input-group-prepend pl-3 pt-1 text-inline'>"+
-    //                            "<div class='form-check'>" +
-    //                                "<input class='form-check-input' type='checkbox' value='' id='check-"+data[i]["iIdItem"]+"'>" +
-    //                                "<label class='form-check-label' for='check-" + data[i]["iIdItem"] +"'>" +
-    //                                    data[i]["sNombre"] +
-    //                                "</label>" +
-    //                            "</div>" +
-    //                        "</div>" +
-    //                        "<div class='col-md-12 collapse collapse-"+data[i]["iIdItem"]+"'></div>"+
-    //                    "</div>";
 
-    //                    //"<div class='form-check col-md-12'>" +
-
-    //                    //"<input class='form-check-input' type='checkbox' name='cp" + data[i]["sNombre"] + "' onclick='loadcheck(" + data[i]["iIdItem"] + ",\"cp" + data[i]["iIdItem"]+"\");' id='cp"+data[i]["iIdItem"]+"'> " +
-    //                    //"<label class='form-check-label'>" + data[i]["sNombre"] + "</label>" +    
-    //                    //    "<div class='collapse' id='cp"+data[i]["iIdItem"]+"'></div>" +
-    //                    //"</div>";
-    //            }
-    //        }
-    //    });
-
-
-    //    //console.log("Perfil id " + name);
-    //    $("#collapseProfiles").collapse("show");
-    //}
-    //
     // FUNCION DE un CLICK EN EL ROW 
-    loadone = (id) => {
-        //console.log("Perfil id " + id);
-    }
+    $("#collapseProfiles").show(function () {
+
+        $(this).html("<div class='container row col-md-12'>" +
+            "<div class='col-sm'>Empresas</div>" +
+            "<div class='col-sm'>Empleado</div>" +
+            "<div class='col-sm'>Incidencias</div>" +
+            "<div class='col-sm'>Nomina</div>" +
+            "<div class='col-sm'>Reportes</div>" +
+            "<div class='col-sm'>Catalogos</div>" +
+            "<div class='col-sm'><label class='col-md-12'>Consulta <button class='btn btn-light btn-sm py-0' data-toggle='collapse' data-target='.collapse-consulta' type='button' onclick='loadcheck(35, \"collapse-cons\");'><i class='fas fa-caret-down fa-lg'></i></button></label>" +
+            "<div class='collapse collapse-cons col-md-12'></div>" +
+            "</div>" +
+            "<div class='col-sm'>Kiosko</div>" +
+            "</div>"
+        );
+    });
     //
     // carga los checks que pertenecen a cada menu principal
-    loadcheck = (id) => {
-        //console.log(menu);
-        console.log(id);
-        if ($('#check-' + id).prop('checked')) {
-            document.getElementById("check-" + id).innerHTML = "";
-            $(".collapse-" + id).collapse("hide");
+    loadcheck = (id, collapse) => {
+        if ($('.' + collapse).prop('show')) {
+
+            console.log("Entro al if");
         } else {
-
-
+            console.log("No entro al if");
             $.ajax({
                 url: "../Catalogos/Loadonemenu",
                 type: "POST",
@@ -1611,45 +1585,29 @@
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
                     console.log(data);
-                    var form = document.getElementById(id);
-                    form.innerHTML = "";
+                    $("." + collapse).html("");
+                    var body = "";
                     for (var i = 0; i < data.length; i++) {
-                        form.innerHTML += "" +
-                            "<div class='form-check'>" +
-                            "<input class='form-check-input' type='radio' name='gridRadios' value=''>" +
-                            "<label class='form-check-label' for='gridRadios1'>" + i + " radio</label>" +
-                            "</div>";
-
+                        body +=
+                            "<div class='custom-control custom-checkbox'>" +
+                            "<input class='custom-control-input' type='checkbox' id='" + data[i]["iParent"] + "-" + data[i]["iIdItem"] + "' name='menuitem' value='" + data[i]["iIdItem"] + "'>" +
+                            "<label class='custom-control-label' for='" + data[i]["iParent"] + "-" + data[i]["iIdItem"] + "'>" + data[i]["sNombre"] + "</label>" +
+                            "</div><div class='dropdown-divider'></div>";
                     }
-                    $("#" + menu).collapse("show");
+                    $("." + collapse).html(body);
+                    $("." + collapse).collapse("show");
 
                 }
             });
         }
     }
-    //
-    // carga los checks pertenecientes a cada menu dependiendo el cambio de estado del check
-    //$("input[type=checkbox]").on("click", function () {
-    //if ($(this).prop("checked")  == true ) {
-    //    console.log("entro al check activo");
-    //} else {
-    //    console.log("salio de la activacion");
-    //}
-    //console.log("no entro a nada");
+    // CARGA MODAL DEL NUEVO USUARIO
+    mostarmodalnewusuario = () => {
 
-    //}
+        $("#modalnewusuario").modal("show");
 
-    //
-    // funcion para cambio de icono en boton de collapse de checks
-    //$(".btn-collapse-check").on("click", function () {
-    //    console.log(this);
-    //    if ($(this).find("button").html() == "<i class='fas fa-caret-down fa-lg'></i>") {
-    //        $(this).find("button").html("<i class='fas fa-caret-up fa-lg'></i>");
-    //    } else {
-    //        $(this).find("button").html("<i class='fas fa-caret-down fa-lg'></i>")
-    //    }
+    }
 
-    //});
     $("#btnnewperfil").on("click", function () {
         var data = $("#frmProfiles").serialize();
         console.log(data);
@@ -2208,7 +2166,7 @@
                     "</thead>" +
                     "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
                 for (var i = 0; i < data.length; i++) {
-                    
+
                     document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
                         "<td>" + data[i]["IdLocalidad"] + "</td>" +
                         "<td>" + data[i]["Codigo_Localidad"] + "</td>" +
@@ -2221,7 +2179,7 @@
                         "<td>" + data[i]["Estado_id"] + "</td>" +
                         //"<td class=''>" + data[i]["Fecha_Alta"].substr(0, 10) + "</td>" +
                         "</tr>";
-                    
+
                 }
                 $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
                 $("#" + pilltab).collapse("toggle");
@@ -2236,7 +2194,7 @@
         });
 
 
-        
+
     }
     // MOSTRAR MODAL NUEVA LOCALIDAD 
     mostrarmodalnuevalocalidad = () => {

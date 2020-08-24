@@ -93,20 +93,6 @@
 
                             </div>
                         </div>
-                        @*<div class="form-group col-md-6">
-                            <label for="inGiro_empresa">Banco Interbancarios</label>
-                            <select type="text" class="form-control font-labels" name="inRBanco_interbancarios" id="inRBanco_interbancarios" required>
-                            </select>
-                            <div class="valid-feedback">
-                            </div>
-                        </div>*@
-                        @*<div class="form-group col-md-6">
-                            <label for="inGiro_empresa">Banco Nómina</label>
-                            <select type="text" class="form-control font-labels" name="inBanco_nomina" id="inBanco_nomina" required>
-                            </select>
-                            <div class="valid-feedback">
-                            </div>
-                        </div>*@
                         <div class="form-group col-md-6">
                             <label for="inGiro_empresa">Registro IMSS</label>
                             <input type="text" class="form-control font-labels" name="inRegistro_imss" id="inRegistro_imss" placeholder="Registro IMMS" required>
@@ -346,14 +332,18 @@
     var states = document.getElementById("inEstado_empresa");
     var btnvalidacpstate = document.getElementById("btnValidaCpEstado");
     $(document).ready(function () {
+
         btnvalidacpstate.disabled = true;
         city.disabled = true;
         municipio.disabled = true;
         states.disabled = true;
         colony.disabled = true;
+
+        //EVENTO CLICK EN VALIDAR CODIGO POSTAL 
         $("#btnValidaCpEstado").on("click", function () {
             fvalidatestatecodpost();
         });
+        // FUNCION QUE VALIDA CODIGO POSTAL
         fvalidatestatecodpost = () => {
             if (codpost.value.length === 5) {
                 setTimeout(() => {
@@ -412,25 +402,7 @@
             }
         }
 
-        //LoadSelectBancos = (Banco_id) => {
-        //    $.ajax({
-        //        url: "../Empleados/LoadBanks",
-        //        type: "POST",
-        //        data: JSON.stringify({ keyban: Banco_id }),
-        //        contentType: "application/json; charset=utf-8",
-        //        success: (data) => {
-        //            //document.getElementById("inRBanco_interbancarios").innerHTML = "";
-        //            document.getElementById("inBanco_nomina").innerHTML = "";
-        //            for (var i = 0; i < data.length; i++) {
-        //                //document.getElementById("inRBanco_interbancarios").innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>";
-        //                document.getElementById("inBanco_nomina").innerHTML += "<option value='" + data[i]["iIdBanco"] + "'>" + data[i]["sNombreBanco"] + "</option>"
-        //            }
-
-        //        }
-        //    });
-        //}
-        //
-        //LoadSelectBancos(0);
+        
     });
     document.getElementById("btnClear").classList.add("invisible");
     document.getElementById("btnUpdate").classList.add("invisible");
@@ -546,7 +518,7 @@
 
         }
     });
-
+    // INSERTA EMPRESA
     $("#form_inEmpresa").submit(function (evt) {
 
         var emp = document.getElementById("form_inEmpresa");
@@ -577,11 +549,11 @@
             var afImss = document.getElementById("inAfiliacionIMSS");
             var riesgot = document.getElementById("inRiesgoTrabajo");
             var claserp = document.getElementById("inClase");
-            var bancoin = document.getElementById("inRBanco_interbancarios");
+            //var bancoin = document.getElementById("inRBanco_interbancarios");
             var regimss = document.getElementById("inRegistro_imss");
             var clonar = document.getElementById("inclonar");
             var grupoe = document.getElementById("inGrupo_empresa");
-            var banco_nom = document.getElementById("inBanco_nomina");
+            //var banco_nom = document.getElementById("inBanco_nomina");
             //Variables para primer fecha periodo
             var finicio = document.getElementById("finicio");
             var ffinal = document.getElementById("ffinal");
@@ -664,7 +636,7 @@
         //document.getElementById("btnadd").innerHTML = "Ocultar agregar empresa";
         console.log("show");
         $("#inNombre_empresa").focus();
-        document.getElementById("inNombre_empresa").focus();
+        //document.getElementById("inNombre_empresa").focus();
     });
     $("#btnadd").on("click", function () {
         document.getElementById("btnadd").innerHTML = "Ocultar agregar empresa <i class='text-danger fas fa-minus-circle'></i>";
@@ -675,6 +647,7 @@
         document.getElementById("btnadd").innerHTML = "Agregar empresa <i class='text-success fas fa-plus-circle'></i>";
         console.log("was hide");
     });
+
     $("#btnEditarEmpresa").on("click", function () {
         var nomEmp = document.getElementById("inNombre_empresa");
         var nomEmpc = document.getElementById("inNomCorto_empresa");
@@ -746,6 +719,7 @@
         });
 
     });
+
     $("#btnClear").on(function () {
         console.log("Entra al limpiar");
     });

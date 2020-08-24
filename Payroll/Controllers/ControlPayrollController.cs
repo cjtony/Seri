@@ -47,7 +47,7 @@ namespace Payroll.Controllers
                     {
                         if (subitem.iParent == item.iIdItem)
                         {
-                            subnavs += "<li class='nav-item'><a class='nav-link font-navs " + subitem.sNombre + "' onclick='seeview(" + '"' + subitem.sUrl + '"' + ")' href='#' ><span class='" + subitem.sIcono + "' style='color:#020F59;'></span> " + subitem.sNombre + " </a></li>";
+                            subnavs += "<li class='nav-item'><a class='nav-link font-navs " + subitem.sNombre + "' onclick='seeview(" + '"' + subitem.sUrl + '"' + ")' href='#' ><span class='" + subitem.sIcono + " fa-lg' style='color:#020F59;'></span> " + subitem.sNombre + " </a></li>";
                         }
                     }
                     subnavs += "</ul>";

@@ -1,7 +1,4 @@
-﻿<div class="container bg-white py-4 px-0 rounded-top">
-    
-</div>
-<div class="container collapse pt-3 bg-white font-labels" id="vacacionesCollapse">
+﻿<div class="container collapse pt-3 bg-white font-labels rounded border-left-primary border-right-primary" id="vacacionesCollapse">
     <div class="media row border-bottom pb-3 border-primary">
         <div class="media-body col-md-12 ">
             <div class="row">
@@ -213,12 +210,7 @@
             var dias = document.getElementById("diasV");
             var ln_id = document.getElementById("btn_id_periodo_ln");
             $("#diasV").disabled = true;
-            var datos = JSON.stringify({
-                PerVacLn_id: ln_id.value,
-                FechaInicio: fechai.value,
-                FechaFin: fechat.value,
-                Dias: dias.value
-            });
+            //var datos = ;
             console.log("periodo");
             console.log(datos);
             //$.ajax({
@@ -236,7 +228,12 @@
                 url: "../Incidencias/SavePeriodosVac",
                 type: "POST",
                 cache: false,
-                data: datos,
+                data: JSON.stringify({
+                    PerVacLn_id: ln_id.value,
+                    FechaInicio: fechai.value,
+                    FechaFin: fechat.value,
+                    Dias: dias.value
+                }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
@@ -253,7 +250,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log("regresa periodos");
+                    //console.log("regresa periodos");
                     document.getElementById("tabBody").innerHTML = "";
                     for (var i = 0; i < data.length; i++) {
                         
@@ -279,7 +276,7 @@
                 }
             });
 
-            console.log("llega");
+            //console.log("llega");
         });
 
         $(".btn-change-status").on("click", function () {

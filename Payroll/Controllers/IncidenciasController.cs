@@ -207,7 +207,7 @@ namespace Payroll.Controllers
             return Json(res);
         }
         [HttpPost]
-        public JsonResult SaveRegistroIncidencia(int inRenglon, int inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA, string infinicio, string inffinal)
+        public JsonResult SaveRegistroIncidencia(int inRenglon, decimal inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA, string infinicio, string inffinal)
         {
             List<string> res = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
@@ -268,6 +268,10 @@ namespace Payroll.Controllers
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             res = Dao.sp_TPensiones_Alimenticias_Delete_Pension(int.Parse(Session["IdEmpresa"].ToString()), int.Parse(Session["Empleado_id"].ToString()), Pension_id, IncidenciaP_id);
             return Json(res);
+        }
+        public PartialViewResult CargaMasiva()
+        {
+            return PartialView();
         }
     }
 }   
