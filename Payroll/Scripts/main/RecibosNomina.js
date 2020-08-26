@@ -306,10 +306,15 @@
              url: "../Empleados/EmisorEmpresa",
              type: "POST",
              data: dataSend,
-             success: (data) => {
-                 console.log(data);
-                 EmpresNom = data[0].sNombreComp + ' ' + 'RFC: ' + data[0].sRFCEmpleado + '  en el periodo: '+ periodo;
-                 $('#Emisor').html(EmpresNom);                             
+             success: function (data) {
+                 if (data[0].sMensaje == "success") {
+                     EmpresNom = data[0].sNombreComp + ' ' + 'RFC: ' + data[0].sRFCEmpleado + '  en el periodo: ' + periodo;
+                     $('#Emisor').html(EmpresNom);
+                 }
+                 else {
+                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                 }
+                                         
              }
          });      
          separador = " ",
@@ -600,8 +605,6 @@
 
 
     });
-
-
 
 
 

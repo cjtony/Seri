@@ -483,27 +483,200 @@ namespace Payroll.Models.Daos
                     while (data.Read())
                     {
                         EmisorReceptorBean ls = new EmisorReceptorBean();
-                        ls.sNombreEmpresa = data["RazonSocial"].ToString();
-                        ls.sCalle = data["Calle"].ToString();
-                        //ls.sColonia = data["Colonia"].ToString();
-                        ls.sCiudad = data["Ciudad"].ToString();
-                        ls.sRFC = data["RFC"].ToString();
-                        ls.sAfiliacionIMSS = data["Afiliacion_IMSS"].ToString();
-                        ls.sNombreComp = data["NombreComp"].ToString();
-                        ls.sRFCEmpleado = data["RFCEmpleado"].ToString();
-                        ls.iIdEmpleado = int.Parse(data["IdEmpleado"].ToString());
-                        ls.sDescripcionDepartamento = data["DescripcionDepartamento"].ToString();
-                        ls.sNombrePuesto = data["NombrePuesto"].ToString();
-                        ls.sFechaIngreso = data["FechaIngreso"].ToString();
-                        ls.sTipoContrato = data["TipoContrato"].ToString();
-                        ls.sCentroCosto = data["CentroCosto"].ToString();
-                        ls.dSalarioMensual = decimal.Parse(data["SalarioMensual"].ToString());
-                        ls.sRegistroImss = data["RegistroImss"].ToString();
-                        ls.sCURP = data["CURP"].ToString();
-                        ls.sDescripcion = data["Descripcion"].ToString();
-                        ls.sCtaCheques = data["Cta_Cheques"].ToString();
-                        ls.iRegimenFiscal = int.Parse(data["Regimen_Fiscal_id"].ToString());
-                        ls.iIdNomina = int.Parse(data["IdNomina"].ToString());
+                        ls.sMensaje = "success";
+                        if (data["RazonSocial"].ToString() == null)
+                        {
+                            ls.sNombreEmpresa = "CEmpresas";
+                            ls.sMensaje = "error";
+                        }
+                        else {
+                            ls.sNombreEmpresa = data["RazonSocial"].ToString();
+                        }
+                        if (data["Calle"].ToString() == null)
+                        {
+                            ls.sCalle = "CEmpresas";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sCalle = data["Calle"].ToString();
+                        }
+                        //if (data["Colonia"].ToString() == null)
+                        //{
+                        //    ls.sColonia = "CEmpresas";
+                        //    ls.sMensaje = "error";
+                        //}
+                        //else
+                        //{
+                        //    ls.sColonia = data["Colonia"].ToString();
+                        //}
+                        if (data["Ciudad"].ToString() == null)
+                        {
+                            ls.sCiudad = "CEmpresas";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sCiudad = data["Ciudad"].ToString();
+                        }
+                        if( data["RFC"].ToString() == null)
+                        {
+                            ls.sRFC = "CEmpresas";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sRFC = data["RFC"].ToString();
+                        }
+
+                        if (data["Afiliacion_IMSS"].ToString() == null)
+                        {
+                            ls.sAfiliacionIMSS = "TRegistro_Patronal";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sAfiliacionIMSS = data["Afiliacion_IMSS"].ToString();
+                        }
+
+                        if (data["NombreComp"].ToString() == null)
+                        {
+                            ls.sNombreComp = "TEmpleado";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sNombreComp = data["NombreComp"].ToString();
+                        }
+                      
+                        if (data["RFCEmpleado"].ToString() == null)
+                        {
+                            ls.sRFCEmpleado = "CEmpresas";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sRFCEmpleado = data["RFCEmpleado"].ToString();
+                        }
+                        if (data["IdEmpleado"].ToString() == null)
+                        {
+                            ls.iIdEmpleado  =0;
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.iIdEmpleado = int.Parse(data["IdEmpleado"].ToString());
+                        }
+
+                        ///
+                        if (data["DescripcionDepartamento"].ToString() == null)
+                        {
+                            ls.sDescripcionDepartamento = "TDepartamentos";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sDescripcionDepartamento = data["DescripcionDepartamento"].ToString();
+                        }
+                        if (data["NombrePuesto"].ToString() == null)
+                        {
+                            ls.sNombrePuesto = "TPuestos";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sNombrePuesto = data["NombrePuesto"].ToString();
+                        }
+                        if (data["FechaIngreso"].ToString() == null)
+                        {
+                             ls.sFechaIngreso = "FechaIngreso";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sFechaIngreso = data["FechaIngreso"].ToString();
+                        }
+                        if (data["TipoContrato"].ToString() == null)
+                        {
+                            ls.sTipoContrato = "Cgeneral";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sTipoContrato = data["TipoContrato"].ToString();
+                        }
+                        if (data["CentroCosto"].ToString() == null)
+                        {
+                            ls.sCentroCosto = "TCentrosCostos";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sCentroCosto = data["CentroCosto"].ToString();
+                        }
+                        if (data["SalarioMensual"].ToString() == null)
+                        {
+                            ls.dSalarioMensual = 0;
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.dSalarioMensual = decimal.Parse(data["SalarioMensual"].ToString());
+                        }
+                        if (data["RegistroImss"].ToString() == null)
+                        {
+                            ls.sRegistroImss = "TEmpleado_IMSS";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sRegistroImss = data["RegistroImss"].ToString();
+                        }
+                        if (data["CURP"].ToString() == null)
+                        {
+                            ls.sCURP = "TEmpleado_IMSS";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sCURP = data["CURP"].ToString(); ;
+                        }
+                        if (data["Descripcion"].ToString() == null)
+                        {
+                            ls.sDescripcion = "CBanco";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sDescripcion = data["Descripcion"].ToString();
+                        }
+                        if (data["Cta_Cheques"].ToString() == null)
+                        {
+                            ls.sCtaCheques = "TEmpleado_Nomina";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sCtaCheques = data["Cta_Cheques"].ToString();
+                        }
+                        if (data["Regimen_Fiscal_id"].ToString() == null)
+                        {
+                            ls.iRegimenFiscal = 0;
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.iRegimenFiscal = int.Parse(data["Regimen_Fiscal_id"].ToString());
+                        }
+                        if (data["IdNomina"].ToString() == null)
+                        {
+                            ls.iIdNomina = 0;
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.iIdNomina = int.Parse(data["IdNomina"].ToString());
+                        }             
 
                         list.Add(ls);
                     }
