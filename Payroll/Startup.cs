@@ -3,6 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
 using Hangfire;
+using Hangfire.SqlServer;
+using Hangfire.Dashboard;
+
+using Hangfire.Storage.Monitoring;
 using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
 using System.Data.SqlClient;
@@ -10,6 +14,9 @@ using System.Data;
 using System.Web.Mvc;
 using Payroll.Models.Daos;
 using System.Collections.Generic;
+using Org.BouncyCastle.Asn1.Cms;
+using Hangfire.Processing;
+using Hangfire.States;
 
 [assembly: OwinStartup(typeof(Payroll.Startup))]
 
@@ -28,8 +35,17 @@ namespace Payroll
             // Para obtener más información sobre cómo configurar la aplicación, visite https://go.microsoft.com/fwlink/?LinkID=316888
             // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
             // Desarrollo
-              GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
-            // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet_original; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
+            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions
+            {
+                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                QueuePollInterval = TimeSpan.Zero,
+                UseRecommendedIsolationLevel = true,
+                DisableGlobalLocks = true
+            });
+        
+            //  GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet_original; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
+            
             // Produccion
             //GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GSERIPROD01; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
             app.UseHangfireDashboard();
@@ -135,16 +151,16 @@ namespace Payroll
 
         // proceso actualiza en BD TpProcesosJons cada 30 segundos 
         public void ActBDTbJobs() {
-            RecurringJob.AddOrUpdate(() => ProcesosContinuos(), Cron.Minutely);
+           //RecurringJob.AddOrUpdate(() => ProcesosContinuos(), Cron.Minutely);
             //var jobId = BackgroundJob.Enqueue(() => ProcesosContinuos());
         }
 
         public void ProcesosContinuos() 
        {
-             FuncionesNomina Dao = new FuncionesNomina();
-             Dao.sp_EstatusTpProcesosJobs_Update_EstatusTpProcesosJobs();     
+            FuncionesNomina Dao = new FuncionesNomina();
+            Dao.sp_EstatusTpProcesosJobs_Update_EstatusTpProcesosJobs();
         }
-  
+
         public string Fecha() 
         {
             // fecha del procesos 
@@ -168,15 +184,30 @@ namespace Payroll
 
             if (NomProceso == "CNomina")
             {
-                          
-                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso));
-                 List<HangfireJobs> id = new List<HangfireJobs>();
-                 FuncionesNomina Dao = new FuncionesNomina();
-                 id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
+
+                var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso));
+              
+                    //Task checkJobState = Task.Factory.StartNew(() =>
+                    //{
+                    //    while (true)
+                    //    {
+                    //        var monitoringApi = JobStorage.Current.GetMonitoringApi();
+                    //        JobDetailsDto jobDetails = monitoringApi.JobDetails(jobId);
+                    //        string currentState = jobDetails.History[0].StateName;
+                    //        if (currentState != "Enqueued" && currentState != "Processing")
+                    //        {
+                    //            break;
+                    //        }
+                    //        TimeSpan.FromSeconds(30); // adjust to a coarse enough value for your scenario
+                    //    }
+                    //});            
+                List<HangfireJobs> id = new List<HangfireJobs>();
+                FuncionesNomina Dao = new FuncionesNomina();
+                id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
                 int Idjobs = Convert.ToInt32(id[0].iId.ToString());
                 string StatusJobs = "En Cola";
                 string Nombrejobs = "CNomina1";
-                string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + ","+ idEmpresa + ","+ iCalxEmple + "," + FechaProceso;
+                string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + "," + idEmpresa + "," + iCalxEmple + "," + FechaProceso;
                 Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros);
 
             }

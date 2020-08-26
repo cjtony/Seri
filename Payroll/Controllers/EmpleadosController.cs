@@ -339,7 +339,7 @@ namespace Payroll.Controllers
 
         public JsonResult ReciboNomina(int iIdEmpresa, int iIdEmpleado, int ianio, int iTipodePerido, int iPeriodo, int iespejo)
         {
-
+            int idRenglon = 0;
             List<ReciboNominaBean> LCRecibo = new List<ReciboNominaBean>();
             List<TablaNominaBean> LsTabla = new List<TablaNominaBean>();
             FuncionesNomina dao = new FuncionesNomina();
@@ -351,9 +351,13 @@ namespace Payroll.Controllers
                 {
                     for (int i = 0; i < LCRecibo.Count; i++)
                     {
+                        if (LCRecibo[i].iIdRenglon == 1) {
+                            idRenglon = i;
+                        }
+
                         TablaNominaBean ls = new TablaNominaBean();
                         {
-                            ls.sConcepto = LCRecibo[i].sNombre_Renglon;
+                            ls.sConcepto = LCRecibo[i].iIdRenglon+" "+ LCRecibo[i].sNombre_Renglon;
 
                             if (LCRecibo[i].sValor == "Percepciones")
                             {
@@ -362,6 +366,11 @@ namespace Payroll.Controllers
                             }
                             if (LCRecibo[i].sValor == "Deducciones")
                             {
+                                if (LCRecibo[i].iIdRenglon == 1013)
+                                {
+                                    LsTabla[idRenglon].dDeducciones = "-"+LCRecibo[i].dSaldo.ToString();
+
+                                }
                                 ls.dPercepciones = "0";
                                 ls.dDeducciones = LCRecibo[i].dSaldo.ToString();
                             }
