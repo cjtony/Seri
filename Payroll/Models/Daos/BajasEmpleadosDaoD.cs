@@ -117,7 +117,7 @@ namespace Payroll.Models.Daos
             return bajasEmpleadosBean;
         }
 
-        public BajasEmpleadosBean sp_BajaEmpleado_Update_EmpleadoNomina(int keyEmployee, int keyBusiness, int keyTypeDown)
+        public BajasEmpleadosBean sp_BajaEmpleado_Update_EmpleadoNomina(int keyEmployee, int keyBusiness, int keyTypeDown, string dateDown)
         {
             BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
             try {
@@ -126,6 +126,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
                 cmd.Parameters.Add(new SqlParameter("@TipoEmpleado", keyTypeDown));
+                cmd.Parameters.Add(new SqlParameter("@FechaBaja", dateDown));
                 if (cmd.ExecuteNonQuery() > 0) {
                     downEmployeeBean.sMensaje = "SUCCESSUPD";
                 } else {

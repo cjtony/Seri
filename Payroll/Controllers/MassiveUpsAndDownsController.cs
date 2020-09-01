@@ -715,7 +715,7 @@ namespace Payroll.Controllers
                                             }
                                             downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(empresa, empleado, fechabaja, tipobaja, motivobj, yearAct, keyPeriodAct);
                                             if (downEmployeeBean.sMensaje == "SUCCESS") {
-                                                downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(empleado, empresa, tipobaja);
+                                                downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(empleado, empresa, tipobaja, fechabaja);
                                                 if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
                                                     correctDataInsertBeans.Add(new CorrectDataInsertBean { iFilaInsert = rowActu, sEmpresa = dr[3].ToString(), sNombre = empleado.ToString() });
                                                     flagInsert = true;

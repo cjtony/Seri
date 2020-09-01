@@ -298,6 +298,25 @@ namespace Payroll.Models.Daos
     }
     public class ImssDao : Conexion
     {
+
+        public String ConvertDateText(string dateConvert)
+        {
+            String convertDate = "";
+            try
+            {
+                string year = dateConvert.Substring(0, 4);
+                string month = dateConvert.Substring(5, 2);
+                string day = dateConvert.Substring(8, 2);
+                string[] days = new string[] { "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" };
+                string[] months = new string[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+                convertDate = day + " de " + months[Convert.ToInt32(month) - 1] + " del " + year;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+            }
+            return convertDate;
+        }
         public ImssBean sp_Imss_Insert_Imss(string fecefe, string regimss, string rfc, string curp, int nivest, int nivsoc, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int keyemployee)
         {
             ImssBean imssBean = new ImssBean();
@@ -342,6 +361,40 @@ namespace Payroll.Models.Daos
             }
             return imssBean;
         }
+
+        public List<ImssBean> sp_Carga_Historial_Imss (int keyEmployee, int keyBusiness)
+        {
+            List<ImssBean> listImssBean = new List<ImssBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Carga_Historial_Imss", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        ImssBean imssBean = new ImssBean();
+                        imssBean.iIdImss  = Convert.ToInt32(data["IdImss"]);
+                        imssBean.sFechaEfectiva = Convert.ToDateTime(data["Effdt"]).ToString("yyyy-MM-dd");
+                        imssBean.sRegistroImss  = data["RegistroImss"].ToString();
+                        imssBean.sRfc           = data["RFC"].ToString();
+                        imssBean.sCurp          = data["CURP"].ToString();
+                        imssBean.sNivelEstudio  = data["NivelEstudio"].ToString();
+                        imssBean.sNivelSocieconomico = data["NivelSocioEconomico"].ToString();
+                        imssBean.sFechaAlta     = ConvertDateText(Convert.ToDateTime(data["Fecha_Alta"]).ToString("yyyy-MM-dd"));
+                        listImssBean.Add(imssBean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return listImssBean;
+        }
+
     }
     public class DatosNominaDao : Conexion
     {
@@ -428,6 +481,59 @@ namespace Payroll.Models.Daos
     }
     public class DatosPosicionesDao : Conexion
     {
+        public String ConvertDateText(string dateConvert)
+        {
+            String convertDate = "";
+            try
+            {
+                string year = dateConvert.Substring(0, 4);
+                string month = dateConvert.Substring(5, 2);
+                string day = dateConvert.Substring(8, 2);
+                string[] days = new string[] { "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" };
+                string[] months = new string[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+                convertDate = day + " de " + months[Convert.ToInt32(month) - 1] + " del " + year;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+            }
+            return convertDate;
+        }
+        public List<DatosPosicionesBean> sp_Carga_Historial_Posiciones(int keyBusiness, int keyEmployee)
+        {
+            List<DatosPosicionesBean> posicionBean = new List<DatosPosicionesBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Carga_Historial_Posiciones", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosPosicionesBean posicion = new DatosPosicionesBean();
+                        posicion.iIdPosicion         = Convert.ToInt32(data["Posicion_id"].ToString());
+                        posicion.sPosicionCodigo     = data["PosicionCodigo"].ToString();
+                        posicion.sNombreDepartamento = data["DescripcionDepartamento"].ToString();
+                        posicion.sNombrePuesto       = data["NombrePuesto"].ToString();
+                        posicion.sLocalidad          = data["Localidad"].ToString();
+                        posicion.sRegistroPat        = data["Afiliacion_IMSS"].ToString();
+                        posicion.sNombreE            = data["Nombre"].ToString();
+                        posicion.iIdReportaAPosicion = Convert.ToInt32(data["Reporta_A_Posicion_Id"].ToString());
+                        posicion.sFechaEffectiva     = Convert.ToDateTime(data["Effdt"]).ToString("yyyy-MM-dd");
+                        posicion.sFechaInicio        = ConvertDateText(Convert.ToDateTime(data["Fecha_Alta"]).ToString("yyyy-MM-dd"));
+                        posicionBean.Add(posicion);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return posicionBean;
+        }
+
         public DatosPosicionesBean sp_Posiciones_Retrieve_Posicion(int clvposition)
         {
             DatosPosicionesBean posicionBean = new DatosPosicionesBean();
@@ -729,7 +835,7 @@ namespace Payroll.Models.Daos
             }
             return datoPosicionBean;
         }
-        public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsigEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom, int usuario)
+        public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsigEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom, int usuario, int keyemp)
         {
             DatosPosicionesBean datoPosicionBean = new DatosPosicionesBean();
             try
@@ -745,6 +851,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlUsuario", usuario));
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", clvemp));
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdNomina", clvnom));
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyemp));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     datoPosicionBean.sMensaje = "success";

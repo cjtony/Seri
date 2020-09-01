@@ -680,6 +680,7 @@
                                 beforeSend: (evt) => {
                                     fDisabledButtonsRep();
                                 }, success: (data) => {
+                                    console.log(data);
                                     setTimeout(() => {
                                         if (data.Validacion === true) {
                                             if (data.Bandera === true && data.MensajeError === "none") {

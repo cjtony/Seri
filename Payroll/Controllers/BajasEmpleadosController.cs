@@ -55,7 +55,7 @@ namespace Payroll.Controllers
                     downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct);
                 }
                 if (downEmployeeBean.sMensaje == "SUCCESS") {
-                    downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(keyEmployee, keyBusiness, idTypeDown);
+                    downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(keyEmployee, keyBusiness, idTypeDown, dateDownFormat);
                     if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
                         flag = true;
                     } else {

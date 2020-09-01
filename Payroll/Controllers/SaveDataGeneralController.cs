@@ -257,8 +257,9 @@ namespace Payroll.Controllers
             DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
             DatosPosicionesDao datoPosicionDao  = new DatosPosicionesDao();
             try {
+                int keyemp      = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsigEdit(clvstr, convertFEffdt, convertFIniP, clvemp, clvnom, usuario);
+                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsigEdit(clvstr, convertFEffdt, convertFIniP, clvemp, clvnom, usuario, keyemp);
                 if (addPosicionBean.sMensaje != "success") {
                     messageError = addPosicionBean.sMensaje;
                 }
