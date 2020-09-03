@@ -1,16 +1,16 @@
 ﻿<div class="container bg-white pb-3 rounded font-labels shadow shadow-lg border-left-primary border-right-primary">
     <div class="border-bottom border-secondary pt-4 pb-2 font-weight-bold d-flex justify-content-between"><div>Registrar ausentismo a empleado : </div><strong class="font-button" id="EmpDes"></strong><div class="btn btn-info btn-sm font-labels" id="btn-cambiar-empleado" title="Cambia de usuario"><i class="fas fa-users"></i></div></div>
     <div class="row">
-        <div class="col-md-12  rounded">
+        <div class="col-md-4 rounded">
             <form action="#" method="post" class="bg-light px-3 py-3 rounded" id="frmAusentismos">
                 <div class="form-group row">
                     <div class="form-group col-md-12">
                         <label for="">Motivo del ausentismo</label>
-                        <select class="form-control font-labels custom-select" id="inMotivoAusentismo" name="inMotivoAusentismo" required>
+                        <select class="form-control font-labels custom-select custom-select-sm" id="inMotivoAusentismo" name="inMotivoAusentismo" required>
                             <option value="">Selecciona</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label for="inRecuperacionAusentismo">Recupera ausentismo</label>
                         <select class="form-control font-labels custom-select custom-select-sm" id="inRecuperacionAusentismo" required>
                             <option value="">Selecciona</option>
@@ -19,28 +19,37 @@
                             <option value="No aplicar">No aplicar</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inFechaAusentismo">Fecha</label>
-                        <div class="input-group">
-                            <input type="text" name="inFechaAusentismo" id="inFechaAusentismo" class="form-control form-control-sm font-labels" placeholder="DD/MM/AAAA" required />
-                            <div class="input-group-prepend">
-                                <div class="input-group-text " id=""><span class="far fa-calendar-alt"></span></div>
-                            </div>
+                    <div class="form-group col-md-12 text-right">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-sm btn-outline-info font-labels active" onclick="checkPorDias();">
+                                <input type="radio" name="options" id="option1" checked> Por Días
+                            </label>
+                            <label class="btn btn-sm btn-outline-info font-labels" onclick="checkPorFecha();">
+                                <input type="radio" name="options" id="option2"> Por Fechas
+                            </label>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inDiasAusentismo">Dias</label>
-                        <input type="text" name="inDiasAusentismo" id="inDiasAusentismo" class="form-control input-number form-control-sm" placeholder="Escriba los dias de Ausentismo" min="1" maxlength="2" required />
+                    <div class="col-md-12 px-0" id="frmtipo">
+                        <div class="form-group col-md-12">
+                            <label for="inFechaAusentismo">Fecha</label>
+                            <input type="date" name="inFechaAusentismo" id="inFechaAusentismo" class="form-control form-control-sm font-labels" required />
+
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inDiasAusentismo">Dias</label>
+                            <input type="text" name="inDiasAusentismo" id="inDiasAusentismo" class="form-control input-number form-control-sm" placeholder="Escriba los dias de Ausentismo" min="1" maxlength="2" required />
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
+                    
+                    <div class="form-group col-md-12">
                         <label for="inCausaAusentismo">Causa</label>
                         <input type="text" name="inCausaAusentismo" id="inCausaAusentismo" value="" class="form-control form-control-sm" placeholder="Escriba la causa del Ausentismo" required />
                     </div>
-                    <div class="form-group imss col-md-6">
+                    <div class="form-group imss col-md-12">
                         <label for="inCertificadoAusentismo">Certificado</label>
                         <input type="text" name="inCertificadoAusentismo" id="inCertificadoAusentismo" value="" class="form-control form-control-sm" placeholder="Folio de certificado" required />
                     </div>
-                    <div class="form-group imss col-md-6">
+                    <div class="form-group imss col-md-12">
                         <label for="inComentariosAusentismo">Comentarios</label>
                         <input type="text" name="inComentariosAusentismo" id="inComentariosAusentismo" value="" class="form-control form-control-sm" placeholder="Escriba un comentario" required />
                     </div>
@@ -62,23 +71,79 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-12 mt-3">
-            <table class="table table-sm font-labels text-center table-striped border-bottom border-top-primary" id="tabAusentismos">
-                <thead>
-                    <tr>
-                        <th scope="col">Motivo</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Dias</th>
-                        <th scope="col">Recupera</th>
-                        <th scope="col">Causa</th>
-                        <th scope="col">Certificado IMSS</th>
-                        <th scope="col">Comentarios IMSS</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabody">
-                </tbody>
-            </table>
+        <div class="col-md-8 mt-3">
+
+            <ul class="nav nav-tabs font-weight-bold" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active h6 text-info" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"> <i class="fas fa-calendar-times text-primary" style="color:#020F59;"></i> Todos los ausentismos </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link h6 text-info" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">  <i class="fas fa-calendar-plus text-primary" style="color:#020F59;"></i>  Incapacidades </a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <table class="table table-sm font-labels text-center table-striped" id="tabAusentismos">
+                        <thead>
+                            <tr>
+                                <th scope="col">Motivo</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Dias</th>
+                                <th scope="col">Recupera</th>
+                                <th scope="col">Causa</th>
+                                <th scope="col">Certificado IMSS</th>
+                                <th scope="col">Comentarios IMSS</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <form class="col-md-12 form-group-sm row my-3 mx-auto p-2 rounded text-center px-auto" id="frmIncapacidades" style="background-color:rgba(0, 161, 255, 0.1)">
+                        <div class="col-md-3">
+                            <label class="text-dark">Fecha Inicio</label>
+                            <input type="date" class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-dark">Fecha Fin</label>
+                            <input type="date" class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-md-5">
+                            <label class="invisible col-md-12">src only</label>
+                            <div class="btn btn-outline-primary btn-sm font-labels col-md-5 mx-1">
+                                <span class="icon"><i class="fas fa-search"></i></span>
+                                <span class="text"> Buscar </span>
+                            </div>
+                            <div class="btn btn-outline-secondary btn-sm font-labels col-md-5 mx-1">
+                                <span class="icon"><i class="fas fa-search"></i></span>
+                                <span class="text"> Ver todo </span>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table table-sm font-labels text-center table-striped" id="tabIncapacidades">
+                        <thead>
+                            <tr>
+                                <th scope="col">Motivo</th>
+                                <th scope="col">Fecha Inicio</th>
+                                <th scope="col">Dias</th>
+                                <th scope="col">Fecha Fin</th>
+                                <th scope="col">Causa</th>
+                                <th scope="col">Certificado IMSS</th>
+                                <th scope="col">Comentarios IMSS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabodyIncapacidades">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
         </div>
     </div>
 </div>
@@ -111,4 +176,11 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Ausentismos.js"></script>
+<script src="~/Scripts/main/Ausentismos.js?n=1"></script>
+<script>
+    $(function () {
+        // carga select
+        LoadSelectRecuperaAusentismo();
+        
+    });
+</script>

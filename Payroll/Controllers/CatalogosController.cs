@@ -439,6 +439,13 @@ namespace Payroll.Controllers
             Lista = Dao.sp_TRegistroPatronal_insert_RegistroPatronal(Empresa_id, Afiliacion_IMSS, NombreAfiliacion, RiesgoTrabajo, Clase);
             return Json(Lista);
         }
-
+        [HttpPost]
+        public JsonResult LoadTipoRecuperaAusentismo()
+        {
+            List<List<string>> Lista;
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            Lista = Dao.sp_CatalogoGeneral_Retrieve_RecuperaAusentismos();
+            return Json(Lista);
+        }
     }
 }

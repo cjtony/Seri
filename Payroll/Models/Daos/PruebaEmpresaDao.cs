@@ -359,8 +359,8 @@ namespace Payroll.Models.Daos
                     list.Descripcion = data["Descripcion"].ToString();
                     list.TasaIva = data["TazaIva"].ToString();
 
-                    if (data["RegistroPatronal_id"].ToString().Length != 0) 
-                    { 
+                    if (data["RegistroPatronal_id"].ToString().Length != 0)
+                    {
                         list.RegistroPatronal_id = int.Parse(data["RegistroPatronal_id"].ToString());
                         list.NombreRegistroPatronal = data["Afiliacion_IMSS"].ToString() + " - " + data["NombreRegistroPatronal"].ToString();
                     }
@@ -376,7 +376,7 @@ namespace Payroll.Models.Daos
                     else { list.Sucursal_id = 0; }
 
                     if (data["Cg_Estado_id"].ToString().Length != 0) { list.Estado_id = int.Parse(data["Cg_Estado_id"].ToString()); }
-                    else { list.Estado_id = 0; } 
+                    else { list.Estado_id = 0; }
 
                     lista.Add(list);
                 }
@@ -517,7 +517,7 @@ namespace Payroll.Models.Daos
             {
                 RegionalesBean list = new RegionalesBean { sDescripcionRegional = "true" };
                 lista.Add(list);
-                
+
             }
             data.Close();
 
@@ -623,7 +623,7 @@ namespace Payroll.Models.Daos
 
             return res;
         }
-        public List<AusentismosBean> sp_TiposAusentimo_Retrieve_TiposAusentismo()
+        public List<AusentismosBean> sp_TiposAusentimo_Retrieve_TiposAusentismo(int Empresa_id)
         {
             List<AusentismosBean> lista = new List<AusentismosBean>();
             this.Conectar();
@@ -639,13 +639,67 @@ namespace Payroll.Models.Daos
             {
                 while (data.Read())
                 {
-                    AusentismosBean list = new AusentismosBean
+                    AusentismosBean list = new AusentismosBean();
+
+                    switch (int.Parse(data["idValor"].ToString()))
                     {
-                        iIdTipoAusentismo = int.Parse(data["idValor"].ToString()),
-                        sNombreAusentismo = data["Valor"].ToString(),
-                        sDescripcionAusentismo = data["Descripcion"].ToString()
-                    };
-                    lista.Add(list);
+                        case 1:
+                            list.iIdTipoAusentismo = 1204;
+                            list.sNombreAusentismo = "{Incapacidad} " + data["Valor"].ToString();
+                            list.sDescripcionAusentismo = data["IdValor"].ToString();
+                            lista.Add(list);
+                            break;
+
+                        case 6:
+                            list.iIdTipoAusentismo = 1201;
+                            list.sNombreAusentismo = "{Incapacidad} " + data["Valor"].ToString();
+                            list.sDescripcionAusentismo = data["IdValor"].ToString();
+                            lista.Add(list);
+                            break;
+
+                        case 7:
+                            list.iIdTipoAusentismo = 1201;
+                            list.sNombreAusentismo = "{Incapacidad} " + data["Valor"].ToString();
+                            list.sDescripcionAusentismo = data["IdValor"].ToString();
+                            lista.Add(list);
+                            break;
+
+                        case 10:
+                            list.iIdTipoAusentismo = 1202;
+                            list.sNombreAusentismo = "{Incapacidad} " + data["Valor"].ToString();
+                            list.sDescripcionAusentismo = data["IdValor"].ToString();
+                            lista.Add(list);
+                            break;
+
+                        case 20:
+                            list.iIdTipoAusentismo = 1203;
+                            list.sNombreAusentismo = "{Incapacidad} " + data["Valor"].ToString();
+                            list.sDescripcionAusentismo = data["IdValor"].ToString();
+                            lista.Add(list);
+                            break;
+                        case 22:
+                        case 23:
+                        case 24:
+                        case 25:
+                            break;
+
+                        default:
+                            list.iIdTipoAusentismo = 1013;
+                            list.sNombreAusentismo = "{Falta} " + data["Valor"].ToString();
+                            list.sDescripcionAusentismo = data["IdValor"].ToString();
+                            lista.Add(list);
+                            break;
+                    }
+                }
+                if (Empresa_id == 156)
+                {
+                    AusentismosBean ls1 = new AusentismosBean();
+                    //AusentismosBean ls2 = new AusentismosBean();
+                    //AusentismosBean ls3 = new AusentismosBean();
+                    ls1.iIdTipoAusentismo = 1050;
+                    ls1.sNombreAusentismo = "{Falta} Falta injustificada (proporcional)";
+                    ls1.sDescripcionAusentismo = "1050";
+                    lista.Add(ls1);
                 }
             }
             else
@@ -887,6 +941,37 @@ namespace Payroll.Models.Daos
             data.Close();
 
             return res;
+        }
+        public List<List<string>> sp_CatalogoGeneral_Retrieve_RecuperaAusentismos()
+        {
+            List<List<string>> lista = new List<List<string>>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_CatalogoGeneral_Retrieve_CatalogoGeneral", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlCatalogoId", 36));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    List<string> list = new List<string>();
+                    list.Add(data["idValor"].ToString());
+                    list.Add(data["Valor"].ToString());
+                    list.Add(data["Descripcion"].ToString());
+                    lista.Add(list);
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+
+            return lista;
         }
     }
 }

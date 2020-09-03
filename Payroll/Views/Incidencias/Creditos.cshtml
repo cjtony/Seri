@@ -5,39 +5,27 @@
         <div class="col-md-6  rounded">
             <form action="#" method="post" class="bg-light px-3 py-3 rounded" id="frmCreditos">
                 <div class="form-group row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group form-group-sm col-md-12">
                         <label for="">Tipo de descuento</label>
-                        <select class="form-control font-labels custom-select" id="inTipoDescuento" name="inMotivoAusentismo" required>
-                            <option value="">Selecciona</option>
-                            <option value="Cuota Fija">Cuota Fija</option>
-                            <option value="Porcentaje">Porcentaje</option>
-                            <option value="N veces el Sal. Minimo">N veces el Sal. Minimo</option>
-                            <option value="Cuota fija sobre UMA">Cuota fija sobre UMA</option>
+                        <select class="form-control font-labels custom-select custom-select-sm" id="inTipoDescuento" name="inTipoDescuento" required>   
                         </select>
                         <small class="font-labelspt-1 text-black-50"> **Para cualquier opción seleccionada se tendra que calcular el monto e ingresarlo en el apartado de descuento. </small>
                     </div>
                 </div>
-                <div class="form-group">
-                    @*<label for="custom-switch">Aplica seguro vivienda</label>*@
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input input-number" id="inAplicaSeguro" name="inAplicaSeguro">
-                        <label class="custom-control-label" for="inAplicaSeguro">Aplica seguro vivienda</label>
-                    </div>
-                </div>
                 <div class="form-group row">
                     <div class="form-group col-md-6">
-                        <label for="inDescuento">Descuento</label>
-                        <input class="form-control" type="text" name="inDescuento" id="inDescuento" placeholder="Ingresa el descuento a aplicar" autocomplete="off" required />
+                        <label id="lblInDescuento" for="inDescuento"> Monto </label>
+                        <input class="form-control form-control-sm" type="text" name="inDescuento" id="inDescuento" placeholder="Ingresa el descuento a aplicar" autocomplete="off" required />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inNoCredito">No de Crédito</label>
-                        <input class="form-control" type="text" name="inNoCredito" id="inNoCredito" placeholder="Ingresa el No de credito" required />
+                        <input class="form-control  form-control-sm" type="text" name="inNoCredito" id="inNoCredito" placeholder="Ingresa el No de credito" required />
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="form-group col-md-6">
                         <label for="inFechaAprovacionCredito">Fecha de aprobación del crédito</label>
-                        <input type="date" name="inFechaAprovacionCredito" id="inFechaAprovacionCredito" class="form-control font-labels" required />
+                        <input type="date" name="inFechaAprovacionCredito" id="inFechaAprovacionCredito" class="form-control form-control-sm font-labels" required />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inDescontar">Descontar</label>
@@ -49,24 +37,25 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group row">
                     <div class="form-group col-md-6">
                         <label for="inFechaAusentismo">Fecha de baja del crédito</label>
-                        <input type="date" name="inFechaBajaCredito" id="inFechaBajaCredito" value="" class="form-control font-labels" required />
+                        <input type="date" name="inFechaBajaCredito" id="inFechaBajaCredito" value="" class="form-control form-control-sm font-labels" required />
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inFechaAusentismo">Fecha de reinicio del crédito</label>
-                        <input type="date" name="inFechaReinicioCredito" id="inFechaReinicioCredito" value="" class="form-control font-labels" />
+                        <input type="date" name="inFechaReinicioCredito" id="inFechaReinicioCredito" value="" class="form-control form-control-sm font-labels" />
                     </div>
                     <div class="form-group col-md-12">
                         <div class="btn btn-primary font-labels col-md-12" id="btnSaveCredito">Registrar credito <i class="far fa-edit"></i></div>
                     </div>
-
                 </div>
             </form>
         </div>
         <div class="col-md-6">
+
+
+
             <table class="table table-sm font-labels" id="tabCreditos">
                 <thead>
                     <tr>
@@ -82,12 +71,7 @@
             </table>
         </div>
     </div>
-
-
-
-
 </div>
-
 @* MODAL DE LIVE SEARCH EMPLEADO *@
 <!-- Modal -->
 <div class="modal fade" id="modalLiveSearchEmpleado" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -102,19 +86,21 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="search-box col-md-12">
-
                         <label for="inputSearchEmpleados" class="font-labels">Escribe el nombre del empleado que buscas</label>
                         <input type="text" name="inputSearchEmpleados" id="inputSearchEmpleados" placeholder="Escriba el nombre del empleado" class=" form-control" autocomplete="off" />
                         <div id="resultSearchEmpleados" name="resultSearchEmpleados" class="list-group"></div>
-
                     </div>
                     <div class="col-lg-3 col-md-3 col-3 pb-3">
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <script src="~/Scripts/main/Creditos.js"></script>
+<script>
+    $(function () {
+        //manda llamar la funcion de cargar los selects 
+        LoadSelectTipoDescuento();
+    });
+</script>
