@@ -13,7 +13,6 @@
 
     //    //}
     //});
-    console.log(url);
 
     loadIncidenciasFile = () => {
         var oReq = new XMLHttpRequest();

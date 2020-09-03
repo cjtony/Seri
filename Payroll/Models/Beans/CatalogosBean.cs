@@ -507,6 +507,7 @@ namespace Payroll.Models.Beans
         public string Certificado_imss { get; set; }
         public string Comentarios_imss { get; set; }
         public string Causa_FaltaInjustificada { get; set; }
+        public string FechaFin { get; set; }
     }
     public class PensionesAlimentariasBean
     {

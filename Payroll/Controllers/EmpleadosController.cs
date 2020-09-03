@@ -1121,7 +1121,7 @@ namespace Payroll.Controllers
             {
                 Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             }
-            @Session["Empleado_id"] = Empleado_id;
+            Session["Empleado_id"] = Empleado_id;
             int Perfil_id = int.Parse(Session["Profile"].ToString());
             empleados = Dao.sp_Templeado_Retrieve_DatosEmpleado(Empresa_id,Empleado_id,Perfil_id);
             return Json(empleados);

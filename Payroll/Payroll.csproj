@@ -883,6 +883,7 @@
     <Content Include="Scripts\main\BajasMasivas\main.js" />
     <Content Include="Scripts\main\branchoffices.js" />
     <Content Include="Scripts\main\CargasMasivas\main.js" />
+    <Content Include="Scripts\main\cargamasiva.js" />
     <Content Include="Scripts\main\catalogos.js" />
     <Content Include="Scripts\main\centrcost.js" />
     <Content Include="Scripts\main\Creditos.js" />
@@ -1019,6 +1020,7 @@
     <Content Include="Views\Empresas\Bancos.cshtml" />
     <Content Include="Views\Catalogos\CUsuarios.cshtml" />
     <Content Include="Views\Empleados\EmisionRecibos.cshtml" />
+    <Content Include="Views\Incidencias\CargaMasiva.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

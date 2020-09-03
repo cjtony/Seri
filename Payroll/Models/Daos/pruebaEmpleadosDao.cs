@@ -318,7 +318,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, int SeguroVivienda, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
+        public List<string> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
         {
             if (FechaBaja == null)
             {
@@ -337,7 +337,6 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipoDescuento", TipoDescuento));
-            cmd.Parameters.Add(new SqlParameter("@ctrlSeguroVivienda", SeguroVivienda));
             cmd.Parameters.Add(new SqlParameter("@ctrlDescuento", Descuento));
             cmd.Parameters.Add(new SqlParameter("@ctrlNoCredito", NoCredito));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaAprovacionCredito", FechaAprovacion));
@@ -511,7 +510,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo)
+        public List<string> sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo,string FechaFin, int Tipo)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -529,6 +528,8 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", Comentarios_imss));
             cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", Causa_FaltaInjustificada));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaFin", FechaFin));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipo", Tipo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -926,6 +927,90 @@ namespace Payroll.Models.Daos
                 {
                     list.Add(data["iFlag"].ToString());
                     list.Add(data["sMensaje"].ToString());
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
+        public List<AusentismosEmpleadosBean> sp_TAusentismos_Retrieve_IncapacidadesPeriodo(int Empresa_id, int Empleado_id)
+        {
+            List<AusentismosEmpleadosBean> list = new List<AusentismosEmpleadosBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TAusentismos_Retrieve_IncapacidadesPeriodo", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    AusentismosEmpleadosBean lista = new AusentismosEmpleadosBean();
+
+                    lista.IdAusentismo = int.Parse(data["IdAusentismo"].ToString());
+                    lista.Tipo_Ausentismo_id = int.Parse(data["Tipo_Ausentismo_id"].ToString());
+                    lista.Nombre_Ausentismo = data["Descripcion"].ToString();
+                    lista.Empleado_id = int.Parse(data["Empleado_id"].ToString());
+                    lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
+                    lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
+                    lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
+                    lista.Certificado_imss = data["Certificado_imss"].ToString();
+                    lista.Comentarios_imss = data["Comentarios_imss"].ToString();
+                    lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
+                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
+                    lista.FechaFin = data["Fechaf"].ToString();
+                    list.Add(lista);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+
+            return list;
+        }
+        public List<AusentismosEmpleadosBean> sp_TAusentismos_Search_Incapacidades(int Empresa_id, int Empleado_id, string FechaI, string FechaF)
+        {
+            List<AusentismosEmpleadosBean> list = new List<AusentismosEmpleadosBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TAusentismos_Search_Incapacidades", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaInicio", FechaI));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaFin", FechaF));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    AusentismosEmpleadosBean lista = new AusentismosEmpleadosBean();
+
+                    lista.IdAusentismo = int.Parse(data["IdAusentismo"].ToString());
+                    lista.Tipo_Ausentismo_id = int.Parse(data["Tipo_Ausentismo_id"].ToString());
+                    lista.Nombre_Ausentismo = data["Descripcion"].ToString();
+                    lista.Empleado_id = int.Parse(data["Empleado_id"].ToString());
+                    lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
+                    lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
+                    lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
+                    lista.Certificado_imss = data["Certificado_imss"].ToString();
+                    lista.Comentarios_imss = data["Comentarios_imss"].ToString();
+                    lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
+                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
+                    lista.FechaFin = data["Fechaf"].ToString();
+                    list.Add(lista);
                 }
             }
             else

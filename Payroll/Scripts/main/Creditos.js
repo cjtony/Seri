@@ -7,7 +7,7 @@
     //Eventos 
     $("#btnSaveCredito").on("click", function () {
         var tdescuento = document.getElementById("inTipoDescuento");
-        var aseguro = document.getElementById("inAplicaSeguro");
+        //var aseguro = document.getElementById("inAplicaSeguro");
         var descuento = document.getElementById("inDescuento");
         var ncredito = document.getElementById("inNoCredito");
         var fechaa = document.getElementById("inFechaAprovacionCredito");
@@ -31,7 +31,7 @@
                 url: "../Incidencias/SaveCredito",
                 data: JSON.stringify({
                     TipoDescuento: tdescuento.value,
-                    SeguroVivienda: aseg,
+                    //SeguroVivienda: aseg,
                     Descuento: descuento.value,
                     NoCredito: ncredito.value,
                     FechaAprovacion: fechaa.value,
@@ -59,10 +59,6 @@
                         });
                         form.reset();
                     } 
-
-                    
-                    
-                    
                 }
             });
         }
@@ -103,7 +99,7 @@
         this.value = this.value.replace(/[^0-9]/g, '');
     });
 
-    //Funciones
+    //Funcion de mostrar empleado seleccionado en la busqueda
     MostrarDatosEmpleado = (idE) => {
         var txtIdEmpleado = { "IdEmpleado": idE };
         $.ajax({
@@ -121,6 +117,7 @@
         });
 
     }
+    //crea la tabla con los creditos que tiene activos el empleado
     createTab = () => {
         $.ajax({
             method: "POST",
@@ -141,6 +138,7 @@
         });
 
     }
+    //carga el tipo de descuentos con los que trabaja el credito
     LoadSelectTipoDescuento = () => {
         $.ajax({
             method: "POST",
@@ -151,14 +149,13 @@
                 var select = document.getElementById("inTipoDescuento");
                 select.innerHTML = "<option value=''> Selecciona </option>";
                 for (var i = 0; i < data.length; i++) {
-                    select.innerHTML += "<option value='" + data[i]["Id"] + "'>"+data[i]["Nombre"]+"</option>"
+                    select.innerHTML += "<option value='" + data[i]["Id"] + "'>" + data[i]["Nombre"] + "</option>";
                 }
-
-
             }
         });
     }
-    LoadSelectTipoDescuento();
+    
+    //borra el credito seleccionado
     deleteCredito = (Credito_id) => {
         Swal.fire({
             title: 'Estas seguro?',
@@ -200,5 +197,28 @@
             }
         });
     }
+    //cambia el valor del campo segun el select 
+    $("#inTipoDescuento").change(function () {
+        var select = document.getElementById("inTipoDescuento");
+        //console.log(select.value);
+        switch (select.value) {
+            case '289':
+                $("#lblInDescuento").html(" Monto ");
+                break;
+            case '290':
+                $("#lblInDescuento").html(" Porcentaje ");
+                break;
+            case '291':
+                $("#lblInDescuento").html(" No. Veces ");
+                break;
+            case '292':
+                $("#lblInDescuento").html(" Factor Descuento ");
+                break;
+            default:
+                $("#lblInDescuento").html(" Monto ");
+                break;
+        }
+    });
     
+    //
 });
