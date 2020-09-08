@@ -294,15 +294,15 @@ namespace Payroll.Controllers
             lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Empleado_id, FechaI, FechaF);
             return Json(lista);
         }
-        [HttpPost]
-        public JsonResult LoadDiasRestantesPeriodo(string FechaI, string FechaF)
-        {
-            List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();
-            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
-            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
-            int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Periodo);
-            return Json(lista);
-        }
+        //[HttpPost]
+        //public JsonResult LoadDiasRestantesPeriodo(string FechaI, string FechaF)
+        //{
+        //    List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();
+        //    pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+        //    int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+        //    int Periodo = int.Parse(Session["Periodo_id"].ToString());
+        //    lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Periodo);
+        //    return Json(lista);
+        //}
     }
 }   
