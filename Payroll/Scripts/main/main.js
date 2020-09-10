@@ -75,39 +75,45 @@
 
     dateact.textContent = daylet + " " + d.getDate() + " de " + montlet + " del " + d.getFullYear() + ".";
 
-    const navDataGenTab = document.getElementById('nav-datagen-tab'),
-        navImssTab = document.getElementById('nav-imss-tab'),
-        navDataNomTab = document.getElementById('nav-datanom-tab'),
-        navEstructureTab = document.getElementById('nav-estructure-tab');
+    const navDataGenTab    = document.getElementById('nav-datagen-tab');
+    const navImssTab       = document.getElementById('nav-imss-tab');
+    const navDataNomTab    = document.getElementById('nav-datanom-tab');
+    const navEstructureTab = document.getElementById('nav-estructure-tab');
 
-    const btnsaveedit = document.getElementById('btn-save-edit'),
-        btnClearLocSto = document.getElementById('btn-clear-localstorage'),
-        btnSaveDataGen = document.getElementById('btn-save-data-gen'),
-        btnSaveDataImss = document.getElementById('btn-save-data-imss'),
-        btnSaveDataNomina = document.getElementById('btn-save-data-nomina'),
-        btnSaveDataEstructure = document.getElementById('btn-save-data-estructure');
+    const btnsaveedit           = document.getElementById('btn-save-edit');
+    const btnClearLocSto        = document.getElementById('btn-clear-localstorage');
+    const btnSaveDataGen        = document.getElementById('btn-save-data-gen');
+    const btnSaveDataImss       = document.getElementById('btn-save-data-imss');
+    const btnSaveDataNomina     = document.getElementById('btn-save-data-nomina');
+    const btnSaveDataEstructure = document.getElementById('btn-save-data-estructure');
 
-    let objectDataTabDataGen = {},
-        objectDataTabImss = {},
-        objectDataTabNom = {},
-        objectDataTabEstructure = {};
+    let objectDataTabDataGen    = {};
+    let objectDataTabImss       = {};
+    let objectDataTabNom        = {};
+    let objectDataTabEstructure = {};
 
     // Variables formulario Datos Generales \\ 
-    const clvemp = document.getElementById('clvemp'),
-        name = document.getElementById('name'), apep = document.getElementById('apepat'),
-        apem = document.getElementById('apemat'), fnaci = document.getElementById('fnaci'),
-        lnaci = document.getElementById('lnaci'),
-        title = document.getElementById('title'),
-        sex = document.getElementById('sex'), nacion = document.getElementById('nacion'),
-        estciv = document.getElementById('estciv'), codpost = document.getElementById('codpost'),
-        state = document.getElementById('state'), city = document.getElementById('city'),
-        colony = document.getElementById('colony'),
-        street = document.getElementById('street'), numberst = document.getElementById('numberst'),
-        telfij = document.getElementById('telfij'),
-        telmov = document.getElementById('telmov'),
-        mailus = document.getElementById('mailus'),
-        tipsan = document.getElementById('tipsan'),
-        fecmat = document.getElementById('fecmat');
+    const clvemp   = document.getElementById('clvemp');
+    const name     = document.getElementById('name');
+    const apep     = document.getElementById('apepat');
+    const apem     = document.getElementById('apemat');
+    const fnaci    = document.getElementById('fnaci');
+    const lnaci    = document.getElementById('lnaci');
+    const title    = document.getElementById('title');
+    const sex      = document.getElementById('sex');
+    const nacion   = document.getElementById('nacion');
+    const estciv   = document.getElementById('estciv');
+    const codpost  = document.getElementById('codpost');
+    const state    = document.getElementById('state');
+    const city     = document.getElementById('city');
+    const colony   = document.getElementById('colony');
+    const street   = document.getElementById('street');
+    const numberst = document.getElementById('numberst');
+    const telfij   = document.getElementById('telfij');
+    const telmov   = document.getElementById('telmov');
+    const mailus   = document.getElementById('mailus');
+    const tipsan   = document.getElementById('tipsan');
+    const  fecmat  = document.getElementById('fecmat');
     const btnsaveeditdatagen = document.getElementById('btn-save-edit-data-gen');
 
 
@@ -131,10 +137,14 @@
     }
 
     // Variables formulario IMSS \\
-    const clvimss = document.getElementById('clvimss'), fechefecactimss = document.getElementById('fechefecactimss'), imss = document.getElementById('regimss'),
-        rfc = document.getElementById('rfc'), curp = document.getElementById('curp'),
-        nivest = document.getElementById('nivest'), nivsoc = document.getElementById('nivsoc'),
-        fecefe = document.getElementById('fecefe');
+    const clvimss         = document.getElementById('clvimss');
+    const fechefecactimss = document.getElementById('fechefecactimss');
+    const imss            = document.getElementById('regimss');
+    const rfc             = document.getElementById('rfc');
+    const curp            = document.getElementById('curp');
+    const nivest          = document.getElementById('nivest');
+    const nivsoc          = document.getElementById('nivsoc');
+    const fecefe          = document.getElementById('fecefe');
     const btnsaveeditdataimss = document.getElementById('btn-save-edit-data-imss');
     const vardataimss = [clvimss, fechefecactimss, fecefe, imss, rfc, curp, nivest, nivsoc];
     fclearfieldsvar2 = () => {
@@ -148,22 +158,29 @@
     }
 
     // Variables formulario datos nomina \\
-    const clvnom = document.getElementById('clvnom'),
-        fecefecnom = document.getElementById('fecefecnom'),
-        fechefectact = document.getElementById('fechefectact'),
-        salmen = document.getElementById('salmen'), tipper = document.getElementById('tipper'),
-        tipemp = document.getElementById('tipemp'), nivemp = document.getElementById('nivemp'),
-        tipjor = document.getElementById('tipjor'), tipcon = document.getElementById('tipcon'),
-        fecing = document.getElementById('fecing'), fecant = document.getElementById('fecant'),
-        vencon = document.getElementById('vencon'), tippag = document.getElementById('tippag'),
-        banuse = document.getElementById('banuse'),
-        cunuse = document.getElementById('cunuse'),
-        //estats = document.getElementById('estats'),
-        tipcontra = document.getElementById('tipcontra');
-        //motinc = document.getElementById('motinc')
+    const clvnom       = document.getElementById('clvnom');
+    const fecefecnom   = document.getElementById('fecefecnom');
+    const fechefectact = document.getElementById('fechefectact');
+    const salmen       = document.getElementById('salmen');
+    const tipper       = document.getElementById('tipper');
+    const tipemp       = document.getElementById('tipemp');
+    const nivemp       = document.getElementById('nivemp');
+    const tipjor       = document.getElementById('tipjor');
+    const tipcon       = document.getElementById('tipcon');
+    const fecing       = document.getElementById('fecing');
+    const fecant       = document.getElementById('fecant');
+    const vencon       = document.getElementById('vencon');
+    const tippag       = document.getElementById('tippag');
+    const banuse       = document.getElementById('banuse');
+    const cunuse       = document.getElementById('cunuse');
+    const tipcontra    = document.getElementById('tipcontra');
+    const tiposueldo   = document.getElementById('tiposueldo');
+
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
 
-    const vardatanomina = [clvnom, fechefectact, fecefecnom, tipper, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse];
+    const vardatanomina = [
+        clvnom, fechefectact, fecefecnom, tipper, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo
+    ];
     fclearfieldsvar3 = () => {
         for (let i = 0; i < vardatanomina.length; i++) {
             if (vardatanomina[i].getAttribute('tp-select') != null) {
@@ -179,17 +196,22 @@
     }
 
     //Variables formulario estructura \\
-    const numpla = document.getElementById('numpla'), clvstr = document.getElementById('clvstr'),
-        clvposasig = document.getElementById('clvposasig'), clvstract = document.getElementById('clvstract'),
-        depaid = document.getElementById('depaid'), puesid = document.getElementById('puesid'),
-        emprep = document.getElementById('emprep'), report = document.getElementById('report'),
-        depart = document.getElementById('depart'), pueusu = document.getElementById('pueusu'),
-        //clvbank = document.getElementById('clvbank'),
-        localty = document.getElementById('localty'), fechefectpos = document.getElementById('fechefectpos');
-    fechinipos = document.getElementById('fechinipos'); fechefecposact = document.getElementById('fechefecposact');
-    //const btnsavedataall = document.getElementById('btn-save-data-all');
+    const numpla       = document.getElementById('numpla');
+    const clvstr       = document.getElementById('clvstr');
+    const clvposasig   = document.getElementById('clvposasig');
+    const clvstract    = document.getElementById('clvstract');
+    const depaid       = document.getElementById('depaid');
+    const puesid       = document.getElementById('puesid');
+    const emprep       = document.getElementById('emprep');
+    const report       = document.getElementById('report');
+    const depart       = document.getElementById('depart');
+    const pueusu       = document.getElementById('pueusu');
+    const localty      = document.getElementById('localty');
+    const fechefectpos = document.getElementById('fechefectpos');
+    const fechinipos   = document.getElementById('fechinipos');
+    const fechefecposact     = document.getElementById('fechefecposact');
     const btnsaveeditdataest = document.getElementById('btn-save-edit-dataest');
-    const vardataestructure = [clvstract, clvposasig, clvstr, numpla, depaid, puesid, emprep, report, depart, pueusu, localty, fechefectpos, fechinipos, fechefecposact];
+    const vardataestructure  = [clvstract, clvposasig, clvstr, numpla, depaid, puesid, emprep, report, depart, pueusu, localty, fechefectpos, fechinipos, fechefecposact];
     fclearfieldsvar4 = () => {
         for (let i = 0; i < vardataestructure.length; i++) {
             if (vardataestructure[i].getAttribute('tp-select') != null) {
@@ -205,7 +227,6 @@
             localStorage.setItem('tabSelected', 'none');
         }
         if (localStorage.getItem('modeedit') != null) {
-            //document.getElementById('btn-save-data-all').disabled = false;
             document.getElementById('content-new-inpt-fechmovi').innerHTML = `
                 <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
                     Fecha de movimiento
@@ -295,20 +316,26 @@
             let dcolony;
             for (i in getDataTabDataGen) {
                 if (getDataTabDataGen[i].key === "general") {
-                    clvemp.value = getDataTabDataGen[i].data.clvemp;
-                    name.value = getDataTabDataGen[i].data.name; apep.value = getDataTabDataGen[i].data.apep;
-                    apem.value = getDataTabDataGen[i].data.apem; fnaci.value = getDataTabDataGen[i].data.fnaci;
-                    lnaci.value = getDataTabDataGen[i].data.lnaci;
-                    title.value = getDataTabDataGen[i].data.title;
-                    sex.value = getDataTabDataGen[i].data.sex; nacion.value = getDataTabDataGen[i].data.nacion;
-                    estciv.value = getDataTabDataGen[i].data.estciv; codpost.value = getDataTabDataGen[i].data.codpost;
-                    state.value = getDataTabDataGen[i].data.state; city.value = getDataTabDataGen[i].data.city;
-                    street.value = getDataTabDataGen[i].data.street;
-                    dcolony = getDataTabDataGen[i].data.colony;
-                    //colony.innerHTML = `<option value="${getDataTabDataGen[i].data.colony}"></option>`;
+                    clvemp.value  = getDataTabDataGen[i].data.clvemp;
+                    name.value    = getDataTabDataGen[i].data.name;
+                    apep.value    = getDataTabDataGen[i].data.apep;
+                    apem.value    = getDataTabDataGen[i].data.apem;
+                    fnaci.value   = getDataTabDataGen[i].data.fnaci;
+                    lnaci.value   = getDataTabDataGen[i].data.lnaci;
+                    title.value   = getDataTabDataGen[i].data.title;
+                    sex.value     = getDataTabDataGen[i].data.sex;
+                    nacion.value  = getDataTabDataGen[i].data.nacion;
+                    estciv.value  = getDataTabDataGen[i].data.estciv;
+                    codpost.value = getDataTabDataGen[i].data.codpost;
+                    state.value   = getDataTabDataGen[i].data.state;
+                    city.value    = getDataTabDataGen[i].data.city;
+                    street.value  = getDataTabDataGen[i].data.street;
+                    dcolony       = getDataTabDataGen[i].data.colony;
                     numberst.value = getDataTabDataGen[i].data.numberst;
-                    telfij.value = getDataTabDataGen[i].data.telfij; telmov.value = getDataTabDataGen[i].data.telmov;
-                    mailus.value = getDataTabDataGen[i].data.mailus; tipsan.value = getDataTabDataGen[i].data.tipsan;
+                    telfij.value = getDataTabDataGen[i].data.telfij;
+                    telmov.value = getDataTabDataGen[i].data.telmov;
+                    mailus.value = getDataTabDataGen[i].data.mailus;
+                    tipsan.value = getDataTabDataGen[i].data.tipsan;
                     fecmat.value = getDataTabDataGen[i].data.fecmat;
                 }
             }
@@ -317,20 +344,20 @@
                 document.getElementById('nameuser').textContent = clvemp.value + " - " + name.value + " " + apep.value + " " + apem.value + ".";
             } else {
                 document.getElementById('nameuser').textContent = name.value + " " + apep.value + " " + apem.value + ".";
-                //setTimeout(() => { colony.value = dcolony; }, 1500);
             }
         }
         if (JSON.parse(localStorage.getItem('objectDataTabImss')) != null) {
             const getDataTabImss = JSON.parse(localStorage.getItem('objectDataTabImss'));
             for (i in getDataTabImss) {
                 if (getDataTabImss[i].key === "imss") {
-                    fecefe.value = getDataTabImss[i].data.fecefe;
-                    clvimss.value = getDataTabImss[i].data.clvimss;
+                    fecefe.value          = getDataTabImss[i].data.fecefe;
+                    clvimss.value         = getDataTabImss[i].data.clvimss;
                     fechefecactimss.value = getDataTabImss[i].data.fechefecactimss;
-                    imss.value = getDataTabImss[i].data.imss;
-                    rfc.value = getDataTabImss[i].data.rfc;
-                    curp.value = getDataTabImss[i].data.curp; nivest.value = getDataTabImss[i].data.nivest;
-                    nivsoc.value = getDataTabImss[i].data.nivsoc;
+                    imss.value            = getDataTabImss[i].data.imss;
+                    rfc.value             = getDataTabImss[i].data.rfc;
+                    curp.value            = getDataTabImss[i].data.curp;
+                    nivest.value          = getDataTabImss[i].data.nivest;
+                    nivsoc.value          = getDataTabImss[i].data.nivsoc;
                 }
             }
         }
@@ -338,16 +365,21 @@
             const getDataTabNom = JSON.parse(localStorage.getItem('objectDataTabNom'));
             for (i in getDataTabNom) {
                 if (getDataTabNom[i].key == "nom") {
-                    clvnom.value = getDataTabNom[i].data.clvnom;
-                    fecefecnom.value = getDataTabNom[i].data.fecefecnom;
-                    salmen.value = getDataTabNom[i].data.salmen; fechefectact.value = getDataTabNom[i].data.fechefectact;
-                    tipper.value = getDataTabNom[i].data.tipper; tipemp.value = getDataTabNom[i].data.tipemp;
-                    nivemp.value = getDataTabNom[i].data.nivemp; tipjor.value = getDataTabNom[i].data.tipjor;
-                    tipcon.value = getDataTabNom[i].data.tipcon; fecing.value = getDataTabNom[i].data.fecing;
-                    fecant.value = getDataTabNom[i].data.fecant; vencon.value = getDataTabNom[i].data.vencon;                   
-                    tipcontra.value = getDataTabNom[i].data.tipcontra;
-                    tippag.value = getDataTabNom[i].data.tippag;
-                    banuse.value = getDataTabNom[i].data.banuse;
+                    clvnom.value       = getDataTabNom[i].data.clvnom;
+                    fecefecnom.value   = getDataTabNom[i].data.fecefecnom;
+                    salmen.value       = getDataTabNom[i].data.salmen;
+                    fechefectact.value = getDataTabNom[i].data.fechefectact;
+                    tipper.value       = getDataTabNom[i].data.tipper;
+                    tipemp.value       = getDataTabNom[i].data.tipemp;
+                    nivemp.value       = getDataTabNom[i].data.nivemp;
+                    tipjor.value       = getDataTabNom[i].data.tipjor;
+                    tipcon.value       = getDataTabNom[i].data.tipcon;
+                    fecing.value       = getDataTabNom[i].data.fecing;
+                    fecant.value       = getDataTabNom[i].data.fecant;
+                    vencon.value       = getDataTabNom[i].data.vencon;                   
+                    tipcontra.value    = getDataTabNom[i].data.tipcontra;
+                    tippag.value       = getDataTabNom[i].data.tippag;
+                    banuse.value       = getDataTabNom[i].data.banuse;
                     if (getDataTabNom[i].data.banuse != 999) {
                         banuse.disabled = false;
                         cunuse.disabled = false;
@@ -366,15 +398,20 @@
             const getDataEstructure = JSON.parse(localStorage.getItem('objectDataTabEstructure'));
             for (i in getDataEstructure) {
                 if (getDataEstructure[i].key === "estructure") {
-                    clvstract.value = getDataEstructure[i].data.clvstract;
-                    clvposasig.value = getDataEstructure[i].data.clvposasig;
-                    clvstr.value = getDataEstructure[i].data.clvstr;
-                    numpla.value = getDataEstructure[i].data.numpla;
-                    emprep.value = getDataEstructure[i].data.emprep; report.value = getDataEstructure[i].data.report;
-                    depaid.value = getDataEstructure[i].data.depaid; depart.value = getDataEstructure[i].data.depart;
-                    puesid.value = getDataEstructure[i].data.puesid; pueusu.value = getDataEstructure[i].data.pueusu;
-                    localty.value = getDataEstructure[i].data.localty; fechefectpos.value = getDataEstructure[i].data.fechefectpos;
-                    fechinipos.value = getDataEstructure[i].data.fechinipos; fechefecposact.value = getDataEstructure[i].data.fechefecposact;
+                    clvstract.value      = getDataEstructure[i].data.clvstract;
+                    clvposasig.value     = getDataEstructure[i].data.clvposasig;
+                    clvstr.value         = getDataEstructure[i].data.clvstr;
+                    numpla.value         = getDataEstructure[i].data.numpla;
+                    emprep.value         = getDataEstructure[i].data.emprep;
+                    report.value         = getDataEstructure[i].data.report;
+                    depaid.value         = getDataEstructure[i].data.depaid;
+                    depart.value         = getDataEstructure[i].data.depart;
+                    puesid.value         = getDataEstructure[i].data.puesid;
+                    pueusu.value         = getDataEstructure[i].data.pueusu;
+                    localty.value        = getDataEstructure[i].data.localty;
+                    fechefectpos.value   = getDataEstructure[i].data.fechefectpos;
+                    fechinipos.value     = getDataEstructure[i].data.fechinipos;
+                    fechefecposact.value = getDataEstructure[i].data.fechefecposact;
                 }
             }
         }
@@ -411,7 +448,6 @@
             btnSaveDataImss.classList.remove('d-none');
             btnSaveDataNomina.classList.remove('d-none');
             btnsaveeditdatanomina.classList.add('d-none');
-            btnsavedataall.classList.remove('d-none');
             btnsaveeditdataest.classList.add('d-none');
         }
     }
@@ -513,7 +549,6 @@
         element.classList.remove('disabled');
         $('body, html').animate({ scrollTop: '0px' }, 1000);
         setTimeout(() => { $(" " + idtab + " ").click(); }, 2000);
-        //Command: toastr["info"](String(texttoastr));
     }
 
     String.prototype.reverse = function () {
@@ -529,13 +564,28 @@
     fshowtypealert = (title, text, icon, element, clear) => {
         Swal.fire({
             title: title, text: text, icon: icon,
-            showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
-            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+            showClass: { popup: 'animated fadeInDown faster' },
+            hideClass: { popup: 'animated fadeOutUp faster' },
+            confirmButtonText: "Aceptar",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
         }).then((acepta) => {
             $("html, body").animate({ scrollTop: $(`#${element.id}`).offset().top - 50 }, 1000);
-            if (clear == 1) { setTimeout(() => { element.focus(); setTimeout(() => { element.value = ""; }, 300); }, 1200); }
-            else { setTimeout(() => { element.focus(); }, 1200); }
-            if (element.id == "numpla") { setTimeout(() => { $("#btn-search-table-num-posicion").click(); }, 1500); }
+            if (clear == 1) {
+                setTimeout(() => {
+                    element.focus(); setTimeout(() => { element.value = ""; }, 300);
+                }, 1200);
+            } else {
+                setTimeout(() => {
+                    element.focus();
+                }, 1200);
+            }
+            if (element.id == "numpla") {
+                setTimeout(() => {
+                    $("#btn-search-table-num-posicion").click();
+                }, 1500);
+            }
         });
     };
 
@@ -765,7 +815,7 @@
     });
 
     btnSaveDataNomina.addEventListener('click', () => {
-        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag];
+        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag, tiposueldo];
         let validate = 0;
         for (let t = 0; t < arrInput.length; t++) {
             if (arrInput[t].hasAttribute("tp-select")) {
@@ -819,17 +869,9 @@
                         fechAct = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
                     }
                     if (arrInput[t].value != "" && attrdate == "less") {
-                        //if (arrInput[t].value > fechAct) {
-                        //    fshowtypealert('Atención', 'La ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser mayor a la fecha actual', 'warning', arrInput[t], 1);
-                        //    validate = 1;
-                        //    break;
-                        //}
+
                     } else if (arrInput[t].value != "" && attrdate == "higher") {
-                        //if (arrInput[t].value < fechAct) {
-                        //    fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
-                        //    validate = 1;
-                        //    break;
-                        //}
+
                     } else {
                         fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[t].placeholder), 'warning', arrInput[t], 0);
                         validate = 1;
@@ -905,11 +947,6 @@
                     } else {
                         fechAct = ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + dateadd;
                     }
-                    //if (arrInput[a].value < fechAct) {
-                    //    fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
-                    //    validate = 1;
-                    //    break;
-                    //}
                 } else {
                     fshowtypealert('Atencion', 'Completa el campo ' + String(arrInput[a].placeholder), 'warning', arrInput[a], 0);
                     validate = 1;
@@ -977,7 +1014,6 @@
     localStorage.setItem("ShowFieldsRequired", 1);
 
     fShowFieldsRequiredDataGen = () => {
-        //const icoShow = document.getElementById('ico-show');
         const labelName = document.getElementById('label-name');
         const labelAPat = document.getElementById('label-patern');
         const labelAMat = document.getElementById('label-matern');
@@ -994,21 +1030,17 @@
         const labelStre = document.getElementById('label-street');
         const labelTMov = document.getElementById('label-telmovil');
         const labelEmai = document.getElementById('label-email');
-        const arrInput = [labelName, labelAPat, labelAMat, labelGene, labelEstC, labelDBir, labelPBir, labelTitl, labelNati, labelStat, labelCity, labelCPos, labelColo, labelStre, labelTMov, labelEmai];
+        const arrInput  = [labelName, labelAPat, labelAMat, labelGene, labelEstC, labelDBir, labelPBir, labelTitl, labelNati, labelStat, labelCity, labelCPos, labelColo, labelStre, labelTMov, labelEmai];
         if (localStorage.getItem("ShowFieldsRequired") == "1") {
             for (let i = 0; i < arrInput.length; i++) {
                 arrInput[i].classList.add('col-ico', 'font-weight-bold');
             }
             localStorage.setItem("ShowFieldsRequired", 2);
-            //icoShow.classList.remove("fa-eye");
-            //icoShow.classList.add("fa-eye-slash");
         } else if (localStorage.getItem("ShowFieldsRequired") == "2") {
             for (let i = 0; i < arrInput.length; i++) {
                 arrInput[i].classList.remove('col-ico', 'font-weight-bold');
             }
             localStorage.setItem("ShowFieldsRequired", 1);
-            //icoShow.classList.remove("fa-eye-slash");
-            //icoShow.classList.add("fa-eye");
         }
     }
 
@@ -1057,7 +1089,8 @@
         const labelRPat = document.getElementById('label-regpa');
         const labelRPos = document.getElementById('label-repos');
         const labelEPos = document.getElementById('label-efpos');
-        const arrInput = [labelPosi, labelDepa, labelPues, labelLocl, labelRPat, labelRPos, labelEPos];
+        const labelTSal = document.getElementById('label-tiposueldo');
+        const arrInput = [labelPosi, labelDepa, labelPues, labelLocl, labelRPat, labelRPos, labelEPos, labelTSal];
         for (let i = 0; i < arrInput.length; i++) {
             arrInput[i].classList.add('col-ico', 'font-weight-bold');
         }

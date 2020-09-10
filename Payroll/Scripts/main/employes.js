@@ -1,5 +1,24 @@
 ﻿$(function () {
 
+    fRandHours = (min, max) => {
+        return Math.random() * (max - min) + min;
+    }
+
+    fReturnTime = (records) => {
+        i = 0;
+        while (i < records) {
+            let hours    = parseInt(fRandHours(8, 10));
+            let minutes  = parseInt(fRandHours(1, 30));
+            let seconds  = parseInt(fRandHours(1, 60));
+            let secondsF = (seconds >= 10) ? seconds : "0" + String(seconds);
+            let minutesF = (minutes >= 10) ? minutes : "0" + String(minutes);
+            console.log("0" + hours + ":" + minutesF + ":" + secondsF);
+            i += 1;
+        }
+    }
+
+    // fReturnTime(100);
+
     const divHistoryImss     = document.getElementById('div-history-imss');
     const divContentTabsImss = document.getElementById('div-content-tabs-imss');
     const divContentInfoImss = document.getElementById('div-content-info-imss');
@@ -480,14 +499,13 @@
     const fecant = document.getElementById('fecant');
     const vencon = document.getElementById('vencon');
     const tipcontra = document.getElementById('tipcontra');
-    //const estats = document.getElementById('estats');
-    //const motinc = document.getElementById('motinc');
+    const tiposueldo = document.getElementById('tiposueldo');
     const tippag = document.getElementById('tippag');
     const banuse = document.getElementById('banuse');
     const cunuse = document.getElementById('cunuse');
     const clvstr = document.getElementById('clvstr');
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
-    const btnsavedatanomina = document.getElementById('btn-save-data-nomina');
+    const btnsavedatanomina     = document.getElementById('btn-save-data-nomina');
     /*
      * Variables apartado estructura
      */
@@ -607,12 +625,13 @@
                 tipemp: tipemp.value, nivemp: nivemp.value,
                 tipjor: tipjor.value, tipcon: tipcon.value,
                 tipcontra: tipcontra.value,
-                //motinc: motinc.value,
+                tiposueldo: tiposueldo.value,
                 fecing: fecing.value,
-                fecant: fecant.value, vencon: vencon.value,
-                //estats: estats.value,
+                fecant: fecant.value,
+                vencon: vencon.value,
                 tippag: tippag.value,
-                banuse: banuse.value, cunuse: cunuse.value
+                banuse: banuse.value,
+                cunuse: cunuse.value
             }
         };
         objectDataTabNom.datanom = dataLocSto;
@@ -753,7 +772,7 @@
                         tipjor.value       = data.Datos.iTipoJornada_id;
                         tipcon.value       = data.Datos.iTipoContrato_id;
                         tipcontra.value    = data.Datos.iTipoContratacion_id;
-                        //motinc.value = data.iMotivoIncremento_id;
+                        tiposueldo.value   = data.Datos.iTipoSueldo_id;
                         fecing.value       = data.Datos.sFechaIngreso;
                         fecant.value       = data.Datos.sFechaAntiguedad;
                         vencon.value       = data.Datos.sVencimientoContrato;
@@ -1315,7 +1334,7 @@
         }
         try {
             let validatedatanom = 0;
-            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag];
+            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tiposueldo, tippag];
             if (fecefecnom.value != fechefectact.value) {
                 arrInput.push(fecefecnom);
             }

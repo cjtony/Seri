@@ -292,6 +292,8 @@ namespace Payroll.Models.Beans
         public int iPosicion_id { get; set; }
         public int iTipoPago_id { get; set; }
         public string sTipoPago { get; set; }
+        public int iTipoSueldo_id { get; set; }
+        public string sTipoSueldo { get; set; }
         public int iBanco_id { get; set; }
         public string sBanco { get; set; }
         public string sCuentaCheques { get; set; }

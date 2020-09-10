@@ -149,7 +149,7 @@ namespace Payroll.Controllers
             List<CatalogoGeneralBean> listTContrac2Empl = new List<CatalogoGeneralBean>();
             List<CatalogoGeneralBean> listTypePaymentEm = new List<CatalogoGeneralBean>();
             List<CatalogoGeneralBean> listBankAvailable = new List<CatalogoGeneralBean>();
-
+            List<CatalogoGeneralBean> listTypeSalary    = new List<CatalogoGeneralBean>();
             ListasAltasBajasMasivasDao listUpsAndDowns  = new ListasAltasBajasMasivasDao();
             try {
                 if (nameFileSession == nameFile) {
@@ -177,6 +177,7 @@ namespace Payroll.Controllers
                     listTContrac2Empl = listUpsAndDowns.UpsAndDownsCatalogs(19, "TipoContratacion", 1);
                     listTypePaymentEm = listUpsAndDowns.UpsAndDownsCatalogs(22, "TipoPago", 1);
                     listBankAvailable = listUpsAndDowns.UpsAndDownsCatalogs(0, "Bancos", 0);
+                    listTypeSalary    = listUpsAndDowns.UpsAndDownsCatalogs(37, "TipoSalario", 1);
                     using (var stream = System.IO.File.Open(pathCompleteSearch + nameFile, FileMode.Open, FileAccess.Read)) {
                         using (var reader = ExcelReaderFactory.CreateReader(stream)) {
                             var result = reader.AsDataSet();
@@ -437,6 +438,11 @@ namespace Payroll.Controllers
                                                 validationErMe.Append("[*] El codigo de posicion " + dr[44].ToString() + " ingresado no existe o no esta disponible. ");
                                                 flagVE = true;
                                             }
+                                            // Validamos que el tipo de salario exista
+                                            if (!listTypeSalary.Any(x => x.iId == Convert.ToInt32(dr[45]))) {
+                                                validationErMe.Append("[*] El valor ingresado " + dr[45].ToString() + " en la columna tipo salario no es valido. ");
+                                                flagVE = true;
+                                            }
                                             // Validamos que el empleado no exista
                                             validaEmpleado = empleadosDao.sp_Empleados_Validate_DatosImss(empresa, dr[27].ToString(), dr[26].ToString() ,0);
                                             if (validaEmpleado.sMensaje != "continue") {
@@ -453,6 +459,7 @@ namespace Payroll.Controllers
                                                 rowErrVal += 1;
                                                 continue;
                                             }
+
                                             // Variables, TEmpleado
                                             //int empresa = Convert.ToInt32(dr[3].ToString());
                                             string nombre  = dr[4].ToString().ToUpper();
@@ -497,6 +504,7 @@ namespace Payroll.Controllers
                                             string fechvco = dr[40].ToString();
                                             int tipopagoem = Convert.ToInt32(dr[41].ToString());
                                             int bancopagoe = Convert.ToInt32(dr[42].ToString());
+                                            int tiposalario = Convert.ToInt32(dr[45].ToString());
                                             string cuentau = dr[43].ToString();
                                             //int posicionid = Convert.ToInt32(dr[44].ToString());
                                             //Insertamos el registro en TEmpleado
@@ -504,7 +512,7 @@ namespace Payroll.Controllers
                                             // Insertamos el registro en TEmpleado_imss
                                             imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, 0);
                                             // Insertamos el registro en TEmpleado_nomina
-                                            datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0);
+                                            datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0, tiposalario);
                                             // Insertamos el registro en TPosiciones_asig
                                             addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(posicionid, fechaen, fechaen, nombre, paterno, materno, fechaNa, usuario_id, empresa);
                                             // Validamos que los registros se hayan hecho correctamente

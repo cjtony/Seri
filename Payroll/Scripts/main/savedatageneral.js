@@ -587,6 +587,7 @@
     const banuse = document.getElementById('banuse');
     const cunuse = document.getElementById('cunuse');
     const clvstr = document.getElementById('clvstr');
+    const tiposueldo = document.getElementById('tiposueldo');
 
     /*
      * Funcion que guarda los datos del apartado datos de nomina
@@ -604,7 +605,7 @@
             //estats: estats.value,
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
-            tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0
+            tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value
         };
         console.log('Datos de nomina');
         console.log(dataSend);

@@ -425,7 +425,7 @@ namespace Payroll.Models.Daos
             return infoPositionInsert;
         }
 
-        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp)
+        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo)
         {
             DatosNominaBean datoNominaBean = new DatosNominaBean();
             try
@@ -457,6 +457,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlBancoId", banuse));
                 cmd.Parameters.Add(new SqlParameter("@ctrlCuentaCh", cunuse));
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", clvemp));
+                cmd.Parameters.Add(new SqlParameter("@TipoSueldo", tiposueldo));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     datoNominaBean.sMensaje = "success";

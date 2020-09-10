@@ -20,6 +20,7 @@
         mailus = document.getElementById('mailus'),
         tipsan = document.getElementById('tipsan'),
         fecmat = document.getElementById('fecmat');
+    
 
     const dataGeneral = [name, apep, apem, fnaci, lnaci, title, sex, nacion, estciv, codpost, state, city, colony, street, numberst, telfij, telmov, mailus, tipsan, fecmat];
 
@@ -75,7 +76,9 @@
         cunuse = document.getElementById('cunuse'),
         banuse = document.getElementById('banuse');
 
-    const dataNomina = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, cunuse, banuse];
+    const tiposueldo = document.getElementById('tiposueldo');
+
+    const dataNomina = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, cunuse, banuse, tiposueldo];
 
     for (let i = 0; i < dataNomina.length; i++) {
         dataNomina[i].style.transition = "1s";
