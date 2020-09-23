@@ -379,6 +379,7 @@
     <Content Include="Archivos\certificados\CSD_SAL150418PD1_20170113_121928.sdg" />
     <Content Include="Archivos\certificados\CSD_unidad_CGA1511196P4_20160128_134059.key" />
     <Content Include="Content\Download\CargaMasiva.xlsx" />
+    <Content Include="Content\Download\BajasMasivasTest.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />

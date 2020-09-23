@@ -63,7 +63,8 @@
     const numberst = document.getElementById('numberst');
     const banuse   = document.getElementById('banuse');
     const cunuse   = document.getElementById('cunuse');
-    const tippag   = document.getElementById('tippag');
+    const tippag = document.getElementById('tippag');
+    const tiposueldo = document.getElementById('tiposueldo');
     const nivtab   = document.getElementById('nivtab');
     //const clvbank  = document.getElementById('clvbank');
     const curp     = document.getElementById('curp');
@@ -239,6 +240,8 @@
 
     // ** Ejecución de la carga de los datos del tipo de pago M ->  DATOS NOMINA ** \\
     floaddatagentype(tippag, 0, 'Active/Desactive', 0, 22, 'nom');
+
+    floaddatagentype(tiposueldo, 0, 'Active/Desactive', 0, 37, 'nom');
 
     floaddatanacionalidades = () => {
         try {

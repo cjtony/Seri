@@ -348,6 +348,11 @@ namespace Payroll.Models.Daos
                     {
                         nominaBean.iBanco_id = 0;
                     }
+                    if (data["Cg_Tipo_sueldo"].ToString().Length != 0) {
+                        nominaBean.iTipoSueldo_id = Convert.ToInt32(data["Cg_Tipo_sueldo"].ToString());
+                    } else {
+                        nominaBean.iTipoSueldo_id = 0;
+                    }
                     nominaBean.sCuentaCheques = (String.IsNullOrEmpty(data["Cta_Cheques"].ToString())) ? "" : data["Cta_Cheques"].ToString();
                     nominaBean.iUsuarioAlta_id = Convert.ToInt32(data["Usuario_Alta_id"].ToString());
                     nominaBean.sFechaAlta = data["Fecha_Alta"].ToString();
@@ -386,25 +391,22 @@ namespace Payroll.Models.Daos
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read())
                 {
-                    //posicionBean.iIdPosicionAsig = Convert.ToInt32(data["IdPosicion_Asig"].ToString());
-                    posicionBean.iIdPosicion = Convert.ToInt32(data["IdPosicion"].ToString());
-                    posicionBean.sPosicionCodigo = data["PosCode1"].ToString();
-                    posicionBean.sFechaEffectiva = Convert.ToDateTime(data["Effdt"].ToString()).ToString("yyyy-MM-dd");
-                    //posicionBean.sFechaInicio = Convert.ToDateTime(data["Fecha_Inicio_Asign"].ToString()).ToString("yyyy-MM-dd");
-                    posicionBean.iPuesto_id = Convert.ToInt32(data["Puesto_id"].ToString());
-                    posicionBean.sNombrePuesto = data["NombrePuesto"].ToString();
-                    posicionBean.sPuestoCodigo = data["PuestoCodigo"].ToString();
-                    posicionBean.iDepartamento_id = Convert.ToInt32(data["Departamento_id"].ToString());
-                    posicionBean.sDeptoCodigo = data["Depto_Codigo"].ToString();
-                    posicionBean.sNombreDepartamento = data["DescripcionDepartamento"].ToString();
-                    posicionBean.iIdLocalidad = Convert.ToInt32(data["Localidad_id"].ToString());
-                    posicionBean.sLocalidad = data["Descripcion"].ToString();
-                    posicionBean.iIdReportaAPosicion = Convert.ToInt32(data["Reporta_A_Posicion_id"].ToString());
-                    //posicionBean.sCodRepPosicion = data["PosCode2"].ToString();
-                    posicionBean.iIdRegistroPat = Convert.ToInt32(data["RegPat_id"].ToString());
-                    posicionBean.sRegistroPat = data["Afiliacion_IMSS"].ToString();
-                    posicionBean.iIdReportaAEmpresa = Convert.ToInt32(data["Reporta_A_Empresa"].ToString());
-                    posicionBean.sNombreEmrpesaRepo = data["NombreEmpresa"].ToString();
+                    posicionBean.iIdPosicion      = (data["IdPosicion"].ToString().Length != 0) ? Convert.ToInt32(data["IdPosicion"].ToString()) : 0;
+                    posicionBean.sPosicionCodigo  = (data["PosCode1"].ToString().Length != 0) ? data["PosCode1"].ToString() : "" ;
+                    posicionBean.sFechaEffectiva  = (data["Effdt"].ToString().Length != 0) ? Convert.ToDateTime(data["Effdt"].ToString()).ToString("yyyy-MM-dd") : "";
+                    posicionBean.iPuesto_id       = (data["Puesto_id"].ToString().Length != 0) ? Convert.ToInt32(data["Puesto_id"].ToString()) : 0;
+                    posicionBean.sNombrePuesto    = (data["NombrePuesto"].ToString().Length != 0) ? data["NombrePuesto"].ToString() : "";
+                    posicionBean.sPuestoCodigo    = (data["PuestoCodigo"].ToString().Length != 0) ? data["PuestoCodigo"].ToString() : "";
+                    posicionBean.iDepartamento_id = (data["Departamento_id"].ToString().Length != 0) ? Convert.ToInt32(data["Departamento_id"].ToString()) : 0;
+                    posicionBean.sDeptoCodigo     = (data["Depto_Codigo"].ToString().Length != 0) ? data["Depto_Codigo"].ToString() : "";
+                    posicionBean.sNombreDepartamento = (data["DescripcionDepartamento"].ToString().Length != 0) ? data["DescripcionDepartamento"].ToString() : "";
+                    posicionBean.iIdLocalidad = (data["Localidad_id"].ToString().Length != 0) ? Convert.ToInt32(data["Localidad_id"].ToString()) : 0;
+                    posicionBean.sLocalidad   = (data["Descripcion"].ToString().Length != 0) ? data["Descripcion"].ToString() : "";
+                    posicionBean.iIdReportaAPosicion = (data["Reporta_A_Posicion_id"].ToString().Length != 0) ? Convert.ToInt32(data["Reporta_A_Posicion_id"].ToString()) : 0;
+                    posicionBean.iIdRegistroPat = (data["RegPat_id"].ToString().Length != 0) ? Convert.ToInt32(data["RegPat_id"].ToString()) : 0;
+                    posicionBean.sRegistroPat   = (data["Afiliacion_IMSS"].ToString().Length != 0) ? data["Afiliacion_IMSS"].ToString() : "";
+                    posicionBean.iIdReportaAEmpresa = (data["Reporta_A_Empresa"].ToString().Length != 0) ? Convert.ToInt32(data["Reporta_A_Empresa"].ToString()) : 0;
+                    posicionBean.sNombreEmrpesaRepo = (data["NombreEmpresa"].ToString().Length != 0) ? data["NombreEmpresa"].ToString() : "";
                     posicionBean.sMensaje = "success";
                 }
                 else

@@ -387,5 +387,72 @@ namespace Payroll.Controllers
             return Json(empleadoBean);
         }
 
+        // Muestra el historial del empleado IMSS
+        [HttpPost]
+        public JsonResult LoadHistoryImss(string key, int keyEmployee)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<ImssBean> imssBean    = new List<ImssBean>();
+            ImssDao  imssDaoD          = new ImssDao();
+            try {
+                if (keyEmployee != 0) {
+                    int keyBusiness = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                    imssBean = imssDaoD.sp_Carga_Historial_Imss(keyEmployee, keyBusiness);
+                    if (imssBean.Count > 0) {
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+                flag         = false;
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = imssBean });
+        }
+
+        [HttpPost]
+        public JsonResult LoadHistoryNomina(string key, int keyEmployee)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<DatosNominaBean> nominaBean = new List<DatosNominaBean>();
+            NominaDao        nominaDao  = new NominaDao();
+            try {
+                if (keyEmployee != 0) {
+                    int keyBusiness = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                    nominaBean      = nominaDao.sp_Carga_Historial_Nomina(keyBusiness, keyEmployee);
+                    if (nominaBean.Count > 0) {
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = nominaBean });
+        }
+
+        [HttpPost]
+        public JsonResult LoadHistoryPosicion(string key, int keyEmployee)
+        {
+            Boolean flag        = false;
+            String messageError = "none";
+            List<DatosPosicionesBean> posicionesBeans = new List<DatosPosicionesBean>();
+            DatosPosicionesDao datosPosicionesDao     = new DatosPosicionesDao();
+            try {
+                if (keyEmployee != 0) {
+                    int keyBusiness = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                    posicionesBeans = datosPosicionesDao.sp_Carga_Historial_Posiciones(keyBusiness, keyEmployee);
+                    if (posicionesBeans.Count > 0) {
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = posicionesBeans });
+        }
+
     }
 }

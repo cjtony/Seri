@@ -258,7 +258,9 @@ namespace Payroll.Models.Beans
         public string sRfc { get; set; }
         public string sCurp { get; set; }
         public int iNivelEstudio_id { get; set; }
+        public string sNivelEstudio { get; set; }
         public int iNivelSocioeconomico_id { get; set; }
+        public string sNivelSocieconomico { get; set; }
         public int iEstadoImss { get; set; }
         public string iUsuarioAlta_id { get; set; }
         public string sFechaAlta { get; set; }
@@ -271,19 +273,30 @@ namespace Payroll.Models.Beans
         public int iEmpresa_id { get; set; }
         public string sFechaEfectiva { get; set; }
         public int iTipoPeriodo { get; set; }
+        public string sPeriodo { get; set; }
         public double dSalarioMensual { get; set; }
+        public string sSalarioMensual { get; set; }
         public int iTipoEmpleado_id { get; set; }
+        public string sTipoEmpleado { get; set; }
         public int iNivelEmpleado_id { get; set; }
+        public string sNivelEmpleado { get; set; }
         public int iTipoJornada_id { get; set; }
+        public string sTipoJornada { get; set; }
         public int iTipoContrato_id { get; set; }
+        public string sTipoContrato { get; set; }
         public int iTipoContratacion_id { get; set; }
+        public string sTipoContratacion { get; set; }
         public int iMotivoIncremento_id { get; set; }
         public string sFechaIngreso { get; set; }
         public string sFechaAntiguedad { get; set; }
         public string sVencimientoContrato { get; set; }
         public int iPosicion_id { get; set; }
         public int iTipoPago_id { get; set; }
+        public string sTipoPago { get; set; }
+        public int iTipoSueldo_id { get; set; }
+        public string sTipoSueldo { get; set; }
         public int iBanco_id { get; set; }
+        public string sBanco { get; set; }
         public string sCuentaCheques { get; set; }
         public int iUsuarioAlta_id { get; set; }
         public string sFechaAlta { get; set; }

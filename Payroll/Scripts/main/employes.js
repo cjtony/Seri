@@ -1,5 +1,445 @@
 ﻿$(function () {
 
+    fRandHours = (min, max) => {
+        return Math.random() * (max - min) + min;
+    }
+
+    fReturnTime = (records) => {
+        i = 0;
+        while (i < records) {
+            let hours    = parseInt(fRandHours(8, 10));
+            let minutes  = parseInt(fRandHours(1, 30));
+            let seconds  = parseInt(fRandHours(1, 60));
+            let secondsF = (seconds >= 10) ? seconds : "0" + String(seconds);
+            let minutesF = (minutes >= 10) ? minutes : "0" + String(minutes);
+            console.log("0" + hours + ":" + minutesF + ":" + secondsF);
+            i += 1;
+        }
+    }
+
+    // fReturnTime(100);
+
+    const divHistoryImss     = document.getElementById('div-history-imss');
+    const divContentTabsImss = document.getElementById('div-content-tabs-imss');
+    const divContentInfoImss = document.getElementById('div-content-info-imss');
+
+    const divHistoryNomina     = document.getElementById('div-history-nomina');
+    const divContentTabsNomina = document.getElementById('div-content-tabs-nomina');
+    const divContentInfoNomina = document.getElementById('div-content-info-nomina');
+
+    const divHistoryPosicion     = document.getElementById('div-history-posicion');
+    const divContentTabsPosicion = document.getElementById('div-content-tabs-posicion');
+    const divContentInfoPosicion = document.getElementById('div-content-info-posicion');
+
+    // Funcion que muestra los botones del historial de cada apartado
+    fShowBtnsHistoryApart = (param) => {
+        if (param == "IMSS") {
+            divHistoryImss.innerHTML = `<button onclick="fShowHistoryImss();" class="btn btn-sm btn-primary shadow rounded"> <i class="fas fa-book mr-2"></i>  Ver Historial</button>`;
+        }
+        if (param == "NOMINA") {
+            divHistoryNomina.innerHTML = `<button onclick="fShowHistoryNomina();" class="btn btn-sm btn-primary shadow rounded"> <i class="fas fa-book mr-2"></i>  Ver Historial</button>`;
+        }
+        if (param == "POSICION") {
+            divHistoryPosicion.innerHTML = `<button onclick="fShowHistoryPosicion();" class="btn btn-sm btn-primary shadow rounded"> <i class="fas fa-book mr-2"></i>  Ver Historial</button>`;
+        }
+    }
+
+    if (localStorage.getItem("modeedit") != null) {
+        fShowBtnsHistoryApart("IMSS");
+        fShowBtnsHistoryApart("NOMINA");
+        fShowBtnsHistoryApart("POSICION");
+    }
+
+    // Funcion que muestra el historial del Imss
+    fShowHistoryImss = () => {
+        divContentTabsImss.innerHTML = "";
+        divContentInfoImss.innerHTML = "";
+        try {
+            let keyEmp = 0;
+            if (JSON.parse(localStorage.getItem('objectTabDataGen')) != null) {
+                const getDataTabDataGen = JSON.parse(localStorage.getItem('objectTabDataGen'));
+                for (i in getDataTabDataGen) {
+                    if (getDataTabDataGen[i].key === "general") {
+                        keyEmp = getDataTabDataGen[i].data.clvemp;
+                    }
+                }
+            }
+            const key = "IMSS";
+            if (keyEmp != 0) {
+                $.ajax({
+                    url: "../SearchDataCat/LoadHistoryImss",
+                    type: "POST",
+                    data: { key: String(key), keyEmployee: parseInt(keyEmp) },
+                    beforeSend: () => {
+                        console.log('Cargando historial....');
+                    }, success: (data) => {
+                        console.log(data);
+                        if (data.Bandera === true && data.MensajeError == "none") {
+                            $("#modalHistoryImss").modal("show");
+                            setTimeout(() => {
+                                let active1 = "";
+                                let contac1 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac1 == 0) {
+                                        active1 = "active";
+                                    } else {
+                                        active1 = "";
+                                    }
+                                    divContentTabsImss.innerHTML += `
+                                        <a class="nav-link ${active1} text-center" id="v-pills-home-tab" data-toggle="pill"
+                                            href="#tab-imss${data.Datos[i].iIdImss}" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                            <i class="fas fa-calendar-alt mr-2"></i> ${data.Datos[i].sFechaEfectiva}
+                                        </a>
+                                    `;
+                                    contac1 += 1;
+                                }
+                                let active2 = "";
+                                let contac2 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac2 == 0) {
+                                        active2 = "active";
+                                    } else {
+                                        active2 = "";
+                                    }
+                                    divContentInfoImss.innerHTML += `
+                                        <div class="tab-pane fade ${active2} show border-left-primary p-1 shadow" id="tab-imss${data.Datos[i].iIdImss}" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                            <div class="row p-2 animated fadeInLeft">
+                                                <div class="col-md-6">
+                                                    <small class=""><b>Curp:</b>
+                                                        <span class="text-primary">${data.Datos[i].sCurp}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <small class="text-center"><b>Rfc:</b>
+                                                        <span class="text-primary">${data.Datos[i].sRfc}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class="text-center"><b>Imss:</b>
+                                                        <span class="text-primary">${data.Datos[i].sRegistroImss}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small classs="text-center"><b>Nivel Estudio:</b>
+                                                        <span class="text-primary">${data.Datos[i].sNivelEstudio}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small classs="text-center"><b>Nivel Socioeconomico:</b>
+                                                        <span class="text-primary">${data.Datos[i].sNivelSocieconomico}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small classs="text-center"><b>Alta:</b>
+                                                        <span class="text-primary">${data.Datos[i].sFechaAlta}</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `; 
+                                    contac2 += 1;
+                                }
+                            }, 500);
+                        } else {
+                            alert('Ocurrio un problema al cargar el historial');
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Ocurrio un error al cargar el historial Imss del Empleado');
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+
+    // Funcion que muestra el historial de la nomina
+    fShowHistoryNomina = () => {
+        divContentTabsNomina.innerHTML = "";
+        divContentInfoNomina.innerHTML = "";
+        try {
+            let keyEmp = 0;
+            if (JSON.parse(localStorage.getItem("objectTabDataGen")) != null) {
+                const getDataTabDataGen = JSON.parse(localStorage.getItem("objectTabDataGen"));
+                for (i in getDataTabDataGen) {
+                    if (getDataTabDataGen[i].key === "general") {
+                        keyEmp = getDataTabDataGen[i].data.clvemp;
+                    }
+                }
+            }
+            const key = "NOMINA";
+            if (keyEmp != 0) {
+                $.ajax({
+                    url: "../SearchDataCat/LoadHistoryNomina",
+                    type: "POST",
+                    data: { key: String(key), keyEmployee: parseInt(keyEmp) },
+                    beforeSend: () => {
+                        console.log('Cargando historial....');
+                    }, success: (data) => {
+                        console.log(data);
+                        if (data.Bandera === true && data.MensajeError == "none") {
+                            $("#modalHistoryNomina").modal("show");
+                            setTimeout(() => {
+                                let active1 = "";
+                                let contac1 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac1 == 0) {
+                                        active1 = "active";
+                                    } else {
+                                        active1 = "";
+                                    }
+                                    divContentTabsNomina.innerHTML += `
+                                        <a class="nav-link ${active1} text-center" id="v-pills-home-tab" data-toggle="pill"
+                                            href="#tab-nomina${data.Datos[i].iIdNomina}" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                            <i class="fas fa-calendar-alt mr-2"></i> ${data.Datos[i].sFechaEfectiva}
+                                        </a>
+                                    `;
+                                    contac1 += 1;
+                                }
+                                let active2 = "";
+                                let contac2 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac2 == 0) {
+                                        active2 = "active";
+                                    } else {
+                                        active2 = "";
+                                    }
+                                    divContentInfoNomina.innerHTML += `
+                                        <div class="tab-pane fade ${active2} show border-left-primary p-1 shadow" id="tab-nomina${data.Datos[i].iIdNomina}" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                            <div class="row p-2 animated fadeInLeft">
+                                                <div class="col-md-6">
+                                                    <small class=""><b>Periodo:</b>
+                                                        <span class="text-primary">${data.Datos[i].sPeriodo}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <small class=""><b>Salario M:</b>
+                                                        <span class="text-primary">$ ${data.Datos[i].sSalarioMensual}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Tipo Empleado:</b>
+                                                        <span class="text-primary">${data.Datos[i].sTipoEmpleado}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Nivel Empleado:</b>
+                                                        <span class="text-primary">${data.Datos[i].sNivelEmpleado}</span>
+                                                    </small>
+                                                </div>
+                                                 <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Tipo Jornada:</b>
+                                                        <span class="text-primary">${data.Datos[i].sTipoJornada}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Ingreso:</b>
+                                                        <span class="text-primary">${data.Datos[i].sFechaIngreso}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Antiguedad:</b>
+                                                        <span class="text-primary">${data.Datos[i].sFechaAntiguedad}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Vencimiento contrato:</b>
+                                                        <span class="text-primary">${data.Datos[i].sVencimientoContrato}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Tipo Pago:</b>
+                                                        <span class="text-primary">${data.Datos[i].sTipoPago}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Banco:</b>
+                                                        <span class="text-primary">${data.Datos[i].sBanco}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Cuenta Cheques:</b>
+                                                        <span class="text-primary">${data.Datos[i].sCuentaCheques}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Alta:</b>
+                                                        <span class="text-primary">${data.Datos[i].sFechaAlta}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <small class=""><b>Tipo Contratacion:</b>
+                                                        <span class="text-primary">${data.Datos[i].sTipoContratacion}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <small class=""><b>Tipo Contrato:</b>
+                                                        <span class="text-primary">${data.Datos[i].sTipoContrato}</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    contac2 += 1;
+                                }
+                            }, 500);
+                        } else {
+                            alert('Ocurrio un problema al cargar el historial');
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Ocurrio un error al cargar el Historial Nomina del empleado');
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que muestra el historial de la posicion
+    fShowHistoryPosicion = () => {
+        divContentTabsPosicion.innerHTML = "";
+        divContentInfoPosicion.innerHTML = "";
+        try {
+            let keyEmp = 0;
+            if (JSON.parse(localStorage.getItem('objectTabDataGen')) != null) {
+                const getDataTabDataGen = JSON.parse(localStorage.getItem('objectTabDataGen'));
+                for (i in getDataTabDataGen) {
+                    if (getDataTabDataGen[i].key === "general") {
+                        keyEmp = getDataTabDataGen[i].data.clvemp;
+                    }
+                }
+            }
+            const key = "POSICION";
+            if (keyEmp != 0) {
+                $.ajax({
+                    url: "../SearchDataCat/LoadHistoryPosicion",
+                    type: "POST",
+                    data: { key: String(key), keyEmployee: parseInt(keyEmp) },
+                    beforeSend: () => {
+                        console.log('Cargando historial....');
+                    }, success: (data) => {
+                        console.log(data);
+                        if (data.Bandera === true && data.MensajeError == "none") {
+                            $("#modalHistoryPosicion").modal("show");
+                            setTimeout(() => {
+                                let active1 = "";
+                                let contac1 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac1 == 0) {
+                                        active1 = "active";
+                                    } else {
+                                        active1 = "";
+                                    }
+                                    divContentTabsPosicion.innerHTML += `
+                                        <a class="nav-link ${active1} text-center" id="v-pills-home-tab" data-toggle="pill"
+                                            href="#tab-posicion${data.Datos[i].iIdPosicion}" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                            <i class="fas fa-calendar mr-2"></i> ${data.Datos[i].sFechaEffectiva}
+                                        </a>
+                                    `;
+                                    contac1 += 1;
+                                }
+                                let active2 = "";
+                                let contac2 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac2 == 0) {
+                                        active2 = "active";
+                                    } else {
+                                        active2 = "";
+                                    }
+                                    divContentInfoPosicion.innerHTML += `
+                                        <div class="tab-pane fade ${active2} show border-left-primary p-1 shadow" id="tab-posicion${data.Datos[i].iIdPosicion}" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                            <div class="row p-2 animated fadeInLeft">
+                                                <div class="col-md-6">
+                                                    <small class=""><b>Posicion código:</b>
+                                                        <span class="text-primary">${data.Datos[i].sPosicionCodigo}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <small class=""><b>Departamento:</b>
+                                                        <span class="text-primary">${data.Datos[i].sNombreDepartamento}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <small class=""><b>Puesto:</b>
+                                                        <span class="text-primary">${data.Datos[i].sNombrePuesto}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Localidad:</b>
+                                                        <span class="text-primary">${data.Datos[i].sLocalidad}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Afiliacion IMSS:</b>
+                                                        <span class="text-primary">${data.Datos[i].sRegistroPat}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Reporta A:</b>
+                                                        <span class="text-primary">${data.Datos[i].sNombreE}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Reporta posicion:</b>
+                                                        <span class="text-primary">${data.Datos[i].iIdReportaAPosicion}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <small class=""><b>Fecha Alta:</b>
+                                                        <span class="text-primary">${data.Datos[i].sFechaInicio}</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    contac2 += 1;
+                                }
+                            }, 500);
+                        } else {
+                            alert('Ocurrio un problema al cargar el historial');
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Ocurrio un error al cargar el historial de Posiciones del Empleado');
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     const idefectivo = 218;
     const idcuentach = 219;
     const idcajeroau = 220;
@@ -59,14 +499,13 @@
     const fecant = document.getElementById('fecant');
     const vencon = document.getElementById('vencon');
     const tipcontra = document.getElementById('tipcontra');
-    //const estats = document.getElementById('estats');
-    //const motinc = document.getElementById('motinc');
+    const tiposueldo = document.getElementById('tiposueldo');
     const tippag = document.getElementById('tippag');
     const banuse = document.getElementById('banuse');
     const cunuse = document.getElementById('cunuse');
     const clvstr = document.getElementById('clvstr');
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
-    const btnsavedatanomina = document.getElementById('btn-save-data-nomina');
+    const btnsavedatanomina     = document.getElementById('btn-save-data-nomina');
     /*
      * Variables apartado estructura
      */
@@ -186,12 +625,13 @@
                 tipemp: tipemp.value, nivemp: nivemp.value,
                 tipjor: tipjor.value, tipcon: tipcon.value,
                 tipcontra: tipcontra.value,
-                //motinc: motinc.value,
+                tiposueldo: tiposueldo.value,
                 fecing: fecing.value,
-                fecant: fecant.value, vencon: vencon.value,
-                //estats: estats.value,
+                fecant: fecant.value,
+                vencon: vencon.value,
                 tippag: tippag.value,
-                banuse: banuse.value, cunuse: cunuse.value
+                banuse: banuse.value,
+                cunuse: cunuse.value
             }
         };
         objectDataTabNom.datanom = dataLocSto;
@@ -266,6 +706,7 @@
                         document.getElementById('btn-save-data-all').disabled = true;
                         flocalstodatatabstructure();
                         fchecklocalstotab();
+                        fShowBtnsHistoryApart("POSICION");
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedataall.classList.add('d-none');
                             btnsaveeditdataest.classList.remove('d-none');
@@ -331,7 +772,7 @@
                         tipjor.value       = data.Datos.iTipoJornada_id;
                         tipcon.value       = data.Datos.iTipoContrato_id;
                         tipcontra.value    = data.Datos.iTipoContratacion_id;
-                        //motinc.value = data.iMotivoIncremento_id;
+                        tiposueldo.value   = data.Datos.iTipoSueldo_id;
                         fecing.value       = data.Datos.sFechaIngreso;
                         fecant.value       = data.Datos.sFechaAntiguedad;
                         vencon.value       = data.Datos.sVencimientoContrato;
@@ -343,6 +784,7 @@
                             fdatabank(false);
                         }
                         floaddatatabstructure(paramid);
+                        fShowBtnsHistoryApart("NOMINA");
                         flocalstodatatabnomina();
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedatanomina.classList.add('d-none');
@@ -396,6 +838,7 @@
                         nivsoc.value          = data.Datos.iNivelSocioeconomico_id;
                         flocalstodatatabimss();
                         floaddatatabnomina(paramid);
+                        fShowBtnsHistoryApart('IMSS');
                     } else {
                         document.getElementById('div-most-alert-data-imss').innerHTML += `
                             <div class="alert alert-danger text-center" role="alert">
@@ -891,7 +1334,7 @@
         }
         try {
             let validatedatanom = 0;
-            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag];
+            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tiposueldo, tippag];
             if (fecefecnom.value != fechefectact.value) {
                 arrInput.push(fecefecnom);
             }

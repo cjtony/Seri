@@ -383,6 +383,8 @@
                                             <p>
                                                 <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
                                             </p>
+                                            <div id="div-history-imss">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -513,6 +515,8 @@
                                             <p>
                                                 <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
                                             </p>
+                                            <div id="div-history-nomina">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -628,6 +632,16 @@
                                                 <input type="date" tp-date="higher" placeholder="Vencimiento contrato" id="vencon" class="form-control form-control-sm" />
                                             </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <label for="tiposueldo" class="col-sm-4 col-form-label font-labels" id="label-tiposueldo">
+                                                Tipo sueldo:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control form-control-sm" id="tiposueldo" tp-select="Tipo sueldo">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row mt-4 border-right-primary border-left-primary shadow rounded p-3">
@@ -725,6 +739,8 @@
                                             <p>
                                                 <b class="font-labels"> <i class="fas fa-info-circle col-ico mr-2"></i> Los campos en color azul son requeridos.</b>
                                             </p>
+                                            <div id="div-history-posicion">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -1743,16 +1759,16 @@
                                 </div>
                             </div>
                             @*<div class="form-group">
-                                <label class="col-form-label font-labels" for="nivsuptxt">Nivel superior</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-table-departaments0" data-toggle="modal" data-target="#searchdepartamentsdirec">
-                                            <i class="fas fa-search"></i>
+                                    <label class="col-form-label font-labels" for="nivsuptxt">Nivel superior</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-table-departaments0" data-toggle="modal" data-target="#searchdepartamentsdirec">
+                                                <i class="fas fa-search"></i>
+                                            </div>
                                         </div>
+                                        <input placeholder="Nivel superior" type="text" id="nivsuptxt" maxlength="50" class="form-control form-control-sm" readonly />
                                     </div>
-                                    <input placeholder="Nivel superior" type="text" id="nivsuptxt" maxlength="50" class="form-control form-control-sm" readonly />
-                                </div>
-                            </div>*@
+                                </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="edifictxt">Edificio</label>
                                 <div class="input-group mb-2">
@@ -1766,9 +1782,9 @@
                                 </div>
                             </div>
                             @*<div class="form-group">
-                                <label class="col-form-label font-labels" for="piso">Piso</label>
-                                <input placeholder="Piso" maxlength="3" type="text" id="piso" class="form-control form-control-sm text-uppercase" />
-                            </div>*@
+                                    <label class="col-form-label font-labels" for="piso">Piso</label>
+                                    <input placeholder="Piso" maxlength="3" type="text" id="piso" class="form-control form-control-sm text-uppercase" />
+                                </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="ubicac">Ubicación</label>
                                 <input placeholder="Ubicación" maxlength="50" type="text" id="ubicac" class="form-control form-control-sm text-uppercase" />
@@ -1786,11 +1802,11 @@
                                 </div>
                             </div>
                             @*<div class="form-group">
-                                <label class="col-form-label font-labels" for="reportaa">Reporta a:</label>
-                                <select tp-select="Reporta a" class="form-control form-control-sm" id="reportaa">
-                                    <option selected value="0">Selecciona</option>
-                                </select>
-                            </div>*@
+                                    <label class="col-form-label font-labels" for="reportaa">Reporta a:</label>
+                                    <select tp-select="Reporta a" class="form-control form-control-sm" id="reportaa">
+                                        <option selected value="0">Selecciona</option>
+                                    </select>
+                                </div>*@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -1911,16 +1927,16 @@
                                 </select>
                             </div>
                             @*<div class="form-group">
-                                <label class="col-form-label font-labels" for="nivsuptxtedit">Nivel superior</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-table-departaments0edit" data-toggle="modal" data-target="#searchdepartamentsdirec">
-                                            <i class="fas fa-search"></i>
+                                    <label class="col-form-label font-labels" for="nivsuptxtedit">Nivel superior</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-table-departaments0edit" data-toggle="modal" data-target="#searchdepartamentsdirec">
+                                                <i class="fas fa-search"></i>
+                                            </div>
                                         </div>
+                                        <input placeholder="Nivel superior" type="text" id="nivsuptxtedit" maxlength="50" class="form-control form-control-sm" readonly />
                                     </div>
-                                    <input placeholder="Nivel superior" type="text" id="nivsuptxtedit" maxlength="50" class="form-control form-control-sm" readonly />
-                                </div>
-                            </div>*@
+                                </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="edifictxt">Edificio</label>
                                 <div class="input-group mb-2">
@@ -1938,9 +1954,9 @@
                                     </select>*@
                             </div>
                             @*<div class="form-group">
-                                <label class="col-form-label font-labels" for="edipiso">Piso</label>
-                                <input placeholder="Piso" maxlength="3" type="text" id="edipiso" class="form-control form-control-sm text-capitalize" />
-                            </div>*@
+                                    <label class="col-form-label font-labels" for="edipiso">Piso</label>
+                                    <input placeholder="Piso" maxlength="3" type="text" id="edipiso" class="form-control form-control-sm text-capitalize" />
+                                </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="ediubicac">Ubicación</label>
                                 <input placeholder="Ubicación" maxlength="50" type="text" id="ediubicac" class="form-control form-control-sm" />
@@ -1962,11 +1978,11 @@
                                     </select>*@
                             </div>
                             @*<div class="form-group">
-                                <label class="col-form-label font-labels" for="edireportaa">Reporta a:</label>
-                                <select tp-select="Reporta a" class="form-control form-control-sm" id="edireportaa">
-                                    <option selected value="0">Selecciona</option>
-                                </select>
-                            </div>*@
+                                    <label class="col-form-label font-labels" for="edireportaa">Reporta a:</label>
+                                    <select tp-select="Reporta a" class="form-control form-control-sm" id="edireportaa">
+                                        <option selected value="0">Selecciona</option>
+                                    </select>
+                                </div>*@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -3282,7 +3298,7 @@
                             <label for="nivestructureedit" class="col-form-label font-labels">
                                 Nivel estructura:
                             </label>
-                            <input type="hidden" id="keynivestructureedit" class="form-control form-control-sm" placeholder=""  />
+                            <input type="hidden" id="keynivestructureedit" class="form-control form-control-sm" placeholder="" />
                             <input type="text" id="nivestructureedit" class="form-control form-control-sm" placeholder="Nivel de estructura" maxlength="2" />
                         </div>
                         <div class="form-group">
@@ -3366,34 +3382,34 @@
 
 
 @*<div class="modal fade bg-gradient" data-backdrop="static" id="registerdepartament" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content border-left-primary">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar departamento</h5>
-                <button id="ico-clear-fields-departament" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content border-left-primary">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-plus mr-2 col-ico"></i> Registrar departamento</h5>
+                    <button id="ico-clear-fields-departament" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnnewnivestructurebtn" data-toggle="modal" data-target="#newnivelestructure">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-plus"></i>
-                    </span>
-                    <span class="text">Agregar nuevo</span>
-                </button>
-                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-niv-estructure">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-times"></i>
-                    </span>
-                    <span class="text">Cerrar</span>
-                </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnnewnivestructurebtn" data-toggle="modal" data-target="#newnivelestructure">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">Agregar nuevo</span>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-niv-estructure">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-times"></i>
+                        </span>
+                        <span class="text">Cerrar</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 
 
 <!-- VENTANA MODAL QUE EDITA LOS CENTROS DE COSTOS -->
@@ -3728,10 +3744,113 @@
     </div>
 </div>
 
+<!-- Historial IMSS -->
+<div class="modal fade" id="modalHistoryImss" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Historial Imss</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-history-imss">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2 mt-2">
+                    <div class="col-md-3">
+                        <div class="nav flex-column nav-pills" id="div-content-tabs-imss" role="tablist" aria-orientation="vertical">
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="tab-content" id="div-content-info-imss">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-history-imss">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalHistoryNomina" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Historial Nomina</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-history-nomina">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2 mt-2">
+                    <div class="col-md-3">
+                        <div class="nav flex-column nav-pills" id="div-content-tabs-nomina" role="tablist" aria-orientation="vertical">
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="tab-content" id="div-content-info-nomina">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-history-nomina">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalHistoryPosicion" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Historial Posiciones</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-history-posicion">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2 mt-2">
+                    <div class="col-md-3">
+                        <div class="nav flex-column nav-pills" id="div-content-tabs-posicion" role="tablist" aria-orientation="vertical">
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="tab-content" id="div-content-info-posicion">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-history-posicion">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/main.js?n=2"></script>
-<script language="JavaScript" src="~/Scripts/main/animationsmain.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3"></script>
+<script type="text/javascript" src="~/Scripts/main/main.js?n=3.1"></script>
+<script language="JavaScript" src="~/Scripts/main/animationsmain.js?n=3"></script>
+<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3.3"></script>
 <script type="text/javascript" src="~/Scripts/main/puestos.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/positions.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/regionales.js?n=2"></script>
@@ -3740,8 +3859,8 @@
 <script type="text/javascript" src="~/Scripts/main/estructura.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/localitys.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/centrcost.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/employes.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3"></script>
+<script type="text/javascript" src="~/Scripts/main/employes.js?n=8"></script>
 <script src="~/Scripts/main/modenight.js?n=2"></script>
 <script type="text/javascript">
     $(function () {

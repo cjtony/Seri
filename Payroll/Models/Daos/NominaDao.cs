@@ -10,8 +10,68 @@ using System.Globalization;
 namespace Payroll.Models.Daos
 {
 
-    public class NominaDao
+    public class NominaDao : Conexion 
     {
+        public String ConvertDateText(string dateConvert)
+        {
+            String convertDate = "";
+            try
+            {
+                string year = dateConvert.Substring(0, 4);
+                string month = dateConvert.Substring(5, 2);
+                string day = dateConvert.Substring(8, 2);
+                string[] days = new string[] { "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" };
+                string[] months = new string[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+                convertDate = day + " de " + months[Convert.ToInt32(month) - 1] + " del " + year;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+            }
+            return convertDate;
+        }
+        public List<DatosNominaBean> sp_Carga_Historial_Nomina(int keyBusiness, int keyEmployee)
+        {
+            List<DatosNominaBean> listNomina = new List<DatosNominaBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Carga_Historial_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosNominaBean nomina = new DatosNominaBean();
+                        nomina.iIdNomina = Convert.ToInt32(data["IdNomina"]);
+                        nomina.sFechaEfectiva = Convert.ToDateTime(data["Effdt"]).ToString("yyyy-MM-dd");
+                        nomina.sPeriodo = data["Periodo"].ToString();
+                        nomina.sSalarioMensual = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data["SalarioMensual"]));
+                        nomina.sTipoEmpleado = data["Tipo_Empleado"].ToString();
+                        nomina.sNivelEmpleado = data["Nivel_Empleado"].ToString();
+                        nomina.sTipoJornada   = data["Tipo_Jornada"].ToString();
+                        nomina.sTipoContrato  = data["Tipo_Contrato"].ToString();
+                        nomina.sTipoContratacion = data["Tipo_Contratacion"].ToString();
+                        nomina.sFechaIngreso = ConvertDateText(Convert.ToDateTime(data["FechaIngreso"]).ToString("yyyy-MM-dd"));
+                        nomina.sFechaAntiguedad = ConvertDateText(Convert.ToDateTime(data["FechaAntiguedad"]).ToString("yyyy-MM-dd"));
+                        nomina.sVencimientoContrato = (data["Vencimiento_contrato"].ToString() != "") ? ConvertDateText(Convert.ToDateTime(data["Vencimiento_contrato"]).ToString("yyyy-MM-dd")) : "Sin fecha" ;
+                        nomina.iPosicion_id = Convert.ToInt32(data["Posicion_id"]);
+                        nomina.sTipoPago = data["Tipo_Pago"].ToString();
+                        nomina.sBanco = data["Banco"].ToString();
+                        nomina.sCuentaCheques = data["Cta_Cheques"].ToString();
+                        nomina.sFechaAlta = ConvertDateText(Convert.ToDateTime(data["Fecha_Alta"]).ToString("yyyy-MM-dd"));
+                        listNomina.Add(nomina);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return listNomina;
+        }
+
     }
 
     public class FuncionesNomina : Conexion

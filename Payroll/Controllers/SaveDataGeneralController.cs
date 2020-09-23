@@ -170,7 +170,7 @@ namespace Payroll.Controllers
 
         //Guarda los datos de la nomina del empleado
         [HttpPost]
-        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp)
+        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo)
         {
             Boolean flag         = false;
             String  messageError = "none";
@@ -200,7 +200,7 @@ namespace Payroll.Controllers
             try {
                 int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario   = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp);
+                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp, tiposueldo);
                 if (addDatoNomina.sMensaje != "success") {
                     messageError = addDatoNomina.sMensaje;
                 }
@@ -257,8 +257,9 @@ namespace Payroll.Controllers
             DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
             DatosPosicionesDao datoPosicionDao  = new DatosPosicionesDao();
             try {
+                int keyemp      = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsigEdit(clvstr, convertFEffdt, convertFIniP, clvemp, clvnom, usuario);
+                addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsigEdit(clvstr, convertFEffdt, convertFIniP, clvemp, clvnom, usuario, keyemp);
                 if (addPosicionBean.sMensaje != "success") {
                     messageError = addPosicionBean.sMensaje;
                 }

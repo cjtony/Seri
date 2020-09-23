@@ -20,10 +20,9 @@
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
-                            $("#resultSearchEmpleados").append("<div class='list-group-item list-group-item-action btnListEmpleados font-labels  font-weight-bold' onclick='MostrarDatosEmpleado(" + data[i]["IdEmpleado"] + ")' > <i class='far fa-user-circle text-primary'></i> " + data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[i]["DescripcionPuesto"] + "</small></div>");
+                            $("#resultSearchEmpleados").append("<div style='cursor:pointer;' class='list-group-item list-group-item-action btnListEmpleados font-labels  font-weight-bold' onclick='MostrarDatosEmpleado(" + data[i]["IdEmpleado"] + ")' > <i class='far fa-user-circle text-primary'></i> " + data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[i]["DescripcionPuesto"] + "</small></div>");
                         }
-                    }
-                    else {
+                    } else {
                         $("#resultSearchEmpleados").append("<button type='button' class='list-group-item list-group-item-action btnListEmpleados font-labels'  >" + data[0]["Nombre_Empleado"] + "<br><small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small> </button>");
                     }                }
             });
@@ -65,8 +64,8 @@
         document.getElementById('inputSearchEmpleados').value = "";
         document.getElementById('resultSearchEmpleados').innerHTML = "";
         var txtIdEmpleado = { "IdEmpleado": idE };
-        console.log(typeof txtIdEmpleado);
-        console.log(txtIdEmpleado);
+        dateSendDown.innerHTML = `<option value="none">Selecciona</option>`;
+        document.getElementById("inTiposBaja").innerHTML = `<option value="none">Selecciona</option>`;
         $.ajax({
             url: "../Empleados/SearchEmpleado",
             type: "POST",
@@ -211,8 +210,18 @@
         console.log(msg);
     }
 
+    // Funcion que muestra una animacion
+    fShowAnimationInput = (element) => {
+        setTimeout(() => {
+            element.classList.add('animated', 'bounce');
+        }, 1000);
+        setTimeout(() => {
+            element.classList.remove('animated', 'bounce');
+        }, 2000);
+    }
+
     // Funcion que muestra alertas de forma dinamica
-    fShowTypeAlert = (title, text, icon, element, clear) => {
+    fShowTypeAlertDE = (title, text, icon, element, clear, animateinp) => {
         Swal.fire({
             title: title, text: text, icon: icon,
             showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
@@ -226,6 +235,12 @@
                 }, 1200);
             } else if (clear == 2) {
                 setTimeout(() => { element.focus(); }, 1200);
+            }
+            if (clear == 0 && animateinp == 0) {
+                fClearFields();
+            }
+            if (animateinp == 1) {
+                fShowAnimationInput(element);
             }
         });
     }
@@ -415,6 +430,7 @@
         inTiposBaja.value    = "none";
         inMotivosBaja.value  = "none";
         dateDownEmp.value    = "";
+        daysPendings.value   = 0;
         dateSendDown.value   = "none";
         compSendEsp.value    = "none";
         fRemAnimatedFields(divContentP1);
@@ -448,7 +464,7 @@
                                     fShowDataDown();
                                 });
                             } else {
-                                fShowTypeAlert('Error', "Ocurrio un error al guardar la opcion para pago", "error", checkBoxSel, 0);
+                                fShowTypeAlertDE('Error', "Ocurrio un error al guardar la opcion para pago", "error", checkBoxSel, 0, 0);
                             }
                             document.getElementById('btnSelectPay' + String(paramid)).disabled = false;
                         }, error: (jqXHR, exception) => {
@@ -460,7 +476,8 @@
                     location.reload();
                 }
             } else {
-                fShowTypeAlert('Atención', 'Selecciona una opcion de pago', 'info', checkBoxSel, 2);
+                fShowTypeAlertDE('Atención', 'Selecciona una opcion de pago', 'info', checkBoxSel, 2, 1);
+                //fShowAnimationInput(checkBoxSel);
             }
         } catch (error) {
             if (error instanceof RangeError) {
@@ -652,7 +669,7 @@
                             });
                         } else {
                             const checkBoxSel = document.getElementById("radioSelect" + String(paramid));
-                            fShowTypeAlert('Error', "Ocurrio un error al confirmar el pago", "error", checkBoxSel, 0);
+                            fShowTypeAlertDE('Error', "Ocurrio un error al confirmar el pago", "error", checkBoxSel, 0,0);
                         }
                         document.getElementById('btnConfirmPaidSuc' + String(paramid)).disabled = false;
                     }, error: (jqXHR, exception) => {
@@ -823,28 +840,33 @@
                                         beforeSend: () => {
                                             btnGuardaBaja.disabled = true;
                                         }, success: (data) => {
-                                            if (data.Bandera == true && data.MensajeError == "none") {
-                                                Swal.fire({
-                                                    title: "Correcto",
-                                                    text: "Datos registrados!",
-                                                    icon: "success",
-                                                    showClass: { popup: 'animated fadeInDown faster' },
-                                                    hideClass: { popup: 'animated fadeOutUp faster' },
-                                                    confirmButtonText: "Aceptar", allowOutsideClick: false,
-                                                    allowEscapeKey: false, allowEnterKey: false,
-                                                }).then((value) => {
-                                                    fClearFields();
-                                                    fShowDataDown();
-                                                    setTimeout(() => {
-                                                        $("#window-data-down").modal("show");
-                                                    }, 1000);
-                                                });
-                                            } else if (data.Bandera == false && data.MensajeError == "ERRMOSTINFO") {
-                                                alert("Registro correcto, error al mostrar informacion");
-                                            } else if (data.Bandera == false && data.MensajeError == "ERRINSFINIQ") {
-                                                alert("Error al registrar la informacion");
+                                            console.log(data);
+                                            if (data.Existencia === false) {
+                                                if (data.Bandera == true && data.MensajeError == "none") {
+                                                    Swal.fire({
+                                                        title: "Correcto",
+                                                        text: "Datos registrados!",
+                                                        icon: "success",
+                                                        showClass: { popup: 'animated fadeInDown faster' },
+                                                        hideClass: { popup: 'animated fadeOutUp faster' },
+                                                        confirmButtonText: "Aceptar", allowOutsideClick: false,
+                                                        allowEscapeKey: false, allowEnterKey: false,
+                                                    }).then((value) => {
+                                                        fClearFields();
+                                                        fShowDataDown();
+                                                        setTimeout(() => {
+                                                            $("#window-data-down").modal("show");
+                                                        }, 1000);
+                                                    });
+                                                } else if (data.Bandera == false && data.MensajeError == "ERRMOSTINFO") {
+                                                    fShowTypeAlertDE('Error!', 'al mostrar informacion', 'error', btnShowWindowDataDown, 0, 0);
+                                                } else if (data.Bandera == false && data.MensajeError == "ERRINSFINIQ") {
+                                                    fShowTypeAlertDE('Error!', 'al registrar informacion', 'error', btnShowWindowDataDown, 0, 0);
+                                                } else {
+                                                    fShowTypeAlertDE('Error!', 'Contacte al area de TI', 'error', btnShowWindowDataDown, 0, 0);
+                                                }
                                             } else {
-                                                alert("Ocurrio un error, reporte al área de TI");
+                                                fShowTypeAlertDE('Atención!', 'No puedes generar 2 finiquitos en un mismo periodo', 'warning', btnShowWindowDataDown, 0, 0);
                                             }
                                             btnGuardaBaja.disabled = false;
                                         }, error: (jqXHR, exception) => {
@@ -852,22 +874,22 @@
                                         }
                                     });
                                 } else {
-                                    fShowTypeAlert('Atención', 'Seleccione una opción para el campo compensacion especial', 'info', compSendEsp, 2);
+                                    fShowTypeAlertDE('Atención', 'Seleccione una opción para el campo compensacion especial', 'info', compSendEsp, 2, 0);
                                 }
                             } else {
-                                fShowTypeAlert('Atención', 'Seleccione una opción para el campo fecha a usar', 'info', dateSendDown, 2);
+                                fShowTypeAlertDE('Atención', 'Seleccione una opción para el campo fecha a usar', 'info', dateSendDown, 2, 0);
                             }
                         } else {
-                            fShowTypeAlert('Atención', 'Seleccione una fecha de baja para el empleado', 'info', dateDownEmp, 2);
+                            fShowTypeAlertDE('Atención', 'Seleccione una fecha de baja para el empleado', 'info', dateDownEmp, 2, 0);
                         }
                     } else {
-                        fShowTypeAlert('Atención', 'Selecciona una opcion para el motivo de baja', 'info', inMotivosBaja, 2);
+                        fShowTypeAlertDE('Atención', 'Selecciona una opcion para el motivo de baja', 'info', inMotivosBaja, 2, 0);
                     }
                 } else {
-                    fShowTypeAlert('Atención', 'Seleccione una opción para el tipo de baja', 'info', inTiposBaja, 2);
+                    fShowTypeAlertDE('Atención', 'Seleccione una opción para el tipo de baja', 'info', inTiposBaja, 2, 0);
                 }
             } else {
-                fShowTypeAlert('Atención', 'Seleccione una opción para el baja con finiquito', 'info', downSettlement, 2);
+                fShowTypeAlertDE('Atención', 'Seleccione una opción para el baja con finiquito', 'info', downSettlement, 2, 1);
             }
         } catch (error) {
             if (error instanceof RangeError) {

@@ -25,7 +25,7 @@
     const parameterDateE = '<input type="date" class="form-control form-control-sm" id="paramDateE"/>';
     const parameterPStart = `<input type="number" class="form-control form-control-sm" id="paramPStart"/>`;
     const parameterPEnd = `<input type="number" class="form-control form-control-sm" id="paramPEnd"/>`;
-    const parameterPeriod = `<input type="number" class="form-control form-control-sm" id="paramPeriod"/>`;
+    const parameterPeriod  = `<input type="number" class="form-control form-control-sm" id="paramPeriod"/>`;
     const parameterNPeriods = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
     const parameterNEmploye = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
 
@@ -452,7 +452,7 @@
                             </div>
                         </div>
                     `;
-                } else if (typeReportselect.value == "SABANA") {
+                } else if (typeReportselect.value == "SABANA" || typeReportselect.value == "HOJACALCULO" || typeReportselect.value == "HOJACALCULOBAJAS") {
                     contentParameters.innerHTML += `
                     <div class="row mt-3 animated fadeInDown">
                         <div class="col-md-4">
@@ -477,6 +477,9 @@
                                 Refrescar datos
                               </label>
                             </div>
+                        </div>
+                        <div class="col-md-12 text-justify mt-3">
+                            <b class="text-info">(PARA LA OPCION DE "HOJA DE CALCULO BAJAS" Y "NUEVA HOJA DE CALCULO2 NO ES NECESARIO ACTIVAR ESTA CASILLA, AMBAS OPCIONES SE ENCUENTRAN EN VERSIÓN BETA EN CASO DE FALLAR AL GENERAR LA "NUEVA HOJA DE CALCULO", FAVOR DE SELECCIONAR LA OPCION DE "HOJA DE CALCULO")</b>
                         </div>
                     </div>
                     `;
@@ -556,7 +559,11 @@
                 }
                 // Validamos que tipo de reporte vamos a realizar
                 if (typeReport === "SABANA") {
-                    await fGenerateReportPayroll(optionBusiness, keyBusinessOpt);
+                    await fGenerateReportPayroll(optionBusiness, keyBusinessOpt, 1);
+                } else if (typeReport === "HOJACALCULO") {
+                    await fGenerateReportPayroll(optionBusiness, keyBusinessOpt, 2);
+                } else if (typeReport === "HOJACALCULOBAJAS") {
+                    await fGenerateReportPayroll(optionBusiness, keyBusinessOpt, 3);
                 } else if (typeReport === "ALTAEMP") {
                     await fGenerateReportEmployeesUp(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "BAJA_FEC") {
@@ -659,9 +666,20 @@
     }
 
     // Funcion que genera el reporte de la hoja de calculo
-    fGenerateReportPayroll = (option, keyOption) => {
+    fGenerateReportPayroll = (option, keyOption, type) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
+                let urlSend  = "";
+                let typeSend = 0;
+                if (type == 1) {
+                    urlSend = "ReportPayroll";
+                } else if (type == 2) {
+                    urlSend = "ReportPayrollOrg";
+                    typeSend = 1;
+                } else if (type == 3) {
+                    urlSend = "ReportPayrollOrg";
+                    typeSend = 2;
+                }
                 const paramYear = document.getElementById('paramYear');
                 const paramNper = document.getElementById('paramNper');
                 const paramTper = document.getElementById('paramTper');
@@ -674,12 +692,14 @@
                         if (paramTper.value != "" && paramTper.value > 0) {
                             const period = localStorage.getItem("period");
                             $.ajax({
-                                url: "../Reportes/ReportPayroll",
+                                url: "../Reportes/" + urlSend,
                                 type: "POST",
-                                data: { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat) },
+                                data: { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) },
                                 beforeSend: (evt) => {
                                     fDisabledButtonsRep();
+                                    console.log('Ruta enviada: ' + urlSend);
                                 }, success: (data) => {
+                                    console.log(data);
                                     setTimeout(() => {
                                         if (data.Validacion === true) {
                                             if (data.Bandera === true && data.MensajeError === "none") {

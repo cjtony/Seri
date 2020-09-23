@@ -132,14 +132,6 @@ namespace Payroll.Controllers
                 convertFVencC = Convert.ToDateTime(vencon).ToString("dd/MM/yyyy");
             }
             try {
-                //if (convertFEffdt != convertFEffdtAct) {
-                //    int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                //    int keyemp  = int.Parse(Session["IdEmpresa"].ToString());
-                //    DatosNominaDao nominaDao = new DatosNominaDao();
-                //    nominaBean = nominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAntiq, convertFVencC, usuario, "none", "none", "none", "none",);
-                //} else {
-                //    nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position);
-                //}
                 nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position);
                 if (nominaBean.sMensaje != "success") {
                     messageError = nominaBean.sMensaje;
