@@ -6,17 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
-using System.IO.Compression;
-using System.Text;
-using System.Configuration;
-using System.Media;
-using System.Xml;
-
-using System.Drawing;
-using System.Web.UI.WebControls;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using Microsoft.Ajax.Utilities;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -511,10 +501,17 @@ namespace Payroll.Controllers
         public JsonResult ProcesosPots( int IdDefinicionHD, int anio,int iTipoPeriodo,int iperiodo,int iIdempresa,int iCalEmpleado)
 
         {
+            string Path = Server.MapPath("Archivos\\porlotes\\");
+            Path = Path.Replace("\\Nomina", "");
+            Path = Path + "prueba.bat";
+
             Startup obj = new Startup();
             string NomProceso = "CNomina";
-            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado);
-
+            FuncionesNomina Dao2 = new FuncionesNomina();
+            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path);
+          
+          
+            
             return null;
         }
         [HttpPost]

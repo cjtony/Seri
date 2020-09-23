@@ -3,9 +3,9 @@
 
 <div class="container bg-white">
     @*Botones Flotantes*@
- 
+
     <div class="container-fluid">
-  
+
         <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
             <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
             <div class="col-md-6">
@@ -23,22 +23,23 @@
                         Recibo Finiquito
                     </label>
                 </div>
+           
             </div>
             <div class="col-md-12">
                 <hr />
             </div>
-        
+
 
             <div class="row mt-4">
                 <div class="col-md-6">
                     @*<div class="form-group row" style="margin-left:2%">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="CheckFiniquito">
-                            <label class="custom-control-label col-form-label font-labels" for="CheckFiniquito">
-                                Recibo Finiquito
-                            </label>
-                        </div>
-                    </div>*@
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="CheckFiniquito">
+                                <label class="custom-control-label col-form-label font-labels" for="CheckFiniquito">
+                                    Recibo Finiquito
+                                </label>
+                            </div>
+                        </div>*@
                     <div class="form-group row" style="margin-left:2%">
                         <label for="EmpresaNom" class="col-sm-4 col-form-label font-labels">
                             Empresa:
@@ -90,7 +91,12 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <div id="jqxLoader"></div>
+                    </div>
+                    <div class="form-group row">
+                        <div id="jqxLoader2"></div>
+                    </div>
 
                 </div>
             </div>
@@ -115,7 +121,7 @@
                                 </label>
                                 <label for="Emisor" class="col-sm-11 col-form-label font-labels " style="font-size:12px" id="Emisor"></label>
                             </div>
-                       
+
                             <div class="form-group row" style="margin-left:2%">
                                 <label for="Tipofiniquito" class="col-sm-2 col-form-label font-labels" id="LaDropFiniquito" style="visibility:hidden">
                                     Tipo de finiquito :
@@ -125,7 +131,7 @@
                                         <option value="0">Selecciona</option>
                                     </select>
                                 </div>
-                                <div class="custom-control custom-switch" style="margin-left:80%" >
+                                <div class="custom-control custom-switch" style="margin-left:80%">
                                     <input type="checkbox" class="custom-control-input" id="CheckRecibo2" style="visibility:visible">
                                     <label class="custom-control-label" for="CheckRecibo2" id="LachecRecibo2" style="visibility:visible">
                                         Recibo 2
@@ -189,13 +195,17 @@
         <button class="flotante2 btn btn-primary btn-circle shadow" title="Limpiar todos los campos" id="btnFloLimpiar" type="button" btvisible="true" value="1">
             <i class="fas fa-eraser"></i>
         </button>
-        <button class="flotante3 btn btn-primary btn-circle shadow" title="Generar PDF masivos" id="btnPDFms" type="button" btvisible="true" value="1" style="visibility:hidden">
+        <button class="flotante3 btn btn-primary btn-circle shadow" title="Generar PDF masivos" id="btnPDFms" type="button" btvisible="true" value="0" style="visibility:hidden">
             <i class="far fa-file-pdf"></i>
         </button>
         <button class="flotante4 btn btn-primary btn-circle shadow" title="Generar Xml masivos" id="btnXmlms" type="button" btvisible="true" value="1" style="visibility:hidden">
             <i class="far fa-file-code"></i>
         </button>
+        <button class="flotante5 btn btn-primary btn-circle shadow" title="Dowland" id="btnDowlan" type="button" btvisible="true" value="1" style="visibility:hidden">
+            <i class="fas fa-download"></i>
+        </button>
 
+    
     </div>
     </div>
 </div>
@@ -204,6 +214,7 @@
 <script src="~/Scripts/jqxGrid/jqwidgets/jspdf.min.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxloader.js"></script> 
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxscrollbar.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxmenu.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcheckbox.js"></script>
@@ -216,4 +227,5 @@
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxexport.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.sort.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxinput.js"></script>
+
 

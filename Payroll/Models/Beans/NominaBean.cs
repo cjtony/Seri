@@ -233,7 +233,10 @@ namespace Payroll.Models.Beans
         public String sCtaCheques { get; set; }
         public int iRegimenFiscal { get; set; }
         public int iIdNomina { get; set; }
-        public string sUrl {get;set;}
+        public string sUrl { get; set; }
+        public int iCP { get; set; }
+        public string SDINT {get;set;}
+        public int iNoEjecutados { get; set; }
         public string sMensaje { get; set; }
 
     }
@@ -257,7 +260,8 @@ namespace Payroll.Models.Beans
         public int iIdCalculoshd { get; set; }
         public int iElementoNomina { get; set; }
         public string sValor { get; set; }
-       public string sEspejo { get; set; }
+        public string sEspejo { get; set; }
+        public int sIdSat { get; set; }
        public string sMensaje { get; set; }
 
     }
@@ -324,9 +328,14 @@ namespace Payroll.Models.Beans
 
     public class ControlEjecucionBean { 
       public int iIdContro { get; set; }
+      public int iIdUsuario { get; set; }
+      public string sDescripcion { get; set; }
+      public int sfecha { get; set; }
       public int iIdempresa { get; set; }
       public int iInactivo { get; set; }
-      public int sfecha { get; set; }
+      public int iAnio { get; set; }
+      public int iTipoPeriodo { get; set; }
+      public int iPeriodo { get; set; }
       public string sMensaje { get; set; }
     }
 
@@ -338,5 +347,8 @@ namespace Payroll.Models.Beans
         public string sMensaje { get; set; }
 
     }
-    
+
+
+
+
 }

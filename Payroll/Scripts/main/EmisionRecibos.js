@@ -231,12 +231,12 @@
             url: "../Empleados/GenPDF",
             type: "POST",
             data: dataSend,
-            success: function (data) {
-            
+            success: function (data) {            
                 TextBRuta.value = data[0].sUrl;
-
+                TextBTotalEmple = data[0].iNoEjecutados;
             },
         });
+
     };
 
 
@@ -249,23 +249,6 @@
             confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
         }).then((acepta) => {
 
-            //  Nombrede.value       = '';
-            // Descripcionde.value  = '';
-            //iAnode.value         = '';
-            //cande.value          = '';
-            //$("html, body").animate({
-            //    scrollTop: $(`#${element.id}`).offset().top - 50
-            //}, 1000);
-            //if (clear == 1) {
-            //    setTimeout(() => {
-            //        element.focus();
-            //        setTimeout(() => { element.value = ""; }, 300);
-            //    }, 1200);
-            //} else {
-            //    setTimeout(() => {
-            //        element.focus();
-            //    }, 1200);
-            //}
         });
     };
 
