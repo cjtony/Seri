@@ -71,6 +71,196 @@ namespace Payroll.Models.Daos
     public class ReportesDao : Conexion
     {
 
+        // REPORTE BAJAS
+        public List<RenglonesHCBean> sp_Renglones_Hoja_Calculo_BAJAS(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int start, int end)
+        {
+            List<RenglonesHCBean> renglonesHCBeans = new List<RenglonesHCBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Renglones_Hoja_Calculo_BAJAS", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Espejo", ismirror));
+                cmd.Parameters.Add(new SqlParameter("@Inicio", start));
+                cmd.Parameters.Add(new SqlParameter("@Final", end));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        RenglonesHCBean renglones = new RenglonesHCBean();
+                        renglones.iIdRenglon      = Convert.ToInt32(data["Renglon_id"].ToString());
+                        renglones.sNombreRenglon  = data["Nombre_Renglon"].ToString();
+                        renglonesHCBeans.Add(renglones);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return renglonesHCBeans;
+        }
+
+        public List<DatosGeneralesHC> sp_Datos_Generales_HC_BAJAS(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int typeSend)
+        {
+            List<DatosGeneralesHC> datosGenerales = new List<DatosGeneralesHC>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Generales_HC_BAJAS", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        DatosGeneralesHC dato = new DatosGeneralesHC();
+                        dato.iAnio = (data["Anio"].ToString() != "") ? Convert.ToInt32(data["Anio"].ToString()) : 0;
+                        dato.iPeriodo = (data["Periodo"].ToString() != "") ? Convert.ToInt32(data["Periodo"].ToString()) : 0;
+                        dato.iEmpresa = (data["EMPRESA"].ToString() != "") ? Convert.ToInt32(data["EMPRESA"].ToString()) : 0;
+                        dato.sEmpresa = (data["NombreEmpresa"].ToString() != "") ? data["NombreEmpresa"].ToString() : "NA";
+                        dato.iNomina = (data["NOMINA"].ToString() != "") ? Convert.ToInt32(data["NOMINA"].ToString()) : 0;
+                        dato.sPaterno = (data["Apellido_Paterno_Empleado"].ToString() != "") ? data["Apellido_Paterno_Empleado"].ToString() : "NA";
+                        dato.sMaterno = (data["Apellido_Materno_Empleado"].ToString() != "") ? data["Apellido_Materno_Empleado"].ToString() : "NA";
+                        dato.sNombreE = (data["Nombre_Empleado"].ToString() != "") ? data["Nombre_Empleado"].ToString() : "NA";
+                        dato.sRegImss = (data["RegistroImss"].ToString() != "") ? data["RegistroImss"].ToString() : "NA";
+                        dato.sRfc = (data["RFC"].ToString() != "") ? data["RFC"].ToString() : "NA";
+                        dato.sCurp = (data["CURP"].ToString() != "") ? data["CURP"].ToString() : "NA";
+                        dato.sPuesto = (data["PuestoCodigo"].ToString() != "") ? data["PuestoCodigo"].ToString() : "NA";
+                        dato.sNombrePuesto = (data["NombrePuesto"].ToString() != "") ? data["NombrePuesto"].ToString() : "NA";
+                        dato.sNivelJerarquico = (data["NivelJerarquico"].ToString() != "") ? data["NivelJerarquico"].ToString() : "NA";
+                        dato.sDepto = (data["Depto_Codigo"].ToString() != "") ? data["Depto_Codigo"].ToString() : "NA";
+                        dato.sNombreDepto = (data["DescripcionDepartamento"].ToString() != "") ? data["DescripcionDepartamento"].ToString() : "NA";
+                        dato.sCentrCosto = (data["CentroCosto"].ToString() != "") ? data["CentroCosto"].ToString() : "NA";
+                        dato.sDescCentrCosto = (data["DescripcionCentroCosto"].ToString() != "") ? data["DescripcionCentroCosto"].ToString() : "NA";
+                        dato.iRegional = (data["IdRegional"].ToString() != "") ? Convert.ToInt32(data["IdRegional"].ToString()) : 0;
+                        dato.sClvRegional = (data["Clave_Regional"].ToString() != "") ? data["Clave_Regional"].ToString() : "NA";
+                        dato.sDescRegional = (data["Descripcion_Regional"].ToString() != "") ? data["Descripcion_Regional"].ToString() : "NA";
+                        dato.iSucursal = (data["IdSucursal"].ToString() != "") ? Convert.ToInt32(data["IdSucursal"].ToString()) : 0;
+                        dato.sClvSucursal = (data["Clave_Sucursal"].ToString() != "") ? data["Clave_Sucursal"].ToString() : "NA";
+                        dato.sDescSucursal = (data["Descripcion_Sucursal"].ToString() != "") ? data["Descripcion_Sucursal"].ToString() : "NA";
+                        dato.sFechaAnt = (data["FechaAntiguedad"].ToString() != "") ? Convert.ToDateTime(data["FechaAntiguedad"]).ToString("yyyy-MM-dd") : "NA";
+                        dato.sFechaIng = (data["FechaIngreso"].ToString() != "") ? Convert.ToDateTime(data["FechaIngreso"]).ToString("yyyy-MM-dd") : "NA";
+                        dato.dSueldo = (data["SalarioMensual"].ToString() != "") ? Convert.ToDecimal(data["SalarioMensual"].ToString()) : 0;
+                        dato.iVacanteC = (data["Posicion_id"].ToString() != "") ? Convert.ToInt32(data["Posicion_id"].ToString()) : 0;
+                        dato.iUltimaPos = (data["UltimaPos"].ToString() != "") ? Convert.ToInt32(data["UltimaPos"].ToString()) : 0;
+                        dato.dUltSdi = (data["Ult_sdi"].ToString() != "") ? Convert.ToDecimal(data["Ult_sdi"].ToString()) : 0;
+                        datosGenerales.Add(dato);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosGenerales;
+        }
+
+        public DetallesRenglon sp_Detalle_Renglones_BAJAS(int keyBusiness, int keyEmployee, int numberPeriod, int typePeriod, int yearPeriod, int keyRenglon, int ismirror)
+        {
+            DetallesRenglon detallesRenglon = new DetallesRenglon();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Detalle_Renglones_BAJAS", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Renglon", keyRenglon));
+                cmd.Parameters.Add(new SqlParameter("@Espejo", ismirror));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    detallesRenglon.dSaldo   = (data["Saldo"].ToString() != "") ? Convert.ToDecimal(data["Saldo"].ToString()) : 0;
+                    detallesRenglon.iRenglon = (data["Renglon_id"].ToString() != "") ? Convert.ToInt32(data["Renglon_id"].ToString()) : 0;
+                } else {
+                    detallesRenglon.dSaldo   = 0;
+                    detallesRenglon.iRenglon = 0;
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return detallesRenglon;
+        }
+
+        public DetallesRenglon sp_Liquidos_Espejo_No_Espejo_BAJAS(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int keyEmployee)
+        {
+            DetallesRenglon renglonesHC = new DetallesRenglon();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Liquidos_Espejo_No_Espejo_BAJAS", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Espejo", ismirror));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (Convert.ToInt32(data["Saldo"]) > 0) {
+                        renglonesHC.iRenglon = 9999;
+                        renglonesHC.dSaldo = Convert.ToDecimal(data["Saldo"]);
+                    } else {
+                        renglonesHC.iRenglon = 9999;
+                    }
+                }
+                cmd.Parameters.Clear();
+                cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return renglonesHC;
+        }
+
+        public DetallesRenglon sp_Liquidos_Espejo_No_Espejo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int keyEmployee)
+        {
+            DetallesRenglon renglonesHC = new DetallesRenglon();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Liquidos_Espejo_No_Espejo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("TipoPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Espejo", ismirror));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (Convert.ToInt32(data["Saldo"]) > 0) {
+                        renglonesHC.iRenglon = 9999;
+                        renglonesHC.dSaldo   = Convert.ToDecimal(data["Saldo"]);
+                    } else {
+                        renglonesHC.iRenglon = 9999;
+                    }
+                }
+                cmd.Parameters.Clear();
+                cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return renglonesHC;
+        }
+
         // Obtenemos los renglones de la hc que fueron calculados
         public List<RenglonesHCBean> sp_Renglones_Hoja_Calculo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int start, int end)
         {
@@ -105,8 +295,10 @@ namespace Payroll.Models.Daos
         }
 
 
+
+
         // Obtenemos los datos generales de la hc
-        public List<DatosGeneralesHC> sp_Datos_Generales_HC(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
+        public List<DatosGeneralesHC> sp_Datos_Generales_HC(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int typeSend)
         {
             List<DatosGeneralesHC> datosGenerales = new List<DatosGeneralesHC>();
             try {
@@ -116,6 +308,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
                 cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@TipoEnvio", typeSend));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows) {
                     while (data.Read()) {

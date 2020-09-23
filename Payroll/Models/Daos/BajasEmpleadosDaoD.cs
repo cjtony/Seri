@@ -13,6 +13,34 @@ namespace Payroll.Models.Daos
     public class BajasEmpleadosDaoD : Conexion
     {
 
+        public Boolean sp_Valida_Existencia_Finiquito(int keyEmployee, int keyBusiness, int yearAct, int keyPeriodAct)
+        {
+            Boolean validation = false;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Valida_Existencia_Finiquito", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearAct));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", keyPeriodAct));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Respuesta"].ToString() == "EXISTS") {
+                        validation = true;
+                    } else {
+                        validation = false;
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return validation;
+        }
+
         public PeriodoActualBean sp_Load_Info_Periodo_Empr(int keyBusiness, int yearAct)
         {
             PeriodoActualBean periodoActual = new PeriodoActualBean();

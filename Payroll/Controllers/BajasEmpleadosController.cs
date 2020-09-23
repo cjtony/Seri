@@ -26,7 +26,8 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement)
         {
-            Boolean flag = false;
+            Boolean flag       = false;
+            Boolean validation = false;
             String messageError = "none";
             DateTime dateAct = DateTime.Now;
             int yearAct = Convert.ToInt32(dateAct.Year);
@@ -37,39 +38,40 @@ namespace Payroll.Controllers
             BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
             BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
             PeriodoActualBean periodActBean = new PeriodoActualBean();
-            try
-            {
+            try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
                 int keyPeriodAct = 0;
                 periodActBean = downEmployeeDaoD.sp_Load_Info_Periodo_Empr(keyBusiness, yearAct);
-                if (periodActBean.sMensaje == "success")
-                {
+                if (periodActBean.sMensaje == "success") {
                     keyPeriodAct = periodActBean.iPeriodo;
                     yearAct = periodActBean.iAnio;
                     dateStartPayment = periodActBean.sFecha_Inicio;
                     dateEndPayment = periodActBean.sFecha_Final;
                 }
-                if (flagTypeSettlement) {
-                    downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment);
-                } else {
-                    downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct);
-                }
-                if (downEmployeeBean.sMensaje == "SUCCESS") {
-                    downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(keyEmployee, keyBusiness, idTypeDown, dateDownFormat);
-                    if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
-                        flag = true;
+                validation = downEmployeeDaoD.sp_Valida_Existencia_Finiquito(keyEmployee, keyBusiness, yearAct, keyPeriodAct);
+                if (!validation) {
+                    if (flagTypeSettlement) {
+                        downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment);
                     } else {
-                        messageError = "ERRUPDTE";
+                        downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct);
+                    }
+                    if (downEmployeeBean.sMensaje == "SUCCESS") {
+                        downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(keyEmployee, keyBusiness, idTypeDown, dateDownFormat);
+                        if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
+                            flag = true;
+                        } else {
+                            messageError = "ERRUPDTE";
+                        }
+                    } else {
+                        messageError = "ERRINSFINIQ";
                     }
                 } else {
-                    messageError = "ERRINSFINIQ";
+
                 }
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError });
+            return Json(new { Bandera = flag, MensajeError = messageError, Existencia = validation });
         }
 
         [HttpPost]
