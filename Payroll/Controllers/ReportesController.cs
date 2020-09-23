@@ -215,7 +215,13 @@ namespace Payroll.Controllers
             string pathSaveFile = Server.MapPath("~/Content/");
             string nameFolder   = "REPORTES";
             string nameFolderRe = "NOMINA";
-            string fileName     = "HCalculo_E" + keyOptionSel.ToString() + "_A" + yearPeriod.ToString() + "_NP" + numberPeriod.ToString() + "_TP" + typePeriod.ToString() + "_A.xlsx";
+            string initName = "";
+            if (typeSend == 1) {
+                initName = "HCalculo_E";
+            } else {
+                initName = "HCBajas_E";
+            }
+            string fileName = initName + keyOptionSel.ToString() + "_A" + yearPeriod.ToString() + "_NP" + numberPeriod.ToString() + "_TP" + typePeriod.ToString() + "_A.xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable     = 0;

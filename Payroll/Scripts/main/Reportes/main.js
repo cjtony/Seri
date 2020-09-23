@@ -478,6 +478,9 @@
                               </label>
                             </div>
                         </div>
+                        <div class="col-md-12 text-justify mt-3">
+                            <b class="text-info">(PARA LA OPCION DE "HOJA DE CALCULO BAJAS" Y "NUEVA HOJA DE CALCULO2 NO ES NECESARIO ACTIVAR ESTA CASILLA, AMBAS OPCIONES SE ENCUENTRAN EN VERSIÓN BETA EN CASO DE FALLAR AL GENERAR LA "NUEVA HOJA DE CALCULO", FAVOR DE SELECCIONAR LA OPCION DE "HOJA DE CALCULO")</b>
+                        </div>
                     </div>
                     `;
                 }
@@ -697,24 +700,23 @@
                                     console.log('Ruta enviada: ' + urlSend);
                                 }, success: (data) => {
                                     console.log(data);
-                                    console.log('datos');
-                                    //setTimeout(() => {
-                                    //    if (data.Validacion === true) {
-                                    //        if (data.Bandera === true && data.MensajeError === "none") {
-                                    //            if (data.Rows > 0) {
-                                    //                fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
-                                    //            } else {
-                                    //                fShowContentNoDataReport(contentGenerateRep);
-                                    //            }
-                                    //        } else {
-                                    //            alert('Algo fallo al realizar el reporte');
-                                    //            location.reload();
-                                    //        }
-                                    //    } else {
-                                    //        fShowContentNoDataReport(contentGenerateRep);
-                                    //    }
-                                    //    fEnabledButtonsRep();
-                                    //}, 2000);
+                                    setTimeout(() => {
+                                        if (data.Validacion === true) {
+                                            if (data.Bandera === true && data.MensajeError === "none") {
+                                                if (data.Rows > 0) {
+                                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                                } else {
+                                                    fShowContentNoDataReport(contentGenerateRep);
+                                                }
+                                            } else {
+                                                alert('Algo fallo al realizar el reporte');
+                                                location.reload();
+                                            }
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
+                                        fEnabledButtonsRep();
+                                    }, 2000);
                                 }, error: (jqXHR, exception) => {
                                     fcaptureaerrorsajax(jqXHR, exception);
                                 }
