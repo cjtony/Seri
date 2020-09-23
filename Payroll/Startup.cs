@@ -5,7 +5,7 @@ using Owin;
 using Hangfire;
 using Hangfire.SqlServer;
 using Hangfire.Dashboard;
-
+using System.Diagnostics;
 using Hangfire.Storage.Monitoring;
 using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
@@ -14,9 +14,8 @@ using System.Data;
 using System.Web.Mvc;
 using Payroll.Models.Daos;
 using System.Collections.Generic;
-using Org.BouncyCastle.Asn1.Cms;
-using Hangfire.Processing;
-using Hangfire.States;
+
+
 
 [assembly: OwinStartup(typeof(Payroll.Startup))]
 
@@ -37,12 +36,15 @@ namespace Payroll
             // Desarrollo
             GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions
             {
+                
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                 SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
                 QueuePollInterval = TimeSpan.Zero,
                 UseRecommendedIsolationLevel = true,
                 DisableGlobalLocks = true
+
             });
+           
         
             //  GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet_original; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
             
@@ -151,8 +153,8 @@ namespace Payroll
 
         // proceso actualiza en BD TpProcesosJons cada 30 segundos 
         public void ActBDTbJobs() {
-           //RecurringJob.AddOrUpdate(() => ProcesosContinuos(), Cron.Minutely);
-            //var jobId = BackgroundJob.Enqueue(() => ProcesosContinuos());
+            RecurringJob.AddOrUpdate(() => ProcesosContinuos(), Cron.Minutely);
+            var jobId = BackgroundJob.Enqueue(() => ProcesosContinuos());
         }
 
         public void ProcesosContinuos() 
@@ -178,14 +180,14 @@ namespace Payroll
             return fechajobs;
         }
 
-        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple)
+        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple,string Path)
         {
             string FechaProceso = Fecha();
 
             if (NomProceso == "CNomina")
             {
 
-                var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso));
+                var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso, Path));
               
                     //Task checkJobState = Task.Factory.StartNew(() =>
                     //{
@@ -214,15 +216,26 @@ namespace Payroll
 
         }
 
-        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion,int IdEmpresa,int LisEmpleado, string fecha) {
+        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, int IdEmpresa, int LisEmpleado, string fecha, string Path) {
 
-            FuncionesNomina Dao2 = new FuncionesNomina();
-            Dao2.sp_CNomina_1(anio, TipoPeriodo, Periodo, IdDefinicion,IdEmpresa,LisEmpleado);
 
+
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
+            psi.CreateNoWindow = true;
+            psi.WindowStyle = ProcessWindowStyle.Hidden;
+            psi.FileName = Path;
+            Process.Start(psi); 
+
+            //Path = Path.Replace("prueba.bat", "Prueba2.bat");
+            //ProcessStartInfo psi2 = new ProcessStartInfo();
+            //psi2.Arguments = "2020,3,15,2,0,0";
+            //psi2.CreateNoWindow = true;
+            //psi2.WindowStyle = ProcessWindowStyle.Hidden;
+            //psi2.FileName = Path;
+            //Process.Start(psi2);
 
         }
-
-
 
     }
 }

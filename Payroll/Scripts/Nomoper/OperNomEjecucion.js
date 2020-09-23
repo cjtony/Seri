@@ -48,7 +48,8 @@
     const checkedItemsLog = document.getElementById('checkedItemsLog');
     const CheckRecibo2 = document.getElementById('CheckRecibo2');
     const btnFloActualiza = document.getElementById('btnFloActualiza');
-
+    const Tbtotal = document.getElementById('Tbtotal');
+    const LaTotal = document.getElementById('LaTotal');
   
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
@@ -587,7 +588,6 @@
             type: "POST",
             data: dataSend,
             success: (data) => {
-                console.log('resultado'+data);
                 if (data[0] == 1) {
 
                     DatoEjeCerrada = 0;
@@ -973,8 +973,6 @@
                 } 
             }
         }
-
-      
 
 
     };
@@ -1363,8 +1361,11 @@
                             //$('#LaTotalDedu').html(TotalDedu);
                         }
                     }
+
+                    Tbtotal.style.visibility = 'visible';
+                    LaTotal.style.visibility = 'visible';
                     Total = TotalPercep - TotalDedu;
-                    //$('#LaTotalNom').html(Total);
+                    Tbtotal.value = formatter.format(Total)
 
                 }
             }
@@ -1494,14 +1495,13 @@
         var dropDownContent = '<div id="2" style="position: relative; margin-left: 3px; margin-top: 6px;">' + row2['iIdDefinicionhd'] + ' ' + row2['sNombreDefinicion'] + '</div>';
         $("#jqxdropdownbutton2").jqxDropDownButton('setContent', dropDownContent);
         const dataSend = { IdDefinicionHD: IdDropList2, iperiodo: 0 };
-        console.log(dataSend);
+      
                 /*  carga el tipo de periodo en pantalla */
         $.ajax({
             url: "../Nomina/TipoPeriodo",
             type: "POST",
             data: dataSend,
             success: (data) => {
-                console.log('Resultado de periodo: ' + data)
                 TipoPeriodoNoCe.value = data[0].iId + " " + data[0].sValor;
             },
             error: function (jqXHR, exception) {
@@ -2086,8 +2086,11 @@
     // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
     $("#switchButtonEmple").toggle();
 
-
-    
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    });
   
  
 });

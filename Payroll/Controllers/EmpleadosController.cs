@@ -8,16 +8,11 @@ using System.Web.Mvc;
 using System.Xml;
 using System.IO.Compression;
 using System.Text;
-using System.Configuration;
-using System.Media;
 using MessagingToolkit.QRCode.Codec;
-using System.Net.NetworkInformation;
-using System.Web.UI.HtmlControls;
-using System.Xml;
 using System.Drawing;
-using System.Web.UI.WebControls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Security.Policy;
 
 namespace Payroll.Controllers
 {
@@ -391,13 +386,14 @@ namespace Payroll.Controllers
 
         [HttpPost]
 
-        public JsonResult XMLNomina(int IdEmpresa, string sNombreComple, int Periodo, int anios, int Tipodeperido)
+        public JsonResult XMLNomina(int IdEmpresa, string sNombreComple, int Periodo, int anios, int Tipodeperido, int Masivo)
         {
+
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-            string path = Server.MapPath("Archivos\\certificados\\");
+            string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
             path = path.Replace("\\Empleados", "");
-            ListDatEmisor = Dao.GXMLNOM(IdEmpresa, sNombreComple, path, Periodo, anios, Tipodeperido);
+            ListDatEmisor = Dao.GXMLNOM(IdEmpresa, sNombreComple, path, Periodo, anios, Tipodeperido, Masivo);
             return Json(ListDatEmisor);
         }
 
@@ -625,7 +621,7 @@ namespace Payroll.Controllers
 
 
                 /////////////// tipo de pago 
-                ///
+                
 
                 Paragraph Espacio3 = new Paragraph(20, " ");
                 Paragraph table6 = new Paragraph();
@@ -684,8 +680,6 @@ namespace Payroll.Controllers
                 Palabra = nodo.Attributes.GetNamedItem("PeriodicidadPago").Value;
                 Paragraph Periodo = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Periodo.IndentationLeft = 227;
-
-
 
 
                 Paragraph TLugarExp = new Paragraph(-10, "Lugar de Expedicion:", TTexNegCuerpo);
@@ -1126,32 +1120,32 @@ namespace Payroll.Controllers
             return Json(empleados);
         }
 
-        /// generar Pdf
+        /// generar Pdf en emision de Recibos
         [HttpPost]
         public JsonResult GenPDF(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion)
         {
 
-            int Idusuario = Convert.ToInt32(Session["iIdUsuario"]);
-            int inactivo = 0;
+            int Idusuario = Convert.ToInt32(Session["iIdUsuario"]), inactivo = 0,NoEjecuciones=0;
 
 
             List<EmpresasBean> NoEmple = new List<EmpresasBean>();
             List<EmpleadosBean> Empleados = new List<EmpleadosBean>();
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
             List<EmisorReceptorBean> url = new List<EmisorReceptorBean>();
+            List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>();
             FuncionesNomina Dao = new FuncionesNomina();
             ListEmpleadosDao Dao2 = new ListEmpleadosDao();
-            //Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario,sDEscripcion,inactivo);
+            
 
             string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
             int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, Version = 12, Folio = 0;
             Folio = Anio * 100000 + TipoPeriodo * 10000 + Perido * 10;
             var fileName = "";
-            string PathPDF = Server.MapPath("Archivos\\certificados\\PDF2\\IPSNet");
-            string PathZip = Server.MapPath("Archivos\\certificados\\");
+            string PathPDF = "";
+            string PathCarp = Server.MapPath("Archivos\\certificados\\PDF2\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
-            PathZip = PathZip.Replace("\\Empleados", "");
-            //PathZip = PathZip + NomArchivo;
+            PathCarp = PathCarp.Replace("\\Empleados", "");
+           
             string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             string Nombrearc = PathPDF;
@@ -1160,13 +1154,41 @@ namespace Payroll.Controllers
             rows = valores.Length - 1;
             int idempleado = 0;
             string urlpdf;
-            //CreateActionInvoker caroeta
-            //DirectoryInfo di = Directory.CreateDirectory(PathPDF);
+            int defi = 0;
             for (int i = 0; i < rows; i++)
             {
                 idEmpresa = Convert.ToInt32(valores[i]);
-                NoEmple = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 0);
-                Empleados = Dao.sp_EmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 1);
+                NoEmple = Dao.sp_NumeroEmple_Retrieve_TpCalculosLn(idEmpresa, TipoPeriodo, Perido,0);
+                if (defi == 0) {
+                    LisIdcontrol = Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario, sDEscripcion, inactivo, idEmpresa, anios, Tipodeperido, Perido, iRecibo);
+                    defi = 1;
+                }
+                Dao2.sp_CControlEjeLn_insert_CControlEjeLn(LisIdcontrol[0].iIdContro,idEmpresa,0, anios, Tipodeperido, Perido, iRecibo);
+                Empleados = Dao.sp_EmpleadosEmpresa_periodo(idEmpresa, TipoPeriodo, Perido, 1);
+                NoEjecuciones = NoEjecuciones + NoEmple[0].iNoEmpleados;
+
+                if (iRecibo == 1)
+                {
+                    PathCarp = PathCarp + "Simple\\Empresa" + idEmpresa + "\\Periodo"+ Perido+"\\";
+                }
+                if (iRecibo == 2)
+                {
+                    PathCarp = PathCarp + "Fiscal\\Empresa" + idEmpresa + "\\Periodo"+ Perido+"\\";
+                }
+
+                if (System.IO.File.Exists(PathCarp))
+                {
+
+                    PathPDF = PathCarp + "IPSNet";
+
+                }
+                else
+                {
+                   
+                    DirectoryInfo di = Directory.CreateDirectory(PathCarp);
+                    PathPDF = PathCarp + "IPSNet";
+                }
+
                 // con QR
 
                 for (int a = 0; a < NoEmple[0].iNoEmpleados; a++) {
@@ -1188,7 +1210,6 @@ namespace Payroll.Controllers
                     // con QR
                     List<SelloSatBean> LiTsat = new List<SelloSatBean>();
                     LiTsat = Dao2.sp_DatosSat_Retrieve_TSellosSat(idEmpresa, anios, Tipodeperido, Perido, Empleados[a].iIdEmpleado);
-
                     if (ListDatEmisor != null) {
                         if (iRecibo == 1 && ListDatEmisor[0].sRFC.Length > 3)
                         {
@@ -1203,8 +1224,6 @@ namespace Payroll.Controllers
 
                         };
                     };
-
-
                     if (valido == 1) {
                         ListDatEmisor[0].sUrl = PathPDF;
                         LisCer = Dao2.sp_FileCer_Retrieve_CCertificados(ListDatEmisor[0].sRFC);
@@ -1228,10 +1247,6 @@ namespace Payroll.Controllers
                             PdfWriter pw = PdfWriter.GetInstance(documento, Fs);
                             documento.Open();
 
-
-
-
-
                             BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
                             iTextSharp.text.Font TTexNeg = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.BOLD);
                             iTextSharp.text.Font TexNom = new iTextSharp.text.Font(bf, 7, iTextSharp.text.Font.NORMAL);
@@ -1240,8 +1255,7 @@ namespace Payroll.Controllers
                             iTextSharp.text.Font TexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
 
                             //////Cabecera  
-                            ///
-
+                          
                             string Palabra = ListDatEmisor[0].sNombreEmpresa;
                             Paragraph Empresa = new Paragraph(50, Palabra, TTexNeg);
                             Empresa.IndentationLeft = 90;
@@ -1353,8 +1367,6 @@ namespace Payroll.Controllers
                             }
 
 
-
-
                             ////////// Info Personal
                             Paragraph Espacio = new Paragraph(20, " ");
                             Paragraph table1 = new Paragraph();
@@ -1463,7 +1475,13 @@ namespace Payroll.Controllers
                             Paragraph TSalarioB = new Paragraph("Salario Base:", TTexNegCuerpo);
                             TSalarioB.IndentationLeft = 350;
 
-                            Palabra = string.Format("{0:N2}", ListTotales[i].dSaldo);
+                            if(ListTotales == null){
+                                Palabra = "error contcte a sistemas";
+                            };
+                            if(ListTotales != null) {
+                                Palabra = string.Format("{0:N2}", ListTotales[i].dSaldo);
+                            }
+                           
                             Paragraph SalarioB = new Paragraph(-1, Palabra, TexNegCuerpo);
                             SalarioB.IndentationLeft = 395;
 
@@ -1476,7 +1494,7 @@ namespace Payroll.Controllers
                             DateTime dt3 = dt1;
 
                             List<CInicioFechasPeriodoBean> LFechaPerido = new List<CInicioFechasPeriodoBean>();
-                            LFechaPerido = Dao2.sp_DatosPerido_Retrieve_DatosPerido(Perido);
+                            LFechaPerido = Dao2.sp_DatPeridoEmpresa(idEmpresa, TipoPeriodo, Anio, Perido);
 
                             bool fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaInicio, culture, styles, out dt1);
                             fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaFinal, culture, styles, out dt2);
@@ -1506,19 +1524,13 @@ namespace Payroll.Controllers
                             Paragraph Jornada = new Paragraph(-1, Palabra, TexNegCuerpo);
                             Jornada.IndentationLeft = 379;
 
-
-
-
                             Paragraph TRiesgopu = new Paragraph("Riesgo Puesto:", TTexNegCuerpo);
                             TRiesgopu.IndentationLeft = 350;
                             Palabra = "1";
                             Paragraph Riesgopu = new Paragraph(-1, Palabra, TexNegCuerpo);
                             Riesgopu.IndentationLeft = 400;
 
-
-
                             //    /////////////// tipo de pago 
-                            //    ///
 
                             Paragraph Espacio3 = new Paragraph(20, " ");
                             Paragraph table6 = new Paragraph();
@@ -1597,12 +1609,11 @@ namespace Payroll.Controllers
                             // dias Efectivos 
 
                             List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
-                            //LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido);
+                            LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio,0);
                             decimal iTdias = LFechaPerido[0].iDiasEfectivos;
                             int TDias = 0;
                             string Dias = LisTRecibo[0].sNombre_Renglon;
                             string sDiasEfectivos = Convert.ToString(iTdias);
-
 
                             if (Dias.Length > 7)
                             {
@@ -1847,8 +1858,6 @@ namespace Payroll.Controllers
                             documento.Add(Ttotal2);
                             documento.Add(Espacio8);
 
-
-
                             if (iRecibo == 2)
                             {
 
@@ -1955,28 +1964,26 @@ namespace Payroll.Controllers
 
                                 documento.Add(table14);
                                 documento.Add(table16);
-                                documento.Add(table18);
+                                documento.Add(table18);           
 
                             }
 
-
-
-
                             documento.Close();
-                            //FuncionesNomina Daos = new FuncionesNomina();
-                            //Daos.sp_Tsellos_InsertUPdate_TSellosSat(1, 0, 0, NumEmpleado, anios, Tipodeperido, Perido, " ", selloemisor, UUID, SelloCF, RfcProv, Nomcer, fechatem);
-
+                        
 
                         }
                     }
 
 
                 }
+
+
             }
 
             EmisorReceptorBean ls = new EmisorReceptorBean();
             {
-                ls.sUrl = PathPDF;
+                ls.iNoEjecutados = NoEjecuciones;
+                ls.sUrl = PathCarp;
             }
             url.Add(ls);
 
@@ -2092,6 +2099,793 @@ namespace Payroll.Controllers
 
             }
             return Json(archivo);
+        }
+
+        /// pdf masivos 
+
+        [HttpPost]
+        public JsonResult GPDFMasivos(int IdEmpresa, int Periodo, int anios, int Tipodeperido, int iRecibo)
+        {
+
+            int Idusuario = Convert.ToInt32(Session["iIdUsuario"]);
+            int inactivo = 0;
+
+
+            List<EmpresasBean> NoEmple = new List<EmpresasBean>();
+            List<EmpleadosBean> Empleados = new List<EmpleadosBean>();
+            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
+            List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
+            List<EmisorReceptorBean> url = new List<EmisorReceptorBean>();
+            List<CInicioFechasPeriodoBean> LFechaPerido = new List<CInicioFechasPeriodoBean>();
+            List<SelloSatBean> LiTsat = new List<SelloSatBean>();
+
+            FuncionesNomina Dao = new FuncionesNomina();
+            ListEmpleadosDao Dao2 = new ListEmpleadosDao();
+          //  Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario,sDEscripcion,inactivo);
+            LFechaPerido = Dao2.sp_DatosPerido_Retrieve_DatosPerido(Periodo);
+
+            string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
+            int NumEmpleado, Anio = anios, Tipoperido = Tipodeperido, Version = 12, Folio = 0;
+            Folio = Anio * 100000 + Tipoperido * 10000 + Periodo * 10;
+            var fileName = "";
+            string Empre;
+            string sDiasEfectivos;
+            string PathPDF = Server.MapPath("Archivos\\certificados\\");
+            string PathZip = Server.MapPath("Archivos\\certificados\\");
+            PathPDF = PathPDF.Replace("\\Empleados", "");
+            PathZip = PathZip.Replace("\\Empleados", "");
+            PathPDF = PathPDF.Replace("\\Empleados", "");
+            string Nombrearc = "RecibosNom";
+            int idEmpresa = 0, rows = 0;
+            Nombrearc = Nombrearc + "_"+ IdEmpresa+"_"+ LFechaPerido[0].iPeriodo+".pdf";
+            rows = 1;
+            int idempleado = 0;
+            string urlpdf = Nombrearc;
+
+            //nombre y ubicacion del PDF
+
+            Nombrearc = PathPDF + Nombrearc;
+
+            if (System.IO.File.Exists(Nombrearc))
+            {
+                //  System.IO.File.Delete(Nombrearc);
+                EmisorReceptorBean ls = new EmisorReceptorBean();
+                ls.sMensaje = "success";
+                ListDatEmisor.Add(ls);
+
+
+
+            }
+            else
+            {
+
+                // crecion del archivo PDF
+                FileStream Fs = new FileStream(Nombrearc, FileMode.Create);
+                Document documento = new Document(iTextSharp.text.PageSize.LETTER, 2, 5, 5, 2);
+                PdfWriter pw = PdfWriter.GetInstance(documento, Fs);
+                documento.Open();
+
+                for (int i = 0; i < rows; i++)
+                {
+                    idEmpresa = IdEmpresa;
+                    NoEmple = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 0);
+                    Empleados = Dao.sp_EmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 1);
+
+
+                    for (int a = 0; a < NoEmple[0].iNoEmpleados; a++)
+                    {
+
+
+                        int valido = 0;
+                        idempleado = Empleados[a].iIdEmpleado;
+                        ListDatEmisor = Dao2.sp_EmisorReceptor_Retrieve_EmisorReceptor(idEmpresa, Empleados[a].iIdEmpleado);
+                        LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, Empleados[a].iIdEmpleado, LFechaPerido[0].iPeriodo, Tipoperido, Anio, 0);
+                        LiTsat = Dao2.sp_DatosSat_Retrieve_TSellosSat(idEmpresa, anios, Tipodeperido, LFechaPerido[0].iPeriodo, Empleados[a].iIdEmpleado);
+
+                        if (LisTRecibo != null)
+                        {
+
+
+                            string sAntiguedad = "";
+                            List<XMLBean> LisCer = new List<XMLBean>();
+
+                            // con QR
+                            LiTsat = Dao2.sp_DatosSat_Retrieve_TSellosSat(idEmpresa, anios, Tipodeperido, Periodo, Empleados[a].iIdEmpleado);
+
+                            if (ListDatEmisor != null)
+                            {
+                                if (iRecibo == 1 && ListDatEmisor[0].sRFC.Length > 3)
+                                {
+                                    valido = 1;
+                                };
+                                if (iRecibo == 2 && LiTsat != null && ListDatEmisor[0].sRFC.Length > 3)
+                                {
+                                    if (LiTsat[0].sUUID.Length > 3)
+                                    {
+                                        valido = 1;
+                                    };
+
+                                };
+                            };
+                            if (valido == 1)
+                            {
+                                ListDatEmisor[0].sUrl = PathPDF;
+                                LisCer = Dao2.sp_FileCer_Retrieve_CCertificados(ListDatEmisor[0].sRFC);
+                                string pathCert = Server.MapPath("Archivos\\certificados\\");
+                                pathCert = pathCert.Replace("\\Empleados", "");
+                                string s_certificadoKey = pathCert + LisCer[0].sfilekey;
+                                string s_certificadoCer = pathCert + LisCer[0].sfilecer;
+                                string s_transitorio = LisCer[0].stransitorio;
+                                if (System.IO.File.Exists(s_certificadoKey))
+                                {
+
+                                    System.Security.Cryptography.X509Certificates.X509Certificate CerSAT;
+                                    CerSAT = System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromCertFile(s_certificadoCer);
+                                    byte[] bcert = CerSAT.GetSerialNumber();
+                                    string CerNo = LibreriasFacturas.StrReverse((string)Encoding.UTF8.GetString(bcert));
+                                    byte[] CERT_SIS = CerSAT.GetRawCertData();
+
+
+                                    BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+                                    iTextSharp.text.Font TTexNeg = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.BOLD);
+                                    iTextSharp.text.Font TexNom = new iTextSharp.text.Font(bf, 7, iTextSharp.text.Font.NORMAL);
+                                    iTextSharp.text.Font Texchica = new iTextSharp.text.Font(bf, 4, iTextSharp.text.Font.NORMAL);
+                                    iTextSharp.text.Font TexNeg = new iTextSharp.text.Font(bf, 7, iTextSharp.text.Font.BOLD);
+                                    iTextSharp.text.Font TTexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.BOLD);
+                                    iTextSharp.text.Font TexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
+
+                                    //////Cabecera  
+
+
+                                    string Palabra = ListDatEmisor[0].sNombreEmpresa;
+                                    Empre = Palabra;
+                                    Paragraph Empresa = new Paragraph(25, Palabra, TTexNeg);
+                                    Empresa.IndentationLeft = 40;
+
+
+                                    Paragraph Trfc = new Paragraph("R.F.C.:", TexNeg);
+                                    Trfc.IndentationLeft = 40;
+                                    Palabra = ListDatEmisor[0].sRFC;
+                                    RfcEmi = Palabra;
+                                    Paragraph Rfc = new Paragraph(-1, Palabra, TexNom);
+                                    Rfc.IndentationLeft = 64;
+                                    Paragraph Rfcpatron = new Paragraph(-1, Palabra, TexNom);
+                                    Rfcpatron.IndentationLeft = 86;
+
+
+                                    Paragraph TrfcPatron = new Paragraph("R.F.C. Patron:", TexNeg);
+                                    TrfcPatron.IndentationLeft = 40;
+                                    Palabra = ListDatEmisor[0].sAfiliacionIMSS;
+                                    Paragraph TRegPat = new Paragraph("Reg.Pat:", TexNeg);
+                                    TRegPat.IndentationLeft = 40;
+                                    Paragraph RegPat = new Paragraph(-1, Palabra, TexNom);
+                                    RegPat.IndentationLeft = 68;
+
+
+
+                                    /// Emprime Cabecera
+                                    documento.Add(Empresa);
+                                    documento.Add(Trfc);
+                                    documento.Add(Rfc);
+                                    documento.Add(TrfcPatron);
+                                    documento.Add(Rfcpatron);
+                                    documento.Add(TRegPat);
+                                    documento.Add(RegPat);
+
+
+                                    /// cabesera direccion
+
+                                    Paragraph TDireccion = new Paragraph(-25, "Direccion:", TexNeg);
+                                    TDireccion.IndentationLeft = 350;
+                                    Palabra = ListDatEmisor[0].sCalle;
+                                    Paragraph Direccion = new Paragraph(-1, Palabra, TexNom);
+                                    Direccion.IndentationLeft = 382;
+
+
+                                    Paragraph TCol = new Paragraph("Col.", TexNeg);
+                                    TCol.IndentationLeft = 350;
+                                    Palabra = ListDatEmisor[0].sColonia;
+                                    Paragraph Col = new Paragraph(-1, Palabra, TexNom);
+                                    Col.IndentationLeft = 370;
+
+                                    Paragraph TCp = new Paragraph("CP:", TexNeg);
+                                    TCp.IndentationLeft = 350;
+                                    Palabra = Convert.ToString(ListDatEmisor[0].iCP);
+                                    Paragraph cp = new Paragraph(-1, Palabra, TexNom);
+                                    cp.IndentationLeft = 370;
+
+                                    Palabra = " ";
+                                    Paragraph espacio = new Paragraph(4, Palabra, TexNom);
+
+
+                                    Paragraph TEmpleado = new Paragraph("Datos del Empleado", TexNeg);
+                                    TEmpleado.IndentationLeft = 40;
+
+                                    Paragraph TNoNomina = new Paragraph("No Empleado:", TexNeg);
+                                    TNoNomina.IndentationLeft = 40;
+                                    Palabra = Convert.ToString(ListDatEmisor[0].iIdEmpleado);
+                                    Paragraph NoNomina = new Paragraph(-1, Palabra, TexNom);
+                                    NoNomina.IndentationLeft = 88;
+
+
+
+                                    Paragraph TRFCEmpleado = new Paragraph("RFC: ", TexNeg);
+                                    TRFCEmpleado.IndentationLeft = 40;
+
+                                    Palabra = Convert.ToString(ListDatEmisor[0].sRFCEmpleado);
+                                    Paragraph RFCempleado = new Paragraph(-1, Palabra, TexNom);
+                                    RFCempleado.IndentationLeft = 55;
+
+
+                                    Paragraph TISSM = new Paragraph("AFIL. IMSS: ", TexNeg);
+                                    TISSM.IndentationLeft = 40;
+
+                                    Palabra = Convert.ToString(ListDatEmisor[0].sRegistroImss);
+                                    Paragraph NoISSM = new Paragraph(-1, Palabra, TexNom);
+                                    NoISSM.IndentationLeft = 80;
+
+
+                                    Paragraph TDepto = new Paragraph("DEPTO: ", TexNeg);
+                                    TDepto.IndentationLeft = 40;
+
+
+                                    Palabra = Convert.ToString(ListDatEmisor[0].sDescripcionDepartamento);
+                                    Paragraph Depto = new Paragraph(-1, Palabra, TexNom);
+                                    Depto.IndentationLeft = 75;
+
+                                    Paragraph TDiast = new Paragraph("Dias Trab.", TexNeg);
+                                    TDiast.IndentationLeft = 40;
+
+
+                                    // dias Efectivos 
+                                    decimal iTdias = LFechaPerido[0].iDiasEfectivos;
+                                    int TDias = 0;
+                                    string Dias = LisTRecibo[0].sNombre_Renglon;
+                                    sDiasEfectivos = Convert.ToString(iTdias);
+
+                                    if (Dias.Length > 7)
+                                    {
+                                        if (LisTRecibo[0].iIdRenglon == 0)
+                                        {
+                                            string[] dias = Dias.Split(':');
+                                            Dias = dias[1].ToString();
+                                            Dias = Dias.Replace("}", "");
+                                        }
+                                        else
+                                        {
+                                            Dias = "0";
+                                        }
+                                        decimal DiasNo = Convert.ToDecimal(Dias);
+                                        iTdias = iTdias - DiasNo;
+                                        TDias = Convert.ToInt16(iTdias);
+                                        sDiasEfectivos = Convert.ToString(TDias);
+
+                                    }
+
+                                    Palabra = Convert.ToString(sDiasEfectivos);
+                                    Paragraph DiasT = new Paragraph(-1, Palabra, TexNom);
+                                    DiasT.IndentationLeft = 75;
+
+                                    Paragraph TPeriodo = new Paragraph(-35, "Periodo de pago: ", TexNeg);
+                                    TPeriodo.IndentationLeft = 350;
+
+                                    Palabra = Convert.ToString(LFechaPerido[0].sFechaInicio + " AL " + LFechaPerido[0].sFechaFinal);
+                                    Paragraph Periodos = new Paragraph(-1, Palabra, TexNom);
+                                    Periodos.IndentationLeft = 405;
+
+                                    Paragraph Tpuesto = new Paragraph("Puesto: ", TexNeg);
+                                    Tpuesto.IndentationLeft = 350;
+
+
+                                    Palabra = Convert.ToString(ListDatEmisor[0].sNombrePuesto);
+                                    Paragraph puesto = new Paragraph(-1, Palabra, TexNom);
+                                    puesto.IndentationLeft = 380;
+
+
+
+                                    Paragraph TSalariod = new Paragraph("Sala. Dirario: ", TexNeg);
+                                    TSalariod.IndentationLeft = 350;
+
+                                    int SD = Convert.ToInt32(ListDatEmisor[0].dSalarioMensual);
+                                    SD = SD / 30;
+
+                                    Palabra = Convert.ToString(SD);
+                                    Paragraph Salariod = new Paragraph(-1, Palabra, TexNom);
+                                    Salariod.IndentationLeft = 390;
+
+
+                                    Paragraph TSalariodInt = new Paragraph("Sala. Dirario Int: ", TexNeg);
+                                    TSalariodInt.IndentationLeft = 350;
+
+                                    Palabra = Convert.ToString(ListDatEmisor[0].SDINT);
+                                    Paragraph Salariodint = new Paragraph(-1, Palabra, TexNom);
+                                    Salariodint.IndentationLeft = 405;
+
+                                    Paragraph TCentroCost = new Paragraph("CEN.DE COSTOS:", TexNeg);
+                                    TCentroCost.IndentationLeft = 350;
+
+                                    Palabra = Convert.ToString(ListDatEmisor[0].sCentroCosto);
+                                    Paragraph CentroCost = new Paragraph(-1, Palabra, TexNom);
+                                    CentroCost.IndentationLeft = 410;
+
+                                    documento.Add(TDireccion);
+                                    documento.Add(Direccion);
+                                    documento.Add(TCol);
+                                    documento.Add(Col);
+                                    documento.Add(TCp);
+                                    documento.Add(cp);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    documento.Add(TEmpleado);
+                                    documento.Add(espacio);
+                                    documento.Add(TNoNomina);
+                                    documento.Add(NoNomina);
+                                    documento.Add(TRFCEmpleado);
+                                    documento.Add(RFCempleado);
+                                    documento.Add(TISSM);
+                                    documento.Add(NoISSM);
+                                    documento.Add(TDepto);
+                                    documento.Add(Depto);
+                                    documento.Add(TDiast);
+                                    documento.Add(DiasT);
+                                    documento.Add(TPeriodo);
+                                    documento.Add(Periodos);
+                                    documento.Add(Tpuesto);
+                                    documento.Add(puesto);
+                                    documento.Add(TSalariod);
+                                    documento.Add(Salariod);
+                                    documento.Add(TSalariodInt);
+                                    documento.Add(Salariodint);
+                                    documento.Add(TCentroCost);
+                                    documento.Add(CentroCost);
+
+
+
+
+                                    Paragraph Espacio2 = new Paragraph(-1, " ");
+                                    Paragraph table1 = new Paragraph();
+                                    table1.IndentationLeft = 100;
+                                    PdfPTable table2 = new PdfPTable(2);
+                                    table2.HorizontalAlignment = 0;
+                                    table2.PaddingTop = 10;
+                                    table2.TotalWidth = 500;
+                                    table2.LockedWidth = true;
+
+                                    Paragraph table3 = new Paragraph();
+                                    table3.IndentationLeft = 50;
+
+
+                                    PdfPTable table4 = new PdfPTable(2);
+                                    table4.HorizontalAlignment = 0;
+                                    table4.PaddingTop = 10;
+                                    table4.TotalWidth = 250;
+                                    table4.LockedWidth = true;
+
+                                    Paragraph table5 = new Paragraph();
+                                    table5.IndentationLeft = 310;
+
+                                    PdfPTable table6 = new PdfPTable(2);
+                                    table6.HorizontalAlignment = 0;
+                                    table6.PaddingTop = 10;
+                                    table6.TotalWidth = 250;
+                                    table6.LockedWidth = true;
+
+
+
+
+                                    PdfPCell Cell5 = new PdfPCell();
+                                    Cell5.BackgroundColor = BaseColor.WHITE;
+                                    Cell5.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                                    Cell5.AddElement(new Chunk("PERCEPCIONES", TexNeg));
+
+
+                                    PdfPCell Cell6 = new PdfPCell();
+                                    Cell6.BackgroundColor = BaseColor.WHITE;
+                                    Cell6.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                                    Cell6.AddElement(new Chunk("DEDUCCIONES", TexNeg));
+                                    table2.AddCell(Cell5);
+                                    table2.AddCell(Cell6);
+                                    table1.Add(table2);
+
+                                    PdfPCell Cell7 = new PdfPCell();
+                                    Cell7.BackgroundColor = BaseColor.WHITE;
+                                    Cell7.MinimumHeight = 120f;
+                                    //Cell7.HasMinimumHeight = 350f;
+                                    Cell7.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+                                    PdfPCell Cell8 = new PdfPCell();
+                                    Cell8.BackgroundColor = BaseColor.WHITE;
+                                    Cell8.MinimumHeight = 120f;
+                                    Cell8.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+                                    PdfPCell Cell9 = new PdfPCell();
+                                    Cell9.BackgroundColor = BaseColor.WHITE;
+                                    Cell9.MinimumHeight = 120f;
+                                    Cell9.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+                                    PdfPCell Cell10 = new PdfPCell();
+                                    Cell10.MinimumHeight = 120f;
+                                    Cell10.BackgroundColor = BaseColor.WHITE;
+                                    Cell10.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+
+                                    documento.Add(espacio);
+                                    documento.Add(table1);
+
+                                    int b = 0;
+                                    string Palabra2;
+                                    decimal valor;
+                                    decimal per = 0;
+                                    decimal ded = 0;
+                                    decimal total;
+
+                                    if (LisTRecibo.Count > 0)
+                                    {
+                                        for (int x = 0; x < LisTRecibo.Count; x++)
+                                        {
+                                            if (LisTRecibo[x].sValor == "Percepciones")
+                                            {
+                                                string lengRenglon = "";
+                                                string ImporGra = string.Format("{0:N2}", LisTRecibo[x].dSaldo);
+                                                ImporGra = ImporGra.Replace(",", "");
+                                                string IdRenglon = Convert.ToString(LisTRecibo[x].iIdRenglon);
+                                                string concepto = LisTRecibo[x].sNombre_Renglon;
+                                                if (IdRenglon == "1")
+                                                {
+                                                    concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
+                                                    lengRenglon = "001";
+                                                }
+                                                lengRenglon = "010";
+                                                int idReglontama = IdRenglon.Length;
+                                                if (idReglontama == 1) { IdRenglon = "00" + IdRenglon; };
+                                                if (idReglontama == 2) { IdRenglon = "0" + IdRenglon; };
+
+
+                                                Palabra = concepto;
+                                                Palabra2 = ImporGra;
+                                                valor = decimal.Parse(Palabra2);
+                                                per = per + valor;
+                                                Paragraph TLeyenda = new Paragraph(Palabra, TexNegCuerpo);
+                                                TLeyenda.IndentationLeft = 75;
+                                                Paragraph TPercep = new Paragraph(-1, Palabra2, TexNegCuerpo);
+                                                TPercep.IndentationLeft = 180;
+
+                                                string Perp = concepto + "    " + ImporGra;
+
+                                                Cell7.AddElement(new Chunk(Palabra, TexNeg));
+                                                Cell8.AddElement(new Chunk(Palabra2, TexNeg));
+
+
+                                            }
+                                            if (LisTRecibo[x].sValor == "Deducciones")
+                                            {
+
+                                                string lengRenglon = "";
+                                                string ImporGra = string.Format("{0:N2}", LisTRecibo[x].dSaldo);
+                                                ImporGra = ImporGra.Replace(",", "");
+                                                string IdRenglon = Convert.ToString(LisTRecibo[x].iIdRenglon);
+                                                string concepto = LisTRecibo[x].sNombre_Renglon;
+
+                                                Palabra = concepto;
+                                                Palabra2 = ImporGra;
+                                                valor = decimal.Parse(Palabra2);
+                                                ded = ded + valor;
+                                                Paragraph TLeyenda = new Paragraph(Palabra, TexNegCuerpo);
+                                                TLeyenda.IndentationLeft = 300;
+                                                Paragraph TDedu = new Paragraph(-1, Palabra2, TexNegCuerpo);
+                                                TDedu.IndentationLeft = 450;
+                                                Cell9.AddElement(new Chunk(Palabra, TexNeg));
+                                                Cell10.AddElement(new Chunk(Palabra2, TexNeg));
+
+                                            }
+                                        }
+
+                                    }
+
+
+                                    table4.AddCell(Cell7);
+                                    table4.AddCell(Cell8);
+                                    table3.Add(table4);
+
+                                    table6.AddCell(Cell9);
+                                    table6.AddCell(Cell10);
+                                    table5.Add(table6);
+
+                                    Palabra = " ";
+                                    Paragraph espacio3 = new Paragraph(-130, Palabra, TexNom);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    documento.Add(table3);
+                                    documento.Add(espacio3);
+                                    documento.Add(table5);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    Paragraph TTOtalPer = new Paragraph(" Total Percepciones: ", TexNeg);
+                                    TTOtalPer.IndentationLeft = 100;
+
+                                    Palabra = Convert.ToString(per);
+                                    Paragraph Totaper = new Paragraph(-1, Palabra, TexNom);
+                                    Totaper.IndentationLeft = 170;
+
+                                    Paragraph TTotaldeduc = new Paragraph(-1, " Total deduccion: ", TexNeg);
+                                    TTotaldeduc.IndentationLeft = 350;
+
+                                    Palabra = Convert.ToString(ded);
+                                    Paragraph Totadeduc = new Paragraph(-1, Palabra, TexNom);
+                                    Totadeduc.IndentationLeft = 420;
+
+
+                                    Paragraph TTipopago = new Paragraph("99:Otros   PAGO EN UNA SOLA EXHIBICIÓN ", TexNeg);
+                                    TTipopago.IndentationLeft = 40;
+
+                                    string cantidad = Convert.ToString(per - ded);
+                                    cantidad = NumeroALetras(cantidad);
+
+                                    Paragraph TTipogoEmpra = new Paragraph("RECIBI" + Empre + ", LA CANTIDAD DE: " + cantidad, TexNeg);
+                                    TTipogoEmpra.IndentationLeft = 40;
+
+                                    Palabra = " " /*Convert.ToString()*/;
+                                    Paragraph CantidaLetr = new Paragraph(-1, Palabra, TexNom);
+                                    CantidaLetr.IndentationLeft = 220;
+
+                                    Paragraph TTotoal = new Paragraph(-8, "Total a Pagar: " + Convert.ToString(per - ded), TexNeg);
+                                    TTotoal.IndentationLeft = 350;
+
+                                    documento.Add(TTOtalPer);
+                                    documento.Add(Totaper);
+                                    documento.Add(TTotaldeduc);
+                                    documento.Add(Totadeduc);
+                                    documento.Add(espacio);
+                                    documento.Add(TTipopago);
+                                    documento.Add(TTipogoEmpra);
+                                    documento.Add(CantidaLetr);
+                                    documento.Add(TTotoal);
+
+                                    PdfPTable tableQR = new PdfPTable(1);
+                                    tableQR.HorizontalAlignment = 0;
+                                    tableQR.PaddingTop = 10;
+                                    tableQR.TotalWidth = 50;
+                                    tableQR.LockedWidth = true;
+                                    Paragraph tablqr = new Paragraph();
+                                    tablqr.IndentationLeft = 40;
+
+                                    PdfPTable tableSell = new PdfPTable(1);
+                                    tableSell.HorizontalAlignment = 0;
+                                    tableSell.PaddingTop = 10;
+                                    tableSell.TotalWidth = 250;
+                                    tableSell.LockedWidth = true;
+                                    Paragraph tablSello = new Paragraph();
+                                    tablSello.IndentationLeft = 100;
+
+
+
+                                    PdfPCell Cellqr = new PdfPCell();
+                                    Cellqr.MinimumHeight = 25f;
+                                    Cellqr.FixedHeight = PageSize.LETTER.Height / 15;
+                                    Cellqr.BackgroundColor = BaseColor.WHITE;
+                                    Cellqr.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+                                    PdfPCell CellSello = new PdfPCell();
+                                    CellSello.MinimumHeight = 25f;
+                                    CellSello.BackgroundColor = BaseColor.WHITE;
+                                    CellSello.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+
+                                    LiTsat = Dao2.sp_DatosSat_Retrieve_TSellosSat(idEmpresa, anios, Tipodeperido, LFechaPerido[0].iPeriodo, Empleados[a].iIdEmpleado);
+                                    if (LiTsat != null)
+                                    {
+
+                                        Palabra = Convert.ToString(LiTsat[0].sUUID);
+                                        Paragraph TFolio = new Paragraph("Folio Fiscal: " + Palabra, TexNeg);
+                                        TFolio.IndentationLeft = 40;
+                                        documento.Add(espacio);
+                                        documento.Add(espacio);
+                                        documento.Add(TFolio);
+
+
+                                        Palabra = Convert.ToString(LiTsat[0].sSelloCFD);
+                                        CellSello.AddElement(new Chunk(Palabra, Texchica));
+
+
+                                        if (LiTsat[0].sUUID != "")
+                                        {
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            string selloemi = LiTsat[0].sSelloSat;
+                                            string QrSat = "https://verificacfdi.facturaelectronica.sat.gob.mx/Defaul.aspx?id=" + LiTsat[0].sUUID + "&re=" + ListDatEmisor[0].sRFC + "&rr=" + ListDatEmisor[0].sRFCEmpleado + "&tt=" + (per - ded) + "&fe=" + selloemi.Substring(selloemi.Length - 8, 8);
+                                            QRCodeEncoder encoder = new QRCodeEncoder();
+                                            Bitmap img = encoder.Encode(QrSat);
+                                            System.Drawing.Image QR = (System.Drawing.Image)img;
+                                            using (MemoryStream ms = new MemoryStream())
+                                            {
+                                                QR.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                                byte[] imageBytes = ms.ToArray();
+
+                                                iTextSharp.text.Image imgQr = iTextSharp.text.Image.GetInstance(ms.ToArray());
+                                                imgQr.BorderWidth = 0;
+                                                //imgQr.SetAbsolutePosition(450, 40);
+                                                imgQr.IndentationLeft = 40;
+                                                float porcentaje = 0.0f;
+                                                porcentaje = 10 / imgQr.Width;
+                                                imgQr.ScalePercent(porcentaje * 50);
+
+                                                Cellqr.Image = iTextSharp.text.Image.GetInstance(imgQr);  //.AddElement(new Chunk(imgQr, Texchica));
+                                                                                                          //documento.Add(imgQr);
+
+                                            }
+
+
+                                        };
+                                        if (LiTsat[0].sUUID == "")
+                                        {
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+
+
+                                        };
+
+
+                                    }
+                                    if (LiTsat == null)
+                                    {
+
+                                    }
+
+
+                                    Paragraph espaciotablaSe = new Paragraph(-55, " ", TexNeg);
+                                    Paragraph TFirmaEmple = new Paragraph(-25, "Firma Empleado", TexNeg);
+                                    TFirmaEmple.IndentationLeft = 400;
+                                    Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0f, 50f, BaseColor.BLACK, Element.ALIGN_LEFT, 0.2f)));
+                                    p.IndentationLeft = 400;
+                                    p.IndentationRight = 100;
+                                    documento.Add(p);
+                                    tableQR.AddCell(Cellqr);
+                                    tablqr.Add(tableQR);
+                                    tableSell.AddCell(CellSello);
+                                    tablSello.Add(tableSell);
+                                    documento.Add(tablqr);
+                                    documento.Add(espaciotablaSe);
+                                    documento.Add(tablSello);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+
+                                    documento.Add(TFirmaEmple);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+                                    documento.Add(espacio);
+
+                                };
+
+                            }
+                        }
+
+
+                    }
+                }
+
+                documento.Close();
+
+                EmisorReceptorBean ls = new EmisorReceptorBean();
+                {
+                    ls.sUrl = urlpdf;
+                    
+                }
+
+
+
+            };
+    
+            
+            return Json(ListDatEmisor);
+        }
+
+
+          //// Cantidad en letra 
+        public static string NumeroALetras(string num)
+        {
+            string res, dec = "";
+            Int64 entero;
+            int decimales;
+            double nro;
+
+            try
+            {
+                nro = Convert.ToDouble(num);
+            }
+            catch
+            {
+                return "";
+            }
+
+            entero = Convert.ToInt64(Math.Truncate(nro));
+            decimales = Convert.ToInt32(Math.Round((nro - entero) * 100, 2));
+
+            if (decimales > 0)
+            {
+                dec = " CON " + decimales.ToString() + "/100";
+            }
+
+            res = NumeroALetras(Convert.ToDouble(entero)) + dec;
+            return res;
+        }
+
+        private static string NumeroALetras(double value)
+        {
+            string Num2Text = "";
+            value = Math.Truncate(value);
+
+            if (value == 0) Num2Text = "CERO";
+            else if (value == 1) Num2Text = "UNO";
+            else if (value == 2) Num2Text = "DOS";
+            else if (value == 3) Num2Text = "TRES";
+            else if (value == 4) Num2Text = "CUATRO";
+            else if (value == 5) Num2Text = "CINCO";
+            else if (value == 6) Num2Text = "SEIS";
+            else if (value == 7) Num2Text = "SIETE";
+            else if (value == 8) Num2Text = "OCHO";
+            else if (value == 9) Num2Text = "NUEVE";
+            else if (value == 10) Num2Text = "DIEZ";
+            else if (value == 11) Num2Text = "ONCE";
+            else if (value == 12) Num2Text = "DOCE";
+            else if (value == 13) Num2Text = "TRECE";
+            else if (value == 14) Num2Text = "CATORCE";
+            else if (value == 15) Num2Text = "QUINCE";
+            else if (value < 20) Num2Text = "DIECI" + NumeroALetras(value - 10);
+            else if (value == 20) Num2Text = "VEINTE";
+            else if (value < 30) Num2Text = "VEINTI" + NumeroALetras(value - 20);
+            else if (value == 30) Num2Text = "TREINTA";
+            else if (value == 40) Num2Text = "CUARENTA";
+            else if (value == 50) Num2Text = "CINCUENTA";
+            else if (value == 60) Num2Text = "SESENTA";
+            else if (value == 70) Num2Text = "SETENTA";
+            else if (value == 80) Num2Text = "OCHENTA";
+            else if (value == 90) Num2Text = "NOVENTA";
+
+            else if (value < 100) Num2Text = NumeroALetras(Math.Truncate(value / 10) * 10) + " Y " + NumeroALetras(value % 10);
+            else if (value == 100) Num2Text = "CIEN";
+            else if (value < 200) Num2Text = "CIENTO " + NumeroALetras(value - 100);
+            else if ((value == 200) || (value == 300) || (value == 400) || (value == 600) || (value == 800)) Num2Text = NumeroALetras(Math.Truncate(value / 100)) + "CIENTOS";
+
+            else if (value == 500) Num2Text = "QUINIENTOS";
+            else if (value == 700) Num2Text = "SETECIENTOS";
+            else if (value == 900) Num2Text = "NOVECIENTOS";
+            else if (value < 1000) Num2Text = NumeroALetras(Math.Truncate(value / 100) * 100) + " " + NumeroALetras(value % 100);
+            else if (value == 1000) Num2Text = "MIL";
+            else if (value < 2000) Num2Text = "MIL " + NumeroALetras(value % 1000);
+            else if (value < 1000000)
+            {
+                Num2Text = NumeroALetras(Math.Truncate(value / 1000)) + " MIL";
+                if ((value % 1000) > 0) Num2Text = Num2Text + " " + NumeroALetras(value % 1000);
+            }
+
+            else if (value == 1000000) Num2Text = "UN MILLON";
+            else if (value < 2000000) Num2Text = "UN MILLON " + NumeroALetras(value % 1000000);
+            else if (value < 1000000000000)
+            {
+                Num2Text = NumeroALetras(Math.Truncate(value / 1000000)) + " MILLONES ";
+                if ((value - Math.Truncate(value / 1000000) * 1000000) > 0) Num2Text = Num2Text + " " + NumeroALetras(value - Math.Truncate(value / 1000000) * 1000000);
+            }
+            else if (value == 1000000000000) Num2Text = "UN BILLON";
+            else if (value < 2000000000000) Num2Text = "UN BILLON " + NumeroALetras(value - Math.Truncate(value / 1000000000000) * 1000000000000);
+            else
+            {
+                Num2Text = NumeroALetras(Math.Truncate(value / 1000000000000)) + " BILLONES";
+                if ((value - Math.Truncate(value / 1000000000000) * 1000000000000) > 0) Num2Text = Num2Text + " " + NumeroALetras(value - Math.Truncate(value / 1000000000000) * 1000000000000);
+            }
+
+            return Num2Text;
         }
 
     }

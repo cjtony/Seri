@@ -24,10 +24,13 @@
     const dropFiniquito = document.getElementById('dropFiniquito'); 
     const LaDropFiniquito = document.getElementById('LaDropFiniquito');
     const LachecRecibo2 = document.getElementById('LachecRecibo2');
+    /*const CheckRecibosFis = document.getElementById('CheckRecibosFis')*/;
+    const btnDowlan = document.getElementById('btnDowlan');
+
 
     var ValorChek = document.getElementById('CheckRecibo2');
     var valorChekFint = document.getElementById('CheckFiniquito');
-
+    //var ValorChekReFis = document.getElementById('CheckRecibosFis');
     var EmpresNom;
     var IdEmpresa;
     var NombreEmpleado;
@@ -510,7 +513,7 @@
         anio = anoNom.value;
         Tipoperiodo = TipodePerdioRec.value;
         datosPeriodo = PeridoNom.value;       
-        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo };
+        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo:0 };
         $.ajax({
             url: "../Empleados/XMLNomina",
             type: "POST",
@@ -641,6 +644,118 @@
 
     CheckFiniquito.addEventListener('click', FvalorChechFin);
 
+
+    /// descarga masiva de xml
+
+    FdowXmlsMasivo = () => {
+        btnXmlms.value = 1;
+        btnPDFms.value = 0;
+        IdEmpresa = EmpresaNom.value;
+        var nom = $('#jqxInput').jqxInput('val');
+        NombreEmpleado = nom.label;
+        IdEmpresa = EmpresaNom.value;
+        anio = anoNom.value;
+        Tipoperiodo = TipodePerdioRec.value;
+        datosPeriodo = PeridoNom.value;
+        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo:1 };
+        $.ajax({
+            url: "../Empleados/XMLNomina",
+            type: "POST",
+            data: dataSend,
+            beforeSend: function (data) {
+                $('#jqxLoader2').jqxLoader('open');
+            },
+            success: function (data) {
+
+                if (data[0].sMensaje != "NorCert") {
+                    btnDowlan.style.visibility = 'visible';
+                    $('#jqxLoader2').jqxLoader('close');
+                    fshowtypealert('Recibos de nomina', 'sean generado los archivos XML correctamente', 'success');
+
+                }
+                else {
+                    $('#jqxLoader2').jqxLoader('close');
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                }
+
+            }
+        });
+
+    };
+
+    btnXmlms.addEventListener('click',FdowXmlsMasivo)
+
+    /// descarga masiva de PDF
+
+  
+    FdowPDFMasivos = () => {
+        btnXmlms.value = 0;
+        btnPDFms.value = 1;
+        console.log('prueba');
+        var oprefis = 0;
+        
+        IdEmpresa = EmpresaNom.value;
+        var nom = $('#jqxInput').jqxInput('val');
+        NombreEmpleado = nom.label;
+        IdEmpresa = EmpresaNom.value;
+        anio = anoNom.value;
+        Tipoperiodo = TipodePerdioRec.value;
+        datosPeriodo = PeridoNom.value;
+        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, iRecibo: 1 };
+        $.ajax({
+            url: "../Empleados/GPDFMasivos",
+            type: "POST",
+            data: dataSend,
+            beforeSend: function (data) {
+                $('#jqxLoader').jqxLoader('open');
+            },
+            success: function (data) {
+                if (data[0].sMensaje != "NorCert") {
+                    btnDowlan.style.visibility = 'visible';
+                    $('#jqxLoader').jqxLoader('close');
+                    fshowtypealert('Recibos de nomina', 'sean generado el PDF correctamente', 'success');         
+                  
+                }
+                else {
+                   
+                    $('#jqxLoader').jqxLoader('close');
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                }
+                
+            }
+        });
+
+   
+    };
+
+    btnPDFms.addEventListener('click', FdowPDFMasivos)
+
+    FOpenFile = () => {
+
+
+        if (btnPDFms.value == 1) {
+            var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
+            separador = " ",
+            imite = 2,
+            arreglosubcadena = periodo.split(separador, limite);
+
+            var nombre = "RecibosNom_" + EmpresaNom.value+ "_" + arreglosubcadena[0]+".pdf";   
+            var url = '\\Archivos\\certificados\\' + nombre;
+            window.open(url);
+            btnDowlan.style.visibility = 'hidden';
+        };
+
+        if (btnXmlms.value == 1) {
+            var url = '\\Archivos\\certificados\\ZipXML.zip';
+            window.open(url);
+            btnDowlan.style.visibility = 'hidden';
+        };
+
+    };
+
+    btnDowlan.addEventListener('click', FOpenFile);
+
+
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
         Swal.fire({
@@ -669,5 +784,7 @@
             //}
         });
     };
-    
+
+    $("#jqxLoader").jqxLoader({ text: "Generando PDF", width: 160, height: 80 });
+    $("#jqxLoader2").jqxLoader({ text: "Generando XML", width: 160, height: 80 });
 });
