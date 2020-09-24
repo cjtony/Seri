@@ -486,6 +486,10 @@ namespace Payroll.Models.Beans
         public string FechaBaja { get; set; }
         public string FechaReinicio { get; set; }
         public string Finalizado { get; set; }
+        public string Effdt { get; set; }
+        public string Cancelado { get; set; }
+        public int IncidenciaProgramada_id { get; set; }
+        public string FactorDescuento { get; set; }
     }
     public class AusentismosEmpleadosBean
     {
@@ -501,6 +505,8 @@ namespace Payroll.Models.Beans
         public string Comentarios_imss { get; set; }
         public string Causa_FaltaInjustificada { get; set; }
         public string FechaFin { get; set; }
+        public int IncidenciaProgramada_id { get; set; }
+        public string Tipo { get; set; }
     }
     public class PensionesAlimentariasBean
     {

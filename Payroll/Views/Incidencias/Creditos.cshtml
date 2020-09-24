@@ -1,68 +1,61 @@
-﻿
-<div class="container bg-white pb-3 rounded font-labels">
+﻿<div class="container bg-white pb-3 rounded font-labels">
     <div class="border-bottom border-secondary pt-4 pb-2 font-weight-bold d-flex justify-content-between"> <div>Creditos Infonavit del empleado : </div><strong class="font-button" id="EmpDes"></strong><div class="btn btn-info btn-sm font-labels" id="btn-cambiar-empleado" data-toggle="modal" data-target="#modalLiveSearchEmpleado" title="Cambia de usuario"><i class="fas fa-users"></i></div></div>
     <div class="row">
-        <div class="col-md-6  rounded">
-            <form action="#" method="post" class="bg-light px-3 py-3 rounded" id="frmCreditos">
-                <div class="form-group row">
-                    <div class="form-group form-group-sm col-md-12">
-                        <label for="">Tipo de descuento</label>
-                        <select class="form-control font-labels custom-select custom-select-sm" id="inTipoDescuento" name="inTipoDescuento" required>   
-                        </select>
-                        <small class="font-labelspt-1 text-black-50"> **Para cualquier opción seleccionada se tendra que calcular el monto e ingresarlo en el apartado de descuento. </small>
-                    </div>
+        <div class="col-md-12 rounded">
+            <form action="#" method="post" class="bg-light px-3 py-3 row rounded" id="frmCreditos">
+
+                <div class="form-group col-md-4">
+                    <label for="">Tipo de descuento</label>
+                    <select class="form-control font-labels custom-select custom-select-sm" id="inTipoDescuento" name="inTipoDescuento" required>
+                    </select>
+                    @*<small class="font-labelspt-1 text-black-50"> **Para cualquier opción seleccionada se tendra que calcular el monto e ingresarlo en el apartado de descuento. </small>*@
                 </div>
-                <div class="form-group row">
-                    <div class="form-group col-md-6">
-                        <label id="lblInDescuento" for="inDescuento"> Monto </label>
-                        <input class="form-control form-control-sm" type="text" name="inDescuento" id="inDescuento" placeholder="Ingresa el descuento a aplicar" autocomplete="off" required />
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inNoCredito">No de Crédito</label>
-                        <input class="form-control  form-control-sm" type="text" name="inNoCredito" id="inNoCredito" placeholder="Ingresa el No de credito" required />
-                    </div>
+                <div class="form-group col-md-4">
+                    <label id="lblInDescuento" for="inDescuento"> Monto </label>
+                    <input class="form-control form-control-sm " type="text" name="inDescuento" id="inDescuento" placeholder="Ingresa el descuento a aplicar" autocomplete="off" required />
                 </div>
-                <div class="form-group row">
-                    <div class="form-group col-md-6">
-                        <label for="inFechaAprovacionCredito">Fecha de aprobación del crédito</label>
-                        <input type="date" name="inFechaAprovacionCredito" id="inFechaAprovacionCredito" class="form-control form-control-sm font-labels" required />
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inDescontar">Descontar</label>
-                        <select class="form-control font-labels custom-select" id="inDescontar" name="inDescontar" required>
-                            <option value="">Selecciona</option>
-                            <option>En cada periodo</option>
-                            <option>En 1er periodo de mes</option>
-                            <option>En ultimo periodo del mes</option>
-                        </select>
-                    </div>
+                <div class="form-group col-md-4">
+                    <label for="inFactorDesc"> Factor Descuento </label>
+                    <input class="form-control form-control-sm " type="text" name="inFactorDesc" id="inFactorDesc" placeholder="Ingresa el Factor" autocomplete="off" required />
                 </div>
-                <div class="form-group row">
-                    <div class="form-group col-md-6">
-                        <label for="inFechaAusentismo">Fecha de baja del crédito</label>
-                        <input type="date" name="inFechaBajaCredito" id="inFechaBajaCredito" value="" class="form-control form-control-sm font-labels" required />
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inFechaAusentismo">Fecha de reinicio del crédito</label>
-                        <input type="date" name="inFechaReinicioCredito" id="inFechaReinicioCredito" value="" class="form-control form-control-sm font-labels" />
-                    </div>
-                    <div class="form-group col-md-12">
-                        <div class="btn btn-primary font-labels col-md-12" id="btnSaveCredito">Registrar credito <i class="far fa-edit"></i></div>
-                    </div>
+                <div class="form-group col-md-4">
+                    <label for="inNoCredito">No de Crédito</label>
+                    <input class="form-control  form-control-sm" type="text" name="inNoCredito" id="inNoCredito" placeholder="Ingresa el No de credito" required />
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inFechaAprovacionCredito">Fecha de aprobación</label>
+                    <input type="date" name="inFechaAprovacionCredito" id="inFechaAprovacionCredito" class="form-control form-control-sm font-labels" required />
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inDescontar">Descontar</label>
+                    <select class="form-control font-labels custom-select custom-select-sm" id="inDescontar" name="inDescontar" required>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inFechaAusentismo">Fecha de baja del crédito</label>
+                    <input type="date" name="inFechaBajaCredito" id="inFechaBajaCredito" value="" class="form-control form-control-sm font-labels" required />
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inFechaAusentismo">Fecha Efectiva</label>
+                    <input type="date" name="inFechaReinicioCredito" id="inFechaReinicioCredito" value="" class="form-control form-control-sm font-labels" />
+                </div>
+                <div class="form-group col-md-4 text-right">
+                    <label class="invisible col-md-12" for="btnSaveCredito">Src Only</label>
+                    <div class="btn btn-sm btn-primary font-labels col-md-12" id="btnSaveCredito">Registrar credito <i class="far fa-edit"></i></div>
                 </div>
             </form>
         </div>
-        <div class="col-md-6">
-
-
-
-            <table class="table table-sm font-labels" id="tabCreditos">
-                <thead>
+        <div class="col-md-12 mt-3">
+            <table class="table table-sm font-labels table-hover" id="tabCreditos">
+                <thead class="">
                     <tr>
                         <th scope="col">No Crédito</th>
                         <th scope="col">Tipo Descuento</th>
                         <th scope="col">Descuento</th>
+                        <th scope="col">Descontar</th>
+                        <th scope="col">Factor</th>
                         <th scope="col">Fecha Baja</th>
+                        <th scope="col">Effdt</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -97,10 +90,10 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Creditos.js"></script>
+<script src="~/Scripts/main/Creditos.js?n=1"></script>
 <script>
     $(function () {
-        //manda llamar la funcion de cargar los selects 
         LoadSelectTipoDescuento();
+        LoadSelectDescontar();
     });
 </script>

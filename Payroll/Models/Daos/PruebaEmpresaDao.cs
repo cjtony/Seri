@@ -973,5 +973,40 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
+        public List<PVacacionesBean> sp_TperiodosVacaciones_Retrieve_PeriodosVacaciones2(int IdEmpleado, int IdEmpresa)
+        {
+            List<PVacacionesBean> lista = new List<PVacacionesBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPeriodos_Verify_AllPeriods_Vacaciones", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrliIdEmpresa", IdEmpresa));
+            cmd.Parameters.Add(new SqlParameter("@ctrliIdEmpleado", IdEmpleado));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    PVacacionesBean list = new PVacacionesBean
+                    {
+                        Periodo = data["aniversario_anterior"].ToString().Substring(0, 10) + " a " + data["aniversario_proximo"].ToString().Substring(0, 10),
+                        DiasPrima = int.Parse(data["DiasPrima"].ToString()),
+                        DiasDisfrutados = int.Parse(data["DiasDisfrutados"].ToString()),
+                        DiasRestantes = int.Parse(data["DiasRestantes"].ToString()),
+                        Id_Per_Vac_Ln = int.Parse(data["IdPer_Vac_Ln"].ToString())
+                    };
+                    lista.Add(list);
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+
+            return lista;
+        }
     }
 }

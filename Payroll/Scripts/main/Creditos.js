@@ -1,13 +1,12 @@
 ﻿$(function () {
     //var ren_incidencia = document.getElementById("inRenglon");
     //var concepto_incidencia = document.getElementById("inConcepto_incidencia");
-
+    var factor = document.getElementById("inFactorDesc");
+    factor.disabled = true;
     $("#modalLiveSearchEmpleado").modal("show");
-
     //Eventos 
     $("#btnSaveCredito").on("click", function () {
         var tdescuento = document.getElementById("inTipoDescuento");
-        //var aseguro = document.getElementById("inAplicaSeguro");
         var descuento = document.getElementById("inDescuento");
         var ncredito = document.getElementById("inNoCredito");
         var fechaa = document.getElementById("inFechaAprovacionCredito");
@@ -31,13 +30,13 @@
                 url: "../Incidencias/SaveCredito",
                 data: JSON.stringify({
                     TipoDescuento: tdescuento.value,
-                    //SeguroVivienda: aseg,
                     Descuento: descuento.value,
                     NoCredito: ncredito.value,
                     FechaAprovacion: fechaa.value,
                     Descontar: descontar.value,
                     FechaBaja: fechab.value,
-                    FechaReinicio: fechar.value
+                    FechaReinicio: fechar.value,
+                    FactorDesc: factor.value
                 }),
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -58,7 +57,7 @@
                             timer: 1000
                         });
                         form.reset();
-                    } 
+                    }
                 }
             });
         }
@@ -125,18 +124,43 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                //console.log(data["data"][0]["Empresa_id"]);
                 console.log(data);
-                //$("#tcbody").empty();
                 document.getElementById("tcbody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tcbody").innerHTML += "<tr><td>" + data[i]["NoCredito"] + "</td><td>" + data[i]["TipoDescuento"] + "</td><td>" + data[i]["Descuento"] + "</td><td>" + data[i]["FechaBaja"].substr(0,10) + "</td><td><div class='btn badge badge-danger text-center' onclick='deleteCredito("+data[i]["IdCredito"]+");' title='Desactivar'><i class='fas fa-minus'></i> </div></td></tr>";
+                    if (data[i]["Cancelado"] == "True") {
+                        document.getElementById("tcbody").innerHTML +=
+                            "<tr>"
+                            + "<td>" + data[i]["NoCredito"] + "</td>"
+                            + "<td>" + data[i]["TipoDescuento"] + "</td>"
+                            + "<td>" + data[i]["Descuento"] + "</td>"
+                            + "<td>" + data[i]["Descontar"] + "</td>"
+                            + "<td>" + data[i]["FactorDescuento"] + "</td>"
+                            + "<td>" + data[i]["FechaBaja"].substr(0, 10) + "</td>"
+                            + "<td>" + data[i]["Effdt"] + "</td>"
+                            + "<td>"
+                            + "<a href='#' class='btn badge badge-light text-center mx-1' onclick='activarCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Activar'><i class='fas fa-lock text-danger'></i> </a>"
+                            + "</td>"
+                            + "</tr>";
+                    } else {
+                        document.getElementById("tcbody").innerHTML +=
+                            "<tr>"
+                            + "<td>" + data[i]["NoCredito"] + "</td>"
+                            + "<td>" + data[i]["TipoDescuento"] + "</td>"
+                            + "<td>" + data[i]["Descuento"] + "</td>"
+                            + "<td>" + data[i]["Descontar"] + "</td>"
+                            + "<td>" + data[i]["FactorDescuento"] + "</td>"
+                            + "<td>" + data[i]["FechaBaja"].substr(0, 10) + "</td>"
+                            + "<td>" + data[i]["Effdt"] + "</td>"
+                            + "<td>"
+                            + "<a href='#' class='btn badge badge-light text-center mx-1' onclick='desactivarCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Desactivar'><i class='fas fa-lock-open text-primary'></i> </a>"
+                            + "<a href='#' class='btn badge badge-success text-center mx-1' onclick='updateCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Modificar'><i class='fas fa-edit'></i> </a>"
+                            + "<a href='#' class='btn badge badge-danger text-center mx-1' onclick='deleteCredito(" + data[i]["IdCredito"] + ");' title='Desactivar'><i class='fas fa-minus'></i> </a>"
+                            + "</td>"
+                            + "</tr>";
+                    }
                 }
-
-
             }
         });
-
     }
     //carga el tipo de descuentos con los que trabaja el credito
     LoadSelectTipoDescuento = () => {
@@ -147,14 +171,31 @@
             dataType: "json",
             success: (data) => {
                 var select = document.getElementById("inTipoDescuento");
-                select.innerHTML = "<option value=''> Selecciona </option>";
+                //select.innerHTML = "<option value=''> Selecciona </option>";
                 for (var i = 0; i < data.length; i++) {
                     select.innerHTML += "<option value='" + data[i]["Id"] + "'>" + data[i]["Nombre"] + "</option>";
                 }
             }
         });
     }
-    
+    //carga el tiempo en el que se descontara el credito
+    LoadSelectDescontar = () => {
+        $.ajax({
+            method: "POST",
+            url: "../Incidencias/LoadDescontar",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({ catalogoid: 35 }),
+            success: (data) => {
+                var select = document.getElementById("inDescontar");
+                //select.innerHTML = "<option value=''> Selecciona </option>";
+                for (var i = 0; i < data.length; i++) {
+                    select.innerHTML += "<option value='" + data[i]["iId"] + "'>" + data[i]["sValor"] + "</option>";
+                }
+            }
+        });
+    }
+
     //borra el credito seleccionado
     deleteCredito = (Credito_id) => {
         Swal.fire({
@@ -204,21 +245,55 @@
         switch (select.value) {
             case '289':
                 $("#lblInDescuento").html(" Monto ");
+                factor.disabled = true;
                 break;
             case '290':
                 $("#lblInDescuento").html(" Porcentaje ");
+                factor.disabled = true;
                 break;
             case '291':
                 $("#lblInDescuento").html(" No. Veces ");
+                factor.disabled = false;
                 break;
             case '292':
                 $("#lblInDescuento").html(" Factor Descuento ");
+                factor.disabled = true;
                 break;
             default:
                 $("#lblInDescuento").html(" Monto ");
+                factor.disabled = true;
                 break;
         }
     });
-    
-    //
+
+    //selecciona el credito y lo dej alisto para modificarlo 
+    updateCredito = (Credito_id, IncidenciaProg_id) => {
+        $.ajax({
+            method: "POST",
+            data: JSON.stringify({ Credito_id: Credito_id }),
+            url: "../Incidencias/LoadCreditoEmpleado",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (data) => {
+                $("#inTipoDescuento option[value=" + data[0]["Descontar"] + "]").attr("selected", true);
+
+                document.getElementById("inDescuento").value = data[0]["Descuento"];
+                document.getElementById("inNoCredito").value = data[0]["NoCredito"];
+
+                var ano = data[0]["FechaAprovacionCredito"].substr(6, 10);
+                var mes = data[0]["FechaAprovacionCredito"].substr(4, 6);
+                var dia = data[0]["FechaAprovacionCredito"].substr(0, 2);
+                console.log(ano + '-' + mes + dia);
+
+                //document.getElementById("inFechaAprovacionCredito").value = 
+                //var fechab = document.getElementById("inFechaBajaCredito");
+                //var fechar = document.getElementById("inFechaReinicioCredito");
+
+                //console.log(data);
+                //ncredito.value = data[0]["NoCredito"];
+                //descuento.value = data[0]["Descuento"];
+                //de
+            }
+        });
+    }
 });

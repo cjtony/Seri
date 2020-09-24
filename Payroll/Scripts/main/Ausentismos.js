@@ -56,6 +56,7 @@
         var form = document.getElementById("frmAusentismos");
         var ndias = 0;
         var fechafin = "0";
+        var fechaini;
         var tipo = 0;
 
         if (form.checkValidity() === false) {
@@ -69,14 +70,16 @@
                 console.log('Soy valido check 1');
                 ndias = dias.value;
                 fechafin = "0";
+                fechaini = fechaa.value;
                 tipo = 0;
             }
-            if ($("#option2").prop('checked')){
+            if ($("#option2").prop('checked')) {
                 console.log('Soy invalido check 2');
                 ndias = 0;
                 fechafin = document.getElementById("inFechafAusentismo").value;
+                fechaini = document.getElementById("inFechaiAusentismo").value;
                 tipo = 1;
-            } 
+            }
             //console.log(data);
             if (certif.value.length != 0) { cer_imss = certif.value } else { cer_imss = "0" }
             if (coment.value.length != 0) { com_imss = coment.value } else { com_imss = "0" }
@@ -88,7 +91,7 @@
                 data: JSON.stringify({
                     Tipo_Ausentismo_id: motivo.value,
                     Recupera_Ausentismo: recup.value,
-                    Fecha_Ausentismo: fechaa.value,
+                    Fecha_Ausentismo: fechaini,
                     Dias_Ausentismo: ndias,
                     Certificado_imss: cer_imss,
                     Comentarios_imss: com_imss,
@@ -136,12 +139,7 @@
         success: (data) => {
             motivoA.innerHTML = "<option value=''> Selecciona </option>";
             for (var i = 0; i < data.length; i++) {
-                //if (data[i].iIdTipoAusentismo >= 22) {
-
-                //} else {
                 motivoA.innerHTML += `<option value='${data[i].sDescripcionAusentismo}'> ${data[i].sNombreAusentismo} </option>`;
-
-                //}
             }
         }
     });
@@ -189,6 +187,9 @@
         //console.log("btn-editar");
         var data = $("#frmAusentismos").serialize();
         var cer_imss, com_imss, cau_falta;
+        var ndias = 0;
+        var fechafin = "0";
+        var Fechaini;
         var form = document.getElementById("frmAusentismos");
         if (form.checkValidity() === false) {
 
@@ -196,6 +197,21 @@
             //console.log(data);
             //console.log("no entro");
         } else {
+
+            if ($("#option1").prop('checked')) {
+                console.log('Soy valido check 1');
+                ndias = dias.value;
+                fechafin = "0";
+                Fechaini = fechaa.value;
+                tipo = 0;
+            }
+            if ($("#option2").prop('checked')) {
+                console.log('Soy invalido check 2');
+                ndias = 0;
+                fechafin = document.getElementById("inFechafAusentismo").value;
+                Fechaini = document.getElementById("inFechaiAusentismo").value;
+                tipo = 1;
+            }
 
             //console.log(data);
             if (certif.value.length != 0) { cer_imss = certif.value } else { cer_imss = "0" }
@@ -208,20 +224,19 @@
                     Id: $("#btnUpdate").attr("btnupdate"),
                     Tipo_Ausentismo_id: motivo.value,
                     Recupera_Ausentismo: recup.value,
-                    Fecha_Ausentismo: fechaa.value,
-                    Dias_Ausentismo: dias.value,
+                    Fecha_Ausentismo: Fechaini,
+                    Dias_Ausentismo: ndias,
                     Certificado_imss: cer_imss,
                     Comentarios_imss: com_imss,
-                    Causa_FaltaInjustificada: cau_falta
+                    Causa_FaltaInjustificada: cau_falta,
+                    FechaFin: fechafin,
+                    Tipo: tipo,
+                    IncidenciaProgramada_id: $("#inIncidenciaProgramada_id").val()
                 }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data1) => {
-                    //console.log(data1)
-
-                    fechaa.value = "";
-                    dias.value = "";
-                    causa.value = "";
+                    
                     if (data1[0] == "0") {
                         Swal.fire({
                             icon: 'warning',
@@ -230,19 +245,22 @@
                             timer: 1000
                         });
                     } else if (data1[0] == "1") {
+                        document.getElementById('frmAusentismos').reset();
                         Swal.fire({
                             icon: 'success',
                             title: 'Correcto!',
                             text: data1[1],
                             timer: 1000
                         });
+                        tabAusentismo();
+                        tabIncapacidades();
+                        //$("#inRecuperacionAusentismo option[value='']").attr("selected", true);
+                        //$("#inMotivoAusentismo option[value='']").attr("selected", true);
+                        $("#btnRegistroAusentismo").removeClass("invisible");
+                        $("#btnClear").addClass("invisible");
+                        $("#btnUpdate").addClass("invisible");
                     }
-                    tabAusentismo();
-                    $("#inRecuperacionAusentismo option[value='']").attr("selected", true);
-                    $("#inMotivoAusentismo option[value='']").attr("selected", true);
-                    $("#btnRegistroAusentismo").removeClass("invisible");
-                    $("#btnClear").addClass("invisible");
-                    $("#btnUpdate").addClass("invisible");
+
                 }
             });
 
@@ -313,7 +331,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                
+
                 document.getElementById("tabodyIncapacidades").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     document.getElementById("tabodyIncapacidades").innerHTML += "" +
@@ -357,6 +375,8 @@
                         text: data[1]
                     });
                 }
+                document.getElementById("tabodyIncapacidades").innerHTML = "";
+                document.getElementById("tabody").innerHTML = "";
                 tabAusentismo();
                 tabIncapacidades();
             }
@@ -364,7 +384,7 @@
     }
     //Editar ausentismo
     editarAusentismo = (Ausentismo_id) => {
-        var motivo = document.getElementById("inMotivoAusentismo");
+        //var motivo = document.getElementById("inMotivoAusentismo");
         //var recup = document.getElementById("inRecuperacionAusentismo");
         var fechaa = document.getElementById("inFechaAusentismo");
         var dias = document.getElementById("inDiasAusentismo");
@@ -380,47 +400,47 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                if (data['Tipo'] == 'True') {
+                    //checkPorDias();
+                    $(".btn-option-1").click();
+                    setTimeout(() => {
+                        fechaa.value = data[0].Fecha_Ausentismo.substring(6, 10) + "-" + data[0].Fecha_Ausentismo.substring(3, 5) + "-" + data[0].Fecha_Ausentismo.substring(0, 2);
+                        dias.value = data[0].Dias_Ausentismo;
+                    }, 600);
+
+                } else {
+                    //checkPorFecha();
+                    $(".btn-option-2").click();
+                    setTimeout(() => {
+                        document.getElementById('inFechaiAusentismo').value = data[0].Fecha_Ausentismo.substring(6, 10) + "-" + data[0].Fecha_Ausentismo.substring(3, 5) + "-" + data[0].Fecha_Ausentismo.substring(0, 2);
+                        document.getElementById('inFechafAusentismo').value = data[0].FechaFin.substring(6, 10) + "-" + data[0].FechaFin.substring(3, 5) + "-" + data[0].FechaFin.substring(0, 2);
+                    }, 600);
+
+                }
                 //console.log(data);
-                dias.value = data[0].Dias_Ausentismo;
+                //dias.value = data[0].Dias_Ausentismo;
                 causa.value = data[0].Causa_FaltaInjustificada;
-                //console.log(data[0].Fecha_Ausentismo + " _ " + data[0].RecuperaAusentismo);
-                fechaa.value = data[0].Fecha_Ausentismo;
+                $('#inIncidenciaProgramada_id').val(data[0].IncidenciaProgramada_id);
+                //fechaa.value = data[0].Fecha_Ausentismo.substring(6, 10) + "-" + data[0].Fecha_Ausentismo.substring(3, 5) + "-" + data[0].Fecha_Ausentismo.substring(0, 2);
 
                 $("#inRecuperacionAusentismo option[value='" + data[0].RecuperaAusentismo + "']").attr("selected", true);
-                //console.log(data[0].Certificado_imss.length);
+
                 if (data[0].Certificado_imss.length != 0) {
                     certif.disabled = false;
                     coment.disabled = false;
                     certif.value = data[0].Certificado_imss;
                     coment.value = data[0].Comentarios_imss;
                 }
-                //Carga los tipos de ausentismos 
-                $.ajax({
-                    url: "../Incidencias/LoadAusentismos",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: (data1) => {
 
-                        motivo.innerHTML = "<option value=''> Selecciona </option>";
-                        for (var j = 0; j < data1.length; j++) {
-                            if (data1[j].iIdTipoAusentismo >= 21) {
+                $("#inMotivoAusentismo option[value='" + data[0].Tipo_Ausentismo_id + "']").attr("selected", true);
 
-                            } else {
 
-                                if (data[0].Tipo_Ausentismo_id == data1[j].iIdTipoAusentismo) {
-                                    motivo.innerHTML += `<option selected value='${data1[j].iIdTipoAusentismo}'> ${data1[j].sDescripcionAusentismo} </option>`
-                                } else {
-                                    motivo.innerHTML += `<option value='${data1[j].iIdTipoAusentismo}'> ${data1[j].sDescripcionAusentismo} </option>`
-                                }
-                            }
-                        }
-                        $("#btnUpdate").attr("btnUpdate", Ausentismo_id);
-                        //btnSave.disabled = true;
-                        $("#btnRegistroAusentismo").addClass("invisible");
-                        $("#btnUpdate").removeClass("invisible");
-                        $("#btnClear").removeClass("invisible");
-                    }
-                });
+                $("#btnUpdate").attr("btnUpdate", Ausentismo_id);
+                //btnSave.disabled = true;
+                $("#btnRegistroAusentismo").addClass("invisible");
+                $("#btnUpdate").removeClass("invisible");
+                $("#btnClear").removeClass("invisible");
+
             }
         });
     }
@@ -475,9 +495,8 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                
+
             }
         });
     }
-
 });
