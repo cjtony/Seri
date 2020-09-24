@@ -19,7 +19,7 @@
                         <i class="fas fa-user-times col-ico mr-ico-05"></i> Bajas
                     </a>
                     <a class="nav-item nav-link font-navs" id="nav-imss-tab" data-toggle="tab" href="#nav-redoc" role="tab" aria-controls="nav-imss" aria-selected="false">
-                        <i class="fas fa-notes-medical col-ico mr-ico-05"></i> Redocumentar Prestamos y/o Seguros
+                        <i class="fas fa-user-check col-ico mr-ico-05"></i> Reactivar empleados
                     </a>
                     <a class="nav-item nav-link font-navs" id="nav-datanom-tab" data-toggle="tab" href="#nav-inciden" role="tab" aria-controls="nav-datanom" aria-selected="false">
                         <i class="fas fa-dollar-sign col-ico mr-ico-05"></i> Incidencias en el periodo
@@ -147,8 +147,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="nav-redoc" role="tabpanel" aria-labelledby="profile-tab">
-                    r
+                <div class="tab-pane fade p-4" id="nav-redoc" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="tab-content" id="nav-tabContentRE">
+                        <div class="tab-pane fade show active p-3" id="nav-bajas-reactivacion" role="tabpanel" aria-labelledby="nav-reporte-tab">
+                            <div class="row mt-2">
+                                <div id="div-most-alert-data-bajas-reactivacion" class="col-md-6 offset-3"></div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="text-left">
+                                        <h6 class="col-ico font-navs">
+                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i> Completa los parametros </b>
+                                        </h6>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4 shadow rounded border-left-primary border-right-primary p-3" id="search-employee-down">
+                                <div class="col-md-10 offset-1">
+                                    <div class="form-group row mb-4 p-2 border-left-primary border-right-primary rounded shadow">
+                                        <div class="col-md-4 mt-2">
+                                            <h6 class="text-center">Buscar por: </h6>
+                                        </div>
+                                        <div class="col-md-4 text-center mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="filtroemp" id="filtronumber" value="numero" />
+                                                <label class="form-check-label font-weight-bold" for="filtronumber" id="labelfiltronumber">Nomina</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-center mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="filtroemp" id="filtroname" value="nombre" checked />
+                                                <label class="form-check-label font-weight-bold" for="filtroname" id="labelfiltroname">Nombre</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-4">
+                                        <label for="searchemployekey" class="col-form-label col-md-4 text-center" id="labelsearchemployee">
+                                            <i class="fas fa-user mr-2 col-ico"></i> <span id="labsearchemp">Nombre:</span>
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" autocomplete="off" class="form-control form-control-sm text-uppercase" id="searchemployekey" placeholder="NOMBRE DEL EMPLEADO" onkeypress="return check(event)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="nav-inciden" role="tabpanel" aria-labelledby="messages-tab">
                     i

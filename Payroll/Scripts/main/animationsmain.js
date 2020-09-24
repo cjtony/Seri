@@ -76,9 +76,12 @@
         cunuse = document.getElementById('cunuse'),
         banuse = document.getElementById('banuse');
 
-    const tiposueldo = document.getElementById('tiposueldo');
+    const tiposueldo = document.getElementById('tiposueldo'),
+          politica   = document.getElementById('politica'),
+          diferencia = document.getElementById('diferencia'),
+          transporte = document.getElementById('transporte');
 
-    const dataNomina = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, cunuse, banuse, tiposueldo];
+    const dataNomina = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, cunuse, banuse, tiposueldo, politica, diferencia, transporte];
 
     for (let i = 0; i < dataNomina.length; i++) {
         dataNomina[i].style.transition = "1s";

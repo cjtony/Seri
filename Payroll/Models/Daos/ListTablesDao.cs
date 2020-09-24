@@ -271,52 +271,34 @@ namespace Payroll.Models.Daos
                         nominaBean.iTipoPeriodo = 0;
                     }
                     nominaBean.dSalarioMensual = Convert.ToDouble(data["SalarioMensual"].ToString());
-                    if (data["Cg_TipoEmpleado_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_TipoEmpleado_id"].ToString().Length != 0) {
                         nominaBean.iTipoEmpleado_id = Convert.ToInt32(data["Cg_TipoEmpleado_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         nominaBean.iTipoEmpleado_id = 0;
                     }
-                    if (data["Cg_NivelEmpleado_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_NivelEmpleado_id"].ToString().Length != 0) {
                         nominaBean.iNivelEmpleado_id = Convert.ToInt32(data["Cg_NivelEmpleado_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         nominaBean.iNivelEmpleado_id = 0;
                     }
-                    if (data["Cg_TipoJornada_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_TipoJornada_id"].ToString().Length != 0) {
                         nominaBean.iTipoJornada_id = Convert.ToInt32(data["Cg_TipoJornada_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         nominaBean.iTipoJornada_id = 0;
                     }
-                    if (data["Cg_TipoContrato_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_TipoContrato_id"].ToString().Length != 0) {
                         nominaBean.iTipoContrato_id = Convert.ToInt32(data["Cg_TipoContrato_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         nominaBean.iTipoContrato_id = 0;
                     }
-                    if (data["Cg_TipoContratacion_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_TipoContratacion_id"].ToString().Length != 0) {
                         nominaBean.iTipoContratacion_id = Convert.ToInt32(data["Cg_TipoContratacion_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         nominaBean.iTipoContratacion_id = 0;
                     }
-                    if (data["Cg_MotivoIncremento_id"].ToString().Length != 0)
-                    {
+                    if (data["Cg_MotivoIncremento_id"].ToString().Length != 0) {
                         nominaBean.iMotivoIncremento_id = Convert.ToInt32(data["Cg_MotivoIncremento_id"].ToString());
-                    }
-                    else
-                    {
+                    } else {
                         nominaBean.iMotivoIncremento_id = 0;
                     }
                     nominaBean.sFechaIngreso = Convert.ToDateTime(data["FechaIngreso"].ToString()).ToString("yyyy-MM-dd");
@@ -354,6 +336,21 @@ namespace Payroll.Models.Daos
                         nominaBean.iTipoSueldo_id = Convert.ToInt32(data["Cg_Tipo_sueldo"].ToString());
                     } else {
                         nominaBean.iTipoSueldo_id = 0;
+                    }
+                    if (data["Politica"].ToString().Length != 0) {
+                        nominaBean.iPolitica = Convert.ToInt32(data["Politica"]);
+                    } else {
+                        nominaBean.iPolitica = 0;
+                    }
+                    if (data["DiferenciaP"].ToString().Length != 0) {
+                        nominaBean.dDiferencia = Convert.ToDouble(data["DiferenciaP"]);
+                    } else {
+                        nominaBean.dDiferencia = 0.00;
+                    }
+                    if (data["Transporte"].ToString().Length != 0) {
+                        nominaBean.dTransporte = Convert.ToDouble(data["Transporte"]);
+                    } else {
+                        nominaBean.dTransporte = 0.00;
                     }
                     nominaBean.sCuentaCheques = (String.IsNullOrEmpty(data["Cta_Cheques"].ToString())) ? "" : data["Cta_Cheques"].ToString();
                     nominaBean.iUsuarioAlta_id = Convert.ToInt32(data["Usuario_Alta_id"].ToString());

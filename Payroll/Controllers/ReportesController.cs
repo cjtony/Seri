@@ -222,6 +222,7 @@ namespace Payroll.Controllers
                 initName = "HCBajas_E";
             }
             string fileName = initName + keyOptionSel.ToString() + "_A" + yearPeriod.ToString() + "_NP" + numberPeriod.ToString() + "_TP" + typePeriod.ToString() + "_A.xlsx";
+            Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, fileName);
             ReportesDao reportDao = new ReportesDao();
             string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable     = 0;

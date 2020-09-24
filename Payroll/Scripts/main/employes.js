@@ -498,8 +498,11 @@
     const fecing = document.getElementById('fecing');
     const fecant = document.getElementById('fecant');
     const vencon = document.getElementById('vencon');
-    const tipcontra = document.getElementById('tipcontra');
+    const tipcontra  = document.getElementById('tipcontra');
     const tiposueldo = document.getElementById('tiposueldo');
+    const politica   = document.getElementById('politica');
+    const diferencia = document.getElementById('diferencia');
+    const transporte = document.getElementById('transporte');
     const tippag = document.getElementById('tippag');
     const banuse = document.getElementById('banuse');
     const cunuse = document.getElementById('cunuse');
@@ -626,6 +629,9 @@
                 tipjor: tipjor.value, tipcon: tipcon.value,
                 tipcontra: tipcontra.value,
                 tiposueldo: tiposueldo.value,
+                politica: politica.value,
+                diferencia: diferencia.value,
+                transporte: transporte.value,
                 fecing: fecing.value,
                 fecant: fecant.value,
                 vencon: vencon.value,
@@ -773,6 +779,9 @@
                         tipcon.value       = data.Datos.iTipoContrato_id;
                         tipcontra.value    = data.Datos.iTipoContratacion_id;
                         tiposueldo.value   = data.Datos.iTipoSueldo_id;
+                        politica.value     = data.Datos.iPolitica;
+                        diferencia.value   = data.Datos.dDiferencia;
+                        transporte.value   = data.Datos.dTransporte;
                         fecing.value       = data.Datos.sFechaIngreso;
                         fecant.value       = data.Datos.sFechaAntiguedad;
                         vencon.value       = data.Datos.sVencimientoContrato;
@@ -1329,12 +1338,13 @@
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,
                 //motinc: motinc.value,
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
-                cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value
+                cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
+                transporte: transporte.value
             };
         }
         try {
             let validatedatanom = 0;
-            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tiposueldo, tippag];
+            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tiposueldo, politica, diferencia, transporte, tippag];
             if (fecefecnom.value != fechefectact.value) {
                 arrInput.push(fecefecnom);
             }
@@ -1389,24 +1399,6 @@
                         } else {
                             fechAct = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + dateadd;
                         }
-                        //if (arrInput[t].value != "" && attrdate == "less") {
-                        //    if (arrInput[t].value > fechAct) {
-                        //        fshowtypealert('Atención', 'La ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser mayor a la fecha actual', 'warning', arrInput[t], 1);
-                        //        validatedatanom = 1;
-                        //        break;
-                        //    }
-                        //} else if (arrInput[t].value != "" && attrdate == "higher") {
-                        //    if (arrInput[t].value < fechAct) {
-                        //        fshowtypealert('Atención', 'La fecha de ' + arrInput[t].placeholder + ' seleccionada ' + arrInput[t].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[t], 1);
-                        //        validatedatanom = 1;
-                        //        console.log();
-                        //        break;
-                        //    }
-                        //} else {
-                        //    fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[t].placeholder), 'warning', arrInput[t], 0);
-                        //    validatedatanom = 1;
-                        //    break;
-                        //}
                     } else {
                         if (arrInput[t].value == "") {
                             fshowtypealert('Atención', 'Completa el campo ' + arrInput[t].placeholder, 'warning', arrInput[t], 0);

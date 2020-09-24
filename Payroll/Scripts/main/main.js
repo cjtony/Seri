@@ -175,11 +175,13 @@
     const cunuse       = document.getElementById('cunuse');
     const tipcontra    = document.getElementById('tipcontra');
     const tiposueldo   = document.getElementById('tiposueldo');
-
+    const politica     = document.getElementById('politica');
+    const diferencia   = document.getElementById('diferencia');
+    const transporte   = document.getElementById('transporte');
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
 
     const vardatanomina = [
-        clvnom, fechefectact, fecefecnom, tipper, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo
+        clvnom, fechefectact, fecefecnom, tipper, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte
     ];
     fclearfieldsvar3 = () => {
         for (let i = 0; i < vardatanomina.length; i++) {
@@ -380,6 +382,9 @@
                     tipcontra.value    = getDataTabNom[i].data.tipcontra;
                     tippag.value       = getDataTabNom[i].data.tippag;
                     banuse.value       = getDataTabNom[i].data.banuse;
+                    politica.value     = getDataTabNom[i].data.politica;
+                    diferencia.value   = getDataTabNom[i].data.diferencia;
+                    transporte.value   = getDataTabNom[i].data.transporte;
                     if (getDataTabNom[i].data.banuse != 999) {
                         banuse.disabled = false;
                         cunuse.disabled = false;
@@ -815,7 +820,7 @@
     });
 
     btnSaveDataNomina.addEventListener('click', () => {
-        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag, tiposueldo];
+        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag, tiposueldo, politica, diferencia, transporte];
         let validate = 0;
         for (let t = 0; t < arrInput.length; t++) {
             if (arrInput[t].hasAttribute("tp-select")) {
@@ -909,6 +914,10 @@
                                 tipcon: tipcon.value, fecing: fecing.value,
                                 fecant: fecant.value, vencon: vencon.value,
                                 tipcontra: tipcontra.value,
+                                tiposueldo: tiposueldo.value,
+                                politica: politica.value,
+                                diferencia: diferencia.value,
+                                transporte: transporte.value,
                                 tippag: tippag.value,
                                 banuse: banuse.value, cunuse: cunuse.value,
                             }
@@ -1073,7 +1082,10 @@
         const labelFIng = document.getElementById('label-fing');
         const labelFRec = document.getElementById('label-frec');
         const labelTPag = document.getElementById('label-tippag');
-        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag];
+        const labelPoli = document.getElementById('label-politica');
+        const labelDife = document.getElementById('label-diferencia');
+        const labelTran = document.getElementById('label-transporte');
+        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran];
         for (let i = 0; i < arrInput.length; i++) {
             arrInput[i].classList.add('col-ico', 'font-weight-bold');
         }

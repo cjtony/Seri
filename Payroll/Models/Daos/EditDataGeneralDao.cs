@@ -180,7 +180,7 @@ namespace Payroll.Models.Daos
             return imssBean;
         }
 
-        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position)
+        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int empresa)
         {
             DatosNominaBean nominaBean = new DatosNominaBean();
             try
@@ -190,23 +190,27 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                cmd.Parameters.Add(new SqlParameter("@ctrlFechaEfectiva", fecefecnom));
-                cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo", tipper));
-                cmd.Parameters.Add(new SqlParameter("@ctrlSalarioMensual", salmen));
-                cmd.Parameters.Add(new SqlParameter("@ctrlTipoEmpleado", tipemp));
-                cmd.Parameters.Add(new SqlParameter("@ctrlNivelEmpleado", nivemp));
-                cmd.Parameters.Add(new SqlParameter("@ctrlTipoJornada", tipjor));
-                cmd.Parameters.Add(new SqlParameter("@ctrlTipoContrato", tipcon));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFechaEfectiva",    fecefecnom));
+                cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo",      tipper));
+                cmd.Parameters.Add(new SqlParameter("@ctrlSalarioMensual",   salmen));
+                cmd.Parameters.Add(new SqlParameter("@ctrlTipoEmpleado",     tipemp));
+                cmd.Parameters.Add(new SqlParameter("@ctrlNivelEmpleado",    nivemp));
+                cmd.Parameters.Add(new SqlParameter("@ctrlTipoJornada",      tipjor));
+                cmd.Parameters.Add(new SqlParameter("@ctrlTipoContrato",     tipcon));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoContratacion", tipcontra));
-                //cmd.Parameters.Add(new SqlParameter("@ctrlMotivoInc", motinc));
-                cmd.Parameters.Add(new SqlParameter("@ctrlFechaIngreso", fecing));
-                cmd.Parameters.Add(new SqlParameter("@ctrlFechaAntiguedad", fecant));
-                cmd.Parameters.Add(new SqlParameter("@ctrlVencimientoCont", vencon));
-                cmd.Parameters.Add(new SqlParameter("@ctrlPosicionId", position));
-                cmd.Parameters.Add(new SqlParameter("@ctrlPagoId", tippag));
-                cmd.Parameters.Add(new SqlParameter("@ctrlBancoId", banuse));
-                cmd.Parameters.Add(new SqlParameter("@ctrlCtaCheques", cunuse));
-                cmd.Parameters.Add(new SqlParameter("@ctrlIdNomina", clvnom));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFechaIngreso",     fecing));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFechaAntiguedad",  fecant));
+                cmd.Parameters.Add(new SqlParameter("@ctrlVencimientoCont",  vencon));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPosicionId",       position));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPagoId",           tippag));
+                cmd.Parameters.Add(new SqlParameter("@ctrlBancoId",          banuse));
+                cmd.Parameters.Add(new SqlParameter("@ctrlCtaCheques",       cunuse));
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdNomina",         clvnom));
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa",        empresa));
+                cmd.Parameters.Add(new SqlParameter("@ctrlTipoSueldo",       tiposueldo));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPolitica",         politica));
+                cmd.Parameters.Add(new SqlParameter("@ctrlDiferencia",       diferencia));
+                cmd.Parameters.Add(new SqlParameter("@ctrlTransporte",       transporte));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     nominaBean.sMensaje = "success";

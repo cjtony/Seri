@@ -298,6 +298,9 @@ namespace Payroll.Models.Beans
         public int iBanco_id { get; set; }
         public string sBanco { get; set; }
         public string sCuentaCheques { get; set; }
+        public int iPolitica { get; set; }
+        public double dDiferencia { get; set; }
+        public double dTransporte { get; set; }
         public int iUsuarioAlta_id { get; set; }
         public string sFechaAlta { get; set; }
         public string sMensaje { get; set; }
