@@ -1219,7 +1219,7 @@
         btnFloEjecutar.style.visibility = 'hidden';
 
     };
-
+    
     FGridCalculos = (dataSend2) => {
         $.ajax({
             url: "../Empleados/ReciboNomina",
@@ -1365,6 +1365,7 @@
                     Tbtotal.style.visibility = 'visible';
                     LaTotal.style.visibility = 'visible';
                     Total = TotalPercep - TotalDedu;
+                    console.log('PEr: ' + TotalPercep + ' Dedu: ' + TotalDedu + 'Igual: ' + Total)
                     Tbtotal.value = formatter.format(Total)
 
                 }
