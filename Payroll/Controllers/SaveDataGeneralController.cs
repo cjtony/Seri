@@ -170,13 +170,15 @@ namespace Payroll.Controllers
 
         //Guarda los datos de la nomina del empleado
         [HttpPost]
-        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo)
+        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte)
         {
             Boolean flag         = false;
             String  messageError = "none";
             DatosNominaBean addDatoNomina = new DatosNominaBean();
             DatosNominaDao datoNominaDao  = new DatosNominaDao();
             string convertFEffdt = "";
+            double diferenciaE = (diferencia < 1) ? 0.00 : diferencia;
+            double transporteE = (transporte < 1) ? 0.00 : transporte;
             if (fecefecnom != "") {
                 convertFEffdt = Convert.ToDateTime(fecefecnom).ToString("dd/MM/yyyy");
             }
@@ -200,7 +202,7 @@ namespace Payroll.Controllers
             try {
                 int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario   = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp, tiposueldo);
+                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp, tiposueldo, politica, diferenciaE, transporteE);
                 if (addDatoNomina.sMensaje != "success") {
                     messageError = addDatoNomina.sMensaje;
                 }

@@ -568,10 +568,8 @@
      */
     const clvnom = document.getElementById('clvnom');
     const fecefecnom = document.getElementById('fecefecnom');
-    //const numnom = document.getElementById('numnom');
     const salmen = document.getElementById('salmen');
     const tipper = document.getElementById('tipper');
-    //const pagret = document.getElementById('pagret');
     const tipemp = document.getElementById('tipemp');
     const tipmon = document.getElementById('tipmon');
     const nivemp = document.getElementById('nivemp');
@@ -580,14 +578,15 @@
     const fecing = document.getElementById('fecing');
     const fecant = document.getElementById('fecant');
     const vencon = document.getElementById('vencon');
-    //const estats = document.getElementById('estats');
     const tipcontra = document.getElementById('tipcontra');
-    //const motinc = document.getElementById('motinc');
     const tippag = document.getElementById('tippag');
     const banuse = document.getElementById('banuse');
     const cunuse = document.getElementById('cunuse');
     const clvstr = document.getElementById('clvstr');
     const tiposueldo = document.getElementById('tiposueldo');
+    const politica   = document.getElementById('politica');
+    const diferencia = document.getElementById('diferencia');
+    const transporte = document.getElementById('transporte');
 
     /*
      * Funcion que guarda los datos del apartado datos de nomina
@@ -605,7 +604,8 @@
             //estats: estats.value,
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
-            tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value
+            tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value, politica: politica.value,
+            diferencia: diferencia.value, transporte: transporte.value
         };
         console.log('Datos de nomina');
         console.log(dataSend);
@@ -797,7 +797,7 @@
                     }
                 }
                 if (validatedataimss == 0) {
-                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag];
+                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tiposueldo, politica, diferencia, transporte, tippag];
                     for (let t = 0; t < arrInput.length; t++) {
                         if (arrInput[t].hasAttribute("tp-select")) {
                             let textpag;
@@ -890,13 +890,6 @@
                                         } else {
                                             fechAct = ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + datetod;
                                         }
-                                        //if (arrInput[a].value < fechAct) {
-                                        //    console.log(arrInput[a].value);
-                                        //    console.log(fechAct);
-                                        //    fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
-                                        //    validateSend = 1;
-                                        //    break;
-                                        //}
                                     }
                                     else {
                                         fshowtypealert('Atencion', 'Completa el campo ' + String(arrInput[a].placeholder), 'warning', arrInput[a], 0);
