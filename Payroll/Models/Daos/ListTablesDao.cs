@@ -853,7 +853,7 @@ namespace Payroll.Models.Daos
 
         }
 
-        public List<ReciboNominaBean> sp_SaldosTotales_Retrieve_TPlantillasCalculos(int CtrlIdEmpresa, int CtrlIdEmpleado, int CtrlPeriodo)
+        public List<ReciboNominaBean> sp_SaldosTotales_Retrieve_TPlantillasCalculos(int CtrlIdEmpresa, int CtrlIdEmpleado, int CtrlPeriodo,int CtrliEspejo)
         {
             List<ReciboNominaBean> list = new List<ReciboNominaBean>();
             try
@@ -866,6 +866,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrlIdEmpresa", CtrlIdEmpresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrlIdEmpleado", CtrlIdEmpleado));
                 cmd.Parameters.Add(new SqlParameter("@CtrlPeriodo", CtrlPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliEspejo", CtrliEspejo));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -969,7 +970,7 @@ namespace Payroll.Models.Daos
                         id = ListEmple[i].iIdEmpleado;
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                     };
-                    ListTotales = sp_SaldosTotales_Retrieve_TPlantillasCalculos(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo);
+                    ListTotales = sp_SaldosTotales_Retrieve_TPlantillasCalculos(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo,0);
                     LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id, LFechaPerido[0].iPeriodo, Tipodeperido, anios, 0);
 
                 if (ListTotales != null)
@@ -1767,8 +1768,45 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
+        /// inserta datos en la tabla de CControl_ejecionLn 
+
+        public SelloSatBean  sp_CCejecucionAndSen_update_TsellosSat(int CtrliIdEmpresa,int CtrliIdEmpleado, int CtrliAnio, int CtrliTipoperido, int CtrliPeriodo, int CtriliOpcione)
+        {
+            SelloSatBean bean = new SelloSatBean();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CCejecucionAndSen_update_TsellosSat", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado)); 
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoperido", CtrliTipoperido));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtriliOpcione", CtriliOpcione));
+                
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
+
 
     }
-
-
 }

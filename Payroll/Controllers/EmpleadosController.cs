@@ -1098,11 +1098,11 @@ namespace Payroll.Controllers
 
 
         [HttpPost]
-        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo)
+        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo,int iespejo)
         {
             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-            ListTotales = Dao.sp_SaldosTotales_Retrieve_TPlantillasCalculos(iIdEmpresa, iIdEmpleado, iPeriodo);
+            ListTotales = Dao.sp_SaldosTotales_Retrieve_TPlantillasCalculos(iIdEmpresa, iIdEmpleado, iPeriodo, iespejo);
             return Json(ListTotales);
         }
 
@@ -1220,6 +1220,7 @@ namespace Payroll.Controllers
                         {
                             if (LiTsat[0].sUUID.Length > 3)
                             {
+                                Dao2.sp_CCejecucionAndSen_update_TsellosSat(idEmpresa, idempleado, anios, Tipodeperido, Perido,0);
                                 valido = 1;
                             };
 
@@ -1471,7 +1472,7 @@ namespace Payroll.Controllers
 
 
                             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
-                            ListTotales = Dao2.sp_SaldosTotales_Retrieve_TPlantillasCalculos(idEmpresa, Empleados[a].iIdEmpleado, Perido);
+                            ListTotales = Dao2.sp_SaldosTotales_Retrieve_TPlantillasCalculos(idEmpresa, Empleados[a].iIdEmpleado, Perido,0);
 
                             Paragraph TSalarioB = new Paragraph("Salario Base:", TTexNegCuerpo);
                             TSalarioB.IndentationLeft = 350;
@@ -1842,9 +1843,7 @@ namespace Payroll.Controllers
                             Paragraph TTotal2 = new Paragraph("Total:", TTexNegCuerpo);
                             TTotal2.IndentationLeft = 430;
 
-
                             Paragraph Espacio8 = new Paragraph(5, " ");
-
 
 
                             documento.Add(Ttotal);
@@ -1861,6 +1860,8 @@ namespace Payroll.Controllers
 
                             if (iRecibo == 2)
                             {
+
+
 
                                 Paragraph table14 = new Paragraph();
                                 table14.IndentationLeft = 50;
@@ -1963,9 +1964,12 @@ namespace Payroll.Controllers
 
                                 }
 
+
                                 documento.Add(table14);
                                 documento.Add(table16);
                                 documento.Add(table18);           
+
+
 
                             }
 
