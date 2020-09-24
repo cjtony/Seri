@@ -117,13 +117,13 @@ namespace Payroll.Controllers
             return Json(lista);
         }
         [HttpPost]
-        public JsonResult SaveCredito(string TipoDescuento, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio)
+        public JsonResult SaveCredito(string TipoDescuento, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio, string FactorDesc)
         {
             List<string> lista = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
-            lista = Dao.sp_TCreditos_Insert_Credito(id1, id2, TipoDescuento, Descuento, NoCredito, FechaAprovacion, Descontar, FechaBaja, FechaReinicio);
+            lista = Dao.sp_TCreditos_Insert_Credito(id1, id2, TipoDescuento, Descuento, NoCredito, FechaAprovacion, Descontar, FechaBaja, FechaReinicio, FactorDesc);
             return Json(lista);
         }
         [HttpPost]
@@ -176,14 +176,14 @@ namespace Payroll.Controllers
             return Json(lista);
         }
         [HttpPost]
-        public JsonResult UpdateAusentismo(int id, int Tipo_Ausentismo_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada)
+        public JsonResult UpdateAusentismo(int id, int Tipo_Ausentismo_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, string FechaFin, int Tipo, int IncidenciaProgramada_id)
         {
             List<string> lista = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            lista = Dao.sp_TAusentismos_Update_Ausentismo(id, Tipo_Ausentismo_id, id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada, Periodo);
+            lista = Dao.sp_TAusentismos_Update_Ausentismo(id, Tipo_Ausentismo_id, id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada, Periodo, FechaFin, Tipo, IncidenciaProgramada_id);
             //lista.Add("Ausentismo registrado con éxito");
             return Json(lista);
         }
@@ -263,6 +263,7 @@ namespace Payroll.Controllers
             res = Dao.sp_TCreditos_delete_Credito(int.Parse(Session["IdEmpresa"].ToString()), int.Parse(Session["Empleado_id"].ToString()), Credito_id);
             return Json(res);
         }
+        [HttpPost]
         public JsonResult DeletePension(int Pension_id, int IncidenciaP_id)
         {
             List<string> res;
@@ -294,14 +295,41 @@ namespace Payroll.Controllers
             lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Empleado_id, FechaI, FechaF);
             return Json(lista);
         }
+        //[HttpPost]
+        //public JsonResult LoadDiasRestantesPeriodo(string FechaI, string FechaF)
+        //{
+        //    List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();
+        //    pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+        //    int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+        //    int Periodo = int.Parse(Session["Periodo_id"].ToString());
+        //    lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Periodo);
+        //    return Json(lista);
+        //}
         [HttpPost]
-        public JsonResult LoadDiasRestantesPeriodo(string FechaI, string FechaF)
+        public JsonResult LoadCreditoEmpleado(int Credito_id)
         {
-            List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();
+            List<CreditosBean> lista = new List<CreditosBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
-            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
-            int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Periodo);
+            int id1 = int.Parse(Session["Empleado_id"].ToString());
+            int id2 = int.Parse(Session["IdEmpresa"].ToString());
+            lista = Dao.sp_TCreditos_Retrieve_Credito(id1, id2, Credito_id);
+            //var data = new { data = lista };
+            return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult LoadDescontar(int catalogoid)
+        {
+            List<InfDomicilioBean> lista = new List<InfDomicilioBean>();
+            InfDomicilioDao Dao = new InfDomicilioDao();
+            lista = Dao.sp_CatalogoGeneral_Retrieve_CatalogoGeneral(catalogoid);
+            return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult LoadPeriodosVac2()
+        {
+            List<PVacacionesBean> lista = new List<PVacacionesBean>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            lista = Dao.sp_TperiodosVacaciones_Retrieve_PeriodosVacaciones2(int.Parse(Session["Empleado_id"].ToString()), int.Parse(Session["IdEmpresa"].ToString()));
             return Json(lista);
         }
     }

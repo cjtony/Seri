@@ -21,10 +21,10 @@
                     </div>
                     <div class="form-group col-md-12 text-right">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-sm btn-outline-info font-labels active" onclick="checkPorDias();">
+                            <label class="btn btn-sm btn-outline-info font-labels active btn-option-1" onclick="checkPorDias();">
                                 <input type="radio" name="options" id="option1" checked> Por Días
                             </label>
-                            <label class="btn btn-sm btn-outline-info font-labels" onclick="checkPorFecha();">
+                            <label class="btn btn-sm btn-outline-info font-labels  btn-option-2" onclick="checkPorFecha();">
                                 <input type="radio" name="options" id="option2"> Por Fechas
                             </label>
                         </div>
@@ -53,6 +53,7 @@
                         <label for="inComentariosAusentismo">Comentarios</label>
                         <input type="text" name="inComentariosAusentismo" id="inComentariosAusentismo" value="" class="form-control form-control-sm" placeholder="Escriba un comentario" required />
                     </div>
+                    <input type="hidden" id="inIncidenciaProgramada_id" value="" />
                     <div class=" col-md-12 d-flex justify-content-end">
                         <label class="sr-only"></label>
                         <button type="button" class="btn btn-sm btn-primary mx-1 btn-icon-split font-labels" id="btnRegistroAusentismo">

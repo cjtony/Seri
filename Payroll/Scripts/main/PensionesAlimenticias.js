@@ -25,15 +25,13 @@
         if ($("#inAumentarSegunAs").is(":checked")) { ch3 = 1; } else { ch3 = 0; }
         if (Porcentaje.value == "") { Porcentaje.value = 0 }
         if (CFija.value == "") { CFija.value = "0" }
-        if (CFija.value == "") { CFija.value = "0" }
         var data = $("#frmPensionesAlimenticias").serialize();
         
         var form = document.getElementById("frmPensionesAlimenticias");
         if (form.checkValidity() === false) {
             evt.preventDefault();
-            form.classList.add("was-validated");
+            form.classList.add("was-validated");    
         } else {
-            
             var benef;
             if (Beneficiaria.value == "") { benef = 0;  } else {    benef = Beneficiaria.value; }
             $.ajax({
@@ -154,7 +152,14 @@
                 console.log(data);
                 $("#tabody").empty();
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tabody").innerHTML += "<tr><td>" + data[i]["Beneficiaria"] + "</td><td>" + data[i]["No_Oficio"] + "</td><td>" + data[i]["Fecha_Oficio"] + "</td><td>$ " + data[i]["Cuota_Fija"] + " - % " + data[i]["Porcentaje"] + "</td><td><div class='btn badge badge-danger btn-editar-pensiones ' onclick='eliminarPension( " + data[i]["IdPension"] + "," + data[i]["IncidenciaProgramada_id"] + ");'><i class='fas fa-minus'></i></div></td></tr>";
+                    document.getElementById("tabody").innerHTML += "<tr>"
+                        + "<td>" + data[i]["Beneficiaria"] + "</td>"
+                        + "<td>" + data[i]["No_Oficio"] + "</td>"
+                        + "<td>" + data[i]["Fecha_Oficio"] + "</td>"
+                        + "<td>" + data[i]["Fecha_baja"] + "</td>"
+                        + "<td>$ " + data[i]["Cuota_Fija"] + " - % " + data[i]["Porcentaje"] + "</td>"
+                        + "<td><div class='btn badge badge-danger btn-editar-pensiones ' onclick='eliminarPension( " + data[i]["IdPension"] + "," + data[i]["IncidenciaProgramada_id"] + ");'><i class='fas fa-minus'></i></div></td>"
+                        + "</tr>";
                     
                 }
                 
