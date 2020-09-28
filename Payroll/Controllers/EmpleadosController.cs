@@ -1158,13 +1158,13 @@ namespace Payroll.Controllers
             for (int i = 0; i < rows; i++)
             {
                 idEmpresa = Convert.ToInt32(valores[i]);
-                NoEmple = Dao.sp_NumeroEmple_Retrieve_TpCalculosLn(idEmpresa, TipoPeriodo, Perido,0);
+                NoEmple = Dao.sp_NumeroEmple_Retrieve_TpCalculosLn(idEmpresa, TipoPeriodo, Perido, anios, 0);
                 if (defi == 0) {
                     LisIdcontrol = Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario, sDEscripcion, inactivo, idEmpresa, anios, Tipodeperido, Perido, iRecibo);
                     defi = 1;
                 }
                 Dao2.sp_CControlEjeLn_insert_CControlEjeLn(LisIdcontrol[0].iIdContro,idEmpresa,0, anios, Tipodeperido, Perido, iRecibo);
-                Empleados = Dao.sp_EmpleadosEmpresa_periodo(idEmpresa, TipoPeriodo, Perido, 1);
+                Empleados = Dao.sp_EmpleadosEmpresa_periodo(idEmpresa, TipoPeriodo, Perido, anios, 1);
                 NoEjecuciones = NoEjecuciones + NoEmple[0].iNoEmpleados;
 
                 if (iRecibo == 1)
@@ -2825,6 +2825,7 @@ namespace Payroll.Controllers
             return res;
         }
 
+        // cambia la cantidad en letra 
         private static string NumeroALetras(double value)
         {
             string Num2Text = "";
@@ -2891,6 +2892,26 @@ namespace Payroll.Controllers
 
             return Num2Text;
         }
+
+        // Carga la ultima ejecuion de la tabla Control de ejecucion 
+
+        [HttpPost]
+        public JsonResult TheLastEjecution()
+        {
+
+          
+            List<EmpresasBean> NoEmple = new List<EmpresasBean>();
+         
+            List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>(); 
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            LisIdcontrol=Dao.sp_UltimaEje_Retrieve_CControlejecEmpr();
+            return Json(LisIdcontrol);
+
+
+        }
+
+
+
 
     }
 }

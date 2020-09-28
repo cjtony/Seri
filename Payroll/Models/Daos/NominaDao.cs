@@ -2318,7 +2318,7 @@ namespace Payroll.Models.Daos
         }
 
         ///Numero de empleados de periodos de Empresas
-        public List<EmpresasBean> sp_NumeroEmple_Retrieve_TpCalculosLn(int CtrliIdempresa, int CtrliIdTipoPeriodo,int ctrliIdPerido,int CtrliOp)
+        public List<EmpresasBean> sp_NumeroEmple_Retrieve_TpCalculosLn(int CtrliIdempresa, int CtrliIdTipoPeriodo,int ctrliIdPerido,int CtrliAnio, int CtrliOp)
         {
             List<EmpresasBean> list = new List<EmpresasBean>();
             try
@@ -2331,6 +2331,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdTipoPeriodo", CtrliIdTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@ctrliIdPerido", ctrliIdPerido));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliOp", CtrliOp));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
@@ -2364,7 +2365,7 @@ namespace Payroll.Models.Daos
 
 
         ///empleados de Empresas
-        public List<EmpleadosBean> sp_EmpleadosEmpresa_periodo(int CtrliIdempresa, int CtrliIdTipoPeriodo, int ctrliIdPerido,int CtrliOp)
+        public List<EmpleadosBean> sp_EmpleadosEmpresa_periodo(int CtrliIdempresa, int CtrliIdTipoPeriodo, int ctrliIdPerido,int CtrliAnio, int CtrliOp)
         {
             List<EmpleadosBean> list = new List<EmpleadosBean>();
             try
@@ -2377,6 +2378,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdTipoPeriodo", CtrliIdTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@ctrliIdPerido", ctrliIdPerido));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliOp",CtrliOp));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
@@ -2395,7 +2397,7 @@ namespace Payroll.Models.Daos
                 {
                     list = null;
                 }
-                data.Close(); cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
@@ -2403,14 +2405,7 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-
-
-
-
-
     }
-
-
 
 }
 
