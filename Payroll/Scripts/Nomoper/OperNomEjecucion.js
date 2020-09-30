@@ -1221,12 +1221,12 @@
     };
     
     FGridCalculos = (dataSend2) => {
+        
         $.ajax({
             url: "../Empleados/ReciboNomina",
             type: "POST",
             data: dataSend2,
             success: (data) => {
-                console.log(data);
                 var source =
                 {
                     localdata: data,

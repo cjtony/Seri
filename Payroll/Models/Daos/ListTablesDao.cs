@@ -1817,19 +1817,24 @@ namespace Payroll.Models.Daos
                     {
                         ControlEjecucionBean ls = new ControlEjecucionBean();
                         {
-                            ls.sDescripcion = data["Descripccion"].ToString();
+                            ls.sDescripcion = data["Descripcion"].ToString();
                             ls.iIdempresa = int.Parse(data["Empresa_id"].ToString());
-                            ls.iTipoPeriodo = int.Parse(data["TipoPeriodo_id"].ToString());
-                            ls.iPeriodo = int.Parse(data["Periodo_id"].ToString());
+                            ls.iTipoPeriodo = int.Parse(data["TipoPerido_id"].ToString());
+                            ls.iPeriodo = int.Parse(data["Perido_id"].ToString());
                             ls.iAnio = int.Parse(data["Anio"].ToString());
                             ls.iRecibo = int.Parse(data["Recibo"].ToString());
+                            ls.sMensaje = "succes";
                         };
                         list.Add(ls);
                     }
                 }
                 else
                 {
-                    list = null;
+                    ControlEjecucionBean ls = new ControlEjecucionBean();
+                    {
+                        ls.sMensaje = "Not Dat";
+                    };
+                    list.Add(ls);
                 }
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
@@ -1838,6 +1843,60 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
             }
             return list;
+        }
+
+        /// Consulta los pdfconsellos ejecutados y enviados 
+
+        public  List<SelloSatBean> sp_EjectadosAndSend_Retrieve_TSelloSat(int CtrliIdempresa, int CtrliAnio, int CtrliTipoPeriodo, int CtrliPeriodo, int CtrliEjecutado, int CtrlImensaje,int CtrliOpc)
+        {
+           List<SelloSatBean> bean = new List<SelloSatBean>();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_EjectadosAndSend_Retrieve_TSelloSat", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPeriodo", CtrliTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliEjecutado", CtrliEjecutado));
+                cmd.Parameters.Add(new SqlParameter("@CtrlImensaje", CtrlImensaje));
+                cmd.Parameters.Add(new SqlParameter("@CtrliOpc", CtrliOpc));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        SelloSatBean LP = new SelloSatBean();
+                        {
+                            //LP.iId = int.Parse(data["Id"].ToString());
+                            //LP.sNominaCerrada = data["Nomina_Cerrada"].ToString();
+                            //LP.sFechaInicio = data["Fecha_Inicio"].ToString();
+                            //LP.sFechaFinal = data["Fecha_Final"].ToString();
+                            //LP.sFechaProceso = data["Fecha_Proceso"].ToString();
+                            //LP.sFechaPago = data["Fecha_Pago"].ToString();
+                            //LP.iDiasEfectivos = int.Parse(data["Dias_Efectivos"].ToString());
+                            //LP.iPeriodo = int.Parse(data["Periodo"].ToString());
+                        };
+
+                        bean.Add(LP);
+                    }
+                }
+                else
+                {
+                    bean = null;
+                };
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
         }
 
 

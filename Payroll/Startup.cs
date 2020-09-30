@@ -219,12 +219,13 @@ namespace Payroll
         public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, int IdEmpresa, int LisEmpleado, string fecha, string Path) {
 
 
-
-            ProcessStartInfo psi = new ProcessStartInfo();
+            string path2 = Path;
+             ProcessStartInfo psi = new ProcessStartInfo();
             psi.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
             psi.CreateNoWindow = true;
             psi.WindowStyle = ProcessWindowStyle.Hidden;
             psi.FileName = Path;
+
             Process.Start(psi);
 
             Path = Path.Replace("prueba.bat", "Prueba2.bat");
@@ -234,7 +235,7 @@ namespace Payroll
             psi2.WindowStyle = ProcessWindowStyle.Hidden;
             psi2.FileName = Path;
             Process.Start(psi2);
-            Path = Path.Replace("prueba2.bat", "Prueba3.bat");
+            Path = path2.Replace("prueba.bat", "Prueba3.bat");
             ProcessStartInfo psi3 = new ProcessStartInfo();
             psi3.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
             psi3.CreateNoWindow = true;
