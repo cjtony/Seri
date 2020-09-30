@@ -84,16 +84,18 @@
                     checkedItems += this.label + "\n";
                     //checkedItemsIdEmpleados += this.value + ",";
                 });
-                console.log(checkedItems);
+             
                 limpTextarea();
                 document.getElementById("TextSelecEmpre").innerHTML += checkedItems;
                 Empresas = checkids;
                 FNoEmpeleados(checkids);
-                FTipodePeriodo(checkids, 0);
+                FTipodePeriodo(checkids, 0,0);
                 FPeriodo(checkids, 1);
             }
         }
     });
+
+
 
 
     /// Limpias el campo de Texttarea
@@ -143,22 +145,50 @@
     };
 
     // Verifica que todas las empresas contengan el mismo tipo de periodo y lo llena el drop
-    FTipodePeriodo = (sdEMpresa, op) => {
-        const dataSend = { IdEmpresas: sdEMpresa, OP: op };
-        $("#DroTipoPeriodo").empty();
-        $('#DroTipoPeriodo').append('<option value="0" selected="selected">Selecciona</option>');
-        $.ajax({
-            url: "../Nomina/TipoPPeriodoEmision",
-            type: "POST",
-            data: dataSend,
-            success: function (data) {
-                console.log(data);
-                for (i = 0; i < data.length; i++) {
-                   
-                    document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${data[i].iId}'>${data[i].iId} ${data[i].sValor} </option>`;
-                }
-            },
-        });
+    FTipodePeriodo = (sdEMpresa, op,tp) => {
+
+        if (tp == 0) {
+            const dataSend = { IdEmpresas: sdEMpresa, OP: op };
+            $("#DroTipoPeriodo").empty();
+            $('#DroTipoPeriodo').append('<option value="0" selected="selected">Selecciona</option>');
+            $.ajax({
+                url: "../Nomina/TipoPPeriodoEmision",
+                type: "POST",
+                data: dataSend,
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+
+                        document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${data[i].iId}'>${data[i].iId} ${data[i].sValor} </option>`;
+                    }
+                },
+            });
+
+
+        }
+        if (tp == 1) {
+            const dataSend = { IdEmpresas: sdEMpresa, OP: op };
+            $("#DroTipoPeriodo").empty();
+            $('#DroTipoPeriodo').append('<option value="0" selected="selected">Selecciona</option>');
+            $.ajax({
+                url: "../Nomina/TipoPPeriodoEmision",
+                type: "POST",
+                data: dataSend,
+                success: function (data) {
+                    for (i = 0; i < data.length; i++) {
+                        document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${data[i].iId}'>${data[i].iId} ${data[i].sValor} </option>`;
+                    }
+                },
+            });
+            console.log(DroTipoPeriodo.contains);
+            console.log(DroTipoPeriodo.length);
+            for (var i = 0; i < DroTipoPeriodo.contains; i++) {
+                console.log(DroTipoPeriodo.options[i].text + 'su valor ' + DroTipoPeriodo.value );
+
+            }
+
+        }
+
+
 
     };
 
@@ -250,8 +280,49 @@
             type: "POST",
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
-            success: (data) => {
-         
+            success: function (data) {
+                if (data[0].sMensaje = "succes") {
+                    for (var i = 0; i < DropGrup.length; i++) {
+                        if (DropGrup.options[i].text == "IPSNet") {
+                            // seleccionamos el valor que coincide
+                            DropGrup.selectedIndex = i;
+                        }
+                    }
+                    for (var i = 0; i < DropContEje.length; i++) {
+                        if (DropContEje.options[i].text == data[0].sDescripcion) {
+                            DropContEje.selectedIndex = i;
+                        }
+                    }
+       
+                  
+                    TextBAnioProce.value = data[0].iAnio;
+                    descrip = data[0].sDescripcion;
+                    document.getElementById("TextDEesp").innerHTML += descrip;
+                    LisEmpresa();
+
+                    $("#DropEmpresa").jqxDropDownList('checkItem', data[0].iIdempresa);
+
+                    DroTipoRecibo.selectedIndex = data[0].iRecibo;
+                    var Tp = "";
+                    if (data[0].iTipoPeriodo == 1) {
+                        Tp = " Semanal"; 
+                    };
+                    if (data[0].iTipoPeriodo == 3) {
+                        Tp=" Quincenal"
+                    };
+
+                    $("#DroTipoPeriodo").empty();
+                    document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${data[0].iTipoPeriodo}'>${data[0].iTipoPeriodo} ${Tp} </option>`;
+
+                    $("#DropPerido").empty();
+                    document.getElementById("DropPerido").innerHTML += `<option value='${data[0].iPeriodo}'>${data[0].iPeriodo}  </option>`;
+
+                }
+                else {
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+
+                };
+                
             }
         });
 

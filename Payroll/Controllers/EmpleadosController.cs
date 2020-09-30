@@ -2899,16 +2899,12 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult TheLastEjecution()
         {
-
-          
-            List<EmpresasBean> NoEmple = new List<EmpresasBean>();
-         
+  
+            List<EmpresasBean> NoEmple = new List<EmpresasBean>();         
             List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>(); 
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             LisIdcontrol=Dao.sp_UltimaEje_Retrieve_CControlejecEmpr();
             return Json(LisIdcontrol);
-
-
         }
 
 
