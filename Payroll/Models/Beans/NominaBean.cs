@@ -1,4 +1,5 @@
 ﻿using System;
+using iTextSharp.text.io;
 
 namespace Payroll.Models.Beans
 {
@@ -336,6 +337,7 @@ namespace Payroll.Models.Beans
       public int iAnio { get; set; }
       public int iTipoPeriodo { get; set; }
       public int iPeriodo { get; set; }
+      public int iRecibo { get; set; }
       public string sMensaje { get; set; }
     }
 

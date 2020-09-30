@@ -464,7 +464,6 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-
         public List<EmisorReceptorBean> sp_EmisorReceptor_Retrieve_EmisorReceptor(int CrtliIdEmpresa, int CrtliIdEmpleado)
         {
             List<EmisorReceptorBean> list = new List<EmisorReceptorBean>();
@@ -713,7 +712,6 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-
         public List<CInicioFechasPeriodoBean> sp_DatosPerido_Retrieve_DatosPerido(int CtrliIdPeriodo)
         {
             List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
@@ -764,7 +762,6 @@ namespace Payroll.Models.Daos
             return list;
 
         }
-
         public List<XMLBean> sp_FileCer_Retrieve_CCertificados(string CtrlsRFC)
         {
             List<XMLBean> list = new List<XMLBean>();
@@ -809,7 +806,6 @@ namespace Payroll.Models.Daos
             return list;
 
         }
-
         public List<XMLBean> sp_ObtenFolioCCertificados_RetrieveUpdate_Ccertificados(string rfc)
         {
             List<XMLBean> list = new List<XMLBean>();
@@ -852,7 +848,6 @@ namespace Payroll.Models.Daos
             return list;
 
         }
-
         public List<ReciboNominaBean> sp_SaldosTotales_Retrieve_TPlantillasCalculos(int CtrlIdEmpresa, int CtrlIdEmpleado, int CtrlPeriodo,int CtrliEspejo)
         {
             List<ReciboNominaBean> list = new List<ReciboNominaBean>();
@@ -898,7 +893,6 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-
         public HttpResponse response { get; }
         public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido,int masivo)
         {
@@ -907,7 +901,8 @@ namespace Payroll.Models.Daos
             string[] Nombre= sNombreComple.Split(' ');
             List<string> NomArchXML = new List<string>();
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
-            List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
+            List<EmpleadosBean> ListEmple = new List<EmpleadosBean>();
+          //  List<EmpleadosBean> LisEmpleados = new List<EmpleadosBean>();
             List<CInicioFechasPeriodoBean> LFechaPerido = new List<CInicioFechasPeriodoBean>();
             List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
             FuncionesNomina Dao = new FuncionesNomina();
@@ -948,7 +943,11 @@ namespace Payroll.Models.Daos
 
             LFechaPerido = sp_DatosPerido_Retrieve_DatosPerido(Periodo);
             if (masivo == 1) {
-                ListEmple = sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(IdEmpresa, Tipodeperido, LFechaPerido[0].iPeriodo, anios);
+                int PeridoEmple = LFechaPerido[0].iPeriodo;
+                ListEmple = Dao.sp_EmpleadosEmpresa_periodo(IdEmpresa, Tipodeperido, PeridoEmple, anios, 1);   // sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(IdEmpresa, Tipodeperido, LFechaPerido[0].iPeriodo, anios);
+
+               
+               // LisEmpleados = Dao.sp_EmpleadosEmpresa_periodo(IdEmpresa, Tipodeperido, PeridoEmple, anios,1); 
                 NoXmlx = ListEmple.Count-1;
             };
 
@@ -965,8 +964,8 @@ namespace Payroll.Models.Daos
                     }
                     if (masivo == 1)
                     {
-                        Nombre = ListEmple[i].sNombreCompleto.Split(' ');
-                        NumEmpleado = ListEmple[i].iIdEmpleado;
+                        Nombre = ListEmple[i].sNombreEmpleado.Split(' '); //.sNombreCompleto.Split(' ');
+                        NumEmpleado = ListEmple[i].iIdEmpleado;   //ListEmple[i].iIdEmpleado;
                         id = ListEmple[i].iIdEmpleado;
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                     };
@@ -1057,7 +1056,7 @@ namespace Payroll.Models.Daos
 
                                     if (LFolio != null) folio = LFolio[0].ifolio.ToString();
                                     else ListDatEmisor[0].sMensaje = "Erro en Genera el folio Contacte a sistemas";
-                                    string sNombre = Nombre[1] + " " + Nombre[2] + " " + Nombre[3];
+                                    string sNombre = Nombre[0] + " " + Nombre[1] + " " + Nombre[2];
                                     string sRegistroPatronal = ListDatEmisor[0].sAfiliacionIMSS;
                                     string sNumSeguridadSocial = ListDatEmisor[0].sRegistroImss;
                                     fechaValida = DateTime.TryParse(ListDatEmisor[0].sFechaIngreso, culture, styles, out dt3);
@@ -1433,6 +1432,13 @@ namespace Payroll.Models.Daos
                             //DirectoryInfo dir = new DirectoryInfo(@"C:\reportes\");
                             // 2 
                             string nombreArchivoZip = "ZipXML.zip";
+
+                            if (System.IO.File.Exists(pathCer + nombreArchivoZip))
+                            {
+                                System.IO.File.Delete(pathCer + nombreArchivoZip);
+                                TipoFiniquito ls = new TipoFiniquito();
+                               
+                            }
                             FileStream stream = new FileStream(pathCer + nombreArchivoZip, FileMode.OpenOrCreate);
                             // 3 
                             ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create);
@@ -1804,6 +1810,50 @@ namespace Payroll.Models.Daos
             }
 
             return bean;
+        }
+
+        // tra los datos de la fecha mayo de la tabla ejecc
+
+        public List<ControlEjecucionBean> sp_UltimaEje_Retrieve_CControlejecEmpr()
+        {
+            List<ControlEjecucionBean> list = new List<ControlEjecucionBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_UltimaEje_Retrieve_CControlejecEmpr", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        ControlEjecucionBean ls = new ControlEjecucionBean();
+                        {
+                            ls.sDescripcion = data["Descripccion"].ToString();
+                            ls.iIdempresa = int.Parse(data["Empresa_id"].ToString());
+                            ls.iTipoPeriodo = int.Parse(data["TipoPeriodo_id"].ToString());
+                            ls.iPeriodo = int.Parse(data["Periodo_id"].ToString());
+                            ls.iAnio = int.Parse(data["Anio"].ToString());
+                            ls.iRecibo = int.Parse(data["Recibo"].ToString());
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
         }
 
 

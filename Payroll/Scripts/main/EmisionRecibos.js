@@ -13,6 +13,7 @@
     const TextBAnioProce = document.getElementById('TextBAnioProce');
     const DroTipoRecibo = document.getElementById('DroTipoRecibo');
     const TextBRuta = document.getElementById('TextBRuta');
+    const btnVerEje = document.getElementById('btnVerEje');
 
     var VarCheckEmpresa = document.getElementById('CheckEmpresa');
     var Empresas;
@@ -181,7 +182,7 @@
 
     };
 
-
+    /// Genera los pdf 
     FGeneraPDF = () => {
 
         if (TextBAnioProce.value != "" && TextBAnioProce.value != " " ) {
@@ -211,7 +212,6 @@
 
                 fshowtypealert('Emisión de recibos', "seleccionar un tipo de periodo", 'warning');
             }
-      
         }
         else {
             
@@ -225,8 +225,7 @@
 
     FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas,descrip) => {
     
-        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value, sDEscripcion: descrip };
-        console.log('genera pdf');
+        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value, sDEscripcion: descrip };   
         $.ajax({
             url: "../Empleados/GenPDF",
             type: "POST",
@@ -234,11 +233,30 @@
             success: function (data) {            
                 TextBRuta.value = data[0].sUrl;
                 TextBTotalEmple = data[0].iNoEjecutados;
+                fshowtypealert('Emisión de recibos', "PDF creados exitosa mente", 'succes');
             },
         });
 
     };
 
+    /// Muestra en pantalla la ultima ejecucion realizada 
+
+
+    FtheLastEje = () => {
+        console.log('Ultima ejecucion')
+
+        $.ajax({
+            url: "../Empleados/TheLastEjecution",
+            type: "POST",
+            data: JSON.stringify(),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+         
+            }
+        });
+
+    };
+    btnVerEje.addEventListener('click', FtheLastEje);
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
