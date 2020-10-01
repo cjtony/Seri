@@ -106,12 +106,12 @@
                                             <div class="row p-2 animated fadeInLeft">
                                                 <div class="col-md-6">
                                                     <small class=""><b>Curp:</b>
-                                                        <span class="text-primary">${data.Datos[i].sCurp}</span>
+                                                        <span class="text-primary text-uppercase">${data.Datos[i].sCurp}</span>
                                                     </small>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <small class="text-center"><b>Rfc:</b>
-                                                        <span class="text-primary">${data.Datos[i].sRfc}</span>
+                                                        <span class="text-primary text-uppercase">${data.Datos[i].sRfc}</span>
                                                     </small>
                                                 </div>
                                                 <div class="col-md-6 mt-2">
@@ -286,6 +286,26 @@
                                                 <div class="col-md-12 mt-2">
                                                     <small class=""><b>Tipo Contrato:</b>
                                                         <span class="text-primary">${data.Datos[i].sTipoContrato}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Tipo Sueldo:</b>
+                                                        <span class="text-primary">${data.Datos[i].sTipoSueldo}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Politica:</b>
+                                                        <span class="text-primary">${data.Datos[i].iPolitica}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Diferencia P:</b>
+                                                        <span class="text-primary">${data.Datos[i].dDiferencia}</span>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <small class=""><b>Transporte:</b>
+                                                        <span class="text-primary">${data.Datos[i].dTransporte}</span>
                                                     </small>
                                                 </div>
                                             </div>
@@ -1374,14 +1394,14 @@
                     }
                     if (arrInput[t].value == idcuentach) {
                         if (cunuse.value.length < 10) {
-                            fshowtypealert('Atencion', 'El numero de cuenta de cheques debe contener 10 digitos y solo tiene ' + String(cunuse.value.length) + ' digitos.', 'warning', cunuse, 0);
+                            fshowtypealert('Atencion', 'El numero de cuenta de cheques debe contener 10 o 11 digitos y solo tiene ' + String(cunuse.value.length) + ' digitos.', 'warning', cunuse, 0);
                             validatedatanom = 1;
                             break;
                         }
                     }
                     if (arrInput[t].value == idcuentaah) {
-                        if (cunuse.value.length < 15) {
-                            fshowtypealert('Atención', 'El numero de cuenta de ahorro debe de contener 18 digitos y solo tiene ' + String(cunuse.value.length) + ' digitos.', 'warning', cunuse, 0);
+                        if (cunuse.value.length < 18) {
+                            fshowtypealert('Atención', 'El numero de cuenta de cheques clabe debe de contener 18 digitos y solo tiene ' + String(cunuse.value.length) + ' digitos.', 'warning', cunuse, 0);
                             validatedatanom = 1;
                             break;
                         }

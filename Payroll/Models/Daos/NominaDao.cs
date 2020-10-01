@@ -48,17 +48,21 @@ namespace Payroll.Models.Daos
                         nomina.sSalarioMensual = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data["SalarioMensual"]));
                         nomina.sTipoEmpleado = data["Tipo_Empleado"].ToString();
                         nomina.sNivelEmpleado = data["Nivel_Empleado"].ToString();
-                        nomina.sTipoJornada   = data["Tipo_Jornada"].ToString();
-                        nomina.sTipoContrato  = data["Tipo_Contrato"].ToString();
+                        nomina.sTipoJornada = data["Tipo_Jornada"].ToString();
+                        nomina.sTipoContrato = data["Tipo_Contrato"].ToString();
                         nomina.sTipoContratacion = data["Tipo_Contratacion"].ToString();
                         nomina.sFechaIngreso = ConvertDateText(Convert.ToDateTime(data["FechaIngreso"]).ToString("yyyy-MM-dd"));
                         nomina.sFechaAntiguedad = ConvertDateText(Convert.ToDateTime(data["FechaAntiguedad"]).ToString("yyyy-MM-dd"));
-                        nomina.sVencimientoContrato = (data["Vencimiento_contrato"].ToString() != "") ? ConvertDateText(Convert.ToDateTime(data["Vencimiento_contrato"]).ToString("yyyy-MM-dd")) : "Sin fecha" ;
+                        nomina.sVencimientoContrato = (data["Vencimiento_contrato"].ToString() != "") ? ConvertDateText(Convert.ToDateTime(data["Vencimiento_contrato"]).ToString("yyyy-MM-dd")) : "Sin fecha";
                         nomina.iPosicion_id = Convert.ToInt32(data["Posicion_id"]);
                         nomina.sTipoPago = data["Tipo_Pago"].ToString();
                         nomina.sBanco = data["Banco"].ToString();
                         nomina.sCuentaCheques = data["Cta_Cheques"].ToString();
                         nomina.sFechaAlta = ConvertDateText(Convert.ToDateTime(data["Fecha_Alta"]).ToString("yyyy-MM-dd"));
+                        nomina.sTipoSueldo = data["TipoSueldo"].ToString();
+                        nomina.iPolitica = Convert.ToInt32(data["Politica"].ToString());
+                        nomina.dDiferencia = Convert.ToDouble(data["DiferenciaP"].ToString());
+                        nomina.dTransporte = Convert.ToDouble(data["Transporte"].ToString());
                         listNomina.Add(nomina);
                     }
                 }
