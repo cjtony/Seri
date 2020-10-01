@@ -86,6 +86,7 @@
     const btnSaveDataImss       = document.getElementById('btn-save-data-imss');
     const btnSaveDataNomina     = document.getElementById('btn-save-data-nomina');
     const btnSaveDataEstructure = document.getElementById('btn-save-data-estructure');
+    const btnSaveDataAll        = document.getElementById('btn-save-data-all');
 
     let objectDataTabDataGen    = {};
     let objectDataTabImss       = {};
@@ -454,6 +455,8 @@
             btnSaveDataNomina.classList.remove('d-none');
             btnsaveeditdatanomina.classList.add('d-none');
             btnsaveeditdataest.classList.add('d-none');
+            btnSaveDataAll.classList.remove('d-none');
+            btnSaveDataAll.disabled = false;
         }
     }
 
