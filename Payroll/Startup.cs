@@ -219,8 +219,8 @@ namespace Payroll
         public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, int IdEmpresa, int LisEmpleado, string fecha, string Path) {
 
 
-            string path2 = Path;
-             ProcessStartInfo psi = new ProcessStartInfo();
+        //    string path2 = Path;
+            ProcessStartInfo psi = new ProcessStartInfo();
             psi.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
             psi.CreateNoWindow = true;
             psi.WindowStyle = ProcessWindowStyle.Hidden;
@@ -228,20 +228,20 @@ namespace Payroll
 
             Process.Start(psi);
 
-            Path = Path.Replace("prueba.bat", "Prueba2.bat");
-            ProcessStartInfo psi2 = new ProcessStartInfo();
-            psi2.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
-            psi2.CreateNoWindow = true;
-            psi2.WindowStyle = ProcessWindowStyle.Hidden;
-            psi2.FileName = Path;
-            Process.Start(psi2);
-            Path = path2.Replace("prueba.bat", "Prueba3.bat");
-            ProcessStartInfo psi3 = new ProcessStartInfo();
-            psi3.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
-            psi3.CreateNoWindow = true;
-            psi3.WindowStyle = ProcessWindowStyle.Hidden;
-            psi3.FileName = Path;
-            Process.Start(psi3);
+     //       Path = Path.Replace("prueba.bat", "Prueba2.bat");
+      //      ProcessStartInfo psi2 = new ProcessStartInfo();
+            //psi2.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
+            //psi2.CreateNoWindow = true;
+            //psi2.WindowStyle = ProcessWindowStyle.Hidden;
+            //psi2.FileName = Path;
+            //Process.Start(psi2);
+            //Path = path2.Replace("prueba.bat", "Prueba3.bat");
+            //ProcessStartInfo psi3 = new ProcessStartInfo();
+            //psi3.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
+            //psi3.CreateNoWindow = true;
+            //psi3.WindowStyle = ProcessWindowStyle.Hidden;
+            //psi3.FileName = Path;
+            //Process.Start(psi3);
 
         }
 

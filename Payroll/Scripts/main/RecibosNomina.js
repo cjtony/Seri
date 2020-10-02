@@ -338,7 +338,6 @@
                 type: "POST",
                 data: dataSend2,
                 success: (Result) => {
-
                     var source =
                     {
                         localdata: Result.Result,
@@ -439,7 +438,6 @@
                 type: "POST",
                 data: dataSend2,
                 success: (data) => {
-                    console.log(data);
                     if (data.length > 0) {
                         for (i = 0; i < data.length; i++) {
                             if (data[i].iIdRenglon == 990) {

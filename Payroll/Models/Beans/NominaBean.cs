@@ -291,9 +291,12 @@ namespace Payroll.Models.Beans
         public int iIdCalculosHd { get; set; }
         public int iIdEmpresa { get; set; }
         public int iIdEmpleado { get; set; }
+        public string sNomEmpleado { get; set; }
         public int ianio { get; set; }
         public int iTipoPeriodo { get; set; }
         public int iPeriodo { get; set; }
+        public string bEmailSent { get; set; }
+        public string sEmailSent { get; set; }
         public string sRecibos { get; set; }
         public string sSelloSat { get; set; }
         public string sUUID { get; set; }
