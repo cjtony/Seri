@@ -1889,14 +1889,15 @@ namespace Payroll.Models.Daos
                     {
                         SelloSatBean LP = new SelloSatBean();
                         {
-                            //LP.iId = int.Parse(data["Id"].ToString());
-                            //LP.sNominaCerrada = data["Nomina_Cerrada"].ToString();
-                            //LP.sFechaInicio = data["Fecha_Inicio"].ToString();
-                            //LP.sFechaFinal = data["Fecha_Final"].ToString();
-                            //LP.sFechaProceso = data["Fecha_Proceso"].ToString();
-                            //LP.sFechaPago = data["Fecha_Pago"].ToString();
-                            //LP.iDiasEfectivos = int.Parse(data["Dias_Efectivos"].ToString());
-                            //LP.iPeriodo = int.Parse(data["Periodo"].ToString());
+                            LP.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
+                            LP.sNomEmpleado = data["Empleado"].ToString();
+                            LP.ianio = int.Parse(data["Anio"].ToString());
+                            LP.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
+                            LP.iPeriodo = int.Parse(data["Periodo"].ToString());
+                            LP.bEmailSent = data["Email_Sent"].ToString();
+                            LP.sEmailSent = data["EMAIL_PERSONAL"].ToString();
+                            LP.sMensaje = "Succes";
+          
                         };
 
                         bean.Add(LP);
@@ -1904,7 +1905,14 @@ namespace Payroll.Models.Daos
                 }
                 else
                 {
-                    bean = null;
+                    SelloSatBean LP = new SelloSatBean();
+                    {
+                        
+                        LP.sMensaje = "NoDat";
+
+                    };
+
+                    bean.Add(LP);
                 };
             }
             catch (Exception exc)

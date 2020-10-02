@@ -2899,15 +2899,39 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult TheLastEjecution()
         {
-  
-            List<EmpresasBean> NoEmple = new List<EmpresasBean>();         
+
+            List<SelloSatBean> LSelloSat = new List<SelloSatBean>();        
             List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>(); 
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             LisIdcontrol=Dao.sp_UltimaEje_Retrieve_CControlejecEmpr();
-            return Json(LisIdcontrol);
+            LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(LisIdcontrol[0].iIdempresa, LisIdcontrol[0].iAnio, LisIdcontrol[0].iTipoPeriodo, LisIdcontrol[0].iPeriodo, 1, 0, 0);
+            var TablasDat = new { TablasDat = LisIdcontrol, LSelloSat };
+
+            return Json(TablasDat);
         }
 
+        [HttpPost]
+        public JsonResult EnvioEmail() {
 
+            List<SelloSatBean> Email = new List<SelloSatBean>();
+            string EmailPer = "aacosta@gruposeri.com";
+            string Mensaje = "estimado usuario en este correo se adjunta la factura del periodo ##";
+            Correo EmailEnvio = new Correo(EmailPer,"Facturas",Mensaje);
+            if (EmailEnvio.Estado)
+            {
+                //Correo enviado
+              
+            }
+            else
+            {
+
+                //Error al enviar correo
+               
+            }
+
+
+            return Json(Email);
+        }
 
 
     }

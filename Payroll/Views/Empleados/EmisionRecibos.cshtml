@@ -1,5 +1,4 @@
-﻿
-@*Temas*@
+﻿@*Temas*@
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
@@ -78,7 +77,7 @@
                         año de Procesamiento:
                     </label>
                     <div class="col-sm-8">
-                      <input placeholder="Año de Procesamiento" title="Año de Procesamiento" type="number" id="TextBAnioProce"  min="1900" max="2060" class="form-control form-control-sm" />
+                        <input placeholder="Año de Procesamiento" title="Año de Procesamiento" type="number" id="TextBAnioProce" min="1900" max="2060" class="form-control form-control-sm" />
                     </div>
                 </div>
                 <div class="form-group row">
@@ -132,19 +131,19 @@
                     </div>
                 </div>
                 @*<div class="form-group row">
-                    <label for="nacion" class="col-sm-3 col-form-label font-labels" id="label-nationality">
-                        Procesados:
-                    </label>
-                    <div class="col-sm-3">
-                        <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados" class="form-control form-control-sm" />
-                    </div>
-                    <div class="col-sm-3">
-                        <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados2" readonly class="form-control form-control-sm" />
-                    </div>
-                    <div class="col-sm-3">
-                        <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados2" readonly class="form-control form-control-sm" />
-                    </div>
-                </div>*@
+                        <label for="nacion" class="col-sm-3 col-form-label font-labels" id="label-nationality">
+                            Procesados:
+                        </label>
+                        <div class="col-sm-3">
+                            <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados" class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados2" readonly class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input tp-date="less" placeholder="Procesados" title="Procesados" type="text" id="TextBProcesoados2" readonly class="form-control form-control-sm" />
+                        </div>
+                    </div>*@
 
                 <div class="form-group row">
                     <label class="col-sm-8 col-form-label font-labels"><input type="checkbox" id="ChNCerrada"> Borrar la ultima ejecución activa ?</label>
@@ -163,21 +162,27 @@
 
                 </div>
                 <div class="form-group row">
-                 
+
                     <div class="col-sm-5">
-                        <button id="btn-EnviCorre" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                        <button id="btnEnviCorre" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
                             <i class="fa fa-envelope-o"></i> Envio de Correos
                         </button>
                     </div>
                 </div>
-                <div class="form-group row">
+                @*<div class="form-group row">
                     <div class="col-sm-5">
                         <button id="btn-ReplicarApp" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
                             <i class="fa fa-repeat"></i> Replicar para App
                         </button>
                     </div>
+                </div>*@
+            </div>
+            <div class="col-md-12">
+                <div class="table-responsive" style="text-align:center; margin-left:5%" >
+                    <div id="TbEjeSend" class="table-responsive"></div>
                 </div>
             </div>
+
         </div>
         @*Botones de flotantes*@
         @*<div>
@@ -206,3 +211,14 @@
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxlistbox.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdropdownlist.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqwidgets/jqxcheckbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqx-all.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxmenu.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.filter.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.selection.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxlistbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdropdownlist.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcheckbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxwindow.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxtabs.js"></script>

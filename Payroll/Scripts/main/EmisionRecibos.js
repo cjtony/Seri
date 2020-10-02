@@ -14,6 +14,7 @@
     const DroTipoRecibo = document.getElementById('DroTipoRecibo');
     const TextBRuta = document.getElementById('TextBRuta');
     const btnVerEje = document.getElementById('btnVerEje');
+    const btnEnviCorre = document.getElementById('btnEnviCorre');
 
     var VarCheckEmpresa = document.getElementById('CheckEmpresa');
     var Empresas;
@@ -273,15 +274,14 @@
 
 
     FtheLastEje = () => {
-        console.log('Ultima ejecucion')
-
+       
+      
         $.ajax({
             url: "../Empleados/TheLastEjecution",
             type: "POST",
             data: JSON.stringify(),
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                if (data[0].sMensaje = "succes") {
+            success:  (TablasDat)=> {
+                if (TablasDat.TablasDat[0].sMensaje = "succes") {
                     for (var i = 0; i < DropGrup.length; i++) {
                         if (DropGrup.options[i].text == "IPSNet") {
                             // seleccionamos el valor que coincide
@@ -289,45 +289,99 @@
                         }
                     }
                     for (var i = 0; i < DropContEje.length; i++) {
-                        if (DropContEje.options[i].text == data[0].sDescripcion) {
+                        if (DropContEje.options[i].text == TablasDat.TablasDat[0].sDescripcion) {
                             DropContEje.selectedIndex = i;
                         }
                     }
        
                   
-                    TextBAnioProce.value = data[0].iAnio;
-                    descrip = data[0].sDescripcion;
+                    TextBAnioProce.value = TablasDat.TablasDat[0].iAnio;
+                    descrip = TablasDat.TablasDat[0].sDescripcion;
                     document.getElementById("TextDEesp").innerHTML += descrip;
                     LisEmpresa();
 
-                    $("#DropEmpresa").jqxDropDownList('checkItem', data[0].iIdempresa);
+                    $("#DropEmpresa").jqxDropDownList('checkItem', TablasDat.TablasDat[0].iIdempresa);
 
-                    DroTipoRecibo.selectedIndex = data[0].iRecibo;
+                    DroTipoRecibo.selectedIndex = TablasDat.TablasDat[0].iRecibo;
                     var Tp = "";
-                    if (data[0].iTipoPeriodo == 1) {
+                    if (TablasDat.TablasDat[0].iTipoPeriodo == 1) {
                         Tp = " Semanal"; 
                     };
-                    if (data[0].iTipoPeriodo == 3) {
+                    if (TablasDat.TablasDat[0].iTipoPeriodo == 3) {
                         Tp=" Quincenal"
                     };
 
                     $("#DroTipoPeriodo").empty();
-                    document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${data[0].iTipoPeriodo}'>${data[0].iTipoPeriodo} ${Tp} </option>`;
+                    document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${TablasDat.TablasDat[0].iTipoPeriodo}'>${TablasDat.TablasDat[0].iTipoPeriodo} ${Tp} </option>`;
 
                     $("#DropPerido").empty();
-                    document.getElementById("DropPerido").innerHTML += `<option value='${data[0].iPeriodo}'>${data[0].iPeriodo}  </option>`;
+                    document.getElementById("DropPerido").innerHTML += `<option value='${TablasDat.TablasDat[0].iPeriodo}'>${TablasDat.TablasDat[0].iPeriodo}  </option>`;
 
                 }
                 else {
                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
 
                 };
-                
+                if (TablasDat.LSelloSat[0].sMensaje = "Succes") {
+                    console.log(TablasDat.LSelloSat);
+                    var source =
+                    {
+                        localdata: TablasDat.LSelloSat,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdEmpresa', type: 'int' },
+                                { name: 'sNomEmpleado', type: 'string' },
+                                { name: 'ianio', type: 'int' },
+                                { name: 'iTipoPeriodo', type: 'int' },
+                                { name: 'iPeriodo', type: 'int' },
+                                { name: 'bEmailSent', type: 'string' },
+                                { name: 'sEmailSent', type: 'string' },
+                            ]
+                    };
+
+                    var dataAdapter = new $.jqx.dataAdapter(source);          
+                    $("#TbEjeSend").jqxGrid(
+                        {
+                           
+                            width: 930,
+                            source: dataAdapter,
+                       
+                         
+                            columns: [
+                                { text: 'Empresa No', datafield: 'iIdEmpresa', width: 50 },
+                                { text: 'Nombre de Empleado', datafield: 'sNomEmpleado', width: 300 },
+                                { text: 'Año ', datafield: 'ianio', width: 100 },
+                                { text: 'Tipo de Periodo', datafield: 'iTipoPeriodo', width: 100},
+                                { text: 'Periodo', datafield: 'iPeriodo', width: 80 },
+                                { text: 'Email', datafield: 'sEmailSent', width: 200 },
+                                { text: 'Email enviado', datafield: 'bEmailSent', width: 100 },
+                            ]
+                        });
+                };
             }
         });
 
     };
+    //muestra las facturas con sellos elaboradas 
     btnVerEje.addEventListener('click', FtheLastEje);
+
+
+    // envia correos 
+    FSenEmail = () => {
+        $.ajax({
+            url: "../Empleados/EnvioEmail",
+            type: "POST",
+            data: JSON.stringify(),
+            success: (TablasDat) => {
+
+            }
+        });
+
+
+    };
+
+    btnEnviCorre.addEventListener('click',FSenEmail)
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
