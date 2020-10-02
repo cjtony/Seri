@@ -478,7 +478,7 @@ namespace Payroll.Models.Beans
         public int Empleado_id { get; set; }
         public int Empresa_id { get; set; }
         public string TipoDescuento { get; set; }
-        public string SeguroVivienda { get; set; }
+        //public string SeguroVivienda { get; set; }
         public string Descuento { get; set; }
         public string NoCredito { get; set; }
         public string FechaAprovacionCredito { get; set; }
@@ -587,7 +587,7 @@ namespace Payroll.Models.Beans
         public int IncidenciaP_id { get; set; }
         public string Nombre_Renglon { get; set; }
         public string VW_TipoIncidencia_id { get; set; }
-        public int Cantidad { get; set; }
+        public string Cantidad { get; set; }
         public int Plazos { get; set; }
         public string Descripcion { get; set; }
         public string Fecha_Aplicacion { get; set; }

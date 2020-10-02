@@ -108,6 +108,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                console.log(data);
                 document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 createTab();
@@ -275,15 +276,22 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
+                console.log()
                 $("#inTipoDescuento option[value=" + data[0]["Descontar"] + "]").attr("selected", true);
 
                 document.getElementById("inDescuento").value = data[0]["Descuento"];
                 document.getElementById("inNoCredito").value = data[0]["NoCredito"];
 
-                var ano = data[0]["FechaAprovacionCredito"].substr(6, 10);
-                var mes = data[0]["FechaAprovacionCredito"].substr(4, 6);
+                var ano = data[0]["FechaAprovacionCredito"].substr(6, 4);
+                var mes = data[0]["FechaAprovacionCredito"].substr(3, 2);
                 var dia = data[0]["FechaAprovacionCredito"].substr(0, 2);
-                console.log(ano + '-' + mes + dia);
+                console.log(ano + '-' + mes + '-' + dia + ' ... ' + data[0]["FechaAprovacionCredito"]);
+
+                $('#inFechaAprovacionCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
+
+                $('#inFechaBajaCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
+
+                $('#inFechaBajaCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
 
                 //document.getElementById("inFechaAprovacionCredito").value = 
                 //var fechab = document.getElementById("inFechaBajaCredito");

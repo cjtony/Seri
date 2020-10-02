@@ -807,7 +807,20 @@ namespace Payroll.Models.Daos
                     lista.IncidenciaP_id = int.Parse(data["IncidenciaP_id"].ToString());
                     lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
                     lista.VW_TipoIncidencia_id = data["VW_Tipo_Incidencia_id"].ToString();
-                    lista.Cantidad = int.Parse(data["Cantidad"].ToString());
+
+
+                    //lista.Cantidad = data["Cantidad"].ToString();
+
+                    if (decimal.Parse(data["Cantidad"].ToString()) % 1 == 0)
+                    {
+                        lista.Cantidad = data["Cantidad"].ToString().Substring(0, data["Cantidad"].ToString().Length - 5);
+                    }
+                    else
+                    {
+                        lista.Cantidad = data["Cantidad"].ToString().Substring(0, data["Cantidad"].ToString().Length - 2);
+                    }
+
+
                     lista.Plazos = int.Parse(data["Plazos"].ToString());
                     lista.Descripcion = data["Descripcion"].ToString();
                     lista.Fecha_Aplicacion = data["Fecha_Aplicacion"].ToString();
