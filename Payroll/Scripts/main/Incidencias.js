@@ -77,7 +77,7 @@
     $("#btnSaveIncidencias").on("click", function () {
         var form = document.getElementById("frmIncidencias");
         if (form.checkValidity() == false) {
-            setTimeout( () => {
+            setTimeout(() => {
                 form.classList.add("was-validated");
             }, 5000);
         } else {
@@ -94,7 +94,7 @@
                     inFechaA: fecha_incidencia.value,
                     infinicio: infinicio.value,
                     inffinal: inffinal.value
-                    }),
+                }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
@@ -137,7 +137,7 @@
             success: (data) => {
                 console.log(data);
                 createTab();
-                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "";
+                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i> " + data[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "";
                 $("#modalLiveSearchEmpleado").modal("hide");
             }
         });
@@ -152,18 +152,18 @@
                 console.log(data);
                 document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    document.getElementById("tabIncidenciasBody").innerHTML += ""+
+                    document.getElementById("tabIncidenciasBody").innerHTML += "" +
                         "<tr>" +
-                            "<td>" + data[i]["Nombre_Renglon"] + "</td>" +
-                            "<td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td>" +
-                            "<td class='text-center'>" + data[i]["Cantidad"] + "</td>" +
-                            "<td class='text-center'>" + data[i]["Plazos"] + "</td>" +
-                            "<td class='text-center'>" + data[i]["Descripcion"] + "</td>" +
-                            "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
-                            "<td class='text-center'>" + data[i]["NPeriodo"] + "</td>" +
-                            "<td class='text-center'>" +
-                                "<div class='badge badge-danger btn' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Eliminar'><i class='fas fa-minus'></i></div>" +
-                            "</td>" +
+                        "<td>" + data[i]["Nombre_Renglon"] + "</td>" +
+                        "<td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td>" +
+                        "<td class='text-center'>" + data[i]["Cantidad"] + "</td>" +
+                        "<td class='text-center'>" + data[i]["Plazos"] + "</td>" +
+                        "<td class='text-center'>" + data[i]["Descripcion"] + "</td>" +
+                        "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
+                        "<td class='text-center'>" + data[i]["NPeriodo"] + "</td>" +
+                        "<td class='text-center'>" +
+                        "<div class='badge badge-danger btn' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Eliminar'><i class='fas fa-minus'></i></div>" +
+                        "</td>" +
                         "</tr>";
                 }
             }
@@ -199,14 +199,14 @@
                                 timer: 1000
                             });
                         } else {
-                            
+
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Borrado!',
                                 text: data[1],
                                 timer: 1000
                             });
-                            
+
                         }
                     }
                 });
