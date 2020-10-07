@@ -15,6 +15,9 @@
     const TextBRuta = document.getElementById('TextBRuta');
     const btnVerEje = document.getElementById('btnVerEje');
     const btnEnviCorre = document.getElementById('btnEnviCorre');
+    const BtnSenCorreo = document.getElementById('BtnSenCorreo');
+    const TextCopiaa = document.getElementById('TextCopiaa');
+    const TextBTotalEjecutados = document.getElementById('TextBTotalEjecutados');
 
     var VarCheckEmpresa = document.getElementById('CheckEmpresa');
     var Empresas;
@@ -256,14 +259,18 @@
 
     FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas,descrip) => {
     
-        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value, sDEscripcion: descrip };   
+        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value, sDEscripcion: descrip };
+        if (DroTipoRecibo.value == 2) {
+            BtnSenCorreo.value= 1
+        }
+
         $.ajax({
             url: "../Empleados/GenPDF",
             type: "POST",
             data: dataSend,
             success: function (data) {            
                 TextBRuta.value = data[0].sUrl;
-                TextBTotalEmple = data[0].iNoEjecutados;
+                TextBTotalEmple.value = data[0].iNoEjecutados;
                 fshowtypealert('Emisión de recibos', "PDF creados exitosa mente", 'succes');
             },
         });
@@ -273,9 +280,7 @@
     /// Muestra en pantalla la ultima ejecucion realizada 
 
 
-    FtheLastEje = () => {
-       
-      
+    FtheLastEje = () => {      
         $.ajax({
             url: "../Empleados/TheLastEjecution",
             type: "POST",
@@ -299,7 +304,7 @@
                     descrip = TablasDat.TablasDat[0].sDescripcion;
                     document.getElementById("TextDEesp").innerHTML += descrip;
                     LisEmpresa();
-
+                   
                     $("#DropEmpresa").jqxDropDownList('checkItem', TablasDat.TablasDat[0].iIdempresa);
 
                     DroTipoRecibo.selectedIndex = TablasDat.TablasDat[0].iRecibo;
@@ -317,13 +322,17 @@
                     $("#DropPerido").empty();
                     document.getElementById("DropPerido").innerHTML += `<option value='${TablasDat.TablasDat[0].iPeriodo}'>${TablasDat.TablasDat[0].iPeriodo}  </option>`;
 
+                    TextBTotalEjecutados.value = TablasDat.TablasDat[0].iNoEje;
+                    
                 }
                 else {
+                    BtnSenCorreo.value = 0;
                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
 
                 };
                 if (TablasDat.LSelloSat[0].sMensaje = "Succes") {
-                    console.log(TablasDat.LSelloSat);
+                    BtnSenCorreo.value = 1;
+
                     var source =
                     {
                         localdata: TablasDat.LSelloSat,
@@ -359,9 +368,10 @@
                             ]
                         });
                 };
+
             }
         });
-
+     
     };
     //muestra las facturas con sellos elaboradas 
     btnVerEje.addEventListener('click', FtheLastEje);
@@ -369,19 +379,27 @@
 
     // envia correos 
     FSenEmail = () => {
-        $.ajax({
-            url: "../Empleados/EnvioEmail",
-            type: "POST",
-            data: JSON.stringify(),
-            success: (TablasDat) => {
+        if (BtnSenCorreo.value == 1) {
+            
+            const dataSend = { Ccp: TextCopiaa.value, Anio: TextBAnioProce.value, TipoPeriodo: DroTipoPeriodo.value, Perido: DropPerido.value, sIdEmpresas: Empresas, iRecibo: DroTipoRecibo.value, sDEscripcion: TextDEesp.value}
+            console.log(dataSend);
+            $.ajax({
+                url: "../Empleados/EnvioEmail",
+                type: "POST",
+                data: dataSend,
+                success: (TablasDat) => {
 
-            }
-        });
-
-
+                }
+            });
+        }
+        else {
+            fshowtypealert('Emision de Recibos', 'Realizar una ejecucion o visualizar la ultima ejecucion para realizar el envio de correos', 'warning');
+        }
+       
     };
 
-    btnEnviCorre.addEventListener('click',FSenEmail)
+    BtnSenCorreo.addEventListener('click', FSenEmail)
+ //   btnEnviCorre.addEventListener('click',FSenEmail)
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {

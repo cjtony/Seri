@@ -1550,7 +1550,7 @@ namespace Payroll.Models.Daos
 
         /// insertar ccontro de ejecucuionHd
         
-        public List<ControlEjecucionBean> ps_ControlEje_Insert_CControlEjecEmpr(int CtrliIdusuario, string CtrlsDescripcion, int CtrliInactivo,int CtrliIdEmpresa, int CtrliAnio, int CtrliIdtipoPeriodo,int CtrliIdPeriodo,int CtrliRecibo)
+        public List<ControlEjecucionBean> ps_ControlEje_Insert_CControlEjecEmpr(int CtrliIdusuario, string CtrlsDescripcion, int CtrliInactivo,int CtrliIdEmpresa, int CtrliAnio, int CtrliIdtipoPeriodo,int CtrliIdPeriodo,int CtrliRecibo,int CtrliNoEje)
         {
             List<ControlEjecucionBean> bean = new List<ControlEjecucionBean>();
 
@@ -1569,6 +1569,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdtipoPeriodo", CtrliIdtipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdPeriodo", CtrliIdPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliRecibo", CtrliRecibo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliNoEje", @CtrliNoEje));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -1776,7 +1777,7 @@ namespace Payroll.Models.Daos
 
         /// inserta datos en la tabla de CControl_ejecionLn 
 
-        public SelloSatBean  sp_CCejecucionAndSen_update_TsellosSat(int CtrliIdEmpresa,int CtrliIdEmpleado, int CtrliAnio, int CtrliTipoperido, int CtrliPeriodo, int CtriliOpcione)
+        public SelloSatBean  sp_CCejecucionAndSen_update_TsellosSat(int CtrliIdEmpresa,int CtrliIdEmpleado, int CtrliAnio, int CtrliTipoperido, int CtrliPeriodo, int CtriliOpcione,string CtrlsUurl)
         {
             SelloSatBean bean = new SelloSatBean();
 
@@ -1793,7 +1794,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliTipoperido", CtrliTipoperido));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtriliOpcione", CtriliOpcione));
-                
+                cmd.Parameters.Add(new SqlParameter("@CtrlsUurl", CtrlsUurl));
+
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     bean.sMensaje = "success";
@@ -1839,6 +1841,7 @@ namespace Payroll.Models.Daos
                             ls.iPeriodo = int.Parse(data["Perido_id"].ToString());
                             ls.iAnio = int.Parse(data["Anio"].ToString());
                             ls.iRecibo = int.Parse(data["Recibo"].ToString());
+                            ls.iNoEje = int.Parse(data["NoEjecutados"].ToString());
                             ls.sMensaje = "succes";
                         };
                         list.Add(ls);

@@ -352,7 +352,7 @@ namespace Payroll.Controllers
 
                         TablaNominaBean ls = new TablaNominaBean();
                         {
-                            ls.sConcepto = LCRecibo[i].iIdRenglon+" "+ LCRecibo[i].sNombre_Renglon;
+                            ls.sConcepto = LCRecibo[i].iIdRenglon + " " + LCRecibo[i].sNombre_Renglon;
 
                             if (LCRecibo[i].sValor == "Percepciones")
                             {
@@ -363,7 +363,7 @@ namespace Payroll.Controllers
                             {
                                 if (LCRecibo[i].iIdRenglon == 1013)
                                 {
-                                    LsTabla[idRenglon].dDeducciones = "-"+LCRecibo[i].dSaldo.ToString();
+                                    LsTabla[idRenglon].dDeducciones = "-" + LCRecibo[i].dSaldo.ToString();
 
                                 }
                                 ls.dPercepciones = "0";
@@ -621,7 +621,7 @@ namespace Payroll.Controllers
 
 
                 /////////////// tipo de pago 
-                
+
 
                 Paragraph Espacio3 = new Paragraph(20, " ");
                 Paragraph table6 = new Paragraph();
@@ -1098,7 +1098,7 @@ namespace Payroll.Controllers
 
 
         [HttpPost]
-        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo,int iespejo)
+        public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo, int iespejo)
         {
             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
@@ -1126,7 +1126,7 @@ namespace Payroll.Controllers
         public JsonResult GenPDF(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion)
         {
 
-            int Idusuario = Convert.ToInt32(Session["iIdUsuario"]), inactivo = 0,NoEjecuciones=0;
+            int Idusuario = Convert.ToInt32(Session["iIdUsuario"]), inactivo = 0, NoEjecuciones = 0;
 
 
             List<EmpresasBean> NoEmple = new List<EmpresasBean>();
@@ -1136,7 +1136,7 @@ namespace Payroll.Controllers
             List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>();
             FuncionesNomina Dao = new FuncionesNomina();
             ListEmpleadosDao Dao2 = new ListEmpleadosDao();
-            
+
 
             string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
             int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, Version = 12, Folio = 0;
@@ -1146,7 +1146,7 @@ namespace Payroll.Controllers
             string PathCarp = Server.MapPath("Archivos\\certificados\\PDF2\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             PathCarp = PathCarp.Replace("\\Empleados", "");
-           
+
             string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             string Nombrearc = PathPDF;
@@ -1161,20 +1161,20 @@ namespace Payroll.Controllers
                 idEmpresa = Convert.ToInt32(valores[i]);
                 NoEmple = Dao.sp_NumeroEmple_Retrieve_TpCalculosLn(idEmpresa, TipoPeriodo, Perido, anios, 0);
                 if (defi == 0) {
-                    LisIdcontrol = Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario, sDEscripcion, inactivo, idEmpresa, anios, Tipodeperido, Perido, iRecibo);
+                    LisIdcontrol = Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario, sDEscripcion, inactivo, idEmpresa, anios, Tipodeperido, Perido, iRecibo,0);
                     defi = 1;
                 }
-                Dao2.sp_CControlEjeLn_insert_CControlEjeLn(LisIdcontrol[0].iIdContro,idEmpresa,0, anios, Tipodeperido, Perido, iRecibo);
+                Dao2.sp_CControlEjeLn_insert_CControlEjeLn(LisIdcontrol[0].iIdContro, idEmpresa, 0, anios, Tipodeperido, Perido, iRecibo);
                 Empleados = Dao.sp_EmpleadosEmpresa_periodo(idEmpresa, TipoPeriodo, Perido, anios, 1);
-                NoEjecuciones = NoEjecuciones + NoEmple[0].iNoEmpleados;
+                //NoEjecuciones = NoEjecuciones + NoEmple[0].iNoEmpleados;
 
                 if (iRecibo == 1)
                 {
-                    PathCarp = PathCarp + "Simple\\Empresa" + idEmpresa + "\\Periodo"+ Perido+"\\";
+                    PathCarp = PathCarp + "Simple\\Empresa" + idEmpresa + "\\Periodo" + Perido + "\\";
                 }
                 if (iRecibo == 2)
                 {
-                    PathCarp = PathCarp + "Fiscal\\Empresa" + idEmpresa + "\\Periodo"+ Perido+"\\";
+                    PathCarp = PathCarp + "Fiscal\\Empresa" + idEmpresa + "\\Periodo" + Perido + "\\";
                 }
 
                 if (System.IO.File.Exists(PathCarp))
@@ -1185,7 +1185,7 @@ namespace Payroll.Controllers
                 }
                 else
                 {
-                   
+
                     DirectoryInfo di = Directory.CreateDirectory(PathCarp);
                     PathPDF = PathCarp + "IPSNet";
                 }
@@ -1214,19 +1214,24 @@ namespace Payroll.Controllers
                     if (ListDatEmisor != null) {
                         if (iRecibo == 1 && ListDatEmisor[0].sRFC.Length > 3)
                         {
+                            Dao2.sp_CCejecucionAndSen_update_TsellosSat(idEmpresa, idempleado, anios, Tipodeperido, Perido, 2, Nombrearc);
+
+                            NoEjecuciones = NoEjecuciones + 1;
                             valido = 1;
                         };
                         if (iRecibo == 2 && LiTsat != null && ListDatEmisor[0].sRFC.Length > 3)
                         {
                             if (LiTsat[0].sUUID.Length > 3)
                             {
-                                Dao2.sp_CCejecucionAndSen_update_TsellosSat(idEmpresa, idempleado, anios, Tipodeperido, Perido,0);
+                                NoEjecuciones = NoEjecuciones + 1;
+                                Dao2.sp_CCejecucionAndSen_update_TsellosSat(idEmpresa, idempleado, anios, Tipodeperido, Perido, 0, Nombrearc);
                                 valido = 1;
                             };
 
                         };
                     };
                     if (valido == 1) {
+                       
                         ListDatEmisor[0].sUrl = PathPDF;
                         LisCer = Dao2.sp_FileCer_Retrieve_CCertificados(ListDatEmisor[0].sRFC);
                         string pathCert = Server.MapPath("Archivos\\certificados\\");
@@ -1257,7 +1262,7 @@ namespace Payroll.Controllers
                             iTextSharp.text.Font TexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
 
                             //////Cabecera  
-                          
+
                             string Palabra = ListDatEmisor[0].sNombreEmpresa;
                             Paragraph Empresa = new Paragraph(50, Palabra, TTexNeg);
                             Empresa.IndentationLeft = 90;
@@ -1472,18 +1477,18 @@ namespace Payroll.Controllers
 
 
                             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
-                            ListTotales = Dao2.sp_SaldosTotales_Retrieve_TPlantillasCalculos(idEmpresa, Empleados[a].iIdEmpleado, Perido,0);
+                            ListTotales = Dao2.sp_SaldosTotales_Retrieve_TPlantillasCalculos(idEmpresa, Empleados[a].iIdEmpleado, Perido, 0);
 
                             Paragraph TSalarioB = new Paragraph("Salario Base:", TTexNegCuerpo);
                             TSalarioB.IndentationLeft = 350;
 
-                            if(ListTotales == null){
+                            if (ListTotales == null) {
                                 Palabra = "error contcte a sistemas";
                             };
-                            if(ListTotales != null) {
+                            if (ListTotales != null) {
                                 Palabra = string.Format("{0:N2}", ListTotales[i].dSaldo);
                             }
-                           
+
                             Paragraph SalarioB = new Paragraph(-1, Palabra, TexNegCuerpo);
                             SalarioB.IndentationLeft = 395;
 
@@ -1611,7 +1616,7 @@ namespace Payroll.Controllers
                             // dias Efectivos 
 
                             List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
-                            LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio,0);
+                            LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, 0);
                             decimal iTdias = LFechaPerido[0].iDiasEfectivos;
                             int TDias = 0;
                             string Dias = LisTRecibo[0].sNombre_Renglon;
@@ -1967,14 +1972,14 @@ namespace Payroll.Controllers
 
                                 documento.Add(table14);
                                 documento.Add(table16);
-                                documento.Add(table18);           
+                                documento.Add(table18);
 
 
 
                             }
 
                             documento.Close();
-                        
+
 
                         }
                     }
@@ -1984,7 +1989,7 @@ namespace Payroll.Controllers
 
 
             }
-
+            LisIdcontrol = Dao2.ps_ControlEje_Insert_CControlEjecEmpr(Idusuario, sDEscripcion, inactivo, idEmpresa, anios, Tipodeperido, Perido, iRecibo, NoEjecuciones);
             EmisorReceptorBean ls = new EmisorReceptorBean();
             {
                 ls.iNoEjecutados = NoEjecuciones;
@@ -2005,7 +2010,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        
+
         /// Lista empleado Finiquito
         public JsonResult ListEmpleadoFin(int iIdEmpresa, int TipoPeriodo, int periodo, int Anio)
         {
@@ -2019,9 +2024,9 @@ namespace Payroll.Controllers
 
         [HttpPost]
 
-        public JsonResult ReciboFiniquito(int iIdEmpresa, int iIdEmpleado, int ianio, int iPeriodo,int idTipFiniquito)
+        public JsonResult ReciboFiniquito(int iIdEmpresa, int iIdEmpleado, int ianio, int iPeriodo, int idTipFiniquito)
         {
-            
+
             List<ReciboNominaBean> LCRecibo = new List<ReciboNominaBean>();
             List<TablaNominaBean> LsTabla = new List<TablaNominaBean>();
             List<ReciboNominaBean> LsTotal = new List<ReciboNominaBean>();
@@ -2078,7 +2083,7 @@ namespace Payroll.Controllers
         }
 
         /// Lista de tipo de Finiquito por empleado
-        public JsonResult ListFiniquito(int iIdEmpresa, int iIdEmpleado,  int Anio,int  periodo)
+        public JsonResult ListFiniquito(int iIdEmpresa, int iIdEmpleado, int Anio, int periodo)
         {
             List<TipoFiniquito> ListFini = new List<TipoFiniquito>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
@@ -2089,7 +2094,7 @@ namespace Payroll.Controllers
 
         /// Elimina archivo 
 
-        public JsonResult deletArchivo( string path)
+        public JsonResult deletArchivo(string path)
         {
             List<TipoFiniquito> archivo = new List<TipoFiniquito>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
@@ -2142,7 +2147,7 @@ namespace Payroll.Controllers
             PathPDF = PathPDF.Replace("\\Empleados", "");
             string Nombrearc = "RecibosNom";
             int idEmpresa = 0, rows = 0;
-            Nombrearc = Nombrearc + "_"+ IdEmpresa+"_"+ LFechaPerido[0].iPeriodo+".pdf";
+            Nombrearc = Nombrearc + "_" + IdEmpresa + "_" + LFechaPerido[0].iPeriodo + ".pdf";
             rows = 1;
             int idempleado = 0;
             string urlpdf = Nombrearc;
@@ -2157,8 +2162,6 @@ namespace Payroll.Controllers
                 EmisorReceptorBean ls = new EmisorReceptorBean();
                 ls.sMensaje = "success";
                 ListDatEmisor.Add(ls);
-
-
 
             }
             else
@@ -2785,19 +2788,19 @@ namespace Payroll.Controllers
                 EmisorReceptorBean ls = new EmisorReceptorBean();
                 {
                     ls.sUrl = urlpdf;
-                    
+
                 }
 
 
 
             };
-    
-            
+
+
             return Json(ListDatEmisor);
         }
 
 
-          //// Cantidad en letra 
+        //// Cantidad en letra 
         public static string NumeroALetras(string num)
         {
             string res, dec = "";
@@ -2896,11 +2899,11 @@ namespace Payroll.Controllers
 
         // Carga la ultima ejecuion de la tabla Control de ejecucion 
 
+
         [HttpPost]
         public JsonResult TheLastEjecution()
-        {
-
-            List<SelloSatBean> LSelloSat = new List<SelloSatBean>();        
+        {  
+            List<SelloSatBean> LSelloSat = new List<SelloSatBean>();
             List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>(); 
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             LisIdcontrol=Dao.sp_UltimaEje_Retrieve_CControlejecEmpr();
@@ -2911,22 +2914,32 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult EnvioEmail() {
+        public JsonResult EnvioEmail(string Ccp, int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion) {
 
             List<SelloSatBean> Email = new List<SelloSatBean>();
-            string EmailPer = "aacosta@gruposeri.com";
-            string Mensaje = "estimado usuario en este correo se adjunta la factura del periodo ##";
-            Correo EmailEnvio = new Correo(EmailPer,"Facturas",Mensaje);
-            if (EmailEnvio.Estado)
-            {
-                //Correo enviado
-              
-            }
-            else
-            {
+            List<SelloSatBean> LSelloSat = new List<SelloSatBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+          //  LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(LisIdcontrol[0].iIdempresa, LisIdcontrol[0].iAnio, LisIdcontrol[0].iTipoPeriodo, LisIdcontrol[0].iPeriodo, 1, 0, 0);
 
-                //Error al enviar correo
-               
+            if (Anio >0) {
+                for (int i = 0; i < Anio; i++) { 
+                
+                
+                }
+                string EmailPer = "aacosta@gruposeri.com";
+                string Mensaje = "estimado usuario en este correo se adjunta la factura del periodo ##";
+                Correo EmailEnvio = new Correo(EmailPer, "Facturas", Mensaje);
+                if (EmailEnvio.Estado)
+                {
+                    //Correo enviado
+
+                }
+                else
+                {
+
+                    //Error al enviar correo
+
+                }
             }
 
 
