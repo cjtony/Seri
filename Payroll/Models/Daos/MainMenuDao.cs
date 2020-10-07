@@ -40,6 +40,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
 
             return permBean;
 
@@ -73,6 +78,7 @@ namespace Payroll.Models.Daos
                 }
             }
             data.Close();
+            this.conexion.Close();this.Conectar().Close();
 
             return MmenuBean;
         }
@@ -106,7 +112,8 @@ namespace Payroll.Models.Daos
                     list.Add(listMmenuBean);
                 }
             }
-
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }

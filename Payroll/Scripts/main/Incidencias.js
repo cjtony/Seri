@@ -8,6 +8,7 @@
     var fecha_incidencia = document.getElementById("inFechaA");
     var infinicio = document.getElementById("infinicio");
     var inffinal = document.getElementById("inffinal");
+    document.getElementById("lbloptions").style.visibility = "none";
 
     $("#modalLiveSearchEmpleado").modal("show");
     //Busqueda de empleado
@@ -63,24 +64,76 @@
         if (ren_incidencia.value == '71') {
             //console.log("si");
             $("#lblCantidad").html("Dias");
+            $("#inflbl").html("<small class='px-2'> *Si selecciona por días se insertaran en el periodo actual, si selecciona por fechas solo aplicara dentro del rango agregado.<small>").attr("class", "alert-warning text-center col-md-12 mx-3 mb-2");
             $("#inCantidad").attr("placeholder", "#");
             $("#collapsefechas").collapse("show");
+            $("#lbloptions").html(""
+                + "<div class='btn-group btn-group-toggle' data-toggle='buttons' >"
+                + "<label class='btn btn-sm btn-outline-info font-labels active btn-option-1' onclick='checkPorDias();'>"
+                + "<input type='radio' name='options' id='opt1' checked> Por Días"
+                + "</label>"
+                + "<label class='btn btn-sm btn-outline-info font-labels  btn-option-2' onclick='checkPorFecha();'>"
+                + "<input type='radio' name='options' id='opt2'> Por Fechas"
+                + "</label>"
+                + "</div>"
+                //+ "<div class='btn-group' role='group' aria-label='Basic example'>"
+                //+ "<button type='button' id='opt1' class='btn btn-outline-info btn-sm'><small> <i class='fas fa-calendar-day'></i> Por Dias </small> </button>"
+                //+ "<button type='button' id='opt2' class='btn btn-outline-info btn-sm'><small> <i class='fas fa-calendar-alt'></i> Por Fechas </small> </button>"
+                //+ "</div >"
+            );
+
+            setTimeout(() => {
+                document.getElementById("opt1").click();
+            }, 500);
+
+            $("#opt1").click();
         } else {
             //console.log("no");
             $("#lblCantidad").html("Cantidad");
+            $("#inflbl").html("").attr("class", "");
             $("#inCantidad").attr("placeholder", "$ 0000.00");
             $("#collapsefechas").collapse("hide");
+            $("#lbloptions").html("");
+
         }
 
     });
+    checkPorDias = () => {
+        document.getElementById("inCantidad").disabled = false;
+        document.getElementById("infinicio").disabled = true;
+        document.getElementById("inffinal").disabled = true;
+    }
+    checkPorFecha = () => {
+        document.getElementById("inCantidad").disabled = true;
+        document.getElementById("infinicio").disabled = false;
+        document.getElementById("inffinal").disabled = false;
+    }
     //GUARDAR INCIDENCIA
     $("#btnSaveIncidencias").on("click", function () {
+
+        var tipo = 0;
+
         var form = document.getElementById("frmIncidencias");
         if (form.checkValidity() == false) {
             setTimeout(() => {
                 form.classList.add("was-validated");
             }, 5000);
         } else {
+            if (concepto_incidencia.value == "71") {
+                if ($("#opt1").prop('checked')) {
+                    console.log("Por dias");
+
+                    tipo = 0;
+
+                } else if ($("#opt2").prop('checked')) {
+                    console.log("Por dias");
+
+                    tipo = 1;
+
+                }
+            }
+
+
             var Vform = $("#frmIncidencias").serialize();
             $.ajax({
                 url: "../Incidencias/SaveRegistroIncidencia",

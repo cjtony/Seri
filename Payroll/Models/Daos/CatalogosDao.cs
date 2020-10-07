@@ -647,37 +647,50 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listEmpresasBean;
         }
     }
 
-    public class CodigoCatalogosDao : Conexion {
-        
+    public class CodigoCatalogosDao : Conexion
+    {
+
         public List<CodigoCatalogoBean> sp_Datos_Codigo_Catalogo(string typeJob, int keyEmpr)
         {
             List<CodigoCatalogoBean> listCodeCatBean = new List<CodigoCatalogoBean>();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Datos_Codigo_Catalogo", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@Catalogo", typeJob));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyEmpr));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows) {
-                    while (data.Read()) {
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
                         CodigoCatalogoBean codeCatBean = new CodigoCatalogoBean();
-                        codeCatBean.iId          = Convert.ToInt32(data["id"].ToString());
-                        codeCatBean.sCatalogo    = data["Catalogo"].ToString();
-                        codeCatBean.sCodigo      = data["Codigo"].ToString();
+                        codeCatBean.iId = Convert.ToInt32(data["id"].ToString());
+                        codeCatBean.sCatalogo = data["Catalogo"].ToString();
+                        codeCatBean.sCodigo = data["Codigo"].ToString();
                         codeCatBean.sDescripcion = data["Descripcion"].ToString();
-                        codeCatBean.sCancelado   = data["Cancelado"].ToString();
+                        codeCatBean.sCancelado = data["Cancelado"].ToString();
                         codeCatBean.iConsecutivo = (data["Consecutivo"].ToString().Length > 0) ? Convert.ToInt32(data["Consecutivo"].ToString()) : 0;
                         listCodeCatBean.Add(codeCatBean);
                     }
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 Console.WriteLine(exc.Message.ToString());
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -687,25 +700,33 @@ namespace Payroll.Models.Daos
         public CodigoCatalogoBean sp_Dato_Codigo_Catalogo_Seleccionado(int keytypejob)
         {
             CodigoCatalogoBean codeCatBean = new CodigoCatalogoBean();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Dato_Codigo_Catalogo_Seleccionado", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdRegistro", keytypejob));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read()) {
-                    codeCatBean.iId          = Convert.ToInt32(data["id"].ToString());
-                    codeCatBean.sCatalogo    = data["Catalogo"].ToString();
-                    codeCatBean.sCodigo      = data["Codigo"].ToString();
+                if (data.Read())
+                {
+                    codeCatBean.iId = Convert.ToInt32(data["id"].ToString());
+                    codeCatBean.sCatalogo = data["Catalogo"].ToString();
+                    codeCatBean.sCodigo = data["Codigo"].ToString();
                     codeCatBean.sDescripcion = data["Descripcion"].ToString();
-                    codeCatBean.sCancelado   = data["Cancelado"].ToString();
+                    codeCatBean.sCancelado = data["Cancelado"].ToString();
                     codeCatBean.iConsecutivo = (data["Consecutivo"].ToString().Length > 0) ? Convert.ToInt32(data["Consecutivo"].ToString()) : 0;
-                } else {
+                }
+                else
+                {
                     codeCatBean.sMensaje = "NODATA";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 codeCatBean.sMensaje = exc.Message.ToString();
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -801,82 +822,106 @@ namespace Payroll.Models.Daos
             }
             return listCentrosCostosBean;
         }
-    
-        public CentrosCostosBean sp_Data_Centro_Costo (int keyemp, int keycentrcost)
+
+        public CentrosCostosBean sp_Data_Centro_Costo(int keyemp, int keycentrcost)
         {
             CentrosCostosBean centrCostBean = new CentrosCostosBean();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Data_Centro_Costo", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdCentroCosto", keycentrcost));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read()) {
+                if (data.Read())
+                {
                     centrCostBean.iIdCentroCosto = Convert.ToInt32(data["IdCentroCosto"].ToString());
-                    centrCostBean.iIdEmpresa     = Convert.ToInt32(data["Empresa_id"].ToString());
-                    centrCostBean.sCentroCosto   = data["CentroCosto"].ToString();
+                    centrCostBean.iIdEmpresa = Convert.ToInt32(data["Empresa_id"].ToString());
+                    centrCostBean.sCentroCosto = data["CentroCosto"].ToString();
                     centrCostBean.sDescripcionCentroCosto = data["DescripcionCentroCosto"].ToString();
-                    centrCostBean.iEstadoCentroCosto      =  Convert.ToInt32(data["EstadoCentroCosto"].ToString());
-                    centrCostBean.sMensaje                = "success";
-                } else {
+                    centrCostBean.iEstadoCentroCosto = Convert.ToInt32(data["EstadoCentroCosto"].ToString());
+                    centrCostBean.sMensaje = "success";
+                }
+                else
+                {
                     centrCostBean.sMensaje = "NODATALOAD";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 centrCostBean.sMensaje = exc.Message.ToString();
                 Console.WriteLine(exc.Message.ToString());
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
             return centrCostBean;
         }
-    
+
         public CentrosCostosBean sp_Update_Centro_Costo(int keycentrcost, string ncentrocosto, string dcentrocosto, int keyemp)
         {
             CentrosCostosBean centrCostBean = new CentrosCostosBean();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Update_Centro_Costo", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdCentroCosto", keycentrcost));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
                 cmd.Parameters.Add(new SqlParameter("@CentroCosto", ncentrocosto));
                 cmd.Parameters.Add(new SqlParameter("@DescripcionCC", dcentrocosto));
-                if (cmd.ExecuteNonQuery() > 0) {
+                if (cmd.ExecuteNonQuery() > 0)
+                {
                     centrCostBean.sMensaje = "success";
-                } else {
+                }
+                else
+                {
                     centrCostBean.sMensaje = "NOTUPDATE";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 centrCostBean.sMensaje = exc.Message.ToString();
                 Console.WriteLine(exc.Message.ToString());
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
             return centrCostBean;
         }
-        
+
         public CentrosCostosBean sp_Insert_Centro_Costo(int keyEmpr, string ncentrcost, string dcentrcost, int keyUser)
         {
             CentrosCostosBean centrCostBean = new CentrosCostosBean();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Insert_Centro_Costo", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyEmpr));
                 cmd.Parameters.Add(new SqlParameter("@CentroCosto", ncentrcost));
                 cmd.Parameters.Add(new SqlParameter("@DescripcionCC", dcentrcost));
                 cmd.Parameters.Add(new SqlParameter("@UsuarioA", keyUser));
-                if (cmd.ExecuteNonQuery() > 0) {
+                if (cmd.ExecuteNonQuery() > 0)
+                {
                     centrCostBean.sMensaje = "success";
-                } else {
+                }
+                else
+                {
                     centrCostBean.sMensaje = "ERRINSERT";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 centrCostBean.sMensaje = exc.Message.ToString();
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -975,22 +1020,30 @@ namespace Payroll.Models.Daos
         public NivelEstructuraBean sp_NivelEstructura_Insert_NivEstructura(int keyemp, string nivEstructure, string descNEstructure, int keyuser)
         {
             NivelEstructuraBean nivEstructureBean = new NivelEstructuraBean();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_NivelEstructura_Insert_NivEstructura", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
                 cmd.Parameters.Add(new SqlParameter("@NivEstructura", nivEstructure));
                 cmd.Parameters.Add(new SqlParameter("@Descripcion", descNEstructure));
                 cmd.Parameters.Add(new SqlParameter("@Usuario", keyuser));
-                if (cmd.ExecuteNonQuery() > 0) {
+                if (cmd.ExecuteNonQuery() > 0)
+                {
                     nivEstructureBean.sMensaje = "SUCCESS";
-                } else {
+                }
+                else
+                {
                     nivEstructureBean.sMensaje = "ERRINSERT";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 nivEstructureBean.sMensaje = exc.Message.ToString();
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -1000,21 +1053,29 @@ namespace Payroll.Models.Daos
         public NivelEstructuraBean sp_NivelEstructura_Update_NivEstructura(int keyNivEstructure, string nivEstructure, string descNivEstructure)
         {
             NivelEstructuraBean nivEstructureBean = new NivelEstructuraBean();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_NivelEstructura_Update_NivEstructura", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdNivel", keyNivEstructure));
                 cmd.Parameters.Add(new SqlParameter("@NivelEstructura", nivEstructure));
                 cmd.Parameters.Add(new SqlParameter("@Descripcion", descNivEstructure));
-                if (cmd.ExecuteNonQuery() > 0) {
+                if (cmd.ExecuteNonQuery() > 0)
+                {
                     nivEstructureBean.sMensaje = "SUCCESS";
-                } else {
+                }
+                else
+                {
                     nivEstructureBean.sMensaje = "ERRORUPD";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 nivEstructureBean.sMensaje = exc.Message.ToString();
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -1471,35 +1532,43 @@ namespace Payroll.Models.Daos
         public LocalidadesBean sp_Dato_Localidad_Seleccionada(int keyLocality, int keyEmp)
         {
             LocalidadesBean localityBean = new LocalidadesBean();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Dato_Localidad_Seleccionada", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdLocalidad", keyLocality));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyEmp));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read()) {
-                    localityBean.IdLocalidad         = Convert.ToInt32(data["IdLocalidad"].ToString());
-                    localityBean.Empresa_id          = Convert.ToInt32(data["Empresa_id"].ToString());
-                    localityBean.Codigo_Localidad    = Convert.ToInt32(data["Codigo_Localidad"].ToString());
-                    localityBean.Descripcion         = data["Descripcion"].ToString();
-                    localityBean.TasaIva             = data["TazaIva"].ToString();
+                if (data.Read())
+                {
+                    localityBean.IdLocalidad = Convert.ToInt32(data["IdLocalidad"].ToString());
+                    localityBean.Empresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
+                    localityBean.Codigo_Localidad = Convert.ToInt32(data["Codigo_Localidad"].ToString());
+                    localityBean.Descripcion = data["Descripcion"].ToString();
+                    localityBean.TasaIva = data["TazaIva"].ToString();
                     localityBean.RegistroPatronal_id = Convert.ToInt32(data["RegistroPatronal_id"].ToString());
-                    localityBean.ZonaEconomica_id    = Convert.ToInt32(data["ZonaEconomica_id"].ToString());
-                    localityBean.Regional_id         = Convert.ToInt32(data["Regional_id"].ToString());
-                    localityBean.ClaveRegional       = data["Clave_Regional"].ToString();
+                    localityBean.ZonaEconomica_id = Convert.ToInt32(data["ZonaEconomica_id"].ToString());
+                    localityBean.Regional_id = Convert.ToInt32(data["Regional_id"].ToString());
+                    localityBean.ClaveRegional = data["Clave_Regional"].ToString();
                     localityBean.DescripcionRegional = data["Descripcion_Regional"].ToString();
-                    localityBean.Sucursal_id         = Convert.ToInt32(data["Sucursal_id"].ToString());
-                    localityBean.ClaveSucursal       = data["Clave_Sucursal"].ToString();
+                    localityBean.Sucursal_id = Convert.ToInt32(data["Sucursal_id"].ToString());
+                    localityBean.ClaveSucursal = data["Clave_Sucursal"].ToString();
                     localityBean.DescripcionSucursal = data["Descripcion_Sucursal"].ToString();
-                    localityBean.Estado_id           = Convert.ToInt32(data["Cg_Estado_id"].ToString());
-                    localityBean.sMensaje            = "success";
-                } else {
+                    localityBean.Estado_id = Convert.ToInt32(data["Cg_Estado_id"].ToString());
+                    localityBean.sMensaje = "success";
+                }
+                else
+                {
                     localityBean.sMensaje = "NODATALOAD";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 localityBean.sMensaje = exc.Message.ToString();
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -1509,7 +1578,8 @@ namespace Payroll.Models.Daos
         public LocalidadesBean2 sp_Update_Localidad(int keylocality, string desclocality, string ivalocality, int regpatlocality, int idreglocality, int zonelocality, int idsuclocality, int estatelocality)
         {
             LocalidadesBean2 saveEditLocBean = new LocalidadesBean2();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Update_Localidad", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdLocalidad", keylocality));
@@ -1520,15 +1590,22 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ZonaEconomicaId", zonelocality));
                 cmd.Parameters.Add(new SqlParameter("@SucursalId", idsuclocality));
                 cmd.Parameters.Add(new SqlParameter("@EstadoId", estatelocality));
-                if (cmd.ExecuteNonQuery() > 0) {
+                if (cmd.ExecuteNonQuery() > 0)
+                {
                     saveEditLocBean.sMensaje = "success";
-                } else {
+                }
+                else
+                {
                     saveEditLocBean.sMensaje = "NOTUPDATE";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 saveEditLocBean.sMensaje = exc.Message.ToString();
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -1538,7 +1615,8 @@ namespace Payroll.Models.Daos
         public LocalidadesBean2 sp_Insert_Localidad(string desclocality, string ivalocality, int regpatlocality, int idreglocality, int zonelocality, int idsuclocality, int estatelocality, int keyemp)
         {
             LocalidadesBean2 saveDataLocBean = new LocalidadesBean2();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Insert_Localidad", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@Descripcion", desclocality));
@@ -1550,20 +1628,30 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@EstadoId", estatelocality));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyemp));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read()) {
-                    if (data["Respuesta"].ToString() == "INSERT") {
-                        saveDataLocBean.sMensaje         = "success";
+                if (data.Read())
+                {
+                    if (data["Respuesta"].ToString() == "INSERT")
+                    {
+                        saveDataLocBean.sMensaje = "success";
                         saveDataLocBean.iCodigoLocalidad = Convert.ToInt32(data["Codigo"].ToString());
-                    } else {
+                    }
+                    else
+                    {
                         saveDataLocBean.sMensaje = data["Respuesta"].ToString();
                     }
-                } else {
+                }
+                else
+                {
                     saveDataLocBean.sMensaje = "ERRINSERT";
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 saveDataLocBean.sMensaje = exc.Message.ToString();
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
@@ -1577,22 +1665,30 @@ namespace Payroll.Models.Daos
         public List<ZonaEconomicaBean> sp_Datos_Zonas_Economicas()
         {
             List<ZonaEconomicaBean> zoneEcoBean = new List<ZonaEconomicaBean>();
-            try {
+            try
+            {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Datos_Zonas_Economicas", this.conexion) { CommandType = CommandType.StoredProcedure };
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows) {
-                    while (data.Read()) {
-                        zoneEcoBean.Add(new ZonaEconomicaBean { 
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        zoneEcoBean.Add(new ZonaEconomicaBean
+                        {
                             iIdZonaEconomica = Convert.ToInt32(data["IdZonaEconomica"].ToString()),
-                            sDescripcion     = data["Descripcion"].ToString()
+                            sDescripcion = data["Descripcion"].ToString()
                         });
                     }
                 }
                 cmd.Dispose(); data.Close();
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 Console.WriteLine(exc.Message.ToString());
-            } finally {
+            }
+            finally
+            {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
