@@ -281,6 +281,7 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 //console.log(data[0]["Nombre_Empleado"]);
+                $("#tabodyIncapacidades").html("");
                 document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 document.getElementById("resultSearchEmpleados").innerHTML = "";

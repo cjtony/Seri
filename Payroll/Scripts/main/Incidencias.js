@@ -10,7 +10,12 @@
     var inffinal = document.getElementById("inffinal");
     document.getElementById("lbloptions").style.visibility = "none";
 
+    // SE LANZA LA INSTRUCCION DE MOSTRAR EL MODAL DE BUSQUEDA DE EMPLEADOS
     $("#modalLiveSearchEmpleado").modal("show");
+    // Al hacer click en el boton cambiar usuario muestra el modal de busqueda 
+    $("#btn-cambiar-empleado").on("click", function () {
+        $("#modalLiveSearchEmpleado").modal("toggle");
+    });
     //Busqueda de empleado
     $("#inputSearchEmpleados").on("keyup", function () {
         $("#inputSearchEmpleados").empty();
@@ -112,6 +117,9 @@
     $("#btnSaveIncidencias").on("click", function () {
 
         var tipo = 0;
+        var fi = "";
+        var ff = "";
+        var cant = 0;
 
         var form = document.getElementById("frmIncidencias");
         if (form.checkValidity() == false) {
@@ -122,17 +130,22 @@
             if (concepto_incidencia.value == "71") {
                 if ($("#opt1").prop('checked')) {
                     console.log("Por dias");
-
+                    fi = "0";
+                    ff = "0";
                     tipo = 0;
+                    cant = document.getElementById("inCantidad").value;
 
                 } else if ($("#opt2").prop('checked')) {
                     console.log("Por dias");
-
+                    fi = document.getElementById("infinicio").value;
+                    ff = document.getElementById("inffinal").value;
                     tipo = 1;
+                    cant = 0;
 
                 }
+            } else {
+                cant = document.getElementById("inCantidad").value;
             }
-
 
             var Vform = $("#frmIncidencias").serialize();
             $.ajax({
@@ -140,13 +153,14 @@
                 type: "POST",
                 data: JSON.stringify({
                     inRenglon: concepto_incidencia.value,
-                    inCantidad: cantidad_incidencia.value,
+                    inCantidad: cant,
                     inPlazos: plazos_incidencia.value,
                     inLeyenda: leyenda_incidencia.value,
                     inReferencia: referencia_incidencia.value,
                     inFechaA: fecha_incidencia.value,
-                    infinicio: infinicio.value,
-                    inffinal: inffinal.value
+                    infinicio: fi,
+                    inffinal: ff,
+                    intipo: tipo
                 }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -188,10 +202,14 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
+                $("#tabIncidenciasBody").html("");
                 createTab();
                 document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i> " + data[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "";
                 $("#modalLiveSearchEmpleado").modal("hide");
+                document.getElementById("resultSearchEmpleados").innerHTML = "";
+                document.getElementById("inputSearchEmpleados").value = "";
+                //console.log(data);
+
             }
         });
     }
