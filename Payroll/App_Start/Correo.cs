@@ -20,18 +20,22 @@ public class Correo
         MailMessage correo = new MailMessage();
         SmtpClient Protocolo = new SmtpClient();
         correo.To.Add(destinatario);
-        correo.From = new MailAddress("pp709672@gmail.com", "Grupo Seri",System.Text.Encoding.UTF8);
+        correo.From = new MailAddress("capitalhumano@gruposeri.com", "Grupo Seri",System.Text.Encoding.UTF8);
         correo.Subject = asunto;
         correo.SubjectEncoding = System.Text.Encoding.UTF8;
         correo.Body = mensaje;
         correo.Attachments.Add(new Attachment(path));
-        correo.BodyEncoding = System.Text.Encoding.UTF8;
-        correo.IsBodyHtml = false;
+        //correo.BodyEncoding = System.Text.Encoding.UTF8;
+        correo.IsBodyHtml = true;
+        correo.Priority = MailPriority.Normal;
 
-        Protocolo.Credentials = new System.Net.NetworkCredential("pp709672@gmail.com","S3r12020c#");
+        // Protocolo.Credentials = new System.Net.NetworkCredential("pp709672@gmail.com","S3r12020c#");
+      
         Protocolo.Port = 587;
-        Protocolo.Host = "smtp.gmail.com";
+        Protocolo.Host = "mail.office365.com";
         Protocolo.EnableSsl = true;
+        Protocolo.UseDefaultCredentials = false;
+        Protocolo.Credentials = new System.Net.NetworkCredential("abimaelh@raciti.com.mx", "Abjoe182");
 
         try
         {
@@ -57,4 +61,6 @@ public class Correo
  
   
     }
+
+ 
 }

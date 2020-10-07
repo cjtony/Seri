@@ -459,6 +459,7 @@ namespace Payroll.Controllers
             
             //List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
             FuncionesNomina dao = new FuncionesNomina();
+            dao.sp_EstatusTpProcesosJobs_Update_EstatusTpProcesosJobs();
             Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa, Anio);
             if (Dta.Count > 1) {
                 for (int i = 0; i < Dta.Count; i++) {
@@ -493,6 +494,7 @@ namespace Payroll.Controllers
         {
             List<TPProcesos> LTbProc = new List<TPProcesos>();
             FuncionesNomina dao = new FuncionesNomina();
+            dao.sp_EstatusTpProcesosJobs_Update_EstatusTpProcesosJobs();
             LTbProc = dao.sp_EstatusJobsTbProcesos_retrieve_EstatusJobsTbProcesos();
             Startup obj = new Startup();
             obj.ActBDTbJobs();
@@ -869,5 +871,15 @@ namespace Payroll.Controllers
             return Json(LiExit);
         }
 
+        // consulta direccion  el path de los archivos bat 
+        public string path()
+        {
+            string path = " ";
+            path = Server.MapPath("Archivos\\porlotes\\");
+            path = path.Replace("\\Nomina", "");
+            path = path + "prueba.bat";
+
+            return path;
+        }
     }
 }

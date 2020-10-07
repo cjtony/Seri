@@ -14,8 +14,7 @@ using System.Data;
 using System.Web.Mvc;
 using Payroll.Models.Daos;
 using System.Collections.Generic;
-
-
+using Payroll.Controllers;
 
 [assembly: OwinStartup(typeof(Payroll.Startup))]
 
@@ -218,8 +217,15 @@ namespace Payroll
 
         public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, int IdEmpresa, int LisEmpleado, string fecha, string Path) {
 
+            if (Path == null) {
 
-        //    string path2 = Path;
+                NominaController contol = new NominaController();
+
+                Path = contol.path();
+            };
+          
+
+            //    string path2 = Path;
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
             psi.CreateNoWindow = true;

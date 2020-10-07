@@ -1228,7 +1228,7 @@ namespace Payroll.Models.Daos
                     list.Add(ls);
 
                 }
-                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear(); 
             }
             catch (Exception exc)
             {
@@ -2405,6 +2405,10 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
+
+        /// saca la direccion de los archivos bat
+
+    
     }
 
 }
