@@ -37,6 +37,10 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close(); this.Conectar().Close();
+            }
 
             return permBean;
         }

@@ -52,6 +52,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close();this.Conectar().Close();
 
             return list;
         }
@@ -134,6 +135,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -195,6 +197,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -231,6 +234,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -266,6 +270,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -320,6 +325,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -364,6 +370,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -405,6 +412,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -449,6 +457,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -487,6 +496,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -516,6 +526,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -554,6 +565,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -594,6 +606,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -637,6 +650,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -688,6 +702,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -717,6 +732,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -754,6 +770,8 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
             return list;
         }
         public List<VW_TipoIncidenciaBean> sp_TRegistro_incidencias_Update_Incidencia(int Empresa_id, int Empleado_id, int Renglon, int Cantidad, int Plazos, string Descripcion, string Referencia, string Fecha_Aplicacion)
@@ -782,6 +800,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -833,6 +852,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -873,6 +893,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -901,6 +922,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -930,6 +952,8 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
             return list;
         }
         public List<string> sp_TPensiones_Alimenticias_Delete_Pension(int Empresa_id, int Empleado_id, int Pension_id, int IncidenciaP_id)
@@ -959,6 +983,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -1000,6 +1025,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -1043,6 +1069,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -1093,6 +1120,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }

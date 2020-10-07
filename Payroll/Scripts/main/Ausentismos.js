@@ -67,14 +67,14 @@
             evt.preventDefault();
             //
             if ($("#option1").prop('checked')) {
-                console.log('Soy valido check 1');
-                ndias = dias.value;
+                console.log('Por dias');
+                ndias = document.getElementById("inDiasAusentismo").value;
                 fechafin = "0";
-                fechaini = fechaa.value;
+                fechaini = document.getElementById("inFechaAusentismo").value;
                 tipo = 0;
             }
             if ($("#option2").prop('checked')) {
-                console.log('Soy invalido check 2');
+                console.log('Por fechas');
                 ndias = 0;
                 fechafin = document.getElementById("inFechafAusentismo").value;
                 fechaini = document.getElementById("inFechaiAusentismo").value;

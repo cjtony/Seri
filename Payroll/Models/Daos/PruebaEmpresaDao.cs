@@ -38,6 +38,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -68,6 +69,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -121,6 +123,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -163,6 +166,7 @@ namespace Payroll.Models.Daos
                 empresa = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return empresa;
         }
@@ -205,6 +209,7 @@ namespace Payroll.Models.Daos
                 empresa = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return empresa;
         }
@@ -259,6 +264,8 @@ namespace Payroll.Models.Daos
                 res = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
             return res;
         }
         public List<RegistroPatronalBean> sp_Registro_Patronal_Retrieve_Registros_Patronales(int id_empresa)
@@ -295,6 +302,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -707,6 +715,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -743,6 +752,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -781,6 +791,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
             return lista;
         }
         public List<string> sp_TPeriodosVacaciones_Dist_Set_PeriodoDisfrutado(int IdPer_vac_Dist)
@@ -876,7 +887,7 @@ namespace Payroll.Models.Daos
                 periodo = null;
             }
             data.Close();
-
+            this.conexion.Close(); this.Conectar().Close();
             return periodo;
         }
         public List<string> sp_CEmpresas_Update_GrupoEmpresas(string Empresa_id, string Grupo_id)
@@ -970,6 +981,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -1005,6 +1017,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
