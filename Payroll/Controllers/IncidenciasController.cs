@@ -332,5 +332,10 @@ namespace Payroll.Controllers
             lista = Dao.sp_TperiodosVacaciones_Retrieve_PeriodosVacaciones2(int.Parse(Session["Empleado_id"].ToString()), int.Parse(Session["IdEmpresa"].ToString()));
             return Json(lista);
         }
+        [HttpPost]
+        public ActionResult PIncidencias() 
+        {
+            return PartialView();
+        }
     }
 }   

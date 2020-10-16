@@ -113,6 +113,8 @@
         document.getElementById("infinicio").disabled = false;
         document.getElementById("inffinal").disabled = false;
     }
+    // ABRE EL COLLAPSE PARA INSERTAR NUEVAS INCIDENCIAS 
+    $("#collapseNewIncidencia").collapse("show");
     //GUARDAR INCIDENCIA
     $("#btnSaveIncidencias").on("click", function () {
 
@@ -173,6 +175,7 @@
                             timer: 1000
                         });
                     } else if (data[0] == '1') {
+                        $("#collapseNewIncidencia").collapse("hide");
                         concepto_incidencia.value = '';
                         cantidad_incidencia.value = '';
                         plazos_incidencia.value = '';
@@ -204,7 +207,8 @@
             success: (data) => {
                 $("#tabIncidenciasBody").html("");
                 createTab();
-                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i> " + data[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "";
+                console.log(data);
+                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i> " + data[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "&nbsp;&nbsp;-&nbsp;&nbsp;<small class='text-muted'>" + data[51] + "</small>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 document.getElementById("resultSearchEmpleados").innerHTML = "";
                 document.getElementById("inputSearchEmpleados").value = "";
@@ -223,9 +227,19 @@
                 console.log(data);
                 document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
+                    var period = $("#lblPeriodoId").html();
+                    console.log(period);
+                    console.log(data[i]["NPeriodo"]);
+
+                    if (data[i]["NPeriodo"] == period) {
+                        console.log("igual");
+                    } else {
+                        console.log("diff");
+                    }
+
                     document.getElementById("tabIncidenciasBody").innerHTML += "" +
                         "<tr>" +
-                        "<td>" + data[i]["Nombre_Renglon"] + "</td>" +
+                        "<td scope='row'>" + data[i]["Nombre_Renglon"] + "</td>" +
                         "<td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Cantidad"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Plazos"] + "</td>" +
@@ -233,7 +247,10 @@
                         "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
                         "<td class='text-center'>" + data[i]["NPeriodo"] + "</td>" +
                         "<td class='text-center'>" +
-                        "<div class='badge badge-danger btn' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Eliminar'><i class='fas fa-minus'></i></div>" +
+                        //"<div class='badge badge-success btn' onclick='adelantarPagoIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Adelantar Pago'><i class='fas fa-donate'></i></div>" +
+                        //"<div class='badge badge-danger btn' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Eliminar'><i class='fas fa-minus'></i></div>" +
+                        //"<div class='badge badge-success btn' title='Adelantar Pago'><i class='fas fa-donate'></i></div>" +
+                        "<div class='badge badge-danger btn' title='Eliminar'><i class='fas fa-minus'></i></div>" +
                         "</td>" +
                         "</tr>";
                 }

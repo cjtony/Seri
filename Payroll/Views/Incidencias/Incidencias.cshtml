@@ -2,83 +2,8 @@
     <div class="border-bottom border-secondary pt-4 pb-2 font-weight-bold d-flex justify-content-between"><div>Registrar Incidencia a empleado : </div><strong class="font-button" id="EmpDes"></strong><div class="btn btn-info btn-sm font-labels" id="btn-cambiar-empleado" title="Cambia de usuario"><i class="fas fa-users"></i></div></div>
     <div class="form-group">
         <div class="form-group col-md-12 row">
-            <div class="form-group col-md-5">
-                <div class="collapse show" id="incidenciasCollapse">
-                    <form action="#" id="frmIncidencias" class="font-labels">
-                        <div class="font-labels font-weight-bold pb-3">Nueva Incidencia</div>
-                        <div class="form-group row">
-                            <div class="form-group col-md-6">
-                                <label>Concepto *</label>
-                                <select class="custom-select custom-select-sm font-labels" id="inConcepto_incidencia" name="inConcepto_incidencia" required>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Renglón *</label>
-                                <input type="text" name="inRenglon" id="inRenglon" class="form-control form-control-sm disabled" readonly placeholder="#" required />
-                            </div>
-                            <div id="lbloptions" class="col-md-12 text-center">
-                            </div>
-                            <div id="inflbl" class=""></div>
-                            <div class="form-group col-md-6">
-                                <label id="lblCantidad">Cantidad *</label>
-                                <input type="text" name="inCantidad" id="inCantidad" class="form-control form-control-sm" placeholder="$ 0000.00" />
-
-                            </div>
-                            <div class="col-md-12 collapse row text-center " id="collapsefechas">
-
-                                <div class="form-group col-md-6">
-                                    <label>Fecha Inicio</label>
-                                    <input type="date" name="infinicio" id="infinicio" class="form-control form-control-sm" />
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label id="lblCantidad">Fecha Final</label>
-                                    <input type="date" name="inffinal" id="inffinal" class="form-control form-control-sm" />
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Plazos *</label>
-                                <input type="text" name="inPlazos" id="inPlazos" class="form-control form-control-sm" placeholder="No. de periodos " />
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Leyenda</label>
-                                <input type="text" name="inLeyenda" id="inLeyenda" class="form-control form-control-sm" />
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Referencia</label>
-                                <input type="text" name="inReferencia" id="inReferencia" class="form-control form-control-sm" />
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Fecha de Aplicacion *</label>
-                                <input type="date" name="inFechaA" id="inFechaA" class="form-control form-control-sm" required />
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class="text-muted" style="font-size:smaller;">* Campos obligatorios</label>
-                            </div>
-                            <div class="d-flex justify-content-end col-md-12">
-                                <div class="btn btn-primary btn-sm btn-icon-split rounded m-1" title="Guardar" id="btnSaveIncidencias">
-                                    <span class="icon">
-                                        <i class="fas fa-save"></i>
-                                    </span>
-                                    <span class="text">
-                                        Guardar
-                                    </span>
-                                </div>
-                                <div class="btn btn-warning rounded btn-sm m-1 btn-icon-split" title="Limpiar Formulario" id="btnClearIncidencias">
-                                    <span class="icon">
-                                        <i class="far fa-trash-alt"></i>
-                                    </span>
-                                    <span class="text">
-                                        Limpiar
-                                    </span>
-                                </div>
-                                <div class="btn btn-danger btn-sm rounded m-1 invisible" title="Editar Registro" id="btnEditIncidencias"><i class="far fa-edit"></i></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="form-group col-md-7">
-                <table class="table table-sm font-labels border-top-0">
+            <div class="form-group col-md-9">
+                <table class="table table-sm mt-2">
                     <thead class="">
                         <tr>
                             <th>Concepto</th>
@@ -95,6 +20,95 @@
                     </tbody>
                 </table>
             </div>
+            <div class="row mt-3 aling-items-center form-group col-md-3 font-button">
+                <div class="col"></div>
+                <a class="btn btn-sm btn-info mt-3 mb-auto" href="#"> <i class="fas fa-plus"></i> Nueva Incidencia </a>
+                <div class="col"></div>
+            </div>
+
+            <div class="collapse collapsed" id="collapseNewIncidencia">
+
+                <div class="form-group col-md-12">
+                    <div class="collapse show" id="incidenciasCollapse">
+                        <form action="#" id="frmIncidencias" class="font-labels">
+                            <div class="font-labels font-weight-bold pb-3">Nueva Incidencia</div>
+                            <div class="form-group row">
+                                <div class="form-group col-md-6">
+                                    <label>Concepto *</label>
+                                    <select class="custom-select custom-select-sm font-labels" id="inConcepto_incidencia" name="inConcepto_incidencia" required>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Renglón *</label>
+                                    <input type="text" name="inRenglon" id="inRenglon" class="form-control form-control-sm disabled" readonly placeholder="#" required />
+                                </div>
+                                <div id="lbloptions" class="col-md-12 text-center">
+                                </div>
+                                <div id="inflbl" class=""></div>
+                                <div class="form-group col-md-6">
+                                    <label id="lblCantidad">Cantidad *</label>
+                                    <input type="text" name="inCantidad" id="inCantidad" class="form-control form-control-sm" placeholder="$ 0000.00" />
+
+                                </div>
+                                <div class="col-md-12 collapse row text-center " id="collapsefechas">
+
+                                    <div class="form-group col-md-6">
+                                        <label>Fecha Inicio</label>
+                                        <input type="date" name="infinicio" id="infinicio" class="form-control form-control-sm" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label id="lblCantidad">Fecha Final</label>
+                                        <input type="date" name="inffinal" id="inffinal" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Plazos *</label>
+                                    <input type="text" name="inPlazos" id="inPlazos" class="form-control form-control-sm" placeholder="No. de periodos " />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Leyenda</label>
+                                    <input type="text" name="inLeyenda" id="inLeyenda" class="form-control form-control-sm" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Referencia</label>
+                                    <input type="text" name="inReferencia" id="inReferencia" class="form-control form-control-sm" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Fecha de Aplicacion *</label>
+                                    <input type="date" name="inFechaA" id="inFechaA" class="form-control form-control-sm" required />
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="text-muted" style="font-size:smaller;">* Campos obligatorios</label>
+                                </div>
+                                <div class="d-flex justify-content-end col-md-12">
+                                    <div class="btn btn-primary btn-sm btn-icon-split rounded m-1" title="Guardar" id="btnSaveIncidencias">
+                                        <span class="icon">
+                                            <i class="fas fa-save"></i>
+                                        </span>
+                                        <span class="text">
+                                            Guardar
+                                        </span>
+                                    </div>
+                                    <div class="btn btn-warning rounded btn-sm m-1 btn-icon-split" title="Limpiar Formulario" id="btnClearIncidencias">
+                                        <span class="icon">
+                                            <i class="far fa-trash-alt"></i>
+                                        </span>
+                                        <span class="text">
+                                            Limpiar
+                                        </span>
+                                    </div>
+                                    <div class="btn btn-danger btn-sm rounded m-1 invisible" title="Editar Registro" id="btnEditIncidencias"><i class="far fa-edit"></i></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
         </div>
     </div>
 </div>
@@ -123,4 +137,4 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Incidencias.js?n=1"></script>
+<script src="~/Scripts/main/Incidencias.js?n=2"></script>
