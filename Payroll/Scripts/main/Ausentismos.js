@@ -280,9 +280,9 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data[0]["Nombre_Empleado"]);
+                console.log(data);
                 $("#tabodyIncapacidades").html("");
-                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
+                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i>&nbsp;&nbsp;" + data[0]["IdEmpleado"] + "&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i>&nbsp;&nbsp;" + data[0]["Nombre_Empleado"] + "&nbsp;" + data[0]["Apellido_Paterno_Empleado"] + '&nbsp;' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionPuesto"] + "</small>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 document.getElementById("resultSearchEmpleados").innerHTML = "";
                 document.getElementById("inputSearchEmpleados").value = "";
@@ -291,11 +291,12 @@
                 //document.getElementById("nameuser").innerHTML = "<div class='text-uppercase'>" + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "<small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small></div>";
             }
         });
-        //Funcion para validar solo numeros 
-        $('.input-number').on('input', function () {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
+        
     }
+    //Funcion para validar solo numeros 
+    $('.input-number').on('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
     //
     tabAusentismo = () => {
         $.ajax({

@@ -128,6 +128,7 @@ namespace Payroll.Models.Daos
                     list.Add(data["Afiliacion_IMSS"].ToString());
                     list.Add(data["NomPuesto"].ToString());
                     list.Add(data["ReportaA"].ToString());
+                    list.Add(data["DescripcionDepartamento"].ToString());
                 }
             }
             else
@@ -824,7 +825,7 @@ namespace Payroll.Models.Daos
                 {
                     TabIncidenciasBean lista = new TabIncidenciasBean();
                     lista.Incidencia_id = int.Parse(data["Incidencia_id"].ToString());
-                    lista.IncidenciaP_id = int.Parse(data["IncidenciaP_id"].ToString());
+                    //lista.IncidenciaP_id = int.Parse(data["IncidenciaP_id"].ToString()); //SE TIENE QUE VER COMO SE RELACIONARA CON LAS PROGRAMADAS
                     lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
                     lista.VW_TipoIncidencia_id = data["VW_Tipo_Incidencia_id"].ToString();
 
