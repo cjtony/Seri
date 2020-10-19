@@ -797,7 +797,7 @@
                     }
                 }
                 if (validatedataimss == 0) {
-                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tiposueldo, politica, diferencia, transporte, tippag];
+                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag];
                     for (let t = 0; t < arrInput.length; t++) {
                         if (arrInput[t].hasAttribute("tp-select")) {
                             let textpag;
@@ -847,6 +847,12 @@
                                     break;
                                 }
                             }
+                        }
+                    }
+                    if (fecant.value != "" && fecing.value != "") {
+                        if (fecant.value > fecing.value) {
+                            fshowtypealert('Atención', 'La fecha de antiguedad no puede ser mayor a la fecha de ingreso', 'warning', fecant, 0);
+                            validatedatanom = 1;
                         }
                     }
                     if (validatedatanom == 0) {

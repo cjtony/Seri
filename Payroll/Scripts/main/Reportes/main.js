@@ -8,24 +8,24 @@
     btnClearParamsReports.disabled = true;
 
     //const btnContinueReport  = document.getElementById('btnContinueReport');
-    const typeReportselect = document.getElementById('typeReportselect');
-    const contentParameters = document.getElementById('contentParameters');
+    const typeReportselect   = document.getElementById('typeReportselect');
+    const contentParameters  = document.getElementById('contentParameters');
     const contentBtnGenerate = document.getElementById('contentBtnGenerate');
     const contentGenerateRep = document.getElementById('contentGenerateRep');
 
-    const parameterYear = `<input type="number" class="form-control form-control-sm" id="paramYear"/>`;
-    const parameterNPer = `<input type="number" class="form-control form-control-sm" id="paramNper"/>`;
-    const parameterTPer = '<input type="number" class="form-control form-control-sm" id="paramTper"/>';
-    const parameterDate = '<input type="date" class="form-control form-control-sm" id="paramDate"/>';
-    const parameterYears = `<input type="number" class="form-control form-control-sm" id="paramYearS"/>`;
-    const parameterYearE = `<input type="number" class="form-control form-control-sm" id="paramYearE"/>`;
-    const parameterNReng = `<input type="number" class="form-control form-control-sm" id="paramNReng"/>`;
-    const parameterTEmpl = `<input type="text" class="form-control form-control-sm" id="paramTEmpl"/>`;
-    const parameterDateS = '<input type="date" class="form-control form-control-sm" id="paramDateS"/>';
-    const parameterDateE = '<input type="date" class="form-control form-control-sm" id="paramDateE"/>';
-    const parameterPStart = `<input type="number" class="form-control form-control-sm" id="paramPStart"/>`;
-    const parameterPEnd = `<input type="number" class="form-control form-control-sm" id="paramPEnd"/>`;
-    const parameterPeriod  = `<input type="number" class="form-control form-control-sm" id="paramPeriod"/>`;
+    const parameterYear     = `<input type="number" class="form-control form-control-sm" id="paramYear"/>`;
+    const parameterNPer     = `<input type="number" class="form-control form-control-sm" id="paramNper"/>`;
+    const parameterTPer     = '<input type="number" class="form-control form-control-sm" id="paramTper"/>';
+    const parameterDate     = '<input type="date" class="form-control form-control-sm" id="paramDate"/>';
+    const parameterYears    = `<input type="number" class="form-control form-control-sm" id="paramYearS"/>`;
+    const parameterYearE    = `<input type="number" class="form-control form-control-sm" id="paramYearE"/>`;
+    const parameterNReng    = `<input type="number" class="form-control form-control-sm" id="paramNReng"/>`;
+    const parameterTEmpl    = `<input type="text" class="form-control form-control-sm" id="paramTEmpl"/>`;
+    const parameterDateS    = '<input type="date" class="form-control form-control-sm" id="paramDateS"/>';
+    const parameterDateE    = '<input type="date" class="form-control form-control-sm" id="paramDateE"/>';
+    const parameterPStart   = `<input type="number" class="form-control form-control-sm" id="paramPStart"/>`;
+    const parameterPEnd     = `<input type="number" class="form-control form-control-sm" id="paramPEnd"/>`;
+    const parameterPeriod   = `<input type="number" class="form-control form-control-sm" id="paramPeriod"/>`;
     const parameterNPeriods = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
     const parameterNEmploye = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
 

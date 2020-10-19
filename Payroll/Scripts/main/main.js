@@ -823,7 +823,7 @@
     });
 
     btnSaveDataNomina.addEventListener('click', () => {
-        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, tipcontra, tippag, tiposueldo, politica, diferencia, transporte];
+        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tippag, tiposueldo, politica, diferencia, transporte];
         let validate = 0;
         for (let t = 0; t < arrInput.length; t++) {
             if (arrInput[t].hasAttribute("tp-select")) {
@@ -899,6 +899,12 @@
             fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
             setTimeout(() => { $("#nav-imss-tab").click(); }, 1000);
+        }
+        if (fecant.value != "" && fecing.value != "") {
+            if (fecant.value > fecing.value) {
+                fshowtypealert('Atención', 'La fecha de antiguedad no puede ser mayor a la fecha de ingreso', 'warning', fecant, 0);
+                validate = 1;
+            }
         }
         if (validate == 0) {
             $.ajax({
