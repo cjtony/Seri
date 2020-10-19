@@ -264,7 +264,8 @@ namespace Payroll.Models.Daos
         // Obtenemos los renglones de la hc que fueron calculados
         public List<RenglonesHCBean> sp_Renglones_Hoja_Calculo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int start, int end)
         {
-            List<RenglonesHCBean> renglonesHCBeans = new List<RenglonesHCBean>();
+            List<RenglonesHCBean> renglonesHCBeans  = new List<RenglonesHCBean>();
+            List<RenglonesHCBean> renglonesHCBeans1 = new List<RenglonesHCBean>();
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Renglones_Hoja_Calculo", this.conexion) { CommandType = CommandType.StoredProcedure };
@@ -281,7 +282,29 @@ namespace Payroll.Models.Daos
                         RenglonesHCBean renglones = new RenglonesHCBean();
                         renglones.iIdRenglon      = Convert.ToInt32(data["Renglon_id"].ToString());
                         renglones.sNombreRenglon  = data["Nombre_Renglon"].ToString();
-                        renglonesHCBeans.Add(renglones);
+                        if (ismirror == 0 && start == 0) {
+                            if (Convert.ToInt32(data["Renglon_id"].ToString()) == 24    || Convert.ToInt32(data["Renglon_id"].ToString()) == 31    || 
+                                Convert.ToInt32(data["Renglon_id"].ToString()) == 32    || Convert.ToInt32(data["Renglon_id"].ToString()) == 34    || 
+                                Convert.ToInt32(data["Renglon_id"].ToString()) == 36    || Convert.ToInt32(data["Renglon_id"].ToString()) == 45    ||
+                                Convert.ToInt32(data["Renglon_id"].ToString()) == 46) {
+                                renglonesHCBeans.Add(renglones);
+                            } else {
+                                renglonesHCBeans1.Add(new RenglonesHCBean { iIdRenglon = Convert.ToInt32(data["Renglon_id"].ToString()), sNombreRenglon = data["Nombre_Renglon"].ToString() });
+                            }
+                        } else if (ismirror == 0 && start > 0) {
+                            if (Convert.ToInt32(data["Renglon_id"].ToString()) == 1201) {
+                                renglonesHCBeans.Add(renglones);
+                            } else {
+                                renglonesHCBeans1.Add(new RenglonesHCBean { iIdRenglon = Convert.ToInt32(data["Renglon_id"].ToString()), sNombreRenglon = data["Nombre_Renglon"].ToString() });
+                            }
+                        } else {
+                            renglonesHCBeans.Add(renglones);
+                        }
+                    }
+                }
+                if (renglonesHCBeans1.Count > 0) {
+                    foreach (RenglonesHCBean hc in renglonesHCBeans1) {
+                        renglonesHCBeans.Add(new RenglonesHCBean { iIdRenglon = hc.iIdRenglon, sNombreRenglon = hc.sNombreRenglon });
                     }
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
@@ -294,7 +317,37 @@ namespace Payroll.Models.Daos
             return renglonesHCBeans;
         }
 
-
+        // Obtenemos los renglones de la hc que fueron calculados de forma consecutiva
+        public List<RenglonesHCBean> sp_Renglones_HC_Consecutivo(int keyBusiness, int numberPeriod, int typePeriod, int yearPeriod, int isMirror)
+        {
+            List<RenglonesHCBean> renglonesHCBeans = new List<RenglonesHCBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Renglones_HC_Consecutivo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Empresa_id", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Espejo", isMirror));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        RenglonesHCBean hCBean = new RenglonesHCBean();
+                        hCBean.iIdRenglon      = Convert.ToInt32(data["Renglon_id"].ToString());
+                        hCBean.iConsecutivo    = Convert.ToInt32(data["Consecutivo"].ToString());
+                        hCBean.sNombreRenglon  = data["Nombre_Renglon"].ToString();
+                        renglonesHCBeans.Add(hCBean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return renglonesHCBeans;
+        }
 
 
         // Obtenemos los datos generales de la hc

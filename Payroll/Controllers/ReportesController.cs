@@ -248,6 +248,12 @@ namespace Payroll.Controllers
             DetallesRenglon renglonNoEspejo = new DetallesRenglon();
             DetallesRenglon renglonSiEspejo = new DetallesRenglon();
             DetallesRenglon detallesRenglon = new DetallesRenglon();
+            // * Inicio Codigo Nuevo * \\
+            List<RenglonesHCBean> listRenglonesC1 = new List<RenglonesHCBean>();
+            List<RenglonesHCBean> listRenglonesC2 = new List<RenglonesHCBean>();
+            int[] renglonesC1 = new int[10];
+            int[] renglonesC2 = new int[10];
+            // * Fin Codigo Nuevo * \\
             try {
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage excel = new ExcelPackage()) {
@@ -294,10 +300,12 @@ namespace Payroll.Controllers
                     if (typeSend == 1) {
                         // Obtenemos los renglones calculados
                         listRenglones = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 0, 1000);
-                        if (listRenglones.Count > 0) {
+                        if (listRenglones.Count > 0)
+                        {
                             RenglonesNom = new int[listRenglones.Count];
                             int r = 0;
-                            foreach (RenglonesHCBean renglon in listRenglones) {
+                            foreach (RenglonesHCBean renglon in listRenglones)
+                            {
                                 ii += 1;
                                 Renglon = Convert.ToInt32(renglon.iIdRenglon);
                                 RenglonesNom[r] = Convert.ToInt32(renglon.iIdRenglon);
@@ -305,7 +313,9 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 r += 1;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             RenglonesNom = new int[0];
                         }
 
@@ -315,10 +325,12 @@ namespace Payroll.Controllers
                         //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES FISCAL";
 
                         listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 1000, 2000);
-                        if (listRenglones1.Count > 0) {
+                        if (listRenglones1.Count > 0)
+                        {
                             RenglonesNomDeduc = new int[listRenglones1.Count];
                             int j = 0;
-                            foreach (RenglonesHCBean renglon in listRenglones1) {
+                            foreach (RenglonesHCBean renglon in listRenglones1)
+                            {
                                 ii += 1;
                                 Renglon = Convert.ToInt32(renglon.iIdRenglon);
                                 RenglonesNomDeduc[j] = Renglon;
@@ -326,7 +338,9 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 j += 1;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             RenglonesNomDeduc = new int[0];
                         }
 
@@ -338,10 +352,12 @@ namespace Payroll.Controllers
                         worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR FISCAL";
 
                         listRenglonesEsp = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 0, 1000);
-                        if (listRenglonesEsp.Count > 0) {
+                        if (listRenglonesEsp.Count > 0)
+                        {
                             RenglonesNomEspejo = new int[listRenglonesEsp.Count];
                             int g = 0;
-                            foreach (RenglonesHCBean renglon in listRenglonesEsp) {
+                            foreach (RenglonesHCBean renglon in listRenglonesEsp)
+                            {
                                 ii += 1;
                                 Renglon = Convert.ToInt32(renglon.iIdRenglon);
                                 RenglonesNomEspejo[g] = Renglon;
@@ -349,7 +365,9 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 g += 1;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             RenglonesNomEspejo = new int[0];
                         }
 
@@ -358,10 +376,12 @@ namespace Payroll.Controllers
                         //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES GASTOS";
 
                         listRenglonesEsp1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 1000, 2000);
-                        if (listRenglonesEsp1.Count > 0) {
+                        if (listRenglonesEsp1.Count > 0)
+                        {
                             RenglonesNomDeducEspejo = new int[listRenglonesEsp1.Count];
                             int y = 0;
-                            foreach (RenglonesHCBean renglon in listRenglonesEsp1) {
+                            foreach (RenglonesHCBean renglon in listRenglonesEsp1)
+                            {
                                 ii += 1;
                                 Renglon = Convert.ToInt32(renglon.iIdRenglon);
                                 RenglonesNomDeducEspejo[y] = Renglon;
@@ -369,13 +389,51 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 y += 1;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             RenglonesNomDeducEspejo = new int[0];
                         }
 
                         ii += 1;
                         worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
                         worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR GASTO";
+
+                        // * INICIO CODIGO NUEVO * \\
+
+                        //listRenglonesC1 = reportDao.sp_Renglones_HC_Consecutivo(keyOptionSel, numberPeriod, typePeriod, yearPeriod, 0);
+                        //if (listRenglonesC1.Count > 0) {
+                        //    renglonesC1 = new int[listRenglonesC1.Count];
+                        //    int r = 0;
+                        //    foreach (RenglonesHCBean renglon in listRenglonesC1) {
+                        //        ii += 1;
+                        //        Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                        //        renglonesC1[r] = Renglon;
+                        //        worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
+                        //        worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                        //        r += 1;
+                        //    }
+                        //} else {
+                        //    renglonesC1 = new int[0];
+                        //}
+
+                        //listRenglonesC2 = reportDao.sp_Renglones_HC_Consecutivo(keyOptionSel, numberPeriod, typePeriod, yearPeriod, 1);
+                        //if (listRenglonesC2.Count > 0) {
+                        //    renglonesC2 = new int[listRenglonesC2.Count];
+                        //    int j = 0;
+                        //    foreach (RenglonesHCBean renglon in listRenglonesC2) {
+                        //        ii += 1;
+                        //        Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                        //        renglonesC1[j] = Renglon;
+                        //        worksheet.Cells[1 , ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                        //        worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                        //        j += 1;
+                        //    }
+                        //} else {
+                        //    renglonesC2 = new int[0];
+                        //}
+
+                        // * FIN CODIGO NUEVO * \\
 
                     } else {
 
