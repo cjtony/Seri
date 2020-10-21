@@ -13,8 +13,9 @@ namespace Payroll.Models.Daos
     public class BajasEmpleadosDaoD : Conexion
     {
 
-        public Boolean sp_Valida_Existencia_Finiquito(int keyEmployee, int keyBusiness, int yearAct, int keyPeriodAct)
+        public BajasEmpleadosBean sp_Valida_Existencia_Finiquito(int keyEmployee, int keyBusiness, int yearAct, int keyPeriodAct)
         {
+            BajasEmpleadosBean downVerify = new BajasEmpleadosBean();
             Boolean validation = false;
             try {
                 this.Conectar();
@@ -25,10 +26,12 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Periodo", keyPeriodAct));
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader.Read()) {
-                    if (dataReader["Respuesta"].ToString() == "EXISTS") {
-                        validation = true;
+                    if (dataReader["Respuesta"].ToString() == "EXISTS" && dataReader["FechaBaja"].ToString() != "none") {
+                        downVerify.sMensaje    = "EXISTS";
+                        downVerify.sFecha_baja = dataReader["FechaBaja"].ToString(); 
                     } else {
-                        validation = false;
+                        downVerify.sMensaje    = "NOTEXISTS";
+                        downVerify.sFecha_baja = dataReader["FechaBaja"].ToString();
                     }
                 }
                 cmd.Parameters.Clear(); cmd.Dispose();
@@ -38,7 +41,7 @@ namespace Payroll.Models.Daos
                 this.conexion.Close();
                 this.Conectar().Close();
             }
-            return validation;
+            return downVerify;
         }
 
         public PeriodoActualBean sp_Load_Info_Periodo_Empr(int keyBusiness, int yearAct)
@@ -96,7 +99,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Inicio", dateStartPayment));
                 cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Fin", dateEndPayment));
                 cmd.Parameters.Add(new SqlParameter("@motivo_baja_id", idReasonsDown));
-                if (cmd.ExecuteNonQuery() > 0) {
+                bool proc = Convert.ToBoolean(cmd.ExecuteNonQuery());
+                if (proc) {
                     downEmployee.sMensaje = "SUCCESS";
                 } else {
                     downEmployee.sMensaje = "ERRINSERT";
