@@ -544,7 +544,7 @@
                                 $("#settlement-details").modal("show");
                             }, 1000);
                             const salario_mensual = data.InfoFiniquito[0].sSalario_mensual;
-                            const salario_diario  = data.InfoFiniquito[0].sSalario_diario;
+                            const salario_diario = data.InfoFiniquito[0].sSalario_diario;
                             if (data.InfoFiniquito[0].sCancelado == "True") {
                                 document.getElementById('div-details').innerHTML += `
                                     <div class="col-md-12">
@@ -625,7 +625,9 @@
                             document.getElementById("btnprint" + String(paramid)).setAttribute("download", data.NombrePDF);
                             document.getElementById("btnprint" + String(paramid)).setAttribute("href", "../../Content/" + data.NombreFolder + "/" + data.NombrePDF);
                             btnCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ", '" + data.NombreFolder + "')");
-                            icoCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ", '"+ data.NombreFolder +"')");
+                            icoCloseSettlementSelect.setAttribute("onclick", "fDeletePdfSettlement('" + data.NombrePDF + "'," + paramid + ", '" + data.NombreFolder + "')");
+                        } else {
+                            alert('Error interno de la aplicación');
                         }
                         document.getElementById('btnGenerateReceipt' + String(paramid)).disabled = false;
                     }, error: (jqXHR, exception) => {

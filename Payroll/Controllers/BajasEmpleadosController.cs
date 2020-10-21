@@ -27,7 +27,7 @@ namespace Payroll.Controllers
         public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement)
         {
             Boolean flag       = false;
-            Boolean validation = false;
+            Boolean validation = true;
             String messageError = "none";
             DateTime dateAct = DateTime.Now;
             int yearAct = Convert.ToInt32(dateAct.Year);
@@ -36,6 +36,7 @@ namespace Payroll.Controllers
             string dateStartPayment = "";
             string dateEndPayment = "";
             BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
+            BajasEmpleadosBean downVerifyBean   = new BajasEmpleadosBean();
             BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
             PeriodoActualBean periodActBean = new PeriodoActualBean();
             try {
@@ -48,7 +49,13 @@ namespace Payroll.Controllers
                     dateStartPayment = periodActBean.sFecha_Inicio;
                     dateEndPayment = periodActBean.sFecha_Final;
                 }
-                validation = downEmployeeDaoD.sp_Valida_Existencia_Finiquito(keyEmployee, keyBusiness, yearAct, keyPeriodAct);
+                downVerifyBean = downEmployeeDaoD.sp_Valida_Existencia_Finiquito(keyEmployee, keyBusiness, yearAct, keyPeriodAct);
+                if (downVerifyBean.sMensaje == "EXISTS" && downVerifyBean.sFecha_baja == dateDownEmp) {
+                    validation = false;
+                }
+                if (downVerifyBean.sMensaje == "NOTEXISTS") {
+                    validation = false;
+                }
                 if (!validation) {
                     if (flagTypeSettlement) {
                         downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment);
@@ -66,7 +73,7 @@ namespace Payroll.Controllers
                         messageError = "ERRINSFINIQ";
                     }
                 } else {
-
+                    validation = true;
                 }
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
@@ -553,6 +560,9 @@ namespace Payroll.Controllers
                                     totalBalance = data.sSaldo;
                                     break;
                                 }
+                            }
+                            if (totalBalance == "") {
+                                totalBalance = "0";
                             }
                             ConversorMoneda convertMon = new ConversorMoneda();
                             // Definimos el nombre del archivo pdf
