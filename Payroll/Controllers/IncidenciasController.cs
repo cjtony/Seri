@@ -208,14 +208,14 @@ namespace Payroll.Controllers
             return Json(res);
         }
         [HttpPost]
-        public JsonResult SaveRegistroIncidencia(int inRenglon, decimal inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA, string infinicio, string inffinal, int intipo)
+        public JsonResult SaveRegistroIncidencia(int inRenglon, decimal inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
         {
             List<string> res = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
             int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo, infinicio, inffinal, intipo);
+            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
             return Json(res);
         }
         [HttpPost]
@@ -244,7 +244,7 @@ namespace Payroll.Controllers
         {
             List<string> res;
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
-            res = Dao.sp_TRegistro_Incidencias_Delete_Incidencias(Incidencia_id,IncidenciaP_id);
+            res = Dao.sp_TRegistro_Incidencias_Delete_Incidencias(Incidencia_id, IncidenciaP_id);
             return Json(res);
         }
         [HttpPost]
@@ -333,9 +333,29 @@ namespace Payroll.Controllers
             return Json(lista);
         }
         [HttpPost]
-        public ActionResult PIncidencias() 
+        public ActionResult PIncidencias()
         {
             return PartialView();
         }
+        [HttpPost]
+        public JsonResult LoadIncidencia(int Incidencia_id)
+        {
+            List<IncidenciasBean> lista = new List<IncidenciasBean>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+            int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
+            lista = Dao.sp_TRegistro_Incidencias_retrieve_incidencia(Empresa_id, Empleado_id, Incidencia_id);
+            return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult UpdateIncidencia(int Incidencia_id, int Renglon_id, string Cantidad, string Saldo, int Plazos, int Pagos_restantes, string Leyenda, string Referencia, string Fecha_Aplicacion, string Numero_dias)
+        {
+            List<string> lista = new List<string>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+            int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
+            lista = Dao.sp_TRegistro_Incidencias_update_incidencia(Empresa_id, Empleado_id, Incidencia_id, Renglon_id, Cantidad, Saldo, Plazos, Pagos_restantes, Leyenda, Referencia, Fecha_Aplicacion, Numero_dias);
+            return Json(lista);
+        }
     }
-}   
+}

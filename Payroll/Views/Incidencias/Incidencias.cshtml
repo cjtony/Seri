@@ -22,14 +22,14 @@
             </div>
             <div class="row mt-3 aling-items-center form-group col-md-3 font-button">
                 <div class="col"></div>
-                <a class="btn btn-sm btn-info mt-3 mb-auto" href="#"> <i class="fas fa-plus"></i> Nueva Incidencia </a>
+                <a class="btn btn-sm btn-primary mt-3 mb-auto" id="btnNewIncidencia" href="#" onclick="mostrarFormNewIncidencias();"> <i class="fas fa-plus"></i> Nueva Incidencia </a>
                 <div class="col"></div>
             </div>
 
-            <div class="collapse collapsed" id="collapseNewIncidencia">
+            <div class="collapse show" id="collapseNewIncidencia">
 
                 <div class="form-group col-md-12">
-                    <div class="collapse show" id="incidenciasCollapse">
+                    <div class="collapse " id="incidenciasCollapse">
                         <form action="#" id="frmIncidencias" class="font-labels">
                             <div class="font-labels font-weight-bold pb-3">Nueva Incidencia</div>
                             <div class="form-group row">
@@ -42,28 +42,14 @@
                                     <label>Renglón *</label>
                                     <input type="text" name="inRenglon" id="inRenglon" class="form-control form-control-sm disabled" readonly placeholder="#" required />
                                 </div>
-                                <div id="lbloptions" class="col-md-12 text-center">
-                                </div>
-                                <div id="inflbl" class=""></div>
                                 <div class="form-group col-md-6">
                                     <label id="lblCantidad">Cantidad *</label>
                                     <input type="text" name="inCantidad" id="inCantidad" class="form-control form-control-sm" placeholder="$ 0000.00" />
 
                                 </div>
-                                <div class="col-md-12 collapse row text-center " id="collapsefechas">
-
-                                    <div class="form-group col-md-6">
-                                        <label>Fecha Inicio</label>
-                                        <input type="date" name="infinicio" id="infinicio" class="form-control form-control-sm" />
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label id="lblCantidad">Fecha Final</label>
-                                        <input type="date" name="inffinal" id="inffinal" class="form-control form-control-sm" />
-                                    </div>
-                                </div>
                                 <div class="form-group col-md-6">
                                     <label>Plazos *</label>
-                                    <input type="text" name="inPlazos" id="inPlazos" class="form-control form-control-sm" placeholder="No. de periodos " />
+                                    <input type="text" name="inPlazos" id="inPlazos" class="form-control form-control-sm" placeholder="No. de periodos " value="1" />
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Leyenda</label>
@@ -103,12 +89,7 @@
                         </form>
                     </div>
                 </div>
-
-
             </div>
-
-
-
         </div>
     </div>
 </div>
@@ -137,4 +118,96 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Incidencias.js?n=2"></script>
+<!--
+    Modal
+    EDITAR INCIDENCIA
+-->
+<div class="modal fade" id="editIncidencia" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editIncidenciaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content border-left-primary border-right-primary">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary font-weight-bold" id="editIncidenciaLabel">Modificar Incidencia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-danger" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmEditIncidencia" class="form-group col-md-12 font-labels row">
+                    <div class="col-md-12 row mb-3">
+                        <label class="col-2"> Concepto </label>
+                        <select id="edConcepto" class="col custom-select custom-select-sm">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12 row mb-3">
+                        <label class="col-2"> Renglón </label>
+                        <input class="col form-control form-control-sm" id="edRenglon" type="text" value="" />
+                    </div>
+
+                    <div class="form-group col-md-6 row">
+                        <label class="col-4"> Cantidad </label>
+                        <input class="col form-control form-control-sm" id="edCantidad" onkeyup="validaCantidad();" type="text" value="" />
+                        <input id="actualCantidad" type="hidden" value="" />
+                    </div>
+                    <div class="form-group col-md-6 row">
+                        <label class="col-4"> Saldo </label>
+                        <input class="col form-control form-control-sm" id="edSaldo" onkeyup="validaCantidad();" type="text" value="" />
+                        <input id="actualSaldo" type="hidden" value="" />
+                    </div>
+
+                    <div class="form-group col-md-6 row">
+                        <label class="col-4"> Plazos </label>
+                        <input class="col form-control form-control-sm input-number" id="edPlazos" onkeyup="validaPlazos();" type="text" value="" />
+                        <input id="actualPlazos" type="hidden" value="" />
+                    </div>
+
+
+                    <div class="form-group col-md-6 row">
+                        <label class="col-4"> Pagos Restantes </label>
+                        <input class="col form-control form-control-sm input-number" id="edPagosRestantes" onkeyup="validaPlazos();" type="text" value="" />
+                        <input id="actualPagosrestantes" type="hidden" value="" />
+                    </div>
+
+                    <div class="form-group col-md-12 row">
+                        <label class="col-2"> Leyenda </label>
+                        <input class="col form-control form-control-sm" id="edLeyenda" type="text" value="" />
+                    </div>
+
+                    <div class="form-group col-md-6 row">
+                        <label class="col-4"> Referencia </label>
+                        <input class="col form-control form-control-sm" id="edReferencia" type="text" value="" />
+                    </div>
+                    <div class="form-group col-md-6 row">
+                        <label class="col-5"> Fecha de Aplicación </label>
+                        <input class="col form-control form-control-sm" id="edFechaAplicacion" value="" type="date" />
+                    </div>
+                    <div class="col-md-12 mt-4 mb-1">
+                        <div id="validactc" class="col-md-12 py-0"></div>
+                        <div id="validactp" class="col-md-12 py-0"></div>
+                        <div id="validc" class="col-md-12 py-0"></div>
+                        <div id="validp" class="col-md-12 py-0"></div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="font-labels btn btn-danger btn-sm btn-icon-split" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text"> Cerrar </span>
+                </button>
+                <button type="button" onclick="updateIncidencia();" class="font-labels btn btn-success btn-sm btn-icon-split">
+                    <span class="icon"><i class="fas fa-upload"></i></span>
+                    <span class="text"> Actualizar </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+     
+    <div id="toasterbody" style="position: absolute; top: 0; right: 0;">
+
+    </div>
+</div>
+
+<script src="~/Scripts/main/Incidencias.js?n=1"></script>
