@@ -52,7 +52,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
-            this.conexion.Close();this.Conectar().Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -178,7 +178,7 @@ namespace Payroll.Models.Daos
                     {
                         listEmpleados.DiasPrima = int.Parse(data["DiasPrima"].ToString());
                     }
-                    
+
                     listEmpleados.DiasDisfrutados = int.Parse(data["DiasDisfrutados"].ToString());
                     if (data["DiasRestantes"].ToString() == null || data["DiasRestantes"].ToString() == "")
                     {
@@ -188,7 +188,7 @@ namespace Payroll.Models.Daos
                     {
                         listEmpleados.DiasRestantes = int.Parse(data["DiasRestantes"].ToString());
                     }
-                    
+
 
                     list.Add(listEmpleados);
                 }
@@ -531,7 +531,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo,string FechaFin, int Tipo)
+        public List<string> sp_TAusentismos_Insert_Ausentismo(int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo, string FechaFin, int Tipo)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -737,7 +737,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, decimal Cantidad, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo, string infinicio, string inffinal, int intipo)
+        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, decimal Cantidad, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -754,9 +754,6 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaAplicacion", Fecha_Aplicacion));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaInicio", infinicio));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaFinal", inffinal));
-            cmd.Parameters.Add(new SqlParameter("@ctrlTipo", intipo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -1125,6 +1122,88 @@ namespace Payroll.Models.Daos
             this.conexion.Close(); this.Conectar().Close();
 
             return list;
+        }
+
+        public List<IncidenciasBean> sp_TRegistro_Incidencias_retrieve_incidencia(int Empresa_id, int Empleado_id, int Incidencia_id)
+        {
+            List<IncidenciasBean> list = new List<IncidenciasBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TRegistro_Incidencias_retrieve_incidencia", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlIncidencia_id", Incidencia_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    IncidenciasBean lista = new IncidenciasBean();
+                    lista.IdTRegistro_Incidencia = int.Parse(data["IdTRegistro_Incidencia"].ToString());
+                    lista.Concepto = data["Concepto"].ToString();
+                    lista.Renglon = int.Parse(data["VW_Tipo_Incidencia_id"].ToString());
+                    lista.Plazos = int.Parse(data["Plazos"].ToString());
+                    lista.Pagos_restantes = data["Pagos_restantes"].ToString();
+                    lista.Cantidad = data["Cantidad"].ToString();
+                    lista.Saldo = data["Saldo"].ToString();
+                    lista.Descripcion = data["Descripcion"].ToString();
+                    lista.Referencia = data["Referencia"].ToString();
+                    lista.Fecha_Aplicacion = data["Fecha_Aplicacion"].ToString();
+                    lista.Numero_dias = data["Numero_dias"].ToString();
+                    list.Add(lista);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return list;
+        }
+
+        public List<string> sp_TRegistro_Incidencias_update_incidencia(int Empresa_id, int Empleado_id, int Incidencia_id, int Renglon_id, string Cantidad, string Saldo, int Plazos, int Pagos_restantes, string Leyenda, string Referencia, string Fecha_Aplicacion, string Numero_dias)
+        {
+            List<string> lista = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TRegistro_Incidencias_update_incidencia", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlIncidencia_id", Incidencia_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRenglon_id", Renglon_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCantidad", Cantidad));
+            cmd.Parameters.Add(new SqlParameter("@ctrlSaldo", Saldo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPlazos", Plazos));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPagos_restantes", Pagos_restantes));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescripcion", Leyenda));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Aplicacion", Fecha_Aplicacion));
+            cmd.Parameters.Add(new SqlParameter("@ctrlNumero_dias", Numero_dias));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    lista.Add(data["Flag"].ToString());
+                    lista.Add(data["Message"].ToString());
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return lista;
         }
     }
 }

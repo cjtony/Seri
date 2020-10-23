@@ -336,7 +336,7 @@ namespace Payroll.Models.Beans
         public string ClaveSucursal { get; set; }
         public string DescripcionSucursal { get; set; }
         public int Estado_id { get; set; }
-        public string NombreEstado { get; set;}
+        public string NombreEstado { get; set; }
         public string sMensaje { get; set; }
     }
     public class LocalidadesBean2
@@ -528,7 +528,7 @@ namespace Payroll.Models.Beans
         public string Tarjeta_vales { get; set; }
         public string Cuenta_cheques { get; set; }
         public string Fecha_baja { get; set; }
-        public string IncidenciaProgramada_id {get;set;}
+        public string IncidenciaProgramada_id { get; set; }
     }
     public class CapturaErroresBean
     {
@@ -558,12 +558,20 @@ namespace Payroll.Models.Beans
     public class IncidenciasBean
     {
         public int IdTRegistro_Incidencia { get; set; }
+        public string Concepto { get; set; }
         public int Renglon { get; set; }
-        public int Cantidad { get; set; }
         public int Plazos { get; set; }
+        public string Pagos_restantes { get; set; }
+        public string Cantidad { get; set; }
+        public string Saldo { get; set; }
         public string Descripcion { get; set; }
         public string Referencia { get; set; }
         public string Fecha_Aplicacion { get; set; }
+        public string Numero_dias { get; set; }
+
+
+
+
     }
     public class VW_TipoIncidenciaBean
     {
@@ -583,7 +591,8 @@ namespace Payroll.Models.Beans
         public int Numero_dias { get; set; }
     }
     public class TabIncidenciasBean
-    {   public int Incidencia_id { get; set; }
+    {
+        public int Incidencia_id { get; set; }
         public int IncidenciaP_id { get; set; }
         public string Nombre_Renglon { get; set; }
         public string VW_TipoIncidencia_id { get; set; }
@@ -681,7 +690,7 @@ namespace Payroll.Models.Beans
         public string Cancelado { get; set; }
         public string Alta_por { get; set; }
         public string Fecha_Alta { get; set; }
-       
+
     }
     public class DataCentrosCosto
     {
