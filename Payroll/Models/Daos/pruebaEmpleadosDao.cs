@@ -825,7 +825,7 @@ namespace Payroll.Models.Daos
                     //lista.IncidenciaP_id = int.Parse(data["IncidenciaP_id"].ToString()); //SE TIENE QUE VER COMO SE RELACIONARA CON LAS PROGRAMADAS
                     lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
                     lista.VW_TipoIncidencia_id = data["VW_Tipo_Incidencia_id"].ToString();
-
+                    lista.Numero_dias = data["Numero_dias"].ToString();
 
                     //lista.Cantidad = data["Cantidad"].ToString();
 
