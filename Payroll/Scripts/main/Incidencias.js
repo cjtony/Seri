@@ -181,7 +181,7 @@ $(function () {
                             timer: 1000
                         });
                     } else if (data[0] == '1') {
-                        $("#collapseNewIncidencia").collapse("hide");
+                        $("#incidenciasCollapse").collapse("hide");
                         concepto_incidencia.value = '';
                         cantidad_incidencia.value = '';
                         plazos_incidencia.value = '';
@@ -236,6 +236,7 @@ $(function () {
                 for (var i = 0; i < data.length; i++) {
                     var period = $("#lblPeriodoId").html();
                     var incidenciaProg_id;
+                    var cantidad;
                     console.log(data[i]["IncidenciaP_id"]);
                     if (data[i]["IncidenciaP_id"] == "" || data[i]["IncidenciaP_id"] == 0) {
                         incidenciaProg_id = 0;
@@ -243,11 +244,17 @@ $(function () {
                         incidenciaProg_id = data[i]["IncidenciaP_id"];
                     }
 
+                    if (data[i]["VW_TipoIncidencia_id"] == 71 || data[i]["VW_TipoIncidencia_id"] == "71") {
+                        cantidad = parseFloat(data[i]["Numero_dias"]);
+                    } else {
+                        cantidad = parseFloat(data[i]["Cantidad"]);
+                    }
+
                     document.getElementById("tabIncidenciasBody").innerHTML += "" +
                         "<tr>" +
                         "<td scope='row'>" + data[i]["Nombre_Renglon"] + "</td>" +
                         "<td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td>" +
-                        "<td class='text-center'>" + data[i]["Cantidad"] + "</td>" +
+                        "<td class='text-center'>" + cantidad + "</td>" +
                         "<td class='text-center'>" + data[i]["Plazos"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Descripcion"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
@@ -517,7 +524,7 @@ $(function () {
         }
 
     }
-    // VALIDA QUE AL CERRRAR EL MODAL SE LIMPIE CUALQUIER VALIDACIEN HECHA EN EL FORMULARIO
+    // VALIDA QUE AL CERRRAR EL MODAL SE LIMPIE CUALQUIER VALIDACION HECHA EN EL FORMULARIO
     $('#editIncidencia').on('hidden.bs.modal', function (e) {
         $("#validp").html("");
         $("#validc").html("");
