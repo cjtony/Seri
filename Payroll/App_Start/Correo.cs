@@ -11,10 +11,9 @@ public class Correo
 {
 	 Boolean estado = true;
     string merror; 
-	public Correo(string destinatario,string asunto, string mensaje)
+	public Correo(string destinatario,string asunto, string mensaje,string path)
 	{
-        string path = @"C:\Users\DELL\Desktop\gitproyecto\Proyecto Actualizado AAA\Seri\Payroll\Archivos\certificados\PDF2\Fiscal\Empresa18\Periodo2\IPSNetReciboFiscal_E18_N31_F202030020.pdf";
-		//
+    	//
 		// TODO: Add constructor logic here
 		//
         MailMessage correo = new MailMessage();
@@ -28,14 +27,14 @@ public class Correo
         //correo.BodyEncoding = System.Text.Encoding.UTF8;
         correo.IsBodyHtml = true;
         correo.Priority = MailPriority.Normal;
-
+       // smtp.Credentials = new NetworkCredential("capitalhumano@gruposeri.com", "cH*150519");
         // Protocolo.Credentials = new System.Net.NetworkCredential("pp709672@gmail.com","S3r12020c#");
-      
+
         Protocolo.Port = 587;
-        Protocolo.Host = "mail.office365.com";
+        Protocolo.Host = "mail.dmlink.com";
         Protocolo.EnableSsl = true;
         Protocolo.UseDefaultCredentials = false;
-        Protocolo.Credentials = new System.Net.NetworkCredential("abimaelh@raciti.com.mx", "Abjoe182");
+        Protocolo.Credentials = new System.Net.NetworkCredential("capitalhumano@gruposeri.com", "cH*150519");
 
         try
         {

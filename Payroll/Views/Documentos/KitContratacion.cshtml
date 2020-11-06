@@ -1,0 +1,108 @@
+﻿@*Temas*@
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.materialpurple.css" type="text/css" />
+
+<body>
+    <div class="container bg-white">
+        @*cuerpo de pantalla*@
+
+        <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+            <div id="div-most-alert-data-gen" class="col-md-8 offset-2"></div>
+            <div class="col-md-6">
+                <div class="text-left">
+                    <h6 class="col-ico font-nav-child">
+                        <b>
+                            <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                            kit de contratacion
+                        </b>
+                    </h6>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr />
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label font-labels" id="laCategoria">
+                        Categoria:
+                    </label>
+                    <div class="col-sm-7">
+                        <select placeholder="Categoria" tp-select="Grupo" class="form-control form-control-sm" id="DropCategoria">
+                            <option value="0">Seleccionan</option>
+                            <option value="1">Alta</option>
+                            <option value="2">Baja</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label for="TotalEmple" class="col-sm-4 col-form-label font-labels" id="laTipoEmpleado">
+                        Tipo de empleado:
+                    </label>
+                    <div class="col-sm-7">
+                        <select placeholder="Tipo de empleado" tp-select="Tipo de empleado" class="form-control form-control-sm" id="DroTipoEmple">
+                            <option value="0">Selecciona</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row" style="margin-left:25%;margin-top:5%">
+                    <div class="col-sm-5">
+                        <button id="btnGnra" class="btn btn-outline-primary btn-sm btn-block mt-2 rounded shadow">
+                            <i class="far fa-file-archive"></i>Genera Archivo
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="table-responsive" style="text-align:center; margin-left:5%;margin-top:-10%">
+                    <div id='jqxWidget'>
+                        <div id="TbKit"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+    @*Botones de flotantes*@
+    <div>
+
+        <button class="flotante1 btn btn-primary btn-circle shadow" title="Dowland" id="btnDowlan" type="button" value="0" style="visibility:hidden">
+            <i class="fas fa-download"></i>
+        </button>
+
+    </div>
+</body>
+
+
+
+<script src="~/Scripts/main/KitBajas.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script> 
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.sort.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxinput.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.filter.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.selection.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxloader.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxlistbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdropdownlist.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqwidgets/jqxcheckbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqx-all.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxmenu.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxlistbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdropdownlist.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcheckbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxwindow.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxtabs.js"></script>

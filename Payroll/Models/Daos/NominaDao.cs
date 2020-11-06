@@ -2018,8 +2018,6 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
             }
             return list;
-
-
         }
 
         public List<int> sp_EmpresaDef_Retrieve_TPDefinicionNomina(int CltrliIdDefinicionHd)
@@ -2471,9 +2469,105 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        /// saca la direccion de los archivos bat
+        /// listPeriodo
 
-    
+        public List<CInicioFechasPeriodoBean> sp_CIncioPeriodo_Retrieve_Periodo(int CtrliIdEmpresa, int CtrliAnio, int CtrliTipoPeriodo)
+        {
+            List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
+            try
+            {
+                
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CIncioPeriodo_Retrieve_Periodo", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPeriodo", CtrliTipoPeriodo));
+              
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CInicioFechasPeriodoBean LP = new CInicioFechasPeriodoBean();
+                        {
+                          
+                            LP.iPeriodo = int.Parse(data["Periodo"].ToString());
+                            LP.sMensaje = "success";
+                        };
+
+                        list.Add(LP);
+                    }
+                }
+                else
+                {
+                    CInicioFechasPeriodoBean LP = new CInicioFechasPeriodoBean();
+                    {
+                        LP.sMensaje = "error";
+                    }
+                    list.Add(LP);
+
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+
+        }
+
+        public List<TPProcesos> sp_CalculosHdFinProces_Retrieve_TPlantillaCalculosHd(int ctrliFolio, int CtrliDefinicionHd)
+        {
+            List<TPProcesos> list = new List<TPProcesos>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CalculosHdFinProces_Retrieve_TPlantillaCalculosHd", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrliFolio", ctrliFolio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliDefinicionHd", CtrliDefinicionHd));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TPProcesos ls = new TPProcesos();
+                        {
+                            ls.sEstatusJobs = data["EstatusJobs"].ToString();
+                            ls.sMensaje = "success";
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    TPProcesos ls = new TPProcesos();
+                    ls.sMensaje = "success";
+                    ls.sEstatusJobs = "Procesando";
+                    list.Add(ls);
+
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
     }
 
 }

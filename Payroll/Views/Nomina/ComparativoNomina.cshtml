@@ -1,0 +1,164 @@
+﻿
+
+<body>
+    <div class="container bg-white">
+        @*Botones Flotantes*@
+
+        <div class="container-fluid">
+
+            <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+                <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
+                <div class="col-md-6">
+                    <div class="text-left">
+                        <h6 class="col-ico font-nav-child">
+                            <b>
+                                <i class="fas fa-balance-scale mr-ico-05"></i>
+                                Comparatiuvo de Nomina
+                            </b>
+                        </h6>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <hr />
+                </div>
+            
+                <div class="col-md-6">
+                    <div style="text-align:center">
+                        <label for="NomReciente" class="col-sm-12 col-form-label font-labels">
+                            Nomina Reciente
+                        </label>
+                    </div>
+              
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+
+                            <div class="form-group row" style="margin-left:2%">
+                                <label for="LaEmpresa" class="col-sm-4 col-form-label font-labels">
+                                    Empresa:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="DropEmpresa">
+                                        <option value="0">Selecciona</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" style="margin-left:2%">
+                                <label for="anoNom" class="col-sm-4 col-form-label font-labels">
+                                    Año:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="TxtAnio" class="form-control form-control-sm text-capitalize" />
+                                </div>
+                            </div>
+                            <div class="form-group row" style="margin-left:2%">
+                                <label for="LaPorcentaje" class="col-sm-4 col-form-label font-labels">
+                                    Porcentaje de diferencia:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <input placeholder="Porcentaje de diferencia" maxlength="3" tvvisible="false" type="text" id="TxtPorcentaje" class="form-control form-control-sm text-capitalize" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="TipoPerido" class="col-sm-3 col-form-label font-labels">
+                                    Tipo de Periodo:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="DropTipodePerdio">
+                                        <option value="0">Selecciona</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="peridoNom" class="col-sm-3 col-form-label font-labels">
+                                    Perido:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="DropPerido">
+                                        <option value="0">Selecciona</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="text-align:center">
+                        <label for="NomAnt" class="col-sm-12 col-form-label font-labels">
+                            Nomina anterior
+                        </label>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="form-group row" style="margin-left:2%">
+                                <label for="LaEmpresa2" class="col-sm-4 col-form-label font-labels">
+                                    Empresa:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="DropEmpresa2">
+                                        <option value="0">Selecciona</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" style="margin-left:2%">
+                                <label for="anoNom2" class="col-sm-4 col-form-label font-labels">
+                                    Año:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="TxtAnio2" class="form-control form-control-sm text-capitalize" />
+                                </div>
+                            </div>
+                            <div class="form-group row" style="margin-left:2%">
+                                <label for="LaPorcentaje" class="col-sm-4 col-form-label font-labels">
+                                    Porcentaje de diferencia:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <input placeholder="Porcentaje de diferencia" maxlength="3" tvvisible="false" type="text" id="TxtPorcentaje2" class="form-control form-control-sm text-capitalize" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="TipoPerido2" class="col-sm-3 col-form-label font-labels">
+                                    Tipo de Periodo:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="DropTipodePerdio2">
+                                        <option value="0">Selecciona</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="peridoNom2" class="col-sm-3 col-form-label font-labels">
+                                    Perido:
+                                </label>
+                                <div class="col-sm-8" style="margin-left:-2%">
+                                    <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="DropPerido2">
+                                        <option value="0">Selecciona</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+           
+                <div class="col-md-12">
+
+                </div>
+
+                @*Botones de flotantes*@
+                <div>
+                    <button class="flotante1 btn btn-primary btn-circle shadow" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="~/Scripts/main/CompNomina.js?n=1"></script>

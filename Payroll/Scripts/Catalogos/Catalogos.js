@@ -179,7 +179,6 @@
             iEspejo: espejo, PenAlin: 0
 
         };
-        console.log(dataSend);
 
         $.ajax({
             url: "../Catalogos/SaveRenglon",
@@ -224,8 +223,6 @@
             type: "POST",
             data: dataSend,
             success: function (data) {
-                console.log(data);
-                console.log(data.sMensaje);
                 if (data.sMensaje == "success") {
                     FTabCRenglones(DropEmpresa2.value, 0);
                     fshowtypealert('Renglon Actualizado!', 'Renglón actualizado ', 'success');

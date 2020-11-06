@@ -489,7 +489,8 @@ namespace Payroll.Models.Daos
                             ls.sNombreEmpresa = "CEmpresas";
                             ls.sMensaje = "error";
                         }
-                        else {
+                        else
+                        {
                             ls.sNombreEmpresa = data["RazonSocial"].ToString();
                         }
                         if (data["Calle"].ToString() == null)
@@ -517,7 +518,7 @@ namespace Payroll.Models.Daos
                         }
                         else
                         {
-                            ls.iCP =Convert.ToInt32(data["CodigoPostal"].ToString());
+                            ls.iCP = Convert.ToInt32(data["CodigoPostal"].ToString());
                         }
                         if (data["Ciudad"].ToString() == null)
                         {
@@ -528,7 +529,7 @@ namespace Payroll.Models.Daos
                         {
                             ls.sCiudad = data["Ciudad"].ToString();
                         }
-                        if( data["RFC"].ToString() == null)
+                        if (data["RFC"].ToString() == null)
                         {
                             ls.sRFC = "CEmpresas";
                             ls.sMensaje = "error";
@@ -536,6 +537,16 @@ namespace Payroll.Models.Daos
                         else
                         {
                             ls.sRFC = data["RFC"].ToString();
+                        }
+
+                        if (data["Representante_legal"].ToString() == null)
+                        {
+                            ls.sRepresentanteLegal = "CEmpresas";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sRepresentanteLegal = data["Representante_legal"].ToString();
                         }
 
                         if (data["Afiliacion_IMSS"].ToString() == null)
@@ -548,6 +559,46 @@ namespace Payroll.Models.Daos
                             ls.sAfiliacionIMSS = data["Afiliacion_IMSS"].ToString();
                         }
 
+                        if (data["FechaAntiguedad"].ToString() == null)
+                        {
+                            ls.sFechaAntiguedad = "TempleadosNomina";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sFechaAntiguedad = data["FechaAntiguedad"].ToString();
+                        }
+
+                        if (data["Fecha_baja"].ToString() == null)
+                        {
+                            ls.sFechaBajaEmple = " ";
+
+                        }
+                        else
+                        {
+                            ls.sFechaBajaEmple = data["Fecha_baja"].ToString();
+                        }
+
+
+                        if (data["Lugar_Nacimiento_Empleado"].ToString() == null)
+                        {
+                            ls.sLugarNacimiento = "TEmpleado";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sLugarNacimiento = data["Lugar_Nacimiento_Empleado"].ToString();
+                        }
+                        if (data["Fecha_Nacimiento_Empleado"].ToString() == null)
+                        {
+                            ls.sFechaNacimiento = "TEmpleado";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sFechaNacimiento = data["Fecha_Nacimiento_Empleado"].ToString();
+                        }
+
                         if (data["NombreComp"].ToString() == null)
                         {
                             ls.sNombreComp = "TEmpleado";
@@ -556,8 +607,53 @@ namespace Payroll.Models.Daos
                         else
                         {
                             ls.sNombreComp = data["NombreComp"].ToString();
+                            ls.sNombreemple = data["Nombre_Empleado"].ToString();
+                            ls.sApellPatemple = data["Apellido_Paterno_Empleado"].ToString();
+                            ls.sApellMatemple = data["Apellido_Materno_Empleado"].ToString();
                         }
-                      
+
+                        if (data["Domicilio"].ToString() == null)
+                        {
+                            ls.sDomiciolioEmple = "TEmpleado";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sDomiciolioEmple = data["Domicilio"].ToString();
+                        }
+
+                        if (data["SEXO"].ToString() == null)
+                        {
+                            ls.sSexo = "empleado";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sSexo = data["SEXO"].ToString();
+                        }
+
+                        if (data["ESTADO_CIVIL"].ToString() == null)
+                        {
+                            ls.sEstadoCivil = "empleado";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sEstadoCivil = data["ESTADO_CIVIL"].ToString();
+                        }
+
+                        if (data["Ciud"].ToString() == null)
+                        {
+                            ls.sCiudadEmple = "TEmpleado";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sCiudadEmple = data["Ciud"].ToString();
+                        }
+
+
+
                         if (data["RFCEmpleado"].ToString() == null)
                         {
                             ls.sRFCEmpleado = "CEmpresas";
@@ -567,9 +663,10 @@ namespace Payroll.Models.Daos
                         {
                             ls.sRFCEmpleado = data["RFCEmpleado"].ToString();
                         }
+
                         if (data["IdEmpleado"].ToString() == null)
                         {
-                            ls.iIdEmpleado  =0;
+                            ls.iIdEmpleado = 0;
                             ls.sMensaje = "error";
                         }
                         else
@@ -587,6 +684,16 @@ namespace Payroll.Models.Daos
                         {
                             ls.sDescripcionDepartamento = data["DescripcionDepartamento"].ToString();
                         }
+                        if (data["Localidad"].ToString() == null)
+                        {
+                            ls.sLocalidademple = "TLocalida";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sLocalidademple = data["Localidad"].ToString();
+                        }
+
                         if (data["NombrePuesto"].ToString() == null)
                         {
                             ls.sNombrePuesto = "TPuestos";
@@ -917,7 +1024,7 @@ namespace Payroll.Models.Daos
             string EspacioDeNombre = "http://www.sat.gob.mx/cfd/3";
             string s_certificadoKey = ""; string s_certificadoCer = ""; string ArchivoXmlFile; string NomArch; string s_transitorio = "";
             string pathCer;
-            pathCer = path.Replace("XmlZip\\", "");
+            pathCer = path.Replace("XmlZip\\", "certificados\\");
 
 
             int nRfcEmisor = 0;
@@ -944,14 +1051,14 @@ namespace Payroll.Models.Daos
             LFechaPerido = sp_DatosPerido_Retrieve_DatosPerido(Periodo);
             if (masivo == 1) {
                 int PeridoEmple = LFechaPerido[0].iPeriodo;
-                ListEmple = Dao.sp_EmpleadosEmpresa_periodo(IdEmpresa, Tipodeperido, PeridoEmple, anios, 1);   // sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(IdEmpresa, Tipodeperido, LFechaPerido[0].iPeriodo, anios);
+                ListEmple = Dao.sp_EmpleadosEmpresa_periodo(IdEmpresa, Tipodeperido, PeridoEmple, anios, 1);
 
-               
-               // LisEmpleados = Dao.sp_EmpleadosEmpresa_periodo(IdEmpresa, Tipodeperido, PeridoEmple, anios,1); 
-                NoXmlx = ListEmple.Count-1;
+                // sp_EmpleadosDEmpresa_Retrieve_EmpleadosDEmpresa(IdEmpresa, Tipodeperido, LFechaPerido[0].iPeriodo, anios);
+                // LisEmpleados = Dao.sp_EmpleadosEmpresa_periodo(IdEmpresa, Tipodeperido, PeridoEmple, anios,1); 
+                NoXmlx =ListEmple.Count-1;
             };
 
-            for (int i = 0; i <= NoXmlx; i++)
+            for (int i = 0; i <=2 /* NoXmlx*/ ; i++)
             {
                 
                     if (masivo == 0)
@@ -1027,6 +1134,7 @@ namespace Payroll.Models.Daos
                                 }
                                 TotalPercepciones = TotalPercepciones.Replace(",", "");
                                 totalDeduciones = totalDeduciones.Replace(",", "");
+                                if (totalDeduciones == " " || totalDeduciones == "") { totalDeduciones = "0"; };
                                 totalRecibo = totalRecibo.Replace(",", "");
                             }
 
@@ -1304,8 +1412,9 @@ namespace Payroll.Models.Daos
 
                                     }
                                     xmlWriter.WriteEndElement();
-
-                                    decimal Deduciones = Convert.ToDecimal(totalDeduciones.ToString());
+                                    decimal Deduciones = 0;
+                                    if (totalDeduciones.ToString() !=" " || totalDeduciones.ToString()!="") { Deduciones = Convert.ToDecimal(totalDeduciones.ToString()); } 
+                                   
                                     string deduciones = string.Format("{0:N2}", Deduciones - Isr);
                                     string isr = string.Format("{0:N2}", Isr);
                                     isr = isr.Replace(",", "");
@@ -1431,15 +1540,16 @@ namespace Payroll.Models.Daos
                             // 1 
                             //DirectoryInfo dir = new DirectoryInfo(@"C:\reportes\");
                             // 2 
-                            string nombreArchivoZip = "ZipXML.zip";
+                            string nombreArchivoZip = pathCer.Replace("certificados\\", "")+ "ZipXML.zip";
+                           
 
-                            if (System.IO.File.Exists(pathCer + nombreArchivoZip))
+                            if (System.IO.File.Exists( nombreArchivoZip))
                             {
-                                System.IO.File.Delete(pathCer + nombreArchivoZip);
+                                System.IO.File.Delete(nombreArchivoZip);
                                 TipoFiniquito ls = new TipoFiniquito();
                                
                             }
-                            FileStream stream = new FileStream(pathCer + nombreArchivoZip, FileMode.OpenOrCreate);
+                            FileStream stream = new FileStream(nombreArchivoZip, FileMode.OpenOrCreate);
                             // 3 
                             ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create);
                             // 4 
@@ -1866,7 +1976,7 @@ namespace Payroll.Models.Daos
 
         /// Consulta los pdfconsellos ejecutados y enviados 
 
-        public  List<SelloSatBean> sp_EjectadosAndSend_Retrieve_TSelloSat(int CtrliIdempresa, int CtrliAnio, int CtrliTipoPeriodo, int CtrliPeriodo, int CtrliEjecutado, int CtrlImensaje,int CtrliOpc)
+        public  List<SelloSatBean> sp_EjectadosAndSend_Retrieve_TSelloSat(string CtrliIdempresa, int CtrliAnio, int CtrliTipoPeriodo, int CtrliPeriodo, int CtrliEjecutado, int CtrlImensaje,int CtrliOpc,int CtrliRecibo)
         {
            List<SelloSatBean> bean = new List<SelloSatBean>();
 
@@ -1884,6 +1994,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliEjecutado", CtrliEjecutado));
                 cmd.Parameters.Add(new SqlParameter("@CtrlImensaje", CtrlImensaje));
                 cmd.Parameters.Add(new SqlParameter("@CtrliOpc", CtrliOpc));
+                cmd.Parameters.Add(new SqlParameter("@CtrliRecibo", CtrliRecibo));
+                
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -1893,12 +2005,18 @@ namespace Payroll.Models.Daos
                         SelloSatBean LP = new SelloSatBean();
                         {
                             LP.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
+                            LP.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
                             LP.sNomEmpleado = data["Empleado"].ToString();
+                            LP.sNombre = data["NOMBRE"].ToString();
                             LP.ianio = int.Parse(data["Anio"].ToString());
                             LP.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
                             LP.iPeriodo = int.Parse(data["Periodo"].ToString());
                             LP.bEmailSent = data["Email_Sent"].ToString();
                             LP.sEmailSent = data["EMAIL_PERSONAL"].ToString();
+                            if (data["Recibo_Simple"].ToString()!=null) { LP.sUurReciboSim = data["Recibo_Simple"].ToString(); }
+                            else { LP.sUurReciboSim = " "; };
+                            if (data["Recibo_Fiscal"].ToString() != null) { LP.sUrllReciboFis = data["Recibo_Fiscal"].ToString(); }           else{ LP.sUrllReciboFis = " ";};
+                            LP.sEmailSendSim = data["Email_Sent_simple"].ToString();
                             LP.sMensaje = "Succes";
           
                         };

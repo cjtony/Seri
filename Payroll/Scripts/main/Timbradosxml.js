@@ -34,7 +34,7 @@
         var TipPeriodox = TipoPeriodoxml.value;
         var Peridox = Periodoxml.value;
         var versionx = versionxml;
-        console.log(aniox);
+       
         if (aniox.value != "" && TipPeriodox != "" && Peridox !="" && versionx !="" ) {        
             var selectFile = $("#fileUpload")[0].files[0];
             var dataString = new FormData();
@@ -62,7 +62,7 @@
                                 data: dataSend,
                                 success: (data) => {
                                     if (data[0].sMensaje !=null) {
-                                        var url = '\\Archivos\\certificados\\Pdfzio.zip';
+                                        var url = '\\Archivos\\Pdfzio.zip';
                                         window.open(url);
                                     }
 

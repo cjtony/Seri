@@ -26,26 +26,6 @@ namespace Payroll.Controllers
             MenuDao menDao = new MenuDao();
             int usuSesion = int.Parse(Session["iIdUsuario"].ToString());
             permBean = menDao.sp_Menu_Retrieve_Permisos_Usuario_Menu(usuSesion);
-            //foreach (var item in permBean)
-            //{
-            //    if (item.sPerfil == "Administrador") { Session["Administrador"] = 1; break; }
-            //}
-            //foreach (var item in permBean)
-            //{
-            //    if (item.sPerfil == "Nomina") { Session["Nomina"] = 1; break; }
-            //}
-            //foreach (var item in permBean)
-            //{
-            //    if (item.sPerfil == "Incidencias") { Session["Incidencias"] = 1; break; }
-            //}
-            //foreach (var item in permBean)
-            //{
-            //    if (item.sPerfil == "Kiosko") { Session["Kiosko"] = 1; break; }
-            //}
-            //foreach (var item in permBean)
-            //{
-            //    if (item.sPerfil == "RH") { Session["RH"] = 1; break; }
-            //}
             return Json(usuBean);
         }
         public ActionResult Logout()

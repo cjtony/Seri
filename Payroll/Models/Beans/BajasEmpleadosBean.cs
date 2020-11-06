@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Antlr.Runtime.Tree;
 
 namespace Payroll.Models.Beans
 {
@@ -82,4 +83,9 @@ namespace Payroll.Models.Beans
 
     }
 
+    public class TipoDeEmpleadoBean { 
+        public int iIdTipoEmpleado { get; set; }
+        public string sTipodeEmpleado { get; set; }
+        public string sMensaje { get; set; }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.EnterpriseServices.Internal;
 using iTextSharp.text.io;
 
 namespace Payroll.Models.Beans
@@ -213,18 +214,32 @@ namespace Payroll.Models.Beans
 
     public class EmisorReceptorBean
     {
+        public int iIdEmpresa { get; set; }
         public string sNombreEmpresa { get; set; }
         public string sCalle { get; set; }
         public string sColonia { get; set; }
         public string sCiudad { get; set; }
         public string sRFC { get; set; }
+        public string sRepresentanteLegal { get; set; }
         public string sAfiliacionIMSS { get; set; }
+        public string sNombreemple { get; set; }
+        public string sApellPatemple { get; set; }
+        public string sApellMatemple {get;set;}
+        public string sSexo { get; set; }
+        public string sEstadoCivil { get; set; }
+        public string sCiudadEmple { get; set; }
         public string sNombreComp { get; set; }
         public string sRFCEmpleado { get; set; }
+        public string sLugarNacimiento { get; set; }
+        public string sFechaNacimiento { get; set; }
+        public string sFechaBajaEmple { get; set; }
+        public string sDomiciolioEmple { get; set; }
         public int iIdEmpleado { get; set; }
         public string sDescripcionDepartamento { get; set; }
+        public string sLocalidademple { get; set; }
         public string sNombrePuesto { get; set; }
         public string sFechaIngreso { get; set; }
+        public string sFechaAntiguedad { get; set; }
         public string sTipoContrato { get; set; }
         public string sCentroCosto { get; set; }
         public decimal dSalarioMensual { get; set; }
@@ -289,8 +304,10 @@ namespace Payroll.Models.Beans
 
     public class SelloSatBean {
         public int iIdCalculosHd { get; set; }
+        public int iNomina { get; set; }
         public int iIdEmpresa { get; set; }
         public int iIdEmpleado { get; set; }
+        public string sNombre { get; set; } 
         public string sNomEmpleado { get; set; }
         public int ianio { get; set; }
         public int iTipoPeriodo { get; set; }
@@ -305,6 +322,11 @@ namespace Payroll.Models.Beans
         public string sNoCertificado { get; set; }
         public string Fechatimbrado { get; set; }
         public string Fecha { get; set; }
+        public string sEmailSendSim { get; set; }
+        public string sUurReciboSim { get; set; }
+        public string sUrllReciboFis { get; set; }
+        public int iNoEnviados { get; set; }
+        public int iNoNoEnviados { get; set; }
         public string sMensaje { get; set; }
     }
     public class ElementoNominaBean
@@ -349,7 +371,6 @@ namespace Payroll.Models.Beans
 
         public int iIdTipoFiniquito { get; set; }
         public string sNombreFiniquito { get; set; }
-     
         public string sMensaje { get; set; }
 
     }

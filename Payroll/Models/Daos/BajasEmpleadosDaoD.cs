@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
 
@@ -339,6 +340,7 @@ namespace Payroll.Models.Daos
             return downEmployeeBean;
         }
 
+
         public BajasEmpleadosBean sp_Finiquito_UpdateEstatus_Pagado(int keySettlement)
         {
             BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
@@ -360,6 +362,127 @@ namespace Payroll.Models.Daos
                 this.Conectar().Close();
             }
             return downEmployeeBean;
+        }
+        /// trae el listado del tipos de empleados
+
+        public List<TipoDeEmpleadoBean> sp_TipoEmpleado_Retrieve_Cgeneral() {
+            List<TipoDeEmpleadoBean> list = new List<TipoDeEmpleadoBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TipoEmpleado_Retrieve_Cgeneral", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TipoDeEmpleadoBean ls = new TipoDeEmpleadoBean();
+                        {
+                            ls.iIdTipoEmpleado = int.Parse(data["IdValor"].ToString());
+                            ls.sTipodeEmpleado = data["Valor"].ToString();
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+        /// trae el listado con detalle de los empleados 
+
+        public List<EmisorReceptorBean> sp_EmpladosKitDoc_Retrieve_Cgeneral(int CtrliIdTipoEmpleado, int CtrliBaja)
+        {
+            List<EmisorReceptorBean> list = new List<EmisorReceptorBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_EmpladosKitDoc_Retrieve_Cgeneral", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdTipoEmpleado", CtrliIdTipoEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliBaja", CtrliBaja));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmisorReceptorBean ls = new EmisorReceptorBean();
+                        {
+                            ls.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
+                            ls.iIdNomina = int.Parse(data["IdEmpleado"].ToString());
+                            ls.sNombreComp = data["NombreCompleto"].ToString();
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+        /// trae el litado de los Id de Finiquito
+
+        public List<ReciboNominaBean> sp_NoIdFiniquito_Retrieve_TFiniquitos(int CtrliIdEmpresa, int CtrliIdEmpleado)
+        {
+            List<ReciboNominaBean> list = new List<ReciboNominaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_NoIdFiniquito_Retrieve_TFiniquitos", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+                
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        ReciboNominaBean ls = new ReciboNominaBean();
+                        {
+                            ls.iIdFiniquito = int.Parse(data["Idfiniquito"].ToString());
+                           
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
         }
 
     }

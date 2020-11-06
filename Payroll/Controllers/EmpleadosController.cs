@@ -391,7 +391,7 @@ namespace Payroll.Controllers
 
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-            string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
+            string path = Server.MapPath("Archivos\\XmlZip\\");
             path = path.Replace("\\Empleados", "");
             ListDatEmisor = Dao.GXMLNOM(IdEmpresa, sNombreComple, path, Periodo, anios, Tipodeperido, Masivo);
             return Json(ListDatEmisor);
@@ -403,12 +403,12 @@ namespace Payroll.Controllers
             string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
             int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo;
             var fileName = NomArchivo;
-            string PathPDF = Server.MapPath("Archivos\\certificados\\PDF\\");
-            string PathZip = Server.MapPath("Archivos\\certificados\\");
+            string PathPDF = Server.MapPath("Archivos\\PDF\\");
+            string PathZip = Server.MapPath("Archivos\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             PathZip = PathZip.Replace("\\Empleados", "");
             PathZip = PathZip + NomArchivo;
-            string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
+            string path = Server.MapPath("Archivos\\XmlZip\\");
             path = path.Replace("\\Empleados", "");
 
             ZipFile.ExtractToDirectory(PathZip, path);
@@ -1143,11 +1143,11 @@ namespace Payroll.Controllers
             Folio = Anio * 100000 + TipoPeriodo * 10000 + Perido * 10;
             var fileName = "";
             string PathPDF = "";
-            string PathCarp = Server.MapPath("Archivos\\certificados\\PDF2\\");
+            string PathCarp = Server.MapPath("Archivos\\Recibos\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             PathCarp = PathCarp.Replace("\\Empleados", "");
-
-            string path = Server.MapPath("Archivos\\certificados\\XmlZip\\");
+            string pathCarp2 ="";
+            string path = Server.MapPath("Archivos\\XmlZip\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             string Nombrearc = PathPDF;
             int idEmpresa = 0, rows = 0;
@@ -1170,24 +1170,24 @@ namespace Payroll.Controllers
 
                 if (iRecibo == 1)
                 {
-                    PathCarp = PathCarp + "Simple\\Empresa" + idEmpresa + "\\Periodo" + Perido + "\\";
+                    pathCarp2 = PathCarp + "Simple\\Empresa" + idEmpresa + "\\";
                 }
                 if (iRecibo == 2)
                 {
-                    PathCarp = PathCarp + "Fiscal\\Empresa" + idEmpresa + "\\Periodo" + Perido + "\\";
+                    pathCarp2 = PathCarp + "Fiscal\\Empresa" + idEmpresa +"\\";
                 }
 
-                if (System.IO.File.Exists(PathCarp))
+                if (System.IO.File.Exists(pathCarp2))
                 {
 
-                    PathPDF = PathCarp + "IPSNet";
+                    PathPDF = pathCarp2;
 
                 }
                 else
                 {
 
-                    DirectoryInfo di = Directory.CreateDirectory(PathCarp);
-                    PathPDF = PathCarp + "IPSNet";
+                    DirectoryInfo di = Directory.CreateDirectory(pathCarp2);
+                    PathPDF = pathCarp2;
                 }
 
                 // con QR
@@ -1239,7 +1239,10 @@ namespace Payroll.Controllers
                         string s_certificadoKey = pathCert + LisCer[0].sfilekey;
                         string s_certificadoCer = pathCert + LisCer[0].sfilecer;
                         string s_transitorio = LisCer[0].stransitorio;
-                        if (System.IO.File.Exists(s_certificadoKey))
+                        List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
+                        LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, 0);
+
+                        if (System.IO.File.Exists(s_certificadoKey) && LisTRecibo !=null)
                         {
 
                             System.Security.Cryptography.X509Certificates.X509Certificate CerSAT;
@@ -1615,7 +1618,7 @@ namespace Payroll.Controllers
 
                             // dias Efectivos 
 
-                            List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
+                           
                             LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, 0);
                             decimal iTdias = LFechaPerido[0].iDiasEfectivos;
                             int TDias = 0;
@@ -1752,7 +1755,7 @@ namespace Payroll.Controllers
                             decimal ded = 0;
                             decimal total;
 
-                            if (LisTRecibo.Count > 0)
+                            if (LisTRecibo.Count > 0 || LisTRecibo != null)
                             {
                                 for (int x = 0; x < LisTRecibo.Count; x++)
                                 {
@@ -2140,14 +2143,14 @@ namespace Payroll.Controllers
             var fileName = "";
             string Empre;
             string sDiasEfectivos;
-            string PathPDF = Server.MapPath("Archivos\\certificados\\");
-            string PathZip = Server.MapPath("Archivos\\certificados\\");
+            string PathPDF = Server.MapPath("Archivos\\");
+            string PathZip = Server.MapPath("Archivos\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             PathZip = PathZip.Replace("\\Empleados", "");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             string Nombrearc = "RecibosNom";
             int idEmpresa = 0, rows = 0;
-            Nombrearc = Nombrearc + "_" + IdEmpresa + "_" + LFechaPerido[0].iPeriodo + ".pdf";
+            Nombrearc = Nombrearc + "_E" + IdEmpresa + "_P" + LFechaPerido[0].iPeriodo + ".pdf";
             rows = 1;
             int idempleado = 0;
             string urlpdf = Nombrearc;
@@ -2161,6 +2164,7 @@ namespace Payroll.Controllers
                 //  System.IO.File.Delete(Nombrearc);
                 EmisorReceptorBean ls = new EmisorReceptorBean();
                 ls.sMensaje = "success";
+                ls.sUrl = Nombrearc;
                 ListDatEmisor.Add(ls);
 
             }
@@ -2801,7 +2805,7 @@ namespace Payroll.Controllers
 
 
         //// Cantidad en letra 
-        public static string NumeroALetras(string num)
+        public  string NumeroALetras(string num)
         {
             string res, dec = "";
             Int64 entero;
@@ -2902,48 +2906,118 @@ namespace Payroll.Controllers
 
         [HttpPost]
         public JsonResult TheLastEjecution()
-        {  
+        {
+            string IdEmpresas="";
             List<SelloSatBean> LSelloSat = new List<SelloSatBean>();
             List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>(); 
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             LisIdcontrol=Dao.sp_UltimaEje_Retrieve_CControlejecEmpr();
-            LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(LisIdcontrol[0].iIdempresa, LisIdcontrol[0].iAnio, LisIdcontrol[0].iTipoPeriodo, LisIdcontrol[0].iPeriodo, 1, 0, 0);
+            IdEmpresas =Convert.ToString(LisIdcontrol[0].iIdempresa);
+            if (LisIdcontrol.Count > 1) {
+                IdEmpresas = "";
+                for (int i = 0; i < LisIdcontrol.Count; i++) {
+
+                    IdEmpresas = IdEmpresas+ Convert.ToString(LisIdcontrol[i].iIdempresa) + ",";
+
+                };
+              
+                int startIndex = 0;
+                int length = IdEmpresas.Length-1;
+                IdEmpresas = IdEmpresas.Substring(startIndex, length);
+            };
+
+            LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(IdEmpresas, LisIdcontrol[0].iAnio, LisIdcontrol[0].iTipoPeriodo, LisIdcontrol[0].iPeriodo, 1, 0, 0, LisIdcontrol[0].iRecibo);
             var TablasDat = new { TablasDat = LisIdcontrol, LSelloSat };
 
             return Json(TablasDat);
         }
-
+           // envia los las facturas por correo 
         [HttpPost]
-        public JsonResult EnvioEmail(string Ccp, int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion) {
+        public JsonResult EnvioEmail(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion) {
 
-            List<SelloSatBean> Email = new List<SelloSatBean>();
+            string[] valor = sIdEmpresas.Split(' ');
+            int idEmpre = int.Parse(valor[0].ToString());
+            string IdEmpresas = valor[0].ToString();
+            int NoEmailSend = 0;
+            int NoEmailNotSend = 0;
             List<SelloSatBean> LSelloSat = new List<SelloSatBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-          //  LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(LisIdcontrol[0].iIdempresa, LisIdcontrol[0].iAnio, LisIdcontrol[0].iTipoPeriodo, LisIdcontrol[0].iPeriodo, 1, 0, 0);
-
-            if (Anio >0) {
-                for (int i = 0; i < Anio; i++) { 
-                
-                
-                }
-                string EmailPer = "aacosta@gruposeri.com";
-                string Mensaje = "estimado usuario en este correo se adjunta la factura del periodo ##";
-                Correo EmailEnvio = new Correo(EmailPer, "Facturas", Mensaje);
-                if (EmailEnvio.Estado)
-                {
-                    //Correo enviado
-
-                }
-                else
+            if (valor.Length > 1)
+            {
+                IdEmpresas = "";
+                for (int i = 0; i < valor.Length; i++)
                 {
 
-                    //Error al enviar correo
+                    IdEmpresas = Convert.ToString(valor[i]) + ",";
 
+                };
+
+                int startIndex = 0;
+                int length = IdEmpresas.Length - 1;
+                IdEmpresas = IdEmpresas.Substring(startIndex, length);
+            };
+
+
+            LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(IdEmpresas, Anio, TipoPeriodo, Perido,1,0,0, iRecibo);
+            if (LSelloSat != null)
+            {
+                if (iRecibo == 1)
+                {
+                    for (int i = 0; i < LSelloSat.Count; i++)
+                    {
+                        if (LSelloSat[i].sUurReciboSim !=null) {
+                            string EmailPer = LSelloSat[i].sEmailSent;
+                            string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre+ " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
+                            Correo EmailEnvio = new Correo(EmailPer, "Facturas", Mensaje, LSelloSat[i].sUurReciboSim);
+                            if (EmailEnvio.Estado)
+                            {
+                                //Correo enviado
+                                Dao.sp_CCejecucionAndSen_update_TsellosSat(LSelloSat[i].iIdEmpresa, LSelloSat[i].iIdEmpleado, Anio, TipoPeriodo, Perido, 3, " ");
+                                // LSelloSat[0].sMensaje = "success";
+                                NoEmailSend = NoEmailSend + 1;
+                            }
+                            else
+                            {
+                                NoEmailNotSend = NoEmailNotSend + 1;
+                                //Error al enviar correo
+                               // LSelloSat[0].sMensaje = "error";
+                            }
+
+                        };
+                       
+                    };
                 }
-            }
+                if (iRecibo == 2)
+                {
+                    for (int i = 0; i < LSelloSat.Count; i++)
+                    {
+                        if (LSelloSat[i].sUrllReciboFis !=null) {
+                            string EmailPer = LSelloSat[i].sEmailSent;
+                            string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
+                            Correo EmailEnvio = new Correo(EmailPer, "Facturas", Mensaje, LSelloSat[i].sUrllReciboFis);
+                            if (EmailEnvio.Estado)
+                            {
+                                //Correo enviado
+                                Dao.sp_CCejecucionAndSen_update_TsellosSat(LSelloSat[i].iIdEmpresa, LSelloSat[i].iIdEmpleado, Anio, TipoPeriodo, Perido, 1, " ");
+                                NoEmailSend = NoEmailSend + 1;
+                            }
+                            else
+                            {
+                                NoEmailNotSend = NoEmailNotSend + 1;
+                                //Error al enviar correo
 
-
-            return Json(Email);
+                            }
+                        }
+                       
+                    };
+                };
+                LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(IdEmpresas, Anio, TipoPeriodo, Perido, 1, 0, 0, iRecibo);
+                LSelloSat[0].iNoEnviados = NoEmailSend;
+                LSelloSat[0].iNoNoEnviados = NoEmailNotSend;
+            };
+           
+           
+            return Json(LSelloSat);
         }
 
 
