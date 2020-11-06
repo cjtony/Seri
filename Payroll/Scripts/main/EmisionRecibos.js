@@ -15,8 +15,8 @@
     const TextBRuta = document.getElementById('TextBRuta');
     const btnVerEje = document.getElementById('btnVerEje');
     const btnEnviCorre = document.getElementById('btnEnviCorre');
-    const BtnSenCorreo = document.getElementById('BtnSenCorreo');
-    const TextCopiaa = document.getElementById('TextCopiaa');
+    //const BtnSenCorreo = document.getElementById('BtnSenCorreo');
+    //const TextCopiaa = document.getElementById('TextCopiaa');
     const TextBTotalEjecutados = document.getElementById('TextBTotalEjecutados');
 
     var VarCheckEmpresa = document.getElementById('CheckEmpresa');
@@ -260,9 +260,9 @@
     FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas,descrip) => {
     
         const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value, sDEscripcion: descrip };
-        if (DroTipoRecibo.value == 2) {
-            BtnSenCorreo.value= 1
-        }
+      
+            btnEnviCorre.value= 1
+        
 
         $.ajax({
             url: "../Empleados/GenPDF",
@@ -297,16 +297,12 @@
                         if (DropContEje.options[i].text == TablasDat.TablasDat[0].sDescripcion) {
                             DropContEje.selectedIndex = i;
                         }
-                    }
-       
-                  
+                    }                
                     TextBAnioProce.value = TablasDat.TablasDat[0].iAnio;
                     descrip = TablasDat.TablasDat[0].sDescripcion;
                     document.getElementById("TextDEesp").innerHTML += descrip;
-                    LisEmpresa();
-                   
+                    LisEmpresa();              
                     $("#DropEmpresa").jqxDropDownList('checkItem', TablasDat.TablasDat[0].iIdempresa);
-
                     DroTipoRecibo.selectedIndex = TablasDat.TablasDat[0].iRecibo;
                     var Tp = "";
                     if (TablasDat.TablasDat[0].iTipoPeriodo == 1) {
@@ -315,7 +311,6 @@
                     if (TablasDat.TablasDat[0].iTipoPeriodo == 3) {
                         Tp=" Quincenal"
                     };
-
                     $("#DroTipoPeriodo").empty();
                     document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${TablasDat.TablasDat[0].iTipoPeriodo}'>${TablasDat.TablasDat[0].iTipoPeriodo} ${Tp} </option>`;
 
@@ -326,47 +321,77 @@
                     
                 }
                 else {
-                    BtnSenCorreo.value = 0;
+                    btnEnviCorre.value = 0;
                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
 
                 };
                 if (TablasDat.LSelloSat[0].sMensaje = "Succes") {
-                    BtnSenCorreo.value = 1;
-
-                    var source =
-                    {
-                        localdata: TablasDat.LSelloSat,
-                        datatype: "array",
-                        datafields:
-                            [
-                                { name: 'iIdEmpresa', type: 'int' },
-                                { name: 'sNomEmpleado', type: 'string' },
-                                { name: 'ianio', type: 'int' },
-                                { name: 'iTipoPeriodo', type: 'int' },
-                                { name: 'iPeriodo', type: 'int' },
-                                { name: 'bEmailSent', type: 'string' },
-                                { name: 'sEmailSent', type: 'string' },
-                            ]
-                    };
-
-                    var dataAdapter = new $.jqx.dataAdapter(source);          
-                    $("#TbEjeSend").jqxGrid(
+                    btnEnviCorre.value = 1;
+                    if (TablasDat.TablasDat[0].iRecibo == "1") {
+                        var source =
                         {
-                           
-                            width: 930,
-                            source: dataAdapter,
-                       
-                         
-                            columns: [
-                                { text: 'Empresa No', datafield: 'iIdEmpresa', width: 50 },
-                                { text: 'Nombre de Empleado', datafield: 'sNomEmpleado', width: 300 },
-                                { text: 'Año ', datafield: 'ianio', width: 100 },
-                                { text: 'Tipo de Periodo', datafield: 'iTipoPeriodo', width: 100},
-                                { text: 'Periodo', datafield: 'iPeriodo', width: 80 },
-                                { text: 'Email', datafield: 'sEmailSent', width: 200 },
-                                { text: 'Email enviado', datafield: 'bEmailSent', width: 100 },
-                            ]
-                        });
+                            localdata: TablasDat.LSelloSat,
+                            datatype: "array",
+                            datafields:
+                                [
+                                    { name: 'iIdEmpresa', type: 'int' },
+                                    { name: 'sNomEmpleado', type: 'string' },
+                                    { name: 'ianio', type: 'int' },
+                                    { name: 'iTipoPeriodo', type: 'int' },
+                                    { name: 'iPeriodo', type: 'int' },
+                                    { name: 'bEmailSent', type: 'string' },
+                                    { name: 'sEmailSendSim', type: 'string' },
+                                ]
+                        };
+                        var dataAdapter = new $.jqx.dataAdapter(source);
+                        $("#TbEjeSend").jqxGrid(
+                            {
+                                width: 930,
+                                source: dataAdapter,
+                                columns: [
+                                    { text: 'Empresa No', datafield: 'iIdEmpresa', width: 50 },
+                                    { text: 'Nombre de Empleado', datafield: 'sNomEmpleado', width: 300 },
+                                    { text: 'Año ', datafield: 'ianio', width: 100 },
+                                    { text: 'Tipo de Periodo', datafield: 'iTipoPeriodo', width: 100 },
+                                    { text: 'Periodo', datafield: 'iPeriodo', width: 80 },
+                                    { text: 'Email', datafield: 'sEmailSent', width: 200 },
+                                    { text: 'Email enviado', datafield: 'sEmailSendSim', width: 100 },
+                                ]
+                            });
+                    }
+                    if (TablasDat.TablasDat[0].iRecibo == "2") {
+                        var source =
+                        {
+                            localdata: TablasDat.LSelloSat,
+                            datatype: "array",
+                            datafields:
+                                [
+                                    { name: 'iIdEmpresa', type: 'int' },
+                                    { name: 'sNomEmpleado', type: 'string' },
+                                    { name: 'ianio', type: 'int' },
+                                    { name: 'iTipoPeriodo', type: 'int' },
+                                    { name: 'iPeriodo', type: 'int' },
+                                    { name: 'bEmailSent', type: 'string' },
+                                    { name: 'sEmailSent', type: 'string' },
+                                ]
+                        };
+                        var dataAdapter = new $.jqx.dataAdapter(source);
+                        $("#TbEjeSend").jqxGrid(
+                            {
+                                width: 930,
+                                source: dataAdapter,
+                                columns: [
+                                    { text: 'Empresa No', datafield: 'iIdEmpresa', width: 50 },
+                                    { text: 'Nombre de Empleado', datafield: 'sNomEmpleado', width: 300 },
+                                    { text: 'Año ', datafield: 'ianio', width: 100 },
+                                    { text: 'Tipo de Periodo', datafield: 'iTipoPeriodo', width: 100 },
+                                    { text: 'Periodo', datafield: 'iPeriodo', width: 80 },
+                                    { text: 'Email', datafield: 'sEmailSent', width: 200 },
+                                    { text: 'Email enviado', datafield: 'bEmailSent', width: 100 },
+                                ]
+                            });
+                    }
+               
                 };
 
             }
@@ -379,15 +404,98 @@
 
     // envia correos 
     FSenEmail = () => {
-        if (BtnSenCorreo.value == 1) {
+        console.log('envia correo');
+        if (btnEnviCorre.value == 1) {
             
-            const dataSend = { Ccp: TextCopiaa.value, Anio: TextBAnioProce.value, TipoPeriodo: DroTipoPeriodo.value, Perido: DropPerido.value, sIdEmpresas: Empresas, iRecibo: DroTipoRecibo.value, sDEscripcion: TextDEesp.value}
+            const dataSend = { Anio: TextBAnioProce.value, TipoPeriodo: DroTipoPeriodo.value, Perido: DropPerido.value, sIdEmpresas: Empresas, iRecibo: DroTipoRecibo.value, sDEscripcion: TextDEesp.value}
             console.log(dataSend);
             $.ajax({
                 url: "../Empleados/EnvioEmail",
                 type: "POST",
                 data: dataSend,
-                success: (TablasDat) => {
+                success: function (data) {
+                    console.log(data);
+                    if (data[0].sMensaje == "Succes") {
+                        if (data[0].iNoEnviados < 2) {
+                            fshowtypealert('Emision de Recibos', 'Se enviaro un correos electronicos', 'success');
+                            if (DroTipoRecibo.value == "1") {
+                               
+                                    var source =
+                                    {
+                                        localdata: data,
+                                        datatype: "array",
+                                        datafields:
+                                            [
+                                                { name: 'iIdEmpresa', type: 'int' },
+                                                { name: 'sNomEmpleado', type: 'string' },
+                                                { name: 'ianio', type: 'int' },
+                                                { name: 'iTipoPeriodo', type: 'int' },
+                                                { name: 'iPeriodo', type: 'int' },
+                                                { name: 'bEmailSent', type: 'string' },
+                                                { name: 'sEmailSendSim', type: 'string' },
+                                            ]
+                                    };
+                                    var dataAdapter = new $.jqx.dataAdapter(source);
+                                    $("#TbEjeSend").jqxGrid(
+                                        {
+                                            width: 930,
+                                            source: dataAdapter,
+                                            columns: [
+                                                { text: 'Empresa No', datafield: 'iIdEmpresa', width: 50 },
+                                                { text: 'Nombre de Empleado', datafield: 'sNomEmpleado', width: 300 },
+                                                { text: 'Año ', datafield: 'ianio', width: 100 },
+                                                { text: 'Tipo de Periodo', datafield: 'iTipoPeriodo', width: 100 },
+                                                { text: 'Periodo', datafield: 'iPeriodo', width: 80 },
+                                                { text: 'Email', datafield: 'sEmailSent', width: 200 },
+                                                { text: 'Email enviado', datafield: 'sEmailSendSim', width: 100 },
+                                            ]
+                                        });
+                                }
+                                if (DroTipoRecibo.value == "2") {
+                                    console.log('op2')
+                                    var source =
+                                    {
+                                        localdata: data,
+                                        datatype: "array",
+                                        datafields:
+                                            [
+                                                { name: 'iIdEmpresa', type: 'int' },
+                                                { name: 'sNomEmpleado', type: 'string' },
+                                                { name: 'ianio', type: 'int' },
+                                                { name: 'iTipoPeriodo', type: 'int' },
+                                                { name: 'iPeriodo', type: 'int' },
+                                                { name: 'bEmailSent', type: 'string' },
+                                                { name: 'sEmailSent', type: 'string' },
+                                            ]
+                                    };
+                                    var dataAdapter = new $.jqx.dataAdapter(source);
+                                    $("#TbEjeSend").jqxGrid(
+                                        {
+                                            width: 930,
+                                            source: dataAdapter,
+                                            columns: [
+                                                { text: 'Empresa No', datafield: 'iIdEmpresa', width: 50 },
+                                                { text: 'Nombre de Empleado', datafield: 'sNomEmpleado', width: 300 },
+                                                { text: 'Año ', datafield: 'ianio', width: 100 },
+                                                { text: 'Tipo de Periodo', datafield: 'iTipoPeriodo', width: 100 },
+                                                { text: 'Periodo', datafield: 'iPeriodo', width: 80 },
+                                                { text: 'Email', datafield: 'sEmailSent', width: 200 },
+                                                { text: 'Email enviado', datafield: 'bEmailSent', width: 100 },
+                                            ]
+                                        });
+                                }
+                        }
+                        else {
+
+                        fshowtypealert('Emision de Recibos', 'Se enviaron ' + data[0].iNoEnviados + ' correos electronicos', 'success');
+
+                       }
+                      
+                    }
+                    else{
+                        fshowtypealert('Emision de Recibos', 'Error al enviar los correos electronicos favor de contactar a sistemas', 'Error');
+
+                    }
 
                 }
             });
@@ -398,8 +506,8 @@
        
     };
 
-    BtnSenCorreo.addEventListener('click', FSenEmail)
- //   btnEnviCorre.addEventListener('click',FSenEmail)
+  //  BtnSenCorreo.addEventListener('click', FSenEmail)
+      btnEnviCorre.addEventListener('click',FSenEmail)
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {

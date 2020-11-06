@@ -1152,7 +1152,7 @@ namespace Payroll.Controllers
 
         /// genera pdf fmar&&Ab
         [HttpPost]
-        public JsonResult GeneraPdf(int keySettlement, int keyEmployee, int KeyEmpresa)
+        public JsonResult GeneraPdf(int keySettlement, int keyEmployee, int KeyEmpresa,int Option, string url)
         {
             Boolean flag = false;
             String messageError = "none";
@@ -1193,7 +1193,15 @@ namespace Payroll.Controllers
                         else
                         {
                             flag = true;
-                            string pathSaveDocs = Server.MapPath("~/Content/");
+                            string pathSaveDocs = " ";
+                            if (Option == 0) {
+                                pathSaveDocs= Server.MapPath("~/Content/");
+                            }
+
+                            if (Option == 1) {
+
+                                pathSaveDocs = url;
+                            }
                             nameFolder = "DOCSFINIQUITOS";
                             string nameFileTest = "test.txt";
                             if (!Directory.Exists(pathSaveDocs + nameFolder))
@@ -1768,7 +1776,7 @@ namespace Payroll.Controllers
                 messageError = exc.Message.ToString();
             }
             string nameFileSession = Path.GetFileNameWithoutExtension(nameFilePdf);
-            Session[nameFilePdf] = nameFilePdf;
+           // Session[nameFilePdf] = nameFilePdf;
             return Json(new { Bandera = flag, MensajeError = messageError, NombrePDF = nameFilePdf, InfoFiniquito = dataDownEmployee, NombreFolder = nameFolder });
         }
 
@@ -1777,4 +1785,4 @@ namespace Payroll.Controllers
 
 
     }
-}
+}   

@@ -218,8 +218,6 @@
         });
 
     };
-
-
     FSelectDefinicion();
 
     // abre ventana del agregar 

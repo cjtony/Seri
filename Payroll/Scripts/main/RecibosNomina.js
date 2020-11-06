@@ -113,14 +113,9 @@
                         }
 
                     }
-                    if (valorChekFint.checked == true) {
-                        
-                            document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
-                        
-
-                    }
-                  
-                    
+                    if (valorChekFint.checked == true) { 
+                       document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
+                    }                    
                 }
             },
         });
@@ -257,7 +252,6 @@
     });
 
 
-
      /// validacion de año
 
      $("#iAnoDe").keyup(function () {
@@ -380,15 +374,10 @@
                             $('#LaTotalDedu').html(TotalDedu);
                         }
                     }
-
-                    BtbGeneraPDF.value = Result.LsTotal[0].iIdFiniquito;
-                    Total = TotalPercep - TotalDedu;
-                    $('#LaTotalNom').html(Total);
-
-                    FTipoFiniquito();
-
-
-
+                      BtbGeneraPDF.value = Result.LsTotal[0].iIdFiniquito;
+                      Total = TotalPercep - TotalDedu;
+                      $('#LaTotalNom').html(Total);
+                      FTipoFiniquito();
                 }
             });
         }
@@ -399,7 +388,6 @@
                 type: "POST",
                 data: dataSend2,
                 success: (data) => {
-                    console.log(data);
                     var source =
                     {
                         localdata: data,
@@ -459,10 +447,8 @@
 
 
 
-        }
-        
+        }    
     };
-
 
     FTipoFiniquito = () => {
      
@@ -498,8 +484,6 @@
 
 
     };
-
-
 
      btnFloBuscar.addEventListener('click', FBuscar);
     /// Genera archivo XML
@@ -548,8 +532,6 @@
         $("#jqxInput").empty();
         $("#jqxInput").jqxInput('clear');
         $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "", valueMember: "", width: 350, height: 30, minLength: 1 });
-
-
 
     };
     
@@ -710,6 +692,7 @@
             success: function (data) {
                 if (data[0].sMensaje != "NorCert") {
                     btnDowlan.style.visibility = 'visible';
+                    btnDowlan.value = data[0].sUrl;
                     $('#jqxLoader').jqxLoader('close');
                     fshowtypealert('Recibos de nomina', 'sean generado el PDF correctamente', 'success');         
                   
@@ -737,14 +720,14 @@
             imite = 2,
             arreglosubcadena = periodo.split(separador, limite);
 
-            var nombre = "RecibosNom_" + EmpresaNom.value+ "_" + arreglosubcadena[0]+".pdf";   
-            var url = '\\Archivos\\certificados\\' + nombre;
+            var nombre = "RecibosNom_E" + EmpresaNom.value+ "_P" + arreglosubcadena[0]+".pdf";   
+            var url = '\\Archivos\\' + nombre;
             window.open(url);
             btnDowlan.style.visibility = 'hidden';
         };
 
         if (btnXmlms.value == 1) {
-            var url = '\\Archivos\\certificados\\ZipXML.zip';
+            var url = '\\Archivos\\ZipXML.zip';
             window.open(url);
             btnDowlan.style.visibility = 'hidden';
         };

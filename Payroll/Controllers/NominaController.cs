@@ -44,6 +44,12 @@ namespace Payroll.Controllers
             return PartialView();
         }
 
+        public PartialViewResult ComparativoNomina()
+        {
+
+            return PartialView();
+        }
+
 
         //Guarda los datos de la Definicion
         [HttpPost]
@@ -511,9 +517,6 @@ namespace Payroll.Controllers
             string NomProceso = "CNomina";
             FuncionesNomina Dao2 = new FuncionesNomina();
             obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path);
-          
-          
-            
             return null;
         }
         [HttpPost]
@@ -620,8 +623,26 @@ namespace Payroll.Controllers
         {
            FuncionesNomina dao = new FuncionesNomina();         
             List<TPProcesos> Dta = new List<TPProcesos>();
-            string Parametro = anio+","+ iTipoPeriodo+","+ iPeriodo+","+ iIdCalculosHd+ "%";          
+            List<TPProcesos> Dta2 = new List<TPProcesos>();
+            string Folio = "";
+            if (iPeriodo > 9)
+            {
+               Folio = anio.ToString() + (iTipoPeriodo * 10) + iPeriodo + "0";
+            }
+            if (iPeriodo < 10) {
+                Folio = anio.ToString() + (iTipoPeriodo * 10) +"0"+ iPeriodo + "0";
+            }
+            string Parametro = anio+","+ iTipoPeriodo+","+ iPeriodo+","+ iIdCalculosHd+ "%";
+            Dta2 = dao.sp_CalculosHdFinProces_Retrieve_TPlantillaCalculosHd(Convert.ToInt32(Folio), iIdCalculosHd);
             Dta = dao.sp_StatusProceso_Retrieve_TPProceso(Parametro);
+
+            if (Dta[0].sMensaje != "No hay datos") {
+                if (Dta[0].sMensaje == Dta2[0].sMensaje) {
+                    if (Dta[0].sEstatusJobs == "Terminado" && Dta2[0].sEstatusJobs == "Procesando") {
+                        Dta[0].sEstatusJobs = "Procesando";
+                    }              
+                } 
+            }
             return Json(Dta);
         }
 
@@ -779,16 +800,19 @@ namespace Payroll.Controllers
                                         LE2 = Dao.sp_TipoPPEmision_Retrieve_CInicioPeriodo(idEmpresa, OP);
                                         if (LE2.Count > 0)
                                         {
+                                        if (a < LE2.Count) {
                                             if (LE[a].iPeriodo == LE2[a].iPeriodo)
                                             {
                                                 Validacion = "Correcta";
-                                                
+
                                             }
                                             else
                                             {
                                                 Validacion = "incorrecta";
                                                 x = 99;
                                             }
+
+                                        };                                          
                                         };
                                         
 
@@ -880,6 +904,18 @@ namespace Payroll.Controllers
             path = path + "prueba.bat";
 
             return path;
+        }
+
+        // Muestra el listado de periodo en la  pantalla comparativo nominas
+
+        [HttpPost]
+        public JsonResult ListPeriodoComp(int iIdEmpresesas, int ianio, int iTipoPeriodo)
+        {
+            List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LPe = dao.sp_CIncioPeriodo_Retrieve_Periodo(iIdEmpresesas, ianio, iTipoPeriodo);
+            return Json(LPe);
+
         }
     }
 }

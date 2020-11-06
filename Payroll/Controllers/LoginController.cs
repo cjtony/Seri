@@ -35,6 +35,10 @@ namespace Payroll.Controllers
             }
             foreach (var item in permBean)
             {
+                if (item.sPerfil == "Documentos") { Session["Documentos"] = 1; break; }
+            }
+            foreach (var item in permBean)
+            {
                 if (item.sPerfil == "Incidencias") { Session["Incidencias"] = 1; break; }
             }
             foreach (var item in permBean)

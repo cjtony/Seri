@@ -65,6 +65,10 @@
       <HintPath>..\packages\MessagingToolkit.QRCode.1.3.0\lib\MessagingToolkit.QRCode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -165,6 +169,7 @@
     <Compile Include="Controllers\ConfigDataBankController.cs" />
     <Compile Include="Controllers\ControlPayrollController.cs" />
     <Compile Include="Controllers\DispersionController.cs" />
+    <Compile Include="Controllers\DocumentosController.cs" />
     <Compile Include="Controllers\EditDataGeneralController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
@@ -850,7 +855,7 @@
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.highcontrast.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.light.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.material-green.css" />
-    <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.material-purple.css" />
+    <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.materialpurple.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.material.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.metro.css" />
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.metrodark.css" />
@@ -875,6 +880,7 @@
     <Content Include="Scripts\main\branchoffices.js" />
     <Content Include="Scripts\main\catalogos.js" />
     <Content Include="Scripts\main\centrcost.js" />
+    <Content Include="Scripts\main\CompNomina.js" />
     <Content Include="Scripts\main\Creditos.js" />
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
@@ -900,6 +906,7 @@
     <Content Include="Scripts\main\formValidation.js" />
     <Content Include="Scripts\main\Incidencias.js" />
     <Content Include="Scripts\main\IncidenciasProg.js" />
+    <Content Include="Scripts\main\KitBajas.js" />
     <Content Include="Scripts\main\load1.js" />
     <Content Include="Scripts\main\load2.js" />
     <Content Include="Scripts\main\loadcatalogosemploye.js" />
@@ -1006,6 +1013,8 @@
     <Content Include="Views\Catalogos\GruposEmpresas.cshtml" />
     <Content Include="Views\Catalogos\CGruposEmpresas.cshtml" />
     <Content Include="Views\Empleados\EmisionRecibos.cshtml" />
+    <Content Include="Views\Documentos\KitContratacion.cshtml" />
+    <Content Include="Views\Nomina\ComparativoNomina.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1029,6 +1038,20 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="SHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
