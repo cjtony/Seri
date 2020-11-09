@@ -82,6 +82,25 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult InfoDaysYearsBefore(int business, int employee)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            DescEmpleadoVacacionesBean desc = new DescEmpleadoVacacionesBean();
+            BajasEmpleadosDaoD daoD = new BajasEmpleadosDaoD();
+            try {
+                desc = daoD.sp_Select_Dias_A_Anteriores(business, employee);
+                if (desc.DiasAAnteriores != 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, days = desc.DiasAAnteriores });
+        }
+
+        [HttpPost]
         public JsonResult ShowDataDown(int keyEmployee)
         {
             Boolean flag = false;

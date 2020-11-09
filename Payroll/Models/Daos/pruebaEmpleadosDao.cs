@@ -118,12 +118,9 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrliIdEmpresa", IdEmpresa));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
-            if (data.HasRows)
-            {
-                while (data.Read())
-                {
-                    DescEmpleadoVacacionesBean listEmpleados = new DescEmpleadoVacacionesBean();
-
+            if (data.HasRows) {
+                while (data.Read()) {
+                    DescEmpleadoVacacionesBean listEmpleados = new DescEmpleadoVacacionesBean(); 
                     listEmpleados.iFlag = int.Parse(data["iFlag"].ToString());
                     listEmpleados.IdEmpleado = int.Parse(data["IdEmpleado"].ToString());
                     listEmpleados.Nombre_Empleado = data["Nombre_Empleado"].ToString();
@@ -139,15 +136,13 @@ namespace Payroll.Models.Daos
                     listEmpleados.DiasPrima = (data["DiasPrima"].ToString().Length > 0) ? int.Parse(data["DiasPrima"].ToString()) : 0;
                     listEmpleados.DiasDisfrutados = (data["DiasDisfrutados"].ToString().Length > 0) ? int.Parse(data["DiasDisfrutados"].ToString()) : 0;
                     listEmpleados.DiasRestantes = (data["DiasRestantes"].ToString().Length > 0) ? int.Parse(data["DiasRestantes"].ToString()) : 0;
+                    listEmpleados.Empresa_id = IdEmpresa.ToString();
                     list.Add(listEmpleados);
                 }
-            }
-            else
-            {
+            } else {
                 list = null;
             }
             data.Close();
-
             return list;
         }
         public List<PeriodoVacacionesBean> sp_Retrieve_PeriodosVacaciones(int IdEmpleado)

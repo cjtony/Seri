@@ -215,7 +215,7 @@ namespace Payroll.Controllers
             string pathSaveFile = Server.MapPath("~/Content/");
             string nameFolder   = "REPORTES";
             string nameFolderRe = "NOMINA";
-            string initName = "";
+            string initName     = "";
             if (typeSend == 1) {
                 initName = "HCalculo_E";
             } else {
@@ -299,7 +299,7 @@ namespace Payroll.Controllers
 
                     if (typeSend == 1) {
                         // Obtenemos los renglones calculados
-                        listRenglones = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 0, 1000);
+                        listRenglones = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 0, 1000, typeOption);
                         if (listRenglones.Count > 0)
                         {
                             RenglonesNom = new int[listRenglones.Count];
@@ -324,7 +324,7 @@ namespace Payroll.Controllers
                         //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
                         //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES FISCAL";
 
-                        listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 1000, 2000);
+                        listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 1000, 2000, typeOption);
                         if (listRenglones1.Count > 0)
                         {
                             RenglonesNomDeduc = new int[listRenglones1.Count];
@@ -351,7 +351,7 @@ namespace Payroll.Controllers
                         worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
                         worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR FISCAL";
 
-                        listRenglonesEsp = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 0, 1000);
+                        listRenglonesEsp = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 0, 1000, typeOption);
                         if (listRenglonesEsp.Count > 0)
                         {
                             RenglonesNomEspejo = new int[listRenglonesEsp.Count];
@@ -375,7 +375,7 @@ namespace Payroll.Controllers
                         //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
                         //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES GASTOS";
 
-                        listRenglonesEsp1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 1000, 2000);
+                        listRenglonesEsp1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 1000, 2000, typeOption);
                         if (listRenglonesEsp1.Count > 0)
                         {
                             RenglonesNomDeducEspejo = new int[listRenglonesEsp1.Count];
@@ -528,7 +528,7 @@ namespace Payroll.Controllers
                     string inicio = DateTime.Now.ToString("hh:mm:ss");
                     DateTime comienzo = Convert.ToDateTime(inicio);
                     if (typeSend == 1) {
-                        datosGenerales = reportDao.sp_Datos_Generales_HC(keyOptionSel, typePeriod, numberPeriod, yearPeriod, typeSend);
+                        datosGenerales = reportDao.sp_Datos_Generales_HC(keyOptionSel, typePeriod, numberPeriod, yearPeriod, typeSend, typeOption);
                         ValidDataN = (datosGenerales.Count > 0) ? true : false;
                         if (datosGenerales.Count > 0)
                         {
@@ -724,7 +724,7 @@ namespace Payroll.Controllers
                             }
                         }
                     } else {
-                        datosGenerales = reportDao.sp_Datos_Generales_HC_BAJAS(keyOptionSel, typePeriod, numberPeriod, yearPeriod, typeSend);
+                        datosGenerales = reportDao.sp_Datos_Generales_HC_BAJAS(keyOptionSel, typePeriod, numberPeriod, yearPeriod, typeSend, typeOption);
                         ValidDataN = (datosGenerales.Count > 0) ? true : false;
                         if (datosGenerales.Count > 0) {
                             int business = 0, payroll = 0;

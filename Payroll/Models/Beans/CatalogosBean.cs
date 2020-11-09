@@ -455,6 +455,8 @@ namespace Payroll.Models.Beans
         public int DiasDisfrutados { get; set; }
         public int DiasRestantes { get; set; }
 
+        public int DiasAAnteriores { get; set; }
+
 
     }
     public class PVacacionesBean

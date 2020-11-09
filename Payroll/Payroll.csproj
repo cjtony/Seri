@@ -175,6 +175,7 @@
     <Compile Include="Controllers\EmpresasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncidenciasController.cs" />
+    <Compile Include="Controllers\KioskoMController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MassiveUpsAndDownsController.cs" />
     <Compile Include="Controllers\NominaController.cs" />
@@ -910,6 +911,7 @@
     <Content Include="Scripts\main\formValidation.js" />
     <Content Include="Scripts\main\Incidencias.js" />
     <Content Include="Scripts\main\IncidenciasProg.js" />
+    <Content Include="Scripts\main\KioskoM\checkreceipt.js" />
     <Content Include="Scripts\main\load1.js" />
     <Content Include="Scripts\main\load2.js" />
     <Content Include="Scripts\main\loadcatalogosemploye.js" />
@@ -1015,6 +1017,7 @@
     <Content Include="Views\Catalogos\VistaRenglones.cshtml" />
     <Content Include="Views\Catalogos\GruposEmpresas.cshtml" />
     <Content Include="Views\Catalogos\CGruposEmpresas.cshtml" />
+    <Content Include="Views\KioskoM\ConsultaRecibo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

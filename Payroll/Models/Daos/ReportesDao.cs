@@ -103,7 +103,7 @@ namespace Payroll.Models.Daos
             return renglonesHCBeans;
         }
 
-        public List<DatosGeneralesHC> sp_Datos_Generales_HC_BAJAS(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int typeSend)
+        public List<DatosGeneralesHC> sp_Datos_Generales_HC_BAJAS(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int typeSend, string option)
         {
             List<DatosGeneralesHC> datosGenerales = new List<DatosGeneralesHC>();
             try
@@ -113,6 +113,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
                 cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", option));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {
@@ -262,7 +263,7 @@ namespace Payroll.Models.Daos
         }
 
         // Obtenemos los renglones de la hc que fueron calculados
-        public List<RenglonesHCBean> sp_Renglones_Hoja_Calculo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int start, int end)
+        public List<RenglonesHCBean> sp_Renglones_Hoja_Calculo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int start, int end, string tipo)
         {
             List<RenglonesHCBean> renglonesHCBeans  = new List<RenglonesHCBean>();
             List<RenglonesHCBean> renglonesHCBeans1 = new List<RenglonesHCBean>();
@@ -276,6 +277,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Espejo", ismirror));
                 cmd.Parameters.Add(new SqlParameter("@Inicio", start));
                 cmd.Parameters.Add(new SqlParameter("@Final", end));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", tipo));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows) {
                     while (data.Read()) {
@@ -351,7 +353,7 @@ namespace Payroll.Models.Daos
 
 
         // Obtenemos los datos generales de la hc
-        public List<DatosGeneralesHC> sp_Datos_Generales_HC(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int typeSend)
+        public List<DatosGeneralesHC> sp_Datos_Generales_HC(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int typeSend, string type)
         {
             List<DatosGeneralesHC> datosGenerales = new List<DatosGeneralesHC>();
             try {
@@ -362,6 +364,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
                 cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
                 cmd.Parameters.Add(new SqlParameter("@TipoEnvio", typeSend));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", type));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows) {
                     while (data.Read()) {

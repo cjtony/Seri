@@ -24,7 +24,8 @@
                         }
                     } else {
                         $("#resultSearchEmpleados").append("<button type='button' class='list-group-item list-group-item-action btnListEmpleados font-labels'  >" + data[0]["Nombre_Empleado"] + "<br><small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small> </button>");
-                    }                }
+                    }
+                }
             });
         } else {
             $("#resultSearchEmpleados").empty();
@@ -75,6 +76,7 @@
             success: (emp) => {
                 console.log('Mostrando datos de empleado');
                 console.log(emp);
+                fLoadInfoDaysYearsBefore(parseInt(emp[0].Empresa_id), emp[0].IdEmpleado);
                 //document.getElementById("nameuser").innerHTML = emp[0].Nombre_Empleado + " " + emp[0].Apellido_Paterno_Empleado + " " + emp[0].Apellido_Materno_Empleado;
                 //carga datos de header para baja
                 $.ajax({
@@ -84,6 +86,7 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: (res) => {
+                        console.log(res);
                         document.getElementById('keyEmployee').value        = res[0];
                         document.getElementById("id_emp").innerHTML         = res[0] + " - " + res[1];
                         document.getElementById("sueldo_emp").innerHTML     = "$ " + res[2];
@@ -123,17 +126,19 @@
     /*
      * Constantes bajas
      */
-    const downSettlement = document.getElementById('down-settlement');
+    const downSettlement        = document.getElementById('down-settlement');
     const btnShowWindowDataDown = document.getElementById('btnShowWindowDataDonw');
-    const btnGuardaBaja = document.getElementById('btnGuardaBaja');
-    const keyEmployee   = document.getElementById('keyEmployee');
+    const btnGuardaBaja    = document.getElementById('btnGuardaBaja');
+    const keyEmployee      = document.getElementById('keyEmployee');
     const dateAntiquityEmp = document.getElementById('dateAntiquityEmp');
     const inTiposBaja   = document.getElementById('inTiposBaja');
     const inMotivosBaja = document.getElementById('inMotivosBaja');
+    const daysYearsAftr = document.getElementById('daysYearsAfter');
     const dateDownEmp   = document.getElementById('dateDownEmp');
     const daysPendings  = document.getElementById('daysPendings');
     const dateSendDown  = document.getElementById('dateSendDown');
     const compSendEsp   = document.getElementById('compSendEsp');
+    const divContentP0  = document.getElementById('div-content-param0');
     const divContentP1  = document.getElementById('div-content-param1');
     const divContentP2  = document.getElementById('div-content-param2');
     const divContentP3  = document.getElementById('div-content-param3');
@@ -141,6 +146,7 @@
     const btnCloseSettlementSelect = document.getElementById("btnCloseSettlementSelect");
     const icoCloseSettlementSelect = document.getElementById("icoCloseSettlementSelect");
 
+    divContentP0.classList.add('d-none');
     divContentP1.classList.add('d-none');
     divContentP2.classList.add('d-none');
     divContentP3.classList.add('d-none');
@@ -261,13 +267,48 @@
         try {
             const downSetValue = downSettlement.value;
             if (downSetValue == "1") {
+                fAddAnimatedFields(divContentP0);
                 fAddAnimatedFields(divContentP1);
                 fAddAnimatedFields(divContentP2);
                 fAddAnimatedFields(divContentP3);
             } else {
+                fRemAnimatedFields(divContentP0);
                 fRemAnimatedFields(divContentP1);
                 fRemAnimatedFields(divContentP2);
                 fRemAnimatedFields(divContentP3);
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que obtiene los dias de años anteriores
+    fLoadInfoDaysYearsBefore = (param1, param2) => {
+        try {
+            if (param1 > 0 && param2 > 0) {
+                $.ajax({
+                    url: "../BajasEmpleados/InfoDaysYearsBefore",
+                    type: "POST",
+                    data: { business: param1, employee: param2 },
+                    beforeSend: () => {
+                        console.log('Enviando');
+                    }, success: (data) => {
+                        daysYearsAftr.value = data.days;
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion no valida');
+                location.reload();
             }
         } catch (error) {
             if (error instanceof EvalError) {
@@ -432,7 +473,8 @@
         dateDownEmp.value    = "";
         daysPendings.value   = 0;
         dateSendDown.value   = "none";
-        compSendEsp.value    = "none";
+        compSendEsp.value = "none";
+        fRemAnimatedFields(divContentP0);
         fRemAnimatedFields(divContentP1);
         fRemAnimatedFields(divContentP2);
         fRemAnimatedFields(divContentP3);
