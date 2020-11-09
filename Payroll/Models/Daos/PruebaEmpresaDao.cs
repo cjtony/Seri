@@ -8,7 +8,6 @@ namespace Payroll.Models.Daos
 {
     public class PruebaEmpresaDao : Conexion
     {
-
         public List<PruebaEmpresaBean> sp_Retrieve_PruevaEmpresas()
         {
             List<PruebaEmpresaBean> list = new List<PruebaEmpresaBean>();
@@ -91,6 +90,7 @@ namespace Payroll.Models.Daos
                 }
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
             return ClaveEmpresa + 1;
         }
         public List<PruebaEmpresaBean> sp_Retrieve_NombreEmpresa(int IdEmpresa)
@@ -459,6 +459,8 @@ namespace Payroll.Models.Daos
                 res = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
             return res;
         }
         public List<RegimenFiscalBean> sp_CRegimen_Fiscal_Retrieve()
@@ -491,6 +493,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -528,6 +531,7 @@ namespace Payroll.Models.Daos
 
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -562,6 +566,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -593,6 +598,7 @@ namespace Payroll.Models.Daos
                 lista = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return lista;
         }
@@ -628,6 +634,7 @@ namespace Payroll.Models.Daos
                 res = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return res;
         }
@@ -819,6 +826,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -841,8 +849,8 @@ namespace Payroll.Models.Daos
             {
                 while (data.Read())
                 {
-                    string ls = data["sRespuesta"].ToString();
-                    list.Add(ls);
+                    list.Add( data["iFlag"].ToString());
+                    list.Add( data["sMensaje"].ToString());
                 }
             }
             else
@@ -850,6 +858,7 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return list;
         }
@@ -916,6 +925,7 @@ namespace Payroll.Models.Daos
                 res = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return res;
         }
@@ -950,6 +960,7 @@ namespace Payroll.Models.Daos
                 res = null;
             }
             data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
             return res;
         }
@@ -1003,7 +1014,7 @@ namespace Payroll.Models.Daos
                 {
                     PVacacionesBean list = new PVacacionesBean
                     {
-                        Periodo = data["aniversario_anterior"].ToString().Substring(0, 10) + " a " + data["aniversario_proximo"].ToString().Substring(0, 10),
+                        Periodo = data["aniversario_anterior"].ToString() + " a " + data["aniversario_proximo"].ToString(),
                         DiasPrima = int.Parse(data["DiasPrima"].ToString()),
                         DiasDisfrutados = int.Parse(data["DiasDisfrutados"].ToString()),
                         DiasRestantes = int.Parse(data["DiasRestantes"].ToString()),
