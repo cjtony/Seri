@@ -1,0 +1,68 @@
+﻿
+<div class="container-fluid mb-5">
+
+    <div class="row">
+        <div class="col-sm-10 offset-1">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist"> 
+                    <a class="nav-item nav-link active font-navs" id="nav-consulta-tab" data-toggle="tab" href="#nav-consulta" role="tab" aria-controls="nav-consulta" aria-selected="true">
+                        <i class="fas fa-laptop mr-2"></i> Consultar
+                    </a>
+                </div>
+            </nav>
+            <div class="tab-content bg-white" id="nav-tabContent">
+                <div class="tab-pane fade show active p-3" id="nav-consulta" role="tabpanel" aria-labelledby="nav-consulta-tab">
+                    <div class="tab-content" id="nav-tabContent1">
+                        <div class="tab-pane fade show active p-3" id="nav-consulta" role="tabpanel" aria-labelledby="nav-consulta-tab">
+                            <div class="row mt-2">
+                                <div id="div-most-alert-data-consulta" class="col-md-6 offset-3"></div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="text-left">
+                                        <h6 class="col-ico font-navs">
+                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i> Completa los parametros </b>
+                                        </h6>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="rounded shadow p-3 border-left-primary border-right-primary">
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="receipt">Recibo</label>
+                                        <select class="form-control form-control-sm" id="receipt">
+                                            <option value="none">Selecciona</option>
+                                            <option value="1">Fiscal</option>
+                                            <option value="0">Simple</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="period">Periodo</label>
+                                        <select class="form-control form-control-sm" id="period">
+                                            <option value="none">Selecciona</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="email">Correo electronico</label>
+                                        <input type="email" class="form-control form-control-sm" id="email" />
+                                    </div>
+                                    <div class="form-group text-center mt-4">
+                                        <hr />
+                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-check-receipt">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                            <span class="text">Consultar</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<script type="text/javascript" src="~/Scripts/main/KioskoM/checkreceipt.js?v=0.3"></script>

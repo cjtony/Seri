@@ -667,6 +667,9 @@
 
     // Funcion que genera el reporte de la hoja de calculo
     fGenerateReportPayroll = (option, keyOption, type) => {
+        //console.log("opcion: " + option);
+        //console.log("llave: "  + keyOption);
+        //console.log("tipo: "   + type);
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 let urlSend  = "";
@@ -690,11 +693,13 @@
                 if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
                     if (paramNper.value != "" && paramNper.value > 0) {
                         if (paramTper.value != "" && paramTper.value > 0) {
-                            const period = localStorage.getItem("period");
+                            const period   = localStorage.getItem("period");
+                            const dataSend = { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) };
+                            console.log(dataSend);
                             $.ajax({
                                 url: "../Reportes/" + urlSend,
                                 type: "POST",
-                                data: { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) },
+                                data: dataSend,
                                 beforeSend: (evt) => {
                                     fDisabledButtonsRep();
                                     console.log('Ruta enviada: ' + urlSend);

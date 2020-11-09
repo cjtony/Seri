@@ -117,17 +117,21 @@
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Fecha Baja</label>
                                         <input type="date" class="form-control form-control-sm" id="dateDownEmp" />
                                     </div>
-                                    <div class="form-group col-md-4 animated" id="div-content-param1">
+                                    <div class="form-group col-md-3 animated" id="div-content-param0">
+                                        <label class="col-form-label font-labels col-ico font-weight-bold">Días A. anteriores</label>
+                                        <input type="number" class="form-control form-control-sm" id="daysYearsAfter" pattern="^[0-9]+" />
+                                    </div>
+                                    <div class="form-group col-md-3 animated" id="div-content-param1">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Dias pendientes</label>
                                         <input type="number" class="form-control form-control-sm" id="daysPendings" value="0" min="0" pattern="^[0-9]+" />
                                     </div>
-                                    <div class="col-md-4 form-group animated" id="div-content-param2">
+                                    <div class="col-md-3 form-group animated" id="div-content-param2">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Fecha a usar</label>
                                         <select class="form-control form-control-sm" id="dateSendDown">
                                             <option value="none">Selecciona</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-4 form-group animated" id="div-content-param3">
+                                    <div class="col-md-3 form-group animated" id="div-content-param3">
                                         <label class="col-form-label font-labels col-ico font-weight-bold">Con compensacion especial</label>
                                         <select class="form-control form-control-sm" id="compSendEsp">
                                             <option value="none" selected>Selecciona</option>
@@ -348,5 +352,5 @@
     </div>
 </div>
 
-<script src="~/Scripts/main/BajasEmpleados.js?n=5.5"></script>
-<script type="text/javascript" src="~/Scripts/main/BajasMasivas/main.js?n=1"></script>
+<script src="~/Scripts/main/BajasEmpleados.js?n=5.6"></script>
+<script type="text/javascript" src="~/Scripts/main/BajasMasivas/main.js?n=1.2"></script>

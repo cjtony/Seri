@@ -45,6 +45,30 @@ namespace Payroll.Models.Daos
             return downVerify;
         }
 
+        public DescEmpleadoVacacionesBean sp_Select_Dias_A_Anteriores(int business, int employee)
+        {
+            DescEmpleadoVacacionesBean descEmpleado = new DescEmpleadoVacacionesBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Select_Dias_A_Anteriores", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", employee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", business));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    descEmpleado.DiasAAnteriores = Convert.ToInt32(data["DiasAAnteriores"].ToString());
+                } else {
+                    descEmpleado.DiasAAnteriores = 0;
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return descEmpleado;
+        }
+
         public PeriodoActualBean sp_Load_Info_Periodo_Empr(int keyBusiness, int yearAct)
         {
             PeriodoActualBean periodoActual = new PeriodoActualBean();
