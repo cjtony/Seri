@@ -129,10 +129,22 @@ namespace Payroll.Models.Daos
                     listEmpleados.DescripcionDepartamento = data["DescripcionDepartamento"].ToString();
                     listEmpleados.DescripcionPuesto = data["DescripcionPuesto"].ToString();
                     listEmpleados.FechaIngreso = data["FechaIngreso"].ToString();
-                    listEmpleados.Id_Per_Vac = int.Parse(data["IdPer_Vac"].ToString());
+                    if (data["IdPer_Vac"].ToString() != "") {
+                        listEmpleados.Id_Per_Vac = int.Parse(data["IdPer_Vac"].ToString());
+                    } else {
+                        listEmpleados.Id_Per_Vac = 0;
+                    }
+                    if (data["IdPer_Vac_Ln"].ToString() != "") {
+                        listEmpleados.Id_Per_Vac_Ln = int.Parse(data["IdPer_Vac_Ln"].ToString());
+                    } else {
+                        listEmpleados.Id_Per_Vac_Ln = 0;
+                    }
+                    if (data["Anio"].ToString() != "") {
+                        listEmpleados.Anio = int.Parse(data["Anio"].ToString());
+                    } else {
+                        listEmpleados.Anio = 0;
+                    }
                     listEmpleados.Fecha_Aniversario = data["FechaAntiguedad"].ToString();
-                    listEmpleados.Id_Per_Vac_Ln = int.Parse(data["IdPer_Vac_Ln"].ToString());
-                    listEmpleados.Anio = int.Parse(data["Anio"].ToString());
                     listEmpleados.DiasPrima = (data["DiasPrima"].ToString().Length > 0) ? int.Parse(data["DiasPrima"].ToString()) : 0;
                     listEmpleados.DiasDisfrutados = (data["DiasDisfrutados"].ToString().Length > 0) ? int.Parse(data["DiasDisfrutados"].ToString()) : 0;
                     listEmpleados.DiasRestantes = (data["DiasRestantes"].ToString().Length > 0) ? int.Parse(data["DiasRestantes"].ToString()) : 0;

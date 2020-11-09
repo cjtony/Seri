@@ -142,7 +142,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult SearchEmpleado(int IdEmpleado)
         {
-            @Session["Empleado_id"] = IdEmpleado;
+            Session["Empleado_id"] = IdEmpleado;
             List<DescEmpleadoVacacionesBean> empleados = new List<DescEmpleadoVacacionesBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             empleados = Dao.sp_CEmpleado_Retrieve_Empleado(IdEmpleado, int.Parse(Session["IdEmpresa"].ToString()));
