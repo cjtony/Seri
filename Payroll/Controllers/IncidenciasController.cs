@@ -1,6 +1,10 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
@@ -356,6 +360,56 @@ namespace Payroll.Controllers
             int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
             lista = Dao.sp_TRegistro_Incidencias_update_incidencia(Empresa_id, Empleado_id, Incidencia_id, Renglon_id, Cantidad, Saldo, Plazos, Pagos_restantes, Leyenda, Referencia, Fecha_Aplicacion, Numero_dias);
             return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult LoadFile(HttpPostedFileBase fileUpload, string fileType)
+        {
+            List<object> list = new List<object>();
+
+            string RutaSitio = Server.MapPath("~/");
+            string dia = DateTime.Today.ToString("dd");
+            string mes = DateTime.Today.ToString("MM");
+            string año = DateTime.Today.ToString("yyyy");
+            string hora = DateTime.Now.ToString("HH");
+            string minuto = DateTime.Now.ToString("mm");
+
+            string pathGuardado = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/" + dia + "_" + mes + "_" + año + "_" + hora + "_" + minuto + "_" + fileUpload.FileName);
+            string pathLogs = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
+
+            fileUpload.SaveAs(pathGuardado);
+
+            CargaMasivaDao Dao = new CargaMasivaDao();
+
+            DataTable table = Dao.ValidaArchivo(pathGuardado, fileType);
+
+            List<string> ResutLog = new List<string>();
+
+            int i;
+            int j;
+
+            string errorh = "Error en la linea: ";
+            object errorType = new
+            {
+                e1 = "La empresa no existe",
+                e2 = "El renglon no existe",
+                e3 = "El empleado no existe",
+                e4 = "El periodo no es el actual abierto",
+                e5 = "El tipo de dato en la celda es incorrecto"
+            };
+
+            for (i = 0; i < table.Rows.Count; i++)
+            {
+                DataRow row = table.Rows[i];
+                list.Add(row.ItemArray);
+                for ( j = 0; j < table.Columns.Count; j++)
+                {
+                    var r = Dao.ValidaEmpresa(table.Rows[0]["Empresa_id"].ToString());
+
+                    ResutLog.Add(r.ToString());
+                }
+            }
+
+            return Json(list);
         }
     }
 }

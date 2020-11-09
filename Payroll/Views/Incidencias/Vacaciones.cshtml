@@ -72,7 +72,7 @@
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="datepicker">Días</label>
-                            <input type="text" class="form-control" disabled id="diasV" name="diasV" >
+                            <input type="text" class="form-control" disabled id="diasV" name="diasV">
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-primary font-weight-bold w-100 h-100" disabled id="btnCalcVacaciones" type="button">Registrar</button>
@@ -97,18 +97,18 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="search-box col-md-12">
-                        
-                            <label for="inputSearchEmpleados" class="font-labels">Escribe el nombre del empleado que buscas</label>
-                            <input type="text" name="inputSearchEmpleados" id="inputSearchEmpleados" placeholder="Escriba el nombre del empleado" class=" form-control" autocomplete="off"/>
-                            <div id="resultSearchEmpleados" name="resultSearchEmpleados" class="list-group"></div>
-                        
+
+                        <label for="inputSearchEmpleados" class="font-labels">Escribe el nombre del empleado que buscas</label>
+                        <input type="text" name="inputSearchEmpleados" id="inputSearchEmpleados" placeholder="Escriba el nombre del empleado" class=" form-control" autocomplete="off" />
+                        <div id="resultSearchEmpleados" name="resultSearchEmpleados" class="list-group"></div>
+
                     </div>
                     <div class="col-lg-3 col-md-3 col-3 pb-3">
 
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -211,8 +211,8 @@
             var ln_id = document.getElementById("btn_id_periodo_ln");
             $("#diasV").disabled = true;
             //var datos = ;
-            console.log("periodo");
-            console.log(datos);
+            //console.log("periodo");
+            //console.log(datos);
             //$.ajax({
             //    url: "../Incidencias/SavePeriodosVac",
             //    data: datos,
@@ -239,6 +239,10 @@
                 success: (data) => {
                     console.log("periodo guardado");
                     console.log(data);
+                    document.getElementById("frmAddPeriodo").reset();
+                    $("#to").addClass("disabled");
+                    $("#diasV").addClass("disabled");
+                    $("#btnCalcVacaciones").addClass("disabled");
                 }
             });
 
@@ -246,38 +250,40 @@
                 url: "../Incidencias/LoadPeriodosDist",
                 type: "POST",
                 cache: false,
-                data: JSON.stringify({PerVacLn_id: ln_id.value}),
+                data: JSON.stringify({ PerVacLn_id: ln_id.value }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
                     //console.log("regresa periodos");
                     document.getElementById("tabBody").innerHTML = "";
                     for (var i = 0; i < data.length; i++) {
-                        
+
                         if (data[i]["Agendadas"] == "True") {
-                            document.getElementById("tabBody").innerHTML += "<tr>"+
-                                    "<td>" + data[i]["Dias"] + " <input type = 'hidden' class='btn_IdPer_vac_Dist' value = ' " + data[i]["IdPer_vac_Dist"] + " ' > </td>" +
-                                    " <td>" + data[i]["Fecha_Inicio"] + "</td>" +
-                                    " <td>" + data[i]["Fecha_Fin"] + "</td>" +
-                                    " <td><div class='fas fa-check'></div></td>" +
-                                    "<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + data[i]["IdPer_vac_Dist"] + ")'></div></td>"+
+                            document.getElementById("tabBody").innerHTML += "<tr>" +
+                                "<td>" + data[i]["Dias"] + " <input type = 'hidden' class='btn_IdPer_vac_Dist' value = ' " + data[i]["IdPer_vac_Dist"] + " ' > </td>" +
+                                " <td>" + data[i]["Fecha_Inicio"] + "</td>" +
+                                " <td>" + data[i]["Fecha_Fin"] + "</td>" +
+                                " <td><div class='fas fa-check'></div></td>" +
+                                "<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + data[i]["IdPer_vac_Dist"] + ")'></div></td>" +
                                 "</tr > ";
                         } else {
                             document.getElementById("tabBody").innerHTML += "<tr>" +
-                                    "<td>" + data[i]["Dias"] + " <input type='hidden' class='btn_IdPer_vac_Dist' value=' " + data[i]["IdPer_vac_Dist"] + " '> </td>" +
-                                    "<td>" + data[i]["Fecha_Inicio"] + "</td>" +
-                                    "<td>" + data[i]["Fecha_Fin"] + "</td>" +
-                                    "<td></td>" +
-                                    "<td><div class='fas fa-check'></div></td>" +
+                                "<td>" + data[i]["Dias"] + " <input type='hidden' class='btn_IdPer_vac_Dist' value=' " + data[i]["IdPer_vac_Dist"] + " '> </td>" +
+                                "<td>" + data[i]["Fecha_Inicio"] + "</td>" +
+                                "<td>" + data[i]["Fecha_Fin"] + "</td>" +
+                                "<td></td>" +
+                                "<td><div class='fas fa-check'></div></td>" +
                                 "</tr>";
                         }
                     }
-                    
+
                 }
             });
 
             //console.log("llega");
         });
+
+
 
         $(".btn-change-status").on("click", function () {
             Swal.fire({
@@ -290,18 +296,18 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.value) {
-                    //$.ajax({
-                    //    url: "../Incidencias/setDisfrutadas",
-                    //    type: "POST",
-                    //    cache: false,
-                    //    data: datos,
-                    //    dataType: "json",
-                    //    contentType: "application/json; charset=utf-8",
-                    //    success: (data) => {
-                    //        console.log("periodo guardado");
-                    //        console.log(data);
-                    //    }
-                    //});
+                    $.ajax({
+                        url: "../Incidencias/setDisfrutadas",
+                        type: "POST",
+                        cache: false,
+                        data: datos,
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: (data) => {
+                            console.log("periodo guardado");
+                            console.log(data);
+                        }
+                    });
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
@@ -315,7 +321,7 @@
     });
 </script>
 <script>
-    var tab2,tab1;
+    var tab2, tab1;
     function MostrarDatosEmpleado(idE) {
         var txtIdEmpleado = { "IdEmpleado": idE };
         $.ajax({
@@ -326,19 +332,19 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
-                
+
                 $("#resultSearchEmpleados").empty();
                 for (var i = 0; i < data.length; i++) {
                     $("#nomEmp").empty(); $("#nomEmp").append(data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + " " + data[i]["Apellido_Materno_Empleado"]);
                     $("#puesto_emp").empty(); $("#puesto_emp").append(data[i]["DescripcionPuesto"]);
                     $("#area_emp").empty(); $("#area_emp").append(data[i]["DescripcionDepartamento"])
-                    $("#antig_emp").empty(); $("#antig_emp").append(data[i]["FechaIngreso"].substring(0,10));
+                    $("#antig_emp").empty(); $("#antig_emp").append(data[i]["FechaIngreso"].substring(0, 10));
                     $("#vacacionesCollapse").collapse("show");
 
                 }
-                
+
                 CargarTabResumen();
-                
+
                 document.getElementById("inputSearchEmpleados").value = '';
                 ftoggle();
             }
@@ -347,7 +353,7 @@
     function ftoggle() {
         $("#modalLiveSearchEmpleado").modal("toggle");
     }
-    function CargarTabResumen( ) {
+    function CargarTabResumen() {
         $.ajax({
             url: "../Incidencias/LoadPeriodosVac2",
             type: "POST",
@@ -358,14 +364,14 @@
                 var id = data[0]["Id_Per_Vac_Ln"];
                 for (var i = 0; i < data.length; i++) {
 
-                    document.getElementById("tab1").innerHTML += "<tr><td>" + data[i]["Periodo"] + " <input type='hidden' id='btn_id_periodo_ln' value=' "+ data[i]["Id_Per_Vac_Ln"] +" '> </td><td>" + data[i]["DiasPrima"] + "</td><td>" + data[i]["DiasDisfrutados"] + "</td><td>" + data[i]["DiasRestantes"] + "</td></tr>";
-                                
+                    document.getElementById("tab1").innerHTML += "<tr><td>" + data[i]["Periodo"] + " <input type='hidden' id='btn_id_periodo_ln' value=' " + data[i]["Id_Per_Vac_Ln"] + " '> </td><td>" + data[i]["DiasPrima"] + "</td><td>" + data[i]["DiasDisfrutados"] + "</td><td>" + data[i]["DiasRestantes"] + "</td></tr>";
+
                 }
                 CargarTabPeriodos(id);
             }
         });
     }
-    function CargarTabPeriodos( id ) {
+    function CargarTabPeriodos(id) {
         $.ajax({
             url: "../Incidencias/LoadPeriodosDist",
             type: "POST",
@@ -431,69 +437,70 @@
         var ln_id = document.getElementById("btn_id_periodo_ln");
         console.log(IdPer_vac_Dist);
         Swal.fire({
-                title: '',
-                text: "Deseas cambiar el periodo a disfrutado",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
+            title: '',
+            text: "Deseas cambiar el periodo a disfrutado",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonColor: 'Cancelar',
+            confirmButtonText: 'Aceptar'
+        }).then((result) => {
+            if (result.value) {
 
-                    console.log(IdPer_vac_Dist);
-                    $.ajax({
-                        url: "../Incidencias/setDisfrutadas",
-                        type: "POST",
-                        cache: false,
-                        data: JSON.stringify({IdPer_vac_Dist: IdPer_vac_Dist}),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: (data) => {
-                            $.ajax({
-                                url: "../Incidencias/LoadPeriodosDist",
-                                type: "POST",
-                                cache: false,
-                                data: JSON.stringify({PerVacLn_id: ln_id.value}),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: (res) => {
-                                    console.log("regresa periodos");
-                                    document.getElementById("tabBody").innerHTML = "";
-                                    for (var i = 0; i < res.length; i++) {
-                        
-                                        if (res[i]["Agendadas"] == "True") {
-                                            document.getElementById("tabBody").innerHTML += "<tr>"+
-                                                    "<td>" + res[i]["Dias"] + " <input type = 'hidden' class='btn_IdPer_vac_Dist' value = ' " + res[i]["IdPer_vac_Dist"] + " ' > </td>" +
-                                                    " <td>" + res[i]["Fecha_Inicio"] + "</td>" +
-                                                    " <td>" + res[i]["Fecha_Fin"] + "</td>" +
-                                                    " <td><div class='fas fa-check'></div></td>" +
-                                                    "<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + res[i]["IdPer_vac_Dist"] + ")'></div></td>"+
-                                                "</tr > ";
-                                        } else {
-                                            document.getElementById("tabBody").innerHTML += "<tr>" +
-                                                    "<td>" + res[i]["Dias"] + " <input type='hidden' class='btn_IdPer_vac_Dist' value=' " + res[i]["IdPer_vac_Dist"] + " '> </td>" +
-                                                    "<td>" + res[i]["Fecha_Inicio"] + "</td>" +
-                                                    "<td>" + res[i]["Fecha_Fin"] + "</td>" +
-                                                    "<td></td>" +
-                                                    "<td><div class='fas fa-check'></div></td>" +
-                                                "</tr>";
-                                        }
+                console.log(IdPer_vac_Dist);
+                $.ajax({
+                    url: "../Incidencias/setDisfrutadas",
+                    type: "POST",
+                    cache: false,
+                    data: JSON.stringify({ IdPer_vac_Dist: IdPer_vac_Dist }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: (data) => {
+                        $.ajax({
+                            url: "../Incidencias/LoadPeriodosDist",
+                            type: "POST",
+                            cache: false,
+                            data: JSON.stringify({ PerVacLn_id: ln_id.value }),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: (res) => {
+                                console.log("regresa periodos");
+                                document.getElementById("tabBody").innerHTML = "";
+                                for (var i = 0; i < res.length; i++) {
+
+                                    if (res[i]["Agendadas"] == "True") {
+                                        document.getElementById("tabBody").innerHTML += "<tr>" +
+                                            "<td>" + res[i]["Dias"] + " <input type = 'hidden' class='btn_IdPer_vac_Dist' value = ' " + res[i]["IdPer_vac_Dist"] + " ' > </td>" +
+                                            " <td>" + res[i]["Fecha_Inicio"] + "</td>" +
+                                            " <td>" + res[i]["Fecha_Fin"] + "</td>" +
+                                            " <td><div class='fas fa-check'></div></td>" +
+                                            "<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + res[i]["IdPer_vac_Dist"] + ")'></div></td>" +
+                                            "</tr > ";
+                                    } else {
+                                        document.getElementById("tabBody").innerHTML += "<tr>" +
+                                            "<td>" + res[i]["Dias"] + " <input type='hidden' class='btn_IdPer_vac_Dist' value=' " + res[i]["IdPer_vac_Dist"] + " '> </td>" +
+                                            "<td>" + res[i]["Fecha_Inicio"] + "</td>" +
+                                            "<td>" + res[i]["Fecha_Fin"] + "</td>" +
+                                            "<td></td>" +
+                                            "<td><div class='fas fa-check'></div></td>" +
+                                            "</tr>";
                                     }
-                                    console.log(res);
-                                    Swal.fire(
-                                        'Hecho!',
-                                        'El periodo fue puesto como disfrutado',
-                                        'success'
-                                    );
                                 }
-                            });
+                                console.log(res);
+                                Swal.fire(
+                                    'Hecho!',
+                                    'El periodo fue puesto como disfrutado',
+                                    'success'
+                                );
+                            }
+                        });
 
-                            
-                        }
-                    });
-                    
-                }
-            });
+
+                    }
+                });
+
+            }
+        });
     }
 </script>

@@ -1,5 +1,4 @@
-﻿
-$(function () {
+﻿$(function () {
     var ren_incidencia = document.getElementById("inRenglon");
     var concepto_incidencia = document.getElementById("inConcepto_incidencia");
     var cantidad_incidencia = document.getElementById("inCantidad");

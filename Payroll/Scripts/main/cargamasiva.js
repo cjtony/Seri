@@ -1,51 +1,36 @@
 ﻿$(document).ready(function () {
-    var datos = $("#frmUploadIncidencias");
-    var url = "";
-    $("#frmUploadIncidencias").on("submit", function (e) {
-        e.preventDefault();
-        var formd = $("frmUploadIncidencias")[0].files[0];
-        //formData.append("url", "aqui estaria la url");
-        console.log(formd);
-    });
+    
+    validateUploadFile = () => {
+        var selectedFile = ($("#file-toup"))[0].files[0];
+        var fileType = document.getElementById("file-type").value;
 
-    //$("#incidenciasfile").change(function () {
-    //    //if ($("#incidenciasfile").val() != '') {
+        if (!selectedFile) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Aviso!',
+                text: 'Aun no selecciona un archivo'
+            });
+        } else {
+            var datos = new FormData();
+            datos.append("fileUpload", selectedFile);
+            datos.append("fileType", fileType);
+            $.ajax({
+                url: "../Incidencias/LoadFile",
+                type: "POST",
+                data: datos,
+                processData: false,
+                contentType: false,
+                async: false,
+                //contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                }
+            });
 
-    //    //}
-    //});
-
-    loadIncidenciasFile = () => {
-        var oReq = new XMLHttpRequest();
-        oReq.open("GET", url, true);
-        oReq.responseType = "arraybuffer";
-        oReq.onload = function (e) {
-            var info = readData();
-            console.log(info);
         }
 
-        function readData() {
-            var arraybuffer = oReq.response;
-            /* convert data to binary string */
-            var data = new Uint8Array(arraybuffer);
-            var arr = new Array();
-            for (var i = 0; i != data.length; i++) {
-                arr[i] = String.fromCharCode(data[i]);
-            }
-            var bsrt = arr.join("");
-            var workbook = XLSX.read(bstr, { type: "binary" });
-
-            /*  */
-            var first_sheet_name = workbook.SheetNames[0];
-
-            var worksheet = workbook.Sheets[first_sheet_name];
-
-            var info = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-
-            return info;
-        }
     }
-
-
 
 
 });

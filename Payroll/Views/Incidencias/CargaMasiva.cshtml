@@ -1,30 +1,39 @@
 ﻿<div class="container col-md-10">
-    
-    <div class="col-md-10 offset-1 mt-4">
-        <div class="card shadow rounded">
-            <div class="card-body">
-                <h5 class="card-title text-center">
-                    <i class="fas fa-file-excel mr-2 text-success"></i> Selecciona tu EXCEL .xlsx
-                </h5>
-                <hr />
-                <div class="row">
-                    <div class="col-md-8 offset-2">
-                        <div class="form-group">
-                            <label for="file-up"> <i class="fas fa-search mr-2 col-ico"></i> Buscar </label>
-                            <input type="file" class="form-control-sm form-control-file" id="file-up" />
-                        </div>
-                        <hr />
-                        <div class="form-group mt-4 text-center">
-                            <button class="btn btn-sm btn-outline-primary" id="btn-up-file-up">
-                                <i class="fas fa-check-circle mr-2"></i> Cargar archivo
-                            </button>
+    <form method="post" enctype="multipart/form-data">
+        <div class="col-md-10 offset-1 mt-4">
+            <div class="card shadow rounded border-left-primary border-right-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-center">
+                        <i class="fas fa-file-excel mr-2 text-success"></i> Selecciona tu EXCEL .xlsx
+                    </h5>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-8 offset-2">
+                            <div class="form-group row">
+                                <label for="file-type" class="col-8"><i class="far fa-flag col-ico"></i>&nbsp;&nbsp;&nbsp; Selecciona el tipo de archivo para carga </label>
+                                <select class="custom-select custom-select-sm col-4" id="file-type">
+                                    <option class="selected" value="incidencias"> Incidencias</option>
+                                    @*<option class="" value="ausentismos"> Ausentismos</option>*@
+                                </select>
+                            </div>
+                            <div class="form-group row justify-content-between">
+                                <label for="file-up"> <i class="fas fa-search mr-2 col-ico col-4"></i> Buscar </label>
+                                <input id="file-toup" type="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="form-control-sm form-control-file col-8"  />
+                            </div>
+                            <hr />
+                            <div class="form-group mt-4 text-center">
+                                <button class="btn btn-sm btn-outline-primary" type="button" onclick="validateUploadFile();">
+                                    <i class="fas fa-check-circle mr-2"></i> Cargar archivo
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div id="results-file-upload-up" class="d-none col-md-10 offset-1"></div>
+                    <div class="row">
+                        <div id="results-file-upload-up" class="d-none col-md-10 offset-1"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
+<script src="~/Scripts/main/cargamasiva.js?n=2"></script>
