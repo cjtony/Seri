@@ -120,7 +120,7 @@ namespace Payroll.Controllers
                 app.Selection.Find.Execute("<NombreEmpleado>", missing, missing, missing, missing, missing, missing, missing, missing, LisTipoEmpleado[0].sApellPatemple + " " + LisTipoEmpleado[0].sApellMatemple + " " + LisTipoEmpleado[0].sNombreemple, 2);
                 app.Selection.Find.Execute("<fechaingreso>", missing, missing, missing, missing, missing, missing, missing, missing, LisTipoEmpleado[0].sFechaIngreso, 2);
                 app.Selection.Find.Execute("<DiaIngreso>", missing, missing, missing, missing, missing, missing, missing, missing, DiaIngreso, 2);
-                app.Selection.Find.Execute("<MesIngreso>", missing, missing, missing, missing, missing, missing, missing, missing, anioIngreso, 2);
+                app.Selection.Find.Execute("<MesIngreso>", missing, missing, missing, missing, missing, missing, missing, missing, MesIngreso, 2);
                 app.Selection.Find.Execute("<AnioIngreso>", missing, missing, missing, missing, missing, missing, missing, missing, anioIngreso, 2);
                 app.Selection.Find.Execute("<DiaAntiguedad>", missing, missing, missing, missing, missing, missing, missing, missing, DiaAntiguedad, 2);
                 app.Selection.Find.Execute("<MesAntiguedad>", missing, missing, missing, missing, missing, missing, missing, missing, MesAntiguedad, 2);
@@ -189,6 +189,7 @@ namespace Payroll.Controllers
 
 
                 object SaveAsFile = (object)path;
+
                 LisTipoEmpleado[0].sUrl = path;
                 doc.SaveAs2(SaveAsFile, missing, missing, missing);
 
