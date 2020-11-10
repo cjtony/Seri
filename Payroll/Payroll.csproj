@@ -921,6 +921,7 @@
     <Content Include="Scripts\main\formValidation.js" />
     <Content Include="Scripts\main\Incidencias.js" />
     <Content Include="Scripts\main\IncidenciasProg.js" />
+    <Content Include="Scripts\main\KitAltaBaja.js" />
     <Content Include="Scripts\main\KitBajas.js" />
     <Content Include="Scripts\main\KioskoM\checkreceipt.js" />
     <Content Include="Scripts\main\load1.js" />
