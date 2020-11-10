@@ -7,7 +7,6 @@
     const DropPerido = document.getElementById('DropPerido');
     const DropEmpresa2 = document.getElementById('DropEmpresa2');
     const TxtAnio2 = document.getElementById('TxtAnio2');
-    const TxtPorcentaje2 = document.getElementById('TxtPorcentaje2');
     const DropTipodePerdio2 = document.getElementById('DropTipodePerdio2');
     const DropPerido2 = document.getElementById('DropPerido2');
 

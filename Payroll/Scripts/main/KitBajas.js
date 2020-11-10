@@ -28,7 +28,7 @@
             $("#DroTipoEmple").empty();
             $('#DroTipoEmple').append('<option value="0" selected="selected">Selecciona</option>');
         }
-         FLoadEmpleados();
+        FLoadEmpleados();
 
     });
 
@@ -49,17 +49,17 @@
         });
 
     };
-   
+
     $('#DroTipoEmple').change(function () {
-        
+
         FLoadEmpleados(DroTipoEmple.value, DropCategoria.value);
-       
+
     });
 
 
 
     // carga un listado con detalle de los empleados que pertenencen del tipo de empleado
-    FLoadEmpleados = (TipodeEmpleado,baja) => {
+    FLoadEmpleados = (TipodeEmpleado, baja) => {
         FDelettable();
         const dataSend = { IdTipoempleado: TipodeEmpleado, opBaja: baja }
         console.log(dataSend);
@@ -83,7 +83,7 @@
                 var dataAdapter = new $.jqx.dataAdapter(source);
                 $("#TbKit").jqxGrid(
                     {
-                       
+
                         width: 500,
                         source: dataAdapter,
                         selectionmode: 'multiplerowsextended',
@@ -95,25 +95,25 @@
                             { text: 'No Empresa', datafield: 'iIdEmpresa', width: 100 },
                             { text: 'Nomina', datafield: 'iIdNomina', width: 100 },
                             { text: 'Nompre del Empleado', datafield: 'sNombreComp', width: 300 },
-                         
+
                         ]
                     });
             },
-        
+
         });
-   
+
     };
 
     ///Temas 
-   // $("#TbKit").jqxDataTable({ theme: 'base' });
+    // $("#TbKit").jqxDataTable({ theme: 'base' });
 
     // selesciona Empleado
 
-     $("#TbKit").on('rowselect', function (event) {
-         var args = event.args;
-         var row = $("#TbKit").jqxGrid('getrowdata', args.rowindex);
-         Idempresa = row['iIdEmpresa'];
-         IdNomina = row['iIdNomina'];
+    $("#TbKit").on('rowselect', function (event) {
+        var args = event.args;
+        var row = $("#TbKit").jqxGrid('getrowdata', args.rowindex);
+        Idempresa = row['iIdEmpresa'];
+        IdNomina = row['iIdNomina'];
 
     });
 
@@ -121,41 +121,41 @@
 
     FGeneradoc = () => {
         console.log('generaword');
-        const dataSend = { iIdempresa: Idempresa, iNomina: IdNomina, iCategoria: DropCategoria.value }  
+        const dataSend = { iIdempresa: Idempresa, iNomina: IdNomina, iCategoria: DropCategoria.value }
         $.ajax({
-                url: "../Documentos/KitDocbaja",
-                type: "POST",
-                data: dataSend,
-                success: (data) => {
-                    console.log(data);
-                    if (data[0].sMensaje == "success") {
-                        if (DropCategoria.value == 1) {
-                            fshowtypealert('Kit Contratacion', "El documento se genero exitosamente", 'succes');
-                            btnDowl.style.visibility = 'visible';
-                            btnDowlan.value = data[0].sUrl;
-                        }    
-                        if (DropCategoria.value == 2) {
-                            fshowtypealert('Kit Contratacion', "El documento se genero exitosamente", 'succes');
-                            btnDowl.style.visibility = 'visible';
-                            btnDowlan.value = data[0].sUrl;
-                        
-                        } 
+            url: "../Documentos/KitDocbaja",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                console.log(data);
+                if (data[0].sMensaje == "success") {
+                    if (DropCategoria.value == 1) {
+                        fshowtypealert('Kit Contratacion', "El documento se genero exitosamente", 'succes');
+                        btnDowl.style.visibility = 'visible';
+                        btnDowlan.value = data[0].sUrl;
                     }
-                    if (data[0].sMensaje == "error") {
+                    if (DropCategoria.value == 2) {
+                        fshowtypealert('Kit Contratacion', "El documento se genero exitosamente", 'succes');
+                        btnDowl.style.visibility = 'visible';
+                        btnDowlan.value = data[0].sUrl;
 
-                        fshowtypealert('Kit Contratacion', "contacte a sistemas ", 'error');
                     }
+                }
+                if (data[0].sMensaje == "error") {
 
-                },
-
-                error: function (jqXHR, exception) {
-                    fcaptureaerrorsajax(jqXHR, exception);
                     fshowtypealert('Kit Contratacion', "contacte a sistemas ", 'error');
                 }
-            }); 
+
+            },
+
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+                fshowtypealert('Kit Contratacion', "contacte a sistemas ", 'error');
+            }
+        });
     };
 
-    btnGnr.addEventListener('click',FGeneradoc)
+    btnGnr.addEventListener('click', FGeneradoc)
 
     FDowlankit = () => {
         console.log('bajadocumento');
@@ -166,19 +166,20 @@
             url = url.replace('%2520', ' ');
             console.log(url);
             url = url.replace('%20', ' ');
-            url = url.replace('C:\\Users\\DELL\\Desktop\\gitproyecto\\Proyecto Actualizado AAA\\Seri\\Payroll', '')
+            url = url.replace('D:\\IPSNet\\Repositorio\\GITHUB\\desarrollonew\\Seri\\Payroll\\', '')
+            url = '\\Archivos\\KitContratacion\\Kit.DOCX'
             console.log(url);
             window.open(url);
         }
         if (DropCategoria.value == 2) {
             console.log('documento2' + btnDowl.value);
-            var url =btnDowl.value;
+            var url = btnDowl.value;
             console.log(url);
             url = url.replace('%2520', ' ');
             console.log(url);
             url = url.replace('%20', ' ');
-            url = url.replace('C:\\Users\\DELL\\Desktop\\gitproyecto\\Proyecto Actualizado AAA\\Seri\\Payroll','')
-            console.log(url); 
+            url = '\\Archivos\\certificados\\KitBaja.zip';
+            console.log(url);
             window.open(url);
         }
 
@@ -191,7 +192,7 @@
 
             $("#TbKit").jqxGrid('deleterow', i);
         }
-       
+
 
     };
 
