@@ -388,25 +388,53 @@ namespace Payroll.Controllers
             int j;
 
             string errorh = "Error en la linea: ";
-            object errorType = new
-            {
-                e1 = "La empresa no existe",
-                e2 = "El renglon no existe",
-                e3 = "El empleado no existe",
-                e4 = "El periodo no es el actual abierto",
-                e5 = "El tipo de dato en la celda es incorrecto"
-            };
 
             for (i = 0; i < table.Rows.Count; i++)
             {
-                DataRow row = table.Rows[i];
-                list.Add(row.ItemArray);
-                for ( j = 0; j < table.Columns.Count; j++)
-                {
-                    var r = Dao.ValidaEmpresa(table.Rows[0]["Empresa_id"].ToString());
+                //DataRow row = table.Rows[i];
+                //list.Add(row.ItemArray);
+                
+                var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
+                if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + "La empresa no existe"); }
 
-                    ResutLog.Add(r.ToString());
+                var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
+                if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + "El empleado no existe"); }
+
+                var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
+                if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + "El Periodo es incorrecto"); }
+                if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + "El año del periodo es incorrecto"); }
+
+                var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
+                if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + "El Renglon no existe"); }
+
+            }
+
+            if (ResutLog.Count == 0)
+            {
+                //Console.WriteLine("Se manda al modulo de insercion la tabla");
+
+                for (int k = 0; k < table.Rows.Count; k++)
+                {
+                    Dao.InsertaCargaMasiva(table.Rows[k]);
                 }
+                list.Add("1");
+                list.Add("Carga subida correctamente");
+
+            }
+            else 
+            {
+                StreamWriter txtfile = new StreamWriter(pathLogs);
+
+                foreach (var error in ResutLog)
+                {
+                    txtfile.WriteLine(error);
+                }
+                txtfile.Close();
+
+                list.Clear();
+                
+                list.Add("0");
+                list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
             }
 
             return Json(list);

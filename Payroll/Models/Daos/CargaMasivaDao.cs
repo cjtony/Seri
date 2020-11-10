@@ -65,5 +65,127 @@ namespace Payroll.Models.Daos
 
             return value;
         }
+        public int Valida_Empleado(string Empresa_id, string Empleado_id)
+        {
+            int value = 0;
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Valida_CM_Empleado_Empresa", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    value = int.Parse(data["Result"].ToString());
+                }
+            }
+
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return value;
+        }
+        public int Valida_Periodo(string Empresa_id, string Periodo, string Anio)
+        {
+            int value = 0;
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Valida_CM_Periodo", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAnio", Anio));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    value = int.Parse(data["Result"].ToString());
+                }
+            }
+
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return value;
+        }
+        public int Valida_Renglon(string Empresa_id, string Renglon_id)
+        {
+            int value = 0;
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Valida_CM_Renglon", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRenglon_id", Renglon_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    value = int.Parse(data["Result"].ToString());
+                }
+            }
+
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return value;
+        }
+        public List<string> InsertaCargaMasiva(DataRow rows)
+        {
+            string dia = DateTime.Today.ToString("dd");
+            string mes = DateTime.Today.ToString("MM");
+            string año = DateTime.Today.ToString("yyyy");
+
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TRegistro_incidencias_Insert_Incidencia", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows["Empresa_id"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows["Empleado_id"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipoIncidencia", rows["Renglon_id"].ToString()));
+
+            if (rows["Renglon_id"].ToString() == "71")
+            { cmd.Parameters.Add(new SqlParameter("@ctrlCantidad", rows["Numero_dias"].ToString())); }
+            else
+            { cmd.Parameters.Add(new SqlParameter("@ctrlCantidad", rows["Importe"].ToString())); }
+
+            cmd.Parameters.Add(new SqlParameter("@ctrlPlazos", rows["Plazos"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlLeyenda", rows["Leyenda"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", rows["Descripcion"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaAplicacion", dia + "/" + mes + "/" + año));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", rows["Periodo"].ToString()));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["Descripcion"].ToString());
+                }
+            }
+
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return list;
+        }
     }
 }
