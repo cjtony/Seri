@@ -237,7 +237,7 @@ namespace Payroll.Controllers
                 }
                 if (iCategoria == 2)
                 {
-                    string pathZip = Server.MapPath("Archivos\\certificados\\XmlZip\\");
+                    string pathZip = Server.MapPath("Archivos\\XmlZip\\");
                     pathZip = pathZip.Replace("\\XmlZip", "");
                     pathZip = pathZip.Replace("\\Documentos", "");
                     pathZip = pathZip + "KitBaja.zip";
