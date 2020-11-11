@@ -178,7 +178,7 @@
             url = url.replace('%2520', ' ');
             console.log(url);
             url = url.replace('%20', ' ');
-            url = '\\Archivos\\certificados\\KitBaja.zip';
+            url = '\\Archivos\\KitBaja.zip';
             console.log(url);
             window.open(url);
         }
