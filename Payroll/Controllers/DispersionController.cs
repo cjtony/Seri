@@ -1349,23 +1349,64 @@ namespace Payroll.Controllers
                         }
                         if (bankInterbank == 44) {
                             // SCOTIABANK
-                            string tipoArchivoIntScotiabank = "EE", tipoRegistroIntScotiabank = "HA", numeroContratoIntScotiabank = "47848", secuenciaIntScotiabank = "01",
-                       fillerIntScotiabankHA1 = "                                                                                                                                                                                                                                                                                                                                                                       ";
+                            string tipoArchivoIntScotiabank = "EE", 
+                                tipoRegistroIntScotiabank   = "HA", 
+                                numeroContratoIntScotiabank = "47848", 
+                                secuenciaIntScotiabank = "01",
+                                fillerIntScotiabankHA1 = "                                                                                                                                                                                                                                                                                                                                                                       ";
                             string headerLayoutAIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroIntScotiabank + numeroContratoIntScotiabank + secuenciaIntScotiabank + fillerIntScotiabankHA1;
                             // - ENCABEZADO BLOQUE - \\
-                            string tipoRegistroBIntScotiabank = "HB", monedaCuentaBIntScotiabank = "00", usoFuturoIntScotiabank = "0000", cuentaCargoIntScotiabank = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, referenciaEmpresaIntScotiabank = "0000000001", codigoStatusIntScotiabank = "000", fillerIntScotiabankHB1 = "                                                                                                                                                                                                                                                                                                                                                ";
+                            string tipoRegistroBIntScotiabank = "HB", 
+                                monedaCuentaBIntScotiabank = "00", 
+                                usoFuturoIntScotiabank = "0000", 
+                                cuentaCargoIntScotiabank = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, 
+                                referenciaEmpresaIntScotiabank = "0000000001", 
+                                codigoStatusIntScotiabank = "000", 
+                                fillerIntScotiabankHB1 = "                                                                                                                                                                                                                                                                                                                                                ";
                             string headerLayoutBIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroBIntScotiabank + monedaCuentaBIntScotiabank + usoFuturoIntScotiabank + cuentaCargoIntScotiabank + referenciaEmpresaIntScotiabank + codigoStatusIntScotiabank + fillerIntScotiabankHB1;
                             // - DETALLE - \\
-                            string tipoRegistroCIntScotiabankD = "DA", tipoPagoIntScotiabankD = "04", claveMonedaIntScotiabank = "00", fechaIntScotiabankD = dateGeneration.ToString("yyyyMMdd"), servicioIntScotiabankD = "01", fillerIntScotiabankD1 = "                            ", plazaIntScotiabankD = "00000", sucursalIntScotiabankD = "00000", paisIntScotiabankD = "00000", fillerIntScotiabankD2 = "                                        ", tipoCuentaIntScotiabankD1 = "9", digitoIntScotiabankD1 = " ", bancoEmisorIntScotiabankD1 = "044", diasVigenciaIntScotiabankD = "001", conceptoPagoIntScotiabankD = "PAGO NOMINA", fillerIntScotiabankD3 = "                                       ", fillerIntScotiabankD4 = "                                                            ", fillerIntScotiabankD5 = "                      ";
+                            string tipoRegistroCIntScotiabankD = "DA", 
+                                tipoPagoIntScotiabankD = "04", 
+                                claveMonedaIntScotiabank = "00", 
+                                fechaIntScotiabankD = dateGeneration.ToString("yyyyMMdd"), 
+                                servicioIntScotiabankD = "01", fillerIntScotiabankD1 = "                            ", 
+                                plazaIntScotiabankD = "00000", 
+                                sucursalIntScotiabankD = "00000", 
+                                paisIntScotiabankD = "00000", 
+                                fillerIntScotiabankD2 = "                                        ", 
+                                tipoCuentaIntScotiabankD1 = "9", 
+                                digitoIntScotiabankD1 = " ", 
+                                bancoEmisorIntScotiabankD1 = "044", 
+                                diasVigenciaIntScotiabankD = "001", 
+                                conceptoPagoIntScotiabankD = "PAGO NOMINA", 
+                                fillerIntScotiabankD3 = "                                       ", 
+                                fillerIntScotiabankD4 = "                                                            ", 
+                                fillerIntScotiabankD5 = "                      ";
                             int consecutivoIntScotiabankD1 = 0;
                             // - CREACION DE LISTA PARA LLENAR EL DETALLE - \\
                  
                             using (StreamWriter fileIntScotiabank = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM)) {
                                 fileIntScotiabank.Write(headerLayoutAIntScotiabank + "\n");
                                 fileIntScotiabank.Write(headerLayoutBIntScotiabank + "\n");
-                                string cerosImpIntScotiabankD = "", cerosNumNomIntScotiabankD = "", espaciosNomEmpIntScotiabankD = "", nombreEmpIntScotiabankD = "", cerosConsecIntScotiabankD1 = "",
-                                       cerosCtaCheIntScotiabankD1 = "", cerosCodStaIntScotiabankD1 = "", cerosTotMovIntScotiabank = "", cerosImpTotIntScotiabank = "";
-                                int longImpIntScotiabankD = 15, longNumNomIntScotiabankD = 5, longNomEmpIntScotiabankD = 40, longConIntScotiabankD1 = 16, longCtaCheIntScotiabankD = 20, longCodStaIntScotiabankD = 25, totalMoviIntScotiabank = 0, longTotMovIntScotiabank = 7, importeTotalIntScotiabank = 0, longImpTotIntScotiabank = 17;
+                                string cerosImpIntScotiabankD    = "", 
+                                    cerosNumNomIntScotiabankD    = "", 
+                                    espaciosNomEmpIntScotiabankD = "",
+                                    nombreEmpIntScotiabankD      = "",
+                                    cerosConsecIntScotiabankD1   = "",
+                                    cerosCtaCheIntScotiabankD1   = "", 
+                                    cerosCodStaIntScotiabankD1   = "", 
+                                    cerosTotMovIntScotiabank     = "",
+                                    cerosImpTotIntScotiabank     = "";
+                                int longImpIntScotiabankD     = 15,
+                                    longNumNomIntScotiabankD  = 5, 
+                                    longNomEmpIntScotiabankD  = 40,
+                                    longConIntScotiabankD1    = 16, 
+                                    longCtaCheIntScotiabankD  = 20, 
+                                    longCodStaIntScotiabankD  = 25, 
+                                    totalMoviIntScotiabank    = 0, 
+                                    longTotMovIntScotiabank   = 7,
+                                    importeTotalIntScotiabank = 0,
+                                    longImpTotIntScotiabank   = 17;
                                 foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean) {
                                     int clvBank = bank.iIdBanco;
                                     string sufBank = "";
@@ -1421,6 +1462,15 @@ namespace Payroll.Controllers
                         } 
                         if (bankInterbank == 72) {
                             // BANORTE
+                            string tipoOperacion = "04";
+                            string cuentaOrigen  = "";
+                            string cuentaDestino = "";
+
+                            // GRUPO DE EMPRESAS PARA DISPERSION
+                            // INTERBANORTE
+                            // DISPERSION POR GRUPO
+                            // ARCHIVO POR BANCO PARA TODAS LAS EMPRESAS
+                            // UNA EMPRESA POR GRUPO 
                         }
                     }
                 }
@@ -1491,6 +1541,117 @@ namespace Payroll.Controllers
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Zip = nameFolder, EstadoZip = msgEstatusZip, Estado = msgEstatus, Anio = nameFolderYear });
+        }
+
+        [HttpPost]
+        public JsonResult LoadGroupBusiness()
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            StringBuilder htmlTableBody = new StringBuilder();
+            List<GroupBusinessDispersionBean> groupBusinesses = new List<GroupBusinessDispersionBean>();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                groupBusinesses = dataDispersion.sp_Load_Group_Business_Dispersion();
+                if (groupBusinesses.Count > 0) {
+                    flag = true;
+                    foreach (GroupBusinessDispersionBean data in groupBusinesses) {
+                        htmlTableBody.Append(
+                            "<tr><td> " + data.sNombreGrupo + " </td>" +
+                            "<td> <button onclick='fViewBusinessGroup("+ data.iIdGrupoEmpresa +", \"" + data.sNombreGrupo + "\")' type='button' class='btn btn-success btn-sm btn-icon-split shadow'> <span class='icon text-white-50'><i class='fas fa-eye'></i></span> <span class='text'>Ver Empresas</span> </button> </td></tr>" +
+                            "");  
+                    }
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Html = htmlTableBody.ToString(), Datos = groupBusinesses });
+        }
+
+        [HttpPost]
+        public JsonResult SaveNewGroupBusiness(string name)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            GroupBusinessDispersionBean groupBusiness = new GroupBusinessDispersionBean();
+            DataDispersionBusiness dataDispersion     = new DataDispersionBusiness();
+            try {
+                int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                groupBusiness = dataDispersion.sp_Save_New_Group_Business_Dispersion(name.Trim(), keyUser);
+                if (groupBusiness.sMensaje == "SUCCESS") {
+                    flag = true;
+                } else if (groupBusiness.sMensaje == "EXISTS") {
+                    return Json(new { Bandera = false, Mensaje = "EXISTS" });
+                } else {
+                    return Json(new { Bandera = false, Mensaje = "ERROR" });
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+                flag = false;
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Mensaje = "SUCCESS" });
+        } 
+
+        [HttpPost]
+        public JsonResult LoadBusinessNotGroup()
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            List<EmpresasBean> empresasBean = new List<EmpresasBean>();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                empresasBean = dataDispersion.sp_Load_Business_Not_In_Groups_Dispersion();
+                if (empresasBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = empresasBean });
+        }
+
+        [HttpPost]
+        public JsonResult SaveAsignGroupBusiness(int group, int business)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            GroupBusinessDispersionBean groupBusiness = new GroupBusinessDispersionBean();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                groupBusiness = dataDispersion.sp_Save_Asign_Group_Business(group, business);
+                if (groupBusiness.sMensaje == "INSERT") {
+                    flag = true;
+                } else if (groupBusiness.sMensaje == "NOTINSERT") {
+                    return Json(new { Bandera = false, Mensaje = "NOTINSERT" });
+                } else {
+                    return Json(new { Bandera = false, Mensaje = "ERROR" });
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult ViewBusinessGroup(int keyGroup)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            List<EmpresasBean> empresas = new List<EmpresasBean>();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                empresas = dataDispersion.sp_View_Business_Group_Dispersion(keyGroup);
+                if (empresas.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = empresas });
         }
 
     }

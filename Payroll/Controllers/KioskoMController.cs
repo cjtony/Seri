@@ -13,5 +13,11 @@ namespace Payroll.Controllers
         {
             return PartialView();
         }
+
+        public PartialViewResult AutorizacionVacaciones()
+        {
+            return PartialView();
+        }
+
     }
 }

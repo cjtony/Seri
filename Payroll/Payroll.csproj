@@ -881,6 +881,7 @@
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.base.css" />
     <Content Include="Scripts\main\animationsmain.js" />
     <Content Include="Scripts\main\Ausentismos.js" />
+    <Content Include="Scripts\main\AutorizacionVacaciones\main.js" />
     <Content Include="Scripts\main\BajasEmpleados.js" />
     <Content Include="Scripts\main\BajasMasivas\main.js" />
     <Content Include="Scripts\main\branchoffices.js" />
@@ -1018,6 +1019,7 @@
     <Content Include="Views\Catalogos\GruposEmpresas.cshtml" />
     <Content Include="Views\Catalogos\CGruposEmpresas.cshtml" />
     <Content Include="Views\KioskoM\ConsultaRecibo.cshtml" />
+    <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

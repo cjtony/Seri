@@ -2,6 +2,12 @@
 {
     public class DispersionBean { }
 
+    public class GroupBusinessDispersionBean
+    {
+        public int iIdGrupoEmpresa { get; set; }
+        public string sNombreGrupo { get; set; }
+        public string sMensaje { get; set; }
+    }
 
     public class LoadTypePeriodPayrollBean
     {

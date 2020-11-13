@@ -250,6 +250,148 @@ namespace Payroll.Models.Daos
     public class DataDispersionBusiness : Conexion
     {
 
+        public List<GroupBusinessDispersionBean> sp_Load_Group_Business_Dispersion ()
+        {
+            List<GroupBusinessDispersionBean> groupBusinesses = new List<GroupBusinessDispersionBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Load_Group_Business_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        GroupBusinessDispersionBean group = new GroupBusinessDispersionBean();
+                        group.iIdGrupoEmpresa = Convert.ToInt32(dataReader["IdGrupoEmpresa"]);
+                        group.sNombreGrupo    = dataReader["Nombre_Grupo"].ToString();
+                        groupBusinesses.Add(group);
+                    }
+                }
+                cmd.Dispose();
+                cmd.Parameters.Clear();
+                dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return groupBusinesses;
+        }
+
+        public GroupBusinessDispersionBean sp_Save_New_Group_Business_Dispersion (string name, int user)
+        {
+            GroupBusinessDispersionBean groupBusiness = new GroupBusinessDispersionBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Save_New_Group_Business_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Nombre", name));
+                cmd.Parameters.Add(new SqlParameter("@Usuario", user));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "2") {
+                        groupBusiness.sMensaje = "SUCCESS";
+                    } else if (dataReader["Bandera"].ToString() == "1") {
+                        groupBusiness.sMensaje = "EXISTS";
+                    } else {
+                        groupBusiness.sMensaje = "ERROR";
+                    }
+                } else {
+                    groupBusiness.sMensaje = "ERROR";
+                }
+                cmd.Dispose();
+                cmd.Parameters.Clear();
+                dataReader.Close();
+            } catch (Exception exc) {
+                groupBusiness.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return groupBusiness;
+        }
+
+        public List<EmpresasBean> sp_Load_Business_Not_In_Groups_Dispersion()
+        {
+            List<EmpresasBean> empresasBeans = new List<EmpresasBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Load_Business_Not_In_Groups_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        EmpresasBean empresas = new EmpresasBean();
+                        empresas.iIdEmpresa   = Convert.ToInt32(dataReader["IdEmpresa"]);
+                        empresas.sNombreEmpresa = dataReader["NombreEmpresa"].ToString();
+                        empresas.sRazonSocial   = dataReader["RazonSocial"].ToString();
+                        empresasBeans.Add(empresas);
+                    }
+                }
+                cmd.Dispose(); 
+                cmd.Parameters.Clear();
+                dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return empresasBeans;
+        }
+
+        public GroupBusinessDispersionBean sp_Save_Asign_Group_Business(int group, int business)
+        {
+            GroupBusinessDispersionBean groupBusiness = new GroupBusinessDispersionBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Save_Asign_Group_Business", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdGrupo", group));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", business));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    groupBusiness.sMensaje = "INSERT";
+                } else {
+                    groupBusiness.sMensaje = "NOTINSERT";
+                }
+                cmd.Dispose();
+                cmd.Parameters.Clear();
+            } catch (Exception exc) {
+                groupBusiness.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return groupBusiness;
+        }
+
+        public List<EmpresasBean> sp_View_Business_Group_Dispersion(int keyGroup)
+        {
+            List<EmpresasBean> empresas = new List<EmpresasBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_View_Business_Group_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdGrupo",keyGroup));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        EmpresasBean bean    = new EmpresasBean();
+                        bean.iIdDetalleGrupo = Convert.ToInt32(dataReader["IdDetalle"]);
+                        bean.iIdEmpresa      = Convert.ToInt32(dataReader["IdEmpresa"]);
+                        bean.sNombreEmpresa  = dataReader["NombreEmpresa"].ToString();
+                        bean.sRazonSocial    = dataReader["RazonSocial"].ToString();
+                        bean.fRfc            = dataReader["RFC"].ToString();
+                        empresas.Add(bean);
+                    }
+                }
+                cmd.Dispose();
+                cmd.Parameters.Clear();
+                dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return empresas;
+        }
+
         public List<DataDepositsBankingBean> sp_Obtiene_Depositos_Bancarios(int keyBusiness, int yearDispersion, int typePeriodDisp, int periodDispersion, string type)
         {
             List<DataDepositsBankingBean> listDaDepBankingBean = new List<DataDepositsBankingBean>();
