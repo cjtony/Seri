@@ -656,10 +656,24 @@ namespace Payroll.Controllers
             return Json(LTEmp);
         }
 
+        // Lista Empleado conid
+        [HttpPost]
+        public JsonResult ListConIDEmplados(int iIdEmpresa)
+        {
+            List<EmpleadosEmpresaBean> LTEmp = new List<EmpleadosEmpresaBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LTEmp = Dao.sp_EmpleadosDeEmpresa_Retreive_Templeados(iIdEmpresa);
+            if (LTEmp != null) {
+                for (int i = 0; i < LTEmp.Count; i++) {
+                    LTEmp[i].sNombreCompleto = LTEmp[i].iIdEmpleado +" "+ LTEmp[i].sNombreCompleto.ToString();
+                }
+            }
+            return Json(LTEmp);
+        }
+
         //Guarda Lista de Empleado en la tabla Lista_empleados_Nomina
         [HttpPost]
-        public JsonResult SaveEmpleados(int IdEmpresa,string sIdEmpleados,
-        int iAnio, int TipoPeriodo, int iPeriodo )
+        public JsonResult SaveEmpleados(int IdEmpresa, string sIdEmpleados, int iAnio, int TipoPeriodo, int iPeriodo )
         {
             int IdEmpleado=0;
             int iExite = 0;
@@ -917,5 +931,17 @@ namespace Payroll.Controllers
             return Json(LPe);
 
         }
+        // Muestra el listado de renglones de la diferencia de nomina de una empresa
+
+        [HttpPost]
+        public JsonResult NomiaDiferencia(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CrtliIdEmpresa2, int CrtliAnio2, int CrtliTipoPeriodo2, int CtrliPeriodo2)
+        {
+            List<CompativoNomBean> LPe = new List<CompativoNomBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LPe = dao.sp_CompativoNomina_Retrieve_TPCalculosln(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CrtliIdEmpresa2, CrtliAnio2, CrtliTipoPeriodo2, CtrliPeriodo2);
+            return Json(LPe);
+
+        }
+
     }
 }

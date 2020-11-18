@@ -950,12 +950,15 @@
             }
             if (checkCalculoEmplado == 1) {
                 var NumItemsEmpleado = checkedItemsIdEmpleados.length;
+                console.log(checkedItemsIdEmpleados)
+                console.log(NumItemsEmpleado)
                 if (NumItemsEmpleado != 0) {
-                    dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: EjeEmpresa.value, iCalEmpleado: checkCalculoEmplado };
-                  $.ajax({
+                    const dataSend4 = { IdEmpresa: EjeEmpresa.value, iAnio: AnioDropList, TipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], sIdEmpleados: checkedItemsIdEmpleados};
+                    console.log(dataSend4)
+                    $.ajax({
                         url: "../Nomina/SaveEmpleados",
                         type: "POST",
-                        data: dataSend3,
+                        data: dataSend4,
                         success: function (data) {
                             if (data.sMensaje == "success"){
                              
@@ -1085,7 +1088,7 @@
         var source = " ";
         const dataSend2 = { iIdEmpresa: IdEmpresa };
         $.ajax({
-            url: "../Nomina/ListEmplados",
+            url: "../Nomina/ListConIDEmplados",
             type: "POST",
             data: dataSend2,
             success: (data) => {
@@ -1104,7 +1107,9 @@
                     //}
                 };
                 var dataAdapter = new $.jqx.dataAdapter(source);
-                $("#DropLitEmple").jqxDropDownList({ checkboxes: true, source: dataAdapter, displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 300, height: 30, });
+                $("#DropLitEmple").jqxDropDownList({ checkboxes: true, filterable: true, searchMode: "containsignorecase", selectedIndex: 0, source: dataAdapter, displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 300, height: 30, });
+
+
 
             },
         });

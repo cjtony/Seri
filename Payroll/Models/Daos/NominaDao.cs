@@ -2458,7 +2458,8 @@ namespace Payroll.Models.Daos
 
 
         }
-
+       
+        // Consulta el proceso de nomina
         public List<TPProcesos> sp_CalculosHdFinProces_Retrieve_TPlantillaCalculosHd(int ctrliFolio, int CtrliDefinicionHd)
         {
             List<TPProcesos> list = new List<TPProcesos>();
@@ -2501,6 +2502,76 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
+        // consulta la diferencia de dos nominas
+
+        public List<CompativoNomBean>sp_CompativoNomina_Retrieve_TPCalculosln(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CrtliIdEmpresa2, int CrtliAnio2, int CrtliTipoPeriodo2, int CtrliPeriodo2)
+        {
+
+            List<CompativoNomBean> list = new List<CompativoNomBean>();
+            try
+            {
+
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CompativoNomina_Retrieve_TPCalculosln", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@CrtliIdEmpresa", CrtliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CrtliAnio", CrtliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CrtliTipoPeriodo", CrtliTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CrtliIdEmpresa2", CrtliIdEmpresa2));
+                cmd.Parameters.Add(new SqlParameter("@CrtliAnio2", CrtliAnio2));
+                cmd.Parameters.Add(new SqlParameter("@CrtliTipoPeriodo2", CrtliTipoPeriodo2));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo2", CtrliPeriodo2));
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CompativoNomBean LP = new CompativoNomBean();
+                        {
+
+                            LP.iIdEmpresa = CrtliIdEmpresa;
+                            LP.iIdEmpresa2 = CrtliIdEmpresa2;
+                            LP.TipodNom = data["Tipo"].ToString();
+                            LP.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
+                            LP.sNombreRenglon = data["Nombre_Renglon"].ToString();
+                            LP.sTotal = data["Total"].ToString();
+                            LP.iIdRenglon2 = int.Parse(data["Renglon_id2"].ToString());
+                            LP.sNombreRenglon2 = data["Nombre_Renglon2"].ToString();
+                            LP.sTotal2 = data["Total2"].ToString();
+                            LP.sTotalDif = data["TotalDif"].ToString();
+                            LP.sMensaje = "success";
+                        };
+
+                        list.Add(LP);
+                    }
+                }
+                else
+                {
+                    CompativoNomBean LP = new CompativoNomBean();
+                    {
+                        LP.sMensaje = "error";
+                    }
+                    list.Add(LP);
+
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+
+        }
+
 
 
     }
