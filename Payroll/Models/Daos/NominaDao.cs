@@ -2539,7 +2539,7 @@ namespace Payroll.Models.Daos
                             LP.iIdEmpresa2 = CrtliIdEmpresa2;
                             LP.TipodNom = data["Tipo"].ToString();
                             LP.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
-                            LP.sNombreRenglon = data["Nombre_Renglon"].ToString();
+                            LP.sNombreRenglon = int.Parse(data["Renglon_id"].ToString()) +" "+ data["Nombre_Renglon"].ToString();
                             LP.sTotal = data["Total"].ToString();
                             LP.iIdRenglon2 = int.Parse(data["Renglon_id2"].ToString());
                             LP.sNombreRenglon2 = data["Nombre_Renglon2"].ToString();

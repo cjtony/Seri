@@ -635,13 +635,22 @@ namespace Payroll.Controllers
             string Parametro = anio+","+ iTipoPeriodo+","+ iPeriodo+","+ iIdCalculosHd+ "%";
             Dta2 = dao.sp_CalculosHdFinProces_Retrieve_TPlantillaCalculosHd(Convert.ToInt32(Folio), iIdCalculosHd);
             Dta = dao.sp_StatusProceso_Retrieve_TPProceso(Parametro);
+            if (Dta2[0].sEstatusJobs != "No hay datos")
+            {
+                if (Dta[0].sMensaje != "No hay datos")
+                {
+                    if (Dta[0].sMensaje == Dta2[0].sMensaje)
+                    {
+                        if (Dta[0].sEstatusJobs == "Terminado" && Dta2[0].sEstatusJobs == "Procesando")
+                        {
+                            Dta[0].sEstatusJobs = "Procesando";
+                        }
+                    }
+                }
+            }
+            else if(Dta2[0].sEstatusJobs == "No hay datos"){
+                Dta[0].sMensaje = "No hay datos";
 
-            if (Dta[0].sMensaje != "No hay datos") {
-                if (Dta[0].sMensaje == Dta2[0].sMensaje) {
-                    if (Dta[0].sEstatusJobs == "Terminado" && Dta2[0].sEstatusJobs == "Procesando") {
-                        Dta[0].sEstatusJobs = "Procesando";
-                    }              
-                } 
             }
             return Json(Dta);
         }
@@ -934,13 +943,12 @@ namespace Payroll.Controllers
         // Muestra el listado de renglones de la diferencia de nomina de una empresa
 
         [HttpPost]
-        public JsonResult NomiaDiferencia(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CrtliIdEmpresa2, int CrtliAnio2, int CrtliTipoPeriodo2, int CtrliPeriodo2)
+        public JsonResult NomiaDiferencia(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CrtliAnio2, int CrtliTipoPeriodo2, int CtrliPeriodo2)
         {
             List<CompativoNomBean> LPe = new List<CompativoNomBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            LPe = dao.sp_CompativoNomina_Retrieve_TPCalculosln(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CrtliIdEmpresa2, CrtliAnio2, CrtliTipoPeriodo2, CtrliPeriodo2);
+            LPe = dao.sp_CompativoNomina_Retrieve_TPCalculosln(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CrtliIdEmpresa, CrtliAnio2, CrtliTipoPeriodo2, CtrliPeriodo2);
             return Json(LPe);
-
         }
 
     }
