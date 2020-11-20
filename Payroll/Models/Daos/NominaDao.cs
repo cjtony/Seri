@@ -858,7 +858,7 @@ namespace Payroll.Models.Daos
 
         }
 
-        public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliNominaCerrada)
+        public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliFolio, int CtrliNominaCerrada)
         {
             TpCalculosHd bean = new TpCalculosHd();
             try
@@ -869,8 +869,9 @@ namespace Payroll.Models.Daos
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicionHd", CtrliIdDefinicionHd));
+                cmd.Parameters.Add(new SqlParameter("@CtrliFolio", CtrliFolio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNominaCerrada", CtrliNominaCerrada));
-
+               
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     bean.sMensaje = "success";
@@ -2572,6 +2573,49 @@ namespace Payroll.Models.Daos
 
         }
 
+        /// consulta los datos de definicion para generar folio en cualculos ln
+        public List<CInicioFechasPeriodoBean> sp_DatFolioDefNomina_Retreieve(int CrtliIdDefinicion)
+        {
+            List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_DatFolioDefNomina_Retreieve", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CrtliIdDefinicion", CrtliIdDefinicion));
+        
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CInicioFechasPeriodoBean ls = new CInicioFechasPeriodoBean();
+                        {
+                            
+                                ls.iIdEmpresesas = int.Parse(data["Empresa_id"].ToString());
+                                ls.ianio = int.Parse(data["Anio"].ToString());
+                                ls.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
+                                ls.iPeriodo = int.Parse(data["Periodo"].ToString());
+                            
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
 
 
     }

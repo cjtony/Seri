@@ -350,9 +350,28 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult InsertDatTpCalculos(int iIdDefinicionHd, int iNominaCerrada)
         {
+            string sFolio="";
+            int iFolio = 0;
             TpCalculosHd bean = new TpCalculosHd();
+            List<CInicioFechasPeriodoBean> DaFolio =new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iNominaCerrada);
+            DaFolio = dao.sp_DatFolioDefNomina_Retreieve(iIdDefinicionHd);
+            if (DaFolio != null) {
+
+                if (DaFolio[0].iPeriodo > 9)
+                {
+                    sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + DaFolio[0].iPeriodo + "0";
+                }
+                if (DaFolio[0].iPeriodo < 10)
+                {
+                    sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + "0" + DaFolio[0].iPeriodo + "0";
+                }
+
+                iFolio = Convert.ToInt32(sFolio);
+                bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada);
+            }
+        
+           
             return Json(bean);
 
         }
