@@ -350,9 +350,28 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult InsertDatTpCalculos(int iIdDefinicionHd, int iNominaCerrada)
         {
+            string sFolio="";
+            int iFolio = 0;
             TpCalculosHd bean = new TpCalculosHd();
+            List<CInicioFechasPeriodoBean> DaFolio =new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iNominaCerrada);
+            DaFolio = dao.sp_DatFolioDefNomina_Retreieve(iIdDefinicionHd);
+            if (DaFolio != null) {
+
+                if (DaFolio[0].iPeriodo > 9)
+                {
+                    sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + DaFolio[0].iPeriodo + "0";
+                }
+                if (DaFolio[0].iPeriodo < 10)
+                {
+                    sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + "0" + DaFolio[0].iPeriodo + "0";
+                }
+
+                iFolio = Convert.ToInt32(sFolio);
+                bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada);
+            }
+        
+           
             return Json(bean);
 
         }
@@ -635,13 +654,22 @@ namespace Payroll.Controllers
             string Parametro = anio+","+ iTipoPeriodo+","+ iPeriodo+","+ iIdCalculosHd+ "%";
             Dta2 = dao.sp_CalculosHdFinProces_Retrieve_TPlantillaCalculosHd(Convert.ToInt32(Folio), iIdCalculosHd);
             Dta = dao.sp_StatusProceso_Retrieve_TPProceso(Parametro);
+            if (Dta2[0].sEstatusJobs != "No hay datos")
+            {
+                if (Dta[0].sMensaje != "No hay datos")
+                {
+                    if (Dta[0].sMensaje == Dta2[0].sMensaje)
+                    {
+                        if (Dta[0].sEstatusJobs == "Terminado" && Dta2[0].sEstatusJobs == "Procesando")
+                        {
+                            Dta[0].sEstatusJobs = "Procesando";
+                        }
+                    }
+                }
+            }
+            else if(Dta2[0].sEstatusJobs == "No hay datos"){
+                Dta[0].sMensaje = "No hay datos";
 
-            if (Dta[0].sMensaje != "No hay datos") {
-                if (Dta[0].sMensaje == Dta2[0].sMensaje) {
-                    if (Dta[0].sEstatusJobs == "Terminado" && Dta2[0].sEstatusJobs == "Procesando") {
-                        Dta[0].sEstatusJobs = "Procesando";
-                    }              
-                } 
             }
             return Json(Dta);
         }
@@ -656,10 +684,24 @@ namespace Payroll.Controllers
             return Json(LTEmp);
         }
 
+        // Lista Empleado conid
+        [HttpPost]
+        public JsonResult ListConIDEmplados(int iIdEmpresa)
+        {
+            List<EmpleadosEmpresaBean> LTEmp = new List<EmpleadosEmpresaBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LTEmp = Dao.sp_EmpleadosDeEmpresa_Retreive_Templeados(iIdEmpresa);
+            if (LTEmp != null) {
+                for (int i = 0; i < LTEmp.Count; i++) {
+                    LTEmp[i].sNombreCompleto = LTEmp[i].iIdEmpleado +" "+ LTEmp[i].sNombreCompleto.ToString();
+                }
+            }
+            return Json(LTEmp);
+        }
+
         //Guarda Lista de Empleado en la tabla Lista_empleados_Nomina
         [HttpPost]
-        public JsonResult SaveEmpleados(int IdEmpresa,string sIdEmpleados,
-        int iAnio, int TipoPeriodo, int iPeriodo )
+        public JsonResult SaveEmpleados(int IdEmpresa, string sIdEmpleados, int iAnio, int TipoPeriodo, int iPeriodo )
         {
             int IdEmpleado=0;
             int iExite = 0;
@@ -917,5 +959,16 @@ namespace Payroll.Controllers
             return Json(LPe);
 
         }
+        // Muestra el listado de renglones de la diferencia de nomina de una empresa
+
+        [HttpPost]
+        public JsonResult NomiaDiferencia(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CrtliAnio2, int CrtliTipoPeriodo2, int CtrliPeriodo2)
+        {
+            List<CompativoNomBean> LPe = new List<CompativoNomBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LPe = dao.sp_CompativoNomina_Retrieve_TPCalculosln(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CrtliIdEmpresa, CrtliAnio2, CrtliTipoPeriodo2, CtrliPeriodo2);
+            return Json(LPe);
+        }
+
     }
 }

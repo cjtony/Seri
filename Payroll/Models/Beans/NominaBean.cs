@@ -375,7 +375,22 @@ namespace Payroll.Models.Beans
 
     }
 
+    public class CompativoNomBean { 
+      public int iIdEmpresa { get; set; }
+      public string TipodNom { get; set; }
+      public int iIdRenglon { get; set; }
+      public string sNombreRenglon { get; set; }
+      public string sTotal { get; set; }
+      public int porcentaje { get; set; }
+      public int iIdEmpresa2 { get; set; }
+      public int iIdRenglon2 { get; set; }
+      public string sNombreRenglon2 { get; set; }
+      public string sTotal2 { get; set; }
+      public string sTotalDif { get; set; }
+      public string sMensaje { get; set; }
+        
 
+    };
 
 
 }
