@@ -144,7 +144,7 @@ namespace Payroll.Models.Daos
         {
             List<DescEmpleadoVacacionesBean> list = new List<DescEmpleadoVacacionesBean>();
             this.Conectar();
-            SqlCommand cmd = new SqlCommand("sp_TPeriodos_Verify_AllPeriods", this.conexion)
+            SqlCommand cmd = new SqlCommand("sp_TPeriodos_Verify_AllPeriods_Vacaciones", this.conexion)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -167,6 +167,7 @@ namespace Payroll.Models.Daos
                         listEmpleados.Id_Per_Vac = int.Parse(data["IdPer_Vac"].ToString());
                     } else {
                         listEmpleados.Id_Per_Vac = 0;
+
                     }
                     if (data["IdPer_Vac_Ln"].ToString() != "") {
                         listEmpleados.Id_Per_Vac_Ln = int.Parse(data["IdPer_Vac_Ln"].ToString());
@@ -812,7 +813,15 @@ namespace Payroll.Models.Daos
                 {
                     TabIncidenciasBean lista = new TabIncidenciasBean();
                     lista.Incidencia_id = int.Parse(data["Incidencia_id"].ToString());
-                    //lista.IncidenciaP_id = int.Parse(data["IncidenciaP_id"].ToString()); //SE TIENE QUE VER COMO SE RELACIONARA CON LAS PROGRAMADAS
+                    
+                    if (data["IncidenciaP_id"] == null || data["IncidenciaP_id"].ToString().Length == 0)
+                    {
+                        lista.IncidenciaP_id = 0;
+                    }
+                    else
+                    {
+                        lista.IncidenciaP_id = int.Parse(data["IncidenciaP_id"].ToString()); //SE TIENE QUE VER COMO SE RELACIONARA CON LAS PROGRAMADAS
+                    }
                     lista.Nombre_Renglon = data["Nombre_Renglon"].ToString();
                     lista.VW_TipoIncidencia_id = data["VW_Tipo_Incidencia_id"].ToString();
                     lista.Numero_dias = data["Numero_dias"].ToString();
@@ -1001,7 +1010,7 @@ namespace Payroll.Models.Daos
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
-                    lista.Certificado_imss = data["Certificado_imss"].ToString();
+                    lista.Certificado_imss = data["Certific ado_imss"].ToString();
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
                     lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
@@ -1152,10 +1161,8 @@ namespace Payroll.Models.Daos
             }
             data.Close();
             this.conexion.Close(); this.Conectar().Close();
-
             return list;
         }
-
         public List<string> sp_TRegistro_Incidencias_update_incidencia(int Empresa_id, int Empleado_id, int Incidencia_id, int Renglon_id, string Cantidad, string Saldo, int Plazos, int Pagos_restantes, string Leyenda, string Referencia, string Fecha_Aplicacion, string Numero_dias)
         {
             List<string> lista = new List<string>();

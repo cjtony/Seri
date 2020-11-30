@@ -1,4 +1,5 @@
-﻿using Payroll.Models.Beans;
+﻿
+using Payroll.Models.Beans;
 using Payroll.Models.Daos;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -80,7 +81,6 @@ namespace Payroll.Controllers
                                 "<div class='input-group-text text-dark bg-white'><i class='fas fa-city'></i></div>" +
                             "</div>" +
                             "<div class='form-control btn btn-menu btnsEmpresas' onclick='btnsEmpresas(\"" + item.IdEmpresa + "\",\"" + item.NombreEmpresa + "\")'>" +
-
                                 "<small class='badge p-0 m-0 text-wrap'>" + item.NombreEmpresa + "&nbsp;&nbsp;&nbsp; <small class='badge badge-pill badge-light text-center aling-middle'> " + item.IdEmpresa + " </small></small>" +
                             "</div>" +
                         "</div>" +

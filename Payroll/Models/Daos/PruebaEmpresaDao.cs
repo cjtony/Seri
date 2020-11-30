@@ -830,7 +830,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TPeriodosDist_Insert_Periodo(int PerVacLn_id, string FechaInicio, string FechaFin, int Dias)
+        public List<string> sp_TPeriodosDist_Insert_Periodo(int PerVacLn_id, string FechaInicio, string FechaFin, int Dias, int Usuario_id)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -842,6 +842,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaInicio", FechaInicio));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaFin", FechaFin));
             cmd.Parameters.Add(new SqlParameter("@ctrlDias", Dias));
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
 
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
