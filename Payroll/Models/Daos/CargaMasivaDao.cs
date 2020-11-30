@@ -15,7 +15,7 @@ namespace Payroll.Models.Daos
         public DataTable ValidaArchivo(string fileName, string fileType)
         {
             List<object> list = new List<object>();
-            
+
             DataSet dataset = null;
 
             using (var stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
