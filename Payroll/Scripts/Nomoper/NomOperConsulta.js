@@ -338,7 +338,7 @@
 
     btnActualizarDefinicion.addEventListener('click', FActualiza);
 
-    // Pantalla  Percepciones
+                   // Pantalla  Percepciones
 
     // llena el grip de Percepciones
 
@@ -524,7 +524,8 @@
     const BAgregarPer = document.getElementById('BAgregarPer');
 
     // fincion de llenado el droplist de empresa de persepciones
-    LisEmpresa = () => {
+    LisEmpresa = () =>
+    {
         $.ajax({
             url: "../Nomina/LisEmpresas",
             type: "POST",
@@ -554,7 +555,7 @@
             data: dataSend,
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
-                    document.getElementById("RegTipoperiodo1").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
+                    document.getElementById("RegTipoperiodo1").innerHTML += `<option value='${data[i].iId} '>${data[i].sValor}</option>`;
                 }
             },
             error: function (jqXHR, exception) {
@@ -578,7 +579,29 @@
             data: dataSend,
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
-                    document.getElementById("RegRenglon").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sNombreRenglon}</option>`;
+                    document.getElementById("RegRenglon").innerHTML += `<option value='${data[i].iIdRenglon} - ${data[i].iEspejo}'>${data[i].sNombreRenglon}</option>`;
+                }
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+
+    };
+
+    RecargaLisRenglon2 = ( IdEmpresa) => {
+
+        
+        const dataSend = { IdEmpresa: IdEmpresa, iElemntoNOm: 1 };
+        $("#RegRenglon").empty();
+        $('#RegRenglon').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisRenglon",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("RegRenglon").innerHTML += `<option value='${data[i].iIdRenglon} - ${data[i].iEspejo}'>${data[i].sNombreRenglon}</option>`;
                 }
             },
             error: function (jqXHR, exception) {
@@ -601,7 +624,10 @@
         var OpRenglon = RegEmpresa.options[RegEmpresa.selectedIndex].text;
         var opEmpresaval = RegEmpresa.value;
         var OpRenglonint = RegRenglon.options[RegRenglon.selectedIndex].text;
-        const opRenglonTex = RegRenglon.value;
+        separador = "-",
+        limite = 2,
+        arreglosubcadena = RegRenglon.value.split(separador, limite);
+        const opRenglonTex = arreglosubcadena[0];
         const dataSend = { iIdEmpresa: opEmpresaval, iIdRenglon: opRenglonTex };
         $("#RegAcumulado").empty();
         $('#RegAcumulado').append('<option value="0" selected="selected">Selecciona</option>');
@@ -621,6 +647,14 @@
 
 
         });
+     
+        if (arreglosubcadena[1] == 0) {
+            RegEspejo.selectedIndex = 2;
+            
+        }
+        if (arreglosubcadena[1] == 1) {
+            RegEspejo.selectedIndex = 1;
+        }
 
     };
 
@@ -668,7 +702,10 @@
                     const idempresa = RegEmpresa.value;
                     const idTipoPeriodo = RegTipoperiodo1.value;
                     //const idPeriodo = op2;
-                    const idRenglon = RegRenglon.value;
+                    separador = "-",
+                    limite = 2,
+                    arreglosubcadena = RegRenglon.value.split(separador, limite);
+                    const idRenglon = arreglosubcadena[0];
                     const icance = opcanel1;
                     const iEleNom = '39';
                     const idAcumulado = iAcumulado.value;
@@ -742,7 +779,6 @@
 
     // abre ventana y carga datos 
     botonActuPer = () => {
-        console.log('actualiza');
         $("#TbPercepciones").click();
         btnAgregarPercep.style.visibility = 'hidden';
         btnActualizarPercep.style.visibility = 'visible';
@@ -756,7 +792,8 @@
         }
         var opvalEmpresa = RegEmpresa.value;
         const dataSend = { IdEmpresa: opvalEmpresa, iElemntoNOm: 1 };
-        console.log(dataSend);
+
+
         $("#RegRenglon").empty();
         $('#RegRenglon').append('<option value="0" selected="selected">Selecciona</option>');
         $.ajax({
@@ -887,10 +924,11 @@
 
 
     };
-
     BActuPer.addEventListener('click', botonActuPer);
+
     BActuPer.style.visibility = 'hidden';
     BAgregarPer.style.visibility = 'hidden';
+
     $("#TbPercepciones").on('rowselect', function (event) {
         var args = event.args;
         var row = $("#TbPercepciones").jqxGrid('getrowdata', args.rowindex);
@@ -924,12 +962,15 @@
 
     FactulizaPer = () => {
 
-        console.log('actualiza percecpcion');
         var EmpresaPer = RegEmpresa.options[RegEmpresa.selectedIndex].text;
         var EmpresaIDper = RegEmpresa.value;
         var RenglonPre = RegRenglon.options[RegRenglon.selectedIndex].text;
-        var RenglonPerId = RegRenglon.value;
+        separador = "-",
+        limite = 2,
+        arreglosubcadena = RegRenglon.value.split(separador, limite);
+        var RenglonPerId = arreglosubcadena[0];
         var TipoPeriodoPre = Tpoperiodo1.options[Tpoperiodo1.selectedIndex].text;
+
         var TipoPeriodoPreId = Tpoperiodo1.value;
         var EspejoPre = iRegEspejo.options[iRegEspejo.selectedIndex].text;
         var EspejoPreId = iRegEspejo.value;
@@ -994,7 +1035,7 @@
 
                                     $("#TpDefinicion").click();
                                     FcargaPercepciones();
-                                    fshowtypealert('Registro Actualizado!', 'Definicion de Percepción', 'success');
+                                    fshowtypealert('Registro Actualizado!', 'Percepción actualizada', 'success');
 
                                 } else {
                                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
@@ -1028,8 +1069,6 @@
     btnActualizarPercep.addEventListener('click', FactulizaPer);
 
     FDeleteDefinicionNLPer = () => {
-
-
         $("#TbPercepciones").click();
         console.log(DatoiId);
         const dataSend = {
@@ -1055,13 +1094,11 @@
                 fcaptureaerrorsajax(jqXHR, exception);
             }
         });
-
-
     }
 
 
-    BEliminarPer.addEventListener('click', FDeleteDefinicionNLPer)
-    BEliminarPer.style.visibility = 'hidden'
+    BEliminarPer.addEventListener('click', FDeleteDefinicionNLPer);
+    BEliminarPer.style.visibility = 'hidden';
     FVisualizacionBotones = () => {
         btnAgregarPercep.style.visibility = "visible";
         btnActualizarPercep.style.visibility = "hidden";
@@ -1073,6 +1110,8 @@
             if (arreglosubcadena[1] == empresaSelect) {
                 // seleccionamos el valor que coincide
                 RegEmpresa.selectedIndex = i;
+                RecargaLisRenglon2(arreglosubcadena[0]);
+             
             }
 
         }
@@ -1111,6 +1150,7 @@
                 fcaptureaerrorsajax(jqXHR, exception);
             }
         });
+       
     };
 
     BAgregarPer.addEventListener('click', FVisualizacionBotones);
@@ -1325,7 +1365,6 @@
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("RegEmpresaDe").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
                 }
@@ -1360,7 +1399,6 @@
     };
 
     // llenado del droplist de renglon
-
     RecargaLisRenglonDe = () => {
         var OpRenglon = RegEmpresade.options[RegEmpresade.selectedIndex].text;
         var opvalEmpresaDe = RegEmpresade.value;
@@ -1372,9 +1410,9 @@
             type: "POST",
             data: dataSend,
             success: (data) => {
-                console.log(data);
+                console.log(data+'1');
                 for (i = 0; i < data.length; i++) {
-                    document.getElementById("RegRenglonDe").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sNombreRenglon}</option>`;
+                    document.getElementById("RegRenglonDe").innerHTML += `<option value='${data[i].iIdRenglon} - ${data[i].iEspejo}'>${data[i].sNombreRenglon}</option>`;
                 }
             },
             error: function (jqXHR, exception) {
@@ -1382,6 +1420,32 @@
             }
         });
     };
+
+    // llenado del droplist de renglon
+    RecargaLisRenglonDe2 = (Idempresade) => {
+        var OpRenglon = RegEmpresade.options[RegEmpresade.selectedIndex].text;
+       
+        const dataSend = { IdEmpresa: Idempresade, iElemntoNOm: 2 };
+        $("#RegRenglonDe").empty();
+        $('#RegRenglonDe').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisRenglon",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                console.log('2 vuelve a entrar aqui');
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("RegRenglonDe").innerHTML += `<option value='${data[i].iIdRenglon} - ${data[i].iEspejo}'>${data[i].sNombreRenglon}</option>`;
+                }
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+    };
+
+
+
 
     $('#RegEmpresaDe').change(function () {
 
@@ -1396,7 +1460,11 @@
         var OpRenglon = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
         var opEmpresaval = RegEmpresaDe.value;
         var OpRenglonint = RegRenglonDe.options[RegRenglonDe.selectedIndex].text;
-        const opRenglonTex = RegRenglonDe.value;
+        separador = "-",
+        limite = 2,
+        arreglosubcadena2 = RegRenglonDe.value.split(separador, limite);
+
+        const opRenglonTex = arreglosubcadena2[0] ;
         const dataSend = { iIdEmpresa: opEmpresaval, iIdRenglon: opRenglonTex };
         $("#RegAcumuladoDe").empty();
         $('#RegAcumuladoDe').append('<option value="0" selected="selected">Selecciona</option>');
@@ -1416,6 +1484,12 @@
 
 
         });
+        if (arreglosubcadena[1] == 0) {
+            iRegEspejode.selectedIndex = 2;
+        }
+        if (arreglosubcadena[1] == 1) {
+            iRegEspejode.selectedIndex = 1;
+        }
 
     };
 
@@ -1429,7 +1503,7 @@
     FDeleteDefinicionNLdedu = () => {
 
         $("#TbDeducciones").click();
-        console.log(DatoiId);
+      
         const dataSend = {
             iIdDefinicion: DatoiIdde
         };
@@ -1553,7 +1627,10 @@
                     const idempresade = RegEmpresade.value;
                     const idTipoPeriodode = Tpoperiodode.value;
                     //const idPeriodode = op2;
-                    const idRenglonde = RegRenglonde.value;
+                    separador = "-",
+                    limite = 2,
+                    arreglosubcadena2 = RegRenglonDe.value.split(separador, limite);
+                    const idRenglonde = arreglosubcadena2[0];
                     const icancede = opcanel;
                     const iEleNomde = '40';
                     const idAcumuladode = iAcumuladode.value;
@@ -1671,17 +1748,21 @@
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("RegRenglonDe").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sNombreRenglon}</option>`;
                 }
-
+                console.log('Reno dedu' + RegRenglonDe.length);
                 for (i = 0; i < RegRenglonDe.length; i++) {
+                    console.log(RegRenglonDe.options[i].text + '=' + DatoRenglonde);
                     if (RegRenglonDe.options[i].text == DatoRenglonde) {
+                        console.log('Entro' + i);
                         // seleccionamos el valor que coincide
+              
                         RegRenglonDe.selectedIndex = i;
+                        i = 100000;
                     }
                 }
 
                 var opEmpresaval = RegEmpresaDe.value;
                 OpRenglon = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
-                const opRenglonTex = RegRenglonDe.value;
+                const opRenglonTex = RegRenglonde.value;
                 const dataSend3 = { iIdEmpresa: opEmpresaval, iIdRenglon: opRenglonTex };
                 $("#RegAcumuladoDe").empty();
                 $('#RegAcumuladoDe').append('<option value="0" selected="selected">Selecciona</option>');
@@ -1693,7 +1774,6 @@
 
                         for (i = 0; i < data.length; i++) {
                             document.getElementById("RegAcumuladoDe").innerHTML += `<option value='${data[i].iIdAcumulado}'>${data[i].sDesAcumulado}</option>`;
-
                         }
 
                         for (i = 0; i < RegAcumuladoDe.length; i++) {
@@ -1717,6 +1797,7 @@
         var op = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
         var opvalde = RegEmpresaDe.value;
         const dataSend2 = { IdEmpresa: opvalde };
+
         $("#RegTipoperiodoDe").empty();
         $('#RegTipoperiodoDe').append('<option value="0" selected="selected">Selecciona</option>');
         $.ajax({
@@ -1732,10 +1813,11 @@
                     if (RegTipoperiodoDe.options[i].text == datotipoperiodode) {
                         // seleccionamos el valor que coincide
                         RegTipoperiodoDe.selectedIndex = i;
+                       
                     }
 
                 }
-
+          
                 $("#TpDefinicion").click();
 
                 //const dataSend4 = { iIdFinicion: IdDh };
@@ -1828,7 +1910,7 @@
             data: dataSend,
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
-                    document.getElementById("RegRenglonDe").innerHTML += `<option value='${data[i].iIdRenglon}'>${data[i].sNombreRenglon}</option>`;
+                    document.getElementById("RegRenglonDe").innerHTML += `<option value='${data[i].iIdRenglon} - ${data[i].iEspejo}'>${data[i].sNombreRenglon}</option>`;
                 }           
 
             },
@@ -1883,7 +1965,10 @@
         var Empresaded = RegEmpresaDe.options[RegEmpresaDe.selectedIndex].text;
         var EmpresaIDded = RegEmpresaDe.value;
         var Renglonded = RegRenglonDe.options[RegRenglonDe.selectedIndex].text;
-        var RenglondedId = RegRenglonDe.value;
+        separador = "-",
+        limite = 2,
+        arreglosubcadena = RegRenglonDe.value.split(separador, limite);
+        var RenglondedId = arreglosubcadena[0];
         var TipoPeriododed = RegTipoperiodoDe.options[RegTipoperiodoDe.selectedIndex].text;
         var TipoPeriododedId = RegTipoperiodoDe.value;
         var Espejoded = RegEspejoDe.options[RegEspejoDe.selectedIndex].text;

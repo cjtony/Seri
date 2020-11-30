@@ -150,7 +150,8 @@ namespace Payroll.Models.Daos
                         {
                             ls.iIdRenglon = int.Parse(data["IdRenglon"].ToString());
                             ls.sNombreRenglon = data["NombreRenglon"].ToString();
-
+                            ls.iEspejo = int.Parse(data["rng_espejo"].ToString());
+                         
                         };
 
 
@@ -1700,12 +1701,12 @@ namespace Payroll.Models.Daos
 
         }
 
-        public CInicioFechasPeriodoBean sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(int CrtliIdDeficionHd, int CtrliPeriodo, int CtrliNominaCerrada,int CtrliAnio)
+        public CInicioFechasPeriodoBean sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo(int CrtliIdDeficionHd, int CtrliPeriodo, int CtrliNominaCerrada,int CtrliAnio, int CtrlIdTipoPeriodo, int CtrliIdempresa)
         {
             CInicioFechasPeriodoBean bean = new CInicioFechasPeriodoBean();
             try
             {
-                int CtrliIdempresa = 0;
+                
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_NomCerradaCInicioFechaPeriodo_Update_CInicioFechasPeriodo", this.conexion)
                 {
@@ -1713,6 +1714,7 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@CrtliIdDeficionHd", CrtliIdDeficionHd));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrlIdTipoPeriodo", CtrlIdTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNominaCerrada", CtrliNominaCerrada));
                 cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
@@ -2616,6 +2618,71 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
+
+        // consulta la diferencias de saldos de las empresasd
+
+        public List<CompativoNomBean> sp_ComparativoNominaXEmpresa_Retrieve_TpCalculosLN(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPerido, int CtrliPeriodoAnte)
+        {
+
+            List<CompativoNomBean> list = new List<CompativoNomBean>();
+            try
+            {
+
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ComparativoNominaXEmpresa_Retrieve_TpCalculosLN", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@CrtliIdEmpresa", CrtliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CrtliAnio", CrtliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CrtliTipoPeriodo", CrtliTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPerido", CtrliPerido));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodoAnte", CtrliPeriodoAnte));
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CompativoNomBean LP = new CompativoNomBean();
+                        {
+
+                            LP.iIdEmpresa = CrtliIdEmpresa;
+                            LP.sNombreRenglon = int.Parse(data["id"].ToString()) + " " + data["Descripcion"].ToString();
+                            LP.sTotal = data["TotalPeriodoActual"].ToString();
+                            LP.sTotal2 = data["TotalPeridoAnter"].ToString();
+                            LP.sTotalDif = data["TotalDif"].ToString();
+                            LP.iNoEmpleado = int.Parse(data["NoempleActual"].ToString());
+                            LP.iNoEmpleadosNuevos = int.Parse(data["NoEmpleados"].ToString());
+                            LP.sMensaje = "success";
+                        };
+
+                        list.Add(LP);
+                    }
+                }
+                else
+                {
+                    CompativoNomBean LP = new CompativoNomBean();
+                    {
+                        LP.sMensaje = "error";
+                    }
+                    list.Add(LP);
+
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+
+        }
+
 
 
     }

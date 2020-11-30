@@ -387,6 +387,8 @@ namespace Payroll.Models.Beans
       public string sNombreRenglon2 { get; set; }
       public string sTotal2 { get; set; }
       public string sTotalDif { get; set; }
+      public int iNoEmpleado { get; set; } 
+      public int iNoEmpleadosNuevos { get; set; }
       public string sMensaje { get; set; }
         
 
