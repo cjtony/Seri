@@ -494,25 +494,25 @@
         IdEmpresa = EmpresaNom.value;
         anio = anoNom.value;
         Tipoperiodo = TipodePerdioRec.value;
-        datosPeriodo = PeridoNom.value;       
-        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo:0 };
+        datosPeriodo = PeridoNom.value;
+        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 0 };
         $.ajax({
             url: "../Empleados/XMLNomina",
             type: "POST",
             data: dataSend,
             success: function (data) {
                 if (data[0].sMensaje != "NorCert") {
-                    var url = '\\Archivos\\certificados\\ZipXML.zip';
+                    var url = '\\Archivos\\ZipXML.zip';
                     window.open(url);
 
                 }
                 else {
                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
                 }
-            
+
             }
         });
- 
+
     };
 
     BtbGeneraXML.addEventListener('click', FGenerarXML);

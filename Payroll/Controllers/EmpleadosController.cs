@@ -389,12 +389,31 @@ namespace Payroll.Controllers
         public JsonResult XMLNomina(int IdEmpresa, string sNombreComple, int Periodo, int anios, int Tipodeperido, int Masivo)
         {
 
+            String messageError = "none";
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-            string path = Server.MapPath("Archivos\\XmlZip\\");
-            path = path.Replace("\\Empleados", "");
-            ListDatEmisor = Dao.GXMLNOM(IdEmpresa, sNombreComple, path, Periodo, anios, Tipodeperido, Masivo);
+            String pathLog = Server.MapPath("~/Content/");
+            try
+            {
+                string path = Server.MapPath("Archivos\\XmlZip\\");
+                path = path.Replace("\\Empleados", "");
+                ListDatEmisor = Dao.GXMLNOM(IdEmpresa, sNombreComple, path, Periodo, anios, Tipodeperido, Masivo);
+            }
+            catch (Exception exc)
+            {
+                messageError = exc.Message.ToString();
+                if (!System.IO.Directory.Exists(pathLog + "LOGS"))
+                {
+                    Directory.CreateDirectory(pathLog + "LOGS");
+                }
+                using (StreamWriter file = new StreamWriter(pathLog + "LOGS" + @"\\" + "LogXMLNOMINA" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt"))
+                {
+                    file.Write(messageError + "\n");
+                    file.Close();
+                }
+            }
             return Json(ListDatEmisor);
+
         }
 
         [HttpPost]

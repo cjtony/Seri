@@ -74,6 +74,8 @@
     var checkedItemsIdEmpleados = "";
     var empresas="";
     var seconds = 0;
+    var cantidad;
+
     //// llenad el grid de Definicion 
 
     FLlenaGrid = () => {
@@ -276,7 +278,6 @@
                RosTabCountCalculo = data.length;
                var dato = data[0].sMensaje;
                 if (dato == "No hay datos") {
-                 
                     $.ajax({
                         url: "../Nomina/Statusproc",
                         type: "POST",
@@ -322,17 +323,25 @@
                     console.log('tiene datos')
                      for (var i=0; i < data.length; i++) {
                         if (data[i].iIdRenglon == 990) {
-                           per = data[i].dTotal;
-                           PercepCal.value = "$ " + new Intl.NumberFormat("en-IN").format(data[i].dTotal)             
+                           per = data[i].dTotal;                 
+                           PercepCal.value = data[i].sTotal;
                         }
                         if (data[i].iIdRenglon == 1990) {
                                 dedu = data[i].dTotal;
-                                DeduCal.value = "$ " + new Intl.NumberFormat("en-IN").format(data[i].dTotal); 
+                                DeduCal.value = data[i].sTotal; 
                                 total = per - dedu;
                                 total = Math.round(total * 100);
                                 total = total / 100;
-                                totalCal.value = "$ " + new Intl.NumberFormat("en-IN").format(total);
-                            }
+                        
+                         }
+
+                         if (data[i].iIdRenglon == 9999) {
+                             totalCal.value = data[i].sTotal;
+
+                         }
+
+                       
+
                     }
                         $.ajax({
                         url: "../Nomina/Statusproc",
@@ -764,7 +773,7 @@
                                     separador = " ",
                                         limite = 2,
                                         arreglosubcadena = periodo.split(separador, limite);
-                                    const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 1, Anio: TbAño.value };
+                                    const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 1, Anio: TbAño.value, IdTipoPeriodo: 0, IdEmpresa:0 };
 
                                     $.ajax({
                                         url: "../Nomina/UpdateCInicioFechasPeriodo",
@@ -981,8 +990,8 @@
                 if (data[0].sMensaje == "error") {
 
                         Swal.fire({
-                            title: 'Los cálculos ya se realizaron en otra definición  ',
-                            text: "si deseas continuar se perderan los calculos de esa definición, ¿deseas continuar?",
+                            title: 'Ya se realizarón calculos de este periodo  ',
+                            text: "si deseas continuar se perderan los calculos anteriores, ¿deseas continuar?",
                             icon: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
@@ -1088,7 +1097,6 @@
     ////// selecccion de los empleado de la empresa
 
     $('#EmpresaNom').change(function () {
-
 
         var tipoPeriodo = TxbTipoPeriodo.value
         separador = " ",
@@ -1336,8 +1344,6 @@
 
 
     };
-
-
 
     BntBusRecibo.addEventListener('click', FBusNom)
 
@@ -2054,7 +2060,108 @@
         currency: 'USD',
         minimumFractionDigits: 0
     });
-  
+
+
+    /// tab abrir no mina 
+
+    const DropEmpresaPeri = document.getElementById('DropEmpresaPeri');
+    const TxtAnioPer = document.getElementById('TxtAnioPer');
+    const DropTipodePerdioPer = document.getElementById('DropTipodePerdioPer');
+    const DropPeridoPer = document.getElementById('DropPeridoPer');
+    const btnOpenPeriodo = document.getElementById('btnOpenPeriodo');
+
+
+    FListadoEmpresaOpen = () => {
+        $("#DropEmpresaPeri").empty();
+        $('#DropEmpresaPeri').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisEmpresas",
+            type: "POST",
+            data: JSON.stringify(),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("DropEmpresaPeri").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+
+                }
+            }
+        });
+    };
+    FListadoEmpresaOpen();
+
+    FListTipoDePeriodoOpen = () => {
+        const dataSend = { IdEmpresa: DropEmpresaPeri.value };
+        $("#DropTipodePerdioPer").empty();
+        $('#DropTipodePerdioPer').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/LisTipPeriodo",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("DropTipodePerdioPer").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
+                }
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+
+    };
+
+    $('#DropEmpresaPeri').change(function () {
+        FListTipoDePeriodoOpen();
+    });
+
+    $('#DropTipodePerdioPer').change(function () {
+        const dataSend = { iIdEmpresesas: DropEmpresaPeri.value, ianio: TxtAnioPer.value, iTipoPeriodo: DropTipodePerdioPer.value };
+        $("#DropPeridoPer").empty();
+        $('#DropPeridoPer').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/ListPeriodoComp",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("DropPeridoPer").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
+                }
+                for (i = 0; i < data.length - 1; i++) {
+                    document.getElementById("DropPerido2").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
+                }
+
+            },
+        });
+
+    });
+
+
+    FAbrirNomina = () => {
+        console.log('abrir nomina');
+        const dataSendopen = { iIdDefinicionHd: 0, IdEmpresa: DropEmpresaPeri.value, iPerido: DropPeridoPer.value, iNominaCerrada: 0, Anio: TxtAnioPer.value, IdTipoPeriodo: DropTipodePerdioPer.value };
+
+        $.ajax({
+            url: "../Nomina/UpdateCInicioFechasPeriodo",
+            type: "POST",
+            data: dataSendopen,
+            success: (data) => {
+
+                if (data.sMensaje == "success") {
+                    fshowtypealert('Nomina', 'El Periodo se Abrio', 'correcto');
+                    
+                }
+                else {
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+
+                }
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+
+    };
+
+    btnOpenPeriodo.addEventListener('click', FAbrirNomina);
  
 });
 

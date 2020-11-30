@@ -22,6 +22,10 @@
                         <a class="nav-item nav-link font-navs " id="nav-NomCe-tab" data-toggle="tab" href="#nav-NomCe" role="tab" aria-controls="nav-NomCe" pagPre="false">
                             <i class="fas fa-bolt col-ico col-ico mr-ico-05 disabled"></i> Ejecución Nominas Cerradas
                         </a>
+                        <a class="nav-item nav-link font-navs " id="nav-NomPeri-tab" data-toggle="tab" href="#nav-NomPer" role="tab" aria-controls="nav-NomPer" pagPre="false">
+                            <i class="fas fa-pager col-ico col-ico mr-ico-05 disabled"></i> Abrir Periodos
+                        </a>
+
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -213,8 +217,8 @@
                                             </div>
                                         </div>
                                         @*<div class="table-responsive" style="text-align:center">
-                                                <div id="TbCalculos" class="table-responsive"></div>
-                                        </div>*@
+                                    <div id="TbCalculos" class="table-responsive"></div>
+                            </div>*@
                                     </div>
                                 </div>
                             </div>
@@ -312,8 +316,8 @@
                                         <label for="anoeje" class="col-sm-4 col-form-label font-labels" id="LaTotal" style="visibility:hidden">
                                             Total:
                                         </label>
-                                        <div class="col-sm-8" >
-                                            <input placeholder="Total" type="text" id="Tbtotal" class="form-control form-control-sm text-capitalize" readonly style="visibility:hidden"/>
+                                        <div class="col-sm-8">
+                                            <input placeholder="Total" type="text" id="Tbtotal" class="form-control form-control-sm text-capitalize" readonly style="visibility:hidden" />
                                         </div>
                                     </div>
 
@@ -445,6 +449,90 @@
                         </div>
 
                     </div>
+               
+                    @*--pantalla Abrir periodo--*@
+
+                    <div class="tab-pane fade  p-4" id="nav-NomPer" role="tabpanel" aria-labelledby="nav-NomPeri-tab">
+                        <center>
+                            <div class="row mt-4 col-md-8 border-left-primary p-3 rounded shadow border-right-primary">
+                                <div class="col-md-12">
+                                    <div class="form-group row col-md-6">
+                                        <div class="text-left" style="margin-left:-50%">
+                                            <h6 class="col-ico font-nav-child">
+                                                <b>
+                                                    <i class="fas fa-pager  mr-ico-05"></i>
+                                                    Periodo
+                                                </b>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr />
+                                    </div>
+                                    <div class="row mt-6">
+                                        <div class="col-md-6">
+                                            <div class="form-group row" style="margin-left:2%">
+                                                <label for="LaEmpresa" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fas fa-building mr-2 col-ico"></i>
+                                                    Empresa:
+                                                </label>
+                                                <div class="col-sm-7" style="margin-left:-2%">
+                                                    <select placeholder="Empresa" tp-select="EmpresaNomPer" class="form-control form-control-sm" id="DropEmpresaPeri">
+                                                        <option value="0">Selecciona</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" style="margin-left:0%">
+                                                <label for="anoNom" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fas fa-calendar mr-2 col-ico"></i>
+                                                    Año:
+                                                </label>
+                                                <div class="col-sm-7" style="margin-left:-2%">
+                                                    <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="TxtAnioPer" class="form-control form-control-sm text-capitalize" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <div class="form-group row">
+                                                <label for="TipoPerido" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fas fa-pallet mr-2 col-ico"></i>
+                                                    Tipo de Periodo:
+                                                </label>
+                                                <div class="col-sm-6" style="margin-left:-2%">
+                                                    <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="DropTipodePerdioPer">
+                                                        <option value="0">Selecciona</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="peridoNom" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fas fa-pager mr-2 col-ico"></i>
+                                                    Perido:
+                                                </label>
+                                                <div class="col-sm-6" style="margin-left:-2%">
+                                                    <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="DropPeridoPer">
+                                                        <option value="0">Selecciona</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <button type="submit" class="btn btn-primary mb-2 " id="btnOpenPeriodo"><span class="fas fa-book-open mr-2"></span>Abrir periodo </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                 
+                                </div>
+                            </div>
+                        </center>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -470,7 +558,6 @@
     </div>
     </div>
 </body>
-
 
 
 

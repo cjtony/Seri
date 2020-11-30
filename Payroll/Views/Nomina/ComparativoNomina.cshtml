@@ -1,5 +1,6 @@
 ﻿
-
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
 <body>
     <div class="container bg-white">
         @*Botones Flotantes*@
@@ -13,7 +14,7 @@
                         <h6 class="col-ico font-nav-child">
                             <b>
                                 <i class="fas fa-balance-scale mr-ico-05"></i>
-                                Comparatiuvo de Nomina
+                                Comparativo de Nomina
                             </b>
                         </h6>
                     </div>
@@ -22,118 +23,105 @@
                 <div class="col-md-12">
                     <hr />
                 </div>
-            
-                <div class="col-md-6">
-                    <div style="text-align:center">
-                        <label for="NomReciente" class="col-sm-12 col-form-label font-labels">
-                            Nomina Reciente
-                        </label>
-                    </div>
-              
-                    <div class="row mt-4">
-                        <div class="col-md-6">
+                <div class="col-md-8 offset-2">
+                    <div class="form-group text-center rounded shadow p-3 border-left-primary">
+                        <div class="col-md-12">
+                            <div class="form-group row col-md-6" style="margin-left:2%">
+                                <div class="text-left">
+                                    <h6 class="col-ico font-nav-child">
+                                        <b>
+                                            <i class="fas fa-print  mr-ico-05"></i>
+                                            Nomina
+                                        </b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+                            <div class="row mt-6">
+                                <div class="col-md-6">
+                                    <div class="form-group row" style="margin-left:2%">
+                                        <label for="LaEmpresa" class="col-sm-4 col-form-label font-labels">
+                                            <i class="fas fa-building mr-2 col-ico"></i>
+                                            Empresa:
+                                        </label>
+                                        <div class="col-sm-6" style="margin-left:-2%">
+                                            <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="DropEmpresa">
+                                                <option value="0">Selecciona</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" style="margin-left:-2%">
+                                        <label for="anoNom" class="col-sm-4 col-form-label font-labels">
+                                            <i class="fas fa-calendar mr-2 col-ico"></i>
+                                            Año:
+                                        </label>
+                                        <div class="col-sm-6" style="margin-left:1%">
+                                            <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="TxtAnio" class="form-control form-control-sm text-capitalize" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" style="margin-left:-2%">
+                                        <label for="LaPorcentaje" class="col-sm-5 col-form-label font-labels">
+                                            <i class="fas fa-percentage mr-2 col-ico"></i>
+                                            Porcentaje de diferencia:
+                                        </label>
+                                        <div class="col-sm-6" style="margin-left:-8%">
+                                            <input placeholder="Porcentaje de diferencia" maxlength="3" tvvisible="false" type="text" id="TxtPorcentaje" class="form-control form-control-sm text-capitalize" />
+                                        </div>
+                                    </div>
 
-                            <div class="form-group row" style="margin-left:2%">
-                                <label for="LaEmpresa" class="col-sm-4 col-form-label font-labels">
-                                    Empresa:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="DropEmpresa">
-                                        <option value="0">Selecciona</option>
-                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="TipoPerido" class="col-sm-4 col-form-label font-labels">
+                                            <i class="fas fa-pallet mr-2 col-ico"></i>
+                                            Tipo de Periodo:
+                                        </label>
+                                        <div class="col-sm-6" style="margin-left:-2%">
+                                            <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="DropTipodePerdio">
+                                                <option value="0">Selecciona</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="peridoNom" class="col-sm-4 col-form-label font-labels">
+                                            <i class="fas fa-pager mr-2 col-ico"></i>
+                                            Perido:
+                                        </label>
+                                        <div class="col-sm-6" style="margin-left:-2%">
+                                            <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="DropPerido">
+                                                <option value="0">Selecciona</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="peridoNom2" class="col-sm-4 col-form-label font-labels">
+                                            <i class="fas fa-pager mr-2 col-ico"></i>
+                                            Perido anterior:
+                                        </label>
+                                        <div class="col-sm-6" style="margin-left:-2%">
+                                            <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="DropPerido2">
+                                                <option value="0">Selecciona</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group row" style="margin-left:2%">
-                                <label for="anoNom" class="col-sm-4 col-form-label font-labels">
-                                    Año:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="TxtAnio" class="form-control form-control-sm text-capitalize" />
-                                </div>
-                            </div>
-                            <div class="form-group row" style="margin-left:2%">
-                                <label for="LaPorcentaje" class="col-sm-4 col-form-label font-labels">
-                                    Porcentaje de diferencia:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <input placeholder="Porcentaje de diferencia" maxlength="3" tvvisible="false" type="text" id="TxtPorcentaje" class="form-control form-control-sm text-capitalize" />
-                                </div>
-                            </div>
-
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="TipoPerido" class="col-sm-3 col-form-label font-labels">
-                                    Tipo de Periodo:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="DropTipodePerdio">
-                                        <option value="0">Selecciona</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="peridoNom" class="col-sm-3 col-form-label font-labels">
-                                    Perido:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="DropPerido">
-                                        <option value="0">Selecciona</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div style="text-align:center">
-                        <label for="NomAnt" class="col-sm-12 col-form-label font-labels">
-                            Nomina anterior
-                        </label>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-
-                            <div class="form-group row" style="margin-left:2%">
-                                <label for="anoNom2" class="col-sm-4 col-form-label font-labels">
-                                    Año:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="TxtAnio2" class="form-control form-control-sm text-capitalize" />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="TipoPerido2" class="col-sm-3 col-form-label font-labels">
-                                    Tipo de Periodo:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="DropTipodePerdio2">
-                                        <option value="0">Selecciona</option>
-                                    </select>
-                                </div>
-                            </div>
-                    
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="peridoNom2" class="col-sm-3 col-form-label font-labels">
-                                    Perido:
-                                </label>
-                                <div class="col-sm-8" style="margin-left:-2%">
-                                    <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="DropPerido2">
-                                        <option value="0">Selecciona</option>
-                                    </select>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
 
                 </div>
-           
-                <div class="col-md-12">
-
+                <div class="form-group text-center rounded shadow p-3 border-left-primary border-right-primary col-md-12 d-none" id="content-tabledif">
+                    <div class="">
+                        <div id="TableDif">
+                        </div>
+                    </div>
                 </div>
+
 
                 @*Botones de flotantes*@
                 <div>
@@ -145,4 +133,22 @@
         </div>
     </div>
 </body>
-<script src="~/Scripts/main/CompNomina.js?n=1"></script>
+<script src="~/Scripts/main/CompNomina.js?n=0.2"></script>
+
+<script src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcheckbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdatatable.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxlistbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdropdownlist.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxtooltip.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxwindow.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxnumberinput.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxinput.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcalendar.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdatetimeinput.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/globalization/globalize.js"></script>
