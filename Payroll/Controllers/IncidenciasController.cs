@@ -106,7 +106,8 @@ namespace Payroll.Controllers
         {
             List<string> lista = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            lista = Dao.sp_TPeriodosDist_Insert_Periodo(PerVacLn_id, FechaInicio, FechaFin, Dias);
+            int Usuario_id = int.Parse(Session["iIdUsuario"].ToString());
+            lista = Dao.sp_TPeriodosDist_Insert_Periodo(PerVacLn_id, FechaInicio, FechaFin, Dias, Usuario_id);
             return Json(lista);
         }
         [HttpPost]
@@ -373,6 +374,11 @@ namespace Payroll.Controllers
             string hora = DateTime.Now.ToString("HH");
             string minuto = DateTime.Now.ToString("mm");
 
+            if (!Directory.Exists(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/"))
+            {
+                Directory.CreateDirectory(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/");
+            }
+
             string pathGuardado = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/" + dia + "_" + mes + "_" + año + "_" + hora + "_" + minuto + "_" + fileUpload.FileName);
             string pathLogs = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
 
@@ -391,21 +397,19 @@ namespace Payroll.Controllers
 
             for (i = 0; i < table.Rows.Count; i++)
             {
-                //DataRow row = table.Rows[i];
-                //list.Add(row.ItemArray);
-                
+
                 var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
-                if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + "La empresa no existe"); }
+                if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
 
                 var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
-                if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + "El empleado no existe"); }
+                if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
 
                 var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
-                if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + "El Periodo es incorrecto"); }
-                if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + "El año del periodo es incorrecto"); }
+                if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
+                if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
 
                 var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
-                if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + "El Renglon no existe"); }
+                if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon "+ table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
 
             }
 
@@ -421,7 +425,7 @@ namespace Payroll.Controllers
                 list.Add("Carga subida correctamente");
 
             }
-            else 
+            else
             {
                 StreamWriter txtfile = new StreamWriter(pathLogs);
 
@@ -432,7 +436,7 @@ namespace Payroll.Controllers
                 txtfile.Close();
 
                 list.Clear();
-                
+
                 list.Add("0");
                 list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
             }

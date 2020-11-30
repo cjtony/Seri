@@ -1,1 +1,110 @@
-﻿
+﻿<div class="container collapse pt-3 bg-white font-labels rounded border-left-primary border-right-primary" id="vacacionesCollapse">
+    <div class="media row border-bottom pb-3 border-primary">
+        <div class="media-body col-md-12 ">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="" class="font-italic">Nombre </label><br>
+                    <div id="nomEmp" class="font-weight-bold"></div>
+                </div>
+                <div class="col-md-3">
+                    <label for="" class=" font-italic">Puesto </label><br>
+                    <div id="puesto_emp" class=" font-weight-bold"></div>
+                </div>
+                <div class="col-md-3">
+                    <label for="" class=" font-italic">Departamento</label><br>
+                    <div id="area_emp" class=" font-weight-bold"></div>
+                </div>
+                <div class="col-md-3 ">
+                    <label for="" class=" font-italic">Antigüedad </label><br>
+                    <div id="antig_emp" class=" font-weight-bold"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-2 border-bottom pb-3 border-primary">
+        <div class="container col-12 col-md-12 col-lg-6">
+            <div class="text-center font-weight-bold font-labels">Resumen de Vacaciones</div>
+            <table id="example1" class="table table-sm table-striped text-center table-bordered table-hover font-labels">
+                <thead class="">
+                    <tr>
+                        <th>Periodo actual</th>
+                        <th>Días Prima</th>
+                        <th>Dias Disfrutados</th>
+                        <th>Dias Restantes</th>
+                    </tr>
+                </thead>
+                <tbody id="tab1">
+                </tbody>
+            </table>
+        </div>
+        <div class="container col-12 col-md-12 col-lg-6">
+            <div class="text-center font-weight-bold font-labels">Periodos</div>
+            <table id="example2" class="table table-sm table-striped text-center table-bordered table-hover font-labels">
+                <thead class="">
+                    <tr class="">
+                        <th>Días</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Termino</th>
+                        <th>Agendadas</th>
+                        <th>Disfrutadas</th>
+                    </tr>
+                </thead>
+                <tbody id="tabBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container col-12 align-content-center">
+        <div class="row">
+            <div class="col-12">
+                <div class="col-12 text-center font-button">Agregar nuevo periodo de vacaciones</div>
+                <form action="#" class="needs-validation text-white rounded px-4 py-3 mb-4" id="frmAddPeriodo" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="from">Fecha Inicio</label>
+                            <input type="text" class="form-control" id="from" name="from" required placeholder="mm / dd / aaaa">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="to">Fecha Termino</label>
+                            <input type="text" class="form-control datepiker" id="to" name="to" required placeholder="mm / dd / aaaa" disabled>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="datepicker">Días</label>
+                            <input type="text" class="form-control" disabled id="diasV" name="diasV">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary font-weight-bold w-100 h-100" disabled id="btnCalcVacaciones" type="button">Registrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@* MODAL DE LIVE SEARCH EMPLEADO *@
+<!-- Modal -->
+<div class="modal fade" id="modalLiveSearchEmpleado" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-labels" id="staticBackdropLabel">Busca el empleado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="search-box col-md-12">
+                        <label for="inputSearchEmpleados" class="font-labels">Escribe el nombre del empleado que buscas</label>
+                        <input type="text" name="inputSearchEmpleados" id="inputSearchEmpleados" placeholder="Escriba el nombre del empleado" class=" form-control" autocomplete="off" />
+                        <div id="resultSearchEmpleados" name="resultSearchEmpleados" class="list-group"></div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-3 pb-3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/main/Vacaciones.js"></script>
