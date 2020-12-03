@@ -1,8 +1,8 @@
 ﻿$(function () {
     //var ren_incidencia = document.getElementById("inRenglon");
     //var concepto_incidencia = document.getElementById("inConcepto_incidencia");
-    var factor = document.getElementById("inFactorDesc");
-    factor.disabled = true;
+    //var factor = document.getElementById("inFactorDesc");
+    //factor.disabled = true;
     $("#modalLiveSearchEmpleado").modal("show");
     //Eventos 
     $("#btnSaveCredito").on("click", function () {
@@ -109,7 +109,18 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
-                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
+
+                var iconb = "";
+                var colorb = "";
+                if (data[0]["TipoEmpleado"] > 163) {
+                    colorb = "badge-danger";
+                    iconb = "fa-times-circle";
+                } else {
+                    colorb = "badge-success";
+                    iconb = "fa-check-circle";
+                }
+
+                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + " - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>&nbsp;&nbsp;<div class='badge " + colorb + "'><i class='fas " + iconb + "'></i>&nbsp;" + data[0]["TipoEmpleado"] + "&nbsp;-&nbsp;" + data[0]["DescTipoEmpleado"] + "</div>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 createTab();
             }

@@ -43,9 +43,10 @@ namespace Payroll.Controllers
             
         }
         [HttpPost]
-        public void DefinePeriodoActual(int IdPeriodo)
+        public void DefinePeriodoActual(int IdPeriodo, string Fecha_inicio, string Fecha_fin)
         {
             @Session["Periodo_id"] = IdPeriodo;
+            @Session["Rango_periodo"] = "De " + Fecha_inicio + " a " + Fecha_fin;
         }
         public PartialViewResult Datos_Generales()
         {

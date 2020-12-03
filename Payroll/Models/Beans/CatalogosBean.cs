@@ -435,6 +435,8 @@ namespace Payroll.Models.Beans
         public int DiasPrima { get; set; }
         public int DiasDisfrutados { get; set; }
         public int DiasRestantes { get; set; }
+        public int TipoEmpleado { get; set; }
+        public string DescTipoEmpleado { get; set; }
 
 
     }

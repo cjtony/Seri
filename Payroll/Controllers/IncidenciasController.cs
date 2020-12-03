@@ -68,12 +68,12 @@ namespace Payroll.Controllers
             return Json(lista);
         }
         [HttpPost]
-        public JsonResult LoadTipoIncidencia()
+        public JsonResult LoadTipoIncidencia(string txtSearch)
         {
             List<VW_TipoIncidenciaBean> lista = new List<VW_TipoIncidenciaBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int IdEmpresa = int.Parse(Session["IdEmpresa"].ToString());
-            lista = Dao.sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(IdEmpresa);
+            lista = Dao.sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(IdEmpresa, txtSearch);
             return Json(lista);
         }
         [HttpPost]

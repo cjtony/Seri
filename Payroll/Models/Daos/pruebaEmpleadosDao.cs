@@ -37,6 +37,8 @@ namespace Payroll.Models.Daos
                         listEmpleados.DescripcionDepartamento = data["DescripcionDepartamento"].ToString();
                         listEmpleados.DescripcionPuesto = data["DescripcionPuesto"].ToString();
                         listEmpleados.FechaIngreso = data["FechaIngreso"].ToString();
+                        listEmpleados.TipoEmpleado = int.Parse(data["Cg_TipoEmpleado_id"].ToString());
+                        listEmpleados.DescTipoEmpleado = data["Descripcion"].ToString();
                     }
                     else
                     {
@@ -129,6 +131,7 @@ namespace Payroll.Models.Daos
                     list.Add(data["NomPuesto"].ToString());
                     list.Add(data["ReportaA"].ToString());
                     list.Add(data["DescripcionDepartamento"].ToString());
+                    list.Add(data["TipoEmpleado_id"].ToString());
                 }
             }
             else
@@ -190,8 +193,8 @@ namespace Payroll.Models.Daos
                     {
                         listEmpleados.DiasRestantes = int.Parse(data["DiasRestantes"].ToString());
                     }
-
-
+                    listEmpleados.TipoEmpleado = int.Parse(data["Cg_TipoEmpleado_id"].ToString());
+                    listEmpleados.DescTipoEmpleado = data["DescripcionTipoEmpleado"].ToString();
                     list.Add(listEmpleados);
                 }
             }
@@ -303,10 +306,10 @@ namespace Payroll.Models.Daos
                     listCreditos.NoCredito = data["NoCredito"].ToString();
                     listCreditos.FechaAprovacionCredito = data["FechaAprovacionCredito"].ToString();
                     listCreditos.Descontar = data["Descontar"].ToString();
-                    if (data["FactorDescuento"].ToString().Length < 1 || data["FactorDescuento"].ToString() == null)
-                    { listCreditos.FactorDescuento = ""; }
-                    else
-                    { listCreditos.FactorDescuento = data["FactorDescuento"].ToString(); }
+                    //if (data["FactorDescuento"].ToString().Length < 1 || data["FactorDescuento"].ToString() == null)
+                    //{ listCreditos.FactorDescuento = ""; }
+                    //else
+                    //{ listCreditos.FactorDescuento = data["FactorDescuento"].ToString(); }
 
                     if (data["FechaBajaCredito"].ToString().Length < 1)
                     { listCreditos.FechaBaja = ""; }
@@ -318,8 +321,8 @@ namespace Payroll.Models.Daos
                     { listCreditos.FechaReinicio = data["FechaReinicioCredito"].ToString(); }
 
                     listCreditos.Finalizado = data["Finalizado"].ToString();
-                    listCreditos.Effdt = data["Effdt"].ToString();
-                    listCreditos.IncidenciaProgramada_id = int.Parse(data["IncidenciaProgramada_id"].ToString());
+                    //listCreditos.Effdt = data["Effdt"].ToString();
+                    listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString());
                     list.Add(listCreditos);
                 }
             }
@@ -681,7 +684,7 @@ namespace Payroll.Models.Daos
                     list.Empleado_id = int.Parse(data["Empleado_id"].ToString());
                     if (data["Cuota_fija"].ToString().Length == 0) { list.Cuota_Fija = ""; } else { list.Cuota_Fija = data["Cuota_fija"].ToString(); }
                     if (data["Porcentaje"].ToString().Length == 0) { list.Porcentaje = 0; } else { list.Porcentaje = int.Parse(data["Porcentaje"].ToString()); }
-                    if (data["AplicaEn"].ToString().Length == 0) { list.AplicaEn = ""; } else { list.AplicaEn = data["AplicaEn"].ToString(); }
+                    if (data["Cg_AplicaEn_id"].ToString().Length == 0) { list.AplicaEn = ""; } else { list.AplicaEn = data["Cg_AplicaEn_id"].ToString(); }
 
                     list.Descontar_en_Finiquito = data["Descontar_en_Finiquito"].ToString();
                     list.No_Oficio = data["No_Oficio"].ToString();
@@ -709,7 +712,7 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
-        public List<VW_TipoIncidenciaBean> sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(int Empresa_id)
+        public List<VW_TipoIncidenciaBean> sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(int Empresa_id, string txtSearch)
         {
             List<VW_TipoIncidenciaBean> list = new List<VW_TipoIncidenciaBean>();
             this.Conectar();
@@ -718,6 +721,7 @@ namespace Payroll.Models.Daos
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrltxtSearch", txtSearch));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -824,7 +828,7 @@ namespace Payroll.Models.Daos
                 {
                     TabIncidenciasBean lista = new TabIncidenciasBean();
                     lista.Incidencia_id = int.Parse(data["Incidencia_id"].ToString());
-                    
+
                     if (data["IncidenciaP_id"] == null || data["IncidenciaP_id"].ToString().Length == 0)
                     {
                         lista.IncidenciaP_id = 0;
