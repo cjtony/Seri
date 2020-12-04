@@ -379,25 +379,17 @@ namespace Payroll.Controllers
                 Directory.CreateDirectory(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/");
             }
 
-            string pathGuardado = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/" + dia + "_" + mes + "_" + año + "_" + hora + "_" + minuto + "_" + fileUpload.FileName);
+            string pathGuardado = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/" + dia + "_" + mes + "_" + año + "_" + hora + "_" + minuto + "_" + fileType + Path.GetExtension(fileUpload.FileName));
             string pathLogs = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
-
             fileUpload.SaveAs(pathGuardado);
-
             CargaMasivaDao Dao = new CargaMasivaDao();
-
             DataTable table = Dao.ValidaArchivo(pathGuardado, fileType);
-
             List<string> ResutLog = new List<string>();
-
             int i;
-            int j;
-
             string errorh = "Error en la linea: ";
 
             for (i = 0; i < table.Rows.Count; i++)
             {
-
                 var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
                 if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
 
@@ -409,39 +401,41 @@ namespace Payroll.Controllers
                 if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
 
                 var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
-                if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon "+ table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
-
+                if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
             }
 
             if (ResutLog.Count == 0)
             {
                 //Console.WriteLine("Se manda al modulo de insercion la tabla");
-
                 for (int k = 0; k < table.Rows.Count; k++)
                 {
-                    Dao.InsertaCargaMasiva(table.Rows[k]);
+                    Dao.InsertaCargaMasivaIncidencias(table.Rows[k]);
                 }
                 list.Add("1");
                 list.Add("Carga subida correctamente");
-
             }
             else
             {
                 StreamWriter txtfile = new StreamWriter(pathLogs);
-
                 foreach (var error in ResutLog)
                 {
                     txtfile.WriteLine(error);
                 }
                 txtfile.Close();
-
                 list.Clear();
-
                 list.Add("0");
                 list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
             }
 
             return Json(list);
+        }
+        [HttpPost]
+        public JsonResult LoadAplicaEn(int CampoCatalogo_id)
+        {
+            List<CatalogoGeneralBean> lista = new List<CatalogoGeneralBean>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            lista = Dao.sp_Cgeneral_Retrieve_Cgeneral(CampoCatalogo_id);
+            return Json(lista);
         }
     }
 }

@@ -1033,5 +1033,40 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
+        public List<CatalogoGeneralBean> sp_Cgeneral_Retrieve_Cgeneral (int CampoCatalogo_id)
+        {
+            List<CatalogoGeneralBean> lista = new List<CatalogoGeneralBean>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_CatalogoGeneral_Retrieve_CatalogoGeneral", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlCatalogoId", CampoCatalogo_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    CatalogoGeneralBean list = new CatalogoGeneralBean();
+                    list.iId = int.Parse(data["id"].ToString());
+                    list.iCampoCatalogoId = int.Parse(data["Campos_Catalogo_id"].ToString());
+                    list.iIdValor = int.Parse(data["IdValor"].ToString());
+                    list.sValor = data["Valor"].ToString();
+                    list.sDescripcion = data["Descripcion"].ToString();
+                    lista.Add(list);
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return lista;
+        }
+
     }
 }

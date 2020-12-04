@@ -142,6 +142,7 @@
                 document.getElementById("resultSearchEmpleados").innerHTML = "";
                 document.getElementById("inputSearchEmpleados").value = "";
                 tabPensiones();
+                LoadSelectAplicaEn();
             }
         });
         
@@ -237,6 +238,26 @@
                         }
                     }
                 });
+            }
+        });
+    }
+    // CARGA SELECT DE APLICA EN
+    LoadSelectAplicaEn = () => {
+        $.ajax({
+            url: "../Incidencias/LoadAplicaEn",
+            type: "POST",
+            data: JSON.stringify({ CampoCatalogo_id: 40 }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+
+                var select = document.getElementById("inAplicaEn");
+                select.innerHTML = "";
+                select.innerHTML += "<option value=''> Selecciona </option>";
+                for (var i = 0; i < data.length; i++) {
+
+                    select.innerHTML += "<option value='" + data[i]["iId"] + "'>" + data[i]["sValor"] + "</option>";
+                }
+
             }
         });
     }

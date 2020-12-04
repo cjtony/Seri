@@ -15,8 +15,9 @@ namespace Payroll.Models.Daos
         public DataTable ValidaArchivo(string fileName, string fileType)
         {
             List<object> list = new List<object>();
-            
             DataSet dataset = null;
+            int typeoffile = 0;
+
 
             using (var stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
             {
@@ -36,8 +37,22 @@ namespace Payroll.Models.Daos
                     }
                 }
             }
-
-            return dataset.Tables[0];
+            switch (fileType)
+            {
+                case "incidencias":
+                    typeoffile = 0;
+                    break;
+                case "ausentismos":
+                    typeoffile = 1;
+                    break;
+                case "creditos":
+                    typeoffile = 2;
+                    break;
+                case "pensiones":
+                    typeoffile = 3;
+                    break;
+            }
+            return dataset.Tables[typeoffile];
         }
 
         public int ValidaEmpresa(string Empresa_id)
@@ -144,7 +159,7 @@ namespace Payroll.Models.Daos
 
             return value;
         }
-        public List<string> InsertaCargaMasiva(DataRow rows)
+        public List<string> InsertaCargaMasivaIncidencias(DataRow rows)
         {
             string dia = DateTime.Today.ToString("dd");
             string mes = DateTime.Today.ToString("MM");
@@ -181,10 +196,43 @@ namespace Payroll.Models.Daos
                     list.Add(data["Descripcion"].ToString());
                 }
             }
+            data.Close();this.conexion.Close();this.Conectar().Close();
+            return list;
+        }
+        public List<string> InsertaCargaMasivaAusentismo(DataRow rows)
+        {
+            string dia = DateTime.Today.ToString("dd");
+            string mes = DateTime.Today.ToString("MM");
+            string año = DateTime.Today.ToString("yyyy");
 
-            data.Close();
-            this.conexion.Close(); this.Conectar().Close();
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TRegistro_incidencias_Insert_Incidencia", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", rows["Tipo_Ausentismo"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows["Empresa_id"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows["Empleado_id"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", rows["Importe"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", rows["Plazos"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", rows["Leyenda"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", rows["Descripcion"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", dia + "/" + mes + "/" + año));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", rows["Periodo"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", rows["Periodo"].ToString()));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
 
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["Descripcion"].ToString());
+                }
+            }
+            data.Close(); this.conexion.Close(); this.Conectar().Close();
             return list;
         }
     }

@@ -1029,7 +1029,7 @@ namespace Payroll.Models.Daos
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
                     lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
-                    lista.FechaFin = data["Fechaf"].ToString();
+                    //lista.FechaFin = data["Fechaf"].ToString();
                     list.Add(lista);
                 }
             }
