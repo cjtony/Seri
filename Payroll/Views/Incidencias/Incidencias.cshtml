@@ -35,8 +35,13 @@
                             <div class="form-group row">
                                 <div class="form-group col-md-6">
                                     <label>Concepto *</label>
-                                    <select class="custom-select custom-select-sm font-labels" id="inConcepto_incidencia" name="inConcepto_incidencia" required>
-                                    </select>
+
+                                    <input type="text" class="form-control form-control-sm" autocomplete="off" id="txtsearchtipoincidencia" required>
+                                    <div id="resulttipoincidencia"></div>
+                                    @*<input type="hidden"  value="" />*@
+                                    @*<select class="custom-select custom-select-sm font-labels" id="inConcepto_incidencia" name="inConcepto_incidencia" required>
+                                    </select>*@
+
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Renglón *</label>
@@ -44,7 +49,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label id="lblCantidad">Cantidad *</label>
-                                    <input type="text" name="inCantidad" id="inCantidad" class="form-control form-control-sm" placeholder="$ 0000.00" />
+                                    <input type="text" name="inCantidad" id="inCantidad" class="form-control form-control-sm" placeholder="$ 0000.00" required/>
 
                                 </div>
                                 <div class="form-group col-md-6">
@@ -204,7 +209,6 @@
 </div>
 
 <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
-     
     <div id="toasterbody" style="position: absolute; top: 0; right: 0;">
 
     </div>
