@@ -1049,8 +1049,8 @@
     <Content Include="Views\KioskoM\ConsultaRecibo.cshtml" />
     <Content Include="Scripts\main\xlsx.full.min.js" />
     <Content Include="Views\Kiosko\SolicitudVacaciones.cshtml" />
-    <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />+
-    <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />+
+    <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
+    <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
