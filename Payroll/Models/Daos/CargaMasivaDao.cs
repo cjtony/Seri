@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Web;
 
 namespace Payroll.Models.Daos
 {
@@ -159,7 +157,7 @@ namespace Payroll.Models.Daos
 
             return value;
         }
-        public List<string> InsertaCargaMasivaIncidencias(DataRow rows)
+        public List<string> InsertaCargaMasivaIncidencias(DataRow rows, int IsCargaMasiva)
         {
             string dia = DateTime.Today.ToString("dd");
             string mes = DateTime.Today.ToString("MM");
@@ -196,10 +194,10 @@ namespace Payroll.Models.Daos
                     list.Add(data["Descripcion"].ToString());
                 }
             }
-            data.Close();this.conexion.Close();this.Conectar().Close();
+            data.Close(); this.conexion.Close(); this.Conectar().Close();
             return list;
         }
-        public List<string> InsertaCargaMasivaAusentismo(DataRow rows)
+        public List<string> InsertaCargaMasivaAusentismo(DataRow rows, int Periodo, int IsCargaMasiva)
         {
             string dia = DateTime.Today.ToString("dd");
             string mes = DateTime.Today.ToString("MM");
@@ -207,20 +205,42 @@ namespace Payroll.Models.Daos
 
             List<string> list = new List<string>();
             this.Conectar();
-            SqlCommand cmd = new SqlCommand("sp_TRegistro_incidencias_Insert_Incidencia", this.conexion)
+            SqlCommand cmd = new SqlCommand("sp_TAusentismos_Insert_Ausentismo", this.conexion)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", rows["Tipo_Ausentismo"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows["Empresa_id"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows["Empleado_id"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", rows["Importe"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", rows["Plazos"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", rows["Leyenda"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", rows["Descripcion"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", dia + "/" + mes + "/" + año));
-            cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", rows["Periodo"].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", rows["Periodo"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", rows["Tipo_Ausentismo"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows["Empresa_id"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows["Empleado_id"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", rows["Importe"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", rows["Plazos"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", rows["Leyenda"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", rows["Descripcion"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", dia + "/" + mes + "/" + año));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", rows["Periodo"].ToString()));
+            //cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", rows["Periodo"].ToString()));
+            var sbs = rows[2].ToString().Substring(0, 2);
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", rows[2].ToString().Substring(0, 2).Trim()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows[0].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows[1].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", 3));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", rows[3].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", rows[4].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", rows[6].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", rows[7].ToString()));
+            if (rows[2].ToString().Substring(0, 2).Trim() == "9")
+            {
+                cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", "FALTA INJUSTIFICADA " + dia + "/" + mes + "/" + año));
+            }
+            else
+            {
+                cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", ""));
+            }
+
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipo", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", rows[8].ToString()));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 
@@ -229,7 +249,102 @@ namespace Payroll.Models.Daos
                 while (data.Read())
                 {
                     list.Add(data["iFlag"].ToString());
-                    list.Add(data["Descripcion"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
+            }
+            data.Close(); this.conexion.Close(); this.Conectar().Close();
+            return list;
+        }
+        public List<string> InsertaCargaMasivaCreditos(DataRow rows, int Periodo, int IsCargaMasiva)
+        {
+            string dia = DateTime.Today.ToString("dd");
+            string mes = DateTime.Today.ToString("MM");
+            string año = DateTime.Today.ToString("yyyy");
+
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TCreditos_Insert_Credito", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows[1].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows[0].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipoDescuento", rows[0].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescuento", 3));
+            cmd.Parameters.Add(new SqlParameter("@ctrlNoCredito", rows[3].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaAprovacionCredito", rows[4].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescontar", rows[6].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", rows[7].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", rows[0].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFactorDesc", rows[0].ToString()));
+            if (rows[2].ToString().Substring(0, 2).Trim() == "9")
+            {
+                cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", "FALTA INJUSTIFICADA " + dia + "/" + mes + "/" + año));
+            }
+            else
+            {
+                cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", ""));
+            }
+
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipo", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", rows[8].ToString()));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
+            }
+            data.Close(); this.conexion.Close(); this.Conectar().Close();
+            return list;
+        }
+        public List<string> InsertaCargaMasivaPensionesAlimenticias(DataRow rows, int Periodo, int IsCargaMasiva)
+        {
+            string dia = DateTime.Today.ToString("dd");
+            string mes = DateTime.Today.ToString("MM");
+            string año = DateTime.Today.ToString("yyyy");
+
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPensiones_Alimenticias_Insert_Pensiones", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows[1].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows[0].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", 3));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", rows[3].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", rows[4].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", rows[6].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", rows[7].ToString()));
+            if (rows[2].ToString().Substring(0, 2).Trim() == "9")
+            {
+                cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", "FALTA INJUSTIFICADA " + dia + "/" + mes + "/" + año));
+            }
+            else
+            {
+                cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", ""));
+            }
+
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipo", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", rows[8].ToString()));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
                 }
             }
             data.Close(); this.conexion.Close(); this.Conectar().Close();

@@ -71,7 +71,7 @@
                             success: (dat) => {
                                 document.getElementById("btnNameEmpresaSelected").innerHTML = nombre;
                                 document.getElementById("lblPeriodoId").innerHTML = data[4];
-                                document.getElementById("lblRangoPeriodo").innerHTML = data[6] + " a " + data[7];
+                                document.getElementById("lblRangoPeriodo").innerHTML = "&nbsp;&nbsp;-&nbsp;&nbsp;del&nbsp;" + data[6] + " a " + data[7];
                                 $("#bodySubmenus").empty();
                                 $("#modalBtns").modal('hide');
                             }

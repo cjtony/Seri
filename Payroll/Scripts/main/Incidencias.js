@@ -1,6 +1,6 @@
 ﻿$(function () {
     var ren_incidencia = document.getElementById("inRenglon");
-    var concepto_incidencia = document.getElementById("inConcepto_incidencia");
+    var concepto_incidencia = document.getElementById("txtsearchtipoincidencia");
     var cantidad_incidencia = document.getElementById("inCantidad");
     var plazos_incidencia = document.getElementById("inPlazos");
     var leyenda_incidencia = document.getElementById("inLeyenda");
@@ -9,6 +9,7 @@
     //var infinicio = document.getElementById("infinicio");
     //var inffinal = document.getElementById("inffinal");
     //document.getElementById("lbloptions").style.visibility = "none";
+
 
     // SE LANZA LA INSTRUCCION DE MOSTRAR EL MODAL DE BUSQUEDA DE EMPLEADOS
     $("#modalLiveSearchEmpleado").modal("show");
@@ -162,7 +163,7 @@
                 url: "../Incidencias/SaveRegistroIncidencia",
                 type: "POST",
                 data: JSON.stringify({
-                    inRenglon: concepto_incidencia.value,
+                    inRenglon: ren_incidencia.value,
                     inCantidad: cant,
                     inPlazos: plazos_incidencia.value,
                     inLeyenda: leyenda_incidencia.value,
@@ -184,6 +185,7 @@
                         });
                     } else if (data[0] == '1') {
                         $("#incidenciasCollapse").collapse("hide");
+                        ren_incidencia.value = '';
                         concepto_incidencia.value = '';
                         cantidad_incidencia.value = '';
                         plazos_incidencia.value = '';
@@ -207,9 +209,9 @@
     MostrarDatosEmpleado = (idE) => {
         var txtIdEmpleado = { "IdEmpleado": idE, Empresa_id: 0 };
         $.ajax({
-            url: "../Empleados/SearchDataEmpleado",
+            url: "../Empleados/SearchEmpleado",
             type: "POST",
-            data: JSON.stringify({ "Empleado_id": idE, Empresa_id: "0" }),
+            data: JSON.stringify({ "IdEmpleado": idE }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
@@ -218,7 +220,7 @@
                 console.log(data);
                 var iconb = "";
                 var colorb = "";
-                if (data["54"] > 163) {
+                if (data[0]["TipoEmpleado"] > 163) {
                     colorb = "badge-danger";
                     iconb = "fa-times-circle";
                 } else {
@@ -226,7 +228,7 @@
                     iconb = "fa-check-circle";
                 }
 
-                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i> " + data[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "&nbsp;&nbsp;-&nbsp;&nbsp;<small class='text-muted'>" + data[51] + "</small>&nbsp;&nbsp;<div class='badge "+ colorb +"'><i class='fas "+ iconb +"'></i>&nbsp;" + data["54"] + "&nbsp;-&nbsp;" + data["33"] + "</div>";
+                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i>&nbsp;&nbsp;" + data[0]["IdEmpleado"] + "&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i>&nbsp;&nbsp;" + data[0]["Nombre_Empleado"] + "&nbsp;" + data[0]["Apellido_Paterno_Empleado"] + '&nbsp;' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionPuesto"] + "</small>&nbsp;&nbsp;<div class='badge " + colorb + "'><i class='fas " + iconb + "'></i>&nbsp;" + data[0]["TipoEmpleado"] + "&nbsp;-&nbsp;" + data[0]["DescTipoEmpleado"] + "</div>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 document.getElementById("resultSearchEmpleados").innerHTML = "";
                 document.getElementById("inputSearchEmpleados").value = "";
@@ -545,7 +547,6 @@
         $("#edPlazos").removeClass("is-valid");
         $("#edPagosRestantes").removeClass("is-valid");
     });
-
 
     $("#txtsearchtipoincidencia").keyup(function () {
         var txt = $("#txtsearchtipoincidencia").val();

@@ -384,48 +384,77 @@ namespace Payroll.Controllers
             fileUpload.SaveAs(pathGuardado);
             CargaMasivaDao Dao = new CargaMasivaDao();
             DataTable table = Dao.ValidaArchivo(pathGuardado, fileType);
+
+
+
             List<string> ResutLog = new List<string>();
             int i;
             string errorh = "Error en la linea: ";
-
-            for (i = 0; i < table.Rows.Count; i++)
+            int IsCargaMasiva = 1;
+            int Periodo = int.Parse(Session["Periodo_id"].ToString());
+            switch (fileType)
             {
-                var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
-                if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
+                case "incidencias":
+                    for (i = 0; i < table.Rows.Count; i++)
+                    {
+                        var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
+                        if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
 
-                var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
-                if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+                        var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
+                        if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
 
-                var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
-                if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
-                if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
+                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
+                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
+                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
 
-                var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
-                if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
+                        var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
+                        if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
+                    }
+
+                    if (ResutLog.Count == 0)
+                    {
+                        //Console.WriteLine("Se manda al modulo de insercion la tabla");
+                        for (int k = 0; k < table.Rows.Count; k++)
+                        {
+                            Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva);
+                        }
+                        list.Add("1");
+                        list.Add("Carga subida correctamente");
+                    }
+                    else
+                    {
+                        StreamWriter txtfile = new StreamWriter(pathLogs);
+                        foreach (var error in ResutLog)
+                        {
+                            txtfile.WriteLine(error);
+                        }
+                        txtfile.Close();
+                        list.Clear();
+                        list.Add("0");
+                        list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
+                    }
+                    break;
+                case "ausentismos":
+                    
+                    for (int k = 0; k < table.Rows.Count; k++)
+                    {
+                        Dao.InsertaCargaMasivaAusentismo(table.Rows[k], Periodo, IsCargaMasiva );
+                    }
+                    break;
+                case "creditos":
+                    for (int k = 0; k < table.Rows.Count; k++)
+                    {
+                        Dao.InsertaCargaMasivaCreditos(table.Rows[k], Periodo, IsCargaMasiva);
+                    }
+                    break;
+                case "pensiones":
+                    for (int k = 0; k < table.Rows.Count; k++)
+                    {
+                        Dao.InsertaCargaMasivaPensionesAlimenticias(table.Rows[k], Periodo, IsCargaMasiva);
+                    }
+                    break;
             }
 
-            if (ResutLog.Count == 0)
-            {
-                //Console.WriteLine("Se manda al modulo de insercion la tabla");
-                for (int k = 0; k < table.Rows.Count; k++)
-                {
-                    Dao.InsertaCargaMasivaIncidencias(table.Rows[k]);
-                }
-                list.Add("1");
-                list.Add("Carga subida correctamente");
-            }
-            else
-            {
-                StreamWriter txtfile = new StreamWriter(pathLogs);
-                foreach (var error in ResutLog)
-                {
-                    txtfile.WriteLine(error);
-                }
-                txtfile.Close();
-                list.Clear();
-                list.Add("0");
-                list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
-            }
 
             return Json(list);
         }

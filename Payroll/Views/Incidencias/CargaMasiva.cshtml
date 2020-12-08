@@ -1,6 +1,6 @@
 ﻿<div class="container col-md-10">
-    <form method="post" enctype="multipart/form-data">
-        <div class="col-md-10 offset-1 mt-4">
+    <form method="post" enctype="multipart/form-data" class="row">
+        <div class="col-md-8 mt-4">
             <div class="card shadow rounded border-left-primary border-right-primary">
                 <div class="card-body">
                     <h5 class="card-title text-center">
@@ -8,7 +8,7 @@
                     </h5>
                     <hr />
                     <div class="row">
-                        <div class="col-md-8 offset-2">
+                        <div class="col-md-12">
                             <div class="form-group row">
                                 <label for="file-type" class="col-8"><i class="far fa-flag col-ico"></i>&nbsp;&nbsp;&nbsp; Selecciona el tipo de archivo para carga </label>
                                 <select class="custom-select small custom-select-sm col-4" id="file-type">
@@ -34,12 +34,88 @@
                         <div id="results-file-upload-up" class="d-none col-md-10 offset-1"></div>
                     </div>
                     <div class="col-md-12 offset-1 mx-auto collapse" id="collapse-validation-cm">
-
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-4 mt-4 rounded">
+            <div class="bg-white shadow rounded border-left-primary border-right-primary p-3 "  data-spy="scroll" >
+                <div class="h6 mt-1 text-primary font-weight-bold text-center">Cargas del Periodo</div>
+                
+                <table class="table table-sm font-labels">
+                    <thead class="font-labels">
+                        <tr>
+                            <th scope="col"> Tabla </th>
+                            <th scope="col"> Folio </th>
+                            <th scope="col"> Referencia </th>
+                            <th scope="col"> Acciones </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabIncProg" class="font-labels">
+                        <tr class="bg-primary">
+                            <td>Incidencias</td>
+                            <td>202030190</td>
+                            <td>Prueba 1</td>
+                            <td>
+                                <a class="badge badge-success" title="Descargar Archivo"> <i class="fas fa-download fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Borrar por Renglon"> <i class="fas fa-folder-minus fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Eliminar Carga completa"> <i class="fas fa-minus fa-lg text-white"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="bg-primary">
+                            <td>Incidencias</td>
+                            <td>202030190</td>
+                            <td>Prueba 2</td>
+                            <td>
+                                <a class="badge badge-success" title="Descargar Archivo"> <i class="fas fa-download fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Borrar por Renglon"> <i class="fas fa-folder-minus fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Eliminar Carga completa"> <i class="fas fa-minus fa-lg text-white"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="bg-primary">
+                            <td>Incidencias</td>
+                            <td>202030190</td>
+                            <td>Prueba 3</td>
+                            <td>
+                                <a class="badge badge-success" title="Descargar Archivo"> <i class="fas fa-download fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Borrar por Renglon"> <i class="fas fa-folder-minus fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Eliminar Carga completa"> <i class="fas fa-minus fa-lg text-white"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="bg-primary">
+                            <td>Incidencias</td>
+                            <td>202030190</td>
+                            <td>Prueba 4</td>
+                            <td>
+                                <a class="badge badge-success" title="Descargar Archivo"> <i class="fas fa-download fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Borrar por Renglon"> <i class="fas fa-folder-minus fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Eliminar Carga completa"> <i class="fas fa-minus fa-lg text-white"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="bg-primary">
+                            <td>Incidencias</td>
+                            <td>202030190</td>
+                            <td>Prueba 5</td>
+                            <td>
+                                <a class="badge badge-success" title="Descargar Archivo"> <i class="fas fa-download fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Borrar por Renglon"> <i class="fas fa-folder-minus fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Eliminar Carga completa"> <i class="fas fa-minus fa-lg text-white"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="bg-primary">
+                            <td>Incidencias</td>
+                            <td>202030190</td>
+                            <td>Prueba 6</td>
+                            <td>
+                                <a class="badge badge-success" title="Descargar Archivo"> <i class="fas fa-download fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Borrar por Renglon"> <i class="fas fa-folder-minus fa-lg text-white"></i></a>
+                                <a class="badge badge-danger" title="Eliminar Carga completa"> <i class="fas fa-minus fa-lg text-white"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </form>
-    
 </div>
 <script src="~/Scripts/main/cargamasiva.js?n=4"></script>
