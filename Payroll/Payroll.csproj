@@ -1045,7 +1045,7 @@
     <Content Include="Views\Empleados\EmisionRecibos.cshtml" />
     <Content Include="Views\Incidencias\CargaMasiva.cshtml" />
     <Content Include="Views\Documentos\KitContratacion.cshtml" />
-    <Content Include="Views\Nomina\ComparativoNomina.cshtml" />+
+    <Content Include="Views\Nomina\ComparativoNomina.cshtml" />
     <Content Include="Views\KioskoM\ConsultaRecibo.cshtml" />
     <Content Include="Scripts\main\xlsx.full.min.js" />
     <Content Include="Views\Kiosko\SolicitudVacaciones.cshtml" />
