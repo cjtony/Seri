@@ -1,7 +1,49 @@
 ﻿
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
+
 <body>
+    <style>
+        .max {
+            color: black\9;
+            background-color: #63be7b\9;
+        }
+
+        .avg {
+            color: black\9;
+            background-color: #f8e984\9;
+        }
+
+        .minavg {
+            color: black\9;
+            background-color: #f9806f\9;
+        }
+
+        .min {
+            color: black\9;
+            background-color: #f8696b\9;
+        }
+
+        .max:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .max:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: #63be7b;
+        }
+
+        .avg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .avg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: #f8e984;
+        }
+
+        .minavg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .minavg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: #f9806f;
+        }
+
+        .min:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .min:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: #f8696b;
+        }
+    </style>
     <div class="container bg-white">
         @*Botones Flotantes*@
 
@@ -113,28 +155,84 @@
 
                         </div>
                     </div>
-
                 </div>
-                <div class="form-group text-center rounded shadow p-3 border-left-primary border-right-primary col-md-12 d-none" id="content-tabledif">
-                    <div class="">
-                        <div id="TableDif">
+
+                <div class="col-12">
+                    <center>
+                        <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-9 d-none" id="content-tabledif">
+                            <div>
+                                <div id="TableDif">
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </center>
                 </div>
 
+                <div class="col-12">
+                    <center>
+                        <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-8 d-none" id="content-tabledifEmpleado">
+                            <div class="col-md-6">
+                                <div class="text-left">
+                                    <h6 class="col-ico font-nav-child">
+                                        <b>
+                                            <i class="fas fa-money-bill-alt mr-ico-05"></i>
+                                            Comparacion de nomina 
+                                        </b>
+                                    </h6>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+                            <div>
+                                <div id="TableDifEmpleado">
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </div>
+
+                <div class="col-12">
+                    <center>
+                        <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-8 d-none" id="content-tabledifEmpleNomina">
+                            <div class="col-md-6">
+                                <div class="text-left">
+                                    <h6 class="col-ico font-nav-child">
+                                        <b>
+                                            <i class="fas fa-money-bill-alt mr-ico-05"></i>
+                                             Nomina empleado
+                                        </b>
+                                    </h6>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+                            <div>
+                                <div id="TableDifEmplNomina">
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </div>
 
                 @*Botones de flotantes*@
-                <div>
-                    <button class="flotante1 btn btn-primary btn-circle shadow" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+            <div>
+                <button class="flotante1 btn btn-primary btn-circle shadow" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="flotante2 btn btn-primary btn-circle shadow" title="Limpiar todos los campos" id="btnLimpiarCamp" type="button" btvisible="true" value="1">
+                    <i class="fas fa-eraser"></i>
+                </button>
             </div>
+            </div>
+
         </div>
     </div>
 </body>
-<script src="~/Scripts/main/CompNomina.js?n=0.2"></script>
-
+<script src="~/Scripts/main/CompNomina.js?n=0.8"></script>
 <script src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script>

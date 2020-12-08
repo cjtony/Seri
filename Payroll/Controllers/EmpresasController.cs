@@ -220,5 +220,13 @@ namespace Payroll.Controllers
             var data = new { data = RP };
             return Json(data);
         }
+        // carga id de empresa
+        public JsonResult LoadEmpresa2(int idEmpresa)
+        {
+            List<string> empresas = new List<string>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();          
+            empresas = Dao.sp_CEmpresas_Retrieve_Empresa(idEmpresa);
+            return Json(empresas);
+        }
     }
 }

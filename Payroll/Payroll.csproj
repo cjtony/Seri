@@ -928,6 +928,7 @@
     <Content Include="Scripts\main\startMenu.js" />
     <Content Include="Scripts\main\Timbradosxml.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Nomoper\CompensacionF.js" />
     <Content Include="Scripts\Nomoper\MonitorProcesos.js" />
     <Content Include="Scripts\Nomoper\NomOperConsulta.js" />
     <Content Include="Scripts\Nomoper\OperNom.js" />
@@ -1015,6 +1016,7 @@
     <Content Include="Views\Empleados\EmisionRecibos.cshtml" />
     <Content Include="Views\Documentos\KitContratacion.cshtml" />
     <Content Include="Views\Nomina\ComparativoNomina.cshtml" />
+    <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

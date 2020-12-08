@@ -1,0 +1,178 @@
+﻿
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
+<body>
+
+    <div class="container bg-white">
+        @*Botones Flotantes*@
+
+        <div class="container-fluid">
+
+            <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+                <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
+                <div class="col-md-6">
+                    <div class="text-left">
+                        <h6 class="col-ico font-nav-child">
+                            <b>
+                                <i class="fas fa-file-invoice-dollar mr-ico-05"></i>
+                                Compensaciones fijas a empleados
+                            </b>
+                        </h6>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <hr />
+                </div>
+              
+
+                <div class="col-12">
+                    <center>
+                        <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-9 d-none" id="content-tableComp">
+                            <div class="form-group row col-md-6" style="margin-left:2%">
+                                <div class="text-left">
+                                    <h6 class="col-ico font-nav-child">
+                                        <b>
+                                            <i class="fas fa-print  mr-ico-05"></i>
+                                            Compensación
+                                        </b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="TBCompensacion">
+                                </div>
+                            </div>
+                            <div class="form-group row col-md-9" style="margin-left:65%; top:25px">
+                                <button type="submit" class="btn btn-primary mb-2 " id="btnNuevaComp"><span class="fa fa-plus-square"></span> Nueva Compensación fija </button>
+                            </div>
+                        </div>
+                    </center>
+                </div>
+
+                <div class="col-12">
+                    <center>
+                        <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-8 d-none" id="content-blockInsert">
+                            <div class="col-md-6">
+                                <div class="text-left">
+                                    <h6 class="col-ico font-nav-child">
+                                        <b>
+                                            <i class="fa fa-plus-square-o mr-ico-05"></i>
+                                            Nueva Compensación
+                                        </b>
+                                    </h6>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+                            <div>
+                                <div class="row mt-6">
+                                    <div class="col-md-6">
+                                        <div class="form-group row" style="margin-left:2%">
+                                            <label for="LaEmpresa" class="col-sm-4 col-form-label font-labels">
+                                                <i class="fas fa-building mr-2 col-ico"></i>
+                                                Empresa:
+                                            </label>
+                                            <div class="col-sm-6" style="margin-left:-2%">
+                                                <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="DropEmpresa">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="margin-left:-2%">
+                                            <label for="LaPuesto" class="col-sm-4 col-form-label font-labels">
+                                                <i class="fa fa-user-circle mr-2 col-ico"></i>
+                                                Puesto:
+                                            </label>
+                                            <div class="col-sm-6" style="margin-left:-2%">
+                                                <select placeholder="Puesto" tp-select="Puesto" class="form-control form-control-sm" id="DropPuesto">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="margin-left:-2%">
+                                            <label for="LaImporte" class="col-sm-4 col-form-label font-labels">
+                                                <i class="fa fa-money mr-2 col-ico"></i>
+                                                Importe:
+                                            </label>
+                                            <div class="col-sm-6" style="margin-left:2%">
+                                                <input placeholder="Importe" tvvisible="false" type="text" id="TxtImporte" class="form-control form-control-sm text-capitalize" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-6 col-form-label font-labels"><input type="checkbox" id="ChekPYA"> N/A PP y PA </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="Renglon" class="col-sm-4 col-form-label font-labels">
+                                                <i class="fas fa-pallet mr-2 col-ico"></i>
+                                                Renglón:
+                                            </label>
+                                            <div class="col-sm-6" style="margin-left:-2%">
+                                                <select placeholder="Renglon" tp-select="Renglon" class="form-control form-control-sm" id="DropRenglon">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="LaDesp" class="col-sm-5 col-form-label font-labels" style="margin-left:-2%">
+                                                <i class="fa fa-pencil-square-o mr-2 col-ico"></i>
+                                                Descripción:
+                                            </label>
+                                            <div class="col-sm-6" style="margin-left:-6%">
+                                                <input placeholder="Descripción" tvvisible="false" type="text" id="TxtDesp" class="form-control form-control-sm text-capitalize" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row col-md-12" top:25px">
+                                <div class="modal-footer" style="margin-left:60%">
+                                    <button type="submit" class="btn btn-primary mb-2 col-md-8" id="btnRegistrar"><span class="fa fa-pencil"></span> Registrar</button>
+                                    <button type="submit" class="btn btn-primary mb-2 col-md-8 " id="btnCancelar"><span class="fa fa-times"></span> Cancelar</button>
+                               </div>
+                            </div>
+                        </div>
+                    </center>
+                </div>
+
+           
+
+                @*Botones de flotantes*@
+                <div>
+                    @*<button class="flotante1 btn btn-primary btn-circle shadow" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="flotante2 btn btn-primary btn-circle shadow" title="Limpiar todos los campos" id="btnLimpiarCamp" type="button" btvisible="true" value="1">
+                            <i class="fas fa-eraser"></i>
+                        </button>*@
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script src="~/Scripts/Nomoper/CompensacionF.js?n=2"></script>
+<script src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcheckbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdatatable.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxlistbox.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdropdownlist.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxtooltip.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxwindow.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxnumberinput.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxinput.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcalendar.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdatetimeinput.js"></script>
+<script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/globalization/globalize.js"></script>
+

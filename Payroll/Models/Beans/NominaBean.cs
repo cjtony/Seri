@@ -376,6 +376,7 @@ namespace Payroll.Models.Beans
     }
 
     public class CompativoNomBean { 
+
       public int iIdEmpresa { get; set; }
       public string TipodNom { get; set; }
       public int iIdRenglon { get; set; }
@@ -389,10 +390,36 @@ namespace Payroll.Models.Beans
       public string sTotalDif { get; set; }
       public int iNoEmpleado { get; set; } 
       public int iNoEmpleadosNuevos { get; set; }
+      public int iIdEmpleado { get; set; }
+      public string sNombreEmpleado { get; set; }
       public string sMensaje { get; set; }
         
 
     };
 
 
+    public class CompensacionFijaBean
+    {
+        public int iId { get; set; }
+        public int iIdEmpresa { get; set; }
+        public string sNombreEmpresa { get; set;}
+        public int iPremioPyA { get; set; }
+        public int iIdPuesto { get; set; }
+        public int iIdRenglon { get; set; }
+        public string sNombreRenglon { get; set; }
+        public double iImporte { get; set; }
+        public string sDescripcion { get; set; }
+        public int iIdUsuario { get; set; }
+        public string sFecha {get;set;}
+        public string sMensaje { get; set; }
+
+    }
+
+    public class PuestosNomBean { 
+        public int iIdPuesto { get; set; }
+        public string sPuestoCodigo{ get; set; }
+        public string sNombrePuesto { get; set; }
+        public string sMensaje { get; set; }
+
+    }
 }

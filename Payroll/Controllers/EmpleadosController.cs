@@ -2033,11 +2033,11 @@ namespace Payroll.Controllers
         [HttpPost]
 
         /// Lista empleado Finiquito
-        public JsonResult ListEmpleadoFin(int iIdEmpresa, int TipoPeriodo, int periodo, int Anio)
+        public JsonResult ListEmpleadoFin(int iIdEmpresa, int TipoPeriodo, int periodo, int Anio,int IdEmpleado)
         {
             List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
-            ListEmple = Dao.sp_EmpleadosFiniquito_Retrieve_Tfiniquito_hst(iIdEmpresa, periodo, Anio);
+            ListEmple = Dao.sp_EmpleadosFiniquito_Retrieve_Tfiniquito_hst(iIdEmpresa, periodo, Anio, IdEmpleado, TipoPeriodo);
             return Json(ListEmple);
         }
 
@@ -2769,7 +2769,6 @@ namespace Payroll.Controllers
 
                                     }
 
-
                                     Paragraph espaciotablaSe = new Paragraph(-55, " ", TexNeg);
                                     Paragraph TFirmaEmple = new Paragraph(-25, "Firma Empleado", TexNeg);
                                     TFirmaEmple.IndentationLeft = 400;
@@ -3038,6 +3037,16 @@ namespace Payroll.Controllers
             return Json(LSelloSat);
         }
 
+        /// lista periodo por empresa
 
+        [HttpPost]
+        public JsonResult ListPeriodoEmpresa(int IdDefinicionHD, int iperiodo, int NomCerr, int Anio)
+        {
+            List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LPe = dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(IdDefinicionHD, iperiodo, NomCerr, Anio);
+            return Json(LPe);
+
+        }
     }
 }
