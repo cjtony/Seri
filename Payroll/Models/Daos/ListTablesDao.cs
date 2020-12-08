@@ -1719,7 +1719,7 @@ namespace Payroll.Models.Daos
         }
 
         /// consulta los emplados que tengan finiquito
-        public List<EmpleadosEmpresaBean> sp_EmpleadosFiniquito_Retrieve_Tfiniquito_hst(int CtrliIdEmpresa, int CtrliPeriodo, int Ctrlianio)
+        public List<EmpleadosEmpresaBean> sp_EmpleadosFiniquito_Retrieve_Tfiniquito_hst(int CtrliIdEmpresa, int CtrliPeriodo, int Ctrlianio,int CtrliIdEmpleado, int CtrliTipoperiodo)
         {
             List<EmpleadosEmpresaBean> list = new List<EmpleadosEmpresaBean>();
             try
@@ -1731,7 +1731,9 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
                 cmd.Parameters.Add(new SqlParameter("@Ctrlianio", Ctrlianio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoperiodo", CtrliTipoperiodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -1740,14 +1742,16 @@ namespace Payroll.Models.Daos
                     {
                         EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
 
-                        ls.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
-                        ls.sNombreCompleto = data["Nombre_Empleado"].ToString();
+                        ls.iIdEmpleado = int.Parse(data["Exite"].ToString());
                         list.Add(ls);
                     }
                 }
                 else
                 {
-                    list = null;
+                    EmpleadosEmpresaBean ls = new EmpleadosEmpresaBean();
+
+                    ls.iIdEmpleado = 0;
+                    list.Add(ls);
                 }
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }

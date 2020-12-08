@@ -26,7 +26,9 @@
     const LachecRecibo2 = document.getElementById('LachecRecibo2');
     /*const CheckRecibosFis = document.getElementById('CheckRecibosFis')*/;
     const btnDowlan = document.getElementById('btnDowlan');
-
+    const LaFiniquito = document.getElementById('LaFiniquito');
+    const dropPeriodoEmple = document.getElementById('dropPeriodoEmple');
+    const LaPeriodoEmple = document.getElementById('LaPeriodoEmple');
 
     var ValorChek = document.getElementById('CheckRecibo2');
     var valorChekFint = document.getElementById('CheckFiniquito');
@@ -40,9 +42,19 @@
     var datosPeriodo;
     var datainformations;
     var rowscounts = 0;
+
+    /// saca la fecha del dia 
+
+    n = new Date();
+    //Año
+    y = n.getFullYear();
+  
+
+    anoNom.value = y;
+
     ///Listbox de Empresas 
 
-    $("#jqxInput").jqxInput({ placeHolder: " Nombre del Empleado", width: 350, height: 30, minLength: 1 });
+    $("#jqxInput").jqxInput({ placeHolder: " Nombre del Empleado", width: 250, height: 30, minLength: 1 });
    
 
     FListadoEmpresa = () => {
@@ -120,85 +132,28 @@
             },
         });
         $("#jqxInput").empty();
-        $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+        $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
 
     });
 
     $('#PeridoNom').change(function () {
-        btnPDFms.style.visibility = 'hidden';
-        btnXmlms.style.visibility = 'hidden';
+    
 
          IdEmpresa = EmpresaNom.value;
          Tipodeperiodo = TipodePerdioRec.value;
          var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
          if (PeridoNom.value == 0) {
              $("#jqxInput").empty();
-             $("#jqxInput").jqxInput({ source: null, placeHolder: "Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
-           
-             
+             $("#jqxInput").jqxInput({ source: null, placeHolder: "Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
+                        
          }
          if (periodo != "Selecciona") {
              separador = " ",
              limite = 2,
              arreglosubcadena = periodo.split(separador, limite);
 
-             const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0], Anio: anoNom.value };
-             if (CheckFiniquito.checked == true) {
-                 btnPDFms.style.visibility = 'hidden';
-                 btnXmlms.style.visibility = 'hidden';
-                 $.ajax({
-                     url: "../Empleados/ListEmpleadoFin",
-                     type: "POST",
-                     data: dataSend,
-                     success: (data) => {
-                         if (data.length > 0) {
-                             var source =
-                             {
-
-                                 localdata: data,
-                                 datatype: "array",
-                                 datafields:
-                                     [
-                                         { name: 'iIdEmpleado' },
-                                         { name: 'sNombreCompleto' }
-
-                                     ]
-                             };
-                             var dataAdapter = new $.jqx.dataAdapter(source);
-                             $("#jqxInput").empty();
-                             $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
-                             $("#jqxInput").on('select', function (event) {
-                                 if (event.args) {
-                                     var item = event.args.item;
-                                     if (item) {
-                                         var valueelement = $("<div></div>");
-                                         valueelement.text("Value: " + item.value);
-                                         var labelelement = $("<div></div>");
-                                         labelelement.text("Label: " + item.label);
-                                         NoEmpleado = item.value;
-                                         NombreEmpleado = item.label;
-                                     }
-                                 }
-
-                             });
-
-                         }
-                         else {
-                             $("#jqxInput").empty();
-                             $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
-                         }
-
-                     }
-                 });
-
-
-
-             }
-             if (CheckFiniquito.checked == false) {
-
-                 btnPDFms.style.visibility = 'visible';
-                 btnXmlms.style.visibility = 'visible';
-                 $.ajax({
+             const dataSend = { iIdEmpresa: IdEmpresa, TipoPeriodo: Tipodeperiodo, periodo: arreglosubcadena[0], Anio: anoNom.value };   
+             $.ajax({
                      url: "../Empleados/DataListEmpleado",
                      type: "POST",
                      data: dataSend,
@@ -218,7 +173,7 @@
                              };
                              var dataAdapter = new $.jqx.dataAdapter(source);
                              $("#jqxInput").empty();
-                             $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                             $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
                              $("#jqxInput").on('select', function (event) {
                                  if (event.args) {
                                      var item = event.args.item;
@@ -237,14 +192,12 @@
                          }
                          else {
                              $("#jqxInput").empty();
-                             $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                             $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
                          }
 
                      }
                  });
-             }
-            
-
+             
 
          }
         
@@ -288,17 +241,20 @@
 
     });
      //// FLlena del Grid con los datos de La nomina
+
     FBuscar = () => {
 
+        console.log('recibo de nomina');
         FDelettable();
         var TotalPercep=0;
         var TotalDedu=0;
         var Total=0;
         IdEmpresa = EmpresaNom.value;
         NombreEmpleado;
-         var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
-         const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado };
-         console.log(dataSend);
+        var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
+        
+
+        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado };
          $.ajax({
              url: "../Empleados/EmisorEmpresa",
              type: "POST",
@@ -317,12 +273,106 @@
          separador = " ",
          limite = 2,
          arreglosubcadena = periodo.split(separador, limite);
-        NoEmpleado;
-        const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0, idTipFiniquito:0};
+         NoEmpleado;
+        
+        const dataSendFinQ = { iIdEmpresa: IdEmpresa, TipoPeriodo: TipodePerdioRec.value, periodo: arreglosubcadena[0], Anio: anoNom.value, IdEmpleado: NoEmpleado };
+        console.log(dataSendFinQ);
+        $.ajax({
+            url: "../Empleados/ListEmpleadoFin",
+            type: "POST",
+            data: dataSendFinQ,
+            success: (data) => {
+                if (data[0].iIdEmpleado == 0) {
+                    console.log('no tiene ');
+                    CheckFiniquito.style.visibility = 'hidden';
+                    LaFiniquito.style.visibility = 'hidden';
+            
+                  
+                };
+                if (data[0].iIdEmpleado == 1) {
+                    console.log('tienefini');
+                    CheckFiniquito.style.visibility = "visible";
+                    LaFiniquito.style.visibility = "visible";
+                
+                };
+            }
 
-         FGridRecibos(dataSend2);
+
+        });
+        const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0, idTipFiniquito: 0 };
+        FGridRecibos(dataSend2);
+      
+        FPeriodosEmpleado(IdEmpresa, anoNom.value, TipodePerdioRec.value, NoEmpleado);
+    };
+
+    /// Periodo de empleados 
+
+    FPeriodosEmpleado = (empresa, anios, iTipoPeriodo, NoEmpleado) => {
+        const dataSend = { Idempresa: empresa, Anio: anios, TipoPeriodo: iTipoPeriodo, idEmpleado:NoEmpleado };
+      
+        $("#dropPeriodoEmple").empty();
+        $('#dropPeriodoEmple').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/PeriodosEmpleados",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+
+                for (i = 0; i < data.length; i++) {
+                  document.getElementById("dropPeriodoEmple").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo}</option>`;
+                }
+            },
+        });
 
     };
+
+    $('#dropPeriodoEmple').change(function () {
+
+        var periodoEmple = dropPeriodoEmple.value;
+        FBuscar2(periodoEmple);
+
+    });
+
+    FBuscar2 = (periodoEmple) => {
+        FDelettable();
+        var TotalPercep = 0;
+        var TotalDedu = 0;
+        var Total = 0;
+        IdEmpresa = EmpresaNom.value;
+        NombreEmpleado;
+        NoEmpleado;
+
+        const dataSendFinQ = { iIdEmpresa: IdEmpresa, TipoPeriodo: TipodePerdioRec.value, periodo: periodoEmple, Anio: anoNom.value, IdEmpleado: NoEmpleado };
+       
+        $.ajax({
+            url: "../Empleados/ListEmpleadoFin",
+            type: "POST",
+            data: dataSendFinQ,
+            success: (data) => {
+                if (data[0].iIdEmpleado == 0) {
+                    console.log('no tiene ');
+                    CheckFiniquito.style.visibility = 'hidden';
+                    LaFiniquito.style.visibility = 'hidden';
+
+
+                };
+                if (data[0].iIdEmpleado == 1) {
+                    console.log('tienefini');
+                    CheckFiniquito.style.visibility = "visible";
+                    LaFiniquito.style.visibility = "visible";
+
+                };
+            }
+
+
+        });
+        const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: periodoEmple, iespejo: 0, idTipFiniquito: 0 };
+        FGridRecibos(dataSend2);
+
+        FPeriodosEmpleado(IdEmpresa, anoNom.value, TipodePerdioRec.value, NoEmpleado);
+    };
+
+
 
     /// llemna grid de los calculos de nomina 
     FGridRecibos = (dataSend2) => {
@@ -356,9 +406,9 @@
                             columnsresize: true,
                             columns: [
                                 { text: 'Concepto', datafield: 'sConcepto', width: 300 },
-                                { text: 'Percepciones', datafield: 'dPercepciones', width: 100 },
-                                { text: 'Deducciones ', datafield: 'dDeducciones', width: 100 },
-                                { text: 'Saldos', datafield: 'dSaldos', width: 100 },
+                                { text: 'Percepciones', datafield: 'dPercepciones', cellsformat: 'c2', width: 100 },
+                                { text: 'Deducciones ', datafield: 'dDeducciones', cellsformat: 'c2', width: 100 },
+                                { text: 'Saldos', datafield: 'dSaldos', cellsformat: 'c2', width: 100 },
                                 { text: 'Informativos', datafield: 'dInformativos', width: 100 }
                             ]
                         });
@@ -412,10 +462,10 @@
                             columnsresize: true,
                             columns: [
                                 { text: 'Concepto', datafield: 'sConcepto', width: 300 },
-                                { text: 'Percepciones', datafield: 'dPercepciones', width: 100 },
-                                { text: 'Deducciones ', datafield: 'dDeducciones', width: 100 },
-                                { text: 'Saldos', datafield: 'dSaldos', width: 100 },
-                                { text: 'Informativos', datafield: 'dInformativos', width: 100 }
+                                { text: 'Percepciones', datafield: 'dPercepciones', cellsformat: 'c2', width: 100 },
+                                { text: 'Deducciones ', datafield: 'dDeducciones', cellsformat: 'c2', width: 100 },
+                                { text: 'Saldos', datafield: 'dSaldos', cellsformat: 'c2', width: 100 },
+                                { text: 'Informativos', datafield: 'dInformativos', cellsformat: 'c2', width: 100 }
                             ]
                         });
                 }
@@ -430,16 +480,16 @@
                         for (i = 0; i < data.length; i++) {
                             if (data[i].iIdRenglon == 990) {
                                 TotalPercep = data[i].dSaldo
-                                $('#LaTotalPer').html(TotalPercep);
+                                $('#LaTotalPer').html(new Intl.NumberFormat("en-IN").format(TotalPercep));
                             }
                             if (data[i].iIdRenglon == 1990) {
 
                                 TotalDedu = data[i].dSaldo
-                                $('#LaTotalDedu').html(TotalDedu);
+                                $('#LaTotalDedu').html(new Intl.NumberFormat("en-IN").format(TotalDedu));
                             }
                         }
                         Total = TotalPercep - TotalDedu;
-                        $('#LaTotalNom').html(Total);
+                        $('#LaTotalNom').html(new Intl.NumberFormat("en-IN").format(Total));
 
                     }
                 }
@@ -531,7 +581,7 @@
         PeridoNom.value = 0;
         $("#jqxInput").empty();
         $("#jqxInput").jqxInput('clear');
-        $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "", valueMember: "", width: 350, height: 30, minLength: 1 });
+        $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "", valueMember: "", width: 250, height: 30, minLength: 1 });
 
     };
     
@@ -596,27 +646,32 @@
     FvalorChechFin = () => {
      
         if (valorChekFint.checked == true) {
-            btnPDFms.style.visibility = 'hidden';
-            btnXmlms.style.visibility = 'hidden';
+         
             LaDropFiniquito.style.visibility = 'visible';
             dropFiniquito.style.visibility = 'visible';
             CheckRecibo2.style.visibility = 'hidden';
             LachecRecibo2.style.visibility = 'hidden';
             BtbGeneraXML.style.visibility = 'hidden';
-            FLimpCamp();
-       
+            dropPeriodoEmple.style.visibility = 'hidden';
+            LaPeriodoEmple.style.visibility = 'hidden';
+            
+            const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0, idTipFiniquito: 1 };
+            FGridRecibos(dataSend2);
 
         }
         if (valorChekFint.checked == false) {
-            btnPDFms.style.visibility = 'hidden';
-            btnXmlms.style.visibility = 'hidden';
+           
             dropFiniquito.style.visibility = 'hidden';
             LaDropFiniquito.style.visibility = 'hidden';
             CheckRecibo2.style.visibility = 'visible';
             LachecRecibo2.style.visibility = 'visible';
             BtbGeneraXML.style.visibility = 'visible';
+            dropPeriodoEmple.style.visibility = 'visible';
+            LaPeriodoEmple.style.visibility = 'visible';
 
-            FLimpCamp();
+            const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0, idTipFiniquito: 0 };
+            FGridRecibos(dataSend2);
+         
           
         }
 
