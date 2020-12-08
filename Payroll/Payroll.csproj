@@ -177,6 +177,7 @@
     <Compile Include="Controllers\ControlPayrollController.cs" />
     <Compile Include="Controllers\DispersionController.cs" />
     <Compile Include="Controllers\DocumentosController.cs" />
+    <Compile Include="Controllers\DispersionSpecialController.cs" />
     <Compile Include="Controllers\EditDataGeneralController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Models\Daos\CatalogosDao.cs" />
     <Compile Include="Models\Daos\ConfigDataBankDao.cs" />
     <Compile Include="Models\Daos\DispersionDao.cs" />
+    <Compile Include="Models\Daos\DispersionSpecialDao.cs" />
     <Compile Include="Models\Daos\EditDataGeneralDao.cs" />
     <Compile Include="Models\Daos\ListTablesDao.cs" />
     <Compile Include="Models\Daos\MainMenuDao.cs" />
@@ -890,6 +892,7 @@
     <Content Include="Scripts\jqxGrid\jqwidgets\styles\jqx.base.css" />
     <Content Include="Scripts\main\animationsmain.js" />
     <Content Include="Scripts\main\Ausentismos.js" />
+    <Content Include="Scripts\main\AutorizacionVacaciones\main.js" />
     <Content Include="Scripts\main\BajasEmpleados.js" />
     <Content Include="Scripts\main\BajasMasivas\main.js" />
     <Content Include="Scripts\main\branchoffices.js" />
@@ -902,6 +905,8 @@
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
     <Content Include="Scripts\main\EmisionRecibos.js" />
+    <Content Include="Scripts\main\Dispersion\databankspecial.js" />
+    <Content Include="Scripts\main\Dispersion\mainspecial.js" />
     <Content Include="Scripts\main\employes.js" />
     <Content Include="Scripts\main\Empre.js" />
     <Content Include="Scripts\ferros\errajax.js" />
@@ -920,6 +925,7 @@
     <Content Include="Scripts\login.js" />
     <Content Include="Scripts\main\Empresas.js" />
     <Content Include="Scripts\main\estructura.js" />
+    <Content Include="Scripts\main\fngeneral\general.js" />
     <Content Include="Scripts\main\formValidation.js" />
     <Content Include="Scripts\main\Incidencias.js" />
     <Content Include="Scripts\main\IncidenciasProg.js" />
@@ -1042,6 +1048,7 @@
     <Content Include="Views\KioskoM\ConsultaRecibo.cshtml" />
     <Content Include="Scripts\main\xlsx.full.min.js" />
     <Content Include="Views\Kiosko\SolicitudVacaciones.cshtml" />
+    <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1050,6 +1057,7 @@
     <Folder Include="Views\BajasEmpleados\" />
     <Folder Include="Views\CatalogsTables\" />
     <Folder Include="Views\ConfigDataBank\" />
+    <Folder Include="Views\DispersionSpecial\" />
     <Folder Include="Views\Dispersion\" />
     <Folder Include="Views\EditDataGeneral\" />
     <Folder Include="Views\Login\" />

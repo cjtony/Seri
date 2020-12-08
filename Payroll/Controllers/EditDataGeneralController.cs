@@ -105,13 +105,18 @@ namespace Payroll.Controllers
         // Edicion de los datos de la nomina del empleado
 
         [HttpPost]
-        public JsonResult EditDataNomina(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte)
+        public JsonResult EditDataNomina(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, string motMoviSal, string fechMoviSal, Boolean flagSal, double salmenact, int clvemp)
         {
             Boolean flag         = false;
             String  messageError = "none";
             DatosNominaBean nominaBean      = new DatosNominaBean();
             EditEmpleadoDao editEmpleadoDao = new EditEmpleadoDao();
-            int empresa = int.Parse(Session["IdEmpresa"].ToString());
+            DatosMovimientosBean datosMovimientos   = new DatosMovimientosBean();
+            DatosPosicionesDao datoPosicionDao      = new DatosPosicionesDao();
+            LoadTypePeriodPayrollBean periodBean    = new LoadTypePeriodPayrollBean();
+            LoadTypePeriodPayrollDaoD periodDaoD    = new LoadTypePeriodPayrollDaoD();
+            int empresa        = int.Parse(Session["IdEmpresa"].ToString());
+            int usuario        = Convert.ToInt32(Session["iIdUsuario"].ToString());
             double diferenciaE = (diferencia < 1) ? 0.00 : diferencia;
             double transporteE = (transporte < 1) ? 0.00 : transporte;
             string convertFEffdtAct = "";
@@ -135,7 +140,11 @@ namespace Payroll.Controllers
                 convertFVencC = Convert.ToDateTime(vencon).ToString("dd/MM/yyyy");
             }
             try {
-                nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position, tiposueldo, politica, diferenciaE, transporte, empresa);
+                if (flagSal) {
+                    periodBean       = periodDaoD.sp_Load_Info_Periodo_Empr(empresa, Convert.ToInt32(DateTime.Now.Year.ToString()));
+                    datosMovimientos = datoPosicionDao.sp_Save_Data_History_Movements_Employee(clvemp, empresa, "SUELDO", motMoviSal, salmen.ToString(), salmenact.ToString(), fechMoviSal, usuario, periodBean.iTipoPeriodo, periodBean.iPeriodo, periodBean.iAnio);
+                }
+                nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position, tiposueldo, politica, diferenciaE, transporte, empresa, retroactivo);
                 if (nominaBean.sMensaje != "success") {
                     messageError = nominaBean.sMensaje;
                 }

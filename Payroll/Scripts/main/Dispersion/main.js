@@ -7,9 +7,13 @@
     const navDispersion           = document.getElementById('nav-dispersion');
     const containerDataDeploy     = document.getElementById('container-data-deploy');
     const tableDataDeposits       = document.getElementById('table-data-deposits');
+    const tableDataDepositsSpecial = document.getElementById('table-data-deposits-especial');
     const alertDataDeposits       = document.getElementById('alert-data-deposits');
+    const alertDataDepositsSpecial = document.getElementById('alert-data-deposits-special');
     const containerBtnsProDepBank = document.getElementById('container-btns-process-deposits-bank');
+    const containerBtnsProDepBankSpecial = document.getElementById('container-btns-process-deposits-bank-special');
     const btndesplegartab         = document.getElementById('btn-desplegar-tab');
+    const btndesplegarespecialtab = document.getElementById('btn-desplegar-especial-tab');
     const btnretnominaemp         = document.getElementById('btn-ret-nomina-employe');
     const searchemployekeynom     = document.getElementById('searchemployekeynom');
     const resultemployekeynom     = document.getElementById('resultemployekeynom');
@@ -23,7 +27,15 @@
     const yeardis  = document.getElementById('yeardis');
     const typeperiod = document.getElementById('typeperiod');
     const periodis = document.getElementById('periodis');
-    const datedis  = document.getElementById('datedis');
+    const datedis = document.getElementById('datedis');
+
+
+    const yeardis1    = document.getElementById('yeardis1');
+    const typeperiod1 = document.getElementById('typeperiod1');
+    const periodis1   = document.getElementById('periodis1');
+    const datedis1 = document.getElementById('datedis1');
+
+    //const isMirror = document.getElementById('ismirror');
 
     const spanish = {
         "decimal": "",
@@ -84,8 +96,13 @@
                         document.getElementById('typeperactnomemp').textContent = data.InfoPeriodo.iTipoPeriodo;
                         document.getElementById('peractnomemp').textContent = data.InfoPeriodo.iPeriodo;
                         document.getElementById('fechaspernomemp').textContent = data.InfoPeriodo.sFechaInicio + " - " + data.InfoPeriodo.sFechaFinal;
-                        periodis.value = data.InfoPeriodo.iPeriodo;
-                        typeperiod.value = data.InfoPeriodo.iTipoPeriodo;
+                        document.getElementById('typeperactnomemp1').textContent = data.InfoPeriodo.iTipoPeriodo;
+                        document.getElementById('peractnomemp1').textContent = data.InfoPeriodo.iPeriodo;
+                        document.getElementById('fechaspernomemp1').textContent = data.InfoPeriodo.sFechaInicio + " - " + data.InfoPeriodo.sFechaFinal;
+                        periodis.value    = data.InfoPeriodo.iPeriodo;
+                        typeperiod.value  = data.InfoPeriodo.iTipoPeriodo;
+                        periodis1.value   = data.InfoPeriodo.iPeriodo;
+                        typeperiod1.value = data.InfoPeriodo.iTipoPeriodo;
                     } else {
                         fShowTypeAlert('Atención!', 'No se ha cargado la informacion del periodo actual, contacte al área de TI indicando el siguiente código: #CODERRfLoadInfoPeriodPayrollMAINDIS#', 'error', navDispersion, 0);
                     }
@@ -362,14 +379,185 @@
     /* Funcion que carga informacion en los inputs de dispersion */
     fLoadInfoDataDispersion = () => {
         const d = new Date();
-        yeardis.value = d.getFullYear();
+        yeardis.value  = d.getFullYear();
+        yeardis1.value = d.getFullYear();
         yeardis.setAttribute('readonly', 'true');
+        yeardis1.setAttribute('readonly', 'true');
         periodis.setAttribute('readonly', 'true');
+        //periodis1.setAttribute('readonly', 'true');
         const day = (d.getDate() < 10) ? "0" + d.getDate() : d.getDate();
         const mth = ((d.getMonth() + 1) < 10) ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
         const yer = d.getFullYear();
-        datedis.value = yer + '-' + mth + '-' + day;
-        console.log("Día: " + day + " Mes: " + mth + " Año: " + yer);
+        datedis.value  = yer + '-' + mth + '-' + day;
+        datedis1.value = yer + '-' + mth + '-' + day;
+    }
+
+    fToDeployInfoDispersionEspecial = () => {
+        btndesplegarespecialtab.innerHTML = `<i class="fas fa-play-circle mr-2"></i> Desplegar `;
+        btndesplegarespecialtab.classList.remove('active'); 
+        tableDataDepositsSpecial.classList.remove('animated', 'fadeIn');
+        tableDataDepositsSpecial.innerHTML = '';
+        alertDataDepositsSpecial.innerHTML = "";
+        containerBtnsProDepBankSpecial.innerHTML = "";
+        document.getElementById('divbtndownzip1').innerHTML = "";
+        document.getElementById('div-controls1').innerHTML = "";
+        document.getElementById('divbtndownzipint1').innerHTML = "";
+        document.getElementById('div-controls-int1').innerHTML = "";
+        try {
+            const arrInput = [yeardis1, periodis1, datedis1];
+            let validate = 0;
+            for (let i = 0; i < arrInput.length; i++) {
+                if (arrInput[i].value === "") {
+                    fShowTypeAlert('Atencion', 'Completa el campo ' + String(arrInput[i].placeholder), 'warning', arrInput[i], 2);
+                    validate = 1;
+                    break;
+                }
+            }
+            if (validate === 0) {
+                $.ajax({
+                    url: "../Dispersion/ToDeployDispersion",
+                    type: "POST",
+                    data: {
+                        yearDispersion: parseInt(yeardis1.value),
+                        typePeriodDisp: parseInt(typeperiod1.value),
+                        periodDispersion: parseInt(periodis1.value),
+                        dateDispersion: datedis1.value,
+                        type: "test"
+                    },
+                    beforeSend: () => {
+                        btndesplegarespecialtab.innerHTML = `
+                            <span class="spinner-grow spinner-grow-sm mr-1" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                            Desplegando
+                        `;
+                        btndesplegarespecialtab.disabled = true;
+                    },
+                    success: (data) => {
+                        btndesplegarespecialtab.classList.add('active');
+                        btndesplegarespecialtab.innerHTML = `<i class="fas fa-play mr-2"></i> Desplegar`;
+                        btndesplegarespecialtab.disabled  = false;
+                        if (data.BanderaDispersion == true) {
+                            if (data.BanderaBancos == true) {
+                                if (data.MensajeError == "none") {
+                                    if (data.DatosDepositos.length > 0) {
+                                        alertDataDepositsSpecial.innerHTML += `
+                                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                              <strong> 
+                                                <i class="fas fa-info-circle mr-1"></i> Correcto!
+                                              </strong> La información bancaria ha sido desplegada.
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                        `;
+                                        tableDataDepositsSpecial.classList.add('animated', 'fadeIn');
+                                        tableDataDepositsSpecial.innerHTML += `
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Banco</th>
+                                                <th scope="col">Concepto</th>
+                                                <th scope="col">Depositos</th>
+                                                <th scope="col">Importe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body-data-especial"></tbody>
+                                    `;
+                                        for (let i = 0; i < data.DatosDepositos.length; i++) {
+                                            let nomBanco = "";
+                                            for (let j = 0; j < data.DatosBancos.length; j++) {
+                                                if (data.DatosBancos[j].iIdBanco === data.DatosDepositos[i].iIdBanco) {
+                                                    nomBanco = "[" + data.DatosBancos[j].sSufijo + "] " + data.DatosBancos[j].sNombreBanco;
+                                                }
+                                            }
+                                            document.getElementById("table-body-data-especial").innerHTML += `
+                                                <tr>
+                                                    <th scope="row">
+                                                        <i class="fas fa-university mr-2 text-primary"></i>
+                                                        ${data.DatosDepositos[i].iIdBanco}
+                                                    </th>
+                                                    <td>
+                                                        <i class="fas fa-file-alt mr-2 text-primary"></i>
+                                                        ${nomBanco}
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-calculator mr-2 text-primary"></i>
+                                                        ${data.DatosDepositos[i].iDepositos}
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-money-bill mr-2 text-success"></i>
+                                                        $ ${data.DatosDepositos[i].sImporte}
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }
+                                        fLoadGroupBusiness("select", "option-group");
+                                        containerBtnsProDepBankSpecial.innerHTML += `
+                                            <div class="row animated fadeInDown delay-1s mt-4 border-left-primary border-right-primary shadow rounded p-2">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label font-labels" for="option-group">Grupo de empresas</label>
+                                                        <select class="form-control form-control-sm" id="option-group">
+                                                            <option value="none">Selecciona</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label font-labels" for="type-dispersion">Tipo dispersion</label>
+                                                        <select class="form-control form-control-sm" id="type-dispersion">
+                                                            <option value="none">Selecciona</option>
+                                                            <option value="NOM">Nomina</option>
+                                                            <option value="INT">Interbancarios</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-check mt-1 rounded text-primary font-weight-bold mt-4" style="">
+                                                        <input type="checkbox" class="form-check-input" id="ismirrorspecial">
+                                                        <label class="form-check-label" for="ismirrorspecial">Espejo</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 offset-2"><hr/></div>
+                                                <div class="col-md-4 offset-2 text-center">
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-dispersion-special" onclick="fnSendDataDispersionSpecial();"> <i class="fas fa-play mr-2"></i>Procesar depositos</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 text-center">
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-report-ds" onclick="fnSendReportDs();"> <i class="fas fa-file mr-2"></i> Generar reporte </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+                                    } else {
+                                        fShowTypeAlert('Atención!', 'No se encontraron depositos', 'warning', btndesplegarespecialtab, 0);
+                                    }
+                                } else {
+                                    fShowTypeAlert('Error!', 'Ocurrio un problema con el despliege de información, contacte al area de TI', 'error', btndesplegarespecialtab, 0);
+                                }
+                            } else {
+                                fShowTypeAlert('Atención!', 'No hay bancos definidos', 'warning', btndesplegarespecialtab, 0);
+                            }
+                        } else {
+                            fShowTypeAlert('Atención!', 'No se encontro informacion bancaria', 'warning', btndesplegarespecialtab, 0);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
     }
 
     fToDeployInfoDispersion = () => {
@@ -472,7 +660,14 @@
                                         }
                                         containerBtnsProDepBank.innerHTML += `
                                             <div class="row animated fadeInDown delay-1s mt-4">
-                                                <div class="col-md-6 text-center">
+                                                <div class="col-md-4 text-center">
+                                                    <div class="form-group form-check mt-1 rounded text-primary font-weight-bold" style="">
+                                                        <input type="checkbox" class="form-check-input" id="ismirror">
+                                                        <label class="form-check-label" for="ismirror">Con Archivos Espejo</label>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-4 text-center">
                                                     <div class="form-group">
                                                         <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow"
                                                             onclick="fValidateBankInterbank('INT');" id="btn-process-deposits-interbank">
@@ -480,18 +675,18 @@
                                                                 <i class="fas fa-play mr-1"></i>
                                                                 <i class="fas fa-money-check-alt"></i>
                                                             </span>
-                                                            <span class="text">Procesar Depósitos Interbancarios</span>
+                                                            <span class="text">Depósitos Interbancarios</span>
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 text-center">
+                                                <div class="col-md-4 text-center">
                                                     <div class="form-group">
                                                         <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow"                                      onclick="fValidateBankInterbank('NOM');" id="btn-process-deposits-payroll">
                                                             <span class="icon text-white">
                                                                 <i class="fas fa-play mr-1"></i>
                                                                 <i class="fas fa-money-bill-wave"></i>
                                                             </span>
-                                                            <span class="text">Procesar Depósitos de Nomina</span>
+                                                            <span class="text">Depósitos de Nomina</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -573,11 +768,13 @@
             document.getElementById('div-controls').innerHTML  = "";
             const btnProcessDepositsPayroll   = document.getElementById('btn-process-deposits-payroll');
             const btnProcessDepositsInterbank = document.getElementById('btn-process-deposits-interbank');
+            const mirrorSend = (document.getElementById('ismirror').checked) ? 1 : 0;
             const dataSendProcessDepPayroll = {
                 yearPeriod: parseInt(yeardis.value),
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
-                dateDeposits: datedis.value
+                dateDeposits: datedis.value,
+                mirror: mirrorSend
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsPayroll",
@@ -586,6 +783,7 @@
                 beforeSend: () => {
                     btnProcessDepositsPayroll.disabled   = true;
                     btnProcessDepositsInterbank.disabled = true;
+                    document.getElementById('ismirror').disabled = true;
                     document.getElementById('div-show-alert-loading').innerHTML = `
                         <div class="text-center">
                             <div class="spinner-grow text-info" role="status">
@@ -671,6 +869,8 @@
                         }, success: (data) => {
                             btnProcessDepositsPayroll.disabled   = false;
                             btnProcessDepositsInterbank.disabled = false;
+                            document.getElementById('ismirror').disabled = false;
+                            document.getElementById('ismirror').checked  = 0;
                             document.getElementById('divbtndownzip').innerHTML = "";
                             document.getElementById('div-controls').innerHTML = "";
                             document.getElementById('divbtndownzipint').innerHTML = "";
@@ -706,19 +906,22 @@
         try {
             const btnProcessDepositsPayroll   = document.getElementById('btn-process-deposits-payroll');
             const btnProcessDepositsInterbank = document.getElementById('btn-process-deposits-interbank');
-            const dataSend = {
+            const mirrorSend = (document.getElementById('ismirror').checked) ? 1 : 0;
+            const dataSend   = {
                 yearPeriod: parseInt(yeardis.value),
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
-                dateDeposits: datedis.value
+                dateDeposits: datedis.value,
+                mirror: mirrorSend
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsInterbank",
                 type: "POST",
                 data: dataSend,
                 beforeSend: () => {
-                    btnProcessDepositsPayroll.disabled = true;
+                    btnProcessDepositsPayroll.disabled   = true;
                     btnProcessDepositsInterbank.disabled = true;
+                    document.getElementById('ismirror').disabled = true;
                     document.getElementById('div-show-alert-loading').innerHTML = `
                         <div class="text-center">
                             <div class="spinner-grow text-info" role="status">
@@ -782,6 +985,397 @@
         }
     }
 
+    /*
+     * Inicio dispersion especial
+     */
+
+    const btnShowGroupBusiness = document.getElementById('btn-show-group-business');
+    const btnNewGroupBusiness  = document.getElementById('btn-new-group-business');
+
+    const btnRegisterGroupBusiness = document.getElementById('btn-new-group-business');
+    const btnSaveNewGroupBusiness  = document.getElementById('btn-save-new-group-business');
+
+    const icoCloseGroupBusiness = document.getElementById('ico-close-group-business');
+    const btnCloseGroupBusiness = document.getElementById('btn-close-group-business');
+
+    const icoCloseNewGroupBusiness = document.getElementById('ico-close-new-group-business');
+    const btnCloseNewGroupBusiness = document.getElementById('btn-close-new-group-business');
+
+    const btnSaveAsignGroupBusiness = document.getElementById('btn-save-asign-group-business');
+
+    const icoCloseAsignGroupBusiness = document.getElementById('ico-close-asign-group-business');
+    const btnCloseAsignGroupBusiness = document.getElementById('btn-close-asign-group-business');
+
+    const icoCloseViewGroupBusiness = document.getElementById('ico-close-view-group-business');
+    const btnCloseViewGroupBusiness = document.getElementById('btn-close-view-group-business');
+
+
+
+    // Destruimos la tabla
+    fDestroyTable = (type) => {
+        if (type == "table") {
+            const dataTable = $("#dataTableSpecial").DataTable();
+            dataTable.destroy();
+            document.getElementById('data-groupbusiness').innerHTML = "";
+        }
+    }
+
+    fLoadGroupBusiness = (type, selectid) => {
+        fDestroyTable("table");
+        try {
+            if (type == "table") {
+                $("#groupBusiness").modal("show");
+            }
+            $.ajax({
+                url: "../Dispersion/LoadGroupBusiness",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == true && request.MensajeError == "none") {
+                        if (type == "table") {
+                            if (request.Datos.length > 0) {
+                                document.getElementById('data-groupbusiness').innerHTML = request.Html;
+                            }
+                            setTimeout(() => {
+                                $("#dataTableSpecial").DataTable({
+                                    language: spanish
+                                });
+                            }, 500);
+                        } else {
+                            for (let i = 0; i < request.Datos.length; i++) {
+                                document.getElementById(selectid).innerHTML += `<option value="${request.Datos[i].iIdGrupoEmpresa}">
+                                    ${request.Datos[i].sNombreGrupo}
+                                </option>`;
+                            } 
+                        }
+                    } else {
+                        if (type == "table") {
+                            setTimeout(() => {
+                                $("#dataTableSpecial").DataTable({
+                                    language: spanish
+                                });
+                            }, 500);
+                        }
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Guardamos un nuevo grupo de empresas
+    fSaveNewGroupBusiness = () => {
+        try {
+            const nameNewGroup = document.getElementById('name-new-group');
+            if (nameNewGroup.value != "") {
+                const dataSend = { name: nameNewGroup.value };
+                $.ajax({
+                    url: "../Dispersion/SaveNewGroupBusiness",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        btnSaveNewGroupBusiness.disabled = true;
+                    }, success: (request) => {
+                        console.log(request);
+                        btnSaveNewGroupBusiness.disabled = false;
+                        if (request.Bandera == true && request.MensajeError == "none" && request.Mensaje == "SUCCESS") {
+                            fDestroyTable("table");
+                            Swal.fire({
+                                title: 'Correcto!', text: 'Grupo añadido', icon: 'success',
+                                showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                            }).then((acepta) => {
+                                nameNewGroup.value = "";
+                                $("#modalNewGroup").modal("hide");
+                                setTimeout(() => {
+                                    fLoadGroupBusiness("table");
+                                }, 1500);
+                            });
+                        } else if (request.Bandera == false && request.Mensaje == "EXISTS") {
+                            fShowTypeAlert("Anteción!", "El grupo que intenta registrar ya existe!", "warning", nameNewGroup, 2);
+                        } else {
+                            fShowTypeAlert("Error!", "Ha ocurrido un error interno en la aplicación", "error", nameNewGroup, 2);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                fShowTypeAlert('Atención!', 'Ingrese el nombre del grupo', 'warning', nameNewGroup, 0);
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    btnSaveNewGroupBusiness.addEventListener('click', fSaveNewGroupBusiness);
+
+    icoCloseGroupBusiness.addEventListener('click', () => { fDestroyTable("table"); });
+    btnCloseGroupBusiness.addEventListener('click', () => { fDestroyTable("table"); });
+
+    btnShowGroupBusiness.addEventListener('click', () => { fLoadGroupBusiness("table"); });
+    btnRegisterGroupBusiness.addEventListener('click', () => {
+        fDestroyTable("table");
+        setTimeout(() => {
+            document.getElementById('name-new-group').focus();
+        }, 1000);
+    });
+
+    // Carga las empresas que no estan en un grupo
+    fLoadBusinessNotInGroup = () => {
+        document.getElementById('select-business').innerHTML = `<option value="none">Selecciona</option>`;
+        $.ajax({
+            url: "../Dispersion/LoadBusinessNotGroup",
+            type: "POST",
+            data: {},
+            beforeSend: () => {
+
+            }, success: (request) => {
+                console.log(request);
+                if (request.Bandera == true && request.MensajeError == "none") {
+                    for (let i = 0; i < request.Datos.length; i++) {
+                        document.getElementById('select-business').innerHTML += `<option value="${request.Datos[i].iIdEmpresa}">
+                           ${request.Datos[i].sNombreEmpresa}
+                        </option>`;
+                    }
+                } else if (request.Bandera == false && request.MensajeError == "none") {
+                    fShowTypeAlert("Atención!", "No hay empresas disponibles para asignar a aun grupo.", "info", btnNewGroupBusiness, 0);
+                } else {
+                    fShowTypeAlert("Error!", "Ocurrio un error interno de la aplicación", "error", btnNewGroupBusiness, 0);
+                    document.getElementById('select-groups').value = "none";
+                    document.getElementById('select-business').value = "none";
+                }
+            }, error: (jqXHR, exception) => {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+    }
+
+    btnNewGroupBusiness.addEventListener('click', () => {
+        $("#modalAsignGroup").modal('show');
+        fLoadGroupBusiness("select", "select-groups");
+        fLoadBusinessNotInGroup();
+    });
+
+    // Funcion limpia campo de nuevo grupo
+    fClearFieldNewGroup = () => {
+        document.getElementById('name-new-group').value = "";
+        setTimeout(() => {
+            fLoadGroupBusiness("table");
+        }, 500);
+    }
+
+    icoCloseNewGroupBusiness.addEventListener('click', fClearFieldNewGroup);
+    btnCloseNewGroupBusiness.addEventListener('click', fClearFieldNewGroup);
+
+    // Funcion que guarda la asignacion de una empresa y un grupo
+    fSaveAsignGroupBusiness = () => {
+        try {
+            const selectGroups = document.getElementById('select-groups');
+            const selectBusiness = document.getElementById('select-business');
+            if (selectGroups.value != "none") {
+                if (selectBusiness.value != "none") {
+                    const dataSend = { group: selectGroups.value, business: selectBusiness.value };
+                    $.ajax({
+                        url: "../Dispersion/SaveAsignGroupBusiness",
+                        type: "POST",
+                        data: dataSend,
+                        beforeSend: () => {
+                            btnSaveAsignGroupBusiness.disabled = true;
+                        }, success: (request) => {
+                            btnSaveAsignGroupBusiness.disabled = false;
+                            console.log(request);
+                            if (request.Bandera == true && request.MensajeError == "none") {
+                                Swal.fire({
+                                    title: 'Correcto!', text: 'Empresa añadida al grupo!', icon: 'success',
+                                    showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    selectGroups.value = "none";
+                                    fLoadBusinessNotInGroup();
+                                });
+                            } else if (request.Bandera == false && request.Mensaje == "NOTINSERT") {
+                                fShowTypeAlert("Error", "Información no guardada", "error", btnSaveAsignGroupBusiness, 0);
+                            } else {
+                                fShowTypeAlert("Error", "Ocurrio un error interno en la aplicación", "error", btnSaveAsignGroupBusiness, 0);
+                            }
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    fShowTypeAlert("Atención!", "Selecciona una empresa", "warning", selectBusiness, 2);
+                }
+            } else {
+                fShowTypeAlert("Atención!", "Selecciona un grupo de empresas", "warning", selectGroups, 2);
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    btnSaveAsignGroupBusiness.addEventListener('click', fSaveAsignGroupBusiness);
+
+    // Limpiamos los campos de la asignacion de empresas a grupos
+    fClearFieldsAsignGroups = () => {
+        document.getElementById('select-groups').innerHTML   = `<option value="none">Selecciona</option>`;
+        document.getElementById('select-business').innerHTML = `<option value="none">Selecciona</option>`;
+    }
+
+    icoCloseAsignGroupBusiness.addEventListener('click', fClearFieldsAsignGroups);
+    btnCloseAsignGroupBusiness.addEventListener('click', fClearFieldsAsignGroups);
+
+    // Funcion para ver las empresas de un grupo
+    fViewBusinessGroup = (paramint, paramstr) => {
+        document.getElementById('content-groups').innerHTML = "";
+        try {
+            if (parseInt(paramint) > 0) {
+                $.ajax({
+                    url: "../Dispersion/ViewBusinessGroup",
+                    type: "POST",
+                    data: { keyGroup: paramint },
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true && request.MensajeError == "none") {
+                            document.getElementById('namegroup').textContent = paramstr;
+                            for (let i = 0; i < request.Datos.length; i++) {
+                                document.getElementById('content-groups').innerHTML += `<div class="col-md-4 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <span class="text-right" style="cursor:pointer;" onclick="fRemoveBusinessGroup(${request.Datos[i].iIdDetalleGrupo}, ${paramint}, '${paramstr}')"> <i class="fas fa-times text-danger mr-2"></i> </span> 
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${request.Datos[i].fRfc}</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">${request.Datos[i].sNombreEmpresa}</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-building fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                            }
+                            $("#groupBusiness").modal("hide");
+                            setTimeout(() => {
+                                $("#modalViewGroupBusiness").modal('show');
+                            }, 500);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Limpiamos contenedor de empresas por grupo
+    fClearContainerGroupBusiness = () => {
+        document.getElementById('content-groups').innerHTML = "";
+        setTimeout(() => {
+            $("#groupBusiness").modal('show');
+        }, 500);
+    }
+
+    icoCloseViewGroupBusiness.addEventListener('click', fClearContainerGroupBusiness);
+    btnCloseViewGroupBusiness.addEventListener('click', fClearContainerGroupBusiness);
+
+    // Funcion que remueve una empresa del un grupo
+    fRemoveBusinessGroup = (paramint, paramkey, paramstr) => {
+        try {
+            if (paramint > 0) {
+                $.ajax({
+                    url: "../Dispersion/RemoveBusinessGroup",
+                    type: "POST",
+                    data: { keyBusinessGroup: parseInt(paramint) },
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true && request.MensajeError == "none") {
+                            Swal.fire({
+                                title: 'Correcto!', text: 'Empresa removida del grupo!', icon: 'success',
+                                showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                            }).then((acepta) => {
+                                fViewBusinessGroup(paramkey, `'${paramstr}'`);
+                            });
+                        } else if (request.Bandera == false && request.MensajeError == "NOTDELETE") {
+                            fShowTypeAlert("Atención!", "Empresa no eliminada del grupo", "warning", null, 0);
+                        } else {
+                            fShowTypeAlert("Error", "Ocurrio un error interno en la aplicación", "error", null, 0);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    /*
+     * Fin dispersion especial
+     */
+
 	/*
 	 * Ejecucion de funciones
 	 */
@@ -803,4 +1397,6 @@
     fLoadInfoDataDispersion();
 
     btndesplegartab.addEventListener('click', fToDeployInfoDispersion);
+
+    btndesplegarespecialtab.addEventListener('click', fToDeployInfoDispersionEspecial);
 });

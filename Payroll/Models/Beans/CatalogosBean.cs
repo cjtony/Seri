@@ -60,6 +60,17 @@ namespace Payroll.Models.Beans
         public string sFechaAlta { get; set; }
         public string sMensaje { get; set; }
     }
+
+    public class BankInt
+    {
+        public string sNombre { get; set; }
+        public int iBanco { get; set; }
+        public int iActivo { get; set; }
+        public string sTipo { get; set; }
+        public int iIdConfiguracion { get; set; }
+        public int iGrupoId { get; set; }
+    }
+
     public class BancosBean
     {
         public int iIdBanco { get; set; }
@@ -71,6 +82,12 @@ namespace Payroll.Models.Beans
         public string sUsuarioModificaBanco { get; set; }
         public string sFechaModificaBanco { get; set; }
         public string sMensaje { get; set; }
+        public int iConfiguracion { get; set; }
+        public int iGrupoId { get; set; }
+        public string sNCliente { get; set; }
+        public string sNCuenta { get; set; }
+        public string sNClabe { get; set; }
+        public string sNPlaza { get; set; }
     }
     public class PuestosBean
     {
@@ -152,6 +169,7 @@ namespace Payroll.Models.Beans
         public string sFechaRegistro { get; set; }
         public int iNoEmpleados { get; set; }
         public string sMensaje { get; set; }
+        public int iIdDetalleGrupo { get; set; }
     }
     public class CentrosCostosBean
     {
@@ -301,6 +319,7 @@ namespace Payroll.Models.Beans
         public int iPolitica { get; set; }
         public double dDiferencia { get; set; }
         public double dTransporte { get; set; }
+        public int iRetroactivo { get; set; }
         public int iUsuarioAlta_id { get; set; }
         public string sFechaAlta { get; set; }
         public string sMensaje { get; set; }
@@ -336,6 +355,21 @@ namespace Payroll.Models.Beans
         public string sFechaRegistroPosicion { get; set; }
         public string sMensaje { get; set; }
     }
+
+    public class DatosMovimientosBean
+    {
+        public int iEmpleado_id { get; set; }
+        public int iEmpresa_id  { get; set; }
+        public string sTipoMovimiento   { get; set; }
+        public string sMotivoMovimiento { get; set; }
+        public string sValorAnterior    { get; set; }
+        public string sValorNuevo       { get; set; }
+        public string sFechaMovimiento  { get; set; }
+        public string sFecha            { get; set; }
+        public int iUsuario_id          { get; set; }
+        public string sMensaje { get; set; }
+    }
+
     public class TipoPeriodosBean
     {
         public int iId { get; set; }
