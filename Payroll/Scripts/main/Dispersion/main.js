@@ -33,7 +33,9 @@
     const yeardis1    = document.getElementById('yeardis1');
     const typeperiod1 = document.getElementById('typeperiod1');
     const periodis1   = document.getElementById('periodis1');
-    const datedis1    = document.getElementById('datedis1');
+    const datedis1 = document.getElementById('datedis1');
+
+    //const isMirror = document.getElementById('ismirror');
 
     const spanish = {
         "decimal": "",
@@ -382,7 +384,7 @@
         yeardis.setAttribute('readonly', 'true');
         yeardis1.setAttribute('readonly', 'true');
         periodis.setAttribute('readonly', 'true');
-        periodis1.setAttribute('readonly', 'true');
+        //periodis1.setAttribute('readonly', 'true');
         const day = (d.getDate() < 10) ? "0" + d.getDate() : d.getDate();
         const mth = ((d.getMonth() + 1) < 10) ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
         const yer = d.getFullYear();
@@ -491,7 +493,7 @@
                                         fLoadGroupBusiness("select", "option-group");
                                         containerBtnsProDepBankSpecial.innerHTML += `
                                             <div class="row animated fadeInDown delay-1s mt-4 border-left-primary border-right-primary shadow rounded p-2">
-                                                <div class="col-md-4 offset-2">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="col-form-label font-labels" for="option-group">Grupo de empresas</label>
                                                         <select class="form-control form-control-sm" id="option-group">
@@ -504,15 +506,26 @@
                                                         <label class="col-form-label font-labels" for="type-dispersion">Tipo dispersion</label>
                                                         <select class="form-control form-control-sm" id="type-dispersion">
                                                             <option value="none">Selecciona</option>
-                                                            <option value="1">Nomina</option>
-                                                            <option value="1">Interbancarios</option>
+                                                            <option value="NOM">Nomina</option>
+                                                            <option value="INT">Interbancarios</option>
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-check mt-1 rounded text-primary font-weight-bold mt-4" style="">
+                                                        <input type="checkbox" class="form-check-input" id="ismirrorspecial">
+                                                        <label class="form-check-label" for="ismirrorspecial">Espejo</label>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-8 offset-2"><hr/></div>
-                                                <div class="col-md-4 offset-4 text-center">
+                                                <div class="col-md-4 offset-2 text-center">
                                                     <div class="form-group">
-                                                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-dispersion-special"> <i class="fas fa-play mr-2"></i>Procesar depositos</button>
+                                                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-dispersion-special" onclick="fnSendDataDispersionSpecial();"> <i class="fas fa-play mr-2"></i>Procesar depositos</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 text-center">
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-report-ds" onclick="fnSendReportDs();"> <i class="fas fa-file mr-2"></i> Generar reporte </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -755,11 +768,13 @@
             document.getElementById('div-controls').innerHTML  = "";
             const btnProcessDepositsPayroll   = document.getElementById('btn-process-deposits-payroll');
             const btnProcessDepositsInterbank = document.getElementById('btn-process-deposits-interbank');
+            const mirrorSend = (document.getElementById('ismirror').checked) ? 1 : 0;
             const dataSendProcessDepPayroll = {
                 yearPeriod: parseInt(yeardis.value),
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
-                dateDeposits: datedis.value
+                dateDeposits: datedis.value,
+                mirror: mirrorSend
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsPayroll",
@@ -768,6 +783,7 @@
                 beforeSend: () => {
                     btnProcessDepositsPayroll.disabled   = true;
                     btnProcessDepositsInterbank.disabled = true;
+                    document.getElementById('ismirror').disabled = true;
                     document.getElementById('div-show-alert-loading').innerHTML = `
                         <div class="text-center">
                             <div class="spinner-grow text-info" role="status">
@@ -853,6 +869,8 @@
                         }, success: (data) => {
                             btnProcessDepositsPayroll.disabled   = false;
                             btnProcessDepositsInterbank.disabled = false;
+                            document.getElementById('ismirror').disabled = false;
+                            document.getElementById('ismirror').checked  = 0;
                             document.getElementById('divbtndownzip').innerHTML = "";
                             document.getElementById('div-controls').innerHTML = "";
                             document.getElementById('divbtndownzipint').innerHTML = "";
@@ -888,19 +906,22 @@
         try {
             const btnProcessDepositsPayroll   = document.getElementById('btn-process-deposits-payroll');
             const btnProcessDepositsInterbank = document.getElementById('btn-process-deposits-interbank');
-            const dataSend = {
+            const mirrorSend = (document.getElementById('ismirror').checked) ? 1 : 0;
+            const dataSend   = {
                 yearPeriod: parseInt(yeardis.value),
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
-                dateDeposits: datedis.value
+                dateDeposits: datedis.value,
+                mirror: mirrorSend
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsInterbank",
                 type: "POST",
                 data: dataSend,
                 beforeSend: () => {
-                    btnProcessDepositsPayroll.disabled = true;
+                    btnProcessDepositsPayroll.disabled   = true;
                     btnProcessDepositsInterbank.disabled = true;
+                    document.getElementById('ismirror').disabled = true;
                     document.getElementById('div-show-alert-loading').innerHTML = `
                         <div class="text-center">
                             <div class="spinner-grow text-info" role="status">
@@ -1236,6 +1257,7 @@
 
     // Funcion para ver las empresas de un grupo
     fViewBusinessGroup = (paramint, paramstr) => {
+        document.getElementById('content-groups').innerHTML = "";
         try {
             if (parseInt(paramint) > 0) {
                 $.ajax({
@@ -1251,7 +1273,7 @@
                             for (let i = 0; i < request.Datos.length; i++) {
                                 document.getElementById('content-groups').innerHTML += `<div class="col-md-4 mb-4">
                                     <div class="card border-left-primary shadow h-100 py-2">
-                                        <span class="text-right" style="cursor:pointer;" onclick="fRemoveBusinessGroup(${request.Datos[i].iIdDetalleGrupo})"> <i class="fas fa-times text-danger mr-2"></i> </span> 
+                                        <span class="text-right" style="cursor:pointer;" onclick="fRemoveBusinessGroup(${request.Datos[i].iIdDetalleGrupo}, ${paramint}, '${paramstr}')"> <i class="fas fa-times text-danger mr-2"></i> </span> 
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
@@ -1305,9 +1327,38 @@
     btnCloseViewGroupBusiness.addEventListener('click', fClearContainerGroupBusiness);
 
     // Funcion que remueve una empresa del un grupo
-    fRemoveBusinessGroup = (paramint) => {
+    fRemoveBusinessGroup = (paramint, paramkey, paramstr) => {
         try {
+            if (paramint > 0) {
+                $.ajax({
+                    url: "../Dispersion/RemoveBusinessGroup",
+                    type: "POST",
+                    data: { keyBusinessGroup: parseInt(paramint) },
+                    beforeSend: () => {
 
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true && request.MensajeError == "none") {
+                            Swal.fire({
+                                title: 'Correcto!', text: 'Empresa removida del grupo!', icon: 'success',
+                                showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                            }).then((acepta) => {
+                                fViewBusinessGroup(paramkey, `'${paramstr}'`);
+                            });
+                        } else if (request.Bandera == false && request.MensajeError == "NOTDELETE") {
+                            fShowTypeAlert("Atención!", "Empresa no eliminada del grupo", "warning", null, 0);
+                        } else {
+                            fShowTypeAlert("Error", "Ocurrio un error interno en la aplicación", "error", null, 0);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
         } catch (error) {
             if (error instanceof EvalError) {
                 console.error('EvalError: ', error.message);

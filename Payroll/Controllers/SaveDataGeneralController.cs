@@ -170,12 +170,16 @@ namespace Payroll.Controllers
 
         //Guarda los datos de la nomina del empleado
         [HttpPost]
-        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte)
+        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, Boolean flagSal, string motMoviSal, string fechMoviSal, double salmenact)
         {
             Boolean flag         = false;
             String  messageError = "none";
             DatosNominaBean addDatoNomina = new DatosNominaBean();
             DatosNominaDao datoNominaDao  = new DatosNominaDao();
+            LoadTypePeriodPayrollBean periodBean  = new LoadTypePeriodPayrollBean();
+            LoadTypePeriodPayrollDaoD periodDaoD  = new LoadTypePeriodPayrollDaoD();
+            DatosMovimientosBean datosMovimientos = new DatosMovimientosBean();
+            DatosPosicionesDao datoPosicionDao    = new DatosPosicionesDao();
             string convertFEffdt = "";
             double diferenciaE = (diferencia < 1) ? 0.00 : diferencia;
             double transporteE = (transporte < 1) ? 0.00 : transporte;
@@ -202,7 +206,11 @@ namespace Payroll.Controllers
             try {
                 int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario   = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp, tiposueldo, politica, diferenciaE, transporteE);
+                if (flagSal) {
+                    periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(keyemp, Convert.ToInt32(DateTime.Now.Year.ToString()));
+                    datosMovimientos = datoPosicionDao.sp_Save_Data_History_Movements_Employee(clvemp, keyemp, "SUELDO", motMoviSal, salmen.ToString(), salmenact.ToString(), fechMoviSal, usuario, periodBean.iTipoPeriodo, periodBean.iPeriodo, periodBean.iAnio);
+                }
+                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp, tiposueldo, politica, diferenciaE, transporteE, retroactivo);
                 if (addDatoNomina.sMensaje != "success") {
                     messageError = addDatoNomina.sMensaje;
                 }
@@ -250,7 +258,7 @@ namespace Payroll.Controllers
 
         // Guarda los datos de la estructura al editar el empleado
         [HttpPost]
-        public JsonResult DataEstructuraEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom, string fechmovi, string motmovi)
+        public JsonResult DataEstructuraEdit(int clvstr,int clvact, string fechefectpos, string fechinipos, int clvemp, int clvnom, string fechmovi, string motmovi)
         {
             Boolean flag          = false;
             String  messageError  = "none";
@@ -258,10 +266,15 @@ namespace Payroll.Controllers
             string  convertFIniP  = Convert.ToDateTime(fechinipos).ToString("dd/MM/yyyy");
             DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
             DatosPosicionesDao datoPosicionDao  = new DatosPosicionesDao();
+            LoadTypePeriodPayrollBean periodBean  = new LoadTypePeriodPayrollBean();
+            LoadTypePeriodPayrollDaoD periodDaoD  = new LoadTypePeriodPayrollDaoD();
+            DatosMovimientosBean datosMovimientos = new DatosMovimientosBean();
             try {
                 int keyemp      = int.Parse(Session["IdEmpresa"].ToString());
                 int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(keyemp, Convert.ToInt32(DateTime.Now.Year.ToString()));
                 addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsigEdit(clvstr, convertFEffdt, convertFIniP, clvemp, clvnom, usuario, keyemp);
+                datosMovimientos = datoPosicionDao.sp_Save_Data_History_Movements_Employee(clvemp, keyemp, "POSICION", motmovi, clvstr.ToString(), clvact.ToString(), fechmovi, usuario, periodBean.iTipoPeriodo, periodBean.iPeriodo, periodBean.iAnio);
                 if (addPosicionBean.sMensaje != "success") {
                     messageError = addPosicionBean.sMensaje;
                 }

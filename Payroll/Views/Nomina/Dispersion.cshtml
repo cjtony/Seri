@@ -154,6 +154,12 @@
                                         </span>
                                         <span class="text">Nuevo registro</span>
                                     </button>
+                                    @*<button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-view-banks">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-piggy-bank"></i>
+                                            </span>
+                                            <span class="text">Bancos</span>
+                                        </button>*@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -188,7 +194,7 @@
                                     </table>
                                     <div id="container-btns-process-deposits-bank-special"></div>
                                     <div class="row">
-                                        <div class="col-md-6 offset-3 mt-4" id="div-show-alert-loading"></div>
+                                        <div class="col-md-6 offset-3 mt-4" id="div-show-alert-loading1"></div>
                                         <div class="col-md-6 mt-4">
                                             <div class="form-group" id="divbtndownzip1"></div>
                                             <div class="form-group text-center" id="div-controls-int1"></div>
@@ -647,9 +653,84 @@
     </div>
 </div>
 
+<!-- Modal vista bancos -->
+<div class="modal fade" id="viewBanks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> <i class="fas fa-cogs mr-2"></i> <span id="name-group-business-bank"></span>  </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-view-banks">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"> 
+                <div class="container-fluid" id="content-view-banks"></div>
+                <hr />
+                <div class="container-fluid" id="content-view-banks-int"></div>
+                <hr />
+                <div class="container-fluid" id="content-view-banks-nom"></div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="btn-close-view-banks">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal configuracion bancos cargados -->
+<div class="modal fade" id="configBanksSelected" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configuracion bancos interbancarios. Grupo <span class="font-weight-bold" id="nameGInt"></span>.</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-view-cd">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="content-general-config-int">
+                    <div class="row">
+                        <div class="col-md-3" id="options-banks">
+                            <div class="form-group p-2">
+                                <label class="col-form-label" for="select-bank-option">Opción:</label>
+                                <select id="select-bank-option" class="form-control form-control-sm">
+                                    <option value="none">Selecciona</option>
+                                    <option value="1">Ver bancos</option>
+                                    <option value="2" selected>Nuevo</option>
+                                    <option value="3">Datos bancarios</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" id="banks-defined">
+                            <div class="form-group p-2">
+                                <label class="col-form-label" for="select-bank-int">Banco:</label>
+                                <select id="select-bank-int" class="form-control form-control-sm">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" id="banks-available"></div>
+                        <div class="col-md-3" id="btn-sconfig-detail"></div>
+                    </div>
+                    <div class="row" id="content-details-config-banks"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-view-cd">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=1.0"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=1.7"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/databankspecial.js?v=1.0"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/mainspecial.js?v=0.8"></script>
 <script type="text/javascript">
     function check(e) {
         tecla = (document.all) ? e.keyCode : e.which;

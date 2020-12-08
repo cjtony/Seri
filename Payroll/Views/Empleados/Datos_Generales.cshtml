@@ -526,6 +526,7 @@
                                         <div class="form-group row">
                                             <input type="hidden" readonly class="form-control form-control-sm" id="clvnom" />
                                             <input type="hidden" readonly class="form-control form-control-sm" id="fechefectact" />
+                                            <input type="hidden" placeholder="Salario mensual" id="salmenact" class="form-control form-control-sm" /> 
                                             <label for="fecefecnom" class="col-sm-4 col-form-label font-labels" id="label-efnom">
                                                 Fecha Efectiva
                                             </label>
@@ -545,6 +546,10 @@
                                                     <input type="number" placeholder="Salario mensual" id="salmen" class="form-control form-control-sm" />
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="form-group row" id="content-new-inpt-movsal">
+                                        </div>
+                                        <div class="form-group row" id="content-new-inpt-fecsal">
                                         </div>
                                         <div class="form-group row">
                                             <label for="tipper" class="col-sm-4 col-form-label font-labels" id="label-tipper">
@@ -676,8 +681,20 @@
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text"> <i class="fas fa-dollar-sign"></i> </div>
                                                     </div>
-                                                    <input type="number" placeholder="Transporte" id="transporte" class="form-control form-control-sm" />
+                                                    <input value="0" type="number" placeholder="Transporte" id="transporte" class="form-control form-control-sm" disabled title="Por el momento se ha deshabilitado esta opción"/>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            @*<div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="retroactivo" value="1">
+                                                <label class="form-check-label" for="inlineCheckbox1" id="label-retroactivo">Retroactivo</label>
+                                            </div>*@
+                                            <label for="retroactivo" class="col-sm-4 col-form-label font-labels" id="label-retroactivo">
+                                                Retroactivo:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input class="form-check-input form-control-sm" type="checkbox" id="retroactivo" value="1">
                                             </div>
                                         </div>
                                     </div>
@@ -3886,8 +3903,8 @@
 </div>
 
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/main.js?n=3.7"></script>
-<script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.4"></script>
+<script type="text/javascript" src="~/Scripts/main/main.js?n=4.0"></script>
+<script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.5"></script>
 <script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3.3"></script>
 <script type="text/javascript" src="~/Scripts/main/puestos.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/positions.js?n=2"></script>
@@ -3897,8 +3914,8 @@
 <script type="text/javascript" src="~/Scripts/main/estructura.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/localitys.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/centrcost.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3.2"></script>
-<script type="text/javascript" src="~/Scripts/main/employes.js?n=8.2"></script>
+<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3.3"></script>
+<script type="text/javascript" src="~/Scripts/main/employes.js?n=8.6"></script>
 <script src="~/Scripts/main/modenight.js?n=2"></script>
 <script type="text/javascript">
     $(function () {

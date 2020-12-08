@@ -468,6 +468,21 @@ namespace Payroll.Controllers
                                             }
                                         } else {
                                             validationErMe.Append("[*] El valor de transporte no puede ir vacío, si no conoce el dato puede poner 0. ");
+                                            flagVE = true;
+                                        }
+                                        // Validamos que el retroactivo no venga vacio 
+                                        if (dr[49].ToString() != "") {
+                                            Boolean flRet = false; ;
+                                            if (dr[49].ToString() == "1" || dr[49].ToString() == "0") {
+                                                flRet = true;
+                                            }
+                                            if (flRet == false) {
+                                                validationErMe.Append("[*] El valor ingresado " + dr[49].ToString() + " en la columna retroactivo debe de ser un valor 1 o 0");
+                                                flagVE = true;
+                                            }
+                                        } else {
+                                            validationErMe.Append("[*] El valor de retroactivo no puede ir vacío, si no conoce el dato puede poner 0. ");
+                                            flagVE = true;
                                         }
                                         // Validamos que el empleado no exista
                                         validaEmpleado = empleadosDao.sp_Empleados_Validate_DatosImss(empresa, dr[27].ToString(), dr[26].ToString() ,0);
@@ -534,14 +549,15 @@ namespace Payroll.Controllers
                                         int politica    = Convert.ToInt32(dr[46].ToString());
                                         double diferencia = Convert.ToDouble(dr[47].ToString());
                                         double transporte = Convert.ToDouble(dr[48].ToString());
-                                        string cuentau = dr[43].ToString();
+                                        int retroactivo   = Convert.ToInt32(dr[49].ToString());
+                                        string cuentau    = dr[43].ToString();
                                         //int posicionid = Convert.ToInt32(dr[44].ToString());
                                         //Insertamos el registro en TEmpleado
                                         empleadosBean = empleadosDao.sp_Empleados_Insert_Empleado(nombre, paterno, materno, genero_id, estado_id, fechaNa, lugarNa, titulo_id, nacion_id.ToString(), estadod_id, codigop, ciudad, colonia, calle, numeroc, telefof, telefom, correoe, usuario_id, empresa, tiposan, fechama);
                                         // Insertamos el registro en TEmpleado_imss
                                         imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, 0);
                                         // Insertamos el registro en TEmpleado_nomina
-                                        datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0, tiposalario, politica, diferencia, transporte);
+                                        datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0, tiposalario, politica, diferencia, transporte, retroactivo);
                                         // Insertamos el registro en TPosiciones_asig
                                         addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(posicionid, fechaen, fechaen, nombre, paterno, materno, fechaNa, usuario_id, empresa);
                                         // Validamos que los registros se hayan hecho correctamente

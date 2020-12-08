@@ -425,7 +425,7 @@ namespace Payroll.Models.Daos
             return infoPositionInsert;
         }
 
-        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte)
+        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo)
         {
             DatosNominaBean datoNominaBean = new DatosNominaBean();
             try
@@ -461,6 +461,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Politica", politica));
                 cmd.Parameters.Add(new SqlParameter("@Diferencia", diferencia));
                 cmd.Parameters.Add(new SqlParameter("@Transporte", transporte));
+                cmd.Parameters.Add(new SqlParameter("@Retroactivo", retroactivo));
                 if (cmd.ExecuteNonQuery() > 0) {
                     datoNominaBean.sMensaje = "success";
                 } else {
@@ -482,6 +483,39 @@ namespace Payroll.Models.Daos
     }
     public class DatosPosicionesDao : Conexion
     {
+
+        public DatosMovimientosBean sp_Save_Data_History_Movements_Employee(int keyEmployee, int keyBusiness, string typeMov, string descMov, string newValue, string beforeValue, string dateMov, int keyUser, int keyPeriod, int period, int year)
+        {
+            DatosMovimientosBean datosMovimientos = new DatosMovimientosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Save_Data_History_Movements_Employee", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Empleado_id", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@Empresa_id", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@TipoMovimiento", typeMov));
+                cmd.Parameters.Add(new SqlParameter("@MotivoMovimiento", descMov));
+                cmd.Parameters.Add(new SqlParameter("@ValorAnterior", beforeValue));
+                cmd.Parameters.Add(new SqlParameter("@ValorNuevo", newValue));
+                cmd.Parameters.Add(new SqlParameter("@FechaMovimiento", dateMov));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_id", keyUser));
+                cmd.Parameters.Add(new SqlParameter("@Periodo_id", keyPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    datosMovimientos.sMensaje = "SUCCESS";
+                } else {
+                    datosMovimientos.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                datosMovimientos.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosMovimientos;
+        }
+
         public String ConvertDateText(string dateConvert)
         {
             String convertDate = "";

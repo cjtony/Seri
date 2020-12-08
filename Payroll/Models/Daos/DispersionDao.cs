@@ -392,6 +392,260 @@ namespace Payroll.Models.Daos
             return empresas;
         }
 
+        public EmpresasBean sp_Remove_Business_Group (int keyBusinessGroup)
+        {
+            EmpresasBean empresas = new EmpresasBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Remove_Business_Group", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdDetalle", keyBusinessGroup));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        empresas.sMensaje = "SUCCESS";
+                    } else {
+                        empresas.sMensaje = "NOTDELETE";
+                    }
+                } else {
+                    empresas.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear();
+                cmd.Dispose();
+                dataReader.Close();
+            } catch (Exception exc) {
+                empresas.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return empresas;
+        }
+
+        public List<BancosBean> sp_View_Banks_Group_Business_Dispersion(int keyGroup)
+        {
+            List<BancosBean> bancosBeans = new List<BancosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_View_Banks_Group_Business_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdGrupo", keyGroup));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        BancosBean bancos   = new BancosBean();
+                        bancos.iIdBanco     = Convert.ToInt32(dataReader["IdBanco"]);
+                        bancos.sNombreBanco = dataReader["Descripcion"].ToString();
+                        bancosBeans.Add(bancos);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bancosBeans;
+        }
+
+        public BancosBean sp_Save_Banks_Group_Interbank (int keyGroup, int user, List<BankInt> bankInts, string type)
+        {
+            BancosBean bancos = new BancosBean();
+            int quantity = 0;
+            int longList = bankInts.Count;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Save_Banks_Group_Interbank", this.conexion) { CommandType = CommandType.StoredProcedure };
+                foreach (BankInt bank in bankInts) {
+                    cmd.Parameters.Add(new SqlParameter("@Grupo_id", keyGroup));
+                    cmd.Parameters.Add(new SqlParameter("@Nombre", bank.sNombre));
+                    cmd.Parameters.Add(new SqlParameter("@Banco_id", bank.iBanco));
+                    cmd.Parameters.Add(new SqlParameter("@Activo", bank.iActivo));
+                    cmd.Parameters.Add(new SqlParameter("@Tipo", type));
+                    cmd.Parameters.Add(new SqlParameter("@Usuario_id", user));
+                    if (cmd.ExecuteNonQuery() > 0) {
+                        quantity += 1;
+                    }
+                    cmd.Parameters.Clear(); cmd.Dispose();
+                }
+                if (quantity == longList) {
+                    bancos.sMensaje = "SUCCESS";
+                }
+            } catch (Exception exc) {
+                bancos.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bancos;
+        }
+
+        public List<BankInt> sp_View_Config_Banks(int keyGroup, string type, string option)
+        {
+            List<BankInt> bankInts = new List<BankInt>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_View_Config_Banks", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Grupo_id", keyGroup));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", type));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", option));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        BankInt bank = new BankInt();
+                        bank.iIdConfiguracion = Convert.ToInt32(dataReader["IdConfiguracion"]);
+                        bank.iGrupoId = Convert.ToInt32(dataReader["Grupo_id"]);
+                        bank.sNombre  = dataReader["Nombre"].ToString();
+                        bank.iBanco   = Convert.ToInt32(dataReader["Banco_id"]);
+                        bank.iActivo  = Convert.ToInt32(dataReader["Activo"]);
+                        bank.sTipo    = dataReader["Tipo"].ToString();
+                        bankInts.Add(bank);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bankInts;
+        }
+
+        public List<BancosBean> sp_View_Banks_Available_Dispersion (int keyGroup, string type, string option, int keyConfig)
+        {
+            List<BancosBean> bancosBeans = new List<BancosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_View_Banks_Available_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Grupo_id", keyGroup));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", type));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", option));
+                cmd.Parameters.Add(new SqlParameter("@Configuracion", keyConfig));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        BancosBean bancos     = new BancosBean();
+                        bancos.iIdBanco       = Convert.ToInt32(dataReader["IdBanco"]);
+                        bancos.sNombreBanco   = dataReader["Descripcion"].ToString();
+                        bancos.iConfiguracion = Convert.ToInt32(dataReader["IdConfiguracionDetalle"]);
+                        bancos.iGrupoId       = Convert.ToInt32(dataReader["Grupo_id"]);
+                        bancosBeans.Add(bancos);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bancosBeans;
+        }
+
+        public BancosBean sp_Save_Config_Details_Banks(int keyGroup, string type, int keyConfig, int bankId, int keyUser)
+        {
+            BancosBean bancosBean = new BancosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Save_Config_Details_Banks", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@GrupoId", keyGroup));
+                cmd.Parameters.Add(new SqlParameter("@ConfiguracionId", keyConfig));
+                cmd.Parameters.Add(new SqlParameter("@BancoId", bankId));
+                cmd.Parameters.Add(new SqlParameter("@TipoDispersion", type));
+                cmd.Parameters.Add(new SqlParameter("@UsuarioId", keyUser));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    bancosBean.sMensaje = "success";
+                } else {
+                    bancosBean.sMensaje = "error";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                bancosBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bancosBean;
+        }
+
+        public BancosBean sp_Remove_Bank_Details(int keyConfigDetail, int keyConfig)
+        {
+            BancosBean bancosBean = new BancosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Remove_Bank_Details", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdConfiguracionDetalle", keyConfigDetail));
+                cmd.Parameters.Add(new SqlParameter("@ConfiguracionId", keyConfig));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    bancosBean.sMensaje = "success";
+                } else {
+                    bancosBean.sMensaje = "error";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                bancosBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bancosBean;
+        }
+
+        public DatosCuentaClienteBancoEmpresaBean sp_View_Config_Data_Account_Bank(int keyConfig)
+        {
+            DatosCuentaClienteBancoEmpresaBean datosCuenta = new DatosCuentaClienteBancoEmpresaBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_View_Config_Data_Account_Bank", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdConfiguracion", keyConfig));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        datosCuenta.sNumeroCliente = dataReader["NCliente"].ToString();
+                        datosCuenta.sNumeroCuenta  = dataReader["NCuenta"].ToString();
+                        datosCuenta.sClabe         = dataReader["NClabe"].ToString();
+                        datosCuenta.iPlaza         = (dataReader["Plaza"].ToString() != "") ? Convert.ToInt32(dataReader["Plaza"]) : 0;
+                        datosCuenta.sMensaje       = "SUCCESS";
+                    } else {
+                        datosCuenta.sMensaje = "NOTFOUND";
+                    }
+                } else {
+                    datosCuenta.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                datosCuenta.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosCuenta;
+        }
+        public DatosCuentaClienteBancoEmpresaBean sp_Save_Config_Data_Account_Bank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig)
+        {
+            DatosCuentaClienteBancoEmpresaBean datosCuenta = new DatosCuentaClienteBancoEmpresaBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Save_Config_Data_Account_Bank", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Cliente", nClient));
+                cmd.Parameters.Add(new SqlParameter("@Cuenta", nAccount));
+                cmd.Parameters.Add(new SqlParameter("@Clabe", nClabe));
+                cmd.Parameters.Add(new SqlParameter("@Plaza", nSquare));
+                cmd.Parameters.Add(new SqlParameter("@IdConfiguracion", keyConfig));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    datosCuenta.sMensaje = "SUCCESS";
+                } else {
+                    datosCuenta.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                datosCuenta.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosCuenta;
+        }
         public List<DataDepositsBankingBean> sp_Obtiene_Depositos_Bancarios(int keyBusiness, int yearDispersion, int typePeriodDisp, int periodDispersion, string type)
         {
             List<DataDepositsBankingBean> listDaDepBankingBean = new List<DataDepositsBankingBean>();

@@ -327,7 +327,7 @@
             let btnDisabled = "";
             if (typeReportselect.value != 0) {
                 $("html, body").animate({ scrollTop: $(`#${contentParameters.id}`).offset().top - 50 }, 1000);
-                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS") {
+                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS" || typeReportselect.value == "MOVIMIENTOS") {
                     contentParameters.innerHTML += `
                     <div class="row mt-3 animated fadeInDown">
                         <div class="col-md-4">
@@ -574,6 +574,8 @@
                     await fGenerateReportEmployeesActiveWithoutSalary(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "ABONO" || typeReport === "ABOTOTAL") {
                     await fGenerateReportBillsChecksDetailsTotals(optionBusiness, keyBusinessOpt, typeReport);
+                } else if (typeReport === "MOVIMIENTOS") {
+                    await fGenerateReportMovements(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -844,6 +846,68 @@
                     }
                 } else {
                     fShowTypeAlert('Atención', 'Complete el campo Fecha inicio', 'warning', paramDateS, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera un reporte de los movimientos generados
+    fGenerateReportMovements = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramYear = document.getElementById('paramYear');
+                const paramNper = document.getElementById('paramNper');
+                const paramTper = document.getElementById('paramTper');
+                if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length === 4) {
+                    if (paramNper.value != "" && paramNper.value > 0) {
+                        if (paramTper.value != "" && paramTper.value > 0) {
+                            $.ajax({
+                                url: "../Reportes/ReportMovements",
+                                type: "POST",
+                                data: {
+                                    typeOption: option, keyOptionSel: parseInt(keyOption),
+                                    yearSelect: paramYear.value, periodSelect: paramNper.value, typePSelect: paramTper.value
+                                },
+                                beforeSend: () => {
+                                    fDisabledButtonsRep();
+                                }, success: (data) => {
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    console.log(data);
+                                    fEnabledButtonsRep();
+                                }, error: (jqXHR, exception) => {
+                                    fcaptureaerrorsajax(jqXHR, exception);
+                                }
+                            });
+                        } else {
+                            fShowTypeAlert('Atención!', 'Complete el campo tipo periodo correctamente', 'warning', paramTper, 2);
+                        }
+                    } else {
+                        fShowTypeAlert('Atención!', 'Complete el campo periodo correctamente', 'warning', paramNper, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención!', 'Complete el campo año correctamente', 'warning', paramYear, 2);
                 }
             } else {
                 alert('Accion invalida');

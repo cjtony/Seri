@@ -242,7 +242,7 @@ namespace Payroll.Controllers
 
         // Procesa los depositos de nomina
         [HttpPost]
-        public JsonResult ProcessDepositsPayroll(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits)
+        public JsonResult ProcessDepositsPayroll(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror)
         {
             Boolean flag            = false;
             Boolean flagMirror      = false;
@@ -268,7 +268,9 @@ namespace Payroll.Controllers
                 datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion(keyBusiness);
                 nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2);
                 flagProsecutors = ProcessDepositsProsecutors(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc);
-                flagMirror      = ProcessDepositsMirror(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc);
+                if (mirror == 1) {
+                    flagMirror = ProcessDepositsMirror(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc);
+                }
                 if (flagProsecutors == true || flagMirror == true) {
                     flag = true;
                 }
@@ -1144,7 +1146,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ProcessDepositsInterbank(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits)
+        public JsonResult ProcessDepositsInterbank(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror)
         {
             Boolean flag            = false;
             Boolean flagMirror      = false;
@@ -1192,6 +1194,9 @@ namespace Payroll.Controllers
                     turns += 1;
                     totalRecords = 0;
                     invoiceId = (turns == 1) ? invoiceId : invoiceIdMirror ;
+                    if (turns == 2 && mirror == 0) {
+                        break;
+                    }
                     if (turns == 1) {
                         listDatosDepositosBancariosBeans = dataDispersionBusiness.sp_Procesa_Cheques_Total_Interbancarios(keyBusiness, typePeriod, numberPeriod, yearPeriod);
                     } else {
@@ -1220,7 +1225,7 @@ namespace Payroll.Controllers
                         if (bankInterbank == 72) {
                             fileNameTxtPM = "NOMINAS_" + "PAG" + string.Format("{0:000000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.iPlaza)) + "01_ESP.txt";
                         } else {
-                            fileNameTxtPM = fileNameTxtPM = "NOMINAS_" + "E" + string.Format("{0:00}", keyBusiness.ToString()) + "A" + yearPeriod.ToString() + "P" + string.Format("{0:00}", Convert.ToInt16(numberPeriod)) + "B" + string.Format("{0:000}", bankInterbank) + "_INTERBANCOSESP.txt";
+                            fileNameTxtPM = "NOMINAS_" + "E" + string.Format("{0:00}", keyBusiness.ToString()) + "A" + yearPeriod.ToString() + "P" + string.Format("{0:00}", Convert.ToInt16(numberPeriod)) + "B" + string.Format("{0:000}", bankInterbank) + "_INTERBANCOSESP.txt";
                         }
                     }
                     // Ejecuta el sp que obtiene los datos de los depositos
@@ -1461,16 +1466,63 @@ namespace Payroll.Controllers
                             }
                         } 
                         if (bankInterbank == 72) {
-                            // BANORTE
+                            // BANORTE -> INTERBANCARIO
+                            // Comprobar porque hay un cero entre la cuenta origen y la cuenta destino
                             string tipoOperacion = "04";
                             string cuentaOrigen  = "";
                             string cuentaDestino = "";
-
-                            // GRUPO DE EMPRESAS PARA DISPERSION
-                            // INTERBANORTE
-                            // DISPERSION POR GRUPO
-                            // ARCHIVO POR BANCO PARA TODAS LAS EMPRESAS
-                            // UNA EMPRESA POR GRUPO 
+                            string apartCeros1   = "00000000000";
+                            string apartCeros2   = "0";
+                            string apartCeros3   = "00";
+                            string referenceDate = DateTime.Now.ToString("ddMMyyyy");
+                            string descriptionPd = "PAGO NOMINA                   ";
+                            string coinOrigin    = "1";
+                            string coingDestiny  = "1";
+                            string ivaBanorte    = "0";
+                            string emailBusiness = "marco@gmail.com";
+                            // Longitudes campos
+                            int longNumberPayroll  = 13;
+                            int longNumberADestiny = 10;
+                            int longNumberImport   = 14;
+                            int longNumberBRfc     = 13;
+                            int longNumberEmail    = 70;
+                            using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM))
+                            {
+                                foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
+                                    string nameEmployee   = data.sNombre + " " + data.sPaterno + " " + data.sMaterno;
+                                    if (nameEmployee.Length > 70) {
+                                        nameEmployee.Substring(0, 69);
+                                    }
+                                    string payroll        = data.sNomina;
+                                    int longPayroll       = longNumberPayroll - payroll.Length;
+                                    string accountOrigin  = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                                    int longAcountOrigin  = longNumberADestiny - accountOrigin.Length;
+                                    string accountDestiny = data.sCuenta;
+                                    string importPaid     = "";
+                                    int longImportPaid    = longNumberImport - data.dImporte.ToString().Length;
+                                    string rfcBusiness    = datosEmpresaBeanDispersion.sRfc;
+                                    int longRfcBusiness   = longNumberBRfc - rfcBusiness.Length;
+                                    int longEmailBusiness = longNumberEmail - emailBusiness.Length;
+                                    for (var i = 0; i < longPayroll; i++) {
+                                        payroll += " ";
+                                    }
+                                    for (var j = 0; j < longAcountOrigin; j++) {
+                                        accountOrigin += "0";
+                                    }
+                                    for (var k = 0; k < longImportPaid; k++) {
+                                        importPaid += "0";
+                                    }
+                                    for (var p = 0; p < longRfcBusiness; p++) {
+                                        rfcBusiness += " ";
+                                    }
+                                    for (var t = 0;  t < longEmailBusiness; t++) {
+                                        emailBusiness += " ";
+                                    }
+                                    importPaid += data.dImporte.ToString();
+                                    fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + "\n");
+                                }
+                                fileIntBanorte.Close();
+                            }
                         }
                     }
                 }
@@ -1558,8 +1610,9 @@ namespace Payroll.Controllers
                     foreach (GroupBusinessDispersionBean data in groupBusinesses) {
                         htmlTableBody.Append(
                             "<tr><td> " + data.sNombreGrupo + " </td>" +
-                            "<td> <button onclick='fViewBusinessGroup("+ data.iIdGrupoEmpresa +", \"" + data.sNombreGrupo + "\")' type='button' class='btn btn-success btn-sm btn-icon-split shadow'> <span class='icon text-white-50'><i class='fas fa-eye'></i></span> <span class='text'>Ver Empresas</span> </button> </td></tr>" +
-                            "");  
+                            "<td> <button onclick='fViewBusinessGroup("+ data.iIdGrupoEmpresa +", \"" + data.sNombreGrupo + "\")' type='button' class='btn btn-success btn-sm btn-icon-split shadow'> <span class='icon text-white-50'><i class='fas fa-eye'></i></span> <span class='text'>Empresas</span> </button> " +
+                            "<button onclick='fViewBanks(" + data.iIdGrupoEmpresa + ", \"" + data.sNombreGrupo + "\")' type='button' class='btn btn-success btn-sm btn-icon-split shadow'> <span class='icon text-white-50'><i class='fas fa-piggy-bank'></i></span> <span class='text'>Bancos</span> </button> " +
+                            "</td></tr>");
                     }
                 }
             } catch (Exception exc) {
@@ -1568,6 +1621,10 @@ namespace Payroll.Controllers
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Html = htmlTableBody.ToString(), Datos = groupBusinesses });
         }
+
+        /*
+         *  hola este es un comentario bro 
+         */
 
         [HttpPost]
         public JsonResult SaveNewGroupBusiness(string name)
@@ -1652,6 +1709,201 @@ namespace Payroll.Controllers
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = empresas });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveBusinessGroup(int keyBusinessGroup)
+        {
+            Boolean flag          = false;
+            String  messageError  = "none";
+            EmpresasBean empresas = new EmpresasBean();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                empresas = dataDispersion.sp_Remove_Business_Group(keyBusinessGroup);
+                if (empresas.sMensaje == "SUCCESS") {
+                    flag = true;
+                } else if (empresas.sMensaje == "NOTDELETE") {
+                    return Json(new { Bandera = false, MensajeError = "NOTDELETE" });
+                } else {
+                    return Json(new { Bandera = false, MensajeError = "ERROR" });
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        /*
+         * Bancos dispersion especial
+         */
+
+        [HttpPost]
+        public JsonResult ViewBanks(string key, int keyGroup)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            List<BancosBean> bancosBean           = new List<BancosBean>();
+            try {
+                bancosBean = dataDispersion.sp_View_Banks_Group_Business_Dispersion(keyGroup);
+                if (bancosBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = bancosBean });
+        }
+
+        [HttpPost]
+        public JsonResult ShowConfigBanks(int keyGroup, string type, string option)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            List<BankInt> bankInts = new List<BankInt>();
+            List<BancosBean> bancosBean = new List<BancosBean>();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                bankInts = dataDispersion.sp_View_Config_Banks(keyGroup, type, option);
+                bancosBean = dataDispersion.sp_View_Banks_Available_Dispersion(keyGroup, type, option, 0);
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = bankInts, Bancos = bancosBean });
+        }
+
+        [HttpPost]
+        public JsonResult SaveBanksDSBank (int keyGroup, string type, int banorte, int santander, int scotiabank, int banamex, int bancomer)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            BancosBean bancosBean = new BancosBean();
+            List<BankInt> bankInt = new List<BankInt>();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            string typeSend = (type == "INT") ? "INTERBANCARIO" : "NOMINA";
+            try { 
+                bankInt.Add(new BankInt { sNombre = "BANORTE",    iBanco = 72, iActivo = banorte    });
+                bankInt.Add(new BankInt { sNombre = "SANTANDER",  iBanco = 14, iActivo = santander  });
+                bankInt.Add(new BankInt { sNombre = "SCOTIABANK", iBanco = 44, iActivo = scotiabank });
+                if (typeSend == "NOMINA") {
+                    bankInt.Add(new BankInt { sNombre = "BANAMEX",  iBanco = 2,  iActivo = banamex  });
+                    bankInt.Add(new BankInt { sNombre = "BANCOMER", iBanco = 12, iActivo = bancomer });
+                } 
+                int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                bancosBean = dataDispersion.sp_Save_Banks_Group_Interbank(keyGroup, keyUser, bankInt, typeSend);
+                if (bancosBean.sMensaje == "SUCCESS") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult ShowBanksConfigDetails(int keyGroup, string type, string option, int configuration)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            List<BancosBean> bancosBean = new List<BancosBean>();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                bancosBean = dataDispersion.sp_View_Banks_Available_Dispersion(keyGroup, type, option, configuration);
+                if (bancosBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = bancosBean });
+        }
+
+        [HttpPost]
+        public JsonResult SaveConfigDetails(int keyGroup, string type, int configurationId, int bank)
+        {
+            Boolean flag          = false;
+            String  messageError  = "none";
+            BancosBean bancosBean = new BancosBean();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                bancosBean  = dataDispersion.sp_Save_Config_Details_Banks(keyGroup, type, configurationId, bank, keyUser);
+                if (bancosBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveBankDetail (int keyConfigBank, int keyDetailConfig)
+        {
+            Boolean flag = false;
+            String  messageError  = "none";
+            BancosBean bancosBean = new BancosBean();
+            DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
+            try {
+                bancosBean = dataDispersion.sp_Remove_Bank_Details(keyDetailConfig, keyConfigBank);
+                if (bancosBean.sMensaje == "success") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult ConfigDataBank(int keyConfig)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            DataDispersionBusiness dataDispersion          = new DataDispersionBusiness();
+            DatosCuentaClienteBancoEmpresaBean datosCuenta = new DatosCuentaClienteBancoEmpresaBean();
+            try {
+                datosCuenta = dataDispersion.sp_View_Config_Data_Account_Bank(keyConfig);
+                if (datosCuenta.sMensaje == "SUCCESS") {
+                    flag = true;
+                } else if (datosCuenta.sMensaje == "NOTFOUND") {
+                    return Json(new { Bandera = flag, MensajeError = datosCuenta.sMensaje });
+                } else {
+                    return Json(new { Bandera = flag, MensajeError = datosCuenta.sMensaje });
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = datosCuenta });
+        }
+
+        [HttpPost]
+        public JsonResult SaveConfigDataBank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            DataDispersionBusiness dataDispersion          = new DataDispersionBusiness();
+            DatosCuentaClienteBancoEmpresaBean datosCuenta = new DatosCuentaClienteBancoEmpresaBean();
+            try {
+                datosCuenta = dataDispersion.sp_Save_Config_Data_Account_Bank(nClient, nAccount, nClabe, nSquare, keyConfig);
+                if (datosCuenta.sMensaje == "SUCCESS") {
+                    flag = true;
+                } else {
+                    return Json(new { Bandera = flag, MensajeError = datosCuenta.sMensaje });
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
         }
 
     }
