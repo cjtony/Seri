@@ -1045,5 +1045,17 @@ namespace Payroll.Controllers
             return Json(bean);
         }
 
+        //Actualiza los datos de la compensacion nueva
+        [HttpPost]
+        public JsonResult UpdateCompFija(int iIDComp,int iIdempresa, int iPyA, int iIdpuesto, int iIdRenglon, double iImporte, string sDescripcion ,int iCancel)
+        {
+            CompensacionFijaBean bean = new CompensacionFijaBean();
+            FuncionesNomina dao = new FuncionesNomina();
+            int usuario = int.Parse(Session["iIdUsuario"].ToString());
+            bean = dao.Sp_CCompensacion_update_CCompensacion(iIDComp, iIdempresa, iPyA, iIdpuesto, iIdRenglon, iImporte, sDescripcion, usuario, iCancel);
+            return Json(bean);
+        }
+
+
     }
 }
