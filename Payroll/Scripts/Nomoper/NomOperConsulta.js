@@ -100,7 +100,7 @@
                             { text: 'Nombre de Definición', filtertype: 'list', filteritems: items, datafield: 'sNombreDefinicion', width: 230 },
                             { text: 'Descripción ', datafield: 'sDescripcion', width: 350 },
                             { text: 'año', datafield: 'iAno', whidt: 80 },
-                            { text: 'Cancelado', datafield: 'iCancelado', whidt: 25 },
+                            { text: 'Cancelado', datafield: 'iCancelado', width: 25 },
                         ]
                     });
 

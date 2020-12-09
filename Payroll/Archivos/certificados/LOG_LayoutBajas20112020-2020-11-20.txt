@@ -1,0 +1,29 @@
+﻿* -- FECHA: 20/11/2020 07:02:01 p. m. -- * 
+
+* -- Registros nuevos leidos -- * 
+Empresa: 17, Nomina: 200371
+Empresa: 17, Nomina: 202175
+Empresa: 18, Nomina: 300957
+Empresa: 18, Nomina: 902899
+Empresa: 19, Nomina: 901274
+Empresa: 19, Nomina: 902821
+Empresa: 20, Nomina: 901772
+Empresa: 20, Nomina: 902745
+Empresa: 21, Nomina: 703895
+Empresa: 21, Nomina: 901814
+Empresa: 21, Nomina: 902094
+Empresa: 21, Nomina: 903187
+Empresa: 22, Nomina: 801118
+Empresa: 22, Nomina: 803640
+----------------------------------------------------------------
+Total de registros recorridos: 21
+----------------------------------------------------------------
+
+* -- Registros Existentes -- *
+* -- [ DETALLE ] -> Empresa: 17, Nomina: 202138, Fecha: 20201120, Fila: 3 -- *
+* -- [ DETALLE ] -> Empresa: 17, Nomina: 901633, Fecha: 20201120, Fila: 5 -- *
+* -- [ DETALLE ] -> Empresa: 10, Nomina: 901982, Fecha: 20201119, Fila: 18 -- *
+* -- [ DETALLE ] -> Empresa: 15, Nomina: 902975, Fecha: 20201120, Fila: 19 -- *
+* -- [ DETALLE ] -> Empresa: 16, Nomina: 130418, Fecha: 20201120, Fila: 20 -- *
+* -- [ DETALLE ] -> Empresa: 5, Nomina: 29552, Fecha: 20201120, Fila: 21 -- *
+* -- [ DETALLE ] -> Empresa: 5, Nomina: 902749, Fecha: 20201112, Fila: 22 -- *

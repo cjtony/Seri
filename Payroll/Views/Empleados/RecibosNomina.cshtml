@@ -16,201 +16,241 @@
                             Recibos de Nomina
                         </b>
                     </h6>
+
                 </div>
-                <div class="custom-control custom-switch">
+                @*<div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" id="CheckFiniquito">
                     <label class="custom-control-label col-form-label font-labels" for="CheckFiniquito">
                         Recibo Finiquito
                     </label>
-                </div>
-           
+                </div>*@
             </div>
+
             <div class="col-md-12">
                 <hr />
             </div>
 
-
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    @*<div class="form-group row" style="margin-left:2%">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="CheckFiniquito">
-                                <label class="custom-control-label col-form-label font-labels" for="CheckFiniquito">
-                                    Recibo Finiquito
-                                </label>
-                            </div>
-                        </div>*@
-                    <div class="form-group row" style="margin-left:2%">
-                        <label for="EmpresaNom" class="col-sm-4 col-form-label font-labels">
-                            Empresa:
-                        </label>
-                        <div class="col-sm-6">
-                            <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="EmpresaNom">
-                                <option value="0">Selecciona</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row" style="margin-left:2%">
-                        <label for="anoNom" class="col-sm-4 col-form-label font-labels">
-                            Año:
-                        </label>
-                        <div class="col-sm-6">
-                            <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="anoNom" class="form-control form-control-sm text-capitalize" />
-                        </div>
-                    </div>
-                    <div class="form-group row" style="margin-left:2%">
-                        <label for="TipoPerido" class="col-sm-4 col-form-label font-labels">
-                            Tipo de Periodo:
-                        </label>
-                        <div class="col-sm-6">
-                            <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="TipodePerdioRec">
-                                <option value="0">Selecciona</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group row">
-                        <label for="peridoNom" class="col-sm-3 col-form-label font-labels">
-                            Perido:
-                        </label>
-                        <div class="col-sm-9">
-                            <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="PeridoNom">
-                                <option value="0">Selecciona</option>
-                            </select>
-                        </div>
-                        <label for="FechaPeriodo" class="col-sm-12 col-form-label font-labels" id="FechaPeridod"></label>
-                    </div>
-                    <div class="form-group row">
-                        <label for="EmpleadoNom" class="col-sm-3 col-form-label font-labels">
-                            Empleados:
-                        </label>
-                        <div class="col-sm-8">
-                            <div id='content'>
-                                <input id="jqxInput" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div id="jqxLoader"></div>
-                    </div>
-                    <div class="form-group row">
-                        <div id="jqxLoader2"></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Pantalla De Recibos de nomina  -->
-
-        <div class="modal fade" data-backdrop="static" id="BRecibosNominaP" tabindex="-1" role="dialog" aria-labelledby="BRecibosNominaP" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="BRecibos"> <i class="fas fa-money-check-alt mr-2"></i> Recibo de Nomina</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <label for="peridoNom" class="col-sm-1 col-form-label font-labels">
+            <div class="col-md-8 offset-2">
+                <div class="form-group text-center rounded shadow p-3 border-left-primary">
+                    <div class="col-md-12">
+                        <div class="form-group row col-md-6" style="margin-left:2%">
+                            <div class="text-left">
+                                <h6 class="col-ico font-nav-child">
                                     <b>
-                                        Empleado:
+                                        <i class="fas fa-print  mr-ico-05"></i>
+                                        Recibo
                                     </b>
-                                </label>
-                                <label for="Emisor" class="col-sm-11 col-form-label font-labels " style="font-size:12px" id="Emisor"></label>
+                                </h6>
                             </div>
+                        </div>
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
 
-                            <div class="form-group row" style="margin-left:2%">
-                                <label for="Tipofiniquito" class="col-sm-2 col-form-label font-labels" id="LaDropFiniquito" style="visibility:hidden">
-                                    Tipo de finiquito :
-                                </label>
-                                <div class="col-sm-4">
-                                    <select placeholder="Tipo de finiquito" tp-select="Tipote finiquito" class="form-control form-control-sm" id="dropFiniquito" style="visibility:hidden">
-                                        <option value="0">Selecciona</option>
-                                    </select>
-                                </div>
-                                <div class="custom-control custom-switch" style="margin-left:80%">
-                                    <input type="checkbox" class="custom-control-input" id="CheckRecibo2" style="visibility:visible">
-                                    <label class="custom-control-label" for="CheckRecibo2" id="LachecRecibo2" style="visibility:visible">
-                                        Recibo 2
+                        <div class="row mt-6">
+                            <div class="col-md-6">
+                                <div class="form-group row" style="margin-left:2%">
+                                    <label for="EmpresaNom" class="col-sm-4 col-form-label font-labels">
+                                        <i class="fas fa-building mr-2 col-ico"></i>
+                                        Empresa:
                                     </label>
+                                    <div class="col-sm-6">
+                                        <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="EmpresaNom">
+                                            <option value="0">Selecciona</option>
+                                        </select>
+                                    </div>
                                 </div>
+                                <div class="form-group row" style="margin-left:2%">
+                                    <label for="anoNom" class="col-sm-4 col-form-label font-labels">
+                                        <i class="fas fa-calendar mr-2 col-ico"></i>
+                                        Año:
+                                    </label>
+                                    <div class="col-sm-6">
+                                        <input placeholder="Año" maxlength="4" tvvisible="false" type="text" id="anoNom" class="form-control form-control-sm text-capitalize" />
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="margin-left:2%">
+                                    <label for="TipoPerido" class="col-sm-4 col-form-label font-labels">
+                                        <i class="fas fa-pallet mr-2 col-ico"></i>
+                                        Tipo de Periodo:
+                                    </label>
+                                    <div class="col-sm-6">
+                                        <select placeholder="Tipo de Periodo" tp-select="TipoPerido" class="form-control form-control-sm" id="TipodePerdioRec">
+                                            <option value="0">Selecciona</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div id='jqxWidget'>
-                                        <div id="TbRecibosNomina">
-                                        </div>
-                                        <div id="eventslog">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="peridoNom" class="col-sm-4 col-form-label font-labels">
+                                        <i class="fas fa-pager mr-2 col-ico"></i>
+                                        Perido:
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select placeholder="Perido" tp-select="PeridoNom" class="form-control form-control-sm" id="PeridoNom">
+                                            <option value="0">Selecciona</option>
+                                        </select>
+                                    </div>
+                                    <label for="FechaPeriodo" class="col-sm-12 col-form-label font-labels" id="FechaPeridod"></label>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="EmpleadoNom" class="col-sm-12 col-form-label font-labels">
+                                        <i class="fas fa-users mr-2 col-ico"></i>
+                                        Empleados:
+                                    </label>
+                                    <div class="col-sm-12">
+                                        <div id='content'>
+                                            <i class="fas fa-search mr-2 col-ico"></i>
+                                            <input id="jqxInput" />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive" style="text-align:center">
-                                    <div id="TbCalculos" class="table-responsive"></div>
+                                <div class="form-group row">
+                                    <div id="jqxLoader"></div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <label for="Tdedu" class="col-sm-3 col-form-label font-labels" style="margin-left:65%">
-                                    <b>
-                                        Total Percepciones:
-                                    </b>
-                                </label>
-                                <label for="LaTotalPer" class="col-sm-2 col-form-label font-labels " style="font-size:12px; margin-left:-10%" id="LaTotalPer"></label>
-                            </div>
-                            <div class="row">
-                                <label for="TotalDedu" class="col-sm-3 col-form-label font-labels" style="margin-left:65%">
-                                    <b>
-                                        Total Deducciones:
-                                    </b>
-                                </label>
-                                <label for="LaTotalDedu" class="col-sm-2 col-form-label font-labels " style="font-size:12px; margin-left:-10%" id="LaTotalDedu"></label>
-                            </div>
-                            <div class="row">
-                                <label for="TotalNom" class="col-sm-3 col-form-label font-labels" style="margin-left:75%">
-                                    <b>
-                                        Total:
-                                    </b>
-                                </label>
-                                <label for="LaTotalNom" class="col-sm-2 col-form-label font-labels " style="font-size:12px; margin-left:-20%" id="LaTotalNom"></label>
+                                <div class="form-group row">
+                                    <div id="jqxLoader2"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button data-toggle="modal" data-target="#GeneraPDF" type="button" class="btn btn-outline-success btn-sm" id="BtbGeneraPDF" style="visibility:visible" value="0"> <i class="far fa-file-pdf mr-2"></i>Generar PDF</button>
-                        <button data-toggle="modal" data-target="#GeneraXML" type="button" class="btn btn-outline-success btn-sm " id="BtbGeneraXML" style="visibility:visible"> <i class="far fa-file-code "></i>Generar XML</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierraRecibio"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                    <div class="col-md-6">
+
                     </div>
                 </div>
             </div>
+
+            <!-- Pantalla De Recibos de nomina  -->
+
+            <div class="modal fade" data-backdrop="static" id="BRecibosNominaP" tabindex="-1" role="dialog" aria-labelledby="BRecibosNominaP" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="BRecibos"> <i class="fas fa-money-check-alt mr-2"></i> Recibo de Nomina</h5>
+                            <div class="custom-control custom-switch" style="margin-left:30%" id="Finiquito">
+                                <input type="checkbox" class="custom-control-input" id="CheckFiniquito" style="visibility:hidden">
+                                <label class="custom-control-label " for="CheckFiniquito" id="LaFiniquito" style="visibility:hidden">
+                                    Recibo Finiquito
+                                </label>
+                            </div>
+                            <div class="custom-control custom-switch" >
+                                <input type="checkbox" class="custom-control-input" id="CheckRecibo2" style="visibility:visible">
+                                <label class="custom-control-label" for="CheckRecibo2" id="LachecRecibo2" style="visibility:visible">
+                                    Recibo 2
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <label for="peridoNom" class="col-sm-1 col-form-label font-labels">
+                                        <b>
+                                            Empleado:
+                                        </b>
+                                    </label>
+                                    <label for="Emisor" class="col-sm-11 col-form-label font-labels " style="font-size:12px" id="Emisor"></label>
+                                </div>
+
+                                <div class="form-group row" style="margin-left:2%">
+                                    <label for="Tipofiniquito" class="col-sm-2 col-form-label font-labels" id="LaDropFiniquito" style="visibility:hidden">
+                                        Tipo de finiquito :
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <select placeholder="Tipo de finiquito" tp-select="Tipote finiquito" class="form-control form-control-sm" id="dropFiniquito" style="visibility:hidden">
+                                            <option value="0">Selecciona</option>
+                                        </select>
+                                    </div>
+
+                                    <label for="Periodo" class="col-sm-2 col-form-label font-labels" id="LaPeriodoEmple" style="visibility:visible">
+                                        Periodo:
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <select placeholder="Periodo" tp-select="Periodo" class="form-control form-control-sm" id="dropPeriodoEmple" style="visibility:visible">
+                                            <option value="0">Selecciona</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id='jqxWidget'>
+                                            <div id="TbRecibosNomina">
+                                            </div>
+                                            <div id="eventslog">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive" style="text-align:center">
+                                        <div id="TbCalculos" class="table-responsive"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="Tdedu" class="col-sm-3 col-form-label font-labels" style="margin-left:65%">
+                                        <b>
+                                            Total Percepciones:
+                                        </b>
+                                    </label>
+                                    <label for="LaTotalPer" class="col-sm-2 col-form-label font-labels " style="font-size:12px; margin-left:-10%" id="LaTotalPer"></label>
+                                </div>
+                                <div class="row">
+                                    <label for="TotalDedu" class="col-sm-3 col-form-label font-labels" style="margin-left:65%">
+                                        <b>
+                                            Total Deducciones:
+                                        </b>
+                                    </label>
+                                    <label for="LaTotalDedu" class="col-sm-2 col-form-label font-labels " style="font-size:12px; margin-left:-10%" id="LaTotalDedu"></label>
+                                </div>
+                                <div class="row">
+                                    <label for="TotalNom" class="col-sm-3 col-form-label font-labels" style="margin-left:75%">
+                                        <b>
+                                            Total:
+                                        </b>
+                                    </label>
+                                    <label for="LaTotalNom" class="col-sm-2 col-form-label font-labels " style="font-size:12px; margin-left:-20%" id="LaTotalNom"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button data-toggle="modal" data-target="#GeneraPDF" type="button" class="btn btn-outline-success btn-sm" id="BtbGeneraPDF" style="visibility:visible" value="0"> <i class="far fa-file-pdf mr-2"></i>Generar PDF</button>
+                            <button data-toggle="modal" data-target="#GeneraXML" type="button" class="btn btn-outline-success btn-sm " id="BtbGeneraXML" style="visibility:visible"> <i class="far fa-file-code "></i>Generar XML</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierraRecibio"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Botones de flotantes*@
+            <div>
+
+                <button class="flotante1 btn btn-primary btn-circle shadow" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="flotante2 btn btn-primary btn-circle shadow" title="Limpiar todos los campos" id="btnFloLimpiar" type="button" btvisible="true" value="1">
+                    <i class="fas fa-eraser"></i>
+                </button>
+                <button class="flotante3 btn btn-primary btn-circle shadow" title="Generar PDF masivos" id="btnPDFms" type="button" btvisible="true" value="0" style="visibility:visible">
+                    <i class="far fa-file-pdf"></i>
+                </button>
+                <button class="flotante4 btn btn-primary btn-circle shadow" title="Generar Xml masivos" id="btnXmlms" type="button" btvisible="true" value="1" style="visibility:visible">
+                    <i class="far fa-file-code"></i>
+                </button>
+                <button class="flotante5 btn btn-primary btn-circle shadow" title="Dowland" id="btnDowlan" type="button" btvisible="true" value="1" style="visibility:hidden">
+                    <i class="fas fa-download"></i>
+                </button>
+
+
+            </div>
+
+
         </div>
 
-        @*Botones de flotantes*@
-    <div>
-
-        <button class="flotante1 btn btn-primary btn-circle shadow" title="Buscar" id="btnFloBuscar" type="button" data-toggle="modal" data-target="#BRecibosNominaP" value="1">
-            <i class="fas fa-search"></i>
-        </button>
-        <button class="flotante2 btn btn-primary btn-circle shadow" title="Limpiar todos los campos" id="btnFloLimpiar" type="button" btvisible="true" value="1">
-            <i class="fas fa-eraser"></i>
-        </button>
-        <button class="flotante3 btn btn-primary btn-circle shadow" title="Generar PDF masivos" id="btnPDFms" type="button" btvisible="true" value="0" style="visibility:hidden">
-            <i class="far fa-file-pdf"></i>
-        </button>
-        <button class="flotante4 btn btn-primary btn-circle shadow" title="Generar Xml masivos" id="btnXmlms" type="button" btvisible="true" value="1" style="visibility:hidden">
-            <i class="far fa-file-code"></i>
-        </button>
-        <button class="flotante5 btn btn-primary btn-circle shadow" title="Dowland" id="btnDowlan" type="button" btvisible="true" value="1" style="visibility:hidden">
-            <i class="fas fa-download"></i>
-        </button>
-
-    
     </div>
-    </div>
+
+
 </div>
 
-<script src="~/Scripts/main/RecibosNomina.js?n=2"></script>
+<script src="~/Scripts/main/RecibosNomina.js?n=6"></script>
 <script src="~/Scripts/jqxGrid/jqwidgets/jspdf.min.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script>

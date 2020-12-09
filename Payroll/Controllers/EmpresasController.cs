@@ -277,5 +277,13 @@ namespace Payroll.Controllers
             RP = Dao.sp_TLocalicades_Retrieve_Localidades(Empresa_id);
             return Json(RP);
         }
+        // carga id de empresa
+        public JsonResult LoadEmpresa2(int idEmpresa)
+        {
+            List<string> empresas = new List<string>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();          
+            empresas = Dao.sp_CEmpresas_Retrieve_Empresa(idEmpresa);
+            return Json(empresas);
+        }
     }
 }

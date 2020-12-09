@@ -2572,7 +2572,7 @@ namespace Payroll.Models.Daos
         }
         // consulta la diferencia de dos nominas
 
-        public List<CompativoNomBean>sp_CompativoNomina_Retrieve_TPCalculosln(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CrtliIdEmpresa2, int CrtliAnio2, int CrtliTipoPeriodo2, int CtrliPeriodo2)
+        public List<CompativoNomBean>sp_CompativoNomina_Retrieve_TPCalculosln(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CtrliPeriodoAnte , int CtrliIdEmpleado,int CtrliEspejo)
         {
 
             List<CompativoNomBean> list = new List<CompativoNomBean>();
@@ -2589,10 +2589,9 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CrtliAnio", CrtliAnio));
                 cmd.Parameters.Add(new SqlParameter("@CrtliTipoPeriodo", CrtliTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
-                cmd.Parameters.Add(new SqlParameter("@CrtliIdEmpresa2", CrtliIdEmpresa2));
-                cmd.Parameters.Add(new SqlParameter("@CrtliAnio2", CrtliAnio2));
-                cmd.Parameters.Add(new SqlParameter("@CrtliTipoPeriodo2", CrtliTipoPeriodo2));
-                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo2", CtrliPeriodo2));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodoAnte", CtrliPeriodoAnte));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@CtrliEspejo", CtrliEspejo));
 
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
@@ -2604,13 +2603,10 @@ namespace Payroll.Models.Daos
                         {
 
                             LP.iIdEmpresa = CrtliIdEmpresa;
-                            LP.iIdEmpresa2 = CrtliIdEmpresa2;
                             LP.TipodNom = data["Tipo"].ToString();
                             LP.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
-                            LP.sNombreRenglon = int.Parse(data["Renglon_id"].ToString()) +" "+ data["Nombre_Renglon"].ToString();
+                            LP.sNombreRenglon = data["Nombre_Renglon"].ToString();
                             LP.sTotal = data["Total"].ToString();
-                            LP.iIdRenglon2 = int.Parse(data["Renglon_id2"].ToString());
-                            LP.sNombreRenglon2 = data["Nombre_Renglon2"].ToString();
                             LP.sTotal2 = data["Total2"].ToString();
                             LP.sTotalDif = data["TotalDif"].ToString();
                             LP.sMensaje = "success";
@@ -2746,6 +2742,307 @@ namespace Payroll.Models.Daos
             return list;
 
 
+        }
+
+
+        // consulta la diferencias de saldos de por empleado
+
+        public List<CompativoNomBean> sp_ComparativoNomXEmpleado_Retrieve_TpCalculosLN(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPerido, int CtrliPeriodoAnte, int CtrliTipoPAgo, int CtrliEsEspejo)
+        {
+
+            List<CompativoNomBean> list = new List<CompativoNomBean>();
+            try
+            {
+
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ComparativoNomXEmpleado_Retrieve_TpCalculosLN", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                
+                cmd.Parameters.Add(new SqlParameter("@CrtliIdEmpresa", CrtliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CrtliAnio", CrtliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CrtliTipoPeriodo", CrtliTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPerido));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodoAnt", CtrliPeriodoAnte));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPAgo", CtrliTipoPAgo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliEsEspejo", CtrliEsEspejo));
+               
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CompativoNomBean LP = new CompativoNomBean();
+                        {
+
+                            LP.iIdEmpresa = CrtliIdEmpresa;
+                            LP.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
+                            LP.sNombreEmpleado = data["NombreCompleto"].ToString();
+                            LP.sTotal = data["Saldo"].ToString();
+                            LP.sTotal2 = data["SaldoAnterior"].ToString();
+                            LP.sTotalDif = data["DiferenciaTotal"].ToString();
+                            LP.sMensaje = "success";
+                        };
+
+                        list.Add(LP);
+                    }
+                }
+                else
+                {
+                    CompativoNomBean LP = new CompativoNomBean();
+                    {
+                        LP.sMensaje = "error";
+                    }
+                    list.Add(LP);
+
+                }
+
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+
+        }
+
+        /// lista de periodo que tiene el empleado 
+        public List<CInicioFechasPeriodoBean> sp_PeriodoEmpleado_Retrieve_TPCalculosLN (int CtrliIdEmpresa , int CtrliAnio, int CtrliTipoPeriodo ,int CtrliIdEmpleado)
+        {
+
+            List<CInicioFechasPeriodoBean> list = new List<CInicioFechasPeriodoBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_PeriodoEmpleado_Retrieve_TPCalculosLN", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPeriodo", CtrliTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CInicioFechasPeriodoBean ls = new CInicioFechasPeriodoBean();
+                        {
+                            ls.iPeriodo = int.Parse(data["Periodo"].ToString());
+
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+        /// compensaciones fijas
+        public List<CompensacionFijaBean> sp_Compensacionfija_Retrieve_CCompensacionfija()
+        {
+
+            List<CompensacionFijaBean> list = new List<CompensacionFijaBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Compensacionfija_Retrieve_CCompensacionfija", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+                //cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                //cmd.Parameters.Add(new SqlParameter("@CtrliTipoPeriodo", CtrliTipoPeriodo));
+                //cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpleado", CtrliIdEmpleado));
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CompensacionFijaBean ls = new CompensacionFijaBean();
+                        {
+                            ls.iId = int.Parse(data["Id"].ToString());
+                            ls.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
+                            ls.sNombreEmpresa = int.Parse(data["Empresa_id"].ToString()) + " " + data["NombreEmpresa"].ToString();
+                            if (data["Premio_PyA"].ToString() == "True") { ls.iPremioPyA = 1; }; if (data["Premio_PyA"].ToString() == "False") { ls.iPremioPyA = 0; };
+                            if (data["Puesto_id"].ToString() == null) { ls.iIdPuesto = 0; }; if (data["Puesto_id"].ToString() != null) { ls.iIdPuesto = int.Parse(data["Puesto_id"].ToString()); }
+                            if (data["sPuesto"].ToString() == null) { ls.sPuesto = " "; }; if (data["sPuesto"].ToString() != null) { ls.sPuesto = data["sPuesto"].ToString(); };
+                            ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
+                            if (data["Renglon_id"].ToString() == null) { ls.sNombreRenglon = " "; };if (data["Renglon_id"].ToString() != null) { ls.sNombreRenglon = int.Parse(data["Renglon_id"].ToString()) + " " + data["Nombre_Renglon"].ToString(); };
+                            if (data["Renglon_id"].ToString() == null) { ls.iImporte = 0; }; if (data["Renglon_id"].ToString() != null) { ls.iImporte = double.Parse(data["Importe"].ToString()); };
+                            ls.sDescripcion = data["Descripcion"].ToString();
+                            ls.iIdUsuario = int.Parse(data["Usuario_id"].ToString());
+                            ls.sFecha = data["Fecha"].ToString();
+                            ls.sMensaje= "success";
+
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    CompensacionFijaBean ls = new CompensacionFijaBean();
+                    {
+                        ls.sMensaje = "error";
+                    }
+                    list.Add(ls);
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+        /// LisPuestoXEmpresas
+        public List<PuestosNomBean> sp_PuestosXEmpresa_Retrieve_Tpuestos( int CtrliIdEmpresa)
+        {
+
+            List<PuestosNomBean> list = new List<PuestosNomBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_PuestosXEmpresa_Retrieve_Tpuestos", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
+              
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        PuestosNomBean ls = new PuestosNomBean();
+                        {
+                            ls.iIdPuesto = int.Parse(data["IdPuesto"].ToString());
+                            ls.sPuestoCodigo = data["PuestoCodigo"].ToString();
+                            ls.sNombrePuesto = data["PuestoCodigo"].ToString()+" "+ data["NombrePuesto"].ToString();
+                            ls.sMensaje = "success";
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    PuestosNomBean ls = new PuestosNomBean();
+                    {
+                        ls.sMensaje = "error";
+                    }
+                    list.Add(ls);
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+        // Inserta una nueva Compensacion fija
+
+        public CompensacionFijaBean sp_Compensacion_Insert_CCompensacionFija(int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto,int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario)
+        {
+            CompensacionFijaBean bean = new CompensacionFijaBean();
+
+            try
+            {
+                this.Conectar(); //sp_DefineNom_insert_DefineNom
+                SqlCommand cmd = new SqlCommand("sp_Compensacion_Insert_CCompensacionFija", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPyA", CtrliPyA));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdPuesto", CtrliIdPuesto));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdRenglon", CtrliIdRenglon));
+                cmd.Parameters.Add(new SqlParameter("@CtrliImporte", CtrliImporte));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsDescrip", CtrlsDescrip));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuario));
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
+        public CompensacionFijaBean Sp_CCompensacion_update_CCompensacion(int CtrliId, int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto, int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario,int CtrIiCanceldo)
+        {
+            CompensacionFijaBean bean = new CompensacionFijaBean();
+
+            try
+            {
+                this.Conectar(); //sp_DefineNom_insert_DefineNom
+                SqlCommand cmd = new SqlCommand("Sp_CCompensacion_update_CCompensacion", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliId", CtrliId));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPyA", CtrliPyA));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdPuesto", CtrliIdPuesto));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdRenglon", CtrliIdRenglon));
+                cmd.Parameters.Add(new SqlParameter("@CtrliImporte", CtrliImporte));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsDescrip", CtrlsDescrip));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuario));
+                cmd.Parameters.Add(new SqlParameter("@CtrIiCanceldo", CtrIiCanceldo));
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
         }
 
 

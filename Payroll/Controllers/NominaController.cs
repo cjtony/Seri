@@ -51,6 +51,12 @@ namespace Payroll.Controllers
         }
 
 
+        public PartialViewResult CompensacionesFijas()
+        {
+            return PartialView();
+        }
+
+
         //Guarda los datos de la Definicion
         [HttpPost]
         public JsonResult DefiNomina(string sNombreDefinicion, string sDescripcion, int iAno, int iCancelado)
@@ -972,17 +978,84 @@ namespace Payroll.Controllers
         }
 
 
-        // Muestra el listado de renglones de la diferencia de nomina de una empresa
+     
+        // Muestra la diferencias de nomina de una empresa o varias empresas 
+
+        [HttpPost]
+        public JsonResult NomiaDiferenciaxEmpleado(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CtrliPeriodo2,int CtrliTipoPAgo,int recibo)
+        {
+            List<CompativoNomBean> LPe = new List<CompativoNomBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LPe = dao.sp_ComparativoNomXEmpleado_Retrieve_TpCalculosLN(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CtrliPeriodo2, CtrliTipoPAgo, recibo);
+            return Json(LPe);
+        }
 
 
-        //[HttpPost]
-        //public JsonResult NomiaDiferencia(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo, int CrtliAnio2, int CrtliTipoPeriodo2, int CtrliPeriodo2)
-        //{
-        //    List<CompativoNomBean> LPe = new List<CompativoNomBean>();
-        //    FuncionesNomina dao = new FuncionesNomina();
-        //    LPe = dao.sp_CompativoNomina_Retrieve_TPCalculosln(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CrtliIdEmpresa, CrtliAnio2, CrtliTipoPeriodo2, CtrliPeriodo2);
-        //    return Json(LPe);
-        //}
+        //Muestra el listado de renglones de la diferencia de nomina de una empresa
+
+
+       [HttpPost]
+        public JsonResult NomiaDiferencia(int CrtliIdEmpresa, int CrtliAnio, int CrtliTipoPeriodo, int CtrliPeriodo,  int CtrliPeriodoAnte, int CtrliIdEmpleado, int CtrliEspejo)
+        {
+            List<CompativoNomBean> LPe = new List<CompativoNomBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            LPe = dao.sp_CompativoNomina_Retrieve_TPCalculosln(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CtrliPeriodoAnte, CtrliIdEmpleado, CtrliEspejo);
+            return Json(LPe);
+        }
+
+
+        /// lista de perido por empleado 
+        [HttpPost]
+        public JsonResult PeriodosEmpleados(int Idempresa, int Anio, int TipoPeriodo, int idEmpleado)
+        {
+            List<CInicioFechasPeriodoBean> LE = new List<CInicioFechasPeriodoBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LE = Dao.sp_PeriodoEmpleado_Retrieve_TPCalculosLN(Idempresa, Anio, TipoPeriodo, idEmpleado);
+            return Json(LE);
+        }
+
+        /// consulta la tabla compensacionesfijas 
+        [HttpPost]
+        public JsonResult CompFijasEmple()
+        {
+            List<CompensacionFijaBean> LComp = new List<CompensacionFijaBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LComp = Dao.sp_Compensacionfija_Retrieve_CCompensacionfija();
+            return Json(LComp);
+        }
+
+        /// Listado de puesto por Empresa 
+        [HttpPost]
+        public JsonResult LisPuestosEmpresa(int iIdEmpresa)
+        {
+            List<PuestosNomBean> LPuesto = new List<PuestosNomBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LPuesto = Dao.sp_PuestosXEmpresa_Retrieve_Tpuestos(iIdEmpresa);
+            return Json(LPuesto);
+        }
+
+        //Guarda los datos de la compensacion nueva
+        [HttpPost]
+        public JsonResult NewCompFija(int iIdempresa, int iPyA,int iIdpuesto,int iIdRenglon,double iImporte, string sDescripcion)
+        {
+            CompensacionFijaBean bean = new CompensacionFijaBean();
+            FuncionesNomina dao = new FuncionesNomina();
+            int usuario = int.Parse(Session["iIdUsuario"].ToString());
+            bean = dao.sp_Compensacion_Insert_CCompensacionFija(iIdempresa, iPyA, iIdpuesto, iIdRenglon, iImporte, sDescripcion, usuario);
+            return Json(bean);
+        }
+
+        //Actualiza los datos de la compensacion nueva
+        [HttpPost]
+        public JsonResult UpdateCompFija(int iIDComp,int iIdempresa, int iPyA, int iIdpuesto, int iIdRenglon, double iImporte, string sDescripcion ,int iCancel)
+        {
+            CompensacionFijaBean bean = new CompensacionFijaBean();
+            FuncionesNomina dao = new FuncionesNomina();
+            int usuario = int.Parse(Session["iIdUsuario"].ToString());
+            bean = dao.Sp_CCompensacion_update_CCompensacion(iIDComp, iIdempresa, iPyA, iIdpuesto, iIdRenglon, iImporte, sDescripcion, usuario, iCancel);
+            return Json(bean);
+        }
+
 
     }
 }
