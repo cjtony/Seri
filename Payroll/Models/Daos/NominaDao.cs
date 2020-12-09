@@ -2885,12 +2885,13 @@ namespace Payroll.Models.Daos
                         {
                             ls.iId = int.Parse(data["Id"].ToString());
                             ls.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
-                            ls.sNombreEmpresa = int.Parse(data["Empresa_id"].ToString()) +" "+ data["NombreEmpresa"].ToString();    
-                            if (data["Premio_PyA"].ToString() == "True") { ls.iPremioPyA = 1; }; if(data["Premio_PyA"].ToString() == "False"){ ls.iPremioPyA =0; };
-                            ls.iIdPuesto = int.Parse(data["Puesto_id"].ToString());
-                            ls.iIdRenglon= int.Parse(data["Renglon_id"].ToString());
-                            ls.sNombreRenglon = int.Parse(data["Renglon_id"].ToString()) + " "+ data["Nombre_Renglon"].ToString();                           
-                            ls.iImporte = double.Parse(data["Importe"].ToString());
+                            ls.sNombreEmpresa = int.Parse(data["Empresa_id"].ToString()) + " " + data["NombreEmpresa"].ToString();
+                            if (data["Premio_PyA"].ToString() == "True") { ls.iPremioPyA = 1; }; if (data["Premio_PyA"].ToString() == "False") { ls.iPremioPyA = 0; };
+                            if (data["Puesto_id"].ToString() == null) { ls.iIdPuesto = 0; }; if (data["Puesto_id"].ToString() != null) { ls.iIdPuesto = int.Parse(data["Puesto_id"].ToString()); }
+                            if (data["sPuesto"].ToString() == null) { ls.sPuesto = " "; }; if (data["sPuesto"].ToString() != null) { ls.sPuesto = data["sPuesto"].ToString(); };
+                            ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
+                            if (data["Renglon_id"].ToString() == null) { ls.sNombreRenglon = " "; };if (data["Renglon_id"].ToString() != null) { ls.sNombreRenglon = int.Parse(data["Renglon_id"].ToString()) + " " + data["Nombre_Renglon"].ToString(); };
+                            if (data["Renglon_id"].ToString() == null) { ls.iImporte = 0; }; if (data["Renglon_id"].ToString() != null) { ls.iImporte = double.Parse(data["Importe"].ToString()); };
                             ls.sDescripcion = data["Descripcion"].ToString();
                             ls.iIdUsuario = int.Parse(data["Usuario_id"].ToString());
                             ls.sFecha = data["Fecha"].ToString();
@@ -2988,6 +2989,44 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrlsDescrip", CtrlsDescrip));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuario));
 
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
+        public CompensacionFijaBean Sp_CCompensacion_update_CCompensacion(int CtrliId, int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto, int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario,int CtrIiCanceldo)
+        {
+            CompensacionFijaBean bean = new CompensacionFijaBean();
+
+            try
+            {
+                this.Conectar(); //sp_DefineNom_insert_DefineNom
+                SqlCommand cmd = new SqlCommand("Sp_CCompensacion_update_CCompensacion", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliId", CtrliId));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdempresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPyA", CtrliPyA));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdPuesto", CtrliIdPuesto));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdRenglon", CtrliIdRenglon));
+                cmd.Parameters.Add(new SqlParameter("@CtrliImporte", CtrliImporte));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsDescrip", CtrlsDescrip));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuario));
+                cmd.Parameters.Add(new SqlParameter("@CtrIiCanceldo", CtrIiCanceldo));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     bean.sMensaje = "success";
