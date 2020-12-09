@@ -295,7 +295,7 @@ namespace Payroll.Models.Daos
                     listCreditos.Cancelado = data["Cancelado"].ToString();
                     listCreditos.Descuento = data["Descuento"].ToString();
                     listCreditos.NoCredito = data["NoCredito"].ToString();
-                    listCreditos.FechaAprovacionCredito = data["FechaAprovacionCredito"].ToString();
+                    listCreditos.FechaAprovacionCredito = data["FechaAprobacionCredito"].ToString();
                     listCreditos.Descontar = data["Descontar"].ToString();
                     //if (data["FactorDescuento"].ToString().Length < 1 || data["FactorDescuento"].ToString() == null)
                     //{ listCreditos.FactorDescuento = ""; }
@@ -313,7 +313,10 @@ namespace Payroll.Models.Daos
 
                     listCreditos.Finalizado = data["Finalizado"].ToString();
                     //listCreditos.Effdt = data["Effdt"].ToString();
-                    listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString());
+                    if (data["Incidencia_Programada_id"].ToString().Length == 0 || data["Incidencia_Programada_id"] == null)
+                    {          }
+                    else { listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString()); }
+                    //listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString());
                     list.Add(listCreditos);
                 }
             }
@@ -545,8 +548,9 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", Comentarios_imss));
             cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", Causa_FaltaInjustificada));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaFin", FechaFin));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipo", Tipo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", "0"));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -751,6 +755,8 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaAplicacion", Fecha_Aplicacion));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", "0"));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)

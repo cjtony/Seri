@@ -385,8 +385,6 @@ namespace Payroll.Controllers
             CargaMasivaDao Dao = new CargaMasivaDao();
             DataTable table = Dao.ValidaArchivo(pathGuardado, fileType);
 
-
-
             List<string> ResutLog = new List<string>();
             int i;
             string errorh = "Error en la linea: ";
@@ -395,6 +393,7 @@ namespace Payroll.Controllers
             switch (fileType)
             {
                 case "incidencias":
+
                     for (i = 0; i < table.Rows.Count; i++)
                     {
                         var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
@@ -409,6 +408,9 @@ namespace Payroll.Controllers
 
                         var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
                         if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
+
+                        //var ResultExisteCarga = Dao.Valida_Existe_Carga_Masiva(int.Parse(table.Rows[i]["Empresa_id"].ToString()),Periodo, int.Parse(table.Rows[i]["Renglon_id"].ToString()), fileType, table.Rows[i]["Referencia"].ToString());
+                        //if (ResultExisteCarga == 0) { ResutLog.Add(errorh + (i + 1) + ", Se ha cargado una incidencia similar antes "); }
                     }
 
                     if (ResutLog.Count == 0)
@@ -416,10 +418,10 @@ namespace Payroll.Controllers
                         //Console.WriteLine("Se manda al modulo de insercion la tabla");
                         for (int k = 0; k < table.Rows.Count; k++)
                         {
-                            Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva);
+                            Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo);
                         }
                         list.Add("1");
-                        list.Add("Carga subida correctamente");
+                        list.Add("Carga de Insidencias subida correctamente");
                     }
                     else
                     {
@@ -435,22 +437,124 @@ namespace Payroll.Controllers
                     }
                     break;
                 case "ausentismos":
-                    
-                    for (int k = 0; k < table.Rows.Count; k++)
+                   
+                    for (i = 0; i < table.Rows.Count; i++)
                     {
-                        Dao.InsertaCargaMasivaAusentismo(table.Rows[k], Periodo, IsCargaMasiva );
+                        var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
+                        if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
+
+                        var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
+                        if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+
+                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
+                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
+                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
+
+                        //var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
+                        //if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
                     }
+                    if (ResutLog.Count == 0)
+                    {
+                        for (int k = 0; k < table.Rows.Count; k++)
+                        {
+                            Dao.InsertaCargaMasivaAusentismo(table.Rows[k], Periodo, IsCargaMasiva);
+                            list.Add("1");
+                            list.Add("Carga de Ausentismos subida correctamente");
+                        }
+                    }
+                    else
+                    {
+                        StreamWriter txtfile = new StreamWriter(pathLogs);
+                        foreach (var error in ResutLog)
+                        {
+                            txtfile.WriteLine(error);
+                        }
+                        txtfile.Close();
+                        list.Clear();
+                        list.Add("0");
+                        list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
+                    }
+
                     break;
                 case "creditos":
-                    for (int k = 0; k < table.Rows.Count; k++)
+
+                    for (i = 0; i < table.Rows.Count; i++)
                     {
-                        Dao.InsertaCargaMasivaCreditos(table.Rows[k], Periodo, IsCargaMasiva);
+                        var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
+                        if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
+
+                        var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
+                        if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+
+                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
+                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
+                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
+
+                        //var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
+                        //if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
                     }
+
+                    if (ResutLog.Count == 0)
+                    {
+                        for (int k = 0; k < table.Rows.Count; k++)
+                        {
+                            Dao.InsertaCargaMasivaCreditos(table.Rows[k], Periodo, IsCargaMasiva);
+                        }
+                        list.Add("1");
+                        list.Add("Carga de Creditos subida correctamente");
+                    }
+                    else
+                    {
+                        StreamWriter txtfile = new StreamWriter(pathLogs);
+                        foreach (var error in ResutLog)
+                        {
+                            txtfile.WriteLine(error);
+                        }
+                        txtfile.Close();
+                        list.Clear();
+                        list.Add("0");
+                        list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
+                    }
+                    
                     break;
                 case "pensiones":
-                    for (int k = 0; k < table.Rows.Count; k++)
+
+                    for (i = 0; i < table.Rows.Count; i++)
                     {
-                        Dao.InsertaCargaMasivaPensionesAlimenticias(table.Rows[k], Periodo, IsCargaMasiva);
+                        var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
+                        if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
+
+                        var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
+                        if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+
+                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
+                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
+                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
+
+                        //var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
+                        //if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
+                    }
+
+                    if (ResutLog.Count == 0)
+                    {
+                        for (int k = 0; k < table.Rows.Count; k++)
+                        {
+                            Dao.InsertaCargaMasivaPensionesAlimenticias(table.Rows[k], Periodo, IsCargaMasiva);
+                        }
+                        list.Add("1");
+                        list.Add("Hecho");
+                    }
+                    else
+                    {
+                        StreamWriter txtfile = new StreamWriter(pathLogs);
+                        foreach (var error in ResutLog)
+                        {
+                            txtfile.WriteLine(error);
+                        }
+                        txtfile.Close();
+                        list.Clear();
+                        list.Add("0");
+                        list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
                     }
                     break;
             }
