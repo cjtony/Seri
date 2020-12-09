@@ -2,10 +2,15 @@
     <form method="post" enctype="multipart/form-data" class="row">
         <div class="col-md-8 mt-4">
             <div class="card shadow rounded border-left-primary border-right-primary">
-                <div class="card-body">
+                <div class="card-body"> 
+                    
                     <h5 class="card-title text-center">
-                        <i class="fas fa-file-excel mr-2 text-success"></i> Selecciona tu EXCEL .xlsx
+                        <i class="fas fa-file-excel text-success"></i> Selecciona tu EXCEL .xlsx
                     </h5>
+                    <a id="btnDownLoadCM" class="text-decoration-none btn btn-info btn-sm font-labels" href="~/Content/FilesCargaMasivaIncidencias/FormatoDeIncidencias/Layout Carga Incidencias.xlsx" target="_blank">
+                        <i class="fas fa-file-download fa-lg text-white"></i>
+                        
+                    </a>
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
@@ -24,7 +29,7 @@
                             </div>
                             <hr />
                             <div class="form-group mt-4 text-center">
-                                <button class="btn btn-sm btn-outline-primary" type="button" onclick="validateUploadFile();">
+                                <button class="btn btn-sm btn-outline-primary" id="btnCargaMasiva" type="button" onclick="beforeValidarFile();">
                                     <i class="fas fa-check-circle mr-2"></i> Cargar archivo
                                 </button>
                             </div>
@@ -39,9 +44,9 @@
             </div>
         </div>
         <div class="col-md-4 mt-4 rounded">
-            <div class="bg-white shadow rounded border-left-primary border-right-primary p-3 "  data-spy="scroll" >
+            <div class="bg-white shadow rounded border-left-primary border-right-primary p-3 " data-spy="scroll">
                 <div class="h6 mt-1 text-primary font-weight-bold text-center">Cargas del Periodo</div>
-                
+
                 <table class="table table-sm font-labels">
                     <thead class="font-labels">
                         <tr>
@@ -52,7 +57,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabIncProg" class="font-labels">
-                        <tr class="bg-primary">
+                        @*<tr class="bg-primary">
                             <td>Incidencias</td>
                             <td>202030190</td>
                             <td>Prueba 1</td>
@@ -111,11 +116,33 @@
                                 <a class="badge badge-danger" title="Borrar por Renglon"> <i class="fas fa-folder-minus fa-lg text-white"></i></a>
                                 <a class="badge badge-danger" title="Eliminar Carga completa"> <i class="fas fa-minus fa-lg text-white"></i></a>
                             </td>
-                        </tr>
+                        </tr>*@
                     </tbody>
                 </table>
             </div>
         </div>
     </form>
 </div>
-<script src="~/Scripts/main/cargamasiva.js?n=4"></script>
+@*<button class="flotante-clear  btn btn-info" title="Descargar Layout" id="btnDownLoadFormatoCargaMasiva">
+    <i class="fas fa-file-download"></i>
+</button>*@
+<!-- Modal -->
+@*<div class="modal fade" id="loadingCargaMasiva" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            
+            <div class="modal-body row text-center">
+                <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+<script src="~/Scripts/main/cargamasiva.js?n=6"></script>
