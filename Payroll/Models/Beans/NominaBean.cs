@@ -405,6 +405,7 @@ namespace Payroll.Models.Beans
         public string sNombreEmpresa { get; set;}
         public int iPremioPyA { get; set; }
         public int iIdPuesto { get; set; }
+        public string sPuesto { get; set; }
         public int iIdRenglon { get; set; }
         public string sNombreRenglon { get; set; }
         public double iImporte { get; set; }
