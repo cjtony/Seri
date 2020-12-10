@@ -1,6 +1,6 @@
 ﻿$(function () {
     var ren_incidencia = document.getElementById("inRenglon");
-    var concepto_incidencia = document.getElementById("inConcepto_incidencia");
+    var concepto_incidencia = document.getElementById("txtsearchtipoincidencia");
     var cantidad_incidencia = document.getElementById("inCantidad");
     var plazos_incidencia = document.getElementById("inPlazos");
     var leyenda_incidencia = document.getElementById("inLeyenda");
@@ -9,6 +9,7 @@
     //var infinicio = document.getElementById("infinicio");
     //var inffinal = document.getElementById("inffinal");
     //document.getElementById("lbloptions").style.visibility = "none";
+
 
     // SE LANZA LA INSTRUCCION DE MOSTRAR EL MODAL DE BUSQUEDA DE EMPLEADOS
     $("#modalLiveSearchEmpleado").modal("show");
@@ -50,22 +51,23 @@
     $('.input-number').on('input', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
-    //CARGA CONCEPTO 
-    $.ajax({
-        url: "../Incidencias/LoadTipoIncidencia",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: (data) => {
-            document.getElementById("inConcepto_incidencia").innerHTML = "<option class='' value=''> Selecciona </option>"
-            for (var i = 0; i < data.length; i++) {
-                document.getElementById("inConcepto_incidencia").innerHTML += "<option class='' value='" + data[i]["Ren_incid_id"] + "'> " + data[i]["Ren_incid_id"] + " : " + data[i]["Descripcion"] + "</option>";
-            }
-        }
-    });
+    ////CARGA CONCEPTO 
+    ////////$.ajax({
+    ////////    url: "../Incidencias/LoadTipoIncidencia",
+    ////////    type: "POST",
+    ////////    dataType: "json",
+    ////////    contentType: "application/json; charset=utf-8",
+    ////////    success: (data) => {
+    ////////        document.getElementById("inConcepto_incidencia").innerHTML = "<option class='' value=''> Selecciona </option>"
+    ////////        for (var i = 0; i < data.length; i++) {
+    ////////            document.getElementById("inConcepto_incidencia").innerHTML += "<option class='' value='" + data[i]["Ren_incid_id"] + "'> " + data[i]["Ren_incid_id"] + " : " + data[i]["Descripcion"] + "</option>";
+    ////////        }
+    ////////    }
+    ////////});
     //CAMBIOS EN EL SELECT Y EL RENGLON
-    $("#inConcepto_incidencia").on("change", function () {
-        ren_incidencia.value = concepto_incidencia.value;
+    //////////////////$("#inRenglon").on("change", function () {
+    checkrenglon = () => {
+        //ren_incidencia.value = concepto_incidencia.value;
         if (ren_incidencia.value == '71') {
             //console.log("si");
             $("#lblCantidad").html("Dias");
@@ -103,8 +105,8 @@
             document.getElementById("inPlazos").disabled = false;
 
         }
-
-    });
+    }
+    ///////////////});
     //checkPorDias = () => {
     //    document.getElementById("inCantidad").disabled = false;
     //    document.getElementById("infinicio").disabled = true;
@@ -118,6 +120,8 @@
     // ABRE EL COLLAPSE PARA INSERTAR NUEVAS INCIDENCIAS 
     mostrarFormNewIncidencias = () => {
         $("#incidenciasCollapse").collapse("show");
+        $("#txtsearchtipoincidencia").click();
+        $("#txtsearchtipoincidencia").focus();
     }
 
     //GUARDAR INCIDENCIA
@@ -159,7 +163,7 @@
                 url: "../Incidencias/SaveRegistroIncidencia",
                 type: "POST",
                 data: JSON.stringify({
-                    inRenglon: concepto_incidencia.value,
+                    inRenglon: ren_incidencia.value,
                     inCantidad: cant,
                     inPlazos: plazos_incidencia.value,
                     inLeyenda: leyenda_incidencia.value,
@@ -181,6 +185,7 @@
                         });
                     } else if (data[0] == '1') {
                         $("#incidenciasCollapse").collapse("hide");
+                        ren_incidencia.value = '';
                         concepto_incidencia.value = '';
                         cantidad_incidencia.value = '';
                         plazos_incidencia.value = '';
@@ -204,16 +209,26 @@
     MostrarDatosEmpleado = (idE) => {
         var txtIdEmpleado = { "IdEmpleado": idE, Empresa_id: 0 };
         $.ajax({
-            url: "../Empleados/SearchDataEmpleado",
+            url: "../Empleados/SearchEmpleado",
             type: "POST",
-            data: JSON.stringify({ "Empleado_id": idE, Empresa_id: "0" }),
+            data: JSON.stringify({ "IdEmpleado": idE }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 $("#tabIncidenciasBody").html("");
                 createTab();
                 console.log(data);
-                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i> " + data[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i> " + data[1] + " " + data[2] + ' ' + data[3] + "&nbsp;&nbsp;-&nbsp;&nbsp;<small class='text-muted'>" + data[51] + "</small>";
+                var iconb = "";
+                var colorb = "";
+                if (data[0]["TipoEmpleado"] > 163) {
+                    colorb = "badge-danger";
+                    iconb = "fa-times-circle";
+                } else {
+                    colorb = "badge-success";
+                    iconb = "fa-check-circle";
+                }
+
+                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i>&nbsp;&nbsp;" + data[0]["IdEmpleado"] + "&nbsp;&nbsp;<i class='fas fa-user-alt text-primary'></i>&nbsp;&nbsp;" + data[0]["Nombre_Empleado"] + "&nbsp;" + data[0]["Apellido_Paterno_Empleado"] + '&nbsp;' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionPuesto"] + "</small>&nbsp;&nbsp;<div class='badge " + colorb + "'><i class='fas " + iconb + "'></i>&nbsp;" + data[0]["TipoEmpleado"] + "&nbsp;-&nbsp;" + data[0]["DescTipoEmpleado"] + "</div>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 document.getElementById("resultSearchEmpleados").innerHTML = "";
                 document.getElementById("inputSearchEmpleados").value = "";
@@ -533,37 +548,40 @@
         $("#edPagosRestantes").removeClass("is-valid");
     });
 
+    $("#txtsearchtipoincidencia").keyup(function () {
+        var txt = $("#txtsearchtipoincidencia").val();
 
+        document.getElementById("resulttipoincidencia").innerHTML = "";
+        $("#inRenglon").val("");
+        $.ajax({
+            url: "../Incidencias/LoadTipoIncidencia",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify({
+                txtSearch: txt
+            }),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                //$("#resulttipoincidencia").html("");
+                document.getElementById("resulttipoincidencia").innerHTML = "";
+                if (data.length < 0 || data == "") {
+                    //console.log(data);
 
+                } else {
+                    //console.log(data);
+                    for (var i = 0; i < data.length; i++) {
+                        document.getElementById("resulttipoincidencia").innerHTML += "<div class='list-group-item list-group-item-light list-group-item-action py-0' onclick='selectIncidencia(" + data[i]["Ren_incid_id"] + ",\"" + data[i]["Descripcion"] + "\");'> " + data[i]["Ren_incid_id"] + " : " + data[i]["Descripcion"] + "</div>";
+                    }
+                }
+            }
+        });
+    });
 
-
-    //crearToast = (type, title, message) => {
-    //    var icono;
-    //    var today = new Date();
-    //    var fecha = today.getDate() + "/" + today.getMonth() + "/" + today.getFullYear();
-    //    var hora = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    //    if (type == "success") {
-    //        icono = "<i class='fas fa-check-square text-success'></i>";
-    //    } else if (type == "erorr") {
-    //        icono = "<i class='fas fa-times text-danger'></i>";
-    //    } else if (type == "warning") {
-    //        icono = "<i class='fas fa-exclamation-triangle text-success'></i>";
-    //    }
-
-    //    var body = "<div class='toast' role='alert' aria-live='assertive' aria-atomic='true'>" +
-    //        "<div class='toast-header'>" +
-    //        icono +
-    //        "<strong class='mr-auto'>" + title + "</strong>" +
-    //        "<small class='text-muted'>" + fecha + hora + "</small>" +
-    //        "<button type='button' class='ml-2 mb-1 close' data-dismiss='toast' aria-label='Close'>" +
-    //        "<span aria-hidden='true'>&times;</span>" +
-    //        "</button>" +
-    //        "</div>" +
-    //        "<div class='toast-body'>" +
-    //        message +
-    //        "</div>" +
-    //        "</div>";
-
-    //    document.getElementById("toasterbody").innerHTML = body;
-    //}
+    selectIncidencia = (Renglon_id, Descripcion) => {
+        $("#txtsearchtipoincidencia").val(Descripcion);
+        document.getElementById("resulttipoincidencia").innerHTML = "";
+        $("#inRenglon").val(Renglon_id);
+        checkrenglon();
+    }
 });

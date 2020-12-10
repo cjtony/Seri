@@ -29,41 +29,49 @@
         </div>
     </div>
 </div>
+
 <script>
-    function seeview(data) {
-        let timerInterval
-        Swal.fire({
-            title: 'Cargando...',
-            html: 'Un segundo por favor!',
-            timer: 2500,
-            timerProgressBar: true,
-            onBeforeOpen: () => {
-                $("#bodySubmenus").load(data);
-                Swal.showLoading();
-            }
-        });
-    }
-    function change() {
-        $("#bodySubmenus").empty();
-    }
-    function btnsEmpresas(id, nombre) {
-        try {
+    $(document).ready(function () {
+
+        seeview = (data) => {
+            let timerInterval
+            Swal.fire({
+                title: 'Cargando...',
+                html: 'Un segundo por favor!',
+                timer: 2500,
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    $("#bodySubmenus").load(data);
+                    Swal.showLoading();
+                }
+            });
+        }
+        change = () => {
+            $("#bodySubmenus").empty();
+        }
+        btnsEmpresas = (id, nombre) => {
+
             $.ajax({
                 url: "../Empresas/DefineEmpresa",
                 type: "POST",
                 data: JSON.stringify({ IdEmpresa: id, NombreEmpresa: nombre }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    //console.log(data);
+                    console.log(data);
                     if (data[0] != "0") {
                         $.ajax({
                             url: "../Empresas/DefinePeriodoActual",
                             type: "POST",
-                            data: JSON.stringify({ IdPeriodo: data[4] }),
+                            data: JSON.stringify({
+                                IdPeriodo: data[4],
+                                Fecha_inicio: data[6],
+                                Fecha_fin: data[7]
+                            }),
                             contentType: "application/json; charset=utf-8",
                             success: (dat) => {
                                 document.getElementById("btnNameEmpresaSelected").innerHTML = nombre;
                                 document.getElementById("lblPeriodoId").innerHTML = data[4];
+                                document.getElementById("lblRangoPeriodo").innerHTML = "&nbsp;&nbsp;-&nbsp;&nbsp;" + data[6] + " - " + data[7];
                                 $("#bodySubmenus").empty();
                                 $("#modalBtns").modal('hide');
                             }
@@ -83,21 +91,9 @@
 
                 }
             });
-        } catch (err) {
-            if (err instanceof TypeError) {
-                console.log("TypeError ", err);
-            } else if (err instanceof EvalError) {
-                console.log("EvalError ", err);
-            } else if (err instanceof RangeError) {
-                console.log("RangeError ", err);
-            } else {
-                console.log("Error ", err);
-            }
+
         }
-    }
-</script>
-<script>
-    $(document).ready(function () {
+
         $("#modalBtns").modal({
             keyboard: false,
             backdrop: "static",
@@ -111,31 +107,7 @@
                 focus: true
             });
         });
-        loadBtnsEmpresas = () => {
-            try {
-                $.ajax({
-                    url: "../Empresas/LoadEmpresas",
-                    type: "POST",
-                    data: {},
-                    contentType: "application/json; charset=utf-8",
-                    success: (data) => {
-                        $("#mbody").html(data);
-                    }
-                });
-            } catch (err) {
-                if (err instanceof TypeError) {
-                    console.log("TypeError ", err);
-                } else if (err instanceof EvalError) {
-                    console.log("EvalError ", err);
-                } else if (err instanceof RangeError) {
-                    console.log("RangeError ", err);
-                } else {
-                    console.log("Error ", err);
-                }
-            }
-        }
-
-        loadBtnsEmpresas();
+        
 
         MostrarBtnsEmpresa = (idE) => {
             var txtIdEmpresa = { "IdEmpresa": idE };
@@ -160,6 +132,21 @@
                 }
             });
         }
+        loadBtnsEmpresas = () => {
+
+            $.ajax({
+                url: "../Empresas/LoadEmpresas",
+                type: "POST",
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    $("#mbody").html(data);
+                }
+            });
+
+        }
+
+        loadBtnsEmpresas();
         $("#modalBtns").modal('show');
     });
 </script>

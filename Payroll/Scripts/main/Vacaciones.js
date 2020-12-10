@@ -4,7 +4,8 @@
         from = $("#from")
             .datepicker({
                 defaultDate: "+1w",
-                minDate: -30,
+                minDate: +7,
+                maxDate: +90,
                 changeMonth: true,
                 numberOfMonths: 1,
                 beforeShowDay: $.datepicker.noWeekends,

@@ -14,10 +14,10 @@
                     <label id="lblInDescuento" for="inDescuento"> Monto </label>
                     <input class="form-control form-control-sm " type="text" name="inDescuento" id="inDescuento" placeholder="Ingresa el descuento a aplicar" autocomplete="off" required />
                 </div>
-                <div class="form-group col-md-4">
+                @*<div class="form-group col-md-4">
                     <label for="inFactorDesc"> Factor Descuento </label>
                     <input class="form-control form-control-sm " type="text" name="inFactorDesc" id="inFactorDesc" placeholder="Ingresa el Factor" autocomplete="off" required />
-                </div>
+                </div>*@
                 <div class="form-group col-md-4">
                     <label for="inNoCredito">No de Crédito</label>
                     <input class="form-control  form-control-sm" type="text" name="inNoCredito" id="inNoCredito" placeholder="Ingresa el No de credito" required />
@@ -35,10 +35,10 @@
                     <label for="inFechaAusentismo">Fecha de baja del crédito</label>
                     <input type="date" name="inFechaBajaCredito" id="inFechaBajaCredito" value="" class="form-control form-control-sm font-labels" required />
                 </div>
-                <div class="form-group col-md-4">
+                @*<div class="form-group col-md-4">
                     <label for="inFechaAusentismo">Fecha Efectiva</label>
                     <input type="date" name="inFechaReinicioCredito" id="inFechaReinicioCredito" value="" class="form-control form-control-sm font-labels" />
-                </div>
+                </div>*@
                 <div class="form-group col-md-4 text-right">
                     <label class="invisible col-md-12" for="btnSaveCredito">Src Only</label>
                     <div class="btn btn-sm btn-primary font-labels col-md-12" id="btnSaveCredito">Registrar credito <i class="far fa-edit"></i></div>
@@ -55,7 +55,7 @@
                         <th scope="col">Descontar</th>
                         <th scope="col">Factor</th>
                         <th scope="col">Fecha Baja</th>
-                        <th scope="col">Effdt</th>
+                        @*<th scope="col">Effdt</th>*@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -90,7 +90,7 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Creditos.js?n=1"></script>
+<script src="~/Scripts/main/Creditos.js?n=3"></script>
 <script>
     $(function () {
         LoadSelectTipoDescuento();

@@ -37,6 +37,8 @@ namespace Payroll.Models.Daos
                         listEmpleados.DescripcionDepartamento = data["DescripcionDepartamento"].ToString();
                         listEmpleados.DescripcionPuesto = data["DescripcionPuesto"].ToString();
                         listEmpleados.FechaIngreso = data["FechaIngreso"].ToString();
+                        listEmpleados.TipoEmpleado = int.Parse(data["Cg_TipoEmpleado_id"].ToString());
+                        listEmpleados.DescTipoEmpleado = data["Descripcion"].ToString();
                     }
                     else
                     {
@@ -129,6 +131,7 @@ namespace Payroll.Models.Daos
                     list.Add(data["NomPuesto"].ToString());
                     list.Add(data["ReportaA"].ToString());
                     list.Add(data["DescripcionDepartamento"].ToString());
+                    list.Add(data["TipoEmpleado_id"].ToString());
                 }
             }
             else
@@ -178,12 +181,14 @@ namespace Payroll.Models.Daos
                         listEmpleados.Anio = int.Parse(data["Anio"].ToString());
                     } else {
                         listEmpleados.Anio = 0;
-                    }
+                    } 
                     listEmpleados.Fecha_Aniversario = data["FechaAntiguedad"].ToString();
                     listEmpleados.DiasPrima = (data["DiasPrima"].ToString().Length > 0) ? int.Parse(data["DiasPrima"].ToString()) : 0;
                     listEmpleados.DiasDisfrutados = (data["DiasDisfrutados"].ToString().Length > 0) ? int.Parse(data["DiasDisfrutados"].ToString()) : 0;
                     listEmpleados.DiasRestantes = (data["DiasRestantes"].ToString().Length > 0) ? int.Parse(data["DiasRestantes"].ToString()) : 0;
                     listEmpleados.Empresa_id = IdEmpresa.ToString();
+                    listEmpleados.TipoEmpleado = int.Parse(data["Cg_TipoEmpleado_id"].ToString());
+                    listEmpleados.DescTipoEmpleado = data["DescripcionTipoEmpleado"].ToString();
                     list.Add(listEmpleados);
                 }
             } else {
@@ -290,12 +295,12 @@ namespace Payroll.Models.Daos
                     listCreditos.Cancelado = data["Cancelado"].ToString();
                     listCreditos.Descuento = data["Descuento"].ToString();
                     listCreditos.NoCredito = data["NoCredito"].ToString();
-                    listCreditos.FechaAprovacionCredito = data["FechaAprovacionCredito"].ToString();
+                    listCreditos.FechaAprovacionCredito = data["FechaAprobacionCredito"].ToString();
                     listCreditos.Descontar = data["Descontar"].ToString();
-                    if (data["FactorDescuento"].ToString().Length < 1 || data["FactorDescuento"].ToString() == null)
-                    { listCreditos.FactorDescuento = ""; }
-                    else
-                    { listCreditos.FactorDescuento = data["FactorDescuento"].ToString(); }
+                    //if (data["FactorDescuento"].ToString().Length < 1 || data["FactorDescuento"].ToString() == null)
+                    //{ listCreditos.FactorDescuento = ""; }
+                    //else
+                    //{ listCreditos.FactorDescuento = data["FactorDescuento"].ToString(); }
 
                     if (data["FechaBajaCredito"].ToString().Length < 1)
                     { listCreditos.FechaBaja = ""; }
@@ -307,8 +312,11 @@ namespace Payroll.Models.Daos
                     { listCreditos.FechaReinicio = data["FechaReinicioCredito"].ToString(); }
 
                     listCreditos.Finalizado = data["Finalizado"].ToString();
-                    listCreditos.Effdt = data["Effdt"].ToString();
-                    listCreditos.IncidenciaProgramada_id = int.Parse(data["IncidenciaProgramada_id"].ToString());
+                    //listCreditos.Effdt = data["Effdt"].ToString();
+                    if (data["Incidencia_Programada_id"].ToString().Length == 0 || data["Incidencia_Programada_id"] == null)
+                    { }
+                    else { listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString()); }
+                    //listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString());
                     list.Add(listCreditos);
                 }
             }
@@ -540,8 +548,9 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", Comentarios_imss));
             cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", Causa_FaltaInjustificada));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaFin", FechaFin));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipo", Tipo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", "0"));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -670,21 +679,25 @@ namespace Payroll.Models.Daos
                     list.Empleado_id = int.Parse(data["Empleado_id"].ToString());
                     if (data["Cuota_fija"].ToString().Length == 0) { list.Cuota_Fija = ""; } else { list.Cuota_Fija = data["Cuota_fija"].ToString(); }
                     if (data["Porcentaje"].ToString().Length == 0) { list.Porcentaje = 0; } else { list.Porcentaje = int.Parse(data["Porcentaje"].ToString()); }
-                    if (data["AplicaEn"].ToString().Length == 0) { list.AplicaEn = ""; } else { list.AplicaEn = data["AplicaEn"].ToString(); }
+                    if (data["Cg_AplicaEn_id"].ToString().Length == 0) { list.AplicaEn = ""; } else { list.AplicaEn = data["Cg_AplicaEn_id"].ToString(); }
 
                     list.Descontar_en_Finiquito = data["Descontar_en_Finiquito"].ToString();
                     list.No_Oficio = data["No_Oficio"].ToString();
                     list.Fecha_Oficio = data["Fecha_Oficio"].ToString().Substring(0, 10);
-                    list.Tipo_Calculo = data["Tipo_Calculo"].ToString();
-                    list.Aumentar_segun_salario_minimo_general = data["Aumentar_segun_salario_minimo_general"].ToString();
-                    list.Aumentar_segun_aumento_de_sueldo = data["Aumentar_segun_aumento_de_sueldo"].ToString();
+                    //list.Tipo_Calculo = data["Tipo_Calculo"].ToString();
+                    //list.Aumentar_segun_salario_minimo_general = data["Aumentar_segun_salario_minimo_general"].ToString();
+                    //list.Aumentar_segun_aumento_de_sueldo = data["Aumentar_segun_aumento_de_sueldo"].ToString();
                     list.Beneficiaria = data["Beneficiaria"].ToString();
-                    list.Banco = int.Parse(data["Banco"].ToString());
+                    list.Banco = int.Parse(data["Banco_id"].ToString());
                     if (data["Sucursal"].ToString().Length == 0) { list.Sucursal = ""; } else { list.Sucursal = data["Sucursal"].ToString(); }
                     if (data["Tarjeta_vales"].ToString().Length == 0) { list.Tarjeta_vales = ""; } else { list.Tarjeta_vales = data["Tarjeta_vales"].ToString(); }
                     if (data["Cuenta_cheques"].ToString().Length == 0) { list.Cuenta_cheques = ""; } else { list.Cuenta_cheques = data["Cuenta_cheques"].ToString(); }
-                    if (data["Fecha_baja"].ToString().Length == 0) { list.Fecha_baja = ""; } else { list.Fecha_baja = data["Fecha_baja"].ToString().Substring(0, 10); }
-                    list.IncidenciaProgramada_id = data["IncidenciaProgramada_id"].ToString();
+                    //if (data["Fecha_baja"].ToString().Length == 0) { list.Fecha_baja = ""; } else { list.Fecha_baja = data["Fecha_baja"].ToString().Substring(0, 10); }
+                    if (data["IncidenciaProgramada_id"].ToString().Length == 0 || data["IncidenciaProgramada_id"] == null)
+                    { list.IncidenciaProgramada_id = "0"; }
+                    else { list.IncidenciaProgramada_id = data["IncidenciaProgramada_id"].ToString(); }
+
+
                     lista.Add(list);
 
                 }
@@ -698,7 +711,7 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
-        public List<VW_TipoIncidenciaBean> sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(int Empresa_id)
+        public List<VW_TipoIncidenciaBean> sp_VW_tipo_Incidencia_Retrieve_LoadTipoIncidencia(int Empresa_id, string txtSearch)
         {
             List<VW_TipoIncidenciaBean> list = new List<VW_TipoIncidenciaBean>();
             this.Conectar();
@@ -707,6 +720,7 @@ namespace Payroll.Models.Daos
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrltxtSearch", txtSearch));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -745,6 +759,8 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaAplicacion", Fecha_Aplicacion));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", "0"));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -813,7 +829,7 @@ namespace Payroll.Models.Daos
                 {
                     TabIncidenciasBean lista = new TabIncidenciasBean();
                     lista.Incidencia_id = int.Parse(data["Incidencia_id"].ToString());
-                    
+
                     if (data["IncidenciaP_id"] == null || data["IncidenciaP_id"].ToString().Length == 0)
                     {
                         lista.IncidenciaP_id = 0;
@@ -1010,11 +1026,11 @@ namespace Payroll.Models.Daos
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
-                    lista.Certificado_imss = data["Certific ado_imss"].ToString();
+                    lista.Certificado_imss = data["Certificado_imss"].ToString();
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
-                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
-                    lista.FechaFin = data["Fechaf"].ToString();
+                    //lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
+                    //lista.FechaFin = data["Fechaf"].ToString();
                     list.Add(lista);
                 }
             }

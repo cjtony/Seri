@@ -1,35 +1,55 @@
 ﻿<div class="container center bg-white font-labels p-4 shadow shadow-lg h-75">
-
-    <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Todos</a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Por Nombre</a>
-            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Por Nómina</a>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Todos</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Por Nombre</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Por Nómina</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <label class="font-button">Tabla de Incidencias Programadas</label>
+                <table class="table table-sm font-labels">
+                    <thead class="font-labels">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre Empleado</th>
+                            <th scope="col">Empleado ID</th>
+                            <th scope="col">Concepto</th>
+                            <th scope="col">Renglon</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">N. Dias</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabIncProg" class="font-labels">
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
         </div>
-    </nav>
-    <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-            <label class="font-button">Tabla de Incidencias Programadas</label>
-            <table class="table table-sm font-labels">
-                <thead class="font-labels">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nombre Empleado</th>
-                        <th scope="col">Empleado ID</th>
-                        <th scope="col">Concepto</th>
-                        <th scope="col">Renglon</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">N. Dias</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabIncProg" class="font-labels">
-                </tbody>
-            </table>
-        </div>
-        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
     </div>
-
-</div>
-<script src="~/Scripts/main/IncidenciasProg.js" type="text/javascript"></script>
+    <script src="~/Scripts/main/IncidenciasProg.js" type="text/javascript"></script>
+@*<br />
+<br />
+<nav class="navbar nav-backcolor navbar-expand-lg justify-content-between">
+    <div class="navbar-brand text-white">
+        <a href="" class="text-white txt-none">
+            <div class="title-navbar text-center">
+                <i class="fas fa-money-check-alt mr-ico-05 ml-ico-05"></i> IPS
+                <br />
+                <span class="small col text-center" style="font-size:x-small"> by Raciti.</span>
+            </div>
+        </a>
+    </div>
+    <form class="text-right m-0 p-0 col-md-3 font-labels">
+        <div class="small">OMEJIA</div>
+        <div class="small">REJUM</div>
+        <div> <a class=" badge text-primary badge-light badge-pill">&nbsp;Cambiar&nbsp;Empresa&nbsp;&nbsp;Q&nbsp;</a> </div>
+        <div class="small">PERIODO: 19</div>
+        <div class="small">Del 01/10/2020 a 15/10/2020 </div>
+        <div class="small"> 6 de Diciembre del 2020. </div>
+        <div> <a class=" badge text-danger badge-light badge-pill">&nbsp;Salir&nbsp;&nbsp;Q&nbsp;</a> </div>
+    </form>
+</nav>*@

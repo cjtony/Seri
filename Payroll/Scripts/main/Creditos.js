@@ -1,8 +1,8 @@
 ﻿$(function () {
     //var ren_incidencia = document.getElementById("inRenglon");
     //var concepto_incidencia = document.getElementById("inConcepto_incidencia");
-    var factor = document.getElementById("inFactorDesc");
-    factor.disabled = true;
+    //var factor = document.getElementById("inFactorDesc");
+    //factor.disabled = true;
     $("#modalLiveSearchEmpleado").modal("show");
     //Eventos 
     $("#btnSaveCredito").on("click", function () {
@@ -12,7 +12,10 @@
         var fechaa = document.getElementById("inFechaAprovacionCredito");
         var descontar = document.getElementById("inDescontar");
         var fechab = document.getElementById("inFechaBajaCredito");
-        var fechar = document.getElementById("inFechaReinicioCredito");
+        var factor;
+        if (tdescuento.value == "291" || tdescuento.value == 291) { factor = descuento.value; }
+        else { factor = 0 }
+
         var aseg;
         var form = document.getElementById("frmCreditos");
         if (form.checkValidity() == false) {
@@ -35,8 +38,8 @@
                     FechaAprovacion: fechaa.value,
                     Descontar: descontar.value,
                     FechaBaja: fechab.value,
-                    FechaReinicio: fechar.value,
-                    FactorDesc: factor.value
+                    //FechaReinicio: fechar.value,
+                    FactorDesc: factor
                 }),
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -109,7 +112,18 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
-                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'> " + data[0]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>";
+
+                var iconb = "";
+                var colorb = "";
+                if (data[0]["TipoEmpleado"] > 163) {
+                    colorb = "badge-danger";
+                    iconb = "fa-times-circle";
+                } else {
+                    colorb = "badge-success";
+                    iconb = "fa-check-circle";
+                }
+
+                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + " - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>&nbsp;&nbsp;<div class='badge " + colorb + "'><i class='fas " + iconb + "'></i>&nbsp;" + data[0]["TipoEmpleado"] + "&nbsp;-&nbsp;" + data[0]["DescTipoEmpleado"] + "</div>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 createTab();
             }
@@ -137,7 +151,7 @@
                             + "<td>" + data[i]["Descontar"] + "</td>"
                             + "<td>" + data[i]["FactorDescuento"] + "</td>"
                             + "<td>" + data[i]["FechaBaja"].substr(0, 10) + "</td>"
-                            + "<td>" + data[i]["Effdt"] + "</td>"
+                            //+ "<td>" + data[i]["Effdt"] + "</td>"
                             + "<td>"
                             + "<a href='#' class='btn badge badge-light text-center mx-1' onclick='activarCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Activar'><i class='fas fa-lock text-danger'></i> </a>"
                             + "</td>"
@@ -151,7 +165,7 @@
                             + "<td>" + data[i]["Descontar"] + "</td>"
                             + "<td>" + data[i]["FactorDescuento"] + "</td>"
                             + "<td>" + data[i]["FechaBaja"].substr(0, 10) + "</td>"
-                            + "<td>" + data[i]["Effdt"] + "</td>"
+                            //+ "<td>" + data[i]["Effdt"] + "</td>"
                             + "<td>"
                             + "<a href='#' class='btn badge badge-light text-center mx-1' onclick='desactivarCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Desactivar'><i class='fas fa-lock-open text-primary'></i> </a>"
                             + "<a href='#' class='btn badge badge-success text-center mx-1' onclick='updateCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Modificar'><i class='fas fa-edit'></i> </a>"
