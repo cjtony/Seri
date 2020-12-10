@@ -510,6 +510,7 @@
     const fechefectact = document.getElementById('fechefectact');
     const fecefecnom = document.getElementById('fecefecnom');
     const salmen = document.getElementById('salmen');
+    const salmenact = document.getElementById('salmenact');
     const tipper = document.getElementById('tipper');
     const tipemp = document.getElementById('tipemp');
     const nivemp = document.getElementById('nivemp');
@@ -523,6 +524,7 @@
     const politica   = document.getElementById('politica');
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
+    const retroactivo = document.getElementById('retroactivo');
     const tippag = document.getElementById('tippag');
     const banuse = document.getElementById('banuse');
     const cunuse = document.getElementById('cunuse');
@@ -640,11 +642,15 @@
     }
     /* FUNCION QUE CREA UN LOCAL STORAGE DEL EMPLEADO A EDITAR DATOS DE NOMINA */
     flocalstodatatabnomina = () => {
+        let retroactivoSave = 0;
+        if (retroactivo.checked) {
+            retroactivoSave = 1;
+        }
         const dataLocSto = {
             key: 'nom', data: {
                 clvnom: clvnom.value, fechefectact: fechefectact.value,
                 fecefecnom: fecefecnom.value,
-                salmen: salmen.value, tipper: tipper.value,
+                salmen: salmen.value, salmenact: salmen.value, tipper: tipper.value,
                 tipemp: tipemp.value, nivemp: nivemp.value,
                 tipjor: tipjor.value, tipcon: tipcon.value,
                 tipcontra: tipcontra.value,
@@ -652,6 +658,7 @@
                 politica: politica.value,
                 diferencia: diferencia.value,
                 transporte: transporte.value,
+                retroactivo: retroactivoSave,
                 fecing: fecing.value,
                 fecant: fecant.value,
                 vencon: vencon.value,
@@ -787,11 +794,13 @@
                 data: { keyemploye: paramid },
                 success: (data) => {
                     console.log(data);
+                    let retroactivoShow = 0;
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvnom.value       = data.Datos.iIdNomina;
                         fechefectact.value = data.Datos.sFechaEfectiva;
                         fecefecnom.value   = data.Datos.sFechaEfectiva;
                         salmen.value       = data.Datos.dSalarioMensual;
+                        salmenact.value    = data.Datos.dSalarioMensual;
                         tipper.value       = data.Datos.iTipoPeriodo;
                         tipemp.value       = data.Datos.iTipoEmpleado_id;
                         nivemp.value       = data.Datos.iNivelEmpleado_id;
@@ -802,6 +811,11 @@
                         politica.value     = data.Datos.iPolitica;
                         diferencia.value   = data.Datos.dDiferencia;
                         transporte.value   = data.Datos.dTransporte;
+                        if (data.Datos.iRetroactivo == 1) {
+                            retroactivo.checked = 1;
+                        } else {
+                            retroactivo.checked = 0;
+                        }
                         fecing.value       = data.Datos.sFechaIngreso;
                         fecant.value       = data.Datos.sFechaAntiguedad;
                         vencon.value       = data.Datos.sVencimientoContrato;
@@ -818,6 +832,22 @@
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedatanomina.classList.add('d-none');
                             btnsaveeditdatanomina.classList.remove('d-none');
+                            document.getElementById('content-new-inpt-movsal').innerHTML = `
+                                <label for="motmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
+                                    Motivo del movimiento
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="motmovisal" class="form-control form-control-sm" placeholder="Motivo del movimiento"/>
+                                </div>
+                            `;
+                            document.getElementById('content-new-inpt-fecsal').innerHTML = `
+                                <label for="fechmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                                    Fecha de movimiento
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="date" id="fechmovisal" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
+                                </div>
+                            `;
                         }
                     } else {
                         document.getElementById('div-most-alert-data-imss').innerHTML += `
@@ -1335,6 +1365,10 @@
     /* FUNCION QUE GUARDA LA EDICION DE LOS DATOS DE NOMINA DEL EMPLEADO */
     fsaveeditdatanomina = () => {
         let url = "", datasend, banco;
+        const flagSal          = (salmen.value != salmenact.value) ? true : false;
+        const retroactivoSendE = (retroactivo.checked) ? 1 : 0;
+        const motMoviSal       = document.getElementById('motmovisal');
+        const fechMoviSal      = document.getElementById('fechmovisal');
         if (tippag.value == "218" || tippag.value == "220") {
             banco = 999;
         } else {
@@ -1346,20 +1380,18 @@
             datasend = {
                 fecefecnom: fecefecnom.value, salmen: salmen.value, tipemp: tipemp.value, nivemp: nivemp.value,
                 tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
-                //estats: estats.value,
                 empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
-                //motinc: motinc.value,
-                tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: clvemp.value
+                tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: clvemp.value, tiposueldo: tiposueldo.value, politica: politica.value,
+                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "none", fechMoviSal: "none", salmenact: salmenact.value
             };
         } else {
             url = "../EditDataGeneral/EditDataNomina";
             datasend = {
                 fecefecnom: fecefecnom.value, fechefectact: fechefectact.value, salmen: salmen.value, tipper: tipper.value, tipemp: tipemp.value,
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,
-                //motinc: motinc.value,
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
-                transporte: transporte.value
+                transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "none", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value
             };
         }
         try {
@@ -1367,6 +1399,12 @@
             const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag];
             if (fecefecnom.value != fechefectact.value) {
                 arrInput.push(fecefecnom);
+            }
+            if (flagSal) {
+                arrInput.push(motMoviSal);
+                arrInput.push(fechMoviSal);
+                datasend.motMoviSal  = motMoviSal.value;
+                datasend.fechMoviSal = fechMoviSal.value;
             }
             for (let t = 0; t < arrInput.length; t++) {
                 if (arrInput[t].hasAttribute("tp-select")) {
@@ -1435,6 +1473,7 @@
                 }
             }
             if (validatedatanom == 0) {
+                console.log(datasend);
                 $.ajax({
                     url: url,
                     type: "POST",
@@ -1486,7 +1525,7 @@
         try {
             if (clvstract.value != clvstr.value) {
                 const fechmovi = document.getElementById('fechmovi');
-                const motmovi = document.getElementById('motmovi');
+                const motmovi  = document.getElementById('motmovi');
                 let fechActE;
                 const arrInput = [clvstr, fechefectpos, fechinipos, motmovi, fechmovi];
                 let validateSend = 0;
@@ -1498,13 +1537,6 @@
                             const dayE    = (dsE.getDate() < 10) ? "0" + dsE.getDate() : dsE.getDate();
                             const monthE  = ((dsE.getMonth() + 1) < 10) ? "0" + dsE.getMonth() + 1 : dsE.getMonth();
                             fechActE      = dsE.getFullYear() + "-" + monthE + "-" + dayE;
-                            //if (arrInput[a].value < fechAct) {
-                            //    console.log(arrInput[a].value);
-                            //    console.log(fechAct);
-                            //    fshowtypealert('Atencion', 'La fecha ' + arrInput[a].value + ' es incorrecta, debe de ser mayor a la fecha actual', 'warning', arrInput[a], 1);
-                            //    validateSend = 1;
-                            //    break;
-                            //}
                         }
                         else {
                             fshowtypealert('Atencion', 'Completa el campo ' + String(arrInput[a].placeholder), 'warning', arrInput[a], 0);
@@ -1520,7 +1552,7 @@
                     }
                 }
                 const dataSend = {
-                    clvstr: clvstr.value, fechefectpos: fechefectpos.value,
+                    clvstr: clvstr.value, clvact: clvstract.value , fechefectpos: fechefectpos.value, 
                     fechinipos: fechinipos.value, clvemp: clvemp.value,
                     clvnom: clvnom.value, fechmovi: fechmovi.value, motmovi: motmovi.value
                 };

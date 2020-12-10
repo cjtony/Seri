@@ -587,6 +587,7 @@
     const politica   = document.getElementById('politica');
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
+    const retroactivo = document.getElementById('retroactivo');
 
     /*
      * Funcion que guarda los datos del apartado datos de nomina
@@ -598,6 +599,10 @@
         } else {
             banco = banuse.value;
         }
+        let retroactivoSend = 0;
+        if (retroactivo.checked) {
+            retroactivoSend = 1;
+        }
         const dataSend = {
             fecefecnom: fecefecnom.value, salmen: salmen.value, tipemp: tipemp.value, nivemp: nivemp.value,
             tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
@@ -605,10 +610,10 @@
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
             tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value, politica: politica.value,
-            diferencia: diferencia.value, transporte: transporte.value
+            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00
         };
-        console.log('Datos de nomina');
-        console.log(dataSend);
+        //console.log('Datos de nomina');
+        //console.log(dataSend);
         try {
             document.getElementById('txtsave3').textContent = 'Guardando';
             $.ajax({

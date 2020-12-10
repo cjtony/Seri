@@ -471,6 +471,32 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
+        public DataTable sp_Datos_Movimientos_Empleados(string typeOption, int keyOptionSel, int year, int period, int typePeriod)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Movimientos_Empleados", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Empresa_id", keyOptionSel));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", typeOption));
+                cmd.Parameters.Add(new SqlParameter("@Periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", "D"));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand  = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); 
+                cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
         public Boolean sp_Comprueba_Existe_Calculos_Nomina(string typeOption, int keyOptionSel, int typePeriod, int numberPeriod, int yearPeriod)
         {
             Boolean flag = false;

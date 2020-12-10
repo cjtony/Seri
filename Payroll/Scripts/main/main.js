@@ -163,6 +163,7 @@
     const fecefecnom   = document.getElementById('fecefecnom');
     const fechefectact = document.getElementById('fechefectact');
     const salmen       = document.getElementById('salmen');
+    const salmenact    = document.getElementById('salmenact');
     const tipper       = document.getElementById('tipper');
     const tipemp       = document.getElementById('tipemp');
     const nivemp       = document.getElementById('nivemp');
@@ -179,12 +180,14 @@
     const politica     = document.getElementById('politica');
     const diferencia   = document.getElementById('diferencia');
     const transporte   = document.getElementById('transporte');
+    const retroactivo  = document.getElementById('retroactivo');
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
 
     const vardatanomina = [
-        clvnom, fechefectact, fecefecnom, tipper, salmen, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte
+        clvnom, fechefectact, fecefecnom, tipper, salmen, salmenact, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte
     ];
     fclearfieldsvar3 = () => {
+        retroactivo.checked = 0;
         for (let i = 0; i < vardatanomina.length; i++) {
             if (vardatanomina[i].getAttribute('tp-select') != null) {
                 if (vardatanomina[i].id == 'tipper') {
@@ -244,6 +247,22 @@
                 </label>
                 <div class="col-sm-8">
                     <input type="text" id="motmovi" class="form-control form-control-sm" placeholder="Motivo del movimiento"/>
+                </div>
+            `;
+            document.getElementById('content-new-inpt-movsal').innerHTML = `
+                <label for="motmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
+                    Motivo del movimiento
+                </label>
+                <div class="col-sm-8">
+                    <input type="text" id="motmovisal" class="form-control form-control-sm" placeholder="Motivo del movimiento salarial"/>
+                </div>
+            `;
+            document.getElementById('content-new-inpt-fecsal').innerHTML = `
+                <label for="fechmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                    Fecha de movimiento
+                </label>
+                <div class="col-sm-8">
+                    <input type="date" id="fechmovisal" class="form-control form-control-sm" placeholder="Fecha del movimiento salarial" />
                 </div>
             `;
         }
@@ -371,6 +390,7 @@
                     clvnom.value       = getDataTabNom[i].data.clvnom;
                     fecefecnom.value   = getDataTabNom[i].data.fecefecnom;
                     salmen.value       = getDataTabNom[i].data.salmen;
+                    salmenact.value    = getDataTabNom[i].data.salmenact;
                     fechefectact.value = getDataTabNom[i].data.fechefectact;
                     tipper.value       = getDataTabNom[i].data.tipper;
                     tipemp.value       = getDataTabNom[i].data.tipemp;
@@ -917,7 +937,7 @@
                         const dataLocSto = {
                             key: 'nom', data: {
                                 clvnom: clvnom.value,
-                                fecefecnom: fecefecnom.value, salmen: salmen.value,
+                                fecefecnom: fecefecnom.value, salmen: salmen.value, salmenact: salmenact.value,
                                 tipper: tipper.value, tipemp: tipemp.value,
                                 nivemp: nivemp.value, tipjor: tipjor.value,
                                 tipcon: tipcon.value, fecing: fecing.value,
@@ -1094,7 +1114,8 @@
         const labelPoli = document.getElementById('label-politica');
         const labelDife = document.getElementById('label-diferencia');
         const labelTran = document.getElementById('label-transporte');
-        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran];
+        const labelRetr = document.getElementById('label-retroactivo');
+        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran, labelRetr];
         for (let i = 0; i < arrInput.length; i++) {
             arrInput[i].classList.add('col-ico', 'font-weight-bold');
         }

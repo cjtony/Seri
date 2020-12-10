@@ -8,6 +8,9 @@
                     <a class="nav-item nav-link active font-navs" id="nav-dispersion-tab" data-toggle="tab" href="#nav-dispersion" role="tab" aria-controls="nav-dispersion" aria-selected="true">
                         <i class="fas fa-book mr-2"></i> Dispersiones
                     </a>
+                    <a class="nav-item nav-link font-navs" id="nav-dispersion-especial-tab" data-toggle="tab" href="#nav-dispersion-especial" role="tab" aria-controls="nav-dispersion-especial" aria-selected="true">
+                        <i class="fas fa-book mr-2"></i> Dispersion especial
+                    </a>
                     <a class="nav-item nav-link font-navs" id="nav-config-data-bank-tab" data-toggle="tab" href="#nav-config-data-bank" role="tab" aria-controls="nav-config-data-bank" aria-selected="true">
                         <i class="fas fa-cogs mr-2"></i> Configuracion datos bancarios
                     </a>
@@ -23,7 +26,7 @@
                                 <div class="col-md-12 mb-4">
                                     <div class="text-left">
                                         <h6 class="col-ico font-navs">
-                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i>  Completa el formulario </b>
+                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i>  Completa los parametros </b>
                                         </h6>
                                         <hr />
                                     </div>
@@ -100,6 +103,105 @@
                                         <div class="col-md-6 mt-4">
                                             <div class="form-group text-center" id="div-controls"></div>
                                             <div class="form-group" id="divbtndownzipint"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade show p-3" id="nav-dispersion-especial" role="tabpanel" aria-labelledby="nav-especial-tab">
+
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active p-3" id="nav-dispersion-especial" role="tabpanel" aria-labelledby="nav-dispersion-especial-tab">
+                            <div class="row mt-2 shadow border-left-primary border-right-primary p-3 rounded">
+                                <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="text-left">
+                                        <h6 class="col-ico font-navs">
+                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i>  Completa los parametros </b>
+                                        </h6>
+                                        <hr />
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group text-center rounded shadow">
+                                        <label class="col-form-label" style="font-size: 14px;">
+                                            <i class="fas fa-pallet mr-2 col-ico"></i>
+                                            Tipo periodo: <span id="typeperactnomemp1" class="font-weight-bold"></span>
+                                        </label>
+                                        <label class="col-form-label ml-2" style="font-size: 14px;">
+                                            <i class="fas fa-pager mr-2 col-ico"></i>
+                                            Periodo: <span id="peractnomemp1" class="font-weight-bold"></span>
+                                        </label>
+                                        <label class="col-form-label ml-2" style="font-size: 14px;">
+                                            <i class="fas fa-calendar mr-2 col-ico"></i>
+                                            Fechas: <span id="fechaspernomemp1" class="font-weight-bold"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-show-group-business">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-building"></i>
+                                        </span>
+                                        <span class="text">Grupos empresas</span>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-new-group-business">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus"></i>
+                                        </span>
+                                        <span class="text">Nuevo registro</span>
+                                    </button>
+                                    @*<button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-view-banks">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-piggy-bank"></i>
+                                            </span>
+                                            <span class="text">Bancos</span>
+                                        </button>*@
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"> Año </label>
+                                        <input type="text" class="form-control-sm form-control" id="yeardis1" placeholder="Año" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"> Periodo </label>
+                                        <input type="hidden" readonly class="form-control-sm form-control" id="typeperiod1" />
+                                        <input type="text" class="form-control-sm form-control" id="periodis1" placeholder="Periodo" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"> Fecha </label>
+                                        <input type="date" class="form-control-sm form-control" id="datedis1" placeholder="Fecha" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-labels"></label>
+                                        <button id="btn-desplegar-especial-tab" class="btn btn-primary btn-sm btn-block mt-2 rounded shadow">
+                                            <i class="fas fa-play-circle mr-2"></i> Desplegar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 offset-md-1 mt-3" id="container-data-deploy">
+                                    <div id="alert-data-deposits-special" class="text-center"></div>
+                                    <table class="table table-bordered table-hover table-sm shadow rounded" id="table-data-deposits-especial">
+                                    </table>
+                                    <div id="container-btns-process-deposits-bank-special"></div>
+                                    <div class="row">
+                                        <div class="col-md-6 offset-3 mt-4" id="div-show-alert-loading1"></div>
+                                        <div class="col-md-6 mt-4">
+                                            <div class="form-group" id="divbtndownzip1"></div>
+                                            <div class="form-group text-center" id="div-controls-int1"></div>
+                                        </div>
+                                        <div class="col-md-6 mt-4">
+                                            <div class="form-group text-center" id="div-controls1"></div>
+                                            <div class="form-group" id="divbtndownzipint1"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -316,7 +418,7 @@
 </div>
 
 <!-- VENTANA MODAL QUE CONFIGURA LOS DETALLES DE LOS BANCOS -->
-<div class="modal fade bg-gradient" data-backdrop="static" id="details-config-bank" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+<div class="modal fade bg-gradient" data-backdrop="static" data-keyboard="false" id="details-config-bank" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content border-left-primary">
             <div class="modal-header">
@@ -339,9 +441,9 @@
                                 <input type="number" class="form-control form-control-sm" id="num-square-bank" placeholder="Numero de plaza" />
                             </div>
                             @*<div class="form-group">
-                                <label class="col-form-label font-labels" for="num-code-bank">Código</label>
-                                <input type="number" class="form-control form-control-sm" id="num-code-bank" placeholder="Codigo" />
-                            </div>*@
+                                    <label class="col-form-label font-labels" for="num-code-bank">Código</label>
+                                    <input type="number" class="form-control form-control-sm" id="num-code-bank" placeholder="Codigo" />
+                                </div>*@
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="num-bill-bank">No. Cuenta</label>
                                 <input type="number" class="form-control form-control-sm" id="num-bill-bank" placeholder="Numero de cuenta" />
@@ -358,13 +460,13 @@
                                     <option value="0">Selecciona</option>
                                 </select>
                                 @*<div class="form-check mt-3">
-                                    <input class="form-check-input" type="radio" name="optionbank" id="deposits-interbank" value="0">
-                                    <label class="form-check-label" for="inlineRadio1">Generar depositos interbancarios</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="optionbank" id="deposits-bank" value="1">
-                                    <label class="form-check-label" for="inlineRadio2">Generar interface para los depositos</label>
-                                </div>*@
+                                        <input class="form-check-input" type="radio" name="optionbank" id="deposits-interbank" value="0">
+                                        <label class="form-check-label" for="inlineRadio1">Generar depositos interbancarios</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="optionbank" id="deposits-bank" value="1">
+                                        <label class="form-check-label" for="inlineRadio2">Generar interface para los depositos</label>
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -388,9 +490,247 @@
     </div>
 </div>
 
+
+<!-- VENTANA MODAL GRUPOS DE EMPRESAS DISPERSION -->
+<div class="modal fade bg-gradient" data-backdrop="static" id="groupBusiness" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="groupBusiness" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title"> <i class="fas fa-building mr-2 col-ico"></i> Grupos de empresas para dispersion</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-group-business">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="table-responsive animated fadeIn">
+                        <table class="table table-bordered" id="dataTableSpecial" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Nombre grupo</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Nombre grupo</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="data-groupbusiness">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-success btn-sm btn-icon-split" id="btn-register-group-business" data-toggle="modal" data-target="#modalNewGroup">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Crear nuevo</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-group-business">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalNewGroup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> <i class="fas fa-building mr-2 col-ico"></i> Nuevo grupo de empresas </h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-new-group-business">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8 offset-2">
+                        <div class="form-group">
+                            <label class="col-form-label" for="name-new-group">Nombre del grupo:</label>
+                            <input type="text" maxlength="50" class="form-control-sm form-control" id="name-new-group" autofocus />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btn-save-new-group-business">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-new-group-business">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAsignGroup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> <i class="fas fa-building mr-2 col-ico"></i> Asignar empresas a grupos </h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-asign-group-business">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 offset-2">
+                        <div class="form-group">
+                            <label class="col-form-label" for="select-groups">Selecciona un grupo:</label>
+                            <select class="form-control form-control-sm" id="select-groups">
+                                <option value="none">Selecciona</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-form-label" for="select-business">Selecciona la empresa:</label>
+                            <select class="form-control form-control-sm" id="select-business">
+                                <option value="none">Selecciona</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btn-save-asign-group-business">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Guardar</span>
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-asign-group-business">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalViewGroupBusiness" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> <i class="fas fa-building mr-2 col-ico"></i> Empresas del Grupo <span id="namegroup"></span> </h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-view-group-business">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="content-groups">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-view-group-business">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal vista bancos -->
+<div class="modal fade" id="viewBanks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> <i class="fas fa-cogs mr-2"></i> <span id="name-group-business-bank"></span>  </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="ico-close-view-banks">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"> 
+                <div class="container-fluid" id="content-view-banks"></div>
+                <hr />
+                <div class="container-fluid" id="content-view-banks-int"></div>
+                <hr />
+                <div class="container-fluid" id="content-view-banks-nom"></div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="btn-close-view-banks">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal configuracion bancos cargados -->
+<div class="modal fade" id="configBanksSelected" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configuracion bancos interbancarios. Grupo <span class="font-weight-bold" id="nameGInt"></span>.</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-view-cd">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="content-general-config-int">
+                    <div class="row">
+                        <div class="col-md-3" id="options-banks">
+                            <div class="form-group p-2">
+                                <label class="col-form-label" for="select-bank-option">Opción:</label>
+                                <select id="select-bank-option" class="form-control form-control-sm">
+                                    <option value="none">Selecciona</option>
+                                    <option value="1">Ver bancos</option>
+                                    <option value="2" selected>Nuevo</option>
+                                    <option value="3">Datos bancarios</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" id="banks-defined">
+                            <div class="form-group p-2">
+                                <label class="col-form-label" for="select-bank-int">Banco:</label>
+                                <select id="select-bank-int" class="form-control form-control-sm">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" id="banks-available"></div>
+                        <div class="col-md-3" id="btn-sconfig-detail"></div>
+                    </div>
+                    <div class="row" id="content-details-config-banks"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-view-cd">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=1.7"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/databankspecial.js?v=1.0"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/mainspecial.js?v=0.8"></script>
 <script type="text/javascript">
     function check(e) {
         tecla = (document.all) ? e.keyCode : e.which;

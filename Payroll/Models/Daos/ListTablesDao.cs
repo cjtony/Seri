@@ -352,6 +352,15 @@ namespace Payroll.Models.Daos
                     } else {
                         nominaBean.dTransporte = 0.00;
                     }
+                    if (data["Retroactivo"].ToString().Length != 0) {
+                        if (data["Retroactivo"].ToString() == "False") {
+                            nominaBean.iRetroactivo = 0;
+                        } else {
+                            nominaBean.iRetroactivo = 1;
+                        }
+                    } else {
+                        nominaBean.iRetroactivo = 0;
+                    }
                     nominaBean.sCuentaCheques = (String.IsNullOrEmpty(data["Cta_Cheques"].ToString())) ? "" : data["Cta_Cheques"].ToString();
                     nominaBean.iUsuarioAlta_id = Convert.ToInt32(data["Usuario_Alta_id"].ToString());
                     nominaBean.sFechaAlta = data["Fecha_Alta"].ToString();
