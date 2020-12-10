@@ -102,7 +102,7 @@ namespace Payroll.Models.Daos
             return periodoActual;
         }
 
-        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation, int daysPendings, int yearAct, int keyPeriodAct, string dateStartPayment, string dateEndPayment)
+        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation, int daysPendings, int yearAct, int keyPeriodAct, string dateStartPayment, string dateEndPayment, int typeOper)
         {
             BajasEmpleadosBean downEmployee = new BajasEmpleadosBean();
             try
@@ -123,6 +123,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Inicio", dateStartPayment));
                 cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Fin", dateEndPayment));
                 cmd.Parameters.Add(new SqlParameter("@motivo_baja_id", idReasonsDown));
+                cmd.Parameters.Add(new SqlParameter("@tipo_operacion", typeOper));
                 bool proc = Convert.ToBoolean(cmd.ExecuteNonQuery());
                 if (proc) {
                     downEmployee.sMensaje = "SUCCESS";
@@ -133,6 +134,7 @@ namespace Payroll.Models.Daos
             }
             catch (Exception exc)
             {
+                downEmployee.sMensaje = exc.Message.ToString();
                 Console.WriteLine(exc.Message.ToString());
             }
             finally
@@ -241,7 +243,8 @@ namespace Payroll.Models.Daos
                             sFecha_Pago_Inicio = data["Fecha_Pago_Inicio"].ToString(),
                             sFecha_Pago_Fin    = data["Fecha_Pago_Fin"].ToString(),
                             sMotivo_baja = data["Motivo_baja"].ToString(),
-                            iMotivo_baja = Convert.ToInt32(data["Cg_motivo_baja_id"].ToString())
+                            iMotivo_baja = Convert.ToInt32(data["Cg_motivo_baja_id"].ToString()),
+                            sTipo_Operacion = data["Tipo_operacion"].ToString()
                         });
                     }
                 }

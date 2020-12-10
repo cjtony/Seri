@@ -148,6 +148,25 @@ namespace Payroll.Controllers
             empleados = Dao.sp_CEmpleado_Retrieve_Empleado(IdEmpleado, int.Parse(Session["IdEmpresa"].ToString()));
             return Json(empleados);
         }
+
+        [HttpPost]
+        public JsonResult SearchEmpleadoInDown(int IdEmpleado)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<string> bean = new List<string>();
+            FuncionesNomina dao = new FuncionesNomina();
+            try {
+                var Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+                bean = dao.sp_TEmpleado_Nomina_Retrieve_DatosBaja(Empresa_id, IdEmpleado);
+                bean.Add(Empresa_id.ToString());
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(bean);
+        }
+
         [HttpPost]
         public JsonResult DataTabGenEmploye(int keyemploye)
         {

@@ -24,7 +24,7 @@ namespace Payroll.Controllers
         //}
 
         [HttpPost]
-        public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement)
+        public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement, int typeOper)
         {
             Boolean flag       = false;
             Boolean validation = true;
@@ -58,7 +58,7 @@ namespace Payroll.Controllers
                 }
                 if (!validation) {
                     if (flagTypeSettlement) {
-                        downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment);
+                        downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment, typeOper);
                     } else {
                         downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct);
                     }

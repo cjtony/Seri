@@ -52,7 +52,7 @@ namespace Payroll.Models.Beans
         public string sCta_Cheques { get; set; }
         public string sFecha_Pago_Inicio { get; set; }
         public string sFecha_Pago_Fin { get; set; }
-
+        public string sTipo_Operacion { get; set; }
         public int iMotivo_baja { get; set; }
         public string sMotivo_baja { get; set; }
         public int iban_fecha_ingreso { get; set; }
