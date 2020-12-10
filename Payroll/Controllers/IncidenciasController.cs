@@ -421,7 +421,7 @@ namespace Payroll.Controllers
                             Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo);
                         }
                         list.Add("1");
-                        list.Add("Carga de Insidencias subida correctamente");
+                        list.Add("Carga de Insidencias correcta");
                     }
                     else
                     {
@@ -459,7 +459,7 @@ namespace Payroll.Controllers
                         {
                             Dao.InsertaCargaMasivaAusentismo(table.Rows[k], Periodo, IsCargaMasiva);
                             list.Add("1");
-                            list.Add("Carga de Ausentismos subida correctamente");
+                            list.Add("Carga de Ausentismos correcta");
                         }
                     }
                     else
@@ -501,7 +501,7 @@ namespace Payroll.Controllers
                             Dao.InsertaCargaMasivaCreditos(table.Rows[k], Periodo, IsCargaMasiva);
                         }
                         list.Add("1");
-                        list.Add("Carga de Creditos subida correctamente");
+                        list.Add("Carga de Creditos correcta");
                     }
                     else
                     {
@@ -542,7 +542,7 @@ namespace Payroll.Controllers
                             Dao.InsertaCargaMasivaPensionesAlimenticias(table.Rows[k], Periodo, IsCargaMasiva);
                         }
                         list.Add("1");
-                        list.Add("Hecho");
+                        list.Add("Carga de Pensiones correcta");
                     }
                     else
                     {
