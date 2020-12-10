@@ -1,4 +1,4 @@
-﻿$(function () { 
+﻿$(function () {
 
     //Muestra en principio el modal de busqueda
     $("#modalLiveSearchEmpleado").modal("show");
@@ -34,7 +34,7 @@
 
     //$("#inTiposBaja").on("change", function () {
 
-        
+
     //});
 
     fLoadMotiveDown = () => {
@@ -59,7 +59,7 @@
         });
     }
 
-    
+
 
     MostrarDatosEmpleado = (idE) => {
         document.getElementById('inputSearchEmpleados').value = "";
@@ -68,80 +68,122 @@
         dateSendDown.innerHTML = `<option value="none">Selecciona</option>`;
         document.getElementById("inTiposBaja").innerHTML = `<option value="none">Selecciona</option>`;
         $.ajax({
-            url: "../Empleados/SearchEmpleado",
+            url: "../Empleados/SearchEmpleadoInDown",
             type: "POST",
             data: JSON.stringify(txtIdEmpleado),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: (emp) => {
-                console.log('Mostrando datos de empleado');
-                console.log(emp);
-                fLoadInfoDaysYearsBefore(parseInt(emp[0].Empresa_id), emp[0].IdEmpleado);
-                //document.getElementById("nameuser").innerHTML = emp[0].Nombre_Empleado + " " + emp[0].Apellido_Paterno_Empleado + " " + emp[0].Apellido_Materno_Empleado;
-                //carga datos de header para baja
-                $.ajax({
-                    url: "../Nomina/LoadDatosBaja",
-                    type: "POST",
-                    data: JSON.stringify(),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: (res) => {
-                        console.log(res);
-                        document.getElementById('keyEmployee').value        = res[0];
-                        document.getElementById("id_emp").innerHTML         = res[0] + " - " + res[1];
-                        document.getElementById("sueldo_emp").innerHTML     = "$ " + res[2];
-                        document.getElementById("aumento_emp").innerHTML    = res[3];
-                        document.getElementById("antiguedad_emp").innerHTML = res[4];
-                        document.getElementById("ingreso_emp").innerHTML    = res[5];
-                        document.getElementById("nivel_emp").innerHTML      = res[6];
-                        document.getElementById("posicion_emp").innerHTML   = res[7];
-                        document.getElementById('dateAntiquityEmp').value   = res[4];
-                        dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
-                        dateSendDown.innerHTML += `<option value="1">Fecha de ingreso    - ${res[5]}</option>`;
-                        document.getElementById('info-employee').classList.remove('d-none');
-                        //document.getElementById('info-employee').classList.add('animated fadeIn delay-1s');
-                    }
-                });
-                //carga select tipo Baja
-                $.ajax({
-                    url: "../Nomina/LoadTipoBaja",
-                    type: "POST",
-                    data: JSON.stringify(),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: (tipo) => {
-                        console.log('Tipos de baja');
-                        console.log(tipo);
-                        for (var i = 0; i < tipo.length; i++) {
-                            document.getElementById("inTiposBaja").innerHTML += "<option value='" + tipo[i]["IdTipo_Empleado"] + "'>" + tipo[i]["Descripcion"] + "</option>";
-                        }
-                    }
-                });
-
-                $("#modalLiveSearchEmpleado").modal("hide");
+            success: (res) => {
+                console.log(res);
+                document.getElementById('keyEmployee').value = res[0];
+                document.getElementById("id_emp").innerHTML = res[0] + " - " + res[1];
+                document.getElementById("sueldo_emp").innerHTML = "$ " + res[2];
+                document.getElementById("aumento_emp").innerHTML = res[3];
+                document.getElementById("antiguedad_emp").innerHTML = res[4];
+                document.getElementById("ingreso_emp").innerHTML = res[5];
+                document.getElementById("nivel_emp").innerHTML = res[6];
+                document.getElementById("posicion_emp").innerHTML = res[7];
+                document.getElementById('dateAntiquityEmp').value = res[4];
+                dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
+                dateSendDown.innerHTML += `<option value="1">Fecha de ingreso    - ${res[5]}</option>`;
+                document.getElementById('info-employee').classList.remove('d-none');
+                fLoadInfoDaysYearsBefore(parseInt(res[8]), parseInt(res[0]));
+                //document.getElementById('info-employee').classList.add('animated fadeIn delay-1s');
             }
         });
+        //carga select tipo Baja
+        $.ajax({
+            url: "../Nomina/LoadTipoBaja",
+            type: "POST",
+            data: JSON.stringify(),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: (tipo) => {
+                console.log('Tipos de baja');
+                console.log(tipo);
+                for (var i = 0; i < tipo.length; i++) {
+                    document.getElementById("inTiposBaja").innerHTML += "<option value='" + tipo[i]["IdTipo_Empleado"] + "'>" + tipo[i]["Descripcion"] + "</option>";
+                }
+            }
+        });
+
+        $("#modalLiveSearchEmpleado").modal("hide");
+        //$.ajax({
+        //    url: "../Empleados/SearchEmpleadoInDown",
+        //    type: "POST",
+        //    data: JSON.stringify(txtIdEmpleado),
+        //    dataType: "json",
+        //    contentType: "application/json; charset=utf-8",
+        //    success: (emp) => {
+        //        console.log('Mostrando datos de empleado');
+        //        console.log(emp);
+        //        fLoadInfoDaysYearsBefore(parseInt(emp[0].Empresa_id), emp[0].IdEmpleado);
+        //        //document.getElementById("nameuser").innerHTML = emp[0].Nombre_Empleado + " " + emp[0].Apellido_Paterno_Empleado + " " + emp[0].Apellido_Materno_Empleado;
+        //        //carga datos de header para baja
+        //        $.ajax({
+        //            url: "../Nomina/SearchEmpleadoInDown",
+        //            type: "POST",
+        //            data: JSON.stringify(),
+        //            dataType: "json",
+        //            contentType: "application/json; charset=utf-8",
+        //            success: (res) => {
+        //                console.log(res);
+        //                document.getElementById('keyEmployee').value = res[0];
+        //                document.getElementById("id_emp").innerHTML = res[0] + " - " + res[1];
+        //                document.getElementById("sueldo_emp").innerHTML = "$ " + res[2];
+        //                document.getElementById("aumento_emp").innerHTML = res[3];
+        //                document.getElementById("antiguedad_emp").innerHTML = res[4];
+        //                document.getElementById("ingreso_emp").innerHTML = res[5];
+        //                document.getElementById("nivel_emp").innerHTML = res[6];
+        //                document.getElementById("posicion_emp").innerHTML = res[7];
+        //                document.getElementById('dateAntiquityEmp').value = res[4];
+        //                dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
+        //                dateSendDown.innerHTML += `<option value="1">Fecha de ingreso    - ${res[5]}</option>`;
+        //                document.getElementById('info-employee').classList.remove('d-none');
+        //                //document.getElementById('info-employee').classList.add('animated fadeIn delay-1s');
+        //            }
+        //        });
+        //        //carga select tipo Baja
+        //        $.ajax({
+        //            url: "../Nomina/LoadTipoBaja",
+        //            type: "POST",
+        //            data: JSON.stringify(),
+        //            dataType: "json",
+        //            contentType: "application/json; charset=utf-8",
+        //            success: (tipo) => {
+        //                console.log('Tipos de baja');
+        //                console.log(tipo);
+        //                for (var i = 0; i < tipo.length; i++) {
+        //                    document.getElementById("inTiposBaja").innerHTML += "<option value='" + tipo[i]["IdTipo_Empleado"] + "'>" + tipo[i]["Descripcion"] + "</option>";
+        //                }
+        //            }
+        //        });
+
+        //        $("#modalLiveSearchEmpleado").modal("hide");
+        //    }
+        //});
     }
 
     /*
      * Constantes bajas
      */
-    const downSettlement        = document.getElementById('down-settlement');
+    const downSettlement = document.getElementById('down-settlement');
+    const optionSettlement = document.getElementById('option-settlement');
     const btnShowWindowDataDown = document.getElementById('btnShowWindowDataDonw');
-    const btnGuardaBaja    = document.getElementById('btnGuardaBaja');
-    const keyEmployee      = document.getElementById('keyEmployee');
+    const btnGuardaBaja = document.getElementById('btnGuardaBaja');
+    const keyEmployee = document.getElementById('keyEmployee');
     const dateAntiquityEmp = document.getElementById('dateAntiquityEmp');
-    const inTiposBaja   = document.getElementById('inTiposBaja');
+    const inTiposBaja = document.getElementById('inTiposBaja');
     const inMotivosBaja = document.getElementById('inMotivosBaja');
     const daysYearsAftr = document.getElementById('daysYearsAfter');
-    const dateDownEmp   = document.getElementById('dateDownEmp');
-    const daysPendings  = document.getElementById('daysPendings');
-    const dateSendDown  = document.getElementById('dateSendDown');
-    const compSendEsp   = document.getElementById('compSendEsp');
-    const divContentP0  = document.getElementById('div-content-param0');
-    const divContentP1  = document.getElementById('div-content-param1');
-    const divContentP2  = document.getElementById('div-content-param2');
-    const divContentP3  = document.getElementById('div-content-param3');
+    const dateDownEmp = document.getElementById('dateDownEmp');
+    const daysPendings = document.getElementById('daysPendings');
+    const dateSendDown = document.getElementById('dateSendDown');
+    const compSendEsp = document.getElementById('compSendEsp');
+    const divContentP0 = document.getElementById('div-content-param0');
+    const divContentP1 = document.getElementById('div-content-param1');
+    const divContentP2 = document.getElementById('div-content-param2');
+    const divContentP3 = document.getElementById('div-content-param3');
 
     const btnCloseSettlementSelect = document.getElementById("btnCloseSettlementSelect");
     const icoCloseSettlementSelect = document.getElementById("icoCloseSettlementSelect");
@@ -156,20 +198,20 @@
     class CampoNumerico {
 
         constructor(selector) {
-            this.nodo  = document.querySelector(selector);
+            this.nodo = document.querySelector(selector);
             this.valor = '';
             this.eventoKeyUp();
         }
 
         eventoKeyUp = () => {
-            this.nodo.addEventListener('keydown', function(ev) {
+            this.nodo.addEventListener('keydown', function (ev) {
                 const teclaPress = ev.key;
                 const teclaPressNumero = Number.isInteger(parseInt(teclaPress));
                 const teclaPressNoAdmitida =
-                    teclaPress != "ArrowDown" && teclaPress != "ArrowUp"    &&
+                    teclaPress != "ArrowDown" && teclaPress != "ArrowUp" &&
                     teclaPress != "ArrowLeft" && teclaPress != "ArrowRight" &&
-                    teclaPress != "Backspace" && teclaPress != "Delete"     &&
-                    teclaPress != "Enter"     && !teclaPressNumero;
+                    teclaPress != "Backspace" && teclaPress != "Delete" &&
+                    teclaPress != "Enter" && !teclaPressNumero;
                 const comienzaCero = this.nodo.value.length === 0 && teclaPress == 0;
                 if (teclaPressNoAdmitida || comienzaCero) {
                     ev.preventDefault();
@@ -263,14 +305,21 @@
     }
 
     // Funcion que habilita los campos a llenar dependiendo si es baja con finiquito o no
-    fSHowFieldsSettlement = () => {
+    fSHowFieldsSettlement = (paramflag) => {
         try {
             const downSetValue = downSettlement.value;
-            if (downSetValue == "1") {
-                fAddAnimatedFields(divContentP0);
-                fAddAnimatedFields(divContentP1);
-                fAddAnimatedFields(divContentP2);
-                fAddAnimatedFields(divContentP3);
+            if (paramflag == 1) {
+                if (downSetValue == "1") {
+                    fAddAnimatedFields(divContentP0);
+                    fAddAnimatedFields(divContentP1);
+                    fAddAnimatedFields(divContentP2);
+                    fAddAnimatedFields(divContentP3);
+                } else {
+                    fRemAnimatedFields(divContentP0);
+                    fRemAnimatedFields(divContentP1);
+                    fRemAnimatedFields(divContentP2);
+                    fRemAnimatedFields(divContentP3);
+                }
             } else {
                 fRemAnimatedFields(divContentP0);
                 fRemAnimatedFields(divContentP1);
@@ -292,6 +341,7 @@
 
     // Funcion que obtiene los dias de años anteriores
     fLoadInfoDaysYearsBefore = (param1, param2) => {
+        //console.log('informacion dias');
         try {
             if (param1 > 0 && param2 > 0) {
                 $.ajax({
@@ -301,6 +351,7 @@
                     beforeSend: () => {
                         console.log('Enviando');
                     }, success: (data) => {
+                        console.log(data);
                         daysYearsAftr.value = data.days;
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -339,7 +390,7 @@
                     }, success: (data) => {
                         console.log(data);
                         if (data.Bandera == true && data.MensajeError == "none") {
-                            let sumEstatus  = 0;
+                            let sumEstatus = 0;
                             for (let j = 0; j < data.DatosFiniquito.length; j++) {
                                 if (data.DatosFiniquito[j].iEstatus > 0) {
                                     sumEstatus += 1;
@@ -348,16 +399,17 @@
                             for (let i = 0; i < data.DatosFiniquito.length; i++) {
                                 const inf = data.DatosFiniquito[i];
                                 let actionSavePay = `onclick="fSelectSettlementPaid(${data.DatosFiniquito[i].iIdFiniquito})"`;
-                                let actionCancel  = `onclick="fCancelSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1)"`;
-                                let titleCancel   = `title="Cancelar Finiquito"`;
-                                let icoCancel     = `<i class="fas fa-times"></i>`;
-                                let colBtnCancel  = "btn-danger";
+                                let actionCancel = `onclick="fCancelSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1)"`;
+                                let titleCancel = `title="Cancelar Finiquito"`;
+                                let icoCancel = `<i class="fas fa-times"></i>`;
+                                let colBtnCancel = "btn-danger";
                                 let btnPaidSucces = "";
                                 let validCancel = "";
                                 let infoPaid = "";
-                                let checked  = "";
-                                let cancel   = "";
+                                let checked = "";
+                                let cancel = "";
                                 let cancelPay = "";
+                                let btnAddComplement = "";
                                 let downNotSettlement = "";
                                 let btnGenerateSettlement = "";
                                 let actionGeneratePDF = `onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"`;
@@ -368,27 +420,30 @@
                                 let spanDownNotSet = "";
                                 let enabledPay = "";
                                 if (data.DatosFiniquito[i].sCancelado == "True") {
-                                    validCancel  = "disabled";
-                                    cancel       = `<span class="badge ml-2 badge-danger"> <i class="fas fa-times-circle mr-1"></i>Cancelado</span>`;
+                                    validCancel = "disabled";
+                                    cancel = `<span class="badge ml-2 badge-danger"> <i class="fas fa-times-circle mr-1"></i>Cancelado</span>`;
                                     actionCancel = `onclick="fCancelSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 0)"`;
-                                    titleCancel  = `title="Reactivar Finiquito"`;
-                                    icoCancel    = `<i class="fas fa-undo text-white"></i>`;
+                                    titleCancel = `title="Reactivar Finiquito"`;
+                                    icoCancel = `<i class="fas fa-undo text-white"></i>`;
                                     colBtnCancel = "btn-warning";
-                                    cancelPay    = "disabled";
+                                    cancelPay = "disabled";
+                                }
+                                if (data.DatosFiniquito[i].sTipo_Operacion == "False") {
+                                    btnAddComplement = `<button class="btn btn-primary btn-sm" title="Añadir complemento (Esta opcion se encuentra en modo de desarrollo, pronto estara habilitada en el sistema)" disabled> <i class="fas fa-plus"></i> </button>`;
                                 }
                                 if (data.DatosFiniquito[i].iEstatus == 1) {
                                     actionSavePay = "disabled";
-                                    enabledPay    = "disabled";
-                                    checked       = "checked";
+                                    enabledPay = "disabled";
+                                    checked = "checked";
                                     infoPaid = `<span class="badge ml-2 badge-warning"><i class="fas fa-clock mr-1"></i>Pendiente para pago</span>`;
                                     btnPaidSucces = `<button id="btnConfirmPaidSuc${data.DatosFiniquito[0].iIdFiniquito}" onclick="fConfirmPaidSuccess(${data.DatosFiniquito[i].iIdFiniquito})" type="button" class="btn btn-sm btn-success" title="Marcar como pagado">
                                             <i class="fas fa-check-circle"></i>
                                         </button>`;
                                 } else if (data.DatosFiniquito[i].iEstatus == 2) {
                                     actionSavePay = "disabled";
-                                    enabledPay    = "disabled";
-                                    checked       = "checked";
-                                    checked       = "checked";
+                                    enabledPay = "disabled";
+                                    checked = "checked";
+                                    checked = "checked";
                                     infoPaid = `<span class="badge ml-2 badge-success"><i class="fas fa-check-circle mr-1"></i>Pagado</span>`;
                                 } else if (data.DatosFiniquito[i].iEstatus == 3) {
                                     enabledPay = "disabled";
@@ -417,6 +472,7 @@
                                             <span style="font-size:14px;"><b>Tipo:</b> ${data.DatosFiniquito[i].sFiniquito_valor}.</span>
                                     </span>
                                     <span class="badge">
+                                        ${btnAddComplement}
                                         ${btnGenerateSettlement}
                                         <button class="btn btn-sm btn-primary" title="Detalle" id="btnGenerateReceipt${data.DatosFiniquito[i].iIdFiniquito}"
                                             ${actionGeneratePDF} ${disabledGeneratePDF}> 
@@ -468,11 +524,11 @@
     // Funcion que limpia los campos 
     fClearFields = () => {
         downSettlement.value = "none";
-        inTiposBaja.value    = "none";
-        inMotivosBaja.value  = "none";
-        dateDownEmp.value    = "";
-        daysPendings.value   = 0;
-        dateSendDown.value   = "none";
+        inTiposBaja.value = "none";
+        inMotivosBaja.value = "none";
+        dateDownEmp.value = "";
+        daysPendings.value = 0;
+        dateSendDown.value = "none";
         compSendEsp.value = "none";
         fRemAnimatedFields(divContentP0);
         fRemAnimatedFields(divContentP1);
@@ -484,7 +540,7 @@
     fSelectSettlementPaid = (paramid) => {
         try {
             const checkBoxSel = document.getElementById("radioSelect" + String(paramid));
-            if ($("#divSelectPay"+String(paramid)+" input[id='radioSelect" + String(paramid) + "']:checkbox").is(':checked')) {
+            if ($("#divSelectPay" + String(paramid) + " input[id='radioSelect" + String(paramid) + "']:checkbox").is(':checked')) {
                 if (parseInt(paramid) > 0) {
                     $.ajax({
                         url: "../BajasEmpleados/SelectSettlementPaid",
@@ -497,11 +553,11 @@
                                 Swal.fire({
                                     title: "Correcto", text: "Opcion guardada", icon: "success",
                                     showClass: { popup: 'animated fadeInDown faster' },
-                                    hideClass: { popup: 'animated fadeOutUp faster'  },
+                                    hideClass: { popup: 'animated fadeOutUp faster' },
                                     confirmButtonText: "Aceptar",
                                     allowOutsideClick: false,
-                                    allowEscapeKey:    false,
-                                    allowEnterKey:     false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false,
                                 }).then((acepta) => {
                                     fShowDataDown();
                                 });
@@ -543,13 +599,13 @@
         try {
             if (parseInt(paramid) > 0) {
                 $("#window-data-down").modal('hide');
-                const arrayDateDown  = String(paramdate).split("/");
+                const arrayDateDown = String(paramdate).split("/");
                 downSettlement.value = "1";
-                inTiposBaja.value    = paramtf;
-                dateDownEmp.value    = arrayDateDown[2] + "-" + arrayDateDown[1] + "-" + arrayDateDown[0];
+                inTiposBaja.value = paramtf;
+                dateDownEmp.value = arrayDateDown[2] + "-" + arrayDateDown[1] + "-" + arrayDateDown[0];
                 fLoadMotiveDown();
                 setTimeout(() => { inMotivosBaja.value = parammd; }, 1000);
-                setTimeout(() => { fSHowFieldsSettlement(); }, 1100);
+                setTimeout(() => { fSHowFieldsSettlement(1); }, 1100);
             } else {
                 alert('Accion invalida');
                 location.reload();
@@ -713,7 +769,7 @@
                             });
                         } else {
                             const checkBoxSel = document.getElementById("radioSelect" + String(paramid));
-                            fShowTypeAlertDE('Error', "Ocurrio un error al confirmar el pago", "error", checkBoxSel, 0,0);
+                            fShowTypeAlertDE('Error', "Ocurrio un error al confirmar el pago", "error", checkBoxSel, 0, 0);
                         }
                         document.getElementById('btnConfirmPaidSuc' + String(paramid)).disabled = false;
                     }, error: (jqXHR, exception) => {
@@ -735,7 +791,7 @@
                 console.error('Error: ', error);
             }
         }
-    } 
+    }
 
     // Funcion que elimina el pdf generado una vez descargado
     fDeletePdfSettlement = (paramstr, paramid, paramfolder) => {
@@ -770,7 +826,7 @@
                             } else {
                                 alert('Error al eliminar el pdf del almacenamiento temporal');
                             }
-                        }, 1000); 
+                        }, 1000);
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }
@@ -857,7 +913,7 @@
                         if (dateDownEmp.value != "") {
                             if (!flagTypeValt) {
                                 dateSendDown.value = "0";
-                                compSendEsp.value  = "0";
+                                compSendEsp.value = "0";
                             }
                             console.log('Valor de la bandera: ' + flagTypeValt);
                             console.log('Valor de fecha a usar: ' + dateSendDown.value);
@@ -873,7 +929,8 @@
                                         daysPending: parseInt(valDaysPendings),
                                         typeDate: parseInt(dateSendDown.value),
                                         typeCompensation: parseInt(compSendEsp.value),
-                                        flagTypeSettlement: flagTypeValt
+                                        flagTypeSettlement: flagTypeValt,
+                                        typeOper: optionSettlement.value
                                     };
                                     console.log('Datos a enviar: ');
                                     console.log(dataSend);
@@ -948,13 +1005,48 @@
         }
     }
 
+    fEnabledOptionsSettlement = (flag) => {
+        downSettlement.disabled = flag;
+        dateDownEmp.disabled = flag;
+        inTiposBaja.disabled = flag;
+        inMotivosBaja.disabled = flag;
+    }
+
+    // Funcion que deshabilita las opciones no necesarias dependiendo la opcion seleccionada
+    fDisabledEnabledOptions = () => {
+        try {
+            const optionSelected = optionSettlement.value;
+            if (optionSelected == "1") {
+                fEnabledOptionsSettlement(true);
+                fSHowFieldsSettlement(0);
+                downSettlement.value = "none";
+            } else { 
+                fEnabledOptionsSettlement(false);
+                fSHowFieldsSettlement(0);
+                //downSettlement.value = "none";
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
     /*
-     * Ejecucion de funciones
-     */
+    * Ejecucion de funciones
+    */
 
     btnShowWindowDataDown.addEventListener('click', fShowDataDown);
     btnGuardaBaja.addEventListener('click', fSendDataDown);
 
-    downSettlement.addEventListener('change', fSHowFieldsSettlement);
+    downSettlement.addEventListener('change', () => { fSHowFieldsSettlement(1); });
+
+    optionSettlement.addEventListener('change', fDisabledEnabledOptions);
 
 });

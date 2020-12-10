@@ -86,7 +86,27 @@
                                 </div>
                             </div>
                             <div id="frmbajas" class="shadow rounded border-left-primary border-right-primary p-3 row">
-                                <div class="form-group col-md-3">
+
+                                <div class="col-md-10 offset-1 mb-4">
+                                    <div class="alert alert-info alert-dismissible fade show shadow rounded text-center" role="alert">
+                                        <strong>Info!</strong> el apartado de complementos de finiquito continua en proceso de desarrollo.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 mb-4"></div>
+                                <div class="form-group col-md-2">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold" for="option-settlement">
+                                        Opcion:
+                                    </label>
+                                    <select id="option-settlement" class="form-control form-control-sm" disabled>
+                                        <option value="none">Selecciona</option>
+                                        <option value="0" selected>Finiquito</option>
+                                        <option value="1">Complemento</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
                                     <label class="col-form-label font-labels col-ico font-weight-bold" for="down-settlement">
                                         Baja con finiquito
                                     </label>
@@ -96,54 +116,54 @@
                                         <option value="0">No</option>
                                     </select>
                                 </div>
-                                    <div class="form-group col-md-3">
-                                        <input type="hidden" readonly id="keyEmployee" />
-                                        <input type="hidden" readonly id="dateAntiquityEmp" />
-                                        <label class="col-form-label font-labels col-ico font-weight-bold">Tipo de Baja</label>
-                                        <select id="inTiposBaja" class="form-control form-control-sm">
-                                            <option value="none">Selecciona</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label class="col-form-label font-labels col-ico font-weight-bold">Motivos de Baja</label>
-                                        <select id="inMotivosBaja" class="form-control form-control-sm">
-                                            <option value="">Selecciona</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label class="col-form-label font-labels col-ico font-weight-bold">Fecha Baja</label>
-                                        <input type="date" class="form-control form-control-sm" id="dateDownEmp" />
-                                    </div>
-                                    <div class="form-group col-md-3 animated" id="div-content-param0">
-                                        <label class="col-form-label font-labels col-ico font-weight-bold">Días A. anteriores</label>
-                                        <input type="number" class="form-control form-control-sm" id="daysYearsAfter" pattern="^[0-9]+" />
-                                    </div>
-                                    <div class="form-group col-md-3 animated" id="div-content-param1">
-                                        <label class="col-form-label font-labels col-ico font-weight-bold">Dias pendientes</label>
-                                        <input type="number" class="form-control form-control-sm" id="daysPendings" value="0" min="0" pattern="^[0-9]+" />
-                                    </div>
-                                    <div class="col-md-3 form-group animated" id="div-content-param2">
-                                        <label class="col-form-label font-labels col-ico font-weight-bold">Fecha a usar</label>
-                                        <select class="form-control form-control-sm" id="dateSendDown">
-                                            <option value="none">Selecciona</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 form-group animated" id="div-content-param3">
-                                        <label class="col-form-label font-labels col-ico font-weight-bold">Con compensacion especial</label>
-                                        <select class="form-control form-control-sm" id="compSendEsp">
-                                            <option value="none" selected>Selecciona</option>
-                                            <option value="0">No</option>
-                                            <option value="1">Si</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 text-center offset-4 mb-2 mt-3">
-                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btnGuardaBaja">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                            <span class="text">Guardar</span>
-                                        </button>
-                                    </div>
+                                <div class="form-group col-md-2">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold">Fecha Baja</label>
+                                    <input type="date" class="form-control form-control-sm" id="dateDownEmp" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <input type="hidden" readonly id="keyEmployee" />
+                                    <input type="hidden" readonly id="dateAntiquityEmp" />
+                                    <label class="col-form-label font-labels col-ico font-weight-bold">Tipo de Baja</label>
+                                    <select id="inTiposBaja" class="form-control form-control-sm">
+                                        <option value="none">Selecciona</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold">Motivos de Baja</label>
+                                    <select id="inMotivosBaja" class="form-control form-control-sm">
+                                        <option value="">Selecciona</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3 animated" id="div-content-param0">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold">Días A. anteriores</label>
+                                    <input type="number" class="form-control form-control-sm" id="daysYearsAfter" pattern="^[0-9]+" />
+                                </div>
+                                <div class="form-group col-md-3 animated" id="div-content-param1">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold">Dias pendientes</label>
+                                    <input type="number" class="form-control form-control-sm" id="daysPendings" value="0" min="0" pattern="^[0-9]+" />
+                                </div>
+                                <div class="col-md-3 form-group animated" id="div-content-param2">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold">Fecha a usar</label>
+                                    <select class="form-control form-control-sm" id="dateSendDown">
+                                        <option value="none">Selecciona</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 form-group animated" id="div-content-param3">
+                                    <label class="col-form-label font-labels col-ico font-weight-bold">Con compensacion especial</label>
+                                    <select class="form-control form-control-sm" id="compSendEsp">
+                                        <option value="none" selected>Selecciona</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 text-center offset-4 mb-2 mt-3">
+                                    <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btnGuardaBaja">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text">Guardar</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -346,5 +366,5 @@
     </div>
 </div>
 
-<script src="~/Scripts/main/BajasEmpleados.js?n=5.6"></script>
-<script type="text/javascript" src="~/Scripts/main/BajasMasivas/main.js?n=1.2"></script>
+<script src="~/Scripts/main/BajasEmpleados.js?n=5.9"></script>
+<script type="text/javascript" src="~/Scripts/main/BajasMasivas/main.js?n=1.3"></script>
