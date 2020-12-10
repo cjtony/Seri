@@ -166,7 +166,7 @@
                         + "<td>" + data[i]["Beneficiaria"] + "</td>"
                         + "<td>" + data[i]["No_Oficio"] + "</td>"
                         + "<td>" + data[i]["Fecha_Oficio"] + "</td>"
-                        + "<td>" + data[i]["Fecha_baja"] + "</td>"
+                        //+ "<td>" + data[i]["Fecha_baja"] + "</td>"
                         + "<td>$ " + data[i]["Cuota_Fija"] + " - % " + data[i]["Porcentaje"] + "</td>"
                         + "<td><div class='btn badge badge-danger btn-editar-pensiones ' onclick='eliminarPension( " + data[i]["IdPension"] + "," + data[i]["IncidenciaProgramada_id"] + ");'><i class='fas fa-minus'></i></div></td>"
                         + "</tr>";

@@ -323,7 +323,7 @@ namespace Payroll.Models.Daos
                     listCreditos.Finalizado = data["Finalizado"].ToString();
                     //listCreditos.Effdt = data["Effdt"].ToString();
                     if (data["Incidencia_Programada_id"].ToString().Length == 0 || data["Incidencia_Programada_id"] == null)
-                    {          }
+                    { }
                     else { listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString()); }
                     //listCreditos.IncidenciaProgramada_id = int.Parse(data["Incidencia_Programada_id"].ToString());
                     list.Add(listCreditos);
@@ -693,16 +693,20 @@ namespace Payroll.Models.Daos
                     list.Descontar_en_Finiquito = data["Descontar_en_Finiquito"].ToString();
                     list.No_Oficio = data["No_Oficio"].ToString();
                     list.Fecha_Oficio = data["Fecha_Oficio"].ToString().Substring(0, 10);
-                    list.Tipo_Calculo = data["Tipo_Calculo"].ToString();
-                    list.Aumentar_segun_salario_minimo_general = data["Aumentar_segun_salario_minimo_general"].ToString();
-                    list.Aumentar_segun_aumento_de_sueldo = data["Aumentar_segun_aumento_de_sueldo"].ToString();
+                    //list.Tipo_Calculo = data["Tipo_Calculo"].ToString();
+                    //list.Aumentar_segun_salario_minimo_general = data["Aumentar_segun_salario_minimo_general"].ToString();
+                    //list.Aumentar_segun_aumento_de_sueldo = data["Aumentar_segun_aumento_de_sueldo"].ToString();
                     list.Beneficiaria = data["Beneficiaria"].ToString();
-                    list.Banco = int.Parse(data["Banco"].ToString());
+                    list.Banco = int.Parse(data["Banco_id"].ToString());
                     if (data["Sucursal"].ToString().Length == 0) { list.Sucursal = ""; } else { list.Sucursal = data["Sucursal"].ToString(); }
                     if (data["Tarjeta_vales"].ToString().Length == 0) { list.Tarjeta_vales = ""; } else { list.Tarjeta_vales = data["Tarjeta_vales"].ToString(); }
                     if (data["Cuenta_cheques"].ToString().Length == 0) { list.Cuenta_cheques = ""; } else { list.Cuenta_cheques = data["Cuenta_cheques"].ToString(); }
-                    if (data["Fecha_baja"].ToString().Length == 0) { list.Fecha_baja = ""; } else { list.Fecha_baja = data["Fecha_baja"].ToString().Substring(0, 10); }
-                    list.IncidenciaProgramada_id = data["IncidenciaProgramada_id"].ToString();
+                    //if (data["Fecha_baja"].ToString().Length == 0) { list.Fecha_baja = ""; } else { list.Fecha_baja = data["Fecha_baja"].ToString().Substring(0, 10); }
+                    if (data["IncidenciaProgramada_id"].ToString().Length == 0 || data["IncidenciaProgramada_id"] == null)
+                    { list.IncidenciaProgramada_id = "0"; }
+                    else { list.IncidenciaProgramada_id = data["IncidenciaProgramada_id"].ToString(); }
+
+
                     lista.Add(list);
 
                 }
