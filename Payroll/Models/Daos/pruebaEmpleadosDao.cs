@@ -1035,10 +1035,10 @@ namespace Payroll.Models.Daos
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
-                    lista.Certificado_imss = data["Certific ado_imss"].ToString();
+                    lista.Certificado_imss = data["Certificado_imss"].ToString();
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
-                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
+                    //lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
                     //lista.FechaFin = data["Fechaf"].ToString();
                     list.Add(lista);
                 }

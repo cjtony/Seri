@@ -236,7 +236,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data1) => {
-                    
+
                     if (data1[0] == "0") {
                         Swal.fire({
                             icon: 'warning',
@@ -302,7 +302,7 @@
                 //document.getElementById("nameuser").innerHTML = "<div class='text-uppercase'>" + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "<small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small></div>";
             }
         });
-        
+
     }
     //Funcion para validar solo numeros 
     $('.input-number').on('input', function () {
@@ -329,7 +329,8 @@
                         "<td>" + data[i]["Certificado_imss"] + "</td>" +
                         "<td>" + data[i]["Comentarios_imss"] + "</td>" +
                         "<td>" +
-                        "<div class='btn-group' role='group' aria-label='Basic example'>" + "<div class='btn btn-subm btn-sm btn-editar-ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='far fa-edit'></i></div><div class='btn btn-danger btn-sm btn-eliminar-ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div></div>" +
+                        "<a class='badge btn badge-info btn-editar-ausentismo text-white mx-1' title='Editar Ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-pencil-alt'></i></div>" +
+                        "<a class='badge btn badge-danger btn-sm btn-eliminar-ausentismo text-white mx-1' title='Eliminar Ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div>" +
                         "</td>" +
                         "</tr>";
                 }
@@ -352,7 +353,7 @@
                         "<td>" + data[i]["Nombre_Ausentismo"] + "</td>" +
                         "<td>" + data[i]["Fecha_Ausentismo"].substring(0, 10) + "</td>" +
                         "<td>" + data[i]["Dias_Ausentismo"] + "</td>" +
-                        "<td>" + data[i]["FechaFin"] + "</td>" +
+                        //"<td>" + data[i]["FechaFin"] + "</td>" +
                         "<td>" + data[i]["Causa_FaltaInjustificada"] + "</td>" +
                         "<td>" + data[i]["Certificado_imss"] + "</td>" +
                         "<td>" + data[i]["Comentarios_imss"] + "</td>" +
@@ -413,23 +414,23 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                if (data['Tipo'] == 'True') {
-                    //checkPorDias();
-                    $(".btn-option-1").click();
-                    setTimeout(() => {
+                //if (data['Tipo'] == 'True') {
+                //    //checkPorDias();
+                //    $(".btn-option-1").click();
+                //    setTimeout(() => {
                         fechaa.value = data[0].Fecha_Ausentismo.substring(6, 10) + "-" + data[0].Fecha_Ausentismo.substring(3, 5) + "-" + data[0].Fecha_Ausentismo.substring(0, 2);
                         dias.value = data[0].Dias_Ausentismo;
-                    }, 600);
+                    //}, 600);
 
-                } else {
-                    //checkPorFecha();
-                    $(".btn-option-2").click();
-                    setTimeout(() => {
-                        document.getElementById('inFechaiAusentismo').value = data[0].Fecha_Ausentismo.substring(6, 10) + "-" + data[0].Fecha_Ausentismo.substring(3, 5) + "-" + data[0].Fecha_Ausentismo.substring(0, 2);
-                        document.getElementById('inFechafAusentismo').value = data[0].FechaFin.substring(6, 10) + "-" + data[0].FechaFin.substring(3, 5) + "-" + data[0].FechaFin.substring(0, 2);
-                    }, 600);
+                //} else {
+                //    //checkPorFecha();
+                //    $(".btn-option-2").click();
+                //    setTimeout(() => {
+                //        document.getElementById('inFechaiAusentismo').value = data[0].Fecha_Ausentismo.substring(6, 10) + "-" + data[0].Fecha_Ausentismo.substring(3, 5) + "-" + data[0].Fecha_Ausentismo.substring(0, 2);
+                //        document.getElementById('inFechafAusentismo').value = data[0].FechaFin.substring(6, 10) + "-" + data[0].FechaFin.substring(3, 5) + "-" + data[0].FechaFin.substring(0, 2);
+                //    }, 600);
 
-                }
+                //}
                 //console.log(data);
                 //dias.value = data[0].Dias_Ausentismo;
                 causa.value = data[0].Causa_FaltaInjustificada;
