@@ -904,12 +904,9 @@
     <Content Include="Scripts\main\Creditos.js" />
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
- 
     <Content Include="Scripts\main\EmisionRecibos.js" />
- 
     <Content Include="Scripts\main\Dispersion\databankspecial.js" />
     <Content Include="Scripts\main\Dispersion\mainspecial.js" />
- 
     <Content Include="Scripts\main\employes.js" />
     <Content Include="Scripts\main\Empre.js" />
     <Content Include="Scripts\ferros\errajax.js" />
@@ -1050,13 +1047,11 @@
     <Content Include="Views\Documentos\KitContratacion.cshtml" />
     <Content Include="Views\Nomina\ComparativoNomina.cshtml" />
     <Content Include="Views\KioskoM\ConsultaRecibo.cshtml" />
- 
     <Content Include="Scripts\main\xlsx.full.min.js" />
     <Content Include="Views\Kiosko\SolicitudVacaciones.cshtml" />
     <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
- 
     <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
- 
+    <Content Include="Views\Incidencias\PIncidencias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
