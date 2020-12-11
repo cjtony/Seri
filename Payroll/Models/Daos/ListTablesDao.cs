@@ -359,6 +359,7 @@ namespace Payroll.Models.Daos
                     } else {
                         nominaBean.iRetroactivo = 0;
                     }
+                    nominaBean.sUlt_sdi = data["Ult_sdi"].ToString();
                     nominaBean.sCuentaCheques = (String.IsNullOrEmpty(data["Cta_Cheques"].ToString())) ? "" : data["Cta_Cheques"].ToString();
                     nominaBean.iUsuarioAlta_id = Convert.ToInt32(data["Usuario_Alta_id"].ToString());
                     nominaBean.sFechaAlta = data["Fecha_Alta"].ToString();

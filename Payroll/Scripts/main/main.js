@@ -265,6 +265,14 @@
                     <input type="date" id="fechmovisal" class="form-control form-control-sm" placeholder="Fecha del movimiento salarial" />
                 </div>
             `;
+            document.getElementById('content-new-inpt-ultsdi').innerHTML = `
+                <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                    Ultimo sdi
+                </label>
+                <div class="col-sm-8">
+                    <input id="view-ultSdi" type="number"  class="form-control form-control-sm" disabled />
+                </div>
+            `;
         }
     }
 
@@ -417,6 +425,9 @@
                     }
                     const cuentaavalor = getDataTabNom[i].data.cunuse;
                     setTimeout(() => { cunuse.value = cuentaavalor }, 2000);
+                    if (localStorage.getItem("modeedit") != null) {
+                        document.getElementById('view-ultSdi').value = getDataTabNom[i].data.ultSdi;
+                    }
                 }
             }
         }
@@ -482,31 +493,6 @@
 
     fclearlocsto = (type) => {
         let timerInterval;
-        localStorage.removeItem('modeedit');
-        localStorage.removeItem('dateedit');
-        localStorage.removeItem('tabSelected');
-        localStorage.removeItem('objectTabDataGen'); localStorage.removeItem('objectDataTabImss');
-        localStorage.removeItem('objectDataTabNom'); localStorage.removeItem('objectDataTabEstructure');
-        localStorage.removeItem('modedit');
-        fchecklocalstotab();
-        fselectlocalstotab();
-        floaddatatabs();
-        fclearfieldsvar1();
-        fclearfieldsvar2();
-        fclearfieldsvar3();
-        fclearfieldsvar4();
-        document.getElementById('icouser').classList.add('d-none');
-        document.getElementById('nameuser').textContent = '';
-        colony.innerHTML = "<option value='0'>Selecciona</option>";
-        codpost.disabled = true;
-        colony.disabled  = true;
-        street.disabled  = true;
-        numberst.disabled = true;
-        banuse.disabled = true;
-        cunuse.disabled = true;
-        document.getElementById('infobankch').classList.add("d-none");
-        document.getElementById('infobankct').classList.add("d-none");
-        fvalidatebuttonsactionmain();
         if (type == 1) {
             Swal.fire({
                 title: "Esta seguro", text: "de limpiar los campos?", icon: "warning",
@@ -514,6 +500,41 @@
                 allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
             }).then((result) => {
                 if (result.value) {
+                    localStorage.removeItem('modeedit');
+                    localStorage.removeItem('dateedit');
+                    localStorage.removeItem('tabSelected');
+                    localStorage.removeItem('objectTabDataGen'); localStorage.removeItem('objectDataTabImss');
+                    localStorage.removeItem('objectDataTabNom'); localStorage.removeItem('objectDataTabEstructure');
+                    localStorage.removeItem('modedit');
+                    document.getElementById('content-new-inpt-fechmovi').innerHTML = "";
+                    document.getElementById('content-new-inpt-motmovi').innerHTML = "";
+                    document.getElementById('content-new-inpt-movsal').innerHTML = "";
+                    document.getElementById('content-new-inpt-fecsal').innerHTML = "";
+                    document.getElementById('content-new-inpt-ultsdi').innerHTML = "";
+                    document.getElementById('content-new-inpt-fechmovi').classList.add('d-none');
+                    document.getElementById('content-new-inpt-motmovi').classList.add('d-none');
+                    document.getElementById('content-new-inpt-movsal').classList.add('d-none');
+                    document.getElementById('content-new-inpt-fecsal').classList.add('d-none');
+                    document.getElementById('content-new-inpt-ultsdi').classList.add('d-none');
+                    fchecklocalstotab();
+                    fselectlocalstotab();
+                    floaddatatabs();
+                    fclearfieldsvar1();
+                    fclearfieldsvar2();
+                    fclearfieldsvar3();
+                    fclearfieldsvar4();
+                    document.getElementById('icouser').classList.add('d-none');
+                    document.getElementById('nameuser').textContent = '';
+                    colony.innerHTML = "<option value='0'>Selecciona</option>";
+                    codpost.disabled = true;
+                    colony.disabled = true;
+                    street.disabled = true;
+                    numberst.disabled = true;
+                    banuse.disabled = true;
+                    cunuse.disabled = true;
+                    document.getElementById('infobankch').classList.add("d-none");
+                    document.getElementById('infobankct').classList.add("d-none");
+                    fvalidatebuttonsactionmain();
                     Swal.fire({
                         title: "Limpiando campos", html: "<b></b>",
                         timer: 2000, timerProgressBar: true,

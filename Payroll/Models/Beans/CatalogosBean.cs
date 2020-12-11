@@ -319,6 +319,7 @@ namespace Payroll.Models.Beans
         public double dDiferencia { get; set; }
         public double dTransporte { get; set; }
         public int iRetroactivo { get; set; }
+        public string sUlt_sdi { get; set; }
         public int iUsuarioAlta_id { get; set; }
         public string sFechaAlta { get; set; }
         public string sMensaje { get; set; }
