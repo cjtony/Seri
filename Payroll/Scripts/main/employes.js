@@ -854,14 +854,16 @@
                                 </div>
                             `;
                         }
-                        document.getElementById('content-new-inpt-ultsdi').innerHTML = `
-                                <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
-                                    Ultimo sdi
-                                </label>
-                                <div class="col-sm-8">
-                                    <input id="view-ultSdi" type="number" value="${data.Datos.sUlt_sdi}"  class="form-control form-control-sm" disabled />
-                                </div>
-                            `;
+                        console.log('Imprimiendo ult sdi:', data.Datos.sUlt_sdi);
+                        document.getElementById('view-ultSdi').value = data.Datos.sUlt_sdi;
+                        //document.getElementById('content-new-inpt-ultsdi').innerHTML = `
+                        //        <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                        //            Ultimo sdi
+                        //        </label>
+                        //        <div class="col-sm-8">
+                        //            <input id="view-ultSdi" type="number" value="${data.Datos.sUlt_sdi}"  class="form-control form-control-sm" disabled />
+                        //        </div>
+                        //    `;
                         flocalstodatatabnomina();
                     } else {
                         document.getElementById('div-most-alert-data-imss').innerHTML = `

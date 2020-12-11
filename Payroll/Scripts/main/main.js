@@ -265,14 +265,7 @@
                     <input type="date" id="fechmovisal" class="form-control form-control-sm" placeholder="Fecha del movimiento salarial" />
                 </div>
             `;
-            document.getElementById('content-new-inpt-ultsdi').innerHTML = `
-                <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
-                    Ultimo sdi
-                </label>
-                <div class="col-sm-8">
-                    <input id="view-ultSdi" type="number"  class="form-control form-control-sm" disabled />
-                </div>
-            `;
+            document.getElementById('content-new-inpt-ultsdi').classList.remove("d-none");
         }
     }
 
