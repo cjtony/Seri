@@ -853,7 +853,8 @@
                                     <input type="date" id="fechmovisal" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
                                 </div>
                             `;
-                            document.getElementById('content-new-inpt-ultsdi').innerHTML = `
+                        }
+                        document.getElementById('content-new-inpt-ultsdi').innerHTML = `
                                 <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
                                     Ultimo sdi
                                 </label>
@@ -861,7 +862,6 @@
                                     <input id="view-ultSdi" type="number" value="${data.Datos.sUlt_sdi}"  class="form-control form-control-sm" disabled />
                                 </div>
                             `;
-                        }
                         flocalstodatatabnomina();
                     } else {
                         document.getElementById('div-most-alert-data-imss').innerHTML = `
