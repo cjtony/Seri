@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-                     /// Tab Ejecucion 
+    /// Tab Ejecucion 
 
     // Declaracion de variables 
 
@@ -43,17 +43,25 @@
     const EjeEmpresa = document.getElementById('EjeEmpresa');
     const Empleadoseje = document.getElementById('Empleadoseje');
     const dropEmpledos = document.getElementById('DropLitEmple');
-    const LaEmplea = document.getElementById('LaEmpleado');
-    const switchButtonEmp = document.getElementById('switchButtonEmple');
+   // const LaEmplea = document.getElementById('LaEmpleado');
+    //const switchButtonEmp = document.getElementById('switchButtonEmple');
     const checkedItemsLog = document.getElementById('checkedItemsLog');
     const CheckRecibo2 = document.getElementById('CheckRecibo2');
     const btnFloActualiza = document.getElementById('btnFloActualiza');
     const Tbtotal = document.getElementById('Tbtotal');
     const LaTotal = document.getElementById('LaTotal');
-  
+    const CheckXEmpresa = document.getElementById('CheckXEmpresa');
+    const CheckXempleado = document.getElementById('CheckXempleado');
+    const LaCheckXEmpleado = document.getElementById('LaCheckXEmpleado');
+    const btnFloLimpiar = document.getElementById('btnFloLimpiar');
+
+
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
-    var valorCheckRec = document.getElementById('CheckRecibo2')
+    var valorCheckRec = document.getElementById('CheckRecibo2');
+    var valorCeckxempresa = document.getElementById('CheckXEmpresa');
+    var valorCheckXempleado = document.getElementById('CheckXempleado');
+
     var DatoEjeCerrada;
     var IdDropList = 0;
     var IdDropList2;
@@ -1151,7 +1159,7 @@
 
     });
 
-        FLimpiaCamp = () => {
+    FLimpiaCamp = () => {
 
         $("#2").empty();
         $("#TpDefinicion").jqxGrid('clearselection');
@@ -1160,7 +1168,15 @@
         TbAño.value = "";
         TxbTipoPeriodo.value = "";
         ValorChek.checked = false;
-    };
+        if (valorCeckxempresa.checked == true) {
+            $("#CheckXEmpresa").click(); 
+        }
+          
+     };
+
+
+    btnFloLimpiar.addEventListener('click', FLimpiaCamp);
+
 
 
        /* muestra calculos de nomina del empleado */
@@ -1960,57 +1976,120 @@
 
     //}, 1000);
 
-    $("#switchButton").jqxSwitchButton({ width: 60, height: 25 });
-    $("#switchButtonEmple").jqxSwitchButton({ width: 60, height: 25 });
+    //$("#switchButton").jqxSwitchButton({ width: 60, height: 25 });
+   // $("#switchButtonEmple").jqxSwitchButton({ width: 60, height: 25 });
 
-    $('#switchButton').on('change', function (event) {
-        var checked = $('#switchButton').jqxSwitchButton('checked');
+    //$('#switchButton').on('change', function (event) {
+    //    var checked = $('#switchButton').jqxSwitchButton('checked');
 
-        if (checked == true)
-        {
+    //    if (checked == true)
+    //    {
+    //        CheckCalculoEmpresa = 1;
+    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
+    //        LaEmplea.style.visibility = 'visible';
+    //        $("#switchButtonEmple").toggle();
+    //        NombEmpre.style.visibility = 'visible';
+    //        EjeEmpresa.style.visibility = 'visible';
+
+    //        EmpleadoDEmp(EjeEmpresa.value);
+    //        Empleadoseje.style.visibility = 'hidden';
+    //        dropEmpledos.style.visibility = 'hidden';
+    //    }
+    //    if (checked == false) {
+    //        CheckCalculoEmpresa = 0;
+    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
+    //        LaEmplea.style.visibility = 'hidden';
+    //        $("#switchButtonEmple").toggle();
+    //        switchButtonEmp.style.visibility = 'hidden';
+    //        NombEmpre.style.visibility = 'hidden';
+    //        EjeEmpresa.style.visibility = 'hidden';
+    //        EmpleadoDEmp(EjeEmpresa.value);
+    //        Empleadoseje.style.visibility = 'hidden';
+    //        dropEmpledos.style.visibility = 'hidden';
+
+
+    //    }
+    //});
+
+    /// Selecciona calculo por empresa
+
+    FCheckXempresa = () => {
+
+        if (valorCeckxempresa.checked == true) {
+            CheckXempleado.style.visibility = 'visible';
+            LaCheckXEmpleado.style.visibility = 'visible';
             CheckCalculoEmpresa = 1;
+            EjeEmpresa
             $("#DropLitEmple").jqxDropDownList('uncheckAll');
-            LaEmplea.style.visibility = 'visible';
+           // LaEmplea.style.visibility = 'visible';
             $("#switchButtonEmple").toggle();
             NombEmpre.style.visibility = 'visible';
             EjeEmpresa.style.visibility = 'visible';
-
+            EjeEmpresa.value = 0;
             EmpleadoDEmp(EjeEmpresa.value);
             Empleadoseje.style.visibility = 'hidden';
             dropEmpledos.style.visibility = 'hidden';
+            valorCheckXempleado.checked = false;
         }
-        if (checked == false) {
+
+        if (valorCeckxempresa.checked == false) {
+            CheckXempleado.style.visibility = 'hidden';
+            LaCheckXEmpleado.style.visibility = 'hidden';
             CheckCalculoEmpresa = 0;
             $("#DropLitEmple").jqxDropDownList('uncheckAll');
-            LaEmplea.style.visibility = 'hidden';
+            //LaEmplea.style.visibility = 'hidden';
             $("#switchButtonEmple").toggle();
-            switchButtonEmp.style.visibility = 'hidden';
+            //switchButtonEmp.style.visibility = 'hidden';
             NombEmpre.style.visibility = 'hidden';
             EjeEmpresa.style.visibility = 'hidden';
             EmpleadoDEmp(EjeEmpresa.value);
             Empleadoseje.style.visibility = 'hidden';
             dropEmpledos.style.visibility = 'hidden';
-
-
+            valorCheckXempleado.checked = false;
         }
-  });
-    $('#switchButtonEmple').on('change', function (event) {
-        var checked2 = $('#switchButtonEmple').jqxSwitchButton('checked');
 
-        if (checked2 == true) {
+    };
+
+    CheckXEmpresa.addEventListener('click', FCheckXempresa);
+
+    /// selecciona calculo por empleado
+
+    Fcheckxempleado = () => {
+        if (valorCheckXempleado.checked == true) {
             checkCalculoEmplado = 1;
             $("#DropLitEmple").jqxDropDownList('uncheckAll');
             Empleadoseje.style.visibility = 'visible';
             dropEmpledos.style.visibility = 'visible';
-        }
-        if (checked2 == false) {
+
+        };
+        if (valorCheckXempleado.checked == false) {
             checkCalculoEmplado = 0;
             $("#DropLitEmple").jqxDropDownList('uncheckAll');
             Empleadoseje.style.visibility = 'hidden';
             dropEmpledos.style.visibility = 'hidden';
 
-        }
-    });
+        };
+    };
+    CheckXempleado.addEventListener('click',Fcheckxempleado)
+
+
+    //$('#switchButtonEmple').on('change', function (event) {
+    //    var checked2 = $('#switchButtonEmple').jqxSwitchButton('checked');
+
+    //    if (checked2 == true) {
+    //        checkCalculoEmplado = 1;
+    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
+    //        Empleadoseje.style.visibility = 'visible';
+    //        dropEmpledos.style.visibility = 'visible';
+    //    }
+    //    if (checked2 == false) {
+    //        checkCalculoEmplado = 0;
+    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
+    //        Empleadoseje.style.visibility = 'hidden';
+    //        dropEmpledos.style.visibility = 'hidden';
+
+    //    }
+    //});
     $("#DropLitEmple").on('checkChange', function (event) {
         if (event.args) {
             var item = event.args.item;
@@ -2053,7 +2132,7 @@
 
 
     // Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion 
-    $("#switchButtonEmple").toggle();
+    //$("#switchButtonEmple").toggle();
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
