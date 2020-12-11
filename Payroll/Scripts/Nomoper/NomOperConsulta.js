@@ -13,30 +13,7 @@
     //const BAgregar = document.getElementById('BAgregar');
     const BActu = document.getElementById('BActu');
     const btnFloAgre = document.getElementById('btnFloAgre');
-    //const BEliminar = document.getElementById('BEliminar');
-
-    // Funcion llena listbox con los nombres de la definicion
-
-    //FlistNombreDef = () => {
-       
-       
-    //    $.ajax({
-    //        url: "../Nomina/ListadoNomDefinicion",
-    //        type: "POST",
-    //        data: JSON.stringify(),
-    //        contentType: "application/json; charset=utf-8",
-    //        success: (data) => {
-    //            var num = 0;
-
-    //            for (i = 0; i < data.length; i++) {
-    //                num = num + 1;
-    //                document.getElementById("DeNombre").innerHTML += `<option value='${num}'>${data[i].sNombreDefinicion}</option>`;
-    //            }
-    //        }
-    //    });
-
-    //};
-    //FlistNombreDef();
+ 
 
     // Funcion llena el grip de Nomina Definicion.
 
@@ -74,7 +51,7 @@
                 $("#TpDefinicion").jqxGrid(
                     {
                         theme:'bootstrap',
-                        width: 880,
+                        width: 715,
                         source: dataAdapter,
                         showfilterrow: true,
                         filterable: true,
@@ -96,11 +73,11 @@
 
                         },
                         columns: [
-                            { text: 'No. Registro', datafield: 'iIdDefinicionhd', width: 50 },
-                            { text: 'Nombre de Definición', filtertype: 'list', filteritems: items, datafield: 'sNombreDefinicion', width: 230 },
-                            { text: 'Descripción ', datafield: 'sDescripcion', width: 350 },
-                            { text: 'año', datafield: 'iAno', whidt: 80 },
-                            { text: 'Cancelado', datafield: 'iCancelado', width: 25 },
+                            { text: 'No. Registro', datafield: 'iIdDefinicionhd', width: 80 },
+                            { text: 'Nombre de Definición', filtertype: 'list', filteritems: items, datafield: 'sNombreDefinicion', width: 200 },
+                            { text: 'Descripción ', datafield: 'sDescripcion', width: 295 },
+                            { text: 'año', datafield: 'iAno', width: 80 },
+                            { text: 'Cancelado', datafield: 'iCancelado', width: 60 },
                         ]
                     });
 
@@ -163,17 +140,17 @@
                 var dataAdapter = new $.jqx.dataAdapter(source);
 
                 $("#TpDefinicion").jqxGrid({
-                    width: 980,
+                    width: 715,
                     source: dataAdapter,
                     columnsresize: true,
                     autorowheight: true,
                     autoheight: true,
                     columns: [
-                        { text: 'No. Registro', datafield: 'iIdDefinicionhd', width: 50 },
-                        { text: 'Nombre de Definición', datafield: 'sNombreDefinicion', width: 230 },
-                        { text: 'Descripción ', datafield: 'sDescripcion', whidth: 500 },
-                        { text: 'año', datafield: 'iAno', whidt: 80 },
-                        { text: 'Cancelado', datafield: 'iCancelado', whidt: 50 },
+                        { text: 'No. Registro', datafield: 'iIdDefinicionhd', width: 80 },
+                        { text: 'Nombre de Definición', filtertype: 'list', filteritems: items, datafield: 'sNombreDefinicion', width: 200 },
+                        { text: 'Descripción ', datafield: 'sDescripcion', width: 295 },
+                        { text: 'año', datafield: 'iAno', width: 80 },
+                        { text: 'Cancelado', datafield: 'iCancelado', width: 60 }
                     ]
                 });
             },
@@ -203,9 +180,10 @@
         });
         // display unselected row index.
         $("#TpDefinicion").on('rowselect', function (event) {
+            
+            document.getElementById('content-blockDedu/per').classList.remove("d-none");
             var args = event.args;
-            var row = $("#TpDefinicion").jqxGrid('getrowdata', args.rowindex);
-            console.log(args);
+            var row = $("#TpDefinicion").jqxGrid('getrowdata', args.rowindex);        
             $("#unselectrowindex").text(row['iIdDefinicionhd'] + row['sNombreDefinicion']);
             dato = row['sNombreDefinicion'];
             IdDh = row['iIdDefinicionhd'];
@@ -383,7 +361,7 @@
 
                     $("#TbPercepciones").jqxGrid(
                         {
-                            width: 840,
+                            width: 620,
                             source: dataAdapter,
                             selectionmode: 'multiplerowsextended',
                             sortable: true,
@@ -418,12 +396,12 @@
 
                             },
                             columns: [
-                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 75 },
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 80 },
                                 { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
                                 { text: 'Renglon', datafield: 'iRenglon', width: 180 },
-                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', whidth: 30 },
-                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 200 },
-                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 80 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', width:80},
+                                { text: 'Esespejo', datafield: 'iEsespejo', width: 80 }
                             ]
                         });
                 }
@@ -1225,7 +1203,7 @@
                     var dataAdapter = new $.jqx.dataAdapter(source);
                     $("#TbDeducciones").jqxGrid(
                         {
-                            width: 840,
+                            width: 620,
                             source: dataAdapter,
                             selectionmode: 'multiplerowsextended',
                             sortable: true,
@@ -1258,12 +1236,12 @@
                                 });
                             },
                             columns: [
-                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
-                                { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
-                                { text: 'Renglon', datafield: 'iRenglon', width: 200 },
-                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
-                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
-                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 80 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 180 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 80 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', width: 80 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', width: 80 }
                             ]
                         });
                 }
@@ -1288,7 +1266,7 @@
                     var dataAdapter = new $.jqx.dataAdapter(source);
                     $("#TbDeducciones").jqxGrid(
                         {
-                            width: 840,
+                            width: 620,
                             source: dataAdapter,
                             selectionmode: 'multiplerowsextended',
                             sortable: true,
@@ -1321,12 +1299,12 @@
                                 });
                             },
                             columns: [
-                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 50 },
-                                { text: 'Empresa', datafield: 'IdEmpresa', width: 200 },
-                                { text: 'Renglon', datafield: 'iRenglon', width: 200 },
-                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 200 },
-                                { text: 'Acumulado', datafield: 'iIdAcumulado', whidt: 400 },
-                                { text: 'Esespejo', datafield: 'iEsespejo', whidt: 30 }
+                                { text: 'No.Linea', datafield: 'iIdDefinicionln', width: 80 },
+                                { text: 'Empresa', datafield: 'IdEmpresa', width: 120 },
+                                { text: 'Renglon', datafield: 'iRenglon', width: 180 },
+                                { text: 'Tipo de periodo', datafield: 'iTipodeperiodo', width: 80 },
+                                { text: 'Acumulado', datafield: 'iIdAcumulado', width: 80 },
+                                { text: 'Esespejo', datafield: 'iEsespejo', width: 80 }
                             ]
                         });
                 }

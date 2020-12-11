@@ -19,6 +19,8 @@
     var RenglonTB;
     var ImporteTb;
     var DescripcioTb;
+    var clickEdit = 0;
+    var clickDele = 0;
 
     /// carga tabla de compesacion fija 
     FTbCompensacion = () => {
@@ -60,12 +62,32 @@
                           //  editSettings: { saveOnPageChange: true, saveOnBlur: true, saveOnSelectionChange: false, cancelOnEsc: true, saveOnEnter: true, editOnDoubleClick: false, editOnF2: false },
                 // called when jqxDataTable is going to be rendered.
                             rendered: function () {
+                                //DoubleClick
                                 $(".editButtons").on('click', function (event) {
-                                    document.getElementById('content-blockInsert').classList.remove("d-none");
-                                    FCargadatos();
+                                    if (clickEdit > 0) {
+                                        FLimpCamp();
+                                        $("#TBCompensacion").click();
+                                        document.getElementById('content-blockInsert').classList.remove("d-none");
+                                        FCargadatos();
+                                        clickEdit = 0;
+                                    }
+                                    else {
+                                    
+                                        clickEdit = clickEdit + 1
+                                    }
+                                   
                                 });
-                                $(".DeleteButtons").on('click', function (event) {
-                                    FCancela();
+                                $(".DeleteButtons").on('click', function (event) { 
+                                    
+                                    if (clickDele > 0) {
+                                        FLimpCamp();
+                                        FCancela();
+                                        clickDelete = 0;
+                                    }
+                                    else {
+                                        clickDele = clickDele + 1;
+                                    };
+                                 
                                 });
 
                             },
@@ -104,6 +126,8 @@
          
     // visualiza el bloque de insert
     FBlockInsert = () => {
+        $("#DropRenglon").attr('readonly', false).trigger('chosen:updated');
+        $("#TxtImporte").attr('readonly', false).trigger('chosen:updated'); 
         document.getElementById('content-blockInsert').classList.remove("d-none");
         FListadoEmpresa();
         btnActu.style.visibility = 'hidden';
@@ -133,7 +157,6 @@
     });
 
     FListPuesto = () => {
-        console.log('activa');
         const dataSend = { iIdEmpresa: DropEmpresa.value };
         $("#DropPuesto").empty();
         $('#DropPuesto').append('<option value="0" selected="selected">Selecciona</option>');
@@ -347,7 +370,9 @@
         arreglosubcadena = IdEmpresaTb.split(separador, limite);
         FListPuestoActu(arreglosubcadena[0]);
         FLisRenglonActu(arreglosubcadena[0]);
-
+        FLimpCamp();
+        clickEdit = 0;
+        clickDele = 0;
     });
 
 
