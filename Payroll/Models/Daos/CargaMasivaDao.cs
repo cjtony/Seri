@@ -268,16 +268,6 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
-            //cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", rows["Tipo_Ausentismo"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows["Empresa_id"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows["Empleado_id"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", rows["Importe"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", rows["Plazos"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", rows["Leyenda"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", rows["Descripcion"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", dia + "/" + mes + "/" + año));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", rows["Periodo"].ToString()));
-            //cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", rows["Periodo"].ToString()));
             var sbs = rows[2].ToString().Substring(0, 2);
             cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Ausentismo_id", rows[2].ToString().Substring(0, 2).Trim()));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows[0].ToString()));
@@ -299,7 +289,8 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipo", "0"));
-            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", rows[8].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", rows[9].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", rows[8].ToString()));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 

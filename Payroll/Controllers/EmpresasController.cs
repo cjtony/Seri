@@ -46,7 +46,7 @@ namespace Payroll.Controllers
         public void DefinePeriodoActual(int IdPeriodo, string Fecha_inicio, string Fecha_fin)
         {
             @Session["Periodo_id"] = IdPeriodo;
-            @Session["Rango_periodo"] = "De " + Fecha_inicio + " a " + Fecha_fin;
+            @Session["Rango_periodo"] = " " + Fecha_inicio + " - " + Fecha_fin;
         }
         public PartialViewResult Datos_Generales()
         {
