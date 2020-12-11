@@ -3,6 +3,7 @@
     //var concepto_incidencia = document.getElementById("inConcepto_incidencia");
     //var factor = document.getElementById("inFactorDesc");
     //factor.disabled = true;
+    $("#btnUpdateCredito").addClass("invisible");
     $("#modalLiveSearchEmpleado").modal("show");
     //Eventos 
     $("#btnSaveCredito").on("click", function () {
@@ -12,7 +13,7 @@
         var fechaa = document.getElementById("inFechaAprovacionCredito");
         var descontar = document.getElementById("inDescontar");
         var fechab = document.getElementById("inFechaBajaCredito");
-        var factor;
+        var factor = 0;
         if (tdescuento.value == "291" || tdescuento.value == 291) { factor = descuento.value; }
         else { factor = 0 }
 
@@ -60,6 +61,7 @@
                             timer: 1000
                         });
                         form.reset();
+                        createTab();
                     }
                 }
             });
@@ -84,7 +86,7 @@
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
-                            $("#resultSearchEmpleados").append("<div class='list-group-item list-group-item-action btnListEmpleados font-labels  font-weight-bold' onclick='MostrarDatosEmpleado(" + data[i]["IdEmpleado"] + ")'> <i class='far fa-user-circle text-primary'></i> " + data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[i]["DescripcionPuesto"] + "</small></div>");
+                            $("#resultSearchEmpleados").append("<div class='list-group-item list-group-item-action btnListEmpleados font-labels  font-weight-bold' onclick='MostrarDatosEmpleado(" + data[i]["IdEmpleado"] + ")'> <i class='far fa-user-circle text-primary'></i> " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "  " + data[i]["Nombre_Empleado"] + "  -   <small class='text-muted'><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[i]["DescripcionPuesto"] + "</small></div>");
                         }
                     }
                     else {
@@ -123,7 +125,7 @@
                     iconb = "fa-check-circle";
                 }
 
-                document.getElementById("EmpDes").innerHTML = "<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + " - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>&nbsp;&nbsp;<div class='badge " + colorb + "'><i class='fas " + iconb + "'></i>&nbsp;" + data[0]["TipoEmpleado"] + "&nbsp;-&nbsp;" + data[0]["DescTipoEmpleado"] + "</div>";
+                document.getElementById("EmpDes").innerHTML = "<i class='fas fa-hashtag text-primary'></i>&nbsp;&nbsp;" + data[0]["IdEmpleado"] + "&nbsp;&nbsp;<i class='far fa-user-circle text-primary'></i> " + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + " - <small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small>&nbsp;&nbsp;<div class='badge " + colorb + "'><i class='fas " + iconb + "'></i>&nbsp;" + data[0]["TipoEmpleado"] + "&nbsp;-&nbsp;" + data[0]["DescTipoEmpleado"] + "</div>";
                 $("#modalLiveSearchEmpleado").modal("hide");
                 createTab();
             }
@@ -149,7 +151,7 @@
                             + "<td>" + data[i]["TipoDescuento"] + "</td>"
                             + "<td>" + data[i]["Descuento"] + "</td>"
                             + "<td>" + data[i]["Descontar"] + "</td>"
-                            + "<td>" + data[i]["FactorDescuento"] + "</td>"
+                            //+ "<td>" + data[i]["FactorDescuento"] + "</td>"
                             + "<td>" + data[i]["FechaBaja"].substr(0, 10) + "</td>"
                             //+ "<td>" + data[i]["Effdt"] + "</td>"
                             + "<td>"
@@ -163,11 +165,12 @@
                             + "<td>" + data[i]["TipoDescuento"] + "</td>"
                             + "<td>" + data[i]["Descuento"] + "</td>"
                             + "<td>" + data[i]["Descontar"] + "</td>"
-                            + "<td>" + data[i]["FactorDescuento"] + "</td>"
+                            //+ "<td>" + data[i]["FactorDescuento"] + "</td>"
                             + "<td>" + data[i]["FechaBaja"].substr(0, 10) + "</td>"
                             //+ "<td>" + data[i]["Effdt"] + "</td>"
                             + "<td>"
-                            + "<a href='#' class='btn badge badge-light text-center mx-1' onclick='desactivarCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Desactivar'><i class='fas fa-lock-open text-primary'></i> </a>"
+                            + "<a href='#' class='btn badge badge-light text-center mx-1' title='Desactivar'><i class='fas fa-lock-open text-primary'></i> </a>"
+                            //+ "<a href='#' class='btn badge badge-light text-center mx-1' onclick='desactivarCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Desactivar'><i class='fas fa-lock-open text-primary'></i> </a>"
                             + "<a href='#' class='btn badge badge-success text-center mx-1' onclick='updateCredito(" + data[i]["IdCredito"] + "," + data[i]["IncidenciaProgramada_id"] + ");' title='Modificar'><i class='fas fa-edit'></i> </a>"
                             + "<a href='#' class='btn badge badge-danger text-center mx-1' onclick='deleteCredito(" + data[i]["IdCredito"] + ");' title='Desactivar'><i class='fas fa-minus'></i> </a>"
                             + "</td>"
@@ -315,6 +318,8 @@
                 //ncredito.value = data[0]["NoCredito"];
                 //descuento.value = data[0]["Descuento"];
                 //de
+                $("#btnUpdateCredito").removeClass("invisible");
+                $("#btnSaveCredito").addClass("invisible");
             }
         });
     }

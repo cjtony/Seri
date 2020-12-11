@@ -128,7 +128,8 @@ namespace Payroll.Controllers
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
-            lista = Dao.sp_TCreditos_Insert_Credito(id1, id2, TipoDescuento, Descuento, NoCredito, FechaAprovacion, Descontar, FechaBaja, FechaReinicio, FactorDesc);
+            int Periodo = int.Parse(Session["Periodo_id"].ToString());
+            lista = Dao.sp_TCreditos_Insert_Credito(id1, id2, TipoDescuento, Descuento, NoCredito, FechaAprovacion, Descontar, FechaBaja, FechaReinicio, Periodo);
             return Json(lista);
         }
         [HttpPost]
@@ -437,7 +438,7 @@ namespace Payroll.Controllers
                     }
                     break;
                 case "ausentismos":
-                   
+
                     for (i = 0; i < table.Rows.Count; i++)
                     {
                         var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
@@ -515,7 +516,7 @@ namespace Payroll.Controllers
                         list.Add("0");
                         list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
                     }
-                    
+
                     break;
                 case "pensiones":
 
@@ -569,6 +570,14 @@ namespace Payroll.Controllers
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             lista = Dao.sp_Cgeneral_Retrieve_Cgeneral(CampoCatalogo_id);
             return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult loadLayout()
+        {
+            List<string> list = new List<string>();
+            string RutaSitio = Server.MapPath("~/");
+            list.Add(RutaSitio + "/Content/FilesCargaMasivaIncidencias/FormatoDeIncidencias/Layout_Carga_Incidencias.xlsx");
+            return Json(list);
         }
     }
 }
