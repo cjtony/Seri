@@ -19,7 +19,7 @@
                             <option value="No aplicar">No aplicar</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-12 text-right">
+                    <div class="form-group col-md-12 text-right invisible">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-sm btn-outline-info font-labels active btn-option-1" onclick="checkPorDias();">
                                 <input type="radio" name="options" id="option1" checked> Por Días
@@ -60,10 +60,10 @@
                             <span class="icon"><i class="fas fa-save"></i></span>
                             <span class="text">Guardar</span>
                         </button>
-                        <div class="btn btn-warning btn-sm mx-1 btn-icon-split invisible font-labels" id="btnClear">
+                        <button type="reset" class="btn btn-warning btn-sm mx-1 btn-icon-split invisible font-labels" id="btnClear">
                             <span class="icon"><i class="fas fa-eraser"></i></span>
                             <span class="text">Limpiar</span>
-                        </div>
+                        </button>
                         <div class="btn btn-success btn-sm mx-1 btn-icon-split invisible font-labels" id="btnUpdate" btnupdate="">
                             <span class="icon"><i class="fas fa-edit"></i></span>
                             <span class="text">Actualizar</span>

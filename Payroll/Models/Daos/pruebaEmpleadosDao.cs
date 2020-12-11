@@ -563,6 +563,8 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipo", Tipo));
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", "0"));
+
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
