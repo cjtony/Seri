@@ -11,7 +11,7 @@ namespace Payroll.Models.Daos
     {
         public List<DescEmpleadoVacacionesBean> sp_Retrieve_liveSearchEmpleado(int IdEmp, string txtSearch)
         {
-            string txt = txtSearch;
+            
             List<DescEmpleadoVacacionesBean> list = new List<DescEmpleadoVacacionesBean>();
             this.Conectar();
             SqlCommand cmd = new SqlCommand("sp_Retrieve_liveSearchEmpleado", this.conexion)
@@ -19,7 +19,7 @@ namespace Payroll.Models.Daos
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.Add(new SqlParameter("@ctrliIdEmpresa", IdEmp));
-            cmd.Parameters.Add(new SqlParameter("@ctrlsNombreEmpleado", txt));
+            cmd.Parameters.Add(new SqlParameter("@ctrlsNombreEmpleado", txtSearch));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -338,7 +338,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio, string FactorDesc)
+        public List<string> sp_TCreditos_Insert_Credito(int Empleado_id, int Empresa_id, string TipoDescuento, string Descuento, string NoCredito, string FechaAprovacion, string Descontar, string FechaBaja, string FechaReinicio, int Periodo)
         {
             if (FechaBaja == null)
             {
@@ -363,7 +363,10 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlDescontar", Descontar));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", FechaBaja));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", FechaReinicio));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFactorDesc", FactorDesc));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaFiniquito", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", ""));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -1121,7 +1124,7 @@ namespace Payroll.Models.Daos
                     //listCreditos.SeguroVivienda = data["SeguroVivienda"].ToString();
                     listCreditos.Descuento = data["Descuento"].ToString();
                     listCreditos.NoCredito = data["NoCredito"].ToString();
-                    listCreditos.FechaAprovacionCredito = data["FechaAprovacionCredito"].ToString();
+                    listCreditos.FechaAprovacionCredito = data["FechaAprobacionCredito"].ToString();
                     listCreditos.Descontar = data["Descontar"].ToString();
                     if (data["FechaBajaCredito"].ToString().Length < 1)
                     { listCreditos.FechaBaja = ""; }
@@ -1133,8 +1136,8 @@ namespace Payroll.Models.Daos
                     { listCreditos.FechaReinicio = data["FechaReinicioCredito"].ToString(); }
 
                     listCreditos.Finalizado = data["Finalizado"].ToString();
-                    listCreditos.Effdt = data["Effdt"].ToString();
-                    listCreditos.IncidenciaProgramada_id = int.Parse(data["IncidenciaProgramada_id"].ToString());
+                    //listCreditos.Effdt = data["Effdt"].ToString();
+                    //listCreditos.IncidenciaProgramada_id = int.Parse(data["IncidenciaProgramada_id"].ToString());
                     list.Add(listCreditos);
                 }
             }

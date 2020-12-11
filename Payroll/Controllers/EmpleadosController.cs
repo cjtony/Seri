@@ -145,7 +145,7 @@ namespace Payroll.Controllers
             @Session["Empleado_id"] = IdEmpleado;
             List<DescEmpleadoVacacionesBean> empleados = new List<DescEmpleadoVacacionesBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
-            empleados = Dao.sp_CEmpleado_Retrieve_Empleado(IdEmpleado, int.Parse(Session["IdEmpresa"].ToString()));
+            empleados = Dao.sp_Retrieve_liveSearchEmpleado( int.Parse(Session["IdEmpresa"].ToString()), IdEmpleado.ToString());
             return Json(empleados);
         }
         [HttpPost]

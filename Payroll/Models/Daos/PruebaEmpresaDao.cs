@@ -1067,6 +1067,6 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
-
+        
     }
 }

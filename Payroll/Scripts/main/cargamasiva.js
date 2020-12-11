@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    
     beforeValidarFile = () => {
 
         $("#btnCargaMasiva").html("<span class='spinner-grow spinner-grow-sm' role='status' aria-hidden='true'></span> Cargando...");
@@ -10,7 +10,6 @@
             validateUploadFile();
         }, 5000);
     }
-
 
     validateUploadFile = () => {
         var selectedFile = $("#file-toup").prop("files")[0];
@@ -77,14 +76,6 @@
         //$("#loadingCargaMasiva").modal("hide");
     }
 
-    //$("#btn-download-formato-carga-masiva").hover(
-    //    function () {
-    //        $(this).append($("<span> Descargar Layout </span>"));
-    //        document.getElementById("btn-download-formato-carga-masiva").style.width = '50px';
-    //    }, function () {
-    //        $(this).find("span").last().remove();
-    //    }
-    //);
     $("#btnDownLoadCM").mouseenter(function () {
         //alert("ENTRA");
         $("#btnDownLoadCM").append("<span> Descargar Layout </span>");
@@ -95,4 +86,18 @@
         $("#btnDownLoadCM").find("span").remove();
         //document.getElementById("btnDownLoadCM").style.width = 30;
     });
+
+    loadLayout = () => {
+        $.ajax({
+            url: "../Incidencias/loadLayout",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(data[0]);
+                //$("#btnDownLoadCM").attr("href", data[0].substring(2, data[0].Length));
+            }
+        });
+    }
+    loadLayout();
 });
