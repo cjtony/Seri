@@ -147,9 +147,9 @@ namespace Payroll.Controllers
         {
             List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
-            int id1 = int.Parse(Session["Empleado_id"].ToString());
-            int id2 = int.Parse(Session["IdEmpresa"].ToString());
-            lista = Dao.sp_TAusentismos_Retrieve_Ausentismo_Empleado(id2, id1, IdAusentismo);
+            int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
+            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+            lista = Dao.sp_TAusentismos_Retrieve_Ausentismo_Empleado(Empresa_id, Empleado_id, IdAusentismo);
             return Json(lista);
         }
         [HttpPost]
