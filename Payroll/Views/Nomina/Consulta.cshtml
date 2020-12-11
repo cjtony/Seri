@@ -1,7 +1,443 @@
 ﻿<link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
-<div class="container-fluid mb-5">
+
+<div class="container bg-white">
+    @*Botones Flotantes*@
+
+    <div class="container-fluid">
+
+        <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+            <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
+            <div class="col-md-6">
+                <div class="text-left">
+                    <h6 class="col-ico font-nav-child">
+                        <b>
+                            <i class="fa fa-file-text mr-2"></i> Consulta
+                        </b>
+                    </h6>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <hr />
+            </div>
+            <div class="col-12">
+                <center>
+                    <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-11" id="content-tableConsul">
+                        <div class="form-group row col-md-6" style="margin-left:2%">
+                            <div class="text-left">
+                                <h6 class="col-ico font-nav-child">
+                                    <b>
+                                        <i class="fa fa-pencil-square-o fa-sm mr-ico-05"></i> Definición/Consulta
+                                    </b>
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                        <div>
+                            <div class="col-md-12">
+                                <div class="col-9">
+                                    @*<input type="button" style='margin-top: 15px; margin-left: 50px; float: left;' value="Agregar" data-toggle="modal" data-target="#AgregarDefinicion" id="BAgregar" />*@
+                                    <input type="button" style='margin-top: 15px;  float: left;' value="Actualizar" data-toggle="modal" data-target="#AgregarDefinicion" id="BActu" />
+                                    @*<input type="button" style='margin-top: 15px;  float: left;' value="Eliminar" id="BEliminar" />*@
+                                </div>
+                                <center>
+                                    <div class="table-responsive col-md-11" style="text-align:center">
+                                        <div id="TpDefinicion" class="table-responsive"></div>
+                                    </div>
+                                </center>
+                            </div>
+                            <div class="form-group row col-md-9" style="margin-left:65%; top:25px">
+                                <button type="submit" class="btn btn-primary mb-2 " id="btnFloAgre" data-toggle="modal" data-target="#AgregarDefinicion" title="Agregar Definición"><span class="fa fa-plus-square"></span> Nueva Definicion</button>
+                            </div>
+                        </div>
+                    </div>
+                </center>
+            </div>
+
+            <div class="col-md-11 offset-2" style="margin-left:1%">    
+              <div class="container-fluid">
+                        <!-- Pantalla de agregar definicion -->
+                        <div class="modal fade" data-backdrop="static" id="AgregarDefinicion" tabindex="-1" role="dialog" aria-labelledby="AgregaDefinicion" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="AgrgarDefinicionlabel"> <i class="fas fa-book mr-2"></i>Definicion de Plantilla </h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <input type="hidden" value="0" readonly class="form-control form-control-sm" id="clvemp" />
+                                                        <label for="NombreDe" class="col-sm-4 col-form-label font-labels">
+                                                            Nombre:
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <input placeholder="Nombre" maxlength="200" tvvisible="false" type="text" id="NombreDe" class="form-control form-control-sm text-capitalize" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="" class="col-sm-4 col-form-label font-labels">
+                                                            Descripción:
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <textarea placeholder="Descripción" maxlength="500" type="text" id="DescripcionDe" class="form-control form-control-sm text-capitalize" rows="2" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label for="ano" class="col-sm-4 col-form-label font-labels">
+                                                            Año:
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <input placeholder="Año" maxlength="4" type="text" id="iAnoDe" class="form-control form-control-sm text-capitalize" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="DCancelado" class="col-sm-4 col-form-label font-labels">
+                                                            Cancelado:
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <select placeholder="Periodo" tp-select="DCancelado" class="form-control form-control-sm" id="DCancelado">
+                                                                <option value="0">No</option>
+                                                                <option value="1">Si</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-toggle="modal" data-target="#AgregarDefinicion" type="button" class="btn btn-outline-success btn-sm" id="btnAgregarDefinicion" style="visibility:visible"> <i class="fas fa-plus mr-2"></i> Agregar Definición</button>
+                                        <button data-toggle="modal" data-target="#ActualizarDefinicion" type="button" class="btn btn-outline-success btn-sm" id="btnActualizarDefinicion" style="visibility:hidden"> <i class="fas fa-plus mr-2"></i> Actualizar Definición</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierraDefinicion"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+            </div>
+
+            <div class="col-12">
+                <center>
+                    <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-11 d-none" id="content-blockDedu/per">
+                        <div class="col-md-6">
+                            <div class="text-left">
+                                <h6 class="col-ico font-nav-child">
+                                    <b>
+                                        <i class=" mr-ico-05"></i>
+                                        Percepciones/Deducciones
+                                    </b>
+                                </h6>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                        <div>
+                            <div class="col-md-12 offset-2" style="margin-left:1%">
+                               
+                              <div class="container-fluid">
+                                        <!--Tabla Definicion-->
+                                        <div class="modal-body">
+                                            <div class="container-fluid">
+                                                <div class="row">
+
+                                                    <!-- tab Percep y deducc -->
+
+                                                    <div class="tab-pane fade show active p-3 row table-responsive" id="navPercepciones" role="tabpanel" aria-labelledby="nav-percepciones-tab">
+                                                        <nav>
+                                                            <div class="nav nav-tabs " id="nav-tab" role="tablist">
+                                                                <a class="nav-item nav-link  font-navs  " id="nav-Percepciones-tab" data-toggle="tab" href="#nav-Percepciones" role="tab" aria-controls="nav-Definicion">
+                                                                    <i class="fas fa-file-signature col-ico mr-ico-05"></i> Percepciones
+                                                                </a>
+                                                                <a class="nav-item nav-link font-navs  " id="nav-Deducciones-tab" data-toggle="tab" href="#nav-deducciones" role="tab" aria-controls="nav-Deducciones" pagPre="false">
+                                                                    <i class="fas fa-sticky-note col-ico mr-ico-05 disabled"></i> Deducciones
+                                                                </a>
+                                                            </div>
+                                                        </nav>
+                                                        <div class="tab-content" id="nav-tabContent">
+
+                                                            <!-- pantalla de la percepciones tab-->
+
+                                                            <div class="tab-pane fade show active p-3" id="nav-Percepciones" role="tabpanel" aria-labelledby="nav-Definicion-tab">
+                                                                <div class="row mt-4">
+                                                                    <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
+                                                                    <div class="col-md-12 mb-4">
+                                                                        <div class="text-left">
+                                                                            <h6 class="col-ico">
+                                                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                                                Percepciones
+                                                                            </h6>
+                                                                            <hr />
+                                                                            <div class="row" style="margin-top:-5px;">
+                                                                                <div class="col-10">
+                                                                                    <input type="button" style='margin-top: 15px; margin-left: 50px; float: left;' value="Agregar" data-toggle="modal" data-target="#AgregarPercepcion" id="BAgregarPer" />
+                                                                                    <input type="button" style='margin-top: 15px;  float: left;' value="Actualizar" data-toggle="modal" data-target="#AgregarPercepcion" id="BActuPer" />
+                                                                                    <input type="button" style='margin-top: 15px;  float: left;' value="Eliminar" id="BEliminarPer" />
+                                                                                </div>
+                                                                                <div class="table-responsive" style="text-align:center">
+                                                                                    <div id="TbPercepciones" class="table-responsive"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-body col-12" style="margin-top:-10px;">
+
+
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <!-- pantalla de la deducciones tab-->
+
+                                                            <div class="tab-pane fade p-3" id="nav-deducciones" role="tabpanel" aria-labelledby="nav-Deducciones-tab">
+                                                                <div class="row mt-4">
+                                                                    <div id="div-most-alert-data-imss" class="col-md-6 offset-3"></div>
+                                                                    <div class="col-md-12 mb-4">
+                                                                        <div class="text-left">
+                                                                            <h6 class="col-ico">
+                                                                                <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                                                                                Deducciones
+                                                                            </h6>
+                                                                            <hr />
+                                                                            <div class="row">
+                                                                                <div class="col-md-10">
+                                                                                    <input type="button" style='margin-top: 15px; margin-left: 50px; float: left;' value="Agregar" data-toggle="modal" data-target="#AgregarDeducciones" id="BAgregardedu2" />
+                                                                                    <input type="button" style='margin-top: 15px;  float: left;' value="Actualizar" data-toggle="modal" data-target="#AgregarDeducciones" id="BActudedu" />
+                                                                                    <input type="button" style='margin-top: 15px;  float: left;' value="Eliminar" id="BEliminardedu" />
+                                                                                </div>
+                                                                                <div class="table-responsive" style="text-align:center">
+                                                                                    <div id="TbDeducciones" class="table-responsive"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Pantalla de agregar Percepciones -->
+                                        <div class="modal fade" data-backdrop="static" id="AgregarPercepcion" tabindex="-1" role="dialog" aria-labelledby="AgregaPercep" aria-hidden="true" style=" margin-top:-5px">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="AgrgarDefinicionlabel"> <i class="fas fa-file-signature mr-2"></i>Percepciones </h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+
+                                                                <!--Columana1 de datos Percepcion -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <input type="hidden" readonly class="form-control form-control-sm" id="clperc" />
+                                                                        <label for="RegEmp" class="col-sm-4 col-form-label font-labels">
+                                                                            Empresa:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="RegEmpresa">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label for="Renglon" class="col-sm-4 col-form-label font-labels">
+                                                                            Renglon:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Renglón" tp-select="Renglon" class="form-control form-control-sm" id="RegRenglon">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label for="RegEspejo" class="col-sm-4 col-form-label font-labels">
+                                                                            Es espejo:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Espejo" tp-select="Espejo" class="form-control form-control-sm" name="RegEspejo" id="RegEspejo">
+                                                                                <option value="0">Selecciona</option>
+                                                                                <option value="1">Si</option>
+                                                                                <option value="2">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Columna 2 de Datos de Percepcion-->
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label for="RegTipoperiodo1" class="col-sm-4 col-form-label font-labels">
+                                                                            Tipo de periodo:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Tipo de periodo" tp-select="Periodo" class="form-control form-control-sm" name="RegTipoperiodo1" id="RegTipoperiodo1" onchange="ShowSelected">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label for="RegAcumulado" class="col-sm-4 col-form-label font-labels">
+                                                                            Acumulado:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Acumulado" tp-select="Acumulado" class="form-control form-control-sm" id="RegAcumulado">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        @*<label for="RegPeridoPer" class="col-sm-4 col-form-label font-labels">
+                                                                        Periodo:
+                                                                    </label>
+                                                                    <div class="col-sm-8">
+                                                                        <select placeholder="Periodo" tp-select="RegPeridoPer" class="form-control form-control-sm" id="RegPeridoPer">
+                                                                            <option value="0">Selecciona</option>
+                                                                        </select>
+                                                                    </div>*@
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button data-toggle="modal" data-target="#AgregarPersepcion" type="button" class="btn btn-outline-success btn-sm" id="btnAgregarPercep" style="visibility:visible"> <i class="fas fa-plus mr-2"></i> Agregar Percepción</button>
+                                                        <button data-toggle="modal" data-target="#ActualizarDefinicion" type="button" class="btn btn-outline-success btn-sm" id="btnActualizarPercep" style="visibility:hidden"> <i class="fas fa-plus mr-2"></i> Actualizar Percepción</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierrapercepcion"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Pantalle de Agregar Deducciones-->
+                                        <div class="modal fade" data-backdrop="static" id="AgregarDeducciones" tabindex="-1" role="dialog" aria-labelledby="AgregaDeducion" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="AgrgarDefinicionlabel"> <i class="fas fa-sticky-note mr-2"></i>Deducciones </h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <!--Columana1 de datos deduccion -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <input type="hidden" readonly class="form-control form-control-sm" id="clperc" />
+                                                                        <label for="RegEmpresaDe" class="col-sm-4 col-form-label font-labels">
+                                                                            Empresa:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="RegEmpresaDe">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label for="RegRenglonDE" class="col-sm-4 col-form-label font-labels">
+                                                                            Renglon:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Renglón" tp-select="Renglón" class="form-control form-control-sm" id="RegRenglonDe">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <label for="RegEspejoDe" class="col-sm-4 col-form-label font-labels">
+                                                                            Es espejo:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Espejo" tp-select="Espejo" class="form-control form-control-sm" name="RegEspejoDe" id="RegEspejoDe">
+                                                                                <option value="0">Selecciona</option>
+                                                                                <option value="1">Si</option>
+                                                                                <option value="2">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Columna 2 de Datos de deduccion-->
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label for="RegTipoperiodoDe" class="col-sm-4 col-form-label font-labels">
+                                                                            Tipo de periodo:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Tipo de periodo" tp-select="Periodo" class="form-control form-control-sm" id="RegTipoperiodoDe">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label for="RegAcumuladoDe" class="col-sm-4 col-form-label font-labels">
+                                                                            Acumulado:
+                                                                        </label>
+                                                                        <div class="col-sm-8">
+                                                                            <select placeholder="Acumulado" tp-select="Acumulado" class="form-control form-control-sm" id="RegAcumuladoDe">
+                                                                                <option value="0">Selecciona</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button data-toggle="modal" data-target="#Agregardedu" type="button" class="btn btn-outline-success btn-sm" id="btnAgregarDedu" style="visibility:visible"> <i class="fas fa-plus mr-2"></i> Agregar Deducción</button>
+                                                        <button data-toggle="modal" data-target="#ActualizarDefinicion" type="button" class="btn btn-outline-success btn-sm" id="btnActualizarDedu" style="visibility:hidden"> <i class="fas fa-plus mr-2"></i> Actualizar Dedución</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierraDedu"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                             
+                            </div>
+                        </div>
+
+                    </div>
+                </center>
+            </div>
+
+
+
+            @*Botones de flotantes*@
+            <div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--<div class="container-fluid mb-5">
     <div class="row">
         <div class="col-sm-11 offset-1">
             <nav>
@@ -29,21 +465,21 @@
                                     <div class="form-group text-center rounded shadow p-3 border-left-primary">
                                         <div class="container-fluid">
                                             <!--Tabla Definicion-->
-                                            <div class="modal-body">
+                                            <!--<div class="modal-body">
                                                 <div class="container-fluid">
                                                     <div class="row">
-                                                        <div class="col-9">
+                                                        <div class="col-9">-->
                                                             @*<input type="button" style='margin-top: 15px; margin-left: 50px; float: left;' value="Agregar" data-toggle="modal" data-target="#AgregarDefinicion" id="BAgregar" />*@
-                                                            <input type="button" style='margin-top: 15px;  float: left;' value="Actualizar" data-toggle="modal" data-target="#AgregarDefinicion" id="BActu" />
+                                                            <!--<input type="button" style='margin-top: 15px;  float: left;' value="Actualizar" data-toggle="modal" data-target="#AgregarDefinicion" id="BActu" />-->
                                                             @*<input type="button" style='margin-top: 15px;  float: left;' value="Eliminar" id="BEliminar" />*@
-                                                        </div>
+                                                        <!--</div>
                                                         <div class="table-responsive" style="text-align:center">
                                                             <div id="TpDefinicion" class="table-responsive"></div>
-                                                        </div>
+                                                        </div>-->
 
                                                         <!-- tab Percep y deducc -->
 
-                                                        <div class="tab-pane fade show active p-3 row table-responsive" id="navPercepciones" role="tabpanel" aria-labelledby="nav-percepciones-tab">
+                                                        <!--<div class="tab-pane fade show active p-3 row table-responsive" id="navPercepciones" role="tabpanel" aria-labelledby="nav-percepciones-tab">
                                                             <nav>
                                                                 <div class="nav nav-tabs " id="nav-tab" role="tablist">
                                                                     <a class="nav-item nav-link  font-navs  " id="nav-Percepciones-tab" data-toggle="tab" href="#nav-Percepciones" role="tab" aria-controls="nav-Definicion">
@@ -54,11 +490,11 @@
                                                                     </a>
                                                                 </div>
                                                             </nav>
-                                                            <div class="tab-content" id="nav-tabContent">
+                                                            <div class="tab-content" id="nav-tabContent">-->
 
                                                                 <!-- pantalla de la percepciones tab-->
 
-                                                                <div class="tab-pane fade show active p-3" id="nav-Percepciones" role="tabpanel" aria-labelledby="nav-Definicion-tab">
+                                                                <!--<div class="tab-pane fade show active p-3" id="nav-Percepciones" role="tabpanel" aria-labelledby="nav-Definicion-tab">
                                                                     <div class="row mt-4">
                                                                         <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
                                                                         <div class="col-md-12 mb-4">
@@ -80,18 +516,18 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="modal-body col-12" style="margin-top:-10px;">  
-                                                                      
-                                                                           
+                                                                        <div class="modal-body col-12" style="margin-top:-10px;">
+
+
                                                                         </div>
                                                                     </div>
 
-                                                                </div>
+                                                                </div>-->
 
 
                                                                 <!-- pantalla de la deducciones tab-->
 
-                                                                <div class="tab-pane fade p-3" id="nav-deducciones" role="tabpanel" aria-labelledby="nav-Deducciones-tab">
+                                                                <!--<div class="tab-pane fade p-3" id="nav-deducciones" role="tabpanel" aria-labelledby="nav-Deducciones-tab">
                                                                     <div class="row mt-4">
                                                                         <div id="div-most-alert-data-imss" class="col-md-6 offset-3"></div>
                                                                         <div class="col-md-12 mb-4">
@@ -113,7 +549,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                      
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -122,9 +558,9 @@
 
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <!-- Pantalla de agregar definicion -->
-                                            <div class="modal fade" data-backdrop="static" id="AgregarDefinicion" tabindex="-1" role="dialog" aria-labelledby="AgregaDefinicion" aria-hidden="true">
+                                            <!--<div class="modal fade" data-backdrop="static" id="AgregarDefinicion" tabindex="-1" role="dialog" aria-labelledby="AgregaDefinicion" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -183,9 +619,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <!-- Pantalla de agregar Percepciones -->
-                                            <div class="modal fade" data-backdrop="static" id="AgregarPercepcion" tabindex="-1" role="dialog" aria-labelledby="AgregaPercep" aria-hidden="true" style=" margin-top:-5px">
+                                            <!--<div class="modal fade" data-backdrop="static" id="AgregarPercepcion" tabindex="-1" role="dialog" aria-labelledby="AgregaPercep" aria-hidden="true" style=" margin-top:-5px">
                                                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -193,10 +629,10 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="container-fluid">
-                                                                <div class="row">
+                                                                <div class="row">-->
 
                                                                     <!--Columana1 de datos Percepcion -->
-                                                                    <div class="col-md-6">
+                                                                    <!--<div class="col-md-6">
                                                                         <div class="form-group row">
                                                                             <input type="hidden" readonly class="form-control form-control-sm" id="clperc" />
                                                                             <label for="RegEmp" class="col-sm-4 col-form-label font-labels">
@@ -230,11 +666,11 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div>-->
 
                                                                     <!-- Columna 2 de Datos de Percepcion-->
 
-                                                                    <div class="col-md-6">
+                                                                    <!--<div class="col-md-6">
                                                                         <div class="form-group row">
                                                                             <label for="RegTipoperiodo1" class="col-sm-4 col-form-label font-labels">
                                                                                 Tipo de periodo:
@@ -255,7 +691,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="form-group row">
+                                                                        <div class="form-group row">-->
                                                                             @*<label for="RegPeridoPer" class="col-sm-4 col-form-label font-labels">
                                                                                     Periodo:
                                                                                 </label>
@@ -264,7 +700,7 @@
                                                                                         <option value="0">Selecciona</option>
                                                                                     </select>
                                                                                 </div>*@
-                                                                        </div>
+                                                                        <!--</div>
 
                                                                     </div>
 
@@ -279,9 +715,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->-->
                                             <!-- Pantalle de Agregar Deducciones-->
-                                            <div class="modal fade" data-backdrop="static" id="AgregarDeducciones" tabindex="-1" role="dialog" aria-labelledby="AgregaDeducion" aria-hidden="true">
+                                            <!--<div class="modal fade" data-backdrop="static" id="AgregarDeducciones" tabindex="-1" role="dialog" aria-labelledby="AgregaDeducion" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -289,9 +725,9 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="container-fluid">
-                                                                <div class="row">
+                                                                <div class="row">-->
                                                                     <!--Columana1 de datos deduccion -->
-                                                                    <div class="col-md-6">
+                                                                    <!--<div class="col-md-6">
                                                                         <div class="form-group row">
                                                                             <input type="hidden" readonly class="form-control form-control-sm" id="clperc" />
                                                                             <label for="RegEmpresaDe" class="col-sm-4 col-form-label font-labels">
@@ -326,11 +762,11 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div>-->
 
                                                                     <!-- Columna 2 de Datos de deduccion-->
 
-                                                                    <div class="col-md-6">
+                                                                    <!--<div class="col-md-6">
                                                                         <div class="form-group row">
                                                                             <label for="RegTipoperiodoDe" class="col-sm-4 col-form-label font-labels">
                                                                                 Tipo de periodo:
@@ -379,13 +815,11 @@
         </div>
     </div>
     <div>
-        <button type="button"  data-toggle="modal" data-target="#AgregarDefinicion" class="flotante1 btn btn-primary btn-circle shadow" title="Agregar Definición" id="btnFloAgre">
-            <i class="far fa-plus-square"></i>
-        </button>
+     
     </div>
-</div>
+</div>-->
 
-<script type="text/javascript" src="~/Scripts/Nomoper/NomOperConsulta.js?n=4"></script>
+<script type="text/javascript" src="~/Scripts/Nomoper/NomOperConsulta.js?n=5"></script>
 @*<script src="~/Scripts/jqxGrid/jqwidgets/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jqxGrid/jqwidgets/jqxgrid.js"></script>*@
 <script src="~/Scripts/jqxGrid/jqwidgets/jqx-all.js"></script>

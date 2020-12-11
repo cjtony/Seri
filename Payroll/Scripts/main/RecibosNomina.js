@@ -244,7 +244,6 @@
 
     FBuscar = () => {
 
-        console.log('recibo de nomina');
         FDelettable();
         var TotalPercep=0;
         var TotalDedu=0;
@@ -568,13 +567,14 @@
     BtbGeneraXML.addEventListener('click', FGenerarXML);
 
     btnFloLimpiar.addEventListener('click', function () {
-   
+         console.log('lipia datos');
         FLimpCamp();
     });
 
     /// Limpia Campos
 
     FLimpCamp = () => {
+        console.log('lipia datos');
         EmpresaNom.value = 0;
         anoNom.value = "";
         TipodePerdioRec.value = 0;
