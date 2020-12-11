@@ -664,7 +664,8 @@
                 vencon: vencon.value,
                 tippag: tippag.value,
                 banuse: banuse.value,
-                cunuse: cunuse.value
+                cunuse: cunuse.value,
+                ultSdi: document.getElementById('view-ultSdi').value
             }
         };
         objectDataTabNom.datanom = dataLocSto;
@@ -743,6 +744,8 @@
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedataall.classList.add('d-none');
                             btnsaveeditdataest.classList.remove('d-none');
+                            document.getElementById('content-new-inpt-fechmovi').classList.remove('d-none');
+                            document.getElementById('content-new-inpt-motmovi').classList.remove('d-none');
                             document.getElementById('content-new-inpt-fechmovi').innerHTML = `
                                 <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
                                     Fecha de movimiento
@@ -761,7 +764,7 @@
                             `;
                         }
                     } else {
-                        document.getElementById('div-most-alert-data-estructure').innerHTML += `
+                        document.getElementById('div-most-alert-data-estructure').innerHTML = `
                             <div class="alert alert-danger text-center" role="alert">
                                 <b>
                                     <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos de la estructura, informe al área de TI.
@@ -828,10 +831,12 @@
                         }
                         floaddatatabstructure(paramid);
                         fShowBtnsHistoryApart("NOMINA");
-                        flocalstodatatabnomina();
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedatanomina.classList.add('d-none');
                             btnsaveeditdatanomina.classList.remove('d-none');
+                            document.getElementById('content-new-inpt-movsal').classList.remove('d-none');
+                            document.getElementById('content-new-inpt-fecsal').classList.remove('d-none');
+                            document.getElementById('content-new-inpt-ultsdi').classList.remove('d-none');
                             document.getElementById('content-new-inpt-movsal').innerHTML = `
                                 <label for="motmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
                                     Motivo del movimiento
@@ -848,9 +853,18 @@
                                     <input type="date" id="fechmovisal" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
                                 </div>
                             `;
+                            document.getElementById('content-new-inpt-ultsdi').innerHTML = `
+                                <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                                    Ultimo sdi
+                                </label>
+                                <div class="col-sm-8">
+                                    <input id="view-ultSdi" type="number" value="${data.Datos.sUlt_sdi}"  class="form-control form-control-sm" disabled />
+                                </div>
+                            `;
                         }
+                        flocalstodatatabnomina();
                     } else {
-                        document.getElementById('div-most-alert-data-imss').innerHTML += `
+                        document.getElementById('div-most-alert-data-imss').innerHTML = `
                             <div class="alert alert-danger text-center" role="alert">
                                 <b>
                                     <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos de la nomina, informe al área de TI.
@@ -899,7 +913,7 @@
                         floaddatatabnomina(paramid);
                         fShowBtnsHistoryApart('IMSS');
                     } else {
-                        document.getElementById('div-most-alert-data-imss').innerHTML += `
+                        document.getElementById('div-most-alert-data-imss').innerHTML = `
                             <div class="alert alert-danger text-center" role="alert">
                                 <b>
                                     <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos del imss, informe al área de TI.
@@ -978,7 +992,7 @@
                             flocalstodatatabgen();
                         }, 2000);
                     } else {
-                        document.getElementById('div-most-alert-data-gen').innerHTML += `
+                        document.getElementById('div-most-alert-data-gen').innerHTML = `
                             <div class="alert alert-danger text-center" role="alert">
                                 <b>
                                     <i class="fas fa-times-circle mr-2"></i> No se cargaron los datos generales, informe al área de TI.

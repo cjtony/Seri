@@ -13,10 +13,15 @@
     const contentBtnGenerate = document.getElementById('contentBtnGenerate');
     const contentGenerateRep = document.getElementById('contentGenerateRep');
 
+    const date = new Date();
+    const frmonth = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+    const frday = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+    const fechact = date.getFullYear() + '-' + frmonth + '-' + frday; 
+
     const parameterYear     = `<input type="number" class="form-control form-control-sm" id="paramYear"/>`;
     const parameterNPer     = `<input type="number" class="form-control form-control-sm" id="paramNper"/>`;
     const parameterTPer     = '<input type="number" class="form-control form-control-sm" id="paramTper"/>';
-    const parameterDate     = '<input type="date" class="form-control form-control-sm" id="paramDate"/>';
+    const parameterDate     = `<input type="date" class="form-control form-control-sm" id="paramDate" value="${fechact}"/>`;
     const parameterYears    = `<input type="number" class="form-control form-control-sm" id="paramYearS"/>`;
     const parameterYearE    = `<input type="number" class="form-control form-control-sm" id="paramYearE"/>`;
     const parameterNReng    = `<input type="number" class="form-control form-control-sm" id="paramNReng"/>`;
