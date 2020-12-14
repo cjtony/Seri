@@ -511,7 +511,7 @@
                                     var periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
                                     if (periodo == "Selecciona") {
                                         $("#jqxInput").empty();
-                                        $("#jqxInput").jqxInput({ source: null, placeHolder: "Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                                        $("#jqxInput").jqxInput({ source: null, placeHolder: "Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
                                     }
                                     if (periodo != "Selecciona") {
                                         separador = " ",
@@ -539,7 +539,7 @@
                                                     };
                                                     var dataAdapter = new $.jqx.dataAdapter(source);
                                                     $("#jqxInput").empty();
-                                                    $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                                                    $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
                                                     $("#jqxInput").on('select', function (event) {
                                                         if (event.args) {
                                                             var item = event.args.item;
@@ -558,7 +558,7 @@
                                                 }
                                                 else {
                                                     $("#jqxInput").empty();
-                                                    $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                                                    $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
                                                 }
 
                                             }
@@ -722,6 +722,7 @@
         btnFloEjecutar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'visible';
     };
+
     navEjecuciontab.addEventListener('click', Ftabopcion1);
     navVisCalculotab.addEventListener('click', Ftabopcion2);
     navNomCetab.addEventListener('click', Ftabopcion3);
@@ -879,8 +880,6 @@
     ChNCerrada.addEventListener('click', FValorChec);
 
                   
-
-
                             /*  Procesos de Ejecucion */
 
     Fejecucion = () => {
@@ -1131,7 +1130,7 @@
                     };
                     var dataAdapter = new $.jqx.dataAdapter(source);
                     $("#jqxInput").empty();
-                    $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                    $("#jqxInput").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
                     $("#jqxInput").on('select', function (event) {
                         if (event.args) {
                             var item = event.args.item;
@@ -1150,7 +1149,7 @@
                 }
                 else {
                     $("#jqxInput").empty();
-                    $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 350, height: 30, minLength: 1 });
+                    $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
                 }
 
             }
@@ -1382,8 +1381,8 @@
     CheckRecibo2.addEventListener('click',FRecibo2)
 
 
-               /* muestra los calculos en pantalla */
-    $("#jqxExpander").jqxExpander({ width: '105%', expanded: false });
+    //           /* muestra los calculos en pantalla */
+    //$("#jqxExpander").jqxExpander({ width: '105%', expanded: false });
 
                /* Borra tabla de Nom */
 
@@ -1516,7 +1515,7 @@
 
 
     $('#PeridoEjeNomCe').change(function () {
-
+        document.getElementById('Block_calculos').classList.remove("d-none");
         IdDropList2;
         periodo = PeridoEjeNomCe.options[PeridoEjeNomCe.selectedIndex].text;
         separador = " ",
@@ -1953,10 +1952,11 @@
 
     $("#timerNotification").jqxNotification("closeLast");
     $("#jqxLoader").jqxLoader({ text: "Realizando calculos", width: 160, height: 80 });
+
     var notificationWidth = 300;
     $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: true, template: "seconds"});
 
-  
+    
   
     //var interval = setInterval(function () {
     //    console.log(seconds);
