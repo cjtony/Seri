@@ -143,12 +143,12 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataSelectCentrCost(int keycentrcost)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
+            Boolean flag = false;
+            String messageError = "none";
             CentrosCostosBean centrCostBean = new CentrosCostosBean();
-            CentrosCostosDao  centrCostDaoD = new CentrosCostosDao();
+            CentrosCostosDao centrCostDaoD = new CentrosCostosDao();
             try {
-                int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 centrCostBean = centrCostDaoD.sp_Data_Centro_Costo(keyemp, keycentrcost);
                 if (centrCostBean.sMensaje != "success") {
                     messageError = centrCostBean.sMensaje;
@@ -157,7 +157,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = centrCostBean });
@@ -166,12 +166,12 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult SaveEditCentrCost(int keycentrcost, string ncentrocosto, string dcentrocosto)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
+            Boolean flag = false;
+            String messageError = "none";
             CentrosCostosBean centrCostBean = new CentrosCostosBean();
-            CentrosCostosDao  centrCostDaoD = new CentrosCostosDao();
+            CentrosCostosDao centrCostDaoD = new CentrosCostosDao();
             try {
-                int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 centrCostBean = centrCostDaoD.sp_Update_Centro_Costo(keycentrcost, ncentrocosto, dcentrocosto, keyemp);
                 if (centrCostBean.sMensaje != "success") {
                     messageError = centrCostBean.sMensaje;
@@ -183,19 +183,19 @@ namespace Payroll.Controllers
                 flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError});
+            return Json(new { Bandera = flag, MensajeError = messageError });
         }
 
         [HttpPost]
         public JsonResult SaveDataCentrCost(string ncentrcost, string dcentrcost)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
+            Boolean flag = false;
+            String messageError = "none";
             CentrosCostosBean centrCostBean = new CentrosCostosBean();
-            CentrosCostosDao  centrCostDaoD = new CentrosCostosDao();
+            CentrosCostosDao centrCostDaoD = new CentrosCostosDao();
             try {
-                int keyUser   = int.Parse(Session["iIdUsuario"].ToString());
-                int keyEmpr   = int.Parse(Session["IdEmpresa"].ToString());
+                int keyUser = int.Parse(Session["iIdUsuario"].ToString());
+                int keyEmpr = int.Parse(Session["IdEmpresa"].ToString());
                 centrCostBean = centrCostDaoD.sp_Insert_Centro_Costo(keyEmpr, ncentrcost.Trim().ToUpper(), dcentrcost.Trim().ToUpper(), keyUser);
                 if (centrCostBean.sMensaje != "success") {
                     messageError = centrCostBean.sMensaje;
@@ -204,7 +204,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError });
@@ -213,10 +213,10 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult TypesJobs(string typeJob)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
+            Boolean flag = false;
+            String messageError = "none";
             List<CodigoCatalogoBean> codeCatBean = new List<CodigoCatalogoBean>();
-            CodigoCatalogosDao       codeCatDaoD = new CodigoCatalogosDao();
+            CodigoCatalogosDao codeCatDaoD = new CodigoCatalogosDao();
             try {
                 int keyEmpr = int.Parse(Session["IdEmpresa"].ToString());
                 codeCatBean = codeCatDaoD.sp_Datos_Codigo_Catalogo(typeJob, keyEmpr);
@@ -224,7 +224,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = codeCatBean });
@@ -252,12 +252,12 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult DataLocalitySelect(int keyLocality)
         {
-            Boolean flag         = false;
-            String  messageError = "none";
+            Boolean flag = false;
+            String messageError = "none";
             LocalidadesBean localitysBean = new LocalidadesBean();
-            LocalidadesDao  localitysDaoD = new LocalidadesDao();
+            LocalidadesDao localitysDaoD = new LocalidadesDao();
             try {
-                int keyemp    = int.Parse(Session["IdEmpresa"].ToString());
+                int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 localitysBean = localitysDaoD.sp_Dato_Localidad_Seleccionada(keyLocality, keyemp);
                 if (localitysBean.sMensaje != "success") {
                     messageError = localitysBean.sMensaje;
@@ -266,7 +266,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = localitysBean });
@@ -275,10 +275,10 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult LoadRegPatLocalitys()
         {
-            Boolean flag         = false;
-            String  messageError = "none";
+            Boolean flag = false;
+            String messageError = "none";
             List<RegistroPatronalBean2> regPatronalBean = new List<RegistroPatronalBean2>();
-            RegistroPatronalDao         regPatronalDaoD = new RegistroPatronalDao();
+            RegistroPatronalDao regPatronalDaoD = new RegistroPatronalDao();
             try {
                 int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 regPatronalBean = regPatronalDaoD.sp_Registro_Patronal_Retrieve_Registros_Patronales(keyemp);
@@ -286,7 +286,7 @@ namespace Payroll.Controllers
                     flag = true;
                 }
             } catch (Exception exc) {
-                flag         = false;
+                flag = false;
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = regPatronalBean });
@@ -298,7 +298,7 @@ namespace Payroll.Controllers
             Boolean flag = false;
             String messageError = "none";
             List<ZonaEconomicaBean> zoneEcoBean = new List<ZonaEconomicaBean>();
-            ZonaEconomicaDao        zoneEcoDaoD = new ZonaEconomicaDao();
+            ZonaEconomicaDao zoneEcoDaoD = new ZonaEconomicaDao();
             try {
                 int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 zoneEcoBean = zoneEcoDaoD.sp_Datos_Zonas_Economicas();
@@ -318,7 +318,7 @@ namespace Payroll.Controllers
             Boolean flag = false;
             String messageError = "none";
             List<CatalogoGeneralBean> catGeneralBean = new List<CatalogoGeneralBean>();
-            CatalogoGeneralDao        catGeneralDao  = new CatalogoGeneralDao();
+            CatalogoGeneralDao catGeneralDao = new CatalogoGeneralDao();
             try {
                 int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 catGeneralBean = catGeneralDao.sp_CatalogoGeneral_Consulta_CatalogoGeneral(0, "Active/Desactive", 0, 1);
@@ -336,9 +336,9 @@ namespace Payroll.Controllers
         public JsonResult SaveEditLocality(int keylocality, string desclocality, string ivalocality, int regpatlocality, int zonelocality, int estatelocality, int idreglocality, int idsuclocality)
         {
             Boolean flag = false;
-            String  messageError = "none";
+            String messageError = "none";
             LocalidadesBean2 saveEditLocBean = new LocalidadesBean2();
-            LocalidadesDao   saveEditLocDaoD = new LocalidadesDao();
+            LocalidadesDao saveEditLocDaoD = new LocalidadesDao();
             try {
                 saveEditLocBean = saveEditLocDaoD.sp_Update_Localidad(keylocality, desclocality.Trim().ToUpper(), ivalocality, regpatlocality, idreglocality, zonelocality, idsuclocality, estatelocality);
                 if (saveEditLocBean.sMensaje != "success") {
@@ -360,7 +360,7 @@ namespace Payroll.Controllers
             Boolean flag = false;
             String messageError = "none";
             LocalidadesBean2 saveDataLocBean = new LocalidadesBean2();
-            LocalidadesDao   saveDataLocDaoD = new LocalidadesDao();
+            LocalidadesDao saveDataLocDaoD = new LocalidadesDao();
             try {
                 int keyemp = int.Parse(Session["IdEmpresa"].ToString());
                 saveDataLocBean = saveDataLocDaoD.sp_Insert_Localidad(desclocality.Trim().ToUpper(), ivalocality, regpatlocality, idreglocality, zonelocality, idsuclocality, estatelocality, keyemp);
@@ -381,9 +381,19 @@ namespace Payroll.Controllers
         public JsonResult SearchEmploye(string wordsearch, string filtered)
         {
             List<EmpleadosBean> empleadoBean = new List<EmpleadosBean>();
-            ListEmpleadosDao empleadoDao = new ListEmpleadosDao();
-            int keyemp = int.Parse(Session["IdEmpresa"].ToString());
+            ListEmpleadosDao empleadoDao     = new ListEmpleadosDao();
+            int keyemp   = int.Parse(Session["IdEmpresa"].ToString());
             empleadoBean = empleadoDao.sp_Empleados_Retrieve_Search_Empleados(keyemp, wordsearch, filtered);
+            return Json(empleadoBean);
+        }
+
+        [HttpPost]
+        public JsonResult SearchEmployeeDown(string wordsearch, string filtered)
+        {
+            List<EmpleadosBean> empleadoBean = new List<EmpleadosBean>();
+            ListEmpleadosDao empleadoDao     = new ListEmpleadosDao();
+            int keyemp   = int.Parse(Session["IdEmpresa"].ToString());
+            empleadoBean = empleadoDao.sp_Empleados_Retrieve_Search_Empleados_Baja(keyemp, wordsearch, filtered);
             return Json(empleadoBean);
         }
 

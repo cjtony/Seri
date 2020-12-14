@@ -27,32 +27,9 @@
     const dataLocStoSave = localStorage.getItem('modesave');
     const dateLocStoSave = localStorage.getItem('datesave');
 
-    if (dataLocStoSave != null) {
-        if (dateLocStoSave != dateActMain) {
-            fclearlocsto(0);
-            localStorage.removeItem('modesave');
-            localStorage.removeItem('datesave');
-        }
-    } 
-
     const dateLocSto = localStorage.getItem("dateedit");
     const modeLocSto = localStorage.getItem("modeedit");
-    if (modeLocSto != null) {
-        localStorage.removeItem('modesave');
-        localStorage.removeItem('datesave');
-        const date = new Date();
-        let fechAct;
-        const day = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
-        const month = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-        fechAct = date.getFullYear() + "-" + month + "-" + day;
-        if (dateLocSto != null) {
-            if (dateLocSto != fechAct) {
-                setTimeout(() => {
-                    fclearlocsto(0);
-                }, 2000);
-            }
-        }
-    }
+    
 
     const dateact = document.getElementById('dateact');
     let d = new Date();
@@ -233,14 +210,14 @@
             localStorage.setItem('tabSelected', 'none');
         }
         if (localStorage.getItem('modeedit') != null) {
-            document.getElementById('content-new-inpt-fechmovi').innerHTML = `
-                <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
-                    Fecha de movimiento
-                </label>
-                <div class="col-sm-8">
-                    <input type="date" id="fechmovi" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
-                </div>
-            `;
+            //document.getElementById('content-new-inpt-fechmovi').innerHTML = `
+            //    <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+            //        Fecha de movimiento
+            //    </label>
+            //    <div class="col-sm-8">
+            //        <input type="date" id="fechmovi" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
+            //    </div>
+            //`;
             document.getElementById('content-new-inpt-motmovi').innerHTML = `
                 <label for="motmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
                     Motivo del movimiento
@@ -550,6 +527,31 @@
             });
         }
         fasignsdates();
+    }
+
+    if (dataLocStoSave != null) {
+        if (dateLocStoSave != dateActMain) {
+            fclearlocsto(0);
+            localStorage.removeItem('modesave');
+            localStorage.removeItem('datesave');
+        }
+    } 
+
+    if (modeLocSto != null) {
+        localStorage.removeItem('modesave');
+        localStorage.removeItem('datesave');
+        const date = new Date();
+        let fechAct;
+        const day = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+        const month = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        fechAct = date.getFullYear() + "-" + month + "-" + day;
+        if (dateLocSto != null) {
+            if (dateLocSto != fechAct) {
+                setTimeout(() => {
+                    fclearlocsto(0);
+                }, 2000);
+            }
+        }
     }
 
     btnClearLocSto.addEventListener('click', () => { fclearlocsto(1); });
