@@ -13,6 +13,62 @@ namespace Payroll.Models.Daos
     public class BajasEmpleadosDaoD : Conexion
     {
 
+        public BajasEmpleadosBean sp_Cancel_Settlement_Employee_Reactive (int keyEmployee, int keyBusiness)
+        {
+            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Cancel_Settlement_Employee_Reactive", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Empresa_id", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Empleado_id", keyEmployee));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        bajasEmpleados.sMensaje = "SUCCESS";
+                    } else {
+                        bajasEmpleados.sMensaje = "ERROR";
+                    }
+                } else {
+                    bajasEmpleados.sMensaje = "NOTDATA";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                bajasEmpleados.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bajasEmpleados;
+        }
+
+        public BajasEmpleadosBean sp_Apply_Down_Employee(int keySettlement, int keyEmployee, int keyBusiness)
+        {
+            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Apply_Down_Employee", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySettlement));
+                cmd.Parameters.Add(new SqlParameter("@Empleado_id", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@Empresa_id", keyBusiness));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        bajasEmpleados.sMensaje = "SUCCESS";
+                    } else {
+                        bajasEmpleados.sMensaje = "ERROR";
+                    }
+                } else {
+                    bajasEmpleados.sMensaje = "NOTDATA";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                bajasEmpleados.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bajasEmpleados;
+        }
         public BajasEmpleadosBean sp_Valida_Existencia_Finiquito(int keyEmployee, int keyBusiness, int yearAct, int keyPeriodAct)
         {
             BajasEmpleadosBean downVerify = new BajasEmpleadosBean();
@@ -102,7 +158,7 @@ namespace Payroll.Models.Daos
             return periodoActual;
         }
 
-        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation, int daysPendings, int yearAct, int keyPeriodAct, string dateStartPayment, string dateEndPayment, int typeOper)
+        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation, int daysPendings, int yearAct, int keyPeriodAct, string dateStartPayment, string dateEndPayment, int typeOper, int propSet)
         {
             BajasEmpleadosBean downEmployee = new BajasEmpleadosBean();
             try
@@ -124,6 +180,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Fecha_Pago_Fin", dateEndPayment));
                 cmd.Parameters.Add(new SqlParameter("@motivo_baja_id", idReasonsDown));
                 cmd.Parameters.Add(new SqlParameter("@tipo_operacion", typeOper));
+                cmd.Parameters.Add(new SqlParameter("@status", propSet));
                 bool proc = Convert.ToBoolean(cmd.ExecuteNonQuery());
                 if (proc) {
                     downEmployee.sMensaje = "SUCCESS";
@@ -335,7 +392,7 @@ namespace Payroll.Models.Daos
             return selectSettlementPaid;
         }
 
-        public BajasEmpleadosBean sp_Cancela_Finiquito(int keySetlement, int typeCancel)
+        public BajasEmpleadosBean sp_Cancela_Finiquito(int keySetlement, int typeCancel, int keyEmployee, int keyBusiness)
         {
             BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
             try
@@ -344,6 +401,8 @@ namespace Payroll.Models.Daos
                 SqlCommand cmd = new SqlCommand("sp_Cancela_Finiquito", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySetlement));
                 cmd.Parameters.Add(new SqlParameter("@Cancelado", typeCancel));
+                cmd.Parameters.Add(new SqlParameter("@Empleado_id", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@Empresa_id", keyBusiness));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     downEmployeeBean.sMensaje = "success";

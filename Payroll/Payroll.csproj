@@ -885,6 +885,7 @@
     <Content Include="Scripts\main\Ausentismos.js" />
     <Content Include="Scripts\main\AutorizacionVacaciones\main.js" />
     <Content Include="Scripts\main\BajasEmpleados.js" />
+    <Content Include="Scripts\main\BajasEmpleados\reactivateEmploye.js" />
     <Content Include="Scripts\main\BajasMasivas\main.js" />
     <Content Include="Scripts\main\branchoffices.js" />
     <Content Include="Scripts\main\CargasMasivas\main.js" />

@@ -24,7 +24,51 @@ namespace Payroll.Controllers
         //}
 
         [HttpPost]
-        public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement, int typeOper)
+        public JsonResult ReactiveEmploye(int keyEmployee)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            BajasEmpleadosDaoD bajasEmpleadosDao = new BajasEmpleadosDaoD();
+            try {
+                int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                bajasEmpleados = bajasEmpleadosDao.sp_Cancel_Settlement_Employee_Reactive(keyEmployee, keyBusiness);
+                if (bajasEmpleados.sMensaje == "SUCCESS") {
+                    flag = true;
+                } else {
+                    messageError = bajasEmpleados.sMensaje;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult ApplyDown(int keySettlement, int keyEmployee)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            BajasEmpleadosDaoD empleadosDaoD  = new BajasEmpleadosDaoD();
+            try {
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                bajasEmpleados  = empleadosDaoD.sp_Apply_Down_Employee(keySettlement, keyEmployee, keyBusiness);
+                if (bajasEmpleados.sMensaje == "SUCCESS") {
+                    flag = true;
+                } else {
+                    messageError = bajasEmpleados.sMensaje;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement, int typeOper, int propSet)
         {
             Boolean flag       = false;
             Boolean validation = true;
@@ -39,6 +83,7 @@ namespace Payroll.Controllers
             BajasEmpleadosBean downVerifyBean   = new BajasEmpleadosBean();
             BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
             PeriodoActualBean periodActBean = new PeriodoActualBean();
+            int propSetSend = (propSet == 1) ? 4 : 0;
             try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
                 int keyPeriodAct = 0;
@@ -58,17 +103,20 @@ namespace Payroll.Controllers
                 }
                 if (!validation) {
                     if (flagTypeSettlement) {
-                        downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment, typeOper);
+                        downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment, typeOper, propSetSend);
                     } else {
                         downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct);
                     }
                     if (downEmployeeBean.sMensaje == "SUCCESS") {
-                        downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(keyEmployee, keyBusiness, idTypeDown, dateDownFormat);
-                        if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
-                            flag = true;
-                        } else {
-                            messageError = "ERRUPDTE";
+                        if (propSet == 0) {
+                            downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(keyEmployee, keyBusiness, idTypeDown, dateDownFormat);
+                            if (downEmployeeBean.sMensaje == "SUCCESSUPD") {
+                                flag = true;
+                            } else {
+                                messageError = "ERRUPDTE";
+                            }
                         }
+                        flag = true;
                     } else {
                         messageError = "ERRINSFINIQ";
                     }
@@ -1160,7 +1208,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult CancelSettlement(int keySettlement, int typeCancel)
+        public JsonResult CancelSettlement(int keySettlement, int typeCancel, int keyEmployee)
         {
             Boolean flag = false;
             String messageError = "none";
@@ -1169,7 +1217,8 @@ namespace Payroll.Controllers
             BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
             try
             {
-                downEmployeeBean = downEmployeeDaoD.sp_Cancela_Finiquito(keySettlement, typeCancel);
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                downEmployeeBean = downEmployeeDaoD.sp_Cancela_Finiquito(keySettlement, typeCancel, keyEmployee, keyBusiness);
                 if (downEmployeeBean.sMensaje == "success")
                 {
                     flag = true;
