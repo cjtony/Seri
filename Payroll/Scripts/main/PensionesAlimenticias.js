@@ -102,7 +102,6 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -261,4 +260,20 @@
             }
         });
     }
+    // VALIDACION DE CAMPO CUOTA FIJA O PORCENTAJE 
+    $("#inCFija").keyup(function () {
+        console.log("si");
+        if ($("#inCFija").val() == "") {
+            $("#inPorcentaje").removeAttr("disabled");
+        } else {
+            $("#inPorcentaje").attr("disabled",true);
+        }
+    });
+    $("#inPorcentaje").keyup(function () {
+        if ($("#inPorcentaje").val() == "") {
+            $("#inCFija").removeAttr("disabled");
+        } else {
+            $("#inCFija").attr("disabled", true);
+        }
+    });
 });

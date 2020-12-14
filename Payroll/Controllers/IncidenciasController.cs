@@ -401,7 +401,7 @@ namespace Payroll.Controllers
                         if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
 
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
-                        if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+                        if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe o esta dado de baja"); }
 
                         //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
                         //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
