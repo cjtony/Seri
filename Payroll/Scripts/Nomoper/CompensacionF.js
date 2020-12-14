@@ -10,6 +10,9 @@
     const btnRegistrar = document.getElementById('btnRegistrar');
     const btnCancelar = document.getElementById('btnCancelar');
     const btnActu = document.getElementById('btnActu');
+    const BActuComp = document.getElementById('BActuComp');
+    const BtDeletComp = document.getElementById('BtDeletComp');
+
     var valorCheckpya = document.getElementById('ChekPYA')
 
     var idTb;
@@ -50,45 +53,38 @@
                             ]
                     };
                     var dataAdapter = new $.jqx.dataAdapter(source);
+
+
                     $("#TBCompensacion").jqxGrid(
-                      {
-                            width: 850,
+                        {
+                            width: 840,
                             source: dataAdapter,
-                            autoheight: true,
+                            selectionmode: 'multiplerowsextended',
+                            sortable: true,
                             pageable: true,
-                            altRows: true,
-                            pagerButtonsCount: 10,
-                           // editable: true,
-                          //  editSettings: { saveOnPageChange: true, saveOnBlur: true, saveOnSelectionChange: false, cancelOnEsc: true, saveOnEnter: true, editOnDoubleClick: false, editOnF2: false },
-                // called when jqxDataTable is going to be rendered.
-                            rendered: function () {
-                                //DoubleClick
-                                $(".editButtons").on('click', function (event) {
-                                    if (clickEdit > 0) {
-                                        FLimpCamp();
-                                        $("#TBCompensacion").click();
-                                        document.getElementById('content-blockInsert').classList.remove("d-none");
-                                        FCargadatos();
-                                        clickEdit = 0;
-                                    }
-                                    else {
-                                    
-                                        clickEdit = clickEdit + 1
-                                    }
-                                   
+                            autoheight: true,
+                            autoloadstate: false,
+                            autosavestate: false,
+                            columnsresize: true,
+                            showtoolbar: true,
+                            rendertoolbar: function (statusbar) {
+                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                             
+                                container.append(ActuButton);
+                                container.append(DeletButton);
+                                statusbar.append(container);
+                                ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                
+                                ActuButton.click(function (event) {
+                                    $("#BActuComp").click();
                                 });
-                                $(".DeleteButtons").on('click', function (event) { 
-                                    
-                                    if (clickDele > 0) {
-                                        FLimpCamp();
-                                        FCancela();
-                                        clickDelete = 0;
-                                    }
-                                    else {
-                                        clickDele = clickDele + 1;
-                                    };
-                                 
+                                DeletButton.click(function (event) {
+                                    $("#BtDeletComp").click();
                                 });
+
 
                             },
                             columns: [
@@ -99,19 +95,12 @@
                                 { text: 'Nombre de renglón', datafield: 'sNombreRenglon', width: 100 },
                                 { text: 'iImporte', datafield: 'iImporte', width: 100 },
                                 { text: 'Descripción', datafield: 'sDescripcion', whidt: 100 },
-                                {
-                                    text: 'Actualiza', cellsAlign: 'center', align: "center", columnType: 'none', editable: false, sortable: false, dataField: null, cellsRenderer: function (row, column, value) {
-                                        //        // render custom column.
-                                        //return "<button data-row='" + row + "' class='editButtons'>Edit</button><button data-row='" + row + "' class='editButtons2'>Eliminar</button>";
-                                        //var ActuButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
-                                        //var DeletButton2 = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
-
-                                        return "<div style='float: left;margin-left:15px 'data-row='" + row + "' class='editButtons' ><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div><div style='float: left; margin-left:15px' class='DeleteButtons' ><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div> "
-                                    }
-                                }
-
                             ]
                         });
+
+
+
+
                 }
                 if (data[0].sMensaje == "error") {
                     document.getElementById('content-tableComp').classList.remove("d-none");
@@ -430,6 +419,18 @@
         });
     };
 
+    FActualizaCopm = () => {
+        FLimpCamp();
+        $("#TBCompensacion").click();
+        document.getElementById('content-blockInsert').classList.remove("d-none");
+        FCargadatos();
+        clickEdit = 0;
+    };
+
+
+
+    BActuComp.addEventListener('click', FActualizaCopm)
+    BtDeletComp.addEventListener('click', FCancela)
 
   /* FUNCION QUE MUESTRA ALERTAS */
 
