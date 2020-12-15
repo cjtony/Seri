@@ -159,6 +159,7 @@
     const transporte   = document.getElementById('transporte');
     const retroactivo  = document.getElementById('retroactivo');
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
+    const ultSdi = document.getElementById('view-ultSdi');
 
     const vardatanomina = [
         clvnom, fechefectact, fecefecnom, tipper, salmen, salmenact, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte
@@ -205,25 +206,65 @@
         }
     }
 
+    //Funcion que carga los motivos de movimiento
+    fLoadMotivesMovements = (paramstreid) => {
+        try {
+            if (paramstreid != "") {
+                $.ajax({
+                    url: "../SearchDataCat/LoadMotivesMovements",
+                    type: "POST",
+                    data: {},
+                    beforeSend: () => {
+                        console.log('Imprimiendo tm')
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true) {
+                            for (let i = 0; i < request.Datos.length; i++) {
+                                document.getElementById(String(paramstreid)).innerHTML += `<option value="${request.Datos[i].iId}">${request.Datos[i].sValor}</option>`;
+                            }
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    } 
+
+    const cntIFechMovi = document.getElementById('content-new-inpt-fechmovits');
+
     fchecklocalstotab = () => {
         if (localStorage.getItem('tabSelected') === null) {
             localStorage.setItem('tabSelected', 'none');
         }
-        if (localStorage.getItem('modeedit') != null) {
-            //document.getElementById('content-new-inpt-fechmovi').innerHTML = `
-            //    <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
-            //        Fecha de movimiento
-            //    </label>
-            //    <div class="col-sm-8">
-            //        <input type="date" id="fechmovi" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
-            //    </div>
-            //`;
+        if (localStorage.getItem('modeedit') != null) { 
+            cntIFechMovi.innerHTML = `
+                <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                    Fecha de movimiento
+                </label>
+                <div class="col-sm-8">
+                    <input type="date" id="fechmovi" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
+                </div>
+            `;
             document.getElementById('content-new-inpt-motmovi').innerHTML = `
                 <label for="motmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
                     Motivo del movimiento
                 </label>
                 <div class="col-sm-8">
-                    <input type="text" id="motmovi" class="form-control form-control-sm" placeholder="Motivo del movimiento"/>
+                    <select class="form-control form-control-sm" id="motmovi" tp-select="Motivo del movimiento"> <option value="">Selecciona</option> </select> 
                 </div>
             `;
             document.getElementById('content-new-inpt-movsal').innerHTML = `
@@ -231,8 +272,8 @@
                     Motivo del movimiento
                 </label>
                 <div class="col-sm-8">
-                    <input type="text" id="motmovisal" class="form-control form-control-sm" placeholder="Motivo del movimiento salarial"/>
-                </div>
+                    <select class="form-control form-control-sm" id="motmovisal" tp-select="Motivo del movimiento"> <option value="0">Selecciona</option> </select>
+                </div> 
             `;
             document.getElementById('content-new-inpt-fecsal').innerHTML = `
                 <label for="fechmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
@@ -242,7 +283,12 @@
                     <input type="date" id="fechmovisal" class="form-control form-control-sm" placeholder="Fecha del movimiento salarial" />
                 </div>
             `;
+            document.getElementById('content-new-inpt-movsal').classList.remove("d-none");
+            document.getElementById('content-new-inpt-fecsal').classList.remove("d-none");
             document.getElementById('content-new-inpt-ultsdi').classList.remove("d-none");
+            cntIFechMovi.classList.remove('d-none');
+            fLoadMotivesMovements('motmovisal');
+            fLoadMotivesMovements('motmovi');
         }
     }
 
@@ -396,7 +442,7 @@
                     const cuentaavalor = getDataTabNom[i].data.cunuse;
                     setTimeout(() => { cunuse.value = cuentaavalor }, 2000);
                     if (localStorage.getItem("modeedit") != null) {
-                        document.getElementById('view-ultSdi').value = getDataTabNom[i].data.ultSdi;
+                        ultSdi.value = getDataTabNom[i].data.ultSdi;
                     }
                 }
             }
@@ -476,12 +522,12 @@
                     localStorage.removeItem('objectTabDataGen'); localStorage.removeItem('objectDataTabImss');
                     localStorage.removeItem('objectDataTabNom'); localStorage.removeItem('objectDataTabEstructure');
                     localStorage.removeItem('modedit');
-                    document.getElementById('content-new-inpt-fechmovi').innerHTML = "";
+                    document.getElementById('content-new-inpt-fechmovits').innerHTML = "";
                     document.getElementById('content-new-inpt-motmovi').innerHTML = "";
                     document.getElementById('content-new-inpt-movsal').innerHTML = "";
                     document.getElementById('content-new-inpt-fecsal').innerHTML = "";
                     document.getElementById('content-new-inpt-ultsdi').innerHTML = "";
-                    document.getElementById('content-new-inpt-fechmovi').classList.add('d-none');
+                    document.getElementById('content-new-inpt-fechmovits').classList.add('d-none');
                     document.getElementById('content-new-inpt-motmovi').classList.add('d-none');
                     document.getElementById('content-new-inpt-movsal').classList.add('d-none');
                     document.getElementById('content-new-inpt-fecsal').classList.add('d-none');

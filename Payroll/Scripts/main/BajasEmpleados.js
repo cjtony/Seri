@@ -41,6 +41,7 @@
         var tipob = document.getElementById("inTiposBaja");
         var motivob = document.getElementById("inMotivosBaja");
         var t = tipob.value;
+        let quantityMatch = 0;
         $.ajax({
             url: "../Nomina/LoadMotivoBajaxTe",
             type: "POST",
@@ -50,10 +51,14 @@
             success: (tipo) => {
                 document.getElementById('inMotivosBaja').innerHTML = "<option value='none'>Selecciona</option>";
                 for (var i = 0; i < tipo.length; i++) {
+                    console.log(tipo[i]);
                     if (t == tipo[i]["TipoEmpleado_id"]) {
                         document.getElementById("inMotivosBaja").innerHTML += "<option value='" + tipo[i]["IdMotivo_Baja"] + "'>" + tipo[i]["Descripcion"] + "</option>";
+                        quantityMatch += 1;
                     }
-
+                }
+                if (quantityMatch == 0) {
+                    document.getElementById("inMotivosBaja").innerHTML += "<option value='256'>NO APLICA</option>";
                 }
             }
         });

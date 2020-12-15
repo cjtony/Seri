@@ -16,6 +16,25 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult LoadMotivesMovements()
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            List<CatalogoGeneralBean> catalogoGeneral   = new List<CatalogoGeneralBean>();
+            CatalogoGeneralDao catalogoGeneralDao       = new CatalogoGeneralDao();
+            try {
+                catalogoGeneral = catalogoGeneralDao.sp_Load_Motives_Movements();
+                if (catalogoGeneral.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = catalogoGeneral });
+        }
+
+        [HttpPost]
         public JsonResult SearchPuesto(string wordsearch)
         {
             List<PuestosBean> listPuestoBean = new List<PuestosBean>();
