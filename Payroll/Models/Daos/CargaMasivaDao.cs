@@ -117,7 +117,6 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
-
             if (data.HasRows)
             {
                 while (data.Read())
@@ -125,10 +124,8 @@ namespace Payroll.Models.Daos
                     value = int.Parse(data["Result"].ToString());
                 }
             }
-
             data.Close();
             this.conexion.Close(); this.Conectar().Close();
-
             return value;
         }
         public int Valida_Periodo(string Empresa_id, string Periodo, string Anio)
