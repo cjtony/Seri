@@ -1157,6 +1157,7 @@
     <Content Include="Views\Kiosko\SolicitudVacaciones.cshtml" />
     <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
     <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
+
     <Content Include="Views\Incidencias\PIncidencias.cshtml" />
   </ItemGroup>
   <ItemGroup>

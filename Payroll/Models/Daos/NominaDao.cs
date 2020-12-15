@@ -2970,7 +2970,7 @@ namespace Payroll.Models.Daos
 
         // Inserta una nueva Compensacion fija
 
-        public CompensacionFijaBean sp_Compensacion_Insert_CCompensacionFija(int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto,int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario)
+        public   CompensacionFijaBean sp_Compensacion_Insert_CCompensacionFija(int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto,int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario)
         {
             CompensacionFijaBean bean = new CompensacionFijaBean();
 
@@ -2988,9 +2988,13 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliImporte", CtrliImporte));
                 cmd.Parameters.Add(new SqlParameter("@CtrlsDescrip", CtrlsDescrip));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuario));
+                cmd.Parameters.Add(new SqlParameter("@CtrliExit", "0"));
+                cmd.Parameters.Add(new SqlParameter("@CtrliNotExit", "0"));
+
 
                 if (cmd.ExecuteNonQuery() > 0)
                 {
+                      
                     bean.sMensaje = "success";
                 }
                 else
