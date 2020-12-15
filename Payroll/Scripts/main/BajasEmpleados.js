@@ -180,10 +180,13 @@
     const daysPendings = document.getElementById('daysPendings');
     const dateSendDown = document.getElementById('dateSendDown');
     const compSendEsp = document.getElementById('compSendEsp');
+    const propSettlement = document.getElementById('prop-settlement');
     const divContentP0 = document.getElementById('div-content-param0');
     const divContentP1 = document.getElementById('div-content-param1');
     const divContentP2 = document.getElementById('div-content-param2');
     const divContentP3 = document.getElementById('div-content-param3');
+    const divContentP4 = document.getElementById('div-content-param4');
+
 
     const btnCloseSettlementSelect = document.getElementById("btnCloseSettlementSelect");
     const icoCloseSettlementSelect = document.getElementById("icoCloseSettlementSelect");
@@ -192,6 +195,8 @@
     divContentP1.classList.add('d-none');
     divContentP2.classList.add('d-none');
     divContentP3.classList.add('d-none');
+    divContentP4.classList.add('d-none');
+
 
     inTiposBaja.addEventListener('change', fLoadMotiveDown);
 
@@ -314,17 +319,20 @@
                     fAddAnimatedFields(divContentP1);
                     fAddAnimatedFields(divContentP2);
                     fAddAnimatedFields(divContentP3);
+                    fAddAnimatedFields(divContentP4);
                 } else {
                     fRemAnimatedFields(divContentP0);
                     fRemAnimatedFields(divContentP1);
                     fRemAnimatedFields(divContentP2);
                     fRemAnimatedFields(divContentP3);
+                    fRemAnimatedFields(divContentP4);
                 }
             } else {
                 fRemAnimatedFields(divContentP0);
                 fRemAnimatedFields(divContentP1);
                 fRemAnimatedFields(divContentP2);
                 fRemAnimatedFields(divContentP3);
+                fRemAnimatedFields(divContentP4);
             }
         } catch (error) {
             if (error instanceof EvalError) {
@@ -379,7 +387,6 @@
         document.getElementById('list-data-down').innerHTML = "";
         document.getElementById('no-data-info').innerHTML = "";
         try {
-            console.log("IdEmpleado: " + keyEmployee.value);
             if (keyEmployee.value != "") {
                 $.ajax({
                     url: "../BajasEmpleados/ShowDataDown",
@@ -399,7 +406,7 @@
                             for (let i = 0; i < data.DatosFiniquito.length; i++) {
                                 const inf = data.DatosFiniquito[i];
                                 let actionSavePay = `onclick="fSelectSettlementPaid(${data.DatosFiniquito[i].iIdFiniquito})"`;
-                                let actionCancel = `onclick="fCancelSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1)"`;
+                                let actionCancel = `onclick="fCancelSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1, ${keyEmployee.value})"`;
                                 let titleCancel = `title="Cancelar Finiquito"`;
                                 let icoCancel = `<i class="fas fa-times"></i>`;
                                 let colBtnCancel = "btn-danger";
@@ -412,6 +419,8 @@
                                 let btnAddComplement = "";
                                 let downNotSettlement = "";
                                 let btnGenerateSettlement = "";
+                                let disabledCancelSettlement = "";
+                                let btnApplyDown = "";
                                 let actionGeneratePDF = `onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"`;
                                 let disabledGeneratePDF = "";
                                 const infoPeriod = `<span class="badge ml-2 badge-info"><i class="fas fa-calendar-alt mr-1"></i>
@@ -422,7 +431,7 @@
                                 if (data.DatosFiniquito[i].sCancelado == "True") {
                                     validCancel = "disabled";
                                     cancel = `<span class="badge ml-2 badge-danger"> <i class="fas fa-times-circle mr-1"></i>Cancelado</span>`;
-                                    actionCancel = `onclick="fCancelSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 0)"`;
+                                    actionCancel = `onclick="fCancelSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 0, ${keyEmployee.value})"`;
                                     titleCancel = `title="Reactivar Finiquito"`;
                                     icoCancel = `<i class="fas fa-undo text-white"></i>`;
                                     colBtnCancel = "btn-warning";
@@ -452,8 +461,12 @@
                                     disabledGeneratePDF = "disabled";
                                     spanDownNotSet = `<span class="badge ml-2 badge-danger"><i class="fas fa-file mr-1"></i>Sin finiquito</span>`;
                                     btnGenerateSettlement = `<button onclick="fSetGenerateSettlement(${data.DatosFiniquito[i].iIdFiniquito}, '${inf.sFecha_baja}', ${inf.iTipo_finiquito_id}, ${inf.iMotivo_baja})" class="btn btn-sm btn-info" title="Asignar finiquito" id="btnGenerateSet${data.DatosFiniquito[i].iIdFiniquito}"> <i class="fas fa-money-check-alt"></i> </button>`;
-                                    console.log('Imprimiendo datos del finiquito sin calculos');
-                                    console.log(data.DatosFiniquito[i]);
+                                } else if (data.DatosFiniquito[i].iEstatus == 4) {
+                                    enabledPay    = "disabled";
+                                    actionSavePay = "disabled"; 
+                                    disabledCancelSettlement = "disabled";
+                                    spanDownNotSet = `<span class="badge ml-2 badge-info"><i class="fas fa-file mr-1"></i>Finiquito sin baja en firme</span>`;
+                                    btnApplyDown = `<button onclick="fApplyDown(${data.DatosFiniquito[i].iIdFiniquito}, ${data.DatosFiniquito[i].iEmpleado_id});" class="btn btn-sm btn-danger" title="Aplicar baja en firme"> <i class="fas fa-user-times"></i> </button>`;
                                 }
                                 document.getElementById('list-data-down').innerHTML += `
                                 <li class="list-group-item d-flex justify-content-between align-items-center shadow rounded">
@@ -473,6 +486,7 @@
                                     </span>
                                     <span class="badge">
                                         ${btnAddComplement}
+                                        ${btnApplyDown}
                                         ${btnGenerateSettlement}
                                         <button class="btn btn-sm btn-primary" title="Detalle" id="btnGenerateReceipt${data.DatosFiniquito[i].iIdFiniquito}"
                                             ${actionGeneratePDF} ${disabledGeneratePDF}> 
@@ -482,7 +496,7 @@
                                         <button ${validCancel} class="btn btn-sm btn-success" title="Guardar" ${actionSavePay} id="btnSelectPay${data.DatosFiniquito[i].iIdFiniquito}">
                                             <i class="fas fa-check"></i>
                                         </button>
-                                        <button class="btn btn-sm ${colBtnCancel}" ${titleCancel} ${actionCancel} id="btnCancelSettlement${data.DatosFiniquito[i].iIdFiniquito}">
+                                        <button ${disabledCancelSettlement} class="btn btn-sm ${colBtnCancel}" ${titleCancel} ${actionCancel} id="btnCancelSettlement${data.DatosFiniquito[i].iIdFiniquito}">
                                             ${icoCancel}
                                         </button>
                                     </span>
@@ -521,19 +535,70 @@
         }
     }
 
+    // Funcion que aplica la baja en firme
+    fApplyDown = (paramid, paramkey) => {
+        try {
+            if (paramid > 0 && paramkey > 0) {
+                const dataSend = { keySettlement: parseInt(paramid), keyEmployee: parseInt(paramkey) };
+                $.ajax({
+                    url: "../BajasEmpleados/ApplyDown",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true && request.MensajeError == "none") {
+                            Swal.fire({
+                                title: "Correcto", text: "Baja aplicada en firme!", icon: "success",
+                                showClass: { popup: 'animated fadeInDown faster' },
+                                hideClass: { popup: 'animated fadeOutUp faster' },
+                                confirmButtonText: "Aceptar",
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false,
+                            }).then((acepta) => {
+                                fShowDataDown();
+                            });
+                        } else {
+                            fShowTypeAlertDE('Error', "Ocurrio un error al generar la baja en firme", "error", null, 0, 0);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Error');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
     // Funcion que limpia los campos 
     fClearFields = () => {
         downSettlement.value = "none";
-        inTiposBaja.value = "none";
-        inMotivosBaja.value = "none";
-        dateDownEmp.value = "";
-        daysPendings.value = 0;
-        dateSendDown.value = "none";
-        compSendEsp.value = "none";
+        inTiposBaja.value    = "none";
+        inMotivosBaja.value  = "none";
+        dateDownEmp.value    = "";
+        daysPendings.value   = 0;
+        dateSendDown.value   = "none";
+        compSendEsp.value    = "none";
+        propSettlement.checked = 0;
         fRemAnimatedFields(divContentP0);
         fRemAnimatedFields(divContentP1);
         fRemAnimatedFields(divContentP2);
         fRemAnimatedFields(divContentP3);
+        fRemAnimatedFields(divContentP4);
     }
 
     // Funcion que guarda la eleccion para pago del finiquito
@@ -848,13 +913,13 @@
     }
 
     // Funcion que cancela el finiquito generado
-    fCancelSettlement = (paramid, typecancel) => {
+    fCancelSettlement = (paramid, typecancel, paramkey) => {
         try {
             if (parseInt(paramid) > 0) {
                 $.ajax({
                     url: "../BajasEmpleados/CancelSettlement",
                     type: "POST",
-                    data: { keySettlement: parseInt(paramid), typeCancel: parseInt(typecancel) },
+                    data: { keySettlement: parseInt(paramid), typeCancel: parseInt(typecancel), keyEmployee: parseInt(paramkey) },
                     beforeSend: () => {
                         document.getElementById('btnCancelSettlement' + String(paramid)).disabled = true;
                     }, success: (data) => {
@@ -905,6 +970,10 @@
         }
         let dataSendType = {};
         let flagTypeValt;
+        let propSet = 0;
+        if (propSettlement.checked) {
+            propSet = 1;
+        }
         try {
             if (downSettlement.value != "none") {
                 flagTypeValt = (downSettlement.value == "1") ? true : false;
@@ -930,7 +999,8 @@
                                         typeDate: parseInt(dateSendDown.value),
                                         typeCompensation: parseInt(compSendEsp.value),
                                         flagTypeSettlement: flagTypeValt,
-                                        typeOper: optionSettlement.value
+                                        typeOper: optionSettlement.value,
+                                        propSet: propSet
                                     };
                                     console.log('Datos a enviar: ');
                                     console.log(dataSend);

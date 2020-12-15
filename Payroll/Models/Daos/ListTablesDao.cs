@@ -27,21 +27,17 @@ namespace Payroll.Models.Daos
         public List<EmpleadosBean> sp_Empleados_Retrieve_Search_Empleados(int keyemp, string wordsearch, string filtered)
         {
             List<EmpleadosBean> listEmpleadosBean = new List<EmpleadosBean>();
-            try
-            {
+            try {
                 this.Conectar();
-                SqlCommand cmd = new SqlCommand("sp_Empleados_Retrieve_Search_Empleados", this.conexion)
-                {
+                SqlCommand cmd = new SqlCommand("sp_Empleados_Retrieve_Search_Empleados", this.conexion) {
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyemp));
                 cmd.Parameters.Add(new SqlParameter("@ctrlWordSearch", wordsearch));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFiltered", filtered));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows)
-                {
-                    while (data.Read())
-                    {
+                if (data.HasRows) {
+                    while (data.Read()) {
                         EmpleadosBean empleadoBean = new EmpleadosBean();
                         empleadoBean.iIdEmpleado = Convert.ToInt32(data["IdEmpleado"].ToString());
                         empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Nombre_Empleado"].ToString() + " " + data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString());
@@ -50,18 +46,52 @@ namespace Payroll.Models.Daos
                     }
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 string origenerror = "ListTablesdao";
                 string mensajeerror = exc.ToString();
                 CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listEmpleadosBean;
         }
+        
+        public List<EmpleadosBean> sp_Empleados_Retrieve_Search_Empleados_Baja(int keyemp, string wordsearch, string filtered)
+        {
+            List<EmpleadosBean> empleadosBeans = new List<EmpleadosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Empleados_Retrieve_Search_Empleados_Baja", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyemp));
+                cmd.Parameters.Add(new SqlParameter("@ctrlWordSearch", wordsearch));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFiltered", filtered));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        EmpleadosBean empleadoBean = new EmpleadosBean();
+                        empleadoBean.iIdEmpleado = Convert.ToInt32(data["IdEmpleado"].ToString());
+                        empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Nombre_Empleado"].ToString() + " " + data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString());
+                        empleadoBean.iNumeroNomina = Convert.ToInt32(data["IdEmpleado"].ToString());
+                        empleadosBeans.Add(empleadoBean);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return empleadosBeans;
+        }
+        
         public List<EmpleadosBean> sp_Empleados_Retrieve_Empleados(int keyemp)
         {
             List<EmpleadosBean> listEmpleadosBean = new List<EmpleadosBean>();
