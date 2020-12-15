@@ -31,6 +31,8 @@
     const divContentTabsPosicion = document.getElementById('div-content-tabs-posicion');
     const divContentInfoPosicion = document.getElementById('div-content-info-posicion');
 
+    const ultSdi = document.getElementById('view-ultSdi');
+
     // Funcion que muestra los botones del historial de cada apartado
     fShowBtnsHistoryApart = (param) => {
         if (param == "IMSS") {
@@ -665,7 +667,7 @@
                 tippag: tippag.value,
                 banuse: banuse.value,
                 cunuse: cunuse.value,
-                ultSdi: document.getElementById('view-ultSdi').value
+                ultSdi: ultSdi.value
             }
         };
         objectDataTabNom.datanom = dataLocSto;
@@ -717,6 +719,9 @@
         localStorage.setItem('tabSelected', 'datanom');
         navDataNomTab.classList.remove('disabled');
     }
+
+    const cntIFechMovi = document.getElementById('content-new-inpt-fechmovits');
+
     /* FUNCION QUE CARGA LOS DATOS DE LA POSICION ASIGNADA A LA ESTRUCTURA */
     floaddatatabstructure = (paramid) => {
         try {
@@ -725,6 +730,8 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
+                    console.log('Datos de estructura');
+                    console.log(data);
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvstract.value = data.Datos.iIdPosicion;
                         numpla.value    = data.Datos.sPosicionCodigo;
@@ -744,9 +751,9 @@
                         if (localStorage.getItem('modeedit') != null) {
                             btnsavedataall.classList.add('d-none');
                             btnsaveeditdataest.classList.remove('d-none');
-                            document.getElementById('content-new-inpt-fechmovi').classList.remove('d-none');
+                            cntIFechMovi.classList.remove('d-none');
                             document.getElementById('content-new-inpt-motmovi').classList.remove('d-none');
-                            document.getElementById('content-new-inpt-fechmovi').innerHTML = `
+                            cntIFechMovi.innerHTML = `
                                 <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
                                     Fecha de movimiento
                                 </label>
@@ -759,9 +766,10 @@
                                     Motivo del movimiento
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="motmovi" class="form-control form-control-sm" placeholder="Motivo del movimiento"/>
+                                     <select class="form-control form-control-sm" id="motmovi" tp-select="Motivo del movimiento"> <option value="">Selecciona</option> </select> 
                                 </div>
                             `;
+                            //fLoadMotivesMovements('motmovi');
                         }
                     } else {
                         document.getElementById('div-most-alert-data-estructure').innerHTML = `
@@ -842,9 +850,10 @@
                                     Motivo del movimiento
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="motmovisal" class="form-control form-control-sm" placeholder="Motivo del movimiento"/>
-                                </div>
+                                    <select class="form-control form-control-sm" id="motmovisal" tp-select="Motivo del movimiento"> <option value="0">Selecciona</option> </select>
+                                </div> 
                             `;
+                            //<input type="text" id="motmovisal" class="form-control form-control-sm" placeholder="Motivo del movimiento" />
                             document.getElementById('content-new-inpt-fecsal').innerHTML = `
                                 <label for="fechmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
                                     Fecha de movimiento
@@ -854,8 +863,7 @@
                                 </div>
                             `;
                         }
-                        console.log('Imprimiendo ult sdi:', data.Datos.sUlt_sdi);
-                        document.getElementById('view-ultSdi').value = data.Datos.sUlt_sdi;
+                        ultSdi.value = data.Datos.sUlt_sdi;
                         //document.getElementById('content-new-inpt-ultsdi').innerHTML = `
                         //        <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
                         //            Ultimo sdi
@@ -1398,7 +1406,7 @@
                 tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
                 empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
                 tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: clvemp.value, tiposueldo: tiposueldo.value, politica: politica.value,
-                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "none", fechMoviSal: "none", salmenact: salmenact.value
+                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value
             };
         } else {
             url = "../EditDataGeneral/EditDataNomina";
@@ -1407,7 +1415,7 @@
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
-                transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "none", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value
+                transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "0", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value
             };
         }
         try {
@@ -1543,7 +1551,7 @@
                 const fechmovi = document.getElementById('fechmovi');
                 const motmovi  = document.getElementById('motmovi');
                 let fechActE;
-                const arrInput = [clvstr, fechefectpos, fechinipos, motmovi, fechmovi];
+                const arrInput = [clvstr, fechefectpos, motmovi, fechmovi];
                 let validateSend = 0;
                 for (let a = 0; a < arrInput.length; a++) {
                     if (arrInput[a].hasAttribute('tp-date')) {
@@ -1561,7 +1569,13 @@
                         }
                     } else {
                         if (arrInput[a].value == '') {
-                            fshowtypealert('Atencion', 'Completa el campo ' + String(arrInput[a].placeholder), 'warning', arrInput[a], 0);
+                            let placeHolder = "";
+                            if (arrInput[a].hasAttribute("tp-select")) {
+                                placeHolder = arrInput[a].getAttribute("tp-select");
+                            } else {
+                                placeHolder = arrInput[a].placeholder;
+                            }
+                            fshowtypealert('Atencion', 'Completa el campo ' + String(placeHolder), 'warning', arrInput[a], 0);
                             validateSend = 1;
                             break;
                         }
@@ -1572,6 +1586,8 @@
                     fechinipos: fechinipos.value, clvemp: clvemp.value,
                     clvnom: clvnom.value, fechmovi: fechmovi.value, motmovi: motmovi.value
                 };
+                console.log('Datos estructura');
+                console.log(dataSend);
                 if (validateSend == 0) {
                     $.ajax({
                         url: "../SaveDataGeneral/DataEstructuraEdit",
