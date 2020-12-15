@@ -10,6 +10,38 @@ namespace Payroll.Models.Daos
     public class CatalogosDao { }
     public class CatalogoGeneralDao : Conexion
     {
+
+        public List<CatalogoGeneralBean> sp_Load_Motives_Movements()
+        {
+            List<CatalogoGeneralBean> generalBeans = new List<CatalogoGeneralBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Load_Motives_Movements", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        CatalogoGeneralBean catGenBean = new CatalogoGeneralBean();
+                        catGenBean.iId = Convert.ToInt32(data["id"].ToString());
+                        catGenBean.iCampoCatalogoId = Convert.ToInt32(data["Campos_Catalogo_Id"].ToString());
+                        catGenBean.sValor = data["Valor"].ToString().ToUpper();
+                        catGenBean.iIdValor = Convert.ToInt32(data["IdValor"].ToString());
+                        generalBeans.Add(catGenBean);
+                    }
+                }
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return generalBeans;
+        }
+
         public List<CatalogoGeneralBean> sp_CatalogoGeneral_Consulta_CatalogoGeneral(int state, string type, int keycat, int keycam)
         {
             List<CatalogoGeneralBean> listCatGenBean = new List<CatalogoGeneralBean>();
