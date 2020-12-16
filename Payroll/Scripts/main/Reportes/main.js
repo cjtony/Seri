@@ -475,17 +475,6 @@
                                 <label class="col-form-label font-labels"> Tipo periodo </label> ${parameterTPer} 
                             </div> 
                         </div>
-                        <div class="col-md-4 offset-4 text-center">
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="1" id="paramRDat">
-                              <label class="form-check-label" for="paramRDat">
-                                Refrescar datos
-                              </label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-justify mt-3">
-                            <b class="text-info">(PARA LA OPCION DE "HOJA DE CALCULO BAJAS" Y "NUEVA HOJA DE CALCULO2 NO ES NECESARIO ACTIVAR ESTA CASILLA, AMBAS OPCIONES SE ENCUENTRAN EN VERSIÓN BETA EN CASO DE FALLAR AL GENERAR LA "NUEVA HOJA DE CALCULO", FAVOR DE SELECCIONAR LA OPCION DE "HOJA DE CALCULO")</b>
-                        </div>
                     </div>
                     `;
                 }

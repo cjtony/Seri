@@ -417,7 +417,7 @@
     <Content Include="Archivos\certificados\CSD_SAB130411LY6_20160129_122824.key" />
     <Content Include="Archivos\certificados\CSD_SAL150418PD1_20170113_121928.sdg" />
     <Content Include="Archivos\certificados\CSD_unidad_CGA1511196P4_20160128_134059.key" />
-    <Content Include="Content\Download\BajaMasiva.xlsx" />
+    <Content Include="Content\Download\BajasMasivas.xlsx" />
     <Content Include="Content\Download\CargaMasiva.xlsx" />
     <Content Include="DispersionTXT\2020\INTERBANCARIOS\DEPOSITOS_E4P19A2020-12-04\CHQ_NOMINAS_E4A20P19_B14_INTERBANCOS.PDF" />
     <Content Include="DispersionTXT\2020\INTERBANCARIOS\DEPOSITOS_E4P19A2020-12-04\CHQ_NOMINAS_E4A20P19_B14_INTERBANCOSESP.PDF" />
