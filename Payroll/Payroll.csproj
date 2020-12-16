@@ -260,6 +260,7 @@
     <Content Include="Content\datatables\datatables.min.css" />
     <Content Include="Content\DOCSFINIQUITOSCANCELADOS\test.txt" />
     <Content Include="Content\DOCSFINIQUITOS\test.txt" />
+    <Content Include="Content\FilesCargaMasivaIncidencias\LogsCarga\Notas_de_carga.txt" />
     <Content Include="Content\FilesDowns\Logs_Validations\LOG_BajasMasivasTest18-08-2020.txt" />
     <Content Include="Content\FilesDowns\Logs_Validations\LOG_BajasMasivasTest21-08-2020.txt" />
     <Content Include="Content\FilesUps\Logs_Validations\LOG_CargaMasiva %2814%2904-12-2020.txt" />
@@ -497,6 +498,8 @@
     <Content Include="Content\REPORTES\NOMINA\HCalculo_E4_A2020_P3_A.xlsx" />
     <Content Include="Content\REPORTES\NOMINA\HCalculo_E8_A2020_NP19_TP3_A.xlsx" />
     <Content Include="Content\REPORTES\NOMINA\HCBajas_E18_A2020_NP15_TP3_A.xlsx" />
+    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout Carga Incidencias.xlsx" />
+    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
@@ -1157,8 +1160,8 @@
     <Content Include="Views\Kiosko\SolicitudVacaciones.cshtml" />
     <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
     <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
-
     <Content Include="Views\Incidencias\PIncidencias.cshtml" />
+    <Content Include="Scripts\Libro2.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

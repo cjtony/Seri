@@ -3,7 +3,7 @@ $(function () {
 
     // *-* DECLARACION DE VARIABLES FORMULARIO *-* \\
 
-    alert('¡ Este es un ambiente de desarrollo !');
+    //alert('¡ Este es un ambiente de desarrollo !');
 
     const username = document.getElementById('username');
     const password = document.getElementById('password');
