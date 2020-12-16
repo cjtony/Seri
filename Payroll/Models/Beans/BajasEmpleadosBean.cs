@@ -69,6 +69,30 @@ namespace Payroll.Models.Beans
     }
     public class DatosFiniquito
     {
+        public int iIdFiniquito { get; set; }
+        public string sEffdt { get; set; }
+        public string sFechaAntiguedad { get; set; }
+        public string sFechaIngreso { get; set; }
+        public string sFechaBaja { get; set; }
+        public int iAnios { get; set; }
+        public int iDias { get; set; }
+        public string sRfc { get; set; }
+        public int iCentroId { get; set; }
+        public int iPuestoId { get; set; }
+        public double dSalarioMensual { get; set; }
+        public double dSalarioDiario { get; set; }
+        public int iTipoFiniquitoId { get; set; }
+        public string sFechaRecibo { get; set; }
+        public int iInactivo { get; set; }
+        public int iBanFechaIngreso { get; set; }
+        public int iBanCompEspecial { get; set; }
+        public int iEstatus { get; set; }
+        public int iAnio           { get; set; }
+        public int iPeriodo        { get; set; }
+        public int iDiasPendientes { get; set; }
+        public int iCancelado      { get; set; }
+        public int iMotivoBajaId   { get; set; }
+        public int iTipoOperacion  { get; set; }
         public int iIdValor { get; set; }
         public string sTipo { get; set; }
         public int iRenglon_id { get; set; }

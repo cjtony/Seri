@@ -1888,5 +1888,26 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, NombrePDF = nameFilePdf, InfoFiniquito = dataDownEmployee, NombreFolder = nameFolder });
         }
 
+        [HttpPost]
+        public JsonResult AddComplementSettlement(int keySettlement, int type, int keyEmploye)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            BajasEmpleadosBean addBajaEmpleado    = new BajasEmpleadosBean();
+            BajasEmpleadosBean bajasEmpleados     = new BajasEmpleadosBean();
+            BajasEmpleadosDaoD empleadosDaoD      = new BajasEmpleadosDaoD();
+            List<DatosFiniquito> datosFiniquitos  = new List<DatosFiniquito>();
+            try {
+                int keyBusiness    = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                addBajaEmpleado = empleadosDaoD.sp_Consulta_Info_Finiquito(keySettlement, keyBusiness, keyEmploye);
+                
+                //bajasEmpleados = empleadosDaoD.sp_CNomina_Finiquito();
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
     }
 }   

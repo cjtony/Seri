@@ -1,7 +1,13 @@
 ﻿$(function () {
 
+    const navDownsTab    = document.getElementById('navDownsTab');
+    const navReactiveTab = document.getElementById('navReactiveTab');
+    const navDownsMassiveTab = document.getElementById('navDownsMassiveTab');
+
+    const alertSelectEmployee = document.getElementById('alertSelectEmployee');
+
     //Muestra en principio el modal de busqueda
-    $("#modalLiveSearchEmpleado").modal("show");
+    //$("#modalLiveSearchEmpleado").modal("show");
     //Funcion que hace la busqueda de empleado por nombre o numero de nomina
     $("#inputSearchEmpleados").on("keyup", function () {
         $("#inputSearchEmpleados").empty();
@@ -20,7 +26,7 @@
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
-                            $("#resultSearchEmpleados").append("<div style='cursor:pointer;' class='list-group-item list-group-item-action btnListEmpleados font-labels  font-weight-bold' onclick='MostrarDatosEmpleado(" + data[i]["IdEmpleado"] + ")' > <i class='far fa-user-circle text-primary'></i> " + data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "   -   <small class='text-muted'><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[i]["DescripcionPuesto"] + "</small></div>");
+                            $("#resultSearchEmpleados").append("<div style='cursor:pointer;' class='list-group-item list-group-item-action btnListEmpleados font-labels  font-weight-bold' onclick='MostrarDatosEmpleado(" + data[i]["IdEmpleado"] + ")' > <i class='far fa-user-circle text-primary'></i> " + data[i]["Apellido_Paterno_Empleado"] + " " + data[i]["Apellido_Materno_Empleado"] + ' ' + data[i]["Nombre_Empleado"] + "   -   <small class='text-muted'><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + "</small> - <small class='text-muted'>" + data[i]["DescripcionPuesto"] + "</small></div>");
                         }
                     } else {
                         $("#resultSearchEmpleados").append("<button type='button' class='list-group-item list-group-item-action btnListEmpleados font-labels'  >" + data[0]["Nombre_Empleado"] + "<br><small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small> </button>");
@@ -49,7 +55,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (tipo) => {
-                document.getElementById('inMotivosBaja').innerHTML = "<option value='none'>Selecciona</option>";
+                document.getElementById('inMotivosBaja').innerHTML = "<option value='none' selected>Selecciona</option>";
                 for (var i = 0; i < tipo.length; i++) {
                     console.log(tipo[i]);
                     if (t == tipo[i]["TipoEmpleado_id"]) {
@@ -72,6 +78,9 @@
         var txtIdEmpleado = { "IdEmpleado": idE };
         dateSendDown.innerHTML = `<option value="none">Selecciona</option>`;
         document.getElementById("inTiposBaja").innerHTML = `<option value="none">Selecciona</option>`;
+        fActiveInputsInit(false);
+        fClearFields();
+        alertSelectEmployee.classList.add("d-none");
         $.ajax({
             url: "../Empleados/SearchEmpleadoInDown",
             type: "POST",
@@ -204,6 +213,16 @@
 
 
     inTiposBaja.addEventListener('change', fLoadMotiveDown);
+
+    fActiveInputsInit = (flag) => {
+        btnGuardaBaja.disabled  = flag;
+        downSettlement.disabled = flag;
+        dateDownEmp.disabled    = flag;
+        inTiposBaja.disabled    = flag;
+        inMotivosBaja.disabled  = flag;
+    }
+
+    fActiveInputsInit(true);
 
     class CampoNumerico {
 
@@ -443,7 +462,7 @@
                                     cancelPay = "disabled";
                                 }
                                 if (data.DatosFiniquito[i].sTipo_Operacion == "False") {
-                                    btnAddComplement = `<button class="btn btn-primary btn-sm" title="Añadir complemento (Esta opcion se encuentra en modo de desarrollo, pronto estara habilitada en el sistema)" disabled> <i class="fas fa-plus"></i> </button>`;
+                                    btnAddComplement = `<button class="btn btn-primary btn-sm" onclick="fAddComplementSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1, ${keyEmployee.value})"> <i class="fas fa-plus"></i> </button>`;
                                 }
                                 if (data.DatosFiniquito[i].iEstatus == 1) {
                                     actionSavePay = "disabled";
@@ -593,7 +612,7 @@
     fClearFields = () => {
         downSettlement.value = "none";
         inTiposBaja.value    = "none";
-        inMotivosBaja.value  = "none";
+        inMotivosBaja.value  = "";
         dateDownEmp.value    = "";
         daysPendings.value   = 0;
         dateSendDown.value   = "none";
@@ -1113,6 +1132,40 @@
         }
     }
 
+    // Funcion que agrega un complemento de finiquito
+    fAddComplementSettlement = (paramkey, paramtype, paramemploye) => {
+        try {
+            if (parseInt(paramkey) > 0 && parseInt(paramtype) > 0) {
+                const dataSend = { keySettlement: parseInt(paramkey), type: parseInt(paramtype), keyEmploye: parseInt(paramemploye) };
+                $.ajax({
+                    url: "../BajasEmpleados/AddComplementSettlement",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida!');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
     /*
     * Ejecucion de funciones
     */
@@ -1123,5 +1176,7 @@
     downSettlement.addEventListener('change', () => { fSHowFieldsSettlement(1); });
 
     optionSettlement.addEventListener('change', fDisabledEnabledOptions);
+
+    //navReactiveTab.addEventListener('click', () => { });
 
 });

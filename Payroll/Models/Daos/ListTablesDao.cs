@@ -40,7 +40,8 @@ namespace Payroll.Models.Daos
                     while (data.Read()) {
                         EmpleadosBean empleadoBean = new EmpleadosBean();
                         empleadoBean.iIdEmpleado = Convert.ToInt32(data["IdEmpleado"].ToString());
-                        empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Nombre_Empleado"].ToString() + " " + data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString());
+                        //empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Nombre_Empleado"].ToString() + " " + data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString());
+                        empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString() + " " + data["Nombre_Empleado"].ToString());
                         empleadoBean.iNumeroNomina = Convert.ToInt32(data["IdEmpleado"].ToString());
                         listEmpleadosBean.Add(empleadoBean);
                     }
@@ -77,7 +78,8 @@ namespace Payroll.Models.Daos
                     while (data.Read()) {
                         EmpleadosBean empleadoBean = new EmpleadosBean();
                         empleadoBean.iIdEmpleado = Convert.ToInt32(data["IdEmpleado"].ToString());
-                        empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Nombre_Empleado"].ToString() + " " + data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString());
+                        //empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Nombre_Empleado"].ToString() + " " + data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString());
+                        empleadoBean.sNombreEmpleado = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(data["Apellido_Paterno_Empleado"].ToString() + " " + data["Apellido_Materno_Empleado"].ToString() + " " + data["Nombre_Empleado"].ToString());
                         empleadoBean.iNumeroNomina = Convert.ToInt32(data["IdEmpleado"].ToString());
                         empleadosBeans.Add(empleadoBean);
                     }

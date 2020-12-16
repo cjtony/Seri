@@ -14,6 +14,30 @@ namespace Payroll.Models.Daos
     public class BajasEmpleadosDaoD : Conexion
     {
 
+        public BajasEmpleadosBean sp_Consulta_Info_Finiquito(int keySettlement, int keyBusiness, int keyEmploye)
+        {
+            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Consulta_Info_Finiquito", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdFiniquito", keySettlement));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmploye));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+
+                } else {
+                    
+                }
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bajasEmpleados;
+        }
+
         public BajasEmpleadosBean sp_Cancel_Settlement_Employee_Reactive (int keyEmployee, int keyBusiness)
         {
             BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
