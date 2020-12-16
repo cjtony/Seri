@@ -1234,7 +1234,8 @@ namespace Payroll.Models.Daos
                             ls.sValor = data["Valor"].ToString();
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
-                            ls.dTotal = decimal.Parse(data["total"].ToString());
+                            if (data["total"].ToString() == "") { ls.dTotal = 0; }
+                            if (data["total"].ToString() != "") { ls.dTotal = decimal.Parse(data["total"].ToString()); }
                             ls.sMensaje = "success";
                         };
                         list.Add(ls);
@@ -1642,13 +1643,13 @@ namespace Payroll.Models.Daos
 
                             ls.iIdCalculoshd = int.Parse(data["Calculos_Hd_id"].ToString());
                             ls.sNombre_Renglon = data["Nombre_Renglon"].ToString();
-                            ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
+                            if (data["Saldo"].ToString() == "") { ls.dSaldo = 0; }
+                            if (data["Saldo"].ToString() != "") { ls.dSaldo = decimal.Parse(data["Saldo"].ToString()); }
                             ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
                             //ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.sValor = data["Valor"].ToString();
                             ls.sIdSat = int.Parse(data["Sat_id"].ToString());
-
                         }
 
                         list.Add(ls);
@@ -2931,10 +2932,7 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", CtrliIdEmpresa));
-              
-
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -2970,9 +2968,9 @@ namespace Payroll.Models.Daos
 
         // Inserta una nueva Compensacion fija
 
-        public   CompensacionFijaBean sp_Compensacion_Insert_CCompensacionFija(int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto,int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario)
+        public List<CompensacionFijaBean> sp_Compensacion_Insert_CCompensacionFija(int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto,int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario)
         {
-            CompensacionFijaBean bean = new CompensacionFijaBean();
+           List<CompensacionFijaBean> bean = new List<CompensacionFijaBean>();
 
             try
             {
@@ -2988,20 +2986,33 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliImporte", CtrliImporte));
                 cmd.Parameters.Add(new SqlParameter("@CtrlsDescrip", CtrlsDescrip));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuario));
-                cmd.Parameters.Add(new SqlParameter("@CtrliExit", "0"));
+                cmd.Parameters.Add(new SqlParameter("@CtrliExitNoAct", "0"));
+                cmd.Parameters.Add(new SqlParameter("@CtrliExitAct", "0"));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNotExit", "0"));
 
-
-                if (cmd.ExecuteNonQuery() > 0)
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
                 {
-                      
-                    bean.sMensaje = "success";
+                    while (data.Read())
+                    {
+                        CompensacionFijaBean ls = new CompensacionFijaBean();
+                        {
+                            ls.iId = int.Parse(data["Id"].ToString());
+                            ls.sMensaje = "success";
+                        };
+                        bean.Add(ls);
+                    }
                 }
                 else
                 {
-                    bean.sMensaje = "error";
+                    CompensacionFijaBean ls = new CompensacionFijaBean();
+                    {
+                        ls.sMensaje = "error";
+                    }
+                    bean.Add(ls);
                 }
-                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
