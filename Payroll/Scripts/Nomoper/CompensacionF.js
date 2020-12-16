@@ -29,83 +29,143 @@
     FTbCompensacion = () => {
         document.getElementById('content-tableComp').classList.remove("d-none");
         $.ajax({
-            url: "../Nomina/CompFijasEmple",
+            url: "../Nomina/CompFijasEmpre",
             type: "POST",
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                if (data[0].sMensaje == "success") {
-                  
-                    var source =
-                    {
-                        localdata: data,
-                        datatype: "array",
-                        datafields:
-                            [
-                                { name: 'iId', type: 'int' },
-                                { name: 'sNombreEmpresa', type: 'string' },
-                                { name: 'sPuesto', type: 'string' },
-                                { name: 'iPremioPyA', type: 'int' },
-                                { name: 'sNombreRenglon', type: 'string' },
-                                { name: 'iImporte', type: 'money' },
-                                { name: 'sDescripcion', type: 'string' },
-
-                            ]
-                    };
-                    var dataAdapter = new $.jqx.dataAdapter(source);
-
-
-                    $("#TBCompensacion").jqxGrid(
+            success: function (data) {
+                console.log(data);
+                if (data.Bandera == true) {
+                    if (data.Datos[0].sMensaje == "success") {
+                        var source =
                         {
-                            width: 840,
-                            source: dataAdapter,
-                            selectionmode: 'multiplerowsextended',
-                            sortable: true,
-                            pageable: true,
-                            autoheight: true,
-                            autoloadstate: false,
-                            autosavestate: false,
-                            columnsresize: true,
-                            showtoolbar: true,
-                            rendertoolbar: function (statusbar) {
-                                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
-                                var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
-                                var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+                            localdata: data.Datos,
+                            datatype: "array",
+                            datafields:
+                                [
+                                    { name: 'iId', type: 'int' },
+                                    { name: 'sNombreEmpresa', type: 'string' },
+                                    { name: 'sPuesto', type: 'string' },
+                                    { name: 'iPremioPyA', type: 'int' },
+                                    { name: 'sNombreRenglon', type: 'string' },
+                                    { name: 'iImporte', type: 'money' },
+                                    { name: 'sDescripcion', type: 'string' },
+
+                                ]
+                        };
+                        var dataAdapter = new $.jqx.dataAdapter(source);
+                        $("#TBCompensacion").jqxGrid(
+                            {
+                                width: 840,
+                                source: dataAdapter,
+                                selectionmode: 'multiplerowsextended',
+                                sortable: true,
+                                pageable: true,
+                                autoheight: true,
+                                autoloadstate: false,
+                                autosavestate: false,
+                                columnsresize: true,
+                                showtoolbar: true,
+                                rendertoolbar: function (statusbar) {
+                                    var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                                    var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                                    var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
+
+                                    container.append(ActuButton);
+                                    container.append(DeletButton);
+                                    statusbar.append(container);
+                                    ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                                    DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+
+                                    ActuButton.click(function (event) {
+                                        $("#BActuComp").click();
+                                    });
+                                    DeletButton.click(function (event) {
+                                        $("#BtDeletComp").click();
+                                    });
+
+
+                                },
+                                columns: [
+                                    { text: 'No.', datafield: 'iId', width: 50 },
+                                    { text: 'Nombre de empresa', datafield: 'sNombreEmpresa', width: 140 },
+                                    { text: 'PPyPA', datafield: 'iPremioPyA', width: 60 },
+                                    { text: 'Puesto', datafield: 'sPuesto', width: 150 },
+                                    { text: 'Nombre de renglón', datafield: 'sNombreRenglon', width: 100 },
+                                    { text: 'iImporte', datafield: 'iImporte', width: 100 },
+                                    { text: 'Descripción', datafield: 'sDescripcion', whidt: 100 },
+                                ]
+                            });
+                    }
+                } else {
+                    alert('No hay datos')
+                }
+                //if (data[0].sMensaje == "success") {
+                  
+                //    var source =
+                //    {
+                //        localdata: data,
+                //        datatype: "array",
+                //        datafields:
+                //            [
+                //                { name: 'iId', type: 'int' },
+                //                { name: 'sNombreEmpresa', type: 'string' },
+                //                { name: 'sPuesto', type: 'string' },
+                //                { name: 'iPremioPyA', type: 'int' },
+                //                { name: 'sNombreRenglon', type: 'string' },
+                //                { name: 'iImporte', type: 'money' },
+                //                { name: 'sDescripcion', type: 'string' },
+
+                //            ]
+                //    };
+                //    var dataAdapter = new $.jqx.dataAdapter(source);
+                //    $("#TBCompensacion").jqxGrid(
+                //        {
+                //            width: 840,
+                //            source: dataAdapter,
+                //            selectionmode: 'multiplerowsextended',
+                //            sortable: true,
+                //            pageable: true,
+                //            autoheight: true,
+                //            autoloadstate: false,
+                //            autosavestate: false,
+                //            columnsresize: true,
+                //            showtoolbar: true,
+                //            rendertoolbar: function (statusbar) {
+                //                var container = $("<div style='overflow: hidden; position: relative; margin: 4px;'></div>");
+                //                var ActuButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-edit.png'/></div>");
+                //                var DeletButton = $("<div style='float: left; '><img style='position: relative; ' src='../../Scripts/jqxGrid/jqwidgets/styles/images/icon-delete.png'/></div>");
                              
-                                container.append(ActuButton);
-                                container.append(DeletButton);
-                                statusbar.append(container);
-                                ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
-                                DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
+                //                container.append(ActuButton);
+                //                container.append(DeletButton);
+                //                statusbar.append(container);
+                //                ActuButton.jqxButton({ template: "link", width: 40, height: 25 });
+                //                DeletButton.jqxButton({ template: "link", width: 40, height: 25 });
                                 
-                                ActuButton.click(function (event) {
-                                    $("#BActuComp").click();
-                                });
-                                DeletButton.click(function (event) {
-                                    $("#BtDeletComp").click();
-                                });
+                //                ActuButton.click(function (event) {
+                //                    $("#BActuComp").click();
+                //                });
+                //                DeletButton.click(function (event) {
+                //                    $("#BtDeletComp").click();
+                //                });
 
 
-                            },
-                            columns: [
-                                { text: 'No.', datafield: 'iId', width: 50 },
-                                { text: 'Nombre de empresa', datafield: 'sNombreEmpresa', width: 140 },
-                                { text: 'PPyPA', datafield: 'iPremioPyA', width: 60 },
-                                { text: 'Puesto', datafield: 'sPuesto', width: 150 },
-                                { text: 'Nombre de renglón', datafield: 'sNombreRenglon', width: 100 },
-                                { text: 'iImporte', datafield: 'iImporte', width: 100 },
-                                { text: 'Descripción', datafield: 'sDescripcion', whidt: 100 },
-                            ]
-                        });
+                //            },
+                //            columns: [
+                //                { text: 'No.', datafield: 'iId', width: 50 },
+                //                { text: 'Nombre de empresa', datafield: 'sNombreEmpresa', width: 140 },
+                //                { text: 'PPyPA', datafield: 'iPremioPyA', width: 60 },
+                //                { text: 'Puesto', datafield: 'sPuesto', width: 150 },
+                //                { text: 'Nombre de renglón', datafield: 'sNombreRenglon', width: 100 },
+                //                { text: 'iImporte', datafield: 'iImporte', width: 100 },
+                //                { text: 'Descripción', datafield: 'sDescripcion', whidt: 100 },
+                //            ]
+                //        });
+                //}
 
-
-
-
-                }
-                if (data[0].sMensaje == "error") {
-                    document.getElementById('content-tableComp').classList.remove("d-none");
-
-                }
+                //if (data[0].sMensaje == "error") {
+                //    document.getElementById('content-tableComp').classList.remove("d-none");
+                //}
                 
             }
         });
@@ -244,10 +304,15 @@
             type: "POST",
             data: dataSendComp,
             success: (data) => {
-                if (data.sMensaje == "success") {
-                    fshowtypealert('Compensación fija!', 'Guardada', 'success');
-                    FLimpCamp();
-                    FTbCompensacion();
+                if (data[0].sMensaje == "success") {
+                    if (data[0].iId < 1) {
+                        fshowtypealert('Compensación fija!', 'Guardada', 'success');
+                        FLimpCamp();
+                        FTbCompensacion();
+                    }
+                    if (data[0].iId > 0) {
+                        fshowtypealert('La compensación ya existe!', 'se encuentra en el renglo No.' + data[0].iId , 'warning');
+                    }
                 }
                 else {
                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
