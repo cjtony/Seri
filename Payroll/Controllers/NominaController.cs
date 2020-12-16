@@ -1015,13 +1015,18 @@ namespace Payroll.Controllers
         }
 
         /// consulta la tabla compensacionesfijas 
-        [HttpPost]
-        public JsonResult CompFijasEmple()
+       
+        public JsonResult CompFijasEmpre()
         {
+            Boolean flag = false;
             List<CompensacionFijaBean> LComp = new List<CompensacionFijaBean>();
             FuncionesNomina Dao = new FuncionesNomina();
             LComp = Dao.sp_Compensacionfija_Retrieve_CCompensacionfija();
-            return Json(LComp);
+            if (LComp.Count > 0)
+            {
+                flag = true;
+            }
+            return Json(new { Bandera = flag, Datos = LComp });
         }
 
         /// Listado de puesto por Empresa 
@@ -1038,7 +1043,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult NewCompFija(int iIdempresa, int iPyA,int iIdpuesto,int iIdRenglon,double iImporte, string sDescripcion)
         {
-            CompensacionFijaBean bean = new CompensacionFijaBean();
+            List<CompensacionFijaBean> bean = new List<CompensacionFijaBean>();
             FuncionesNomina dao = new FuncionesNomina();
             int usuario = int.Parse(Session["iIdUsuario"].ToString());
             bean = dao.sp_Compensacion_Insert_CCompensacionFija(iIdempresa, iPyA, iIdpuesto, iIdRenglon, iImporte, sDescripcion, usuario);
