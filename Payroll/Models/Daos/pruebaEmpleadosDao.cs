@@ -132,6 +132,7 @@ namespace Payroll.Models.Daos
                     list.Add(data["ReportaA"].ToString());
                     list.Add(data["DescripcionDepartamento"].ToString());
                     list.Add(data["TipoEmpleado_id"].ToString());
+                    list.Add(data["Fecha_Baja"].ToString());
                 }
             }
             else
@@ -616,7 +617,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TPensiones_Alimenticias_Insert_Pensiones(int Empresa_id, int Empleado_id, string Cuota_fija, int Porcentaje, string AplicaEn, string Descontar_en_finiquito, string No_Oficio, string Fecha_Oficio, int Tipo_Calculo, string Aumentar_segun_salario_minimo_general, string Aumentar_segun_aumento_de_sueldo, string Beneficiaria, int Banco, string Sucursal, string Tarjeta_vales, string Cuenta_Cheques, string Fecha_baja)
+        public List<string> sp_TPensiones_Alimenticias_Insert_Pensiones(int Empresa_id, int Empleado_id, string Cuota_fija, int Porcentaje, string AplicaEn, string Descontar_en_finiquito, string No_Oficio, string Fecha_Oficio, int Tipo_Calculo, string Aumentar_segun_salario_minimo_general, string Aumentar_segun_aumento_de_sueldo, string Beneficiaria, int Banco, string Sucursal, string Tarjeta_vales, string Cuenta_Cheques, int Periodo)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -632,15 +633,15 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlDescontar_en_Finiquito", Descontar_en_finiquito));
             cmd.Parameters.Add(new SqlParameter("@ctrlNo_Oficio", No_Oficio));
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Oficio", Fecha_Oficio));
-            cmd.Parameters.Add(new SqlParameter("@ctrlTipo_Calculo", Tipo_Calculo));
-            cmd.Parameters.Add(new SqlParameter("@ctrlAumentar_segun_SMG", Aumentar_segun_salario_minimo_general));
-            cmd.Parameters.Add(new SqlParameter("@ctrlAumentar_segun_AS", Aumentar_segun_aumento_de_sueldo));
             cmd.Parameters.Add(new SqlParameter("@ctrlBeneficiaria", Beneficiaria));
             cmd.Parameters.Add(new SqlParameter("@ctrlBanco", Banco));
             cmd.Parameters.Add(new SqlParameter("@ctrlSucursal", Sucursal));
             cmd.Parameters.Add(new SqlParameter("@ctrlTarjeta_Vales", Tarjeta_vales));
             cmd.Parameters.Add(new SqlParameter("@ctrlCuenta_Cheques", Cuenta_Cheques));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Baja", Fecha_baja));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", ""));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", "0"));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)

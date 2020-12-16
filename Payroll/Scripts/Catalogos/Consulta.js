@@ -252,12 +252,12 @@
                 tab.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     tab.innerHTML += "<div class='col-md-12 row'>"
-                        + "<small class='col-md-8'>"+ data[i]["Empresa_id"] + " " + data[i]["NombreEmpresa"] +"</small>"
+                        + "<small class='col-md-8'>" + data[i]["Empresa_id"] + " " + data[i]["NombreEmpresa"] + "</small>"
                         + "<small class='col-md-4'><span class='badge badge-primary col-md-12'><i class='fas fa-users'></i>&nbsp;" + data[i]["No"] + "</span></small>"
                         + "</div>";
                 }
             }
-        }); 
+        });
     }
     //LLENA SELECT EMPRESAS
     LoadSelectEmpresas = () => {
@@ -291,7 +291,7 @@
                     $("#result").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
-                            $("#result").append("<button type='button' class='text-left list-group-item list-group-item-action font-labels' onclick='MostrarDataEmpleado("+ Empresa_id +","+ data[i]["IdEmpleado"] + ")'><i class='far fa-user-circle text-primary'></i> " + data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + "<br><small><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + " - " + data[i]["DescripcionPuesto"] + "</small></button>");
+                            $("#result").append("<button type='button' class='text-left list-group-item list-group-item-action font-labels' onclick='MostrarDataEmpleado(" + Empresa_id + "," + data[i]["IdEmpleado"] + ")'><i class='far fa-user-circle text-primary'></i> " + data[i]["Apellido_Paterno_Empleado"] + ' ' + data[i]["Apellido_Materno_Empleado"] + " " + data[i]["Nombre_Empleado"] + " <br> <small><i class='fas fa-briefcase text-warning'></i> " + data[i]["DescripcionDepartamento"] + " - " + data[i]["DescripcionPuesto"] + "</small></button> ");
                         }
                     }
                     else {
@@ -304,14 +304,15 @@
         }
     });
     //MOSTRAR DATOS DEL EMPLEADO DE LA BUSQUEDA
-    MostrarDataEmpleado = (Empresa_id,Empleado_id) => {
+    MostrarDataEmpleado = (Empresa_id, Empleado_id) => {
         $.ajax({
             url: "../Empleados/SearchDataEmpleado",
             type: "POST",
             cache: false,
-            data: JSON.stringify({ Empresa_id: Empresa_id, Empleado_id: Empleado_id }),
+            data: JSON.stringify({ Empleado_id: Empleado_id, Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     var j = i + 1;
                     $(".lbl-" + j).val(data[i]);
@@ -348,7 +349,7 @@
                         "<tr>" +
                         "<td colspan='3' >" +
                         "<div class='col-md-12 row m-0 p-0'>" +
-                        "<label class='col-md-1'>" + data[i][0] + "</label><label class='col-md-3'>" + data[i][1] + " </label><label class='col-md-3'><span class='badge badge-primary'><i class='fas fa-briefcase text-warning'></i> " + data[i][2] + "</></label><div class='col-md-5'><div class='badge badge-success btn' onclick='irabuscar("+data[i][0]+");'>Ver <i class='fas fa-plus'></i></div></div>" +
+                        "<label class='col-md-1'>" + data[i][0] + "</label><label class='col-md-3'>" + data[i][1] + " </label><label class='col-md-3'><span class='badge badge-primary'><i class='fas fa-briefcase text-warning'></i> " + data[i][2] + "</></label><div class='col-md-5'><div class='badge badge-success btn' onclick='irabuscar(" + data[i][0] + ");'>Ver <i class='fas fa-plus'></i></div></div>" +
                         "</div>" +
                         "</td >" +
                         "</tr >";
@@ -387,7 +388,7 @@
             $("#resultPuesto").empty();
         }
         //MUESTRA EL PUESTO SELECCIONADO
-        MostrarDataPuesto = (Empresa_id,Puesto_id) => {
+        MostrarDataPuesto = (Empresa_id, Puesto_id) => {
             $.ajax({
                 url: "../Catalogos/LoadPuesto",
                 type: "POST",
@@ -402,16 +403,16 @@
                     $("#inp-4").val(data[0]["ClasificacionPuesto"]);
                     $("#inp-5").val(data[0]["Colectivo"]);
                     $("#inp-6").val(data[0]["NivelJerarquico"]);
-                    $("#inp-7").val(data[0]["fecha_alta"].substring(0,10));
+                    $("#inp-7").val(data[0]["fecha_alta"].substring(0, 10));
                     $("#inp-8").val(data[0]["PerformanceManager"]);
-                    
+
                     $("#resultPuesto").empty();
                     $("#inSearchPuesto").val("");
 
                 }
             });
         }
-        
+
     });
     //SELECCIONAR LA EMPRESA CON LA QUE SE QUIERE BUSCAR
     irabuscar = (Empresa_id) => {
@@ -440,7 +441,7 @@
         //    type: "POST",
         //    contentType: "application/json; charset=utf-8",
         //    success: (data) => {
-                
+
         //    }
         //});
         ////
@@ -471,11 +472,11 @@
                 for (var i = 0; i < data.length; i++) {
                     acordeon.innerHTML += ""
                         + "<div class='card border-0 pb-1 my-1 font-labels'>"
-                        + "<div class='card-header bg-white btn btn-light font-labels btn-icon-split col-md-12 text-left p-0'  onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] + "\",\"ul" + data[i][0] + "\",\"collapse" + data[i][0] +"\")' id='heading" + data[i][0] +"'>"
+                        + "<div class='card-header bg-white btn btn-light font-labels btn-icon-split col-md-12 text-left p-0'  onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] + "\",\"ul" + data[i][0] + "\",\"collapse" + data[i][0] + "\")' id='heading" + data[i][0] + "'>"
                         + "<span class='icon'><i class='fas fa-eye text-info'></i></span>"
                         + "<span class='text col '>" + data[i][1] + "</span>"
                         + "</div>"
-                        + "<div id='collapse" + data[i][0] + "' class='collapse p-0' aria-labelledby='heading" + data[i][0] +"' data-parent='#accordionGruposEmpresas'>"
+                        + "<div id='collapse" + data[i][0] + "' class='collapse p-0' aria-labelledby='heading" + data[i][0] + "' data-parent='#accordionGruposEmpresas'>"
                         + "<ul id='ul" + data[i][0] + "' class='list-group list-group-flush border-top-0'>"
                         + "</ul>"
                         + "</div>"
@@ -485,7 +486,7 @@
         });
     }
     //LLENA GRUPOS EMPRESAS LINE
-    MostrarEmpresasEnGrupo = (Grupo_id,ul,collapse) => {
+    MostrarEmpresasEnGrupo = (Grupo_id, ul, collapse) => {
         $.ajax({
             url: "../Catalogos/LoadEmpresasGrupo",
             type: "POST",
@@ -567,7 +568,7 @@
                             "<td class=''>" + data[j]["CentroCosto"] + "</td>" +
                             "<td class=''>" + data[j]["Descripcion"] + "</td>" +
                             "<td class=''>" + "<i class='fas fa-eye text-primary'></i>" + "</td>" +
-                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0,10) + "</td>" +
+                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0, 10) + "</td>" +
                             "</tr>";
                     } else {
                         document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
@@ -575,7 +576,7 @@
                             "<td class=''>" + data[j]["CentroCosto"] + "</td>" +
                             "<td class=''>" + data[j]["Descripcion"] + "</td>" +
                             "<td class=''>" + "<i class='fas fa-eye-slash text-danger'></i>" + "</td>" +
-                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0,10) + "</td>" +
+                            "<td class=''>" + data[j]["Fecha_Alta"].substr(0, 10) + "</td>" +
                             "</tr>";
                     }
                 }
@@ -587,7 +588,7 @@
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                         }
                     });
-                }, 100);   
+                }, 100);
             }
         });
     }

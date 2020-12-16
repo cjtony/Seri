@@ -200,7 +200,8 @@ namespace Payroll.Controllers
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
             int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
-            res = Dao.sp_TPensiones_Alimenticias_Insert_Pensiones(Empresa_id, Empleado_id, Cuota_fija, Porcentaje, AplicaEn, Descontar_en_finiquito, No_Oficio, Fecha_Oficio, Tipo_Calculo, Aumentar_segun_salario_minimo_general, Aumentar_segun_aumento_de_sueldo, Beneficiaria, Banco, Sucursal, Tarjeta_vales, Cuenta_Cheques, Fecha_baja);
+            int Periodo = int.Parse(Session["Periodo_id"].ToString());
+            res = Dao.sp_TPensiones_Alimenticias_Insert_Pensiones(Empresa_id, Empleado_id, Cuota_fija, Porcentaje, AplicaEn, Descontar_en_finiquito, No_Oficio, Fecha_Oficio, Tipo_Calculo, Aumentar_segun_salario_minimo_general, Aumentar_segun_aumento_de_sueldo, Beneficiaria, Banco, Sucursal, Tarjeta_vales, Cuenta_Cheques, Periodo);
             return Json(res);
         }
         [HttpPost]
