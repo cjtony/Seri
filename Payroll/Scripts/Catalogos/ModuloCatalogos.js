@@ -1219,9 +1219,14 @@
 
             if (document.getElementById("newcliente").value == "") {
                 cliente = "0";
+            } else {
+                cliente = document.getElementById("newcliente").value;
             }
+
             if (document.getElementById("newplaza").value == "") {
                 plaza = "0";
+            } else {
+                plaza = document.getElementById("newplaza").value;
             }
 
             var tb = document.getElementById("newtipobanco");
@@ -2015,8 +2020,7 @@
                         "<td class=''>" + data[j]["sClaveRegional"] + "</td>" +
                         "<td class=''>" + data[j]["sDescripcionRegional"] + "</td>" +
                         "<td class=''>" + data[j]["sFechaAlta"] + "</td>" +
-                        "<td class=''></td>" +
-                        "</tr>";
+                        "<td class=''><span class='badge badge-pill badge-danger'><i class='fas fa-trash'></i></span></td></tr>";
                 }
                 $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
                 $("#" + pilltab).collapse("toggle");

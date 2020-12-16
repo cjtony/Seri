@@ -208,7 +208,9 @@
                 var select = document.getElementById("inDescontar");
                 //select.innerHTML = "<option value=''> Selecciona </option>";
                 for (var i = 0; i < data.length; i++) {
-                    select.innerHTML += "<option value='" + data[i]["iId"] + "'>" + data[i]["sValor"] + "</option>";
+                    if (i == 0) {
+                        select.innerHTML += "<option class='active' value='" + data[i]["iId"] + "'>" + data[i]["sValor"] + "</option>";
+                    }
                 }
             }
         });
