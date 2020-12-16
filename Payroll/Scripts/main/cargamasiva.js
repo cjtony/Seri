@@ -44,7 +44,7 @@
                             "<button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button>" +
                             "<strong> Atención </strong> Hubo errores en el archivo Layout de carga.\n Descargue en archivo log con los errores " + btn + "</div >";
 
-                        $("#collapse-validation-cm").html(txt + btn);
+                        $("#collapse-validation-cm").html(txt);
                         $("#collapse-validation-cm").collapse("show");
                         $("a.btn-success").focus();
 
