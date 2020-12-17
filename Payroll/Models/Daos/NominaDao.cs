@@ -110,7 +110,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
         public List<EmpresasBean> sp_CEmpresas_Retrieve_Empresas()
@@ -148,6 +152,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -189,6 +198,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -234,6 +248,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<CAcumuladosRenglon> sp_CAcumuladoREnglones_Retrieve_CAcumuladoREnglones(int ctrliIdEmpresa, int ctrliIdRenglon)
@@ -276,6 +295,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<NominahdBean> sp_IdDefinicionNomina_Retrieve_IdDefinicionNomina()
@@ -311,6 +335,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -354,6 +383,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public NominaLnBean sp_CDefinicionLN_insert_CDefinicionLN(int CtriIdDefinicion, int CtriIdEmpresaid, int CtriIdTipoPeriodo, /*int CtriIdPeriodo,*/ int CtriIdRenglon, int CtriCancelado, int CtriIdUsuarioAlta, int sCtriIdElementoNomina, int ctrliEspejo, int ctrliIDAcumulado)
@@ -391,7 +425,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
         public List<CInicioFechasPeriodoBean> sp_Cperiodo_Retrieve_Cperiodo(int CtrliIdEmpresa, int CtrliAnio, int CtrliIdTipoPeriodo)
@@ -452,6 +490,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
 
@@ -501,6 +544,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
         }
@@ -540,6 +588,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -593,6 +646,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
         }
@@ -631,6 +689,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -672,6 +735,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -718,6 +786,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
 
@@ -751,7 +824,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
         public NominahdBean sp_EliminarDefinicion_Delete_EliminarDefinicion(int CtrliIdDefinicionHd)
@@ -780,7 +857,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
 
 
@@ -816,7 +897,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
 
         }
@@ -846,7 +931,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
 
         }
@@ -876,7 +965,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
 
         }
@@ -920,6 +1013,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
         }
@@ -952,7 +1050,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
         public TpCalculosHd sp_TpCalculos_update_TpCalculos(int CtrliIdDedinicionHD, int CtrliNominacerrada)
@@ -982,7 +1084,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
         public List<NominaLnDatBean> sp_TpDefinicionNomins_Retrieve_TpDefinicionNomins()
@@ -1027,6 +1133,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
         }
@@ -1059,7 +1170,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
         public List<TPProcesos> sp_TPProcesosJobs_Retrieve_TPProcesosJobs(int Crtliop1, int Crtliop2, int Crtliop3, int CrtliIdJobs, int CtrliIdTarea)
@@ -1104,6 +1219,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<HangfireJobs> sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(string CtrlsFecha)
@@ -1141,6 +1261,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -1203,6 +1328,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1254,6 +1384,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
 
@@ -1302,6 +1437,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
         }
@@ -1339,6 +1479,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1369,7 +1514,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 
@@ -1407,6 +1556,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<MotivoBajaBean> sp_Cgeneral_Retrieve_MotivoBajas()
@@ -1442,6 +1596,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -1534,6 +1693,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<string> sp_TEmpleado_Nomina_Retrieve_DatosBaja(int Empresa_id, int Empleado_id)
@@ -1574,6 +1738,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1610,7 +1779,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 
@@ -1666,6 +1839,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1706,6 +1884,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -1761,6 +1944,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -1888,6 +2076,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
         }
@@ -1932,6 +2125,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -1978,7 +2176,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 
@@ -2021,6 +2223,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -2056,6 +2263,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -2099,6 +2311,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -2136,7 +2353,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 
@@ -2179,6 +2400,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -2234,6 +2460,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -2272,6 +2503,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -2321,6 +2557,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -2381,6 +2622,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -2427,6 +2673,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -2469,6 +2720,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -2523,6 +2779,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
 
@@ -2568,6 +2829,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -2632,6 +2898,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
 
 
@@ -2677,6 +2948,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -2739,6 +3015,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
 
@@ -2854,6 +3135,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -2916,6 +3202,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -2962,6 +3253,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -3018,7 +3314,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 
@@ -3056,7 +3356,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 

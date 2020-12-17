@@ -51,6 +51,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return departamentoBean;
         }
     }
@@ -90,6 +95,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return puestoBean;
         }
@@ -143,6 +153,11 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
                 empleadoBean.sMensaje = exc.Message.ToString();
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return empleadoBean;
         }
 
@@ -176,6 +191,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return imssBean;
         }
@@ -227,6 +247,11 @@ namespace Payroll.Models.Daos
                 nominaBean.sMensaje = exc.Message.ToString();
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return nominaBean;
         }
 
@@ -262,6 +287,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return posicionBean;
         }
@@ -299,6 +329,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return regionBean;
         }
     }
@@ -333,6 +368,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return sucuesalesBean;
         }

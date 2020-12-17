@@ -86,6 +86,10 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            } finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listCatGenBean;
         }
@@ -126,6 +130,9 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listInfDomBean;
         }
@@ -165,6 +172,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listInfDomBean;
         }
@@ -207,6 +219,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listInfDomBean;
         }
@@ -252,6 +269,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listNivEstBean;
         }
     }
@@ -295,6 +317,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listTabBean;
         }
     }
@@ -327,6 +354,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBanBean;
         }
@@ -379,6 +411,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listPuestoBean;
         }
 
@@ -421,6 +458,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return puestoBean;
         }
@@ -472,6 +514,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listPuestoBean;
         }
     }
@@ -515,6 +562,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listProfFamilyBean;
         }
     }
@@ -552,6 +604,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listTagContBean;
         }
@@ -596,6 +653,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listNivJerarBean;
         }
     }
@@ -638,6 +700,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listPerfManBean;
         }
@@ -808,6 +875,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listCentrosCostos;
         }
 
@@ -851,6 +923,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listCentrosCostosBean;
         }
@@ -1001,6 +1078,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listEdificiosBean;
         }
 
@@ -1042,6 +1124,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listEdificiosBean;
         }
@@ -1155,6 +1242,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listNivelEstructuraBean;
         }
     }
@@ -1220,6 +1312,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return departamentosBean;
         }
@@ -1288,6 +1385,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listDepartamentoBean;
         }
@@ -1358,6 +1460,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listDepartamentosBean;
         }
     }
@@ -1394,6 +1501,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listTipoPeriodo;
         }
@@ -1479,6 +1591,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listLocalidadesBean;
         }
 
@@ -1557,6 +1674,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listLocalidadesBean;
         }
@@ -1768,6 +1890,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listRegPatronal;
         }
     }
@@ -1811,6 +1938,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listRegionalesBean;
         }
 
@@ -1845,6 +1977,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return regionalBean;
         }
@@ -1883,6 +2020,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listRegionalesBean;
         }
 
@@ -1918,6 +2060,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return regionBean;
         }
@@ -1961,6 +2108,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listSucursalesBean;
         }
 
@@ -1994,6 +2146,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return sucursalBean;
         }
@@ -2031,6 +2188,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listSucursalesBean;
         }
@@ -2075,6 +2237,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return sucursalBean;
         }
 
@@ -2104,6 +2271,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listNacionBean;
         }

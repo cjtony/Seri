@@ -507,6 +507,10 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            } finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -549,6 +553,10 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            } finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -587,10 +595,11 @@ namespace Payroll.Models.Daos
                     list = null;
                 }
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 Console.WriteLine(exc);
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }

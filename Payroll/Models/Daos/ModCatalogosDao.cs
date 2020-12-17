@@ -44,6 +44,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<InicioFechasPeriodoBean> sp_Retrieve_CInicio_Fechas_Periodo_Detalle(int Empresa_id)
@@ -91,6 +96,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<string> sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(int Empresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago)
@@ -131,6 +141,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<string> sp_CInicio_Fechas_Periodo_Delete_Fecha_Periodo(int Empresa_id, int Id)
@@ -164,6 +179,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -207,6 +227,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         // FUNCIONES PARA LAS POLITICAS DE VACACIONES FUTURAS
@@ -244,6 +269,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -285,6 +315,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -328,6 +363,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<string> sp_CPoliticasVacaciones_Insert_Effdt_Futura(int Empresa_id, string Effdt)
@@ -361,6 +401,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -400,6 +445,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<string> sp_CPoliticasVacaciones_Delete_Politica(int Empresa_id, string Effdt, int Anio)
@@ -434,6 +484,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -478,6 +533,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<EmpleadosxEmpresaBean> sp_CEmpresas_Retrieve_NoEmpleados()
@@ -512,6 +572,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -557,6 +622,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<List<string>> sp_TPuestos_Retrieve_Empresas()
@@ -592,6 +662,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return lista;
         }
@@ -635,8 +710,9 @@ namespace Payroll.Models.Daos
             {
                 list = null;
             }
-            data.Close();
-
+            data.Close(); 
+                this.conexion.Close();
+                this.Conectar().Close(); 
             return list;
         }
         public List<DataPuestosBean> sp_TPuestos_Retrieve_Puesto(int Empresa_id, string Puesto_id)
@@ -677,8 +753,9 @@ namespace Payroll.Models.Daos
             {
                 list = null;
             }
-            data.Close();
-
+            data.Close(); 
+                this.conexion.Close();
+                this.Conectar().Close(); 
             return list;
         }
         public List<DataPuestosBean> sp_TPuestos_Retrieve_AllPuestos()
@@ -718,7 +795,8 @@ namespace Payroll.Models.Daos
                 list = null;
             }
             data.Close();
-
+            this.conexion.Close();
+            this.Conectar().Close(); 
             return list;
         }
         public List<List<string>> sp_CGruposEmpresas_Retrieve_Grupos()
@@ -754,6 +832,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return lista;
         }
@@ -809,6 +892,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
         public List<List<string>> sp_CGruposEmpresas_Retrieve_EmpresasGrupo(int Grupo_id)
@@ -843,6 +931,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return lista;
         }
@@ -883,6 +976,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return lista;
         }
@@ -930,6 +1028,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<string> sp_CInicio_Fechas_Periodo_Update_Periodo(int Empresa_id,int Id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago)
@@ -970,6 +1073,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -1016,6 +1124,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<string> sp_BancosEmpresas_Insert_Banco(int Empresa_id, int Banco_id, int TipoBanco, int Cliente, int Plaza, string CuentaEmp, string Clabe)
@@ -1054,6 +1167,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -1094,6 +1212,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<string> sp_BancosEmpresas_updatestatus_Banco(int key, int Id)
@@ -1127,6 +1250,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -1169,6 +1297,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<DataProfilesBean> sp_CPerfiles_Retrieve_Perfiles()
@@ -1207,6 +1340,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -1251,6 +1389,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         // FUNCION PARA TRAER DE Cgeneral LOS TIPOS DE DESCUENTO
@@ -1288,6 +1431,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return Bean;
         }
         public List<string> sp_Catalogos_Insert_Centro_Costo(int Empresa_id, string Nombre, string Descripcion, int Usuario_id)
@@ -1323,6 +1471,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -1360,6 +1513,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listBean;
         }
         public List<string> sp_TRegistroPatronal_update_Status(int Empresa_id, int RegPat_id, int Status)
@@ -1394,6 +1552,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return listBean;
         }
@@ -1469,6 +1632,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1507,6 +1675,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1544,6 +1717,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -1589,6 +1767,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1626,6 +1809,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return list;
         }
 
@@ -1662,6 +1850,11 @@ namespace Payroll.Models.Daos
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return list;
         }
@@ -1713,7 +1906,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 
@@ -1761,7 +1958,11 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
-
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return bean;
         }
 

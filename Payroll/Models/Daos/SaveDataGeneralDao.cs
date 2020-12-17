@@ -79,6 +79,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return addPuestoBean;
         }
     }
@@ -152,6 +157,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return addDepartamentoBean;
         }
@@ -260,6 +270,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return empleadoBean;
         }
         public EmpleadosBean sp_Empleado_Update_PosicionNomina(int clvemp, int keyemp)
@@ -292,6 +307,7 @@ namespace Payroll.Models.Daos
             finally
             {
                 conexion.Close();
+                this.Conectar().Close();
             }
             return empleadoBean;
         }
@@ -358,6 +374,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return imssBean;
         }
@@ -477,6 +498,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return datoNominaBean;
         }
@@ -610,6 +636,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return posicionBean;
         }
         public List<DatosPosicionesBean> sp_Posiciones_Retrieve_Search_Disp_Posiciones(string wordsearch, int keyemp)
@@ -657,6 +688,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listPosicionBean;
         }
         public DatosPosicionesBean sp_Posicion_Consecutivo_Posicion(int keyemp)
@@ -691,6 +727,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return datoPosicionBean;
         }
@@ -744,6 +785,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listPosicionBean;
         }
         public List<DatosPosicionesBean> sp_Posiciones_Retrieve_Posiciones(int keyemp, string typefil)
@@ -789,6 +835,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return listPosicionBean;
         }
         public DatosPosicionesBean sp_Posiciones_Insert_Posicion(string codposic, int depaid, int puesid, int regpatcla, int localityr, int emprepreg, int reportempr, int usuario, int keyemp)
@@ -829,6 +880,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return datoPosicionBean;
         }
         public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsig(int clvstr, string fechefectpos, string fechinipos, string empleado, string apepat, string apemat, string fechanaci, int usuario, int keyemp)
@@ -868,6 +924,11 @@ namespace Payroll.Models.Daos
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return datoPosicionBean;
         }
         public DatosPosicionesBean sp_PosicionesAsig_Insert_PosicionesAsigEdit(int clvstr, string fechefectpos, string fechinipos, int clvemp, int clvnom, int usuario, int keyemp)
@@ -905,6 +966,11 @@ namespace Payroll.Models.Daos
                 CapturaErrores capturaErrorDao = new CapturaErrores();
                 capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
                 Console.WriteLine(exc);
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
             }
             return datoPosicionBean;
         }

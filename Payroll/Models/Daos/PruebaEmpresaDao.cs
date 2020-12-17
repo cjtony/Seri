@@ -340,8 +340,9 @@ namespace Payroll.Models.Daos
             {
                 lista = null;
             }
-            data.Close();
-
+            data.Close(); 
+                this.conexion.Close();
+                this.Conectar().Close(); 
             return lista;
         }
         public List<LocalidadesBean> sp_TLocalicades_Retrieve_Localidades(int IdEmpresa)
@@ -393,8 +394,9 @@ namespace Payroll.Models.Daos
             {
                 lista = null;
             }
-            data.Close();
-
+            data.Close(); 
+                this.conexion.Close();
+                this.Conectar().Close(); 
             return lista;
         }
         public List<CClases_RegPatBean> sp_CClases_RegPat()
@@ -426,8 +428,9 @@ namespace Payroll.Models.Daos
             {
                 list = null;
             }
-            data.Close();
-
+            data.Close(); 
+                this.conexion.Close();
+                this.Conectar().Close(); 
             return list;
         }
         public List<string> sp_Registro_Patronal_Insert_Registros_Patronales(int Empresa_id, string Afiliacion_IMSS, string NombreAfiliacion, string Riesgo_Trabajo, int ClasesRegPat, int Status)

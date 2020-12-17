@@ -50,6 +50,11 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
                 usuBean.sMensaje = "Error - Catch " + exc.ToString();
             }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
             return usuBean;
         }
     }
