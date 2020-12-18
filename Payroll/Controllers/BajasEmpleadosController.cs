@@ -1893,20 +1893,24 @@ namespace Payroll.Controllers
         {
             Boolean flag         = false;
             String  messageError = "none";
-            BajasEmpleadosBean addBajaEmpleado    = new BajasEmpleadosBean();
+            DatosFiniquito datosFiniquito         = new DatosFiniquito();
             BajasEmpleadosBean bajasEmpleados     = new BajasEmpleadosBean();
             BajasEmpleadosDaoD empleadosDaoD      = new BajasEmpleadosDaoD();
             List<DatosFiniquito> datosFiniquitos  = new List<DatosFiniquito>();
             try {
                 int keyBusiness    = Convert.ToInt32(Session["IdEmpresa"].ToString());
-                addBajaEmpleado = empleadosDaoD.sp_Consulta_Info_Finiquito(keySettlement, keyBusiness, keyEmploye);
-                
-                //bajasEmpleados = empleadosDaoD.sp_CNomina_Finiquito();
+                datosFiniquito = empleadosDaoD.sp_Consulta_Info_Finiquito(keySettlement, keyBusiness, keyEmploye);
+                if (datosFiniquito.sMensaje == "SUCCESS") {
+                    bajasEmpleados = empleadosDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmploye, datosFiniquito.sFechaAntiguedad, datosFiniquito.iTipoFiniquitoId, datosFiniquito.iMotivoBajaId, datosFiniquito.sFechaBaja, datosFiniquito.sFechaRecibo, datosFiniquito.iBanFechaIngreso, datosFiniquito.iBanCompEspecial, datosFiniquito.iDiasPendientes, datosFiniquito.iAnio, datosFiniquito.iPeriodo, datosFiniquito.sFechaPagoInicio, datosFiniquito.sFechaPFin, 1, 0);
+                    if (bajasEmpleados.sMensaje == "SUCCESS") {
+                        flag = true;
+                    }
+                }   
             } catch (Exception exc) {
                 flag         = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError });
+            return Json(new { Bandera = flag, MensajeError = messageError, DatosFiniquito = datosFiniquito });
         }
 
     }

@@ -14,9 +14,9 @@ namespace Payroll.Models.Daos
     public class BajasEmpleadosDaoD : Conexion
     {
 
-        public BajasEmpleadosBean sp_Consulta_Info_Finiquito(int keySettlement, int keyBusiness, int keyEmploye)
+        public DatosFiniquito sp_Consulta_Info_Finiquito(int keySettlement, int keyBusiness, int keyEmploye)
         {
-            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            DatosFiniquito datosFiniquito = new DatosFiniquito();
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Consulta_Info_Finiquito", this.conexion) { CommandType = CommandType.StoredProcedure };
@@ -25,17 +25,37 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmploye));
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
 
+                        datosFiniquito.sFechaBaja       = dataReader["Fecha_Baja"].ToString();
+                        datosFiniquito.sFechaRecibo     = dataReader["Fecha_recibo"].ToString();
+                        datosFiniquito.iTipoFiniquitoId = Convert.ToInt32(dataReader["Tipo_finiquito_id"]);
+                        datosFiniquito.iBanFechaIngreso = Convert.ToInt32(dataReader["ban_fecha_ingreso"]);
+                        datosFiniquito.iBanCompEspecial = Convert.ToInt32(dataReader["ban_compensacion_especial"]);
+                        datosFiniquito.iDiasPendientes  = Convert.ToInt32(dataReader["Dias_pendientes"]);
+                        datosFiniquito.iAnio    = Convert.ToInt32(dataReader["Anio"]);
+                        datosFiniquito.iPeriodo = Convert.ToInt32(dataReader["Periodo"]);
+                        datosFiniquito.sFechaPagoInicio = dataReader["Fecha_Pago_Inicio"].ToString();
+                        datosFiniquito.sFechaPFin       = dataReader["Fecha_Pago_Fin"].ToString();
+                        datosFiniquito.iMotivoBajaId    = Convert.ToInt32(dataReader["Cg_motivo_baja_id"]);
+                        datosFiniquito.iTipoOperacion   = Convert.ToInt32(dataReader["Tipo_operacion"]);
+                        datosFiniquito.sFechaAntiguedad = dataReader["Fecha_antiguedad"].ToString();
+                        datosFiniquito.sMensaje         = "SUCCESS";
+
+                    } else {
+                        datosFiniquito.sMensaje = "ERROR";
+                    }
                 } else {
-                    
+                    datosFiniquito.sMensaje = "NOTDATA";
                 }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
             } catch (Exception exc) {
                 Console.WriteLine(exc.Message.ToString());
             } finally {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
-            return bajasEmpleados;
+            return datosFiniquito;
         }
 
         public BajasEmpleadosBean sp_Cancel_Settlement_Employee_Reactive (int keyEmployee, int keyBusiness)

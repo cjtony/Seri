@@ -1411,7 +1411,7 @@
         } else {
             url = "../EditDataGeneral/EditDataNomina";
             datasend = {
-                fecefecnom: fecefecnom.value, fechefectact: fechefectact.value, salmen: salmen.value, tipper: tipper.value, tipemp: tipemp.value,
+                fechefectact: fechefectact.value , fecefecnom: fecefecnom.value, salmen: salmen.value, tipper: tipper.value, tipemp: tipemp.value,
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
@@ -1503,6 +1503,7 @@
                     type: "POST",
                     data: datasend,
                     success: (data) => {
+                        console.log(data);
                         if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos de nomina actualizados", icon: 'success',
