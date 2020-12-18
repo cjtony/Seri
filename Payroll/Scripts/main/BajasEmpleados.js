@@ -462,7 +462,7 @@
                                     cancelPay = "disabled";
                                 }
                                 if (data.DatosFiniquito[i].sTipo_Operacion == "False") {
-                                    btnAddComplement = `<button class="btn btn-primary btn-sm" onclick="fAddComplementSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1, ${keyEmployee.value})"> <i class="fas fa-plus"></i> </button>`;
+                                    btnAddComplement = `<button disabled class="btn btn-primary btn-sm" onclick="fAddComplementSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1, ${keyEmployee.value})"> <i class="fas fa-plus"></i> </button>`;
                                 }
                                 if (data.DatosFiniquito[i].iEstatus == 1) {
                                     actionSavePay = "disabled";

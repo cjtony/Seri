@@ -97,6 +97,9 @@ namespace Payroll.Models.Beans
         public string sTipo { get; set; }
         public int iRenglon_id { get; set; }
         public string sNombre_Renglon { get; set; }
+        public string sFechaPagoInicio { get; set; }
+        public string sFechaPInicio { get; set; }
+        public string sFechaPFin { get; set; }
         public string sGravado { get; set; }
         public string sExcento { get; set; }
         public string sSaldo { get; set; }
@@ -104,6 +107,7 @@ namespace Payroll.Models.Beans
         public int iNomina { get; set; }
         public string sNombre { get; set; }
         public string sLeyenda { get; set; }
+        public string sMensaje { get; set; }
 
     }
 

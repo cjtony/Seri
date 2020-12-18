@@ -838,13 +838,13 @@
         return flagReturn;
     }
 
-    setTimeout(() => {
-        name.addEventListener('change',  () => { validarInputMain(curp) });
-        apep.addEventListener('change',  () => { validarInputMain(curp) });
-        apem.addEventListener('change',  () => { validarInputMain(curp) });
-        sex.addEventListener('change',   () => { validarInputMain(curp) });
-        fnaci.addEventListener('change', () => { validarInputMain(curp) });
-    }, 2000);
+    //setTimeout(() => {
+    //    name.addEventListener('change',  () => { validarInputMain(curp) });
+    //    apep.addEventListener('change',  () => { validarInputMain(curp) });
+    //    apem.addEventListener('change',  () => { validarInputMain(curp) });
+    //    sex.addEventListener('change',   () => { validarInputMain(curp) });
+    //    fnaci.addEventListener('change', () => { validarInputMain(curp) });
+    //}, 2000);
 
     btnSaveDataImss.addEventListener('click', () => {
         const arrInput = [imss, rfc, curp, nivest, nivsoc];
@@ -865,7 +865,9 @@
                 }
             }
         }
-        let flagResultValidCurp = validarInputMain(curp);
+        //let flagResultValidCurp = validarInputMain(curp);
+        let flagResultValidCurp = true;
+
         if (flagResultValidCurp == false) {
             fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
@@ -976,7 +978,9 @@
                 }
             }
         }
-        let flagResultValidCurp = validarInputMain(curp);
+        //let flagResultValidCurp = validarInputMain(curp);
+        let flagResultValidCurp = true;
+
         if (flagResultValidCurp == false) {
             fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
@@ -1066,7 +1070,7 @@
                 }
             }
         }
-        let flagResultValidCurp = validarInputMain(curp);
+        let flagResultValidCurp = true;
         if (flagResultValidCurp == false) {
             fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
