@@ -575,12 +575,13 @@
     icoclosesearchemployesbtn.addEventListener('click', fclearsearchresults);
     btnclosesearchemployesbtn.addEventListener('click', fclearsearchresults);
     /* CONSTANTES ALMACENA EL TAB DE LAS PESTAÑAS */
-    const navDataGenTab = document.getElementById('nav-datagen-tab'),
-        navImssTab = document.getElementById('nav-imss-tab'),
-        navDataNomTab = document.getElementById('nav-datanom-tab'),
+    const navDataGenTab  = document.getElementById('nav-datagen-tab'),
+        navImssTab       = document.getElementById('nav-imss-tab'),
+        navDataNomTab    = document.getElementById('nav-datanom-tab'),
         navEstructureTab = document.getElementById('nav-estructure-tab');
     /* FUNCION QUE EJECUTA UN SP PARA ACTUALIZAR LA POSICION DEL EMPLEADO EN TB -> EMPLEADO_NOMINA */
     fupdateposnew = () => {
+        console.log('Actualizando posicion');
         try {
             if (clvemp.value != "" && clvemp.value > 0) {
                 $.ajax({
@@ -588,7 +589,10 @@
                     type: "POST",
                     data: { clvemp: clvemp.value },
                     success: (data) => {
-                        if (data.result == "success") {
+                        console.log('Datos actualizacion');
+                        console.log(data);
+                        if (data.result == "Actualizado") {
+                            alert('Detectamos que existe un cambio por aplicar...');
                             floaddatatabgeneral(data.empleado);
                         }
                     }, complete: (comp) => {
@@ -724,6 +728,7 @@
 
     /* FUNCION QUE CARGA LOS DATOS DE LA POSICION ASIGNADA A LA ESTRUCTURA */
     floaddatatabstructure = (paramid) => {
+        document.getElementById('div-most-alert-data-estructure').innerHTML = "";
         try {
             $.ajax({
                 url: "../Empleados/DataTabStructureEmploye",
@@ -748,9 +753,7 @@
                         flocalstodatatabstructure();
                         fchecklocalstotab();
                         fShowBtnsHistoryApart("POSICION");
-                        if (localStorage.getItem('modeedit') != null) {
-                            btnsavedataall.classList.add('d-none');
-                            btnsaveeditdataest.classList.remove('d-none');
+                        if (localStorage.getItem('modeedit') != null) { 
                             cntIFechMovi.classList.remove('d-none');
                             document.getElementById('content-new-inpt-motmovi').classList.remove('d-none');
                             cntIFechMovi.innerHTML = `
@@ -772,6 +775,25 @@
                             //fLoadMotivesMovements('motmovi');
                         }
                     } else {
+                        cntIFechMovi.classList.remove('d-none');
+                        document.getElementById('content-new-inpt-motmovi').classList.remove('d-none');
+                        cntIFechMovi.innerHTML = `
+                                <label for="fechmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
+                                    Fecha de movimiento
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="date" id="fechmovi" class="form-control form-control-sm" placeholder="Fecha del movimiento" />
+                                </div>
+                            `;
+                        document.getElementById('content-new-inpt-motmovi').innerHTML = `
+                                <label for="motmovi" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
+                                    Motivo del movimiento
+                                </label>
+                                <div class="col-sm-8">
+                                     <select class="form-control form-control-sm" id="motmovi" tp-select="Motivo del movimiento"> <option value="">Selecciona</option> </select> 
+                                </div>
+                            `;
+                        clvstract.value = 0;
                         document.getElementById('div-most-alert-data-estructure').innerHTML = `
                             <div class="alert alert-danger text-center" role="alert">
                                 <b>
@@ -781,7 +803,12 @@
                                 </b>
                             </div>
                         `;
+                        fLoadMotivesMovements('motmovisal');
+                        fLoadMotivesMovements('motmovi');
+                        fupdateposnew();
                     }
+                    btnsavedataall.classList.add('d-none');
+                    btnsaveeditdataest.classList.remove('d-none');
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
         } catch (error) {
@@ -798,6 +825,7 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DE NOMINA DEL EMPLEADO SELECCIONADO A EDICION */
     floaddatatabnomina = (paramid) => {
+        document.getElementById('div-most-alert-data-nomina').innerHTML = "";
         try {
             $.ajax({
                 url: "../Empleados/DataTabNominaEmploye",
@@ -900,6 +928,7 @@
     }
     /* FUNCION QUE CARGA LOS DATOS DEL IMSS DEL EMPLEADO SELECCIONADO A EDICION */
     floaddatatabimss = (paramid) => {
+        document.getElementById('div-most-alert-data-imss').innerHTML = "";
         try {
             $.ajax({
                 url: "../Empleados/DataTabImssEmploye",
@@ -1550,9 +1579,13 @@
         try {
             if (clvstract.value != clvstr.value) {
                 const fechmovi = document.getElementById('fechmovi');
-                const motmovi  = document.getElementById('motmovi');
+                const motmovi = document.getElementById('motmovi');
                 let fechActE;
                 const arrInput = [clvstr, fechefectpos, motmovi, fechmovi];
+                //if (clvstract.value != 0) {
+                //    arrInput.push(motmovi);
+                //    arrInput.push(fechmovi);
+                //}
                 let validateSend = 0;
                 for (let a = 0; a < arrInput.length; a++) {
                     if (arrInput[a].hasAttribute('tp-date')) {
@@ -1587,6 +1620,10 @@
                     fechinipos: fechinipos.value, clvemp: clvemp.value,
                     clvnom: clvnom.value, fechmovi: fechmovi.value, motmovi: motmovi.value
                 };
+                //if (clvstract.value != 0) {
+                //    dataSend.fechmovi = fechmovi.value;
+                //    dataSend.motmovi  = motmovi.value;
+                //}
                 console.log('Datos estructura');
                 console.log(dataSend);
                 if (validateSend == 0) {
@@ -1606,6 +1643,7 @@
                                     $("html, body").animate({
                                         scrollTop: $('#nav-datanom-tab').offset().top - 50
                                     }, 1000);
+                                    fupdateposnew();
                                 });
                             } else {
                                 Swal.fire({
