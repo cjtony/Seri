@@ -264,8 +264,8 @@ namespace Payroll.Controllers
             String  messageError  = "none";
             string  convertFEffdt = Convert.ToDateTime(fechefectpos).ToString("dd/MM/yyyy");
             string  convertFIniP  = Convert.ToDateTime(fechinipos).ToString("dd/MM/yyyy");
-            DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
-            DatosPosicionesDao datoPosicionDao  = new DatosPosicionesDao();
+            DatosPosicionesBean addPosicionBean   = new DatosPosicionesBean();
+            DatosPosicionesDao datoPosicionDao    = new DatosPosicionesDao();
             LoadTypePeriodPayrollBean periodBean  = new LoadTypePeriodPayrollBean();
             LoadTypePeriodPayrollDaoD periodDaoD  = new LoadTypePeriodPayrollDaoD();
             DatosMovimientosBean datosMovimientos = new DatosMovimientosBean();
