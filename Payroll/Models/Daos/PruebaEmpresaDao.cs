@@ -41,7 +41,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<PruebaEmpresaBean> sp_Retrieve_NombreEmpresas()
+        public List<PruebaEmpresaBean> sp_Retrieve_NombreEmpresas(int Perfil_id)
         {
             List<PruebaEmpresaBean> list = new List<PruebaEmpresaBean>();
             this.Conectar();
@@ -49,6 +49,7 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
+            cmd.Parameters.Add(new SqlParameter("@ctrlPerfil_id", Perfil_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 

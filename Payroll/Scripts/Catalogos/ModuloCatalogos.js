@@ -750,7 +750,7 @@
             }
         });
     }
-
+    //
     // Eliminar una Fecha - Periodo
     eliminarPolitica = (Empresa_id, Effdt, Anio) => {
         Swal.fire({
@@ -794,54 +794,6 @@
             }
         });
     }
-
-    //LLENA GRUPOS EMPRESAS HEADER
-    LoadAcordeonGrupos = () => {
-        $.ajax({
-            url: "../Catalogos/LoadGruposEmpresas",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                console.log(data);
-                var acordeon = document.getElementById("accordeonGruposEmpresas");
-                acordeon.innerHTML = "";
-                for (var i = 0; i < data.length; i++) {
-                    acordeon.innerHTML += ""
-                        + "<div class='card'>"
-                        + "<div class='card-header' id='heading" + data[i][0] + "'>"
-                        + "<h2 class='mb-0'>"
-                        + "<button class='btn btn-link btn-block d-flex justify-content-between aling-items-center' onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] + "\",\"ul" + data[i][0] + "\",\"collapse" + data[i][0] + "\")' type='button'>"
-                        + "" + data[i][1] + ""
-                        + "</button>"
-                        + "</h2>"
-                        + "</div>"
-                        + "<div id='collapse" + data[i][0] + "' class='collapse' aria-labelledby='heading" + data[i][0] + "' data-parent='#accordeonGruposEmpresas'>"
-                        + "<ul id='ul" + data[i][0] + "' class='list-group list-group-flush'>"
-                        + "</ul>"
-                        + "</div>"
-                        + "</div >";
-                }
-            }
-        });
-    }
-    //LLENA GRUPOS EMPRESAS LINE
-    MostrarEmpresasEnGrupo = (Grupo_id, ul, collapse) => {
-        $.ajax({
-            url: "../Catalogos/LoadEmpresasGrupo",
-            type: "POST",
-            data: JSON.stringify({ Grupo_id: Grupo_id }),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                console.log(data);
-                var lista = document.getElementById(ul)
-                lista.innerHTML = "";
-                for (var i = 0; i < data.length; i++) {
-                    lista.innerHTML += "<li class='list-group-item list-group-item-secondary d-flex justify-content-between aling-items-center'>" + data[i][0] + " - " + data[i][1] + "<span class='btn badge badge-danger' title='Quitar empresa'><i class='fas fa-minus'></i></span></li>";
-                }
-                $("#" + collapse).collapse("toggle");
-            }
-        });
-    }
     //LLENA SELECT EMPRESAS
     LoadSelectEmpresas = () => {
         $.ajax({
@@ -858,10 +810,10 @@
             }
         });
     }
-
+    //
     //CAMBIO DE SELECT GRUPOS
     $("#inGrupos").on("change", function () {
-
+    //
     });
     // CARGA MODAL DE EDITAR POLITICAS
     cargaModalEditarPolitica = (Empresa_id, Effdt, Anio) => {
@@ -1048,6 +1000,108 @@
         });
     }
     //
+    //LLENA GRUPOS EMPRESAS HEADER
+    LoadAcordeonGrupos = () => {
+        $.ajax({
+            url: "../Catalogos/LoadGruposEmpresas",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var acordeon = document.getElementById("accordeonGruposEmpresas");
+                acordeon.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    acordeon.innerHTML += ""
+                        + "<div class='card'>"
+                        + "<div class='card-header' id='heading" + data[i][0] + "'>"
+                        + "<h2 class='mb-0'>"
+                        + "<button class='btn btn-link btn-block d-flex justify-content-between aling-items-center' onclick='MostrarEmpresasEnGrupo(\"" + data[i][0] + "\",\"ul" + data[i][0] + "\",\"collapse" + data[i][0] + "\")' type='button'>"
+                        + "" + data[i][1] + ""
+                        + "</button>"
+                        + "</h2>"
+                        + "</div>"
+                        + "<div id='collapse" + data[i][0] + "' class='collapse' aria-labelledby='heading" + data[i][0] + "' data-parent='#accordeonGruposEmpresas'>"
+                        + "<ul id='ul" + data[i][0] + "' class='list-group list-group-flush'>"
+                        + "</ul>"
+                        + "</div>"
+                        + "</div >";
+                }
+            }
+        });
+    }
+    //
+    //LLENA GRUPOS EMPRESAS LINE
+    MostrarEmpresasEnGrupo = (Grupo_id, ul, collapse) => {
+        $.ajax({
+            url: "../Catalogos/LoadEmpresasGrupo",
+            type: "POST",
+            data: JSON.stringify({ Grupo_id: Grupo_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                var lista = document.getElementById(ul)
+                lista.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    lista.innerHTML += "<li class='list-group-item list-group-item-secondary d-flex justify-content-between aling-items-center'>" + data[i][0] + " - " + data[i][1] + "<span class='btn badge badge-danger' title='Quitar empresa'><i class='fas fa-minus'></i></span></li>";
+                }
+                $("#" + collapse).collapse("toggle");
+            }
+        });
+    }
+    //
+    //QUITAR GRUPO DE EMPRESA
+    updateSinEmpresa = (notempresa) => {
+        $.ajax({
+            url: "../Empresas/UpdateGrupo",
+            type: "POST",
+            data: JSON.stringify({
+                cero: notempresa
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                
+            }
+        });
+    }
+    //
+    //AGREGAR GRUPOS DE EMPRESAS
+    SaveNewGrupo = () => {
+        var inNewNombreGrupo = document.getElementById("inNewNombreGrupo");
+        $.ajax({
+            url: "../Empresas/SaveGrupo",
+            type: "POST",
+            data: JSON.stringify({
+                NombreGrupo: inNewNombreGrupo.value
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+                if (data[0] == 0) {
+                    Swal.fire({
+                        timer: 1500,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        title: 'Error!',
+                        icon: 'error',
+                        text: data[1],
+                        width: 400,
+                        height: 200
+                    });
+                } else if (data[0] == 1) {
+                    Swal.fire({
+                        timer: 1500,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        title: 'Correcto!',
+                        icon: 'success',
+                        text: data[1],
+                        width: 400,
+                        iconHeight: 200
+                    });
+                }
+            }
+        });
+    }
     /////////////////////////////////////////////////////
     ///////////////        BANCOS         ///////////////
     /////////////////////////////////////////////////////
@@ -1193,7 +1247,6 @@
                     //if ( data[i]["iId"] == 285 || data[i]["iId"] == 286 ) {
                     select.innerHTML += "<option value='" + data[i]["iId"] + "'>" + data[i]["sValor"] + "</option>";
                     //}
-
                 }
                 $("#newempresa").val(Empresa_id);
                 $("#modal-nuevo-bancoempresa").modal("show");
