@@ -889,44 +889,44 @@
 
     const rfc = document.getElementById('rfc');
 
-    curp.addEventListener('change', () => {
-        validarInput(curp);
-    });
+    //curp.addEventListener('change', () => {
+    //    validarInput(curp);
+    //});
 
-    curp.addEventListener('keyup', () => {
-        if (rfc.value.length > 10) {
-            if (curp.value.length > 10) {
-                let formatrfc = String(rfc.value).substring(0, 10);
-                let formatcurp = String(curp.value).substring(0, 10);
-                if (formatrfc == formatcurp) {
-                    curp.classList.remove('is-invalid');
-                    //rfc.classList.remove('is-invalid');
-                    btnSaveDataImss.disabled = false;
-                } else {
-                    curp.classList.add('is-invalid');
-                    //rfc.classList.add('is-invalid');
-                    btnSaveDataImss.disabled = true;
-                }
-            }
-        }
-    });
+    //curp.addEventListener('keyup', () => {
+    //    if (rfc.value.length > 10) {
+    //        if (curp.value.length > 10) {
+    //            let formatrfc = String(rfc.value).substring(0, 10);
+    //            let formatcurp = String(curp.value).substring(0, 10);
+    //            if (formatrfc == formatcurp) {
+    //                curp.classList.remove('is-invalid');
+    //                //rfc.classList.remove('is-invalid');
+    //                btnSaveDataImss.disabled = false;
+    //            } else {
+    //                curp.classList.add('is-invalid');
+    //                //rfc.classList.add('is-invalid');
+    //                btnSaveDataImss.disabled = true;
+    //            }
+    //        }
+    //    }
+    //});
 
-    rfc.addEventListener('keyup', () => {
-        if (curp.value.length > 10) {
-            if (rfc.value.length > 10) {
-                let formatrfc = String(rfc.value).substring(0, 10);
-                let formatcurp = String(curp.value).substring(0, 10);
-                if (formatrfc == formatcurp) {
-                    //curp.classList.remove('is-invalid');
-                    rfc.classList.remove('is-invalid');
-                    btnSaveDataImss.disabled = false;
-                } else {
-                    //curp.classList.add('is-invalid');
-                    rfc.classList.add('is-invalid');
-                    btnSaveDataImss.disabled = true;
-                }
-            }
-        }
-    });
+    //rfc.addEventListener('keyup', () => {
+    //    if (curp.value.length > 10) {
+    //        if (rfc.value.length > 10) {
+    //            let formatrfc = String(rfc.value).substring(0, 10);
+    //            let formatcurp = String(curp.value).substring(0, 10);
+    //            if (formatrfc == formatcurp) {
+    //                //curp.classList.remove('is-invalid');
+    //                rfc.classList.remove('is-invalid');
+    //                btnSaveDataImss.disabled = false;
+    //            } else {
+    //                //curp.classList.add('is-invalid');
+    //                rfc.classList.add('is-invalid');
+    //                btnSaveDataImss.disabled = true;
+    //            }
+    //        }
+    //    }
+    //});
 
 });

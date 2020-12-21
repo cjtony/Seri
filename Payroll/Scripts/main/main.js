@@ -206,8 +206,34 @@
         }
     }
 
+    fasignsdates = () => {
+        if (localStorage.getItem('modeedit') == null) {
+            const date = new Date();
+            const frmonth = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            const frday = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+            const fechact = date.getFullYear() + '-' + frmonth + '-' + frday;
+            setTimeout(() => {
+                fecefe.disabled = false;
+                fecefe.value = fechact;
+                fecefecnom.disabled = false;
+                fecefecnom.value = fechact;
+                fechefectpos.disabled = false;
+                fechefectpos.value = fechact;
+                fechinipos.disabled = false;
+                fechinipos.value = fechact;
+            }, 1000);
+        }
+        console.log('Fechas asignadas');
+    };
+
     //Funcion que carga los motivos de movimiento
     fLoadMotivesMovements = (paramstreid) => {
+        if (paramstreid.id == "motmovisal") {
+            paramstreid.innerHTML = '<option value="0">Selecciona</option>';
+        } else {
+            paramstreid.innerHTML = '<option value="">Selecciona</option>';
+        }
+        paramstreid.innerHTML = ``;
         try {
             if (paramstreid != "") {
                 $.ajax({
@@ -472,24 +498,7 @@
 
     floaddatatabs();
 
-    fasignsdates = () => {
-        if (localStorage.getItem('modeedit') == null) {
-            const date    = new Date();
-            const frmonth = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-            const frday   = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
-            const fechact = date.getFullYear() + '-' + frmonth + '-' + frday;
-            setTimeout(() => {
-                fecefe.disabled       = false;
-                fecefe.value          = fechact;
-                fecefecnom.disabled   = false;
-                fecefecnom.value      = fechact;
-                fechefectpos.disabled = false;
-                fechefectpos.value    = fechact;
-                fechinipos.disabled   = false;
-                fechinipos.value      = fechact;
-            }, 1000);
-        }
-    };
+    
 
     fasignsdates();
 
@@ -541,10 +550,10 @@
                     fclearfieldsvar4();
                     document.getElementById('icouser').classList.add('d-none');
                     document.getElementById('nameuser').textContent = '';
-                    colony.innerHTML = "<option value='0'>Selecciona</option>";
-                    codpost.disabled = true;
-                    colony.disabled = true;
-                    street.disabled = true;
+                    colony.innerHTML  = "<option value='0'>Selecciona</option>";
+                    codpost.disabled  = true;
+                    colony.disabled   = true;
+                    street.disabled   = true;
                     numberst.disabled = true;
                     banuse.disabled = true;
                     cunuse.disabled = true;
@@ -565,6 +574,8 @@
                                 title: "Correcto", showConfirmButton: false, timer: 1500, icon: "success",
                                 allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false
                             });
+                            fasignsdates();
+                            transporte.value = 0;
                         }
                     });
                 } else {
@@ -838,13 +849,13 @@
         return flagReturn;
     }
 
-    setTimeout(() => {
-        name.addEventListener('change',  () => { validarInputMain(curp) });
-        apep.addEventListener('change',  () => { validarInputMain(curp) });
-        apem.addEventListener('change',  () => { validarInputMain(curp) });
-        sex.addEventListener('change',   () => { validarInputMain(curp) });
-        fnaci.addEventListener('change', () => { validarInputMain(curp) });
-    }, 2000);
+    //setTimeout(() => {
+    //    name.addEventListener('change',  () => { validarInputMain(curp) });
+    //    apep.addEventListener('change',  () => { validarInputMain(curp) });
+    //    apem.addEventListener('change',  () => { validarInputMain(curp) });
+    //    sex.addEventListener('change',   () => { validarInputMain(curp) });
+    //    fnaci.addEventListener('change', () => { validarInputMain(curp) });
+    //}, 2000);
 
     btnSaveDataImss.addEventListener('click', () => {
         const arrInput = [imss, rfc, curp, nivest, nivsoc];
@@ -865,7 +876,9 @@
                 }
             }
         }
-        let flagResultValidCurp = validarInputMain(curp);
+        //let flagResultValidCurp = validarInputMain(curp);
+        let flagResultValidCurp = true;
+
         if (flagResultValidCurp == false) {
             fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
@@ -976,7 +989,9 @@
                 }
             }
         }
-        let flagResultValidCurp = validarInputMain(curp);
+        //let flagResultValidCurp = validarInputMain(curp);
+        let flagResultValidCurp = true;
+
         if (flagResultValidCurp == false) {
             fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
@@ -1066,7 +1081,7 @@
                 }
             }
         }
-        let flagResultValidCurp = validarInputMain(curp);
+        let flagResultValidCurp = true;
         if (flagResultValidCurp == false) {
             fshowtypealert('Atención', 'Curp invalida, compruebe', 'warning', curp, 0);
             validate = 1;
