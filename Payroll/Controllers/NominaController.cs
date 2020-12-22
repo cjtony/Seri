@@ -73,7 +73,8 @@ namespace Payroll.Controllers
         {
             List<EmpresasBean> LE = new List<EmpresasBean>();
             FuncionesNomina Dao = new FuncionesNomina();
-            LE = Dao.sp_CEmpresas_Retrieve_Empresas();
+            int Perfil_id = int.Parse(Session["Profile"].ToString());
+            LE = Dao.sp_CEmpresas_Retrieve_Empresas(Perfil_id);
             if (LE.Count > 0)
             {
                 for (int i = 0; i < LE.Count; i++)
