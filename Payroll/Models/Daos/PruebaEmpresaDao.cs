@@ -8,7 +8,7 @@ namespace Payroll.Models.Daos
 {
     public class PruebaEmpresaDao : Conexion
     {
-        public List<PruebaEmpresaBean> sp_Retrieve_PruevaEmpresas()
+        public List<PruebaEmpresaBean> sp_Retrieve_PruevaEmpresas(int Perfil_id)
         {
             List<PruebaEmpresaBean> list = new List<PruebaEmpresaBean>();
             this.Conectar();
@@ -16,7 +16,7 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
-
+            cmd.Parameters.Add(new SqlParameter("@ctrlPerfil_id", Perfil_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 
@@ -41,7 +41,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<PruebaEmpresaBean> sp_Retrieve_NombreEmpresas()
+        public List<PruebaEmpresaBean> sp_Retrieve_NombreEmpresas(int Perfil_id)
         {
             List<PruebaEmpresaBean> list = new List<PruebaEmpresaBean>();
             this.Conectar();
@@ -49,8 +49,11 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
+            cmd.Parameters.Add(new SqlParameter("@ctrlPerfil_id", Perfil_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
+
+
 
             if (data.HasRows)
             {
@@ -70,8 +73,11 @@ namespace Payroll.Models.Daos
             data.Close();
             this.conexion.Close(); this.Conectar().Close();
 
+
+
             return list;
         }
+
         public int sp_Retrieve_ClaveEmpresa()
         {
             this.Conectar();
