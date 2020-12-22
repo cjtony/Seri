@@ -72,8 +72,7 @@ namespace Payroll.Controllers
         {
             int Perfil_id = int.Parse(Session["Profile"].ToString());
             List<PruebaEmpresaBean> empresas;
-            PruebaEmpresaDao Dao = new PruebaEmpresaDao(); 
-            int Perfil_id = int.Parse(Session["Profile"].ToString()); 
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             empresas = Dao.sp_Retrieve_NombreEmpresas(Perfil_id);
             string btnsEmpresas = "<div class='row'>";
             foreach (var item in empresas)
