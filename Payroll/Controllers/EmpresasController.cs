@@ -14,8 +14,8 @@ namespace Payroll.Controllers
         {
             List<PruebaEmpresaBean> empresas;
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            empresas = Dao.sp_Retrieve_PruevaEmpresas();
-
+            int Perfil_id = int.Parse(Session["Profile"].ToString());
+            empresas = Dao.sp_Retrieve_PruevaEmpresas(Perfil_id);
             return Json(empresas);
         }
         [HttpPost]

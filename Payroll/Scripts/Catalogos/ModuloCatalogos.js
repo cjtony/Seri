@@ -169,7 +169,7 @@
                             "<td colspan='3' >" +
                             "<div class='col-md-12 row'>" +
                             "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]["Effdt"] + "</label><div class='col-md-5'><div class='badge badge-secondary btn' onclick='LoadDetallePoliticas(\"collapsetab-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-primary ml-2' onclick='editarPoliticas(" + data[i]["Empresa_id"] + ",\"" + data[i]["Effdt"] + "\");'>Editar <i class='fas fa-edit'></i></div></div>" +
-                            "<div id='collapsetab-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
+                            "<div id='collapsetab-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + data[i]['Empresa_id'] + " col-md-12'>" +
                             "</div>" +
                             "</div>" +
                             "</td >" +
@@ -182,7 +182,7 @@
                                 "<td colspan='3' >" +
                                 "<div class='col-md-12 row'>" +
                                 "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'> " + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]["Effdt"] + "</label><div class='col-md-5'><div class='badge badge-secondary btn' onclick='LoadDetallePoliticas(\"collapsetab-" + data[i]["NombreEmpresa"] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='btn badge badge-primary ml-2' onclick='editarPoliticas(" + data[i]["Empresa_id"] + ",\"" + data[i]["Effdt"] + "\");'>Editar <i class='fas fa-edit'></i></div></div>" +
-                                "<div id='collapsetab-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + " col-md-12'>" +
+                                "<div id='collapsetab-" + data[i]["NombreEmpresa"] + "' class='collapse collapse-" + data[i]['NombreEmpresa'] + data[i]['Empresa_id'] + " col-md-12'>" +
                                 "</div>" +
                                 "</div>" +
                                 "</td >" +
