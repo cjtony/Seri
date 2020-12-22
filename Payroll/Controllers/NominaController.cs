@@ -1062,6 +1062,16 @@ namespace Payroll.Controllers
             return Json(bean);
         }
 
+        //  verifica si hay una ejecucion en procesos 
+        [HttpPost]
+        public JsonResult ProcesEjecuEsta()
+        {
+            List<TPProcesos> LPro = new List<TPProcesos>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LPro = Dao.sp_ProcesEje_Retrieve_TpProcesosJobs();
+            return Json(LPro);
+        }
+
 
     }
 }
