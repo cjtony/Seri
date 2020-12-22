@@ -70,11 +70,11 @@ namespace Payroll.Controllers
         // llena  listado de empresas
         [HttpPost]
         public JsonResult LisEmpresas()
-        {
+        { 
             List<EmpresasBean> LE = new List<EmpresasBean>();
-            FuncionesNomina Dao = new FuncionesNomina();
+            FuncionesNomina Dao = new FuncionesNomina(); 
             int Perfil_id = int.Parse(Session["Profile"].ToString());
-            LE = Dao.sp_CEmpresas_Retrieve_Empresas(Perfil_id);
+            LE = Dao.sp_CEmpresas_Retrieve_Empresas(Perfil_id); 
             if (LE.Count > 0)
             {
                 for (int i = 0; i < LE.Count; i++)
@@ -1060,6 +1060,16 @@ namespace Payroll.Controllers
             int usuario = int.Parse(Session["iIdUsuario"].ToString());
             bean = dao.Sp_CCompensacion_update_CCompensacion(iIDComp, iIdempresa, iPyA, iIdpuesto, iIdRenglon, iImporte, sDescripcion, usuario, iCancel);
             return Json(bean);
+        }
+
+        //  verifica si hay una ejecucion en procesos 
+        [HttpPost]
+        public JsonResult ProcesEjecuEsta()
+        {
+            List<TPProcesos> LPro = new List<TPProcesos>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LPro = Dao.sp_ProcesEje_Retrieve_TpProcesosJobs();
+            return Json(LPro);
         }
 
 
