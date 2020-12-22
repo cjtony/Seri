@@ -13,9 +13,10 @@ namespace Payroll.Controllers
         public JsonResult LoadSEmp()
         {
             List<PruebaEmpresaBean> empresas;
-            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            int idperfil = int.Parse(Session["Profile"].ToString());
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao(); 
             int Perfil_id = int.Parse(Session["Profile"].ToString());
-            empresas = Dao.sp_Retrieve_PruevaEmpresas(Perfil_id);
+            empresas = Dao.sp_Retrieve_PruevaEmpresas(Perfil_id);  
             return Json(empresas);
         }
         [HttpPost]
@@ -69,9 +70,10 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult LoadEmpresas()
         {
-            List<PruebaEmpresaBean> empresas;
-            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             int Perfil_id = int.Parse(Session["Profile"].ToString());
+            List<PruebaEmpresaBean> empresas;
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao(); 
+            int Perfil_id = int.Parse(Session["Profile"].ToString()); 
             empresas = Dao.sp_Retrieve_NombreEmpresas(Perfil_id);
             string btnsEmpresas = "<div class='row'>";
             foreach (var item in empresas)
