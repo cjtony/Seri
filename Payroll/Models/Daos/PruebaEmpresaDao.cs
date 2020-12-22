@@ -53,6 +53,8 @@ namespace Payroll.Models.Daos
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 
+
+
             if (data.HasRows)
             {
                 while (data.Read())
@@ -71,8 +73,11 @@ namespace Payroll.Models.Daos
             data.Close();
             this.conexion.Close(); this.Conectar().Close();
 
+
+
             return list;
         }
+
         public int sp_Retrieve_ClaveEmpresa()
         {
             this.Conectar();

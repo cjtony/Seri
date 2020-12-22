@@ -113,7 +113,7 @@ namespace Payroll.Models.Daos
 
             return bean;
         }
-        public List<EmpresasBean> sp_CEmpresas_Retrieve_Empresas()
+        public List<EmpresasBean> sp_CEmpresas_Retrieve_Empresas(int idPerfil)
         {
             List<EmpresasBean> list = new List<EmpresasBean>();
             try
@@ -123,7 +123,8 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPerfil_id", idPerfil));
+               
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -1222,7 +1223,6 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", Idempresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
                 
-
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -1255,8 +1255,6 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
             }
             return list;
-
-
         }
 
         public List<EmpresasBean> sp_Empresa_Retrieve_TpCalculosLN(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo)
@@ -1576,7 +1574,6 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-
         public TPProcesos sp_CNomina_1(int p_Ano, int p_Tipo_periodo, int p_Periodo, int p_IdDefinicion_Hd,int p_Empresa_id,int Por_lista_empleado)
         {
             TPProcesos bean = new TPProcesos();
@@ -1701,7 +1698,7 @@ namespace Payroll.Models.Daos
                     list = null;
                 }
 
-                data.Close(); cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
@@ -3022,7 +3019,7 @@ namespace Payroll.Models.Daos
             return bean;
         }
 
-        public CompensacionFijaBean Sp_CCompensacion_update_CCompensacion(int CtrliId, int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto, int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario,int CtrIiCanceldo)
+        public CompensacionFijaBean Sp_CCompensacion_update_CCompensacion(int CtrliId, int CtrliIdempresa, int CtrliPyA, int CtrliIdPuesto, int CtrliIdRenglon, double CtrliImporte, string CtrlsDescrip, int CtrliIdUsuario, int CtrIiCanceldo)
         {
             CompensacionFijaBean bean = new CompensacionFijaBean();
 
@@ -3056,13 +3053,56 @@ namespace Payroll.Models.Daos
             {
                 Console.WriteLine(exc);
             }
+        
 
             return bean;
         }
 
+       // verifica si hay un proceso en ejecucion 
+        public List<TPProcesos> sp_ProcesEje_Retrieve_TpProcesosJobs()
+        {
+            List<TPProcesos> list = new List<TPProcesos>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ProcesEje_Retrieve_TpProcesosJobs", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CrltriOpc", "0"));
+                cmd.Parameters.Add(new SqlParameter("@Crltr1Opc2", "0"));
+                cmd.Parameters.Add(new SqlParameter("@Crltrs", "0"));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TPProcesos ls = new TPProcesos
+                        {
+
+                            sEstatusJobs = data["Estatus"].ToString()
+
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+                  
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+        }
 
 
     }
-
 }
 

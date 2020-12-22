@@ -622,8 +622,6 @@
                 console.log(data);
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("RegTipoperiodoDe").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
-
-
                 }
             },
             error: function (jqXHR, exception) {

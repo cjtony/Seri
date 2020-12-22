@@ -11,6 +11,7 @@
     const navVisCalculotab = document.getElementById('nav-VisCalculo-tab');
     const navNomCetab = document.getElementById('nav-NomCe-tab');
     const navVisNominatab = document.getElementById('nav-VisNomina-tab');
+    const navNomPeritab = document.getElementById('nav-NomPeri-tab');
     const btnFloEjecutar = document.getElementById('btnFloEjecutar');
     const TbAño = document.getElementById('TbAño');
     const TxbTipoPeriodo = document.getElementById('TxbTipoPeriodo');
@@ -43,8 +44,8 @@
     const EjeEmpresa = document.getElementById('EjeEmpresa');
     const Empleadoseje = document.getElementById('Empleadoseje');
     const dropEmpledos = document.getElementById('DropLitEmple');
-   // const LaEmplea = document.getElementById('LaEmpleado');
-    //const switchButtonEmp = document.getElementById('switchButtonEmple');
+  //const LaEmplea = document.getElementById('LaEmpleado');
+  //const switchButtonEmp = document.getElementById('switchButtonEmple');
     const checkedItemsLog = document.getElementById('checkedItemsLog');
     const CheckRecibo2 = document.getElementById('CheckRecibo2');
     const btnFloActualiza = document.getElementById('btnFloActualiza');
@@ -56,7 +57,7 @@
     const btnFloLimpiar = document.getElementById('btnFloLimpiar');
 
 
-    //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
+  //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
     var valorCheckRec = document.getElementById('CheckRecibo2');
     var valorCeckxempresa = document.getElementById('CheckXEmpresa');
@@ -83,6 +84,8 @@
     var empresas="";
     var seconds = 0;
     var cantidad;
+
+    btnFloEjecutar.value = 0;
 
     //// llenad el grid de Definicion 
 
@@ -153,6 +156,7 @@
   // seleccion de linea de grip y la guarda en el droplist y carga los datos de tipo de perio y llena el drop de periodo
 
     $("#TpDefinicion").on('rowselect', function (event) {
+        btnFloEjecutar.value = 0;
         seconds = 0;
         $('#jqxLoader').jqxLoader('close');
         var args = event.args;
@@ -162,13 +166,13 @@
         DefinicionCal.value = row.iIdDefinicionhd + row.sNombreDefinicion;
         var dropDownContent = '<div id="2" style="position: relative; margin-left: 3px; margin-top: 6px;">' + row['iIdDefinicionhd'] + ' ' + row['sNombreDefinicion'] + '</div>';
 
-                                           /// llena el drop de finicion con la selecion del droplist de definicion 
+            /// llena el drop de finicion con la selecion del droplist de definicion 
 
         $("#jqxdropdownbutton").jqxDropDownButton('setContent', dropDownContent);
         TbAño.value = AnioDropList;     
         const dataSend = { IdDefinicionHD: IdDropList, iperiodo: 0 };
 
-                     /// comprueba si la definicion selecionada esta guardada en tbCalculos Hd
+             /// comprueba si la definicion selecionada esta guardada en tbCalculos Hd
 
         const dataSend3 = { iIdDefinicionHd: IdDropList };
         $.ajax({
@@ -180,7 +184,7 @@
 
                     btnFloEjecutar.style.visibility = 'visible';
                     btnFloGuardar.style.visibility = 'hidden';
-                                                /// saca el tipo de periodo de la definicion
+             /// saca el tipo de periodo de la definicion
                     $.ajax({
                         url: "../Nomina/TipoPeriodo",
                         type: "POST",
@@ -215,16 +219,12 @@
                                     }
 
                                 },
-
-
                             });
                         },
                         error: function (jqXHR, exception) {
                             fcaptureaerrorsajax(jqXHR, exception);
                         }
                     });
-
-
                 }
                 if (data[0].iIdCalculosHd == 0) {
                     btnFloGuardar.style.visibility = 'visible';
@@ -244,7 +244,7 @@
 
 
                   /// llena tabla de calculo
-    FllenaCalculos = (periodo, empresa, Tperiodo) => {  
+   FllenaCalculos = (periodo, empresa, Tperiodo) => {  
         
         $('#jqxLoader').jqxLoader('close');
         btnFloEjecutar.style.visibility = 'visible';
@@ -282,10 +282,9 @@
            type: "POST",
            data: dataSend,
             success: (data) => {
-                console.log('muestr calculos si tiene');
                RosTabCountCalculo = data.length;
                var dato = data[0].sMensaje;
-                if (dato == "No hay datos") {
+               if (dato == "No hay datos") {
                     $.ajax({
                         url: "../Nomina/Statusproc",
                         type: "POST",
@@ -295,7 +294,7 @@
                             if (dato == "No hay datos") {
                                 btnFloActualiza.style.visibility = 'hidden';
                                 btnFloEjecutar.style.visibility = 'visible';
-                                fshowtypealert('Vista de Calculo', 'No contiene ningun calculo en la Definicion: ' + DefinicionCal.value + ', en el periodo: ' + PeriodoCal.value, 'warning');                         
+                                fshowtypealert('La definicion', 'No contiene ningun calculo', 'warning');                         
                                 $("#nav-VisCalculo-tab").addClass("disabled"); 
                                 $("#nav-VisNomina-tab").addClass("disabled");
                             }
@@ -317,18 +316,15 @@
                                 }
                                 if (data[0].sEstatusJobs == "Terminado") {
                                     btnFloActualiza.style.visibility = 'hidden';
-                                    fshowtypealert('Vista de Calculo', 'No contiene ningun calculo en la Definicion: ' + DefinicionCal.value + ', en el periodo: ' + PeriodoCal.value, 'warning');
                                     $("#nav-VisCalculo-tab").addClass("disabled");
                                     $("#nav-VisNomina-tab").addClass("disabled");
 
                                 }
                             }
-
                         },
                     });                     
-                }
-                if (dato == "success") {
-                    console.log('tiene datos')
+               }
+               if (dato == "success") {
                      for (var i=0; i < data.length; i++) {
                         if (data[i].iIdRenglon == 990) {
                            per = data[i].dTotal;                 
@@ -360,12 +356,17 @@
                             if (dato == "success") {
                                 if (data[0].sEstatusJobs == "Terminado") {
                                     btnFloActualiza.style.visibility = 'hidden';
-                                    $("#messageNotification").jqxNotification("open");
+                                    if (btnFloEjecutar.value > 0) {
+                                        $("#messageNotification").jqxNotification("open");
+                                        btnFloEjecutar.value = 0;
+                                    }
+                                   
                                 }
-
                                 if (data[0].sEstatusJobs == "En Cola") {
                                     btnFloActualiza.style.visibility = 'visible';
                                     $('#jqxLoader').jqxLoader('open');
+                                    btnFloEjecutar.value = 1;
+                                   
                                     btnFloEjecutar.style.visibility = 'hidden';
 
                                 }
@@ -373,11 +374,9 @@
                                     btnFloActualiza.style.visibility = 'visible';
                                     $('#jqxLoader').jqxLoader('open');
                                     btnFloEjecutar.style.visibility = 'hidden';
+                                    btnFloEjecutar.value = 1;
                                 }
-
                             }
-
-
                         },
                     });   
                         var source =
@@ -396,7 +395,6 @@
                                 // synchronize with the server - send update command   
                             }
                     };
-
                         var dataAdapter = new $.jqx.dataAdapter(source);
                         var buildFilterPanel = function (filterPanel, datafield) {
                             var textInput = $("<input style='margin:5px;'/>");
@@ -479,7 +477,6 @@
                             sortable: true,
                             ready: function () {
                             },
-
                             columns: [
                                 { text: 'IdREnglon', datafield: 'iIdRenglon', width: 100 },
                                 { text: 'Renglon', datafield: 'sNombreRenglon', width: 300 },
@@ -507,7 +504,6 @@
                                         document.getElementById("EmpresaCal").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].iIdEmpresa}  ${data[i].sNombreEmpresa} </option>`;
                                         document.getElementById("EmpresaNom").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].iIdEmpresa}  ${data[i].sNombreEmpresa} </option>`;
                                     }
-
                                     var periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
                                     if (periodo == "Selecciona") {
                                         $("#jqxInput").empty();
@@ -515,11 +511,9 @@
                                     }
                                     if (periodo != "Selecciona") {
                                         separador = " ",
-                                            limite = 2,
-                                            arreglosubcadena2 = periodo.split(separador, limite);
-
-                                        const dataSend5 = { iIdEmpresa: data[0].iIdEmpresa, TipoPeriodo: arreglosubcadena[0], periodo: arreglosubcadena2[0], Anio: TbAño.value };
-                                      
+                                        limite = 2,
+                                        arreglosubcadena2 = periodo.split(separador, limite);
+                                        const dataSend5 = { iIdEmpresa: data[0].iIdEmpresa, TipoPeriodo: arreglosubcadena[0], periodo: arreglosubcadena2[0], Anio: TbAño.value };            
                                         $.ajax({
                                             url: "../Empleados/DataListEmpleado",
                                             type: "POST",
@@ -534,7 +528,6 @@
                                                             [
                                                                 { name: 'iIdEmpleado' },
                                                                 { name: 'sNombreCompleto' }
-
                                                             ]
                                                     };
                                                     var dataAdapter = new $.jqx.dataAdapter(source);
@@ -552,9 +545,7 @@
                                                                 NombreEmpleado = item.label;
                                                             }
                                                         }
-
                                                     });
-
                                                 }
                                                 else {
                                                     $("#jqxInput").empty();
@@ -563,16 +554,14 @@
 
                                             }
                                         });
-
                                     }
                                 },
                             });
-                    }
+                        }
                         $("#nav-VisCalculo-tab").removeClass("disabled");
                         $("#nav-VisNomina-tab").removeClass("disabled");
 
-                    }
-
+               }
             },
         });   
 
@@ -698,7 +687,7 @@
     Ftabopcion1 = () => {
 
         //btnFloGuardar.style.visibility = 'visible';
-        ////btnlimpDat.style.visibility = 'visible';
+        btnFloLimpiar.style.visibility = 'visible';
         btnFloEjecutar.style.visibility = 'visible';
         btnFloBuscar.style.visibility = 'hidden';
 
@@ -708,25 +697,34 @@
         btnFloGuardar.style.visibility = 'hidden';
         btnFloEjecutar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'hidden';
+        btnFloLimpiar.style.visibility = 'hidden';
     };
     Ftabopcion3 = () => {
 
         btnFloGuardar.style.visibility = 'hidden';
         btnFloEjecutar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'hidden';
+        btnFloLimpiar.style.visibility = 'hidden';
         FDelettable();
     };
     FTanopcion4 = () => {
-        console.log('desaparese boton');
         btnFloGuardar.style.visibility = 'hidden';
         btnFloEjecutar.style.visibility = 'hidden';
+        btnFloLimpiar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'visible';
+    };
+    FTanopcion5 = () => {
+        btnFloGuardar.style.visibility = 'hidden';
+        btnFloEjecutar.style.visibility = 'hidden';
+        btnFloLimpiar.style.visibility = 'hidden';
+        btnFloBuscar.style.visibility = 'hidden';
     };
 
     navEjecuciontab.addEventListener('click', Ftabopcion1);
     navVisCalculotab.addEventListener('click', Ftabopcion2);
     navNomCetab.addEventListener('click', Ftabopcion3);
     navVisNominatab.addEventListener('click', FTanopcion4);
+    navNomPeritab.addEventListener('click', FTanopcion5);
 
                //////////////////////////////
 
@@ -876,15 +874,14 @@
         }
 
     };
-
     ChNCerrada.addEventListener('click', FValorChec);
 
                   
-                            /*  Procesos de Ejecucion */
+     /*  Procesos de Ejecucion */
 
     Fejecucion = () => {
-
-      
+        console.log('ejecuta nomian')
+        btnFloEjecutar.value = 1;
         IdDropList;
         AnioDropList;
         TipodePeridoDroplip = TxbTipoPeriodo.value;
@@ -899,58 +896,71 @@
         const dataSend = { iIdDefinicionHd: IdDropList };
         var dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
         var dataSend3 = { Idempresas: empresa, anio: AnioDropList, Tipodeperido: arreglosubcadena3[0], Periodo: arreglosubcadena2[0], IdDefinicionHD: IdDropList };
-   
-
-        if (CheckCalculoEmpresa == 0) {
-            if (IdDropList != 0) {
-                dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
-                FejecutarProceso(dataSend, dataSend2, dataSend3);
-            }
-            else {
-                fshowtypealert("Ejecucion", " Favor de seleccionar una definicion", "warning")
-            }
-        }
-        if (CheckCalculoEmpresa == 1)
-        {   
-            if (checkCalculoEmplado == 0) {
-                if (EjeEmpresa.value != 0) {
-                    dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: EjeEmpresa.value, iCalEmpleado: checkCalculoEmplado };
-                    FejecutarProceso(dataSend, dataSend2, dataSend3);
-                }
-                else {
-                    fshowtypealert("Ejecucion", " Favor de seleccionar una empresa", "warning")
-                }
-            }
-            if (checkCalculoEmplado == 1) {
-                var NumItemsEmpleado = checkedItemsIdEmpleados.length;
-                console.log(checkedItemsIdEmpleados)
-                console.log(NumItemsEmpleado)
-                if (NumItemsEmpleado != 0) {
-                    const dataSend4 = { IdEmpresa: EjeEmpresa.value, iAnio: AnioDropList, TipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], sIdEmpleados: checkedItemsIdEmpleados};
-                    console.log(dataSend4)
-                    $.ajax({
-                        url: "../Nomina/SaveEmpleados",
-                        type: "POST",
-                        data: dataSend4,
-                        success: function (data) {
-                            if (data.sMensaje == "success"){
-                             
+       
+        $.ajax({
+            url: "../Nomina/ProcesEjecuEsta",
+            type: "POST",
+            data: dataSend2,
+            success: (data) => {
+                console.log(data[0].sEstatusJobs);
+                if (data[0].sEstatusJobs == "0") {
+                    if (CheckCalculoEmpresa == 0) {
+                        if (IdDropList != 0) {
+                            dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
+                            FejecutarProceso(dataSend, dataSend2, dataSend3);
+                        }
+                        else {
+                            fshowtypealert("Ejecucion", " Favor de seleccionar una definicion", "warning")
+                        }
+                    }
+                    if (CheckCalculoEmpresa == 1) {
+                        if (checkCalculoEmplado == 0) {
+                            if (EjeEmpresa.value != 0) {
+                                dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: EjeEmpresa.value, iCalEmpleado: checkCalculoEmplado };
                                 FejecutarProceso(dataSend, dataSend2, dataSend3);
                             }
-                            if (data.sMensaje == "error") {
-                                fshowtypealert("Ejecucion", " Contacte a sistemas", "warning")
-
+                            else {
+                                fshowtypealert("Ejecucion", " Favor de seleccionar una empresa", "warning")
                             }
                         }
-                    });
+                        if (checkCalculoEmplado == 1) {
+                            var NumItemsEmpleado = checkedItemsIdEmpleados.length;
+                            console.log(checkedItemsIdEmpleados)
+                            console.log(NumItemsEmpleado)
+                            if (NumItemsEmpleado != 0) {
+                                const dataSend4 = { IdEmpresa: EjeEmpresa.value, iAnio: AnioDropList, TipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], sIdEmpleados: checkedItemsIdEmpleados };
+                                console.log(dataSend4)
+                                $.ajax({
+                                    url: "../Nomina/SaveEmpleados",
+                                    type: "POST",
+                                    data: dataSend4,
+                                    success: function (data) {
+                                        if (data.sMensaje == "success") {
+
+                                            FejecutarProceso(dataSend, dataSend2, dataSend3);
+                                        }
+                                        if (data.sMensaje == "error") {
+                                            fshowtypealert("Ejecucion", " Contacte a sistemas", "warning")
+
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                fshowtypealert("Ejecucion", " Favor de seleccionar por lo menos un empleado", "warning")
+                            }
+                        }
+                    }
+                    
                 }
-                else {
-                    fshowtypealert("Ejecucion", " Favor de seleccionar por lo menos un empleado", "warning")
-                } 
-            }
-        }
+           
+                if (data[0].sEstatusJobs == "1") {
 
+                    fshowtypealert("Calculo de Nomina", "se está realizando los calculo de una definicion de nómina espera 10 min y vuelva intentarlo", "warning")
 
+                }
+            },
+        });
     };
     btnFloEjecutar.addEventListener('click', Fejecucion);
 
@@ -1155,7 +1165,6 @@
             }
         });
 
-
     });
 
     FLimpiaCamp = () => {
@@ -1172,7 +1181,6 @@
         }
           
      };
-
 
     btnFloLimpiar.addEventListener('click', FLimpiaCamp);
 
@@ -1356,8 +1364,6 @@
                 }
             }
         }); 
-
-
     };
 
     BntBusRecibo.addEventListener('click', FBusNom)
@@ -1366,23 +1372,17 @@
     FRecibo2 = () => {
         if (valorCheckRec.checked == true) {
             const dataSend2 = { iIdEmpresa: EmpresaNom.value, iIdEmpleado: NoEmpleado, ianio: AnioDropList, iTipodePerido: arreglosubcadena3[0], iPeriodo: arreglosubcadena[0], iespejo: 1 };
-            FGridCalculos(dataSend2);
-           
+            FGridCalculos(dataSend2);  
         }
-
         if (valorCheckRec.checked == false) {
             const dataSend2 = { iIdEmpresa: EmpresaNom.value, iIdEmpleado: NoEmpleado, ianio: AnioDropList, iTipodePerido: arreglosubcadena3[0], iPeriodo: arreglosubcadena[0], iespejo: 0 };
-            FGridCalculos(dataSend2);
-           
+            FGridCalculos(dataSend2);        
         }
 
     };
 
     CheckRecibo2.addEventListener('click',FRecibo2)
 
-
-    //           /* muestra los calculos en pantalla */
-    //$("#jqxExpander").jqxExpander({ width: '105%', expanded: false });
 
                /* Borra tabla de Nom */
 
@@ -1404,12 +1404,12 @@
 
 
 
-                    /* Tab Nom Cerradas */
+                             /* Tab Nom Cerradas */
 
 
     /* Funcion muestra Grid Con los datos de TPDefinicion en del droplist definicion */
 
-         FLlenaGrid2 = () => {
+       FLlenaGrid2 = () => {
 
         for (var i = 0; i <= RowsGrid; i++) {
 
@@ -1464,7 +1464,7 @@
             },
         });
     };
-         FLlenaGrid2();
+       FLlenaGrid2();
       $("#jqxdropdownbutton2").jqxDropDownButton({
         width: 600, height: 30
     });
@@ -1938,6 +1938,7 @@
                      /* Notificaciones*/
 
     $("#messageNotification").jqxNotification({
+        
         theme: 'bootstrap',
         width: 250, position: "top-right", opacity: 0.9,
         autoOpen: false, animationOpenDelay: 800, autoClose: true, autoCloseDelay: 3000, template: "info"
@@ -1956,60 +1957,8 @@
     var notificationWidth = 300;
     $("#timerNotification").jqxNotification({ width: notificationWidth, position: "top-right", autoOpen: false, closeOnClick: false, autoClose: true, template: "seconds"});
 
+
     
-  
-    //var interval = setInterval(function () {
-    //    console.log(seconds);
-    //    if (seconds > 1) {
-    //        seconds--;
-    //        console.log(seconds);
-
-    //    }
-    //    if (seconds == 1) {
-            
-    //       
-            
-    //        seconds--;
-
-    //    }
- 
-
-    //}, 1000);
-
-    //$("#switchButton").jqxSwitchButton({ width: 60, height: 25 });
-   // $("#switchButtonEmple").jqxSwitchButton({ width: 60, height: 25 });
-
-    //$('#switchButton').on('change', function (event) {
-    //    var checked = $('#switchButton').jqxSwitchButton('checked');
-
-    //    if (checked == true)
-    //    {
-    //        CheckCalculoEmpresa = 1;
-    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
-    //        LaEmplea.style.visibility = 'visible';
-    //        $("#switchButtonEmple").toggle();
-    //        NombEmpre.style.visibility = 'visible';
-    //        EjeEmpresa.style.visibility = 'visible';
-
-    //        EmpleadoDEmp(EjeEmpresa.value);
-    //        Empleadoseje.style.visibility = 'hidden';
-    //        dropEmpledos.style.visibility = 'hidden';
-    //    }
-    //    if (checked == false) {
-    //        CheckCalculoEmpresa = 0;
-    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
-    //        LaEmplea.style.visibility = 'hidden';
-    //        $("#switchButtonEmple").toggle();
-    //        switchButtonEmp.style.visibility = 'hidden';
-    //        NombEmpre.style.visibility = 'hidden';
-    //        EjeEmpresa.style.visibility = 'hidden';
-    //        EmpleadoDEmp(EjeEmpresa.value);
-    //        Empleadoseje.style.visibility = 'hidden';
-    //        dropEmpledos.style.visibility = 'hidden';
-
-
-    //    }
-    //});
 
     /// Selecciona calculo por empresa
 
@@ -2073,23 +2022,7 @@
     CheckXempleado.addEventListener('click',Fcheckxempleado)
 
 
-    //$('#switchButtonEmple').on('change', function (event) {
-    //    var checked2 = $('#switchButtonEmple').jqxSwitchButton('checked');
-
-    //    if (checked2 == true) {
-    //        checkCalculoEmplado = 1;
-    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
-    //        Empleadoseje.style.visibility = 'visible';
-    //        dropEmpledos.style.visibility = 'visible';
-    //    }
-    //    if (checked2 == false) {
-    //        checkCalculoEmplado = 0;
-    //        $("#DropLitEmple").jqxDropDownList('uncheckAll');
-    //        Empleadoseje.style.visibility = 'hidden';
-    //        dropEmpledos.style.visibility = 'hidden';
-
-    //    }
-    //});
+    
     $("#DropLitEmple").on('checkChange', function (event) {
         if (event.args) {
             var item = event.args.item;
@@ -2241,6 +2174,9 @@
     };
 
     btnOpenPeriodo.addEventListener('click', FAbrirNomina);
+
+
+
  
 });
 
