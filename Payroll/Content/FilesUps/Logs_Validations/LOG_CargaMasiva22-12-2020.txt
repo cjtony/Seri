@@ -1,0 +1,4 @@
+﻿* -- Datos insertados -- *
+[*] Fila = 2, [*] Empresa = 158, [*] Nombre = ANGELICA AMAIRANI FLORES CAMACHO
+[*] Fila = 3, [*] Empresa = 158, [*] Nombre = JUAN DE LOS SANTOS REYES
+

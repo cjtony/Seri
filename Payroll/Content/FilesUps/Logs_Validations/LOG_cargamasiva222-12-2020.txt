@@ -1,0 +1,131 @@
+﻿* -- Datos insertados -- *
+[*] Fila = 3, [*] Empresa = 158, [*] Nombre = MARGARITO RODRIGUEZ LOPEZ
+[*] Fila = 4, [*] Empresa = 158, [*] Nombre = ARTURO ESPINOZA VICTORIO
+[*] Fila = 7, [*] Empresa = 158, [*] Nombre = VALENTIN SALVADOR PULIDO RODRIGUEZ
+[*] Fila = 8, [*] Empresa = 158, [*] Nombre = JOSE RAFAEL CAMPOS VALENCIA
+[*] Fila = 9, [*] Empresa = 158, [*] Nombre = RAMIRO CARBAJAL CAMPOS
+[*] Fila = 10, [*] Empresa = 158, [*] Nombre = JUAN MORALES LOPEZ
+[*] Fila = 11, [*] Empresa = 158, [*] Nombre = ABEL GUADALUPE LOPEZ CARREON
+[*] Fila = 12, [*] Empresa = 158, [*] Nombre = JESUS GILBERTO MORALES MENENDEZ
+[*] Fila = 13, [*] Empresa = 158, [*] Nombre = RAUL SEQUERA ORTIZ
+[*] Fila = 15, [*] Empresa = 158, [*] Nombre = RAQUEL LIBREROS CORTES
+[*] Fila = 17, [*] Empresa = 158, [*] Nombre = JOSE BONILLA MORA
+[*] Fila = 19, [*] Empresa = 158, [*] Nombre = SIMEON HERNANDEZ BELLO
+[*] Fila = 21, [*] Empresa = 158, [*] Nombre = ANA GABRIELA DE JESUS HERNANDEZ ROSAS
+[*] Fila = 26, [*] Empresa = 158, [*] Nombre = ANTONIO VAZQUEZ VAZQUEZ
+[*] Fila = 28, [*] Empresa = 158, [*] Nombre = FERNANDO VENANCIO CISNEROS
+[*] Fila = 32, [*] Empresa = 158, [*] Nombre = FRANCISCO ORTIZ FLORES
+[*] Fila = 34, [*] Empresa = 158, [*] Nombre = GABRIEL HERNANDEZ CASTILLO
+[*] Fila = 35, [*] Empresa = 158, [*] Nombre = SIMON CHAVEZ CONTRERAS
+[*] Fila = 36, [*] Empresa = 158, [*] Nombre = KAREN MICHEL HUERTA
+[*] Fila = 37, [*] Empresa = 158, [*] Nombre = JUAN YEUDIEL GARCIA MARTINEZ
+[*] Fila = 38, [*] Empresa = 158, [*] Nombre = GONZALO RODRIGUEZ PEREZ
+[*] Fila = 40, [*] Empresa = 158, [*] Nombre = JOSE HECTOR EMMANUEL GOMEZ LOPEZ
+[*] Fila = 45, [*] Empresa = 158, [*] Nombre = FEDERICO LOPEZ CARREON
+[*] Fila = 47, [*] Empresa = 158, [*] Nombre = JUAN CARLOS QUINTERO LOPEZ
+[*] Fila = 48, [*] Empresa = 158, [*] Nombre = JUAN DIEGO MATIAS NAVARRO
+[*] Fila = 52, [*] Empresa = 158, [*] Nombre = ARTURO DE JESUS PEREZ MATIAS
+[*] Fila = 53, [*] Empresa = 158, [*] Nombre = GILBERTO ARREGUIN GUZMAN
+[*] Fila = 54, [*] Empresa = 158, [*] Nombre = JOSE DAVID RAMIREZ CORDOVA
+[*] Fila = 59, [*] Empresa = 158, [*] Nombre = ISAAC LUNA DIAZ
+[*] Fila = 60, [*] Empresa = 158, [*] Nombre = MARIO ALBERTO VALLON CAMARERO
+[*] Fila = 61, [*] Empresa = 158, [*] Nombre = FRANCISCO GALINDO XALCUACO
+[*] Fila = 62, [*] Empresa = 158, [*] Nombre = EDUARDO RIOS CARDENAS
+[*] Fila = 69, [*] Empresa = 158, [*] Nombre = JOEL VICENTE ENCINAS CARDENAS
+[*] Fila = 70, [*] Empresa = 158, [*] Nombre = LUIS FERNANDO RODRIGUEZ VILLA
+[*] Fila = 74, [*] Empresa = 158, [*] Nombre = LUIS EVELIO COLIN RECILLAS
+[*] Fila = 76, [*] Empresa = 158, [*] Nombre = RAFAEL AMAYA LOPEZ
+[*] Fila = 82, [*] Empresa = 158, [*] Nombre = EDGAR ALEJANDRO VALERIANO VILLEGAS
+[*] Fila = 88, [*] Empresa = 158, [*] Nombre = EDUARDO SALVADOR PEREZ HERNANDEZ
+[*] Fila = 89, [*] Empresa = 158, [*] Nombre = JUAN ANTONIO DOMINGUEZ GONZALEZ
+[*] Fila = 93, [*] Empresa = 158, [*] Nombre = DANIELA ARELLANO ORDUÑA
+[*] Fila = 95, [*] Empresa = 158, [*] Nombre = JOSE GUADALUPE AGUILAR LISAOLA
+[*] Fila = 105, [*] Empresa = 158, [*] Nombre = JUAN FRANCISCO ACEVES LARIOS
+[*] Fila = 106, [*] Empresa = 158, [*] Nombre = VICTOR ALFONSO GONZALEZ LOPEZ
+[*] Fila = 109, [*] Empresa = 158, [*] Nombre = LEONARDO DANIEL VILLALVAZO HERNANDEZ
+[*] Fila = 121, [*] Empresa = 158, [*] Nombre = JUAN MACIAS BALTAZAR
+[*] Fila = 122, [*] Empresa = 158, [*] Nombre = BRAYAN CORTES LUGO
+
+* -- Errores de validaciones -- *
+[*] Fila = 2, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El valor de ciudad no puede ir vacío, tiene que contener un valor. 
+[*] Fila = 5, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 6, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El valor de ciudad no puede ir vacío, tiene que contener un valor. 
+[*] Fila = 14, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100092 ingresado no existe o no esta disponible. 
+[*] Fila = 16, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100093 ingresado no existe o no esta disponible. 
+[*] Fila = 18, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100094 ingresado no existe o no esta disponible. 
+[*] Fila = 20, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100094 ingresado no existe o no esta disponible. 
+[*] Fila = 22, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100094 ingresado no existe o no esta disponible. 
+[*] Fila = 23, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100094 ingresado no existe o no esta disponible. 
+[*] Fila = 24, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100094 ingresado no existe o no esta disponible. 
+[*] Fila = 25, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100094 ingresado no existe o no esta disponible. 
+[*] Fila = 27, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100095 ingresado no existe o no esta disponible. 
+[*] Fila = 29, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100078 ingresado no existe o no esta disponible. 
+[*] Fila = 30, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100078 ingresado no existe o no esta disponible. 
+[*] Fila = 31, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100078 ingresado no existe o no esta disponible. 
+[*] Fila = 33, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 39, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 41, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 42, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 43, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 44, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 46, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100078 ingresado no existe o no esta disponible. 
+[*] Fila = 49, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100078 ingresado no existe o no esta disponible. 
+[*] Fila = 50, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100078 ingresado no existe o no esta disponible. 
+[*] Fila = 51, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 55, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 56, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100095 ingresado no existe o no esta disponible. 
+[*] Fila = 57, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100095 ingresado no existe o no esta disponible. 
+[*] Fila = 58, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100095 ingresado no existe o no esta disponible. 
+[*] Fila = 63, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 64, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 65, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 66, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 67, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100054 ingresado no existe o no esta disponible. 
+[*] Fila = 68, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100057 ingresado no existe o no esta disponible. 
+[*] Fila = 71, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 72, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 73, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 75, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 77, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 78, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 79, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 80, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 81, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 83, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 84, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 85, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 86, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100082 ingresado no existe o no esta disponible. 
+[*] Fila = 87, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 90, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 91, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 92, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 94, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 96, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 97, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 98, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 99, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 100, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 101, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 102, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 103, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 104, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 107, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100084 ingresado no existe o no esta disponible. 
+[*] Fila = 108, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100080 ingresado no existe o no esta disponible. 
+[*] Fila = 110, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 111, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 112, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 113, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 114, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100082 ingresado no existe o no esta disponible. 
+[*] Fila = 115, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 116, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 117, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 118, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100075 ingresado no existe o no esta disponible. 
+[*] Fila = 119, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] La cuenta 1528213663  debe contener 10 caracteres ya que se indico una cuenta de cheques. [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 120, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 123, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 124, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 125, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 126, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 127, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+[*] Fila = 128, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100079 ingresado no existe o no esta disponible. 
+

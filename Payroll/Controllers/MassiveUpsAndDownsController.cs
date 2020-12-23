@@ -203,6 +203,7 @@ namespace Payroll.Controllers
                                         if ((cantReg + 1) == rowReco) {
                                             break;
                                         }
+                                        flagVE = false;
                                         rowActu += 1;
                                         // *  Validaciones TEmpleado * \\
                                         // Validamos la fecha en longitud
@@ -420,21 +421,26 @@ namespace Payroll.Controllers
                                                 flagVE = true;
                                             }
                                         }
+                                        Boolean flagContinue = true;
                                         // Validamos que la posicion no venga vacia
                                         if (dr[44].ToString().Length == 0 || dr[44].ToString() == "") {
                                             validationErMe.Append("[*] El valor de posicion id no puede ir vacío, debe contener un valor");
                                             flagVE = true;
+                                            flagContinue = false;
                                         }
                                         // Definimos el valor de la empresa
                                         int empresa = Convert.ToInt32(dr[3].ToString());
                                         int posicionid = 0;
-                                        // Validamos que la posicion exista y este disponible en la base de datos
-                                        infoPositionInsert = datosNominaDao.sp_Valida_Posicion_Carga_Masiva(empresa, Convert.ToInt32(dr[44]));
-                                        if (infoPositionInsert.iPosicion != 0 && infoPositionInsert.sMensaje == "SUCCESS") {
-                                            posicionid = infoPositionInsert.iPosicion;
-                                        } else {
-                                            validationErMe.Append("[*] El codigo de posicion " + dr[44].ToString() + " ingresado no existe o no esta disponible. ");
-                                            flagVE = true;
+                                        if (flagContinue) {
+                                            int posicionse = Convert.ToInt32(dr[44].ToString());
+                                            // Validamos que la posicion exista y este disponible en la base de datos
+                                            infoPositionInsert = datosNominaDao.sp_Valida_Posicion_Carga_Masiva(empresa, Convert.ToInt32(dr[44]));
+                                            if (infoPositionInsert.iPosicion != 0 && infoPositionInsert.sMensaje == "SUCCESS") {
+                                                posicionid = infoPositionInsert.iPosicion;
+                                            } else {
+                                                validationErMe.Append("[*] El codigo de posicion " + dr[44].ToString() + " ingresado no existe o no esta disponible. ");
+                                                flagVE = true;
+                                            }
                                         }
                                         // Validamos que el tipo de salario exista
                                         if (!listTypeSalary.Any(x => x.iId == Convert.ToInt32(dr[45]))) {
@@ -521,7 +527,10 @@ namespace Payroll.Controllers
                                         string telefof = dr[19].ToString();
                                         string telefom = dr[20].ToString();
                                         string correoe = dr[21].ToString();
-                                        string fechama = Convert.ToDateTime(dr[22].ToString()).ToString("dd/MM/yyyy");
+                                        string fechama = "";
+                                        if (dr[22].ToString() != "") {
+                                            fechama = Convert.ToDateTime(dr[22].ToString()).ToString("dd/MM/yyyy");
+                                        }
                                         string tiposan = dr[23].ToString();
                                         int usuario_id = Convert.ToInt32(Session["iIdUsuario"].ToString());
                                         // Variables, TEmpleado_imss
