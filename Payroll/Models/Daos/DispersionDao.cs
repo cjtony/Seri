@@ -755,6 +755,48 @@ namespace Payroll.Models.Daos
             return datosEmpresaBeanDispersion;
         }
 
+        public DatosEmpresaBeanDispersion sp_Datos_Empresa_Dispersion_Grupos(int keyBusiness)
+        {
+            DatosEmpresaBeanDispersion datosEmpresaBeanDispersion = new DatosEmpresaBeanDispersion();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Empresa_Dispersion_Grupos", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read())
+                {
+                    datosEmpresaBeanDispersion.sNombreEmpresa = data["NombreEmpresa"].ToString();
+                    datosEmpresaBeanDispersion.sCalle = data["Calle"].ToString();
+                    datosEmpresaBeanDispersion.sColonia = data["Colonia"].ToString();
+                    datosEmpresaBeanDispersion.sCodigoPostal = data["CodigoPostal"].ToString();
+                    datosEmpresaBeanDispersion.sCiudad = data["Ciudad"].ToString();
+                    datosEmpresaBeanDispersion.sRfc = data["RFC"].ToString();
+                    datosEmpresaBeanDispersion.iRegimen_Fiscal_id = Convert.ToInt32(data["Regimen_Fiscal_id"].ToString());
+                    datosEmpresaBeanDispersion.sDelegacion = data["Delegacion"].ToString();
+                    datosEmpresaBeanDispersion.iBanco_id = Convert.ToInt32(data["Banco_id"].ToString());
+                    datosEmpresaBeanDispersion.sDescripcion = data["Descripcion"].ToString();
+                    datosEmpresaBeanDispersion.sMensaje = "SUCCESS";
+                }
+                else
+                {
+                    datosEmpresaBeanDispersion.sMensaje = "NOTDATA";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message.ToString());
+                datosEmpresaBeanDispersion.sMensaje = exc.Message.ToString();
+            }
+            finally
+            {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosEmpresaBeanDispersion;
+        }
+
         public List<DatosDepositosBancariosBean> sp_Procesa_Cheques_Total_Nomina(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
         {
             List<DatosDepositosBancariosBean> datosDepositosBancariosBean = new List<DatosDepositosBancariosBean>();

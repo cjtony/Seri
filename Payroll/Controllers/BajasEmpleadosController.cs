@@ -1913,5 +1913,16 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, DatosFiniquito = datosFiniquito });
         }
 
+        public class ListConcepts
+        {
+            public string import { get; set; }
+            public string concept { get; set; }
+        }
+
+        public JsonResult Test(List<ListConcepts> test)
+        {
+            return Json(new { bandera = true, datos = test });
+        }
+
     }
 }   

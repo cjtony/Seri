@@ -1,13 +1,10 @@
 ﻿$(function () {
 
-    const navDownsTab    = document.getElementById('navDownsTab');
-    const navReactiveTab = document.getElementById('navReactiveTab');
-    const navDownsMassiveTab = document.getElementById('navDownsMassiveTab');
-
+    const navDownsTab         = document.getElementById('navDownsTab');
+    const navReactiveTab      = document.getElementById('navReactiveTab');
+    const navDownsMassiveTab  = document.getElementById('navDownsMassiveTab'); 
     const alertSelectEmployee = document.getElementById('alertSelectEmployee');
-
-    //Muestra en principio el modal de busqueda
-    //$("#modalLiveSearchEmpleado").modal("show");
+     
     //Funcion que hace la busqueda de empleado por nombre o numero de nomina
     $("#inputSearchEmpleados").on("keyup", function () {
         $("#inputSearchEmpleados").empty();
@@ -204,6 +201,21 @@
 
     const btnCloseSettlementSelect = document.getElementById("btnCloseSettlementSelect");
     const icoCloseSettlementSelect = document.getElementById("icoCloseSettlementSelect");
+
+    /*
+     * COMPLEMENTOS DE FINIQUITOS
+     */
+
+    const btnCloseComplementSettlement = document.getElementById('btnCloseComplementSettlement');
+    const icoCloseComplementSettlement = document.getElementById('icoCloseComplementSettlement');
+    const btnSaveComplementSettlement = document.getElementById('btnSaveComplementSettlement');
+    const nameEmployeeAddC  = document.getElementById('nameEmployeeAddC');
+    const btnAddComplement  = document.getElementById('btnAddComplement');
+    const importConcept     = document.getElementById('importConcept');
+    const conceptComplement = document.getElementById('conceptComplement');
+    const bodyComplements   = document.getElementById('bodyComplements');
+
+    btnSaveComplementSettlement.disabled = true;
 
     divContentP0.classList.add('d-none');
     divContentP1.classList.add('d-none');
@@ -441,6 +453,7 @@
                                 let cancel = "";
                                 let cancelPay = "";
                                 let btnAddComplement = "";
+                                let badgeComplement  = "";
                                 let downNotSettlement = "";
                                 let btnGenerateSettlement = "";
                                 let disabledCancelSettlement = "";
@@ -462,7 +475,9 @@
                                     cancelPay = "disabled";
                                 }
                                 if (data.DatosFiniquito[i].sTipo_Operacion == "False") {
-                                    btnAddComplement = `<button disabled class="btn btn-primary btn-sm" onclick="fAddComplementSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1, ${keyEmployee.value})"> <i class="fas fa-plus"></i> </button>`;
+                                    btnAddComplement = `<button title="Añadir complemento de finiquito" class="btn btn-primary btn-sm" onclick="fAddComplementSettlement(${data.DatosFiniquito[i].iIdFiniquito}, 1, ${keyEmployee.value}, '${data.DatosFiniquito[i].sFiniquito_valor}')"> <i class="fas fa-plus"></i> </button>`;
+                                } else {
+                                    //badgeComplement = `<span class="badge ml-2 badge-secondary"> <i class="fas fa-info mr-1"></i> Complemento </span>`;
                                 }
                                 if (data.DatosFiniquito[i].iEstatus == 1) {
                                     actionSavePay = "disabled";
@@ -474,9 +489,9 @@
                                         </button>`;
                                 } else if (data.DatosFiniquito[i].iEstatus == 2) {
                                     actionSavePay = "disabled";
-                                    enabledPay = "disabled";
-                                    checked = "checked";
-                                    checked = "checked";
+                                    enabledPay    = "disabled";
+                                    checked  = "checked";
+                                    checked  = "checked";
                                     infoPaid = `<span class="badge ml-2 badge-success"><i class="fas fa-check-circle mr-1"></i>Pagado</span>`;
                                 } else if (data.DatosFiniquito[i].iEstatus == 3) {
                                     enabledPay = "disabled";
@@ -500,7 +515,7 @@
                                                 id="radioSelect${data.DatosFiniquito[i].iIdFiniquito}" 
                                                     value="${data.DatosFiniquito[i].iIdFiniquito}">
                                             <label class="form-check-label" for="radioSelect${data.DatosFiniquito[i].iIdFiniquito}">
-                                            Elegir para pago ${infoPeriod} ${infoPaid} ${cancel} ${spanDownNotSet}
+                                            Elegir para pago ${infoPeriod} ${infoPaid} ${cancel} ${spanDownNotSet} ${badgeComplement}
                                             </label>
                                         </div>
                                         <i class="fas fa-calendar-alt mr-1 col-ico"></i>
@@ -1132,27 +1147,123 @@
         }
     }
 
-    // Funcion que agrega un complemento de finiquito
-    fAddComplementSettlement = (paramkey, paramtype, paramemploye) => {
-        try {
-            if (parseInt(paramkey) > 0 && parseInt(paramtype) > 0) {
-                const dataSend = { keySettlement: parseInt(paramkey), type: parseInt(paramtype), keyEmploye: parseInt(paramemploye) };
-                $.ajax({
-                    url: "../BajasEmpleados/AddComplementSettlement",
-                    type: "POST",
-                    data: dataSend,
-                    beforeSend: () => {
+    var objectData = [];
 
-                    }, success: (request) => {
-                        console.log(request);
-                    }, error: (jqXHR, exception) => {
-                        fcaptureaerrorsajax(jqXHR, exception);
-                    }
-                });
+    // Funcion que agrega un complemento de finiquito
+    fAddComplementSettlement = (paramkey, paramtype, paramemploye, paramname) => {
+        try {
+            localStorage.setItem("complement" + String(paramemploye), "");
+            $("#window-data-down").modal("hide");
+            setTimeout(() => {
+                $("#modalComplementSettlement").modal("show");
+                nameEmployeeAddC.textContent = paramname;
+            }, 500);
+            //if (parseInt(paramkey) > 0 && parseInt(paramtype) > 0) {
+            //    const dataSend = { keySettlement: parseInt(paramkey), type: parseInt(paramtype), keyEmploye: parseInt(paramemploye) };
+            //    $.ajax({
+            //        url: "../BajasEmpleados/AddComplementSettlement",
+            //        type: "POST",
+            //        data: dataSend,
+            //        beforeSend: () => {
+
+            //        }, success: (request) => {
+            //            console.log(request);
+            //        }, error: (jqXHR, exception) => {
+            //            fcaptureaerrorsajax(jqXHR, exception);
+            //        }
+            //    });
+            //} else {
+            //    alert('Accion invalida!');
+            //    location.reload();
+            //}
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
             } else {
-                alert('Accion invalida!');
-                location.reload();
+                console.error('Error: ', error.message);
             }
+        }
+    }
+
+    // Funcion que agrega los complementos a una tabla
+    fAddComplementTable = (type) => {
+        bodyComplements.innerHTML = "";
+        if (type == 1) {
+            if (conceptComplement.value != "") {
+                if (importConcept.value != "") {
+                    let quantityObj = 0;
+                    objectData.push({ import: importConcept.value, concept: conceptComplement.value });
+                    for (let i = 0; i < objectData.length; i++) {
+                        bodyComplements.innerHTML += `
+                        <tr>
+                            <td><span class="text-primary font-weight-bold">${i + 1}</span></td>
+                            <td>${objectData[i].concept}</td>
+                            <td>$ ${objectData[i].import}</td>
+                            <td> <button class="btn btn-danger btn-sm" type="button" id="btnDeleteConcept${i}" onclick="fDeleteConcept(${i})"> <i class="fas fa-times"></i> </button> </td>
+                        </tr>
+                    `;
+                        quantityObj += 1;
+                    }
+                    if (quantityObj > 0) {
+                        btnSaveComplementSettlement.disabled = false;
+                    } else {
+                        btnSaveComplementSettlement.disabled = true;
+                    }
+                } else {
+
+                }
+            } else {
+
+            }
+        } else {
+            let quantityObj = 0; 
+            for (let i = 0; i < objectData.length; i++) {
+                bodyComplements.innerHTML += `
+                        <tr>
+                            <td><span class="text-primary font-weight-bold">${i + 1}</span></td>
+                            <td>${objectData[i].concept}</td>
+                            <td>$ ${objectData[i].import}</td>
+                            <td> <button class="btn btn-danger btn-sm" type="button" id="btnDeleteConcept${i}" onclick="fDeleteConcept(${i})"> <i class="fas fa-times"></i> </button> </td>
+                        </tr>
+                    `;
+                quantityObj += 1;
+            }
+            if (quantityObj > 0) {
+                btnSaveComplementSettlement.disabled = false;
+            } else {
+                btnSaveComplementSettlement.disabled = true;
+            }
+        }
+    }
+
+    // Funcion que elimina un concepto a partir de su posicion
+    fDeleteConcept = (position) => {
+        objectData.splice(position, 1);
+        fAddComplementTable(2);
+    }
+
+    // Funcion que envia la informacion del complemento
+    fSaveDataComplementSettlement = () => {
+        try {
+            var dataSend = { test: objectData }; 
+            console.log(dataSend);
+            $.ajax({
+                url: "../BajasEmpleados/Test",
+                type: "POST",
+                data: dataSend,
+                beforeSend: () => {
+                    btnSaveComplementSettlement.disabled = true;
+                }, success: (request) => {
+                    btnSaveComplementSettlement.disabled = false;
+                    console.log(request);
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
         } catch (error) {
             if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
@@ -1176,6 +1287,10 @@
     downSettlement.addEventListener('change', () => { fSHowFieldsSettlement(1); });
 
     optionSettlement.addEventListener('change', fDisabledEnabledOptions);
+
+    btnAddComplement.addEventListener('click', () => { fAddComplementTable(1); });
+
+    btnSaveComplementSettlement.addEventListener('click', fSaveDataComplementSettlement);
 
     //navReactiveTab.addEventListener('click', () => { });
 

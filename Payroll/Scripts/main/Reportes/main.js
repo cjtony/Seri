@@ -256,7 +256,7 @@
                     const quantity = data.length;
                     if (quantity > 0) {
                         for (let i = 0; i < data.length; i++) {
-                            elementid.innerHTML += `<option value="${data[i].iIdEmpresa}">${data[i].sNombreEmpresa}</option>`;
+                            elementid.innerHTML += `<option value="${data[i].iIdEmpresa}">${data[i].iIdEmpresa} - ${data[i].sNombreEmpresa}</option>`;
                         }
                     }
                 }, error: (jqXHR, exception) => {

@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 ﻿* -- Datos insertados -- *
 [*] Fila = 2, [*] Empresa = 158, [*] Nombre = ANGELICA AMAIRANI FLORES CAMACHO
 [*] Fila = 3, [*] Empresa = 158, [*] Nombre = JUAN DE LOS SANTOS REYES
+=======
+﻿* -- Errores de validaciones -- *
+[*] Fila = 2, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100075 ingresado no existe o no esta disponible. 
+[*] Fila = 3, [*] Empresa = 158,  [*] Mensaje = Errores de validacion: [*] El codigo de posicion 100076 ingresado no existe o no esta disponible. 
+>>>>>>> devaguilar
 

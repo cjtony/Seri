@@ -228,6 +228,8 @@
 
     //Funcion que carga los motivos de movimiento
     fLoadMotivesMovements = (paramstreid) => {
+        //console.log('IdFallo');
+        //console.log(paramstreid);
         if (paramstreid.id == "motmovisal") {
             paramstreid.innerHTML = '<option value="0">Selecciona</option>';
         } else {
@@ -516,6 +518,44 @@
         }
     }
 
+    fGenRestore = () => {
+        localStorage.removeItem('modeedit');
+        localStorage.removeItem('dateedit');
+        localStorage.removeItem('tabSelected');
+        localStorage.removeItem('objectTabDataGen'); localStorage.removeItem('objectDataTabImss');
+        localStorage.removeItem('objectDataTabNom'); localStorage.removeItem('objectDataTabEstructure');
+        localStorage.removeItem('modedit');
+        document.getElementById('content-new-inpt-fechmovits').innerHTML = "";
+        document.getElementById('content-new-inpt-motmovi').innerHTML = "";
+        document.getElementById('content-new-inpt-movsal').innerHTML = "";
+        document.getElementById('content-new-inpt-fecsal').innerHTML = "";
+        document.getElementById('content-new-inpt-ultsdi').innerHTML = "";
+        document.getElementById('content-new-inpt-fechmovits').classList.add('d-none');
+        document.getElementById('content-new-inpt-motmovi').classList.add('d-none');
+        document.getElementById('content-new-inpt-movsal').classList.add('d-none');
+        document.getElementById('content-new-inpt-fecsal').classList.add('d-none');
+        document.getElementById('content-new-inpt-ultsdi').classList.add('d-none');
+        fchecklocalstotab();
+        fselectlocalstotab();
+        floaddatatabs();
+        fclearfieldsvar1();
+        fclearfieldsvar2();
+        fclearfieldsvar3();
+        fclearfieldsvar4();
+        document.getElementById('icouser').classList.add('d-none');
+        document.getElementById('nameuser').textContent = '';
+        colony.innerHTML = "<option value='0'>Selecciona</option>";
+        codpost.disabled = true;
+        colony.disabled = true;
+        street.disabled = true;
+        numberst.disabled = true;
+        banuse.disabled = true;
+        cunuse.disabled = true;
+        document.getElementById('infobankch').classList.add("d-none");
+        document.getElementById('infobankct').classList.add("d-none");
+        fvalidatebuttonsactionmain();
+    }
+
     fclearlocsto = (type) => {
         let timerInterval;
         if (type == 1) {
@@ -525,41 +565,7 @@
                 allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
             }).then((result) => {
                 if (result.value) {
-                    localStorage.removeItem('modeedit');
-                    localStorage.removeItem('dateedit');
-                    localStorage.removeItem('tabSelected');
-                    localStorage.removeItem('objectTabDataGen'); localStorage.removeItem('objectDataTabImss');
-                    localStorage.removeItem('objectDataTabNom'); localStorage.removeItem('objectDataTabEstructure');
-                    localStorage.removeItem('modedit');
-                    document.getElementById('content-new-inpt-fechmovits').innerHTML = "";
-                    document.getElementById('content-new-inpt-motmovi').innerHTML = "";
-                    document.getElementById('content-new-inpt-movsal').innerHTML = "";
-                    document.getElementById('content-new-inpt-fecsal').innerHTML = "";
-                    document.getElementById('content-new-inpt-ultsdi').innerHTML = "";
-                    document.getElementById('content-new-inpt-fechmovits').classList.add('d-none');
-                    document.getElementById('content-new-inpt-motmovi').classList.add('d-none');
-                    document.getElementById('content-new-inpt-movsal').classList.add('d-none');
-                    document.getElementById('content-new-inpt-fecsal').classList.add('d-none');
-                    document.getElementById('content-new-inpt-ultsdi').classList.add('d-none');
-                    fchecklocalstotab();
-                    fselectlocalstotab();
-                    floaddatatabs();
-                    fclearfieldsvar1();
-                    fclearfieldsvar2();
-                    fclearfieldsvar3();
-                    fclearfieldsvar4();
-                    document.getElementById('icouser').classList.add('d-none');
-                    document.getElementById('nameuser').textContent = '';
-                    colony.innerHTML  = "<option value='0'>Selecciona</option>";
-                    codpost.disabled  = true;
-                    colony.disabled   = true;
-                    street.disabled   = true;
-                    numberst.disabled = true;
-                    banuse.disabled = true;
-                    cunuse.disabled = true;
-                    document.getElementById('infobankch').classList.add("d-none");
-                    document.getElementById('infobankct').classList.add("d-none");
-                    fvalidatebuttonsactionmain();
+                    fGenRestore();
                     Swal.fire({
                         title: "Limpiando campos", html: "<b></b>",
                         timer: 2000, timerProgressBar: true,
@@ -582,6 +588,9 @@
                     Swal.fire({ title: "Bien", text: "Todo sigue igual", timer: 1000, showConfirmButton: false, allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false });
                 }
             });
+        } else {
+            Swal.fire({ title: "Atención!", timer: 2200, text: "Detectamos informacion capturada que supera el tiempo de almacenamiento. Los campos se limpiaran.", icon: "info", allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, showConfirmButton: false });
+            fGenRestore();
         }
         fasignsdates();
     }
@@ -603,10 +612,14 @@
         const month = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
         fechAct = date.getFullYear() + "-" + month + "-" + day;
         if (dateLocSto != null) {
+            console.log('Imprimiendo fechas');
+            console.log(dateLocSto);
+            console.log(fechAct);
             if (dateLocSto != fechAct) {
                 setTimeout(() => {
                     fclearlocsto(0);
                 }, 2000);
+                console.log('Entro');
             }
         }
     }
