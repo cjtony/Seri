@@ -636,12 +636,9 @@ namespace Payroll.Controllers
                                         string telefom = dr[20].ToString();
                                         string correoe = dr[21].ToString();
                                         string fechama = "";
-<<<<<<< HEAD
-                                        if (dr[22].ToString() != "") {
-=======
+
                                         if (dr[22].ToString() != "")
                                         {
->>>>>>> devaguilar
                                             fechama = Convert.ToDateTime(dr[22].ToString()).ToString("dd/MM/yyyy");
                                         }
                                         string tiposan = dr[23].ToString();
