@@ -34,6 +34,7 @@ namespace Payroll
             // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
             // Desarrollo
  
+ 
             GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GSERIPROD01; Initial Catalog=IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions
             {
                 

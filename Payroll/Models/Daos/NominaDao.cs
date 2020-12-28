@@ -1897,6 +1897,7 @@ namespace Payroll.Models.Daos
             try
             {
                 int CrtliIdEmpresa = 0;
+                int CrtliTipoPeriodo = 0;
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo", this.conexion)
                 {
@@ -1904,6 +1905,7 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@CrtliIdDeficionHd", CrtliIdDeficionHd));
                 cmd.Parameters.Add(new SqlParameter("@CrtliIdEmpresa", CrtliIdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@CrtliTipoPeriodo", CrtliTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CrtliPeriodo", CrtliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNomCerr", CtrliNomCerr));
                 cmd.Parameters.Add(new SqlParameter("@CrtliAnio", CrtliAnio));

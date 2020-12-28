@@ -950,8 +950,7 @@
                                 fshowtypealert("Ejecucion", " Favor de seleccionar por lo menos un empleado", "warning")
                             }
                         }
-                    }
-                    
+                    }                   
                 }
            
                 if (data[0].sEstatusJobs == "1") {
@@ -981,7 +980,6 @@
                             type: "POST",
                             data: dataSend,
                             success: (data) => {
-
                                 if (data[0].iIdCalculosHd == 1) {
                                     fshowtypealert("Ejecucion", "Los calculos de la nomina se estan realizando", "success")
                                     $.ajax({
