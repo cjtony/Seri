@@ -365,14 +365,30 @@ namespace Payroll.Controllers
             DaFolio = dao.sp_DatFolioDefNomina_Retreieve(iIdDefinicionHd);
             if (DaFolio != null) {
 
-                if (DaFolio[0].iPeriodo > 9)
-                {
-                    sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + DaFolio[0].iPeriodo + "0";
-                }
-                if (DaFolio[0].iPeriodo < 10)
-                {
-                    sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + "0" + DaFolio[0].iPeriodo + "0";
-                }
+              
+                iFolio = int.Parse(DaFolio[0].ianio.ToString()) * 100000 + int.Parse(DaFolio[0].iTipoPeriodo.ToString()) * 10000 +int.Parse( DaFolio[0].iPeriodo.ToString()) * 10;
+                //if (DaFolio[0].iPeriodo > 9 )
+                //{
+                //    if (DaFolio[0].iTipoPeriodo > 0)
+                //    {
+                //        sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + DaFolio[0].iPeriodo + "0";
+                //    }
+                //    if (DaFolio[0].iTipoPeriodo < 1)
+                //    {
+                //        sFolio = DaFolio[0].ianio.ToString() + "00" + DaFolio[0].iPeriodo + "0";
+                //    }
+
+                //}
+                //if (DaFolio[0].iPeriodo > 0 && DaFolio[0].iPeriodo < 10)
+                //{
+                //    if (DaFolio[0].iTipoPeriodo > 0){
+                //        sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + "0" + DaFolio[0].iPeriodo + "0";
+                //    }
+                //    if (DaFolio[0].iTipoPeriodo < 1) {
+                //        sFolio = DaFolio[0].ianio.ToString() + "00" + "0" + DaFolio[0].iPeriodo + "0";
+
+                //    }
+                //}
 
                 iFolio = Convert.ToInt32(sFolio);
                 bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada);
@@ -653,10 +669,23 @@ namespace Payroll.Controllers
             string Folio = "";
             if (iPeriodo > 9)
             {
-                Folio = anio.ToString() + (iTipoPeriodo * 10) + iPeriodo + "0";
+                if (iTipoPeriodo < 1)
+                {
+                    Folio = anio.ToString() + "00" + iPeriodo + "0";
+                }
+                else {
+                    Folio = anio.ToString() + (iTipoPeriodo * 10) + iPeriodo + "0";
+                }
+               
             }
             if (iPeriodo < 10) {
-                Folio = anio.ToString() + (iTipoPeriodo * 10) + "0" + iPeriodo + "0";
+                if (iTipoPeriodo < 1) {
+                    Folio = anio.ToString() + "00" + "0" + iPeriodo + "0";
+                }
+                else{
+                    Folio = anio.ToString() + (iTipoPeriodo * 10) + "0" + iPeriodo + "0";
+
+                }
             }
             string Parametro = anio + "," + iTipoPeriodo + "," + iPeriodo + "," + iIdCalculosHd + "%";
             Dta2 = dao.sp_CalculosHdFinProces_Retrieve_TPlantillaCalculosHd(Convert.ToInt32(Folio), iIdCalculosHd);
@@ -918,7 +947,7 @@ namespace Payroll.Controllers
             List<TpCalculosHd> LiExit = new List<TpCalculosHd>();
             FuncionesNomina Dao = new FuncionesNomina();
             string Correcto = "success";
-            if (Idempresas != "") {
+            if (Idempresas != "" && Idempresas != null) {
                 int idEmpresa = 0;
                 string[] valores = Idempresas.Split(',');
                 for (int i = 1; i < valores.Length - 1; i++)
