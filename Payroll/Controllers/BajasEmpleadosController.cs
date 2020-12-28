@@ -1911,17 +1911,71 @@ namespace Payroll.Controllers
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, DatosFiniquito = datosFiniquito });
+        } 
+
+        [HttpPost]
+        public JsonResult Test(List<ListConcepts> items, int keySettlement)
+        {
+            Boolean flag = false;
+            String messageError = "none"; 
+            BajasEmpleadosBean bajasEmpleadosBean  = new BajasEmpleadosBean();
+            BajasEmpleadosBean bajasEmpleadosBean1 = new BajasEmpleadosBean();
+            BajasEmpleadosDaoD bajasEmpleadosDaoD  = new BajasEmpleadosDaoD();
+            try {
+                int keyBusiness     = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                bajasEmpleadosBean  = bajasEmpleadosDaoD.sp_Max_Sequence_Number_Complement_Settlement(keySettlement, keyBusiness);
+                bajasEmpleadosBean1 = bajasEmpleadosDaoD.sp_Add_Complement_Settlement(items, keySettlement, keyBusiness, bajasEmpleadosBean.iEstatus);
+                if (bajasEmpleadosBean1.sMensaje == "success") {
+                    flag = true;
+                } 
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            }
+
+            return Json(new { Bandera = flag, Datos = items, Finiquito = keySettlement });
         }
 
-        public class ListConcepts
+        [HttpPost]
+        public JsonResult ShowComplementsSettlement(int keySettlement, int keyEmployee)
         {
-            public string import { get; set; }
-            public string concept { get; set; }
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<ComplementosFiniquitos> complementos = new List<ComplementosFiniquitos>();
+            BajasEmpleadosDaoD bajasEmpleadosDao      = new BajasEmpleadosDaoD();
+            int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+            try {
+                complementos = bajasEmpleadosDao.sp_View_Complement_Settlement(keyBusiness, keySettlement);
+                if (complementos.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = complementos, Empresa = keyBusiness });
         }
 
-        public JsonResult Test(List<ListConcepts> test)
+        [HttpPost]
+        public JsonResult ViewDetailsComplement(int keySettlement, int keyBusiness, int keySeq)
         {
-            return Json(new { bandera = true, datos = test });
+            Boolean flag = false;
+            String  messageError = "none";
+            List<ComplementosFiniquitos> complementos = new List<ComplementosFiniquitos>();
+            BajasEmpleadosDaoD bajasEmpleadosDaoD     = new BajasEmpleadosDaoD();
+            decimal totalAmount = 0;
+            try {
+                complementos = bajasEmpleadosDaoD.sp_View_Details_Complement(keySettlement, keyBusiness, keySeq);
+                if (complementos.Count > 0) {
+                    flag = true;
+                    foreach (ComplementosFiniquitos item in complementos) {
+                        totalAmount += item.dImporte;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = complementos, Total = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalAmount)) });
         }
 
     }
