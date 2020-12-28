@@ -181,6 +181,7 @@
     <Compile Include="Controllers\EditDataGeneralController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
+    <Compile Include="Controllers\GenerateFilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncidenciasController.cs" />
     <Compile Include="Controllers\KioskoController.cs" />
@@ -1173,6 +1174,7 @@
     <Folder Include="Views\DispersionSpecial\" />
     <Folder Include="Views\Dispersion\" />
     <Folder Include="Views\EditDataGeneral\" />
+    <Folder Include="Views\GenerateFiles\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\MainMenu\" />
     <Folder Include="Views\MasiveLoads\" />

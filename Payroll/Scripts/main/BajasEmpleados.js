@@ -116,63 +116,8 @@
                     document.getElementById("inTiposBaja").innerHTML += "<option value='" + tipo[i]["IdTipo_Empleado"] + "'>" + tipo[i]["Descripcion"] + "</option>";
                 }
             }
-        });
-
-        $("#modalLiveSearchEmpleado").modal("hide");
-        //$.ajax({
-        //    url: "../Empleados/SearchEmpleadoInDown",
-        //    type: "POST",
-        //    data: JSON.stringify(txtIdEmpleado),
-        //    dataType: "json",
-        //    contentType: "application/json; charset=utf-8",
-        //    success: (emp) => {
-        //        console.log('Mostrando datos de empleado');
-        //        console.log(emp);
-        //        fLoadInfoDaysYearsBefore(parseInt(emp[0].Empresa_id), emp[0].IdEmpleado);
-        //        //document.getElementById("nameuser").innerHTML = emp[0].Nombre_Empleado + " " + emp[0].Apellido_Paterno_Empleado + " " + emp[0].Apellido_Materno_Empleado;
-        //        //carga datos de header para baja
-        //        $.ajax({
-        //            url: "../Nomina/SearchEmpleadoInDown",
-        //            type: "POST",
-        //            data: JSON.stringify(),
-        //            dataType: "json",
-        //            contentType: "application/json; charset=utf-8",
-        //            success: (res) => {
-        //                console.log(res);
-        //                document.getElementById('keyEmployee').value = res[0];
-        //                document.getElementById("id_emp").innerHTML = res[0] + " - " + res[1];
-        //                document.getElementById("sueldo_emp").innerHTML = "$ " + res[2];
-        //                document.getElementById("aumento_emp").innerHTML = res[3];
-        //                document.getElementById("antiguedad_emp").innerHTML = res[4];
-        //                document.getElementById("ingreso_emp").innerHTML = res[5];
-        //                document.getElementById("nivel_emp").innerHTML = res[6];
-        //                document.getElementById("posicion_emp").innerHTML = res[7];
-        //                document.getElementById('dateAntiquityEmp').value = res[4];
-        //                dateSendDown.innerHTML += `<option value="0">Fecha de antiguedad - ${res[4]}</option>`;
-        //                dateSendDown.innerHTML += `<option value="1">Fecha de ingreso    - ${res[5]}</option>`;
-        //                document.getElementById('info-employee').classList.remove('d-none');
-        //                //document.getElementById('info-employee').classList.add('animated fadeIn delay-1s');
-        //            }
-        //        });
-        //        //carga select tipo Baja
-        //        $.ajax({
-        //            url: "../Nomina/LoadTipoBaja",
-        //            type: "POST",
-        //            data: JSON.stringify(),
-        //            dataType: "json",
-        //            contentType: "application/json; charset=utf-8",
-        //            success: (tipo) => {
-        //                console.log('Tipos de baja');
-        //                console.log(tipo);
-        //                for (var i = 0; i < tipo.length; i++) {
-        //                    document.getElementById("inTiposBaja").innerHTML += "<option value='" + tipo[i]["IdTipo_Empleado"] + "'>" + tipo[i]["Descripcion"] + "</option>";
-        //                }
-        //            }
-        //        });
-
-        //        $("#modalLiveSearchEmpleado").modal("hide");
-        //    }
-        //});
+        }); 
+        $("#modalLiveSearchEmpleado").modal("hide"); 
     }
 
     /*
@@ -214,6 +159,9 @@
     const importConcept     = document.getElementById('importConcept');
     const conceptComplement = document.getElementById('conceptComplement');
     const bodyComplements   = document.getElementById('bodyComplements');
+    const contentViewComplements  = document.getElementById('contentViewComplements');
+    const icoCloseViewComplements = document.getElementById('icoCloseViewComplements');
+    const btnCloseViewComplements = document.getElementById('btnCloseViewComplements');
 
     btnSaveComplementSettlement.disabled = true;
 
@@ -458,6 +406,7 @@
                                 let btnGenerateSettlement = "";
                                 let disabledCancelSettlement = "";
                                 let btnApplyDown = "";
+                                let btnShowComplement = `<button class="btn btn-primary btn-sm" type="button" onclick="fShowComplementsSettlement(${data.DatosFiniquito[i].iIdFiniquito}, ${data.DatosFiniquito[i].iEmpleado_id});" title="Ver complementos"> <i class="fas fa-file"></i> </button>`;
                                 let actionGeneratePDF = `onclick="fGenerateReceiptPDF(${data.DatosFiniquito[i].iIdFiniquito},${data.DatosFiniquito[i].iEmpleado_id})"`;
                                 let disabledGeneratePDF = "";
                                 const infoPeriod = `<span class="badge ml-2 badge-info"><i class="fas fa-calendar-alt mr-1"></i>
@@ -525,6 +474,7 @@
                                     </span>
                                     <span class="badge">
                                         ${btnAddComplement}
+                                        ${btnShowComplement}
                                         ${btnApplyDown}
                                         ${btnGenerateSettlement}
                                         <button class="btn btn-sm btn-primary" title="Detalle" id="btnGenerateReceipt${data.DatosFiniquito[i].iIdFiniquito}"
@@ -1152,7 +1102,7 @@
     // Funcion que agrega un complemento de finiquito
     fAddComplementSettlement = (paramkey, paramtype, paramemploye, paramname) => {
         try {
-            localStorage.setItem("complement" + String(paramemploye), "");
+            localStorage.setItem("complement", paramkey);
             $("#window-data-down").modal("hide");
             setTimeout(() => {
                 $("#modalComplementSettlement").modal("show");
@@ -1196,6 +1146,7 @@
             if (conceptComplement.value != "") {
                 if (importConcept.value != "") {
                     let quantityObj = 0;
+                    let totalAmount = 0;
                     objectData.push({ import: importConcept.value, concept: conceptComplement.value });
                     for (let i = 0; i < objectData.length; i++) {
                         bodyComplements.innerHTML += `
@@ -1207,7 +1158,9 @@
                         </tr>
                     `;
                         quantityObj += 1;
+                        totalAmount += parseFloat(objectData[i].import);
                     }
+                    bodyComplements.innerHTML += `<tr><td colspan="3" class="text-primary"><b>Total:</b></td><td class="text-primary"><b>$ ${totalAmount}</b></td></tr>`;
                     if (quantityObj > 0) {
                         btnSaveComplementSettlement.disabled = false;
                     } else {
@@ -1221,6 +1174,7 @@
             }
         } else {
             let quantityObj = 0; 
+            let totalAmount = 0;
             for (let i = 0; i < objectData.length; i++) {
                 bodyComplements.innerHTML += `
                         <tr>
@@ -1231,7 +1185,9 @@
                         </tr>
                     `;
                 quantityObj += 1;
+                totalAmount += parseFloat(objectData[i].import); 
             }
+            bodyComplements.innerHTML += `<tr><td colspan="3" class="text-primary"><b>Total:</b></td><td class="text-primary"><b>$ ${totalAmount}</b></td></tr>`;
             if (quantityObj > 0) {
                 btnSaveComplementSettlement.disabled = false;
             } else {
@@ -1249,7 +1205,8 @@
     // Funcion que envia la informacion del complemento
     fSaveDataComplementSettlement = () => {
         try {
-            var dataSend = { test: objectData }; 
+            const keySettlement = localStorage.getItem('complement');
+            const dataSend      = { items: objectData, keySettlement: keySettlement }; 
             console.log(dataSend);
             $.ajax({
                 url: "../BajasEmpleados/Test",
@@ -1260,6 +1217,42 @@
                 }, success: (request) => {
                     btnSaveComplementSettlement.disabled = false;
                     console.log(request);
+                    if (request.Bandera == true) {
+                        Swal.fire({
+                            title: "Correcto",
+                            text: "Complemento añadido",
+                            icon: "success",
+                            showClass: { popup: 'animated fadeInDown faster' },
+                            hideClass: { popup: 'animated fadeOutUp faster' },
+                            confirmButtonText: "Aceptar", allowOutsideClick: false,
+                            allowEscapeKey: false, allowEnterKey: false,
+                        }).then((acepta) => {
+                            bodyComplements.innerHTML = "";
+                            conceptComplement.value   = "";
+                            importConcept.value       = "";
+                            btnSaveComplementSettlement.disabled = true;
+                            $("#modalComplementSettlement").modal("hide");
+                            setTimeout(() => { $("#window-data-down").modal("show"); }, 1000);
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "El complemento no fue añadido",
+                            icon: "error",
+                            showClass: { popup: 'animated fadeInDown faster' },
+                            hideClass: { popup: 'animated fadeOutUp faster' },
+                            confirmButtonText: "Aceptar", allowOutsideClick: false,
+                            allowEscapeKey: false, allowEnterKey: false,
+                        }).then((acepta) => {
+                            bodyComplements.innerHTML = "";
+                            conceptComplement.value   = "";
+                            importConcept.value       = "";
+                            btnSaveComplementSettlement.disabled = true;
+                            $("#modalComplementSettlement").modal("hide");
+                            setTimeout(() => { $("#window-data-down").modal("show"); }, 1000);
+                        });
+                    }
+                    objectData = [];
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
                 }
@@ -1277,6 +1270,216 @@
         }
     }
 
+    // Funcion que muestra los complementos de finiquitos
+    fShowComplementsSettlement = (paramsettlement, paramemployee) => {
+        contentViewComplements.innerHTML = "";
+        try {
+            if (paramsettlement > 0 && paramemployee > 0) {
+                $.ajax({
+                    url: "../BajasEmpleados/ShowComplementsSettlement",
+                    type: "POST",
+                    data: { keySettlement: paramsettlement, keyEmployee: paramemployee },
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true) {
+                            for (let i = 0; i < request.Datos.length; i++) {
+                                contentViewComplements.innerHTML += `
+                                    <div class="col-md-10 offset-1 animated fadeInDown mb-3">
+                                        <div class="card shadow p-2 border-left-primary">
+                                            <div class="row text-center align-items-center">
+                                                <div class="col-md-3 offset-1 mt-3">
+                                                    <h3><b class="text-primary">#</b> ${request.Datos[i].iSeq} </h3>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button title="Ver detalle" class="btn btn-block btn-sm btn-primary" type="button" onclick="fViewDetailsComplement(${request.Empresa}, ${paramsettlement}, ${request.Datos[i].iSeq});"> <i class="fas fa-eye mr-1"></i> Ver </button> 
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button onclick="fGenerateFileComplementSet(${request.Empresa}, ${paramsettlement}, ${request.Datos[i].iSeq}, ${paramemployee})" title="Imprimir" class="btn btn-block btn-sm btn-primary" type="button"> <i class="fas fa-file-pdf mr-1"></i> PDF </button>
+                                                </div>
+                                                <div class="col-md-2"> 
+                                                    <button title="Minimizar" class="btn btn-block btn-sm btn-secondary" disabled type="button" id="btnRemoveSeq${request.Datos[i].iSeq}" onclick="fRemoveDetailsTableComplement(${request.Datos[i].iSeq});"> <i class="fas fa-minus"></i> </button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="contentCSeq${request.Datos[i].iSeq}"></div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        } else {
+
+                        }
+                        $("#window-data-down").modal("hide");
+                        setTimeout(() => { $("#modalViewComplements").modal("show"); }, 500);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que muestra los detalles del complemento seleccionado
+    fViewDetailsComplement = (parambusiness, paramsettlement, paramseq) => {
+        try {
+            if (parambusiness > 0 && paramsettlement > 0 && paramseq > 0) {
+                $.ajax({
+                    url: "../BajasEmpleados/ViewDetailsComplement",
+                    type: "POST",
+                    data: { keySettlement: paramsettlement, keyBusiness: parambusiness, keySeq: paramseq },
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true) {
+                            let htmlTable = "";
+                            let dateComplements = "";
+                            let quantity  = 0;
+                            document.getElementById('btnRemoveSeq' + String(paramseq)).disabled = false;
+                            for (let i = 0; i < request.Datos.length; i++) {
+                                dateComplements = request.Datos[i].sFechaComplemento;
+                                htmlTable += ` <tr>
+                                    <td>${i + 1}</td>
+                                    <td>[${request.Datos[i].iRenglonId}] ${request.Datos[i].sNombreRenglon}</td>
+                                    <td>$ ${request.Datos[i].sImporte}</td>
+                                    </tr>                                    
+                                `;
+                                quantity += 1;
+                            }
+                            if (quantity == request.Datos.length) {
+                                    document.getElementById('contentCSeq' + String(paramseq)).innerHTML = `
+                                        <div class="col-md-12 mt-3">
+                                            <h6 class="text-right"><b>Generado el ${dateComplements}</b></h6>
+                                            <table class="table">
+                                                <thead class="">
+                                                    <tr>
+                                                        <th scope="col" class="text-primary">#</th>
+                                                        <th scope="col">Concepto</th>
+                                                        <th scope="col">Importe</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    ${htmlTable}
+                                                    <tr><td colspan="2" class="text-primary"><b>Total:</b></td> <td class="text-primary"><b>$ ${request.Total}</b></td> </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    `;
+                                document.getElementById('contentCSeq' + String(paramseq)).classList.add('animated', 'fadeIn');
+                            }
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que limpia la tabla de detalles
+    fRemoveDetailsTableComplement = (paramseq) => {
+        document.getElementById('btnRemoveSeq' + String(paramseq)).disabled = true;
+        document.getElementById('contentCSeq' + String(paramseq)).classList.remove('animated', 'fadeIn');
+        document.getElementById('contentCSeq' + String(paramseq)).innerHTML = "";
+    }
+
+    // Funcion que genera el pdf del complemento 
+    fGenerateFileComplementSet = (parambusiness, paramsettlement, paramseq, paramemployee) => {
+        document.getElementById('contentCSeq' + String(paramseq)).innerHTML = "";
+        try {
+            if (parambusiness > 0 && paramsettlement > 0 && paramseq > 0) {
+                $.ajax({
+                    url: "../GenerateFiles/ComplementSettlement",
+                    type: "POST",
+                    data: { keyBusiness: parambusiness, keySettlement: paramsettlement, keySeq: paramseq, keyEmployee: paramemployee },
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        document.getElementById('btnRemoveSeq' + String(paramseq)).disabled = false;
+                        if (request.Bandera == true) {
+                            document.getElementById('contentCSeq' + String(paramseq)).innerHTML += `
+                                <div class="col-md-12">
+                                    <hr/>
+                                    <div class="p-2 text-center">
+                                        <a download="${request.NombrePDF}" class="btn btn-primary btn-sm" href="../../Content/${request.NombreFolder}/${request.NombrePDF}"> <i class="fas fa-download mr-2"></i> Descargar</a>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            document.getElementById('contentCSeq' + String(paramseq)).innerHTML += `
+                                <div class="col-md-12">
+                                    <hr/>
+                                    <div class="p-2 text-center">
+                                        <h6 class="text-center text-danger"> Ocurrio un problema al generar el archivo ${request.MensajeError} </h6>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion sincronizacion ventana nuevo finiquito
+    fSinWindowNewComplementSet = () => {
+        $("#modalComplementSettlement").modal("hide");
+        setTimeout(() => {
+            $("#window-data-down").modal("show");
+        }, 500);
+    }
+
+    // Funcion sincronizacion ventana nuevo finiquito
+    fSinWindowViewComplementSet = () => {
+        $("#modalViewComplements").modal("hide");
+        setTimeout(() => {
+            $("#window-data-down").modal("show");
+        }, 500);
+    }
+
     /*
     * Ejecucion de funciones
     */
@@ -1291,6 +1494,13 @@
     btnAddComplement.addEventListener('click', () => { fAddComplementTable(1); });
 
     btnSaveComplementSettlement.addEventListener('click', fSaveDataComplementSettlement);
+
+    btnCloseComplementSettlement.addEventListener('click', fSinWindowNewComplementSet);
+    icoCloseComplementSettlement.addEventListener('click', fSinWindowNewComplementSet);
+
+    btnCloseViewComplements.addEventListener('click', fSinWindowViewComplementSet);
+    icoCloseViewComplements.addEventListener('click', fSinWindowViewComplementSet);
+
 
     //navReactiveTab.addEventListener('click', () => { });
 

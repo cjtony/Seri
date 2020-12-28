@@ -17,6 +17,29 @@ namespace Payroll.Models.Beans
         public int iPeriodo { get; set; }
         public string sMensaje { get; set; }
     }
+
+    public class ListConcepts
+    {
+        public string import { get; set; }
+        public string concept { get; set; }
+    }
+
+    public class ComplementosFiniquitos
+    {
+        public string sNombreEmpleado { get; set; }
+        public int iFiniquitoId { get; set; }
+        public int iSeq { get; set; }
+        public int iEmpresaId { get; set; }
+        public int iRenglonId { get; set; }
+        public decimal dImporte { get; set; }
+        public string sImporte { get; set; }
+        public int iCancelado { get; set; }
+        public int iConceptos { get; set; }
+        public int iTipoRenglonId { get; set; }
+        public string sNombreRenglon { get; set; }
+        public string sFechaComplemento { get; set; }
+    }
+
     public class BajasEmpleadosBean
     {
 

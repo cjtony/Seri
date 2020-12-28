@@ -14,6 +14,122 @@ namespace Payroll.Models.Daos
     public class BajasEmpleadosDaoD : Conexion
     {
 
+        public List<ComplementosFiniquitos> sp_View_Details_Complement(int keySettlement, int keyBusiness, int keySeq)
+        {
+            List<ComplementosFiniquitos> complementos = new List<ComplementosFiniquitos>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_View_Details_Complement", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@FiniquitoId", keySettlement));
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Seq", keySeq));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        ComplementosFiniquitos finiquitos = new ComplementosFiniquitos();
+                        finiquitos.iFiniquitoId = Convert.ToInt32(dataReader["Finiquito_id"]);
+                        finiquitos.iSeq = Convert.ToInt32(dataReader["Seq"]);
+                        finiquitos.iEmpresaId = Convert.ToInt32(dataReader["Empresa_id"]);
+                        finiquitos.iRenglonId = Convert.ToInt32(dataReader["Renglon_id"]);
+                        finiquitos.dImporte   = Convert.ToDecimal(dataReader["Importe"]);
+                        finiquitos.sImporte   = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(Convert.ToDecimal(dataReader["Importe"])));
+                        finiquitos.sFechaComplemento = dataReader["FechaComplemento"].ToString();
+                        finiquitos.sNombreRenglon    = dataReader["Nombre_Renglon"].ToString();
+                        finiquitos.iTipoRenglonId    = Convert.ToInt32(dataReader["Tipo_renglon_id"]);
+                        complementos.Add(finiquitos);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return complementos;
+        }
+
+        public List<ComplementosFiniquitos> sp_View_Complement_Settlement(int keyBusiness, int keySettlement)
+        {
+            List<ComplementosFiniquitos> complementos = new List<ComplementosFiniquitos>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_View_Complement_Settlement", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@FiniquitoId", keySettlement));
+                SqlDataReader dataReader = cmd.ExecuteReader(); 
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        ComplementosFiniquitos finiquitos = new ComplementosFiniquitos();
+                        finiquitos.iSeq       = Convert.ToInt32(dataReader["Seq"]);
+                        finiquitos.iConceptos = Convert.ToInt32(dataReader["Conceptos"]);
+                        complementos.Add(finiquitos);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return complementos;
+        }
+
+        public BajasEmpleadosBean sp_Max_Sequence_Number_Complement_Settlement(int keySettlement, int keyBusiness)
+        {
+            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Max_Sequence_Number_Complement_Settlement", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@FiniquitoId", keySettlement));
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    bajasEmpleados.iEstatus = Convert.ToInt32(dataReader["Seq"].ToString());
+                } else {
+                    bajasEmpleados.sMensaje = "NOTDATA";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                bajasEmpleados.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bajasEmpleados;
+        }
+
+        public BajasEmpleadosBean sp_Add_Complement_Settlement(List<ListConcepts> items, int keySettlement, int keyBusiness, int seq)
+        {
+            BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
+            int quantity = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Add_Complement_Settlement", this.conexion) { CommandType = CommandType.StoredProcedure };
+                foreach (ListConcepts concepts in items) {
+                    cmd.Parameters.Add(new SqlParameter("@FiniquitoId", keySettlement));
+                    cmd.Parameters.Add(new SqlParameter("@Seq", seq));
+                    cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                    cmd.Parameters.Add(new SqlParameter("@Importe", concepts.import));
+                    cmd.Parameters.Add(new SqlParameter("@Concepto", concepts.concept));
+                    if (cmd.ExecuteNonQuery() > 0) {
+                        quantity += 1;
+                    }
+                    cmd.Parameters.Clear(); cmd.Dispose();
+                }
+                if (quantity == items.Count) {
+                    bajasEmpleados.sMensaje = "success";
+                }
+            } catch (Exception exc) {
+                bajasEmpleados.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bajasEmpleados;
+        }
+
         public DatosFiniquito sp_Consulta_Info_Finiquito(int keySettlement, int keyBusiness, int keyEmploye)
         {
             DatosFiniquito datosFiniquito = new DatosFiniquito();
@@ -362,6 +478,43 @@ namespace Payroll.Models.Daos
                 this.Conectar().Close();
             }
             return listDataDownEmpBean;
+        }
+
+        public List<ComplementosFiniquitos> sp_Info_Complement_Settlement(int keySettlement, int keyBusiness, int keyEmployee, int seq)
+        {
+            List<ComplementosFiniquitos> listConcepts = new List<ComplementosFiniquitos>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Info_Complement_Settlement", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@FiniquitoId", keySettlement));
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@EmpleadoId", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@Seq", seq));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        ComplementosFiniquitos finiquitos = new ComplementosFiniquitos();
+                        finiquitos.iFiniquitoId = Convert.ToInt32(dataReader["Finiquito_id"]);
+                        finiquitos.iSeq = Convert.ToInt32(dataReader["Seq"]);
+                        finiquitos.iEmpresaId = Convert.ToInt32(dataReader["Empresa_id"]);
+                        finiquitos.iRenglonId = Convert.ToInt32(dataReader["Renglon_id"]);
+                        finiquitos.dImporte = Convert.ToDecimal(dataReader["Importe"]);
+                        finiquitos.sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(Convert.ToDecimal(dataReader["Importe"])));
+                        finiquitos.sFechaComplemento = dataReader["FechaComplemento"].ToString();
+                        finiquitos.sNombreRenglon    = dataReader["Nombre_Renglon"].ToString();
+                        finiquitos.iTipoRenglonId    = Convert.ToInt32(dataReader["Tipo_renglon_id"]);
+                        finiquitos.sNombreEmpleado   = dataReader["NombreEmpleado"].ToString(); 
+                        listConcepts.Add(finiquitos);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return listConcepts;
         }
 
         public List<DatosFiniquito> sp_Info_Finiquito_Empleado(int keySettlement)
