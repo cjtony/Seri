@@ -123,12 +123,12 @@ namespace Payroll.Controllers
             return Json(Lista);
         }
         [HttpPost]
-        public JsonResult SaveNewPeriodo(int inEmpresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago)
+        public JsonResult SaveNewPeriodo(int inEmpresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago, int intipoperiodoid)
         {
             List<string> Lista;
             ModCatalogosDao Dao = new ModCatalogosDao();
 
-            Lista = Dao.sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(inEmpresa_id, inano, inperiodo, infinicio, inffinal, infproceso, infpago, indiaspago);
+            Lista = Dao.sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(inEmpresa_id, inano, inperiodo, infinicio, inffinal, infproceso, infpago, indiaspago, intipoperiodoid);
             return Json(Lista);
         }
         [HttpPost]

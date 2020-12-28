@@ -93,7 +93,7 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
-        public List<string> sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(int Empresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago)
+        public List<string> sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(int Empresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago, int intipoperiodoid)
         {
             List<string> listBean = new List<string>();
             try
@@ -111,6 +111,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Proceso", infproceso));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Pago", infpago));
                 cmd.Parameters.Add(new SqlParameter("@ctrlDias_Pagados", indiaspago));
+                cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo_id", intipoperiodoid));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {

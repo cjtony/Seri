@@ -316,11 +316,11 @@ namespace Payroll.Models.Daos
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows[1].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows[0].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlTipoDescuento", rows[2].ToString().Substring(0, 2).Trim()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipoDescuento", rows[2].ToString().Substring(0, 3).Trim()));
             cmd.Parameters.Add(new SqlParameter("@ctrlDescuento", rows[4].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlNoCredito", rows[5].ToString().Substring(1, rows[5].ToString().Length - 1)));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaAprovacionCredito", rows[6].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlDescontar", rows[3].ToString().Substring(0, 1)));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescontar", rows[3].ToString().Substring(0, 3).Trim()));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", rows[7].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", ""));
             cmd.Parameters.Add(new SqlParameter("@ctrlAplicaFiniquito", rows[8].ToString()));
