@@ -688,7 +688,7 @@
                 }
                 if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
                     if (paramNper.value != "" && paramNper.value > 0) {
-                        if (paramTper.value != "" && paramTper.value > 0) {
+                        if (paramTper.value != "") {
                             const period   = localStorage.getItem("period");
                             const dataSend = { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) };
                             console.log(dataSend);
