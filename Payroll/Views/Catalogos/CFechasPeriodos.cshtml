@@ -99,7 +99,11 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Año</label>
-                        <input class="form-control form-control-sm input-number" type="text" id="inano" name="inano" min="" readonly required />
+                        <input class="form-control form-control-sm input-number" type="text" id="inano" name="inano" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Tipo Periodo id</label>
+                        <input class="form-control form-control-sm input-number" type="text" id="intipoperiodoid" name="intipoperiodoid" readonly required />
                     </div>
                     <div class="form-group col-md-4">
                         <label>Periodo</label>
@@ -126,16 +130,17 @@
                         <input class="form-control form-control-sm" type="text" name="indiaspago" id="indiaspago" value="15" required />
                     </div>
                 </form>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnsavefechaperiodo" onclick="savenew();" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                <button id="btnsavefechaperiodo" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=1"></script>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=3"></script>
 <script>
     $(function () {
         LoadTabFechasPeriodos();

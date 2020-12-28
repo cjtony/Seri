@@ -127,6 +127,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                console.log(data);
                 var tab = document.getElementById("bodytab-fechas-periodos");
                 tab.innerHTML = "";
                 var empresa;
@@ -134,13 +135,13 @@
                     if (i == 0) {
                         empresa = data[i]["Empresa_id"];
                     }
-                    console.log(data[i]["NombreEmpresa"].replace(/ /g, ""));
+                    
                     tab.innerHTML += "" +
                         "<tr>" +
                         "<td colspan='3' >" +
                         "<div class='col-md-12 row'>" +
-                        "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='ml-1 badge badge-primary btn' onclick='mostrarModalNuevoPeriodo(" + data[i]["Empresa_id"] + "," + data[i]["Anio"] + ");'>Nuevo <i class='fas fa-calendar-check'></i></div></div>" +
-                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + "' class='collapse collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + " col-md-12'>" +
+                        "<label class='col-md-1'>" + data[i]['Empresa_id'] + "</label><label class='col-md-3'>" + data[i]['NombreEmpresa'] + " </label><label class='col-md-3'> " + data[i]['Tipo_Periodo_Id'] + " - " + data[i]["DescripcionTipoPeriodo"] + "</label><div class='col-md-5'><div class='badge badge-success btn' onclick='LoadDetalleFechasPeriodo(\"collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + data[i]['Empresa_id'] + "\", " + data[i]["Empresa_id"] + ");'>Ver <i class='fas fa-plus'></i></div><div class='ml-1 badge badge-primary btn' onclick='mostrarModalNuevoPeriodo(" + data[i]["Empresa_id"] + "," + data[i]["Anio"] + "," + data[i]["Tipo_Periodo_Id"] + ");'>Nuevo <i class='fas fa-calendar-check'></i></div></div>" +
+                        "<div id='collapse-" + data[i]["NombreEmpresa"].replace(/ /g, "") + data[i]['Empresa_id'] + "' class='collapse collapse-" + data[i]['NombreEmpresa'].replace(/ /g, "") + data[i]['Empresa_id'] + " col-md-12'>" +
                         "</div>" +
                         "</div>" +
                         "</td >" +
@@ -561,11 +562,14 @@
 
     }
     //mostrarModalNuevoPeriodo 
-    mostrarModalNuevoPeriodo = (Empresa_id, Anio) => {
+    mostrarModalNuevoPeriodo = (Empresa_id, Anio, Tipo_Periodo_id) => {
+        console.log(Tipo_Periodo_id);
         llenaMinAnios();
         $("#modalAgregarFechaPeriodo").modal("show");
         $("#inanio").val(Anio);
+        $("#intipoperiodoid").val(Tipo_Periodo_id);
         $("#inEmpresa_id").val(Empresa_id);
+        console.log(Tipo_Periodo_id);
     }
 
     addNewPolitica = () => {
@@ -585,7 +589,7 @@
     // Guardar Fecha - Periodo
     $("#btnsavefechaperiodo").on("click", function () {
         //savenew = () => { 
-        console.log("si entra");
+        //console.log("si entra");
         var form = document.getElementById("frmNewFechasPeriodos");
         if (form.checkValidity() === false) {
 
@@ -600,6 +604,7 @@
             var infpago = document.getElementById("infpago");
             var indiaspago = document.getElementById("indiaspago");
             var inEmpresa_id = document.getElementById("inEmpresa_id");
+            var intipoperiodoid = document.getElementById("intipoperiodoid");
             $.ajax({
                 url: "../Catalogos/SaveNewPeriodo",
                 type: "POST",
@@ -611,7 +616,8 @@
                     inffinal: inffinal.value,
                     infproceso: infproceso.value,
                     infpago: infpago.value,
-                    indiaspago: indiaspago.value
+                    indiaspago: indiaspago.value,
+                    intipoperiodoid: intipoperiodoid.value
                 }),
                 contentType: "application/json; charset=utf-8",
                 beforeSend: () => {

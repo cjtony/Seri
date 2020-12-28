@@ -22,7 +22,7 @@
             { "data": "ClasesRegPat_id" },
             { "data": "Riesgo_Trabajo" },
             { "data": "Cancelado" },
-            { "defaultContent": "<button class='btneditar btn btn-outline-success btn-sm text-center shadow rounded' title='Editar Registro' > <i class='fas fa-edit'></i> </button>" }
+            { "defaultContent": "<button class='btneditar btn btn-outline-success btn-sm text-center shadow rounded' title='Editar Registro' > <i class='fas fa-edit'></i> </button> <button class='btndelete btn btn-outline-danger btn-sm text-center shadow rounded' title='Eliminar' > <i class='fas fa-minus'></i> </button>" }
         ]
     });
     //Retorna los valores del reglon del registro patronal seleccionado para editar 
@@ -94,6 +94,31 @@
         document.getElementById("btnUpdateRP").classList.remove("invisible");
         document.getElementById("btnClearRP").classList.remove("invisible");
     });
+    //
+    //$("#tabRegistrosPatronales tbody").on('click', 'button.btneditar', function () {
+    //    var dato = tabRP.row($(this).parents('tr')).data();
+    //    console.log(dato);
+    //    var Afrp = document.getElementById("inAfiliacionImssRP");
+    //    var Emrp = document.getElementById("inEmpresaRP");
+    //    var Rtrp = document.getElementById("inRiesgoTrabajoRP");
+    //    var NomRP = document.getElementById("inNombreAfiliacionRP");
+    //    var id = document.getElementById("IdRegPat");
+    //    Afrp.value = dato.Afiliacion_IMSS;
+    //    $.ajax({
+    //        url: "../Empresas/DeleteRegistroPatronal",
+    //        type: "POST",
+    //        data: JSON.stringify({ IdRegPat: dato.IdRegPat }),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: (data) => {
+    //            console.log(data);
+    //            console.log(data[0]["Nombre_Afiliacion"]);
+    //            NomRP.value = data[0]["Nombre_Afiliacion"];
+    //            id.value = data[0]["IdRegPat"];
+    //        }
+    //    });
+
+
+    //});
     //
     $("#btnClearRP").on("click", function () {
         document.getElementById("inAfiliacionImssRP").value = "";

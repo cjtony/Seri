@@ -1,0 +1,1 @@
+Error en la linea: 1, El empleado 10000 no existe
