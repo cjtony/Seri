@@ -1351,15 +1351,35 @@
                             let quantity  = 0;
                             document.getElementById('btnRemoveSeq' + String(paramseq)).disabled = false;
                             for (let i = 0; i < request.Datos.length; i++) {
+                                let badgeDynamic = "";
+                                if (request.Datos[i].iTipoRenglonId == 1) {
+                                    badgeDynamic = "badge-success";
+                                    htmlTable += ` <tr>
+                                            <td>${i + 1}</td>
+                                            <td><span title="Percepcion" class="badge ${badgeDynamic}">[${request.Datos[i].iRenglonId}]</span> ${request.Datos[i].sNombreRenglon}</td>
+                                            <td>$ ${request.Datos[i].sImporte}</td>
+                                        </tr>                                    
+                                    `;
+                                    quantity += 1;
+                                }
                                 dateComplements = request.Datos[i].sFechaComplemento;
-                                htmlTable += ` <tr>
-                                    <td>${i + 1}</td>
-                                    <td>[${request.Datos[i].iRenglonId}] ${request.Datos[i].sNombreRenglon}</td>
-                                    <td>$ ${request.Datos[i].sImporte}</td>
-                                    </tr>                                    
-                                `;
-                                quantity += 1;
                             }
+                            console.log(quantity);
+                            for (let i = 0; i < request.Datos.length; i++) {
+                                let badgeDynamic = "";
+                                if (request.Datos[i].iTipoRenglonId == 2) {
+                                    badgeDynamic = "badge-danger";
+                                    htmlTable += ` <tr>
+                                            <td>${i + 1}</td>
+                                            <td><span title="Deduccion" class="badge ${badgeDynamic}">[${request.Datos[i].iRenglonId}]</span> ${request.Datos[i].sNombreRenglon}</td>
+                                            <td>- $ ${request.Datos[i].sImporte}</td>
+                                        </tr>                                    
+                                    `;
+                                    quantity += 1;
+                                }
+                                dateComplements = request.Datos[i].sFechaComplemento; 
+                            }
+                            console.log(quantity);
                             if (quantity == request.Datos.length) {
                                     document.getElementById('contentCSeq' + String(paramseq)).innerHTML = `
                                         <div class="col-md-12 mt-3">
