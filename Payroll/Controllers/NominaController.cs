@@ -366,31 +366,33 @@ namespace Payroll.Controllers
             if (DaFolio != null) {
 
               
-                iFolio = int.Parse(DaFolio[0].ianio.ToString()) * 100000 + int.Parse(DaFolio[0].iTipoPeriodo.ToString()) * 10000 +int.Parse( DaFolio[0].iPeriodo.ToString()) * 10;
-                //if (DaFolio[0].iPeriodo > 9 )
-                //{
-                //    if (DaFolio[0].iTipoPeriodo > 0)
-                //    {
-                //        sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + DaFolio[0].iPeriodo + "0";
-                //    }
-                //    if (DaFolio[0].iTipoPeriodo < 1)
-                //    {
-                //        sFolio = DaFolio[0].ianio.ToString() + "00" + DaFolio[0].iPeriodo + "0";
-                //    }
+                //iFolio = int.Parse(DaFolio[0].ianio.ToString()) * 100000 + int.Parse(DaFolio[0].iTipoPeriodo.ToString()) * 10000 +int.Parse( DaFolio[0].iPeriodo.ToString()) * 10;
+                if (DaFolio[0].iPeriodo > 9)
+                {
+                    if (DaFolio[0].iTipoPeriodo > 0)
+                    {
+                        sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + DaFolio[0].iPeriodo + "0";
+                    }
+                    if (DaFolio[0].iTipoPeriodo < 1)
+                    {
+                        sFolio = DaFolio[0].ianio.ToString() + "00" + DaFolio[0].iPeriodo + "0";
+                    }
 
-                //}
-                //if (DaFolio[0].iPeriodo > 0 && DaFolio[0].iPeriodo < 10)
-                //{
-                //    if (DaFolio[0].iTipoPeriodo > 0){
-                //        sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + "0" + DaFolio[0].iPeriodo + "0";
-                //    }
-                //    if (DaFolio[0].iTipoPeriodo < 1) {
-                //        sFolio = DaFolio[0].ianio.ToString() + "00" + "0" + DaFolio[0].iPeriodo + "0";
+                }
+                if (DaFolio[0].iPeriodo > 0 && DaFolio[0].iPeriodo < 10)
+                {
+                    if (DaFolio[0].iTipoPeriodo > 0)
+                    {
+                        sFolio = DaFolio[0].ianio.ToString() + (DaFolio[0].iTipoPeriodo * 10) + "0" + DaFolio[0].iPeriodo + "0";
+                    }
+                    if (DaFolio[0].iTipoPeriodo < 1)
+                    {
+                        sFolio = DaFolio[0].ianio.ToString() + "00" + "0" + DaFolio[0].iPeriodo + "0";
 
-                //    }
-                //}
+                    }
+                }
 
-                iFolio = Convert.ToInt32(sFolio);
+                iFolio = int.Parse(sFolio);
                 bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada);
             }
 
