@@ -22,6 +22,7 @@ namespace Payroll.Models.Beans
     {
         public string import { get; set; }
         public string concept { get; set; }
+        public string type { get; set; }
     }
 
     public class ComplementosFiniquitos
@@ -38,6 +39,9 @@ namespace Payroll.Models.Beans
         public int iTipoRenglonId { get; set; }
         public string sNombreRenglon { get; set; }
         public string sFechaComplemento { get; set; }
+        public int iAnio { get; set; }
+        public int iPeriodo { get; set; }
+        public string sMensaje { get; set; }
     }
 
     public class BajasEmpleadosBean
