@@ -1955,10 +1955,12 @@ namespace Payroll.Controllers
             BajasEmpleadosBean bajasEmpleadosBean  = new BajasEmpleadosBean();
             BajasEmpleadosBean bajasEmpleadosBean1 = new BajasEmpleadosBean();
             BajasEmpleadosDaoD bajasEmpleadosDaoD  = new BajasEmpleadosDaoD();
+            PeriodoActualBean periodActBean        = new PeriodoActualBean();
             try {
                 int keyBusiness     = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                periodActBean       = bajasEmpleadosDaoD.sp_Load_Info_Periodo_Empr(keyBusiness, DateTime.Now.Year);
                 bajasEmpleadosBean  = bajasEmpleadosDaoD.sp_Max_Sequence_Number_Complement_Settlement(keySettlement, keyBusiness);
-                bajasEmpleadosBean1 = bajasEmpleadosDaoD.sp_Add_Complement_Settlement(items, keySettlement, keyBusiness, bajasEmpleadosBean.iEstatus);
+                bajasEmpleadosBean1 = bajasEmpleadosDaoD.sp_Add_Complement_Settlement(items, keySettlement, keyBusiness, bajasEmpleadosBean.iEstatus, periodActBean.iAnio, periodActBean.iPeriodo);
                 if (bajasEmpleadosBean1.sMensaje == "success") {
                     flag = true;
                 } 
@@ -2004,6 +2006,8 @@ namespace Payroll.Controllers
                     foreach (ComplementosFiniquitos item in complementos) {
                         if (item.iTipoRenglonId == 1) {
                             totalAmount += item.dImporte;
+                        } else if (item.iTipoRenglonId == 2) {
+                            totalAmount -= item.dImporte;
                         }
                     }
                 }
@@ -2012,6 +2016,72 @@ namespace Payroll.Controllers
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = complementos, Total = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalAmount)) });
+        }
+
+        [HttpPost]
+        public JsonResult CancelComplementSettlement(int keyBusiness, int keySettlement, int keySeq, int keyEmployee)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            ComplementosFiniquitos complementos   = new ComplementosFiniquitos();
+            BajasEmpleadosDaoD bajasEmpleadosDaoD = new BajasEmpleadosDaoD();
+            try {
+                complementos = bajasEmpleadosDaoD.sp_Cancel_Complement_Settlement(keyBusiness, keySettlement, keySeq);
+                if (complementos.sMensaje == "SUCCESS") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult SelectRenglonesComplementSettlement()
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            BajasEmpleadosDaoD bajasEmpleadosDaoD = new BajasEmpleadosDaoD();
+            List<CRenglonesBean> cRenglonesBean   = new List<CRenglonesBean>();
+            try {
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                cRenglonesBean = bajasEmpleadosDaoD.sp_Select_Renglones_Complement_Settlement(keyBusiness);
+                if (cRenglonesBean.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            } 
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = cRenglonesBean });
+        }
+
+        [HttpPost]
+        public JsonResult ValidExistsComplementSettlementPeriod(int keySettlement)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            BajasEmpleadosDaoD bajasEmpleadosDaoD = new BajasEmpleadosDaoD();
+            ComplementosFiniquitos complementosFiniquitos = new ComplementosFiniquitos();
+            PeriodoActualBean periodoActual = new PeriodoActualBean();
+            try {
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                periodoActual = bajasEmpleadosDaoD.sp_Load_Info_Periodo_Empr(keyBusiness, DateTime.Now.Year);
+                complementosFiniquitos = bajasEmpleadosDaoD.sp_Valid_Exists_Complement_Settlement_Period(keyBusiness, keySettlement, periodoActual.iAnio, periodoActual.iPeriodo);
+                if (complementosFiniquitos.sMensaje == "EXISTS") {
+                    flag = true;
+                } else if (complementosFiniquitos.sMensaje == "NOTEXISTS") {
+                    flag = false;
+                } else {
+                    messageError = complementosFiniquitos.sMensaje;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
         }
 
     }

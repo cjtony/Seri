@@ -1097,17 +1097,88 @@
         }
     }
 
+    // Funcion que carga los renglones 
+    fLoadSelectRenglonComplement = () => {
+        try {
+            $.ajax({
+                url: "../BajasEmpleados/SelectRenglonesComplementSettlement",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+                    console.log('Enciandooo')
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == true) {
+                        for (let i = 0; i < request.Datos.length; i++) {
+                            conceptComplement.innerHTML += `
+                                <option value="${request.Datos[i].iIdRenglon}-${request.Datos[i].iIdElementoNomina}"> [${request.Datos[i].iIdRenglon}] ${request.Datos[i].sNombreRenglon}</option>
+                            `;
+                        }
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    fLoadSelectRenglonComplement();
+
     var objectData = [];
 
     // Funcion que agrega un complemento de finiquito
     fAddComplementSettlement = (paramkey, paramtype, paramemploye, paramname) => {
         try {
-            localStorage.setItem("complement", paramkey);
-            $("#window-data-down").modal("hide");
-            setTimeout(() => {
-                $("#modalComplementSettlement").modal("show");
-                nameEmployeeAddC.textContent = paramname;
-            }, 500);
+            $.ajax({
+                url: "../BajasEmpleados/ValidExistsComplementSettlementPeriod",
+                type: "POST",
+                data: { keySettlement: parseInt(paramkey) },
+                beforeSend: () => {
+
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == false && request.MensajeError == "none") {
+                        localStorage.setItem("complement", paramkey);
+                        $("#window-data-down").modal("hide");
+                        setTimeout(() => {
+                            $("#modalComplementSettlement").modal("show");
+                            nameEmployeeAddC.textContent = paramname;
+                        }, 500);
+                    } else if (request.Bandera == true && request.MensajeError == "none") {
+                        Swal.fire({
+                            title: "Atención!",
+                            text: "No puedes generar dos complementos en un mismo periodo, cancela el vigente para poder generar uno nuevo",
+                            icon: "warning",
+                            showClass: { popup: 'animated fadeInDown faster' },
+                            hideClass: { popup: 'animated fadeOutUp faster' },
+                            confirmButtonText: "Aceptar", allowOutsideClick: false,
+                            allowEscapeKey: false, allowEnterKey: false,
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "al consultar la existencia de un complemento " + request.MensajeError,
+                            icon: "error",
+                            showClass: { popup: 'animated fadeInDown faster' },
+                            hideClass: { popup: 'animated fadeOutUp faster' },
+                            confirmButtonText: "Aceptar", allowOutsideClick: false,
+                            allowEscapeKey: false, allowEnterKey: false,
+                        });
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
             //if (parseInt(paramkey) > 0 && parseInt(paramtype) > 0) {
             //    const dataSend = { keySettlement: parseInt(paramkey), type: parseInt(paramtype), keyEmploye: parseInt(paramemploye) };
             //    $.ajax({
@@ -1147,20 +1218,33 @@
                 if (importConcept.value != "") {
                     let quantityObj = 0;
                     let totalAmount = 0;
-                    objectData.push({ import: importConcept.value, concept: conceptComplement.value });
+                    console.log('concepto');
+                    let arrayConcepts = conceptComplement.value.split("-");
+                    console.log(arrayConcepts);
+                    objectData.push({ import: importConcept.value, concept: arrayConcepts[0], type: arrayConcepts[1] });
                     for (let i = 0; i < objectData.length; i++) {
+                        let badgeT = "";
+                        let titleT = "";
+                        if (objectData[i].type == 1) {
+                            badgeT = "success";
+                            titleT = "Percepcion";
+                            totalAmount += parseFloat(objectData[i].import);
+                        } else if (objectData[i].type == 2) {
+                            badgeT = "danger";
+                            titleT = "Deduccion";
+                            totalAmount -= parseFloat(objectData[i].import);
+                        }
                         bodyComplements.innerHTML += `
                         <tr>
                             <td><span class="text-primary font-weight-bold">${i + 1}</span></td>
-                            <td>${objectData[i].concept}</td>
+                            <td> <span title="${titleT}" class="badge badge-${badgeT}">[${objectData[i].concept}]</span></td>
                             <td>$ ${objectData[i].import}</td>
                             <td> <button class="btn btn-danger btn-sm" type="button" id="btnDeleteConcept${i}" onclick="fDeleteConcept(${i})"> <i class="fas fa-times"></i> </button> </td>
                         </tr>
                     `;
                         quantityObj += 1;
-                        totalAmount += parseFloat(objectData[i].import);
                     }
-                    bodyComplements.innerHTML += `<tr><td colspan="3" class="text-primary"><b>Total:</b></td><td class="text-primary"><b>$ ${totalAmount}</b></td></tr>`;
+                    bodyComplements.innerHTML += `<tr><td colspan="3" class="text-primary"><b>Total:</b></td><td class="text-primary"><b>$ ${totalAmount.toFixed(2)}</b></td></tr>`;
                     if (quantityObj > 0) {
                         btnSaveComplementSettlement.disabled = false;
                     } else {
@@ -1176,18 +1260,28 @@
             let quantityObj = 0; 
             let totalAmount = 0;
             for (let i = 0; i < objectData.length; i++) {
+                let badgeT = "";
+                let titleT = "";
+                if (objectData[i].type == 1) {
+                    badgeT = "success";
+                    titleT = "Percepcion";
+                    totalAmount += parseFloat(objectData[i].import);
+                } else if (objectData[i].type == 2) {
+                    badgeT = "danger";
+                    titleT = "Deduccion";
+                    totalAmount -= parseFloat(objectData[i].import);
+                }
                 bodyComplements.innerHTML += `
                         <tr>
                             <td><span class="text-primary font-weight-bold">${i + 1}</span></td>
-                            <td>${objectData[i].concept}</td>
+                            <td> <span title="${titleT}" class="badge badge-${badgeT}">[${objectData[i].concept}]</span></td>
                             <td>$ ${objectData[i].import}</td>
                             <td> <button class="btn btn-danger btn-sm" type="button" id="btnDeleteConcept${i}" onclick="fDeleteConcept(${i})"> <i class="fas fa-times"></i> </button> </td>
                         </tr>
                     `;
                 quantityObj += 1;
-                totalAmount += parseFloat(objectData[i].import); 
             }
-            bodyComplements.innerHTML += `<tr><td colspan="3" class="text-primary"><b>Total:</b></td><td class="text-primary"><b>$ ${totalAmount}</b></td></tr>`;
+            bodyComplements.innerHTML += `<tr><td colspan="3" class="text-primary"><b>Total:</b></td><td class="text-primary"><b>$ ${totalAmount.toFixed(2)}</b></td></tr>`;
             if (quantityObj > 0) {
                 btnSaveComplementSettlement.disabled = false;
             } else {
@@ -1290,16 +1384,19 @@
                                         <div class="card shadow p-2 border-left-primary">
                                             <div class="row text-center align-items-center">
                                                 <div class="col-md-3 offset-1 mt-3">
-                                                    <h3><b class="text-primary">#</b> ${request.Datos[i].iSeq} </h3>
+                                                    <h3><b class="text-primary">#</b> ${i + 1} </h3>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <button title="Ver detalle" class="btn btn-block btn-sm btn-primary" type="button" onclick="fViewDetailsComplement(${request.Empresa}, ${paramsettlement}, ${request.Datos[i].iSeq});"> <i class="fas fa-eye mr-1"></i> Ver </button> 
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <button onclick="fGenerateFileComplementSet(${request.Empresa}, ${paramsettlement}, ${request.Datos[i].iSeq}, ${paramemployee})" title="Imprimir" class="btn btn-block btn-sm btn-primary" type="button"> <i class="fas fa-file-pdf mr-1"></i> PDF </button>
                                                 </div>
+                                                <div class="col-md-2">
+                                                    <button title="Cancelar" class="btn btn-block btn-sm btn-danger"  type="button" id="btnCancelComSet${request.Datos[i].iSeq}" onclick="fCancelComplementSettlement(${request.Empresa}, ${paramsettlement}, ${request.Datos[i].iSeq}, ${paramemployee});"> <i class="fas fa-trash-alt"></i> </button>
+                                                </div>
                                                 <div class="col-md-2"> 
-                                                    <button title="Minimizar" class="btn btn-block btn-sm btn-secondary" disabled type="button" id="btnRemoveSeq${request.Datos[i].iSeq}" onclick="fRemoveDetailsTableComplement(${request.Datos[i].iSeq});"> <i class="fas fa-minus"></i> </button>
+                                                    <button title="Minimizar" class="btn btn-block btn-sm btn-secondary shadow rounded" disabled type="button" id="btnRemoveSeq${request.Datos[i].iSeq}" onclick="fRemoveDetailsTableComplement(${request.Datos[i].iSeq});"> <i class="fas fa-minus"></i> </button>
                                                 </div>
                                             </div>
                                             <div class="form-group row" id="contentCSeq${request.Datos[i].iSeq}"></div>
@@ -1308,7 +1405,17 @@
                                 `;
                             }
                         } else {
-
+                            contentViewComplements.innerHTML += `
+                                    <div class="col-md-10 offset-1 animated fadeInDown mt-3 mb-3">
+                                        <div class="">
+                                            <div class="row text-center align-items-center">
+                                                <div class="alert alert-info p-2 shadow alert-dismissible fade show col-md-12" role="alert">
+                                                  <strong>Atención!</strong> no se ha generado ningun complemento a este finiquito.
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                `;
                         }
                         $("#window-data-down").modal("hide");
                         setTimeout(() => { $("#modalViewComplements").modal("show"); }, 500);
@@ -1362,7 +1469,7 @@
                                     `;
                                     quantity += 1;
                                 }
-                                dateComplements = request.Datos[i].sFechaComplemento;
+                                dateComplements = request.Datos[i].sFechaComplemento + " <span class='badge badge-info'> Periodo " + request.Datos[i].iPeriodo + "</span>";
                             }
                             console.log(quantity);
                             for (let i = 0; i < request.Datos.length; i++) {
@@ -1377,7 +1484,7 @@
                                     `;
                                     quantity += 1;
                                 }
-                                dateComplements = request.Datos[i].sFechaComplemento; 
+                                dateComplements = request.Datos[i].sFechaComplemento + " <span class='badge badge-info'> Periodo " + request.Datos[i].iPeriodo + "</span>";
                             }
                             console.log(quantity);
                             if (quantity == request.Datos.length) {
@@ -1498,6 +1605,52 @@
         setTimeout(() => {
             $("#window-data-down").modal("show");
         }, 500);
+    }
+
+    // Funcion que cancela un complemento de un finiquito
+    fCancelComplementSettlement = (parambusiness, paramsettlement, paramseq, paramemployee) => {
+        try {
+            if (parambusiness > 0 && paramsettlement > 0 && paramseq > 0) {
+                $.ajax({
+                    url: "../BajasEmpleados/CancelComplementSettlement",
+                    type: "POST",
+                    data: { keyBusiness: parambusiness, keySettlement: paramsettlement, keySeq: paramseq, keyEmployee: paramemployee },
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true) {
+                            fShowComplementsSettlement(paramsettlement, paramemployee);
+                        } else {
+                            Swal.fire({
+                                title: "Error",
+                                text: "al cancelar el complemento del finiquito",
+                                icon: "error",
+                                showClass: { popup: 'animated fadeInDown faster' },
+                                hideClass: { popup: 'animated fadeOutUp faster' },
+                                confirmButtonText: "Aceptar", allowOutsideClick: false,
+                                allowEscapeKey: false, allowEnterKey: false,
+                            });
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
     }
 
     /*
