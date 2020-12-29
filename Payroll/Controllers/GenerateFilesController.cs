@@ -126,12 +126,13 @@ namespace Payroll.Controllers
                         //Foreach para sacar el saldo total
                         foreach (ComplementosFiniquitos data in listConcepts) {
                             nameEmployee =  data.sNombreEmpleado;
-                            totalBalance += data.dImporte;
                             if (data.iTipoRenglonId == 1) {
                                 totalPer += data.dImporte;
+                                totalBalance += data.dImporte;
                             }
                             if (data.iTipoRenglonId == 2) {
                                 totalDed += data.dImporte;
+                                totalBalance -= data.dImporte;
                             }
                         }
                         if (totalBalance == 0) {
@@ -187,8 +188,7 @@ namespace Payroll.Controllers
                         pr.Add(paragrahpDescription2);
                         pr.Alignment = Element.ALIGN_JUSTIFIED;
                         doc.Add(pr);
-                        pr.Clear();
-                        doc.Add(new Chunk("\n"));
+                        pr.Clear(); 
                         doc.Add(new Chunk("\n"));
                         PdfPTable tableDataEm = new PdfPTable(2);
                         tableDataEm.WidthPercentage = 100;
@@ -679,6 +679,22 @@ namespace Payroll.Controllers
                         pr.Clear();
                         // Agegamos la tabla al pdf
                         doc.Add(tableFirm);
+                        // Agregamos el numero de nomina del empleado 
+                        PdfPTable tablePayroll = new PdfPTable(1);
+                        tablePayroll.WidthPercentage = 100;
+                        // Creamos la celda de Nomina
+                        Font fontPayroll = new Font(FontFactory.GetFont("ARIAL", 10, Font.BOLD));
+                        pr.Font = fontFirm;
+                        pr.Alignment = Element.ALIGN_CENTER;
+                        pr.Add("NOMINA: " + keyEmployee.ToString());
+                        PdfPCell clNominaE = new PdfPCell();
+                        clNominaE.Border = 0;
+                        clNominaE.PaddingTop = -7;
+                        clNominaE.Colspan = 3;
+                        clNominaE.AddElement(pr);
+                        pr.Clear();
+                        tablePayroll.AddCell(clNominaE);
+                        doc.Add(tablePayroll);
                         doc.Close();
                         pw.Close();
                     } else {

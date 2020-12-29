@@ -13,6 +13,85 @@ namespace Payroll.Models.Daos
 {
     public class BajasEmpleadosDaoD : Conexion
     {
+        public ComplementosFiniquitos sp_Valid_Exists_Complement_Settlement_Period(int keyBusiness, int keySettlement, int year, int period)
+        {
+            ComplementosFiniquitos complementos = new ComplementosFiniquitos();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Valid_Exists_Complement_Settlement_Period", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@FiniquitoId", keySettlement));
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Existe"].ToString() == "1") {
+                        complementos.sMensaje = "EXISTS";
+                    } else {
+                        complementos.sMensaje = "NOTEXISTS";
+                    }
+                } else { 
+                    complementos.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                complementos.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return complementos;
+        }
+
+        public List<CRenglonesBean> sp_Select_Renglones_Complement_Settlement(int keyBusiness)
+        {
+            List<CRenglonesBean> cRenglones = new List<CRenglonesBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Select_Renglones_Complement_Settlement", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                     while (dataReader.Read()) {
+                        CRenglonesBean bean    = new CRenglonesBean();
+                        bean.iIdRenglon        = Convert.ToInt32(dataReader["IdRenglon"]);
+                        bean.sNombreRenglon    = dataReader["Nombre_Renglon"].ToString();
+                        bean.iIdElementoNomina = Convert.ToInt32(dataReader["Cg_Elemento_Nomina_id"]);
+                        cRenglones.Add(bean);
+                     }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return cRenglones;
+        }
+        public ComplementosFiniquitos sp_Cancel_Complement_Settlement(int keyBusiness, int keySettlement, int keySeq)
+        {
+            ComplementosFiniquitos complementos = new ComplementosFiniquitos();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Cancel_Complement_Settlement", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@FiniquitoId", keySettlement));
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Seq", keySeq)); 
+                if (cmd.ExecuteNonQuery() > 0) {
+                    complementos.sMensaje = "SUCCESS";
+                } else {
+                    complementos.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                complementos.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return complementos;
+        }
 
         public List<ComplementosFiniquitos> sp_View_Details_Complement(int keySettlement, int keyBusiness, int keySeq)
         {
@@ -36,6 +115,8 @@ namespace Payroll.Models.Daos
                         finiquitos.sFechaComplemento = dataReader["FechaComplemento"].ToString();
                         finiquitos.sNombreRenglon    = dataReader["Nombre_Renglon"].ToString();
                         finiquitos.iTipoRenglonId    = Convert.ToInt32(dataReader["Tipo_renglon_id"]);
+                        finiquitos.iAnio    = Convert.ToInt32(dataReader["Anio"]);
+                        finiquitos.iPeriodo = Convert.ToInt32(dataReader["Periodo"]);
                         complementos.Add(finiquitos);
                     }
                 }
@@ -100,7 +181,7 @@ namespace Payroll.Models.Daos
             return bajasEmpleados;
         }
 
-        public BajasEmpleadosBean sp_Add_Complement_Settlement(List<ListConcepts> items, int keySettlement, int keyBusiness, int seq)
+        public BajasEmpleadosBean sp_Add_Complement_Settlement(List<ListConcepts> items, int keySettlement, int keyBusiness, int seq, int year, int period)
         {
             BajasEmpleadosBean bajasEmpleados = new BajasEmpleadosBean();
             int quantity = 0;
@@ -113,6 +194,8 @@ namespace Payroll.Models.Daos
                     cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
                     cmd.Parameters.Add(new SqlParameter("@Importe", concepts.import));
                     cmd.Parameters.Add(new SqlParameter("@Concepto", concepts.concept));
+                    cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                    cmd.Parameters.Add(new SqlParameter("@Periodo", period));
                     if (cmd.ExecuteNonQuery() > 0) {
                         quantity += 1;
                     }
