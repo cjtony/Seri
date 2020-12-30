@@ -588,6 +588,9 @@
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
     const retroactivo = document.getElementById('retroactivo');
+    const conFondo = document.getElementById('con_fondo');
+    const categoriaEm = document.getElementById('categoria_emp');
+    const pagoPorEmpl = document.getElementById('pago_por');
 
     /*
      * Funcion que guarda los datos del apartado datos de nomina
@@ -603,6 +606,10 @@
         if (retroactivo.checked) {
             retroactivoSend = 1;
         }
+        let conFondoSend = 0;
+        if (conFondo.checked) {
+            conFondoSend = 1;
+        }
         const dataSend = {
             fecefecnom: fecefecnom.value, salmen: salmen.value, tipemp: tipemp.value, nivemp: nivemp.value,
             tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
@@ -610,12 +617,13 @@
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
             tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value, politica: politica.value,
-            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00
+            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend
         };
         //console.log('Datos de nomina');
         //console.log(dataSend);
         try {
             document.getElementById('txtsave3').textContent = 'Guardando';
+            console.log(dataSend);
             $.ajax({
                 url: "../SaveDataGeneral/DataNomina",
                 type: "POST",
@@ -802,7 +810,7 @@
                     }
                 }
                 if (validatedataimss == 0) {
-                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag];
+                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag, categoriaEm, pagoPorEmpl];
                     for (let t = 0; t < arrInput.length; t++) {
                         if (arrInput[t].hasAttribute("tp-select")) {
                             let textpag;

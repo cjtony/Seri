@@ -200,7 +200,7 @@ namespace Payroll.Models.Daos
             return imssBean;
         }
 
-        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int empresa, int retroactivo)
+        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int empresa, int retroactivo, int categoria, int pagopor, int fondo)
         {
             DatosNominaBean nominaBean = new DatosNominaBean();
             try
@@ -231,7 +231,10 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlPolitica",         politica));
                 cmd.Parameters.Add(new SqlParameter("@ctrlDiferencia",       diferencia));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTransporte",       transporte));
-                cmd.Parameters.Add(new SqlParameter("@ctrlRetroactivo", retroactivo));
+                cmd.Parameters.Add(new SqlParameter("@ctrlRetroactivo",      retroactivo));
+                cmd.Parameters.Add(new SqlParameter("@ctrlCategoria",        categoria));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPagoPor",          pagopor));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFondo", fondo));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     nominaBean.sMensaje = "success";

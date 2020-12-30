@@ -527,6 +527,9 @@
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
     const retroactivo = document.getElementById('retroactivo');
+    const conFondo    = document.getElementById('con_fondo');
+    const categoriaEm = document.getElementById('categoria_emp');
+    const pagoPorEmpl = document.getElementById('pago_por');
     const tippag = document.getElementById('tippag');
     const banuse = document.getElementById('banuse');
     const cunuse = document.getElementById('cunuse');
@@ -582,6 +585,8 @@
     /* FUNCION QUE EJECUTA UN SP PARA ACTUALIZAR LA POSICION DEL EMPLEADO EN TB -> EMPLEADO_NOMINA */
     fupdateposnew = () => {
         console.log('Actualizando posicion');
+        console.log('idempleado');
+        console.log(clvemp);
         try {
             if (clvemp.value != "" && clvemp.value > 0) {
                 $.ajax({
@@ -652,6 +657,10 @@
         if (retroactivo.checked) {
             retroactivoSave = 1;
         }
+        let conFondoSave = 0;
+        if (conFondo.checked) {
+            conFondoSave = 1;
+        }
         const dataLocSto = {
             key: 'nom', data: {
                 clvnom: clvnom.value, fechefectact: fechefectact.value,
@@ -665,6 +674,9 @@
                 diferencia: diferencia.value,
                 transporte: transporte.value,
                 retroactivo: retroactivoSave,
+                confondo: conFondoSave,
+                categoria: categoriaEm.value,
+                pagopor: pagoPorEmpl.value,
                 fecing: fecing.value,
                 fecant: fecant.value,
                 vencon: vencon.value,
@@ -855,6 +867,13 @@
                         } else {
                             retroactivo.checked = 0;
                         }
+                        if (data.Datos.iConFondo == 1) {
+                            conFondo.checked = 1;
+                        } else {
+                            conFondo.checked = 0;
+                        }
+                        categoriaEm.value  = data.Datos.iCategoriaId;
+                        pagoPorEmpl.value  = data.Datos.iPagoPor;
                         fecing.value       = data.Datos.sFechaIngreso;
                         fecant.value       = data.Datos.sFechaAntiguedad;
                         vencon.value       = data.Datos.sVencimientoContrato;
@@ -891,15 +910,7 @@
                                 </div>
                             `;
                         }
-                        ultSdi.value = data.Datos.sUlt_sdi;
-                        //document.getElementById('content-new-inpt-ultsdi').innerHTML = `
-                        //        <label class="col-sm-4 col-form-label font-labels col-ico font-weight-bold">
-                        //            Ultimo sdi
-                        //        </label>
-                        //        <div class="col-sm-8">
-                        //            <input id="view-ultSdi" type="number" value="${data.Datos.sUlt_sdi}"  class="form-control form-control-sm" disabled />
-                        //        </div>
-                        //    `;
+                        ultSdi.value = data.Datos.sUlt_sdi; 
                         flocalstodatatabnomina();
                     } else {
                         document.getElementById('div-most-alert-data-imss').innerHTML = `
@@ -1420,6 +1431,7 @@
         let url = "", datasend, banco;
         const flagSal          = (salmen.value != salmenact.value) ? true : false;
         const retroactivoSendE = (retroactivo.checked) ? 1 : 0;
+        const conFondoSendE = (conFondo.checked) ? 1 : 0;
         const motMoviSal       = document.getElementById('motmovisal');
         const fechMoviSal      = document.getElementById('fechmovisal');
         if (tippag.value == "218" || tippag.value == "220") {
@@ -1435,7 +1447,7 @@
                 tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
                 empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
                 tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: clvemp.value, tiposueldo: tiposueldo.value, politica: politica.value,
-                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value
+                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE
             };
         } else {
             url = "../EditDataGeneral/EditDataNomina";
@@ -1444,12 +1456,13 @@
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
-                transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "0", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value
+                transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "0", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value,
+                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE
             };
         }
         try {
             let validatedatanom = 0;
-            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag];
+            const arrInput = [salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag, categoriaEm, pagoPorEmpl];
             if (fecefecnom.value != fechefectact.value) {
                 arrInput.push(fecefecnom);
             }
