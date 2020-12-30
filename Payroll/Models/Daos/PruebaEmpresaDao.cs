@@ -430,7 +430,7 @@ namespace Payroll.Models.Daos
             data.Close();
 
             return list;
-        }
+        }   
         public List<string> sp_Registro_Patronal_Insert_Registros_Patronales(int Empresa_id, string Afiliacion_IMSS, string NombreAfiliacion, string Riesgo_Trabajo, int ClasesRegPat, int Status)
         {
             List<string> res = new List<string>();
