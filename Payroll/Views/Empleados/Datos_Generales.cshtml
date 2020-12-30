@@ -689,20 +689,44 @@
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text"> <i class="fas fa-dollar-sign"></i> </div>
                                                     </div>
-                                                    <input value="0" type="number" placeholder="Transporte" id="transporte" class="form-control form-control-sm" disabled title="Por el momento se ha deshabilitado esta opción"/>
+                                                    <input value="0" type="number" placeholder="Transporte" id="transporte" class="form-control form-control-sm" disabled title="Por el momento se ha deshabilitado esta opción" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            @*<div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="retroactivo" value="1">
-                                                <label class="form-check-label" for="inlineCheckbox1" id="label-retroactivo">Retroactivo</label>
-                                            </div>*@
                                             <label for="retroactivo" class="col-sm-4 col-form-label font-labels" id="label-retroactivo">
                                                 Retroactivo:
                                             </label>
                                             <div class="col-sm-8">
                                                 <input class="form-check-input form-control-sm" type="checkbox" id="retroactivo" value="1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="con_fondo" class="col-sm-4 col-form-label font-labels" id="label-confondo">
+                                                Con fondo:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input class="form-check-input form-control-sm" type="checkbox" id="con_fondo" value="1" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="categoria_emp" class="col-sm-4 col-form-label font-labels" id="label-categoriaemp">
+                                                Categoria:
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select class="form-control form-control-sm" id="categoria_emp" tp-select="Categoria">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="pago_por" class="col-sm-4 col-form-label font-labels" id="label-pagopor">
+                                                Pago por:
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select class="form-control form-control-sm" id="pago_por" tp-select="Pago por">
+                                                    <option value="0">Selecciona</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -3911,9 +3935,9 @@
 </div>
 
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/main.js?n=5.0"></script>
-<script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.5"></script>
-<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3.5"></script>
+<script type="text/javascript" src="~/Scripts/main/main.js?n=5.3"></script>
+<script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.6"></script>
+<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3.6"></script>
 <script type="text/javascript" src="~/Scripts/main/puestos.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/positions.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/regionales.js?n=2"></script>
@@ -3922,8 +3946,8 @@
 <script type="text/javascript" src="~/Scripts/main/estructura.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/localitys.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/centrcost.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3.3"></script>
-<script type="text/javascript" src="~/Scripts/main/employes.js?n=9.4"></script>
+<script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3.6"></script>
+<script type="text/javascript" src="~/Scripts/main/employes.js?n=9.6"></script>
 <script src="~/Scripts/main/modenight.js?n=2"></script>
 <script type="text/javascript">
     $(function () {

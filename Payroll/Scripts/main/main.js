@@ -158,14 +158,18 @@
     const diferencia   = document.getElementById('diferencia');
     const transporte   = document.getElementById('transporte');
     const retroactivo  = document.getElementById('retroactivo');
+    const conFondo     = document.getElementById('con_fondo');
+    const categoriaEmp = document.getElementById('categoria_emp');
+    const pagoPorEmple = document.getElementById('pago_por');
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
     const ultSdi = document.getElementById('view-ultSdi');
 
     const vardatanomina = [
-        clvnom, fechefectact, fecefecnom, tipper, salmen, salmenact, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte
+        clvnom, fechefectact, fecefecnom, tipper, salmen, salmenact, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple
     ];
     fclearfieldsvar3 = () => {
         retroactivo.checked = 0;
+        conFondo.checked = 0;
         for (let i = 0; i < vardatanomina.length; i++) {
             if (vardatanomina[i].getAttribute('tp-select') != null) {
                 if (vardatanomina[i].id == 'tipper') {
@@ -439,25 +443,27 @@
             const getDataTabNom = JSON.parse(localStorage.getItem('objectDataTabNom'));
             for (i in getDataTabNom) {
                 if (getDataTabNom[i].key == "nom") {
-                    clvnom.value       = getDataTabNom[i].data.clvnom;
-                    fecefecnom.value   = getDataTabNom[i].data.fecefecnom;
-                    salmen.value       = getDataTabNom[i].data.salmen;
-                    salmenact.value    = getDataTabNom[i].data.salmenact;
-                    fechefectact.value = getDataTabNom[i].data.fechefectact;
-                    tipper.value       = getDataTabNom[i].data.tipper;
-                    tipemp.value       = getDataTabNom[i].data.tipemp;
-                    nivemp.value       = getDataTabNom[i].data.nivemp;
-                    tipjor.value       = getDataTabNom[i].data.tipjor;
-                    tipcon.value       = getDataTabNom[i].data.tipcon;
-                    fecing.value       = getDataTabNom[i].data.fecing;
-                    fecant.value       = getDataTabNom[i].data.fecant;
-                    vencon.value       = getDataTabNom[i].data.vencon;                   
-                    tipcontra.value    = getDataTabNom[i].data.tipcontra;
-                    tippag.value       = getDataTabNom[i].data.tippag;
-                    banuse.value       = getDataTabNom[i].data.banuse;
-                    politica.value     = getDataTabNom[i].data.politica;
-                    diferencia.value   = getDataTabNom[i].data.diferencia;
-                    transporte.value   = getDataTabNom[i].data.transporte;
+                    clvnom.value        = getDataTabNom[i].data.clvnom;
+                    fecefecnom.value    = getDataTabNom[i].data.fecefecnom;
+                    salmen.value        = getDataTabNom[i].data.salmen;
+                    salmenact.value     = getDataTabNom[i].data.salmenact;
+                    fechefectact.value  = getDataTabNom[i].data.fechefectact;
+                    tipper.value        = getDataTabNom[i].data.tipper;
+                    tipemp.value        = getDataTabNom[i].data.tipemp;
+                    nivemp.value        = getDataTabNom[i].data.nivemp;
+                    tipjor.value        = getDataTabNom[i].data.tipjor;
+                    tipcon.value        = getDataTabNom[i].data.tipcon;
+                    fecing.value        = getDataTabNom[i].data.fecing;
+                    fecant.value        = getDataTabNom[i].data.fecant;
+                    vencon.value        = getDataTabNom[i].data.vencon;                   
+                    tipcontra.value     = getDataTabNom[i].data.tipcontra;
+                    tippag.value        = getDataTabNom[i].data.tippag;
+                    banuse.value        = getDataTabNom[i].data.banuse;
+                    politica.value      = getDataTabNom[i].data.politica;
+                    diferencia.value    = getDataTabNom[i].data.diferencia;
+                    transporte.value    = getDataTabNom[i].data.transporte;
+                    retroactivo.checked = getDataTabNom[i].data.retroactivo;
+                    conFondo.checked    = getDataTabNom[i].data.confondo;
                     if (getDataTabNom[i].data.banuse != 999) {
                         banuse.disabled = false;
                         cunuse.disabled = false;
@@ -468,7 +474,13 @@
                         cunuse.setAttribute("maxlength", 18);
                     }
                     const cuentaavalor = getDataTabNom[i].data.cunuse;
-                    setTimeout(() => { cunuse.value = cuentaavalor }, 2000);
+                    const categoriaDat = getDataTabNom[i].data.categoria;
+                    const pagoporEmpld = getDataTabNom[i].data.pagopor;
+                    setTimeout(() => {
+                        cunuse.value       = cuentaavalor;
+                        categoriaEmp.value = categoriaDat;
+                        pagoPorEmple.value = pagoporEmpld;
+                    }, 3000);
                     if (localStorage.getItem("modeedit") != null) {
                         ultSdi.value = getDataTabNom[i].data.ultSdi;
                     }
@@ -554,6 +566,8 @@
         document.getElementById('infobankch').classList.add("d-none");
         document.getElementById('infobankct').classList.add("d-none");
         fvalidatebuttonsactionmain();
+        fasignsdates();
+        transporte.value = 0;
     }
 
     fclearlocsto = (type) => {
@@ -580,8 +594,6 @@
                                 title: "Correcto", showConfirmButton: false, timer: 1500, icon: "success",
                                 allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false
                             });
-                            fasignsdates();
-                            transporte.value = 0;
                         }
                     });
                 } else {
@@ -931,7 +943,7 @@
     });
 
     btnSaveDataNomina.addEventListener('click', () => {
-        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tippag, tiposueldo, politica, diferencia, transporte];
+        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tippag, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple];
         let validate = 0;
         for (let t = 0; t < arrInput.length; t++) {
             if (arrInput[t].hasAttribute("tp-select")) {
@@ -1037,6 +1049,8 @@
                                 politica: politica.value,
                                 diferencia: diferencia.value,
                                 transporte: transporte.value,
+                                categoria: categoriaEmp.value,
+                                pagopor: pagoPorEmple.value,
                                 tippag: tippag.value,
                                 banuse: banuse.value, cunuse: cunuse.value,
                             }
@@ -1205,7 +1219,10 @@
         const labelDife = document.getElementById('label-diferencia');
         const labelTran = document.getElementById('label-transporte');
         const labelRetr = document.getElementById('label-retroactivo');
-        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran, labelRetr];
+        const labelCFon = document.getElementById('label-confondo');
+        const labelCemp = document.getElementById('label-categoriaemp');
+        const labelPagp = document.getElementById('label-pagopor');
+        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran, labelRetr, labelCemp, labelPagp, labelCFon];
         for (let i = 0; i < arrInput.length; i++) {
             arrInput[i].classList.add('col-ico', 'font-weight-bold');
         }

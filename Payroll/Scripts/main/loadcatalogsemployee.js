@@ -124,6 +124,8 @@
     const tipjor = document.getElementById('tipjor');
     const tipcon = document.getElementById('tipcon');
     const tipcontra = document.getElementById('tipcontra');
+    const categrEmp = document.getElementById('categoria_emp');
+    const pagoPorEm = document.getElementById('pago_por');
     //const motinc = document.getElementById('motinc');
 
 
@@ -242,6 +244,10 @@
     floaddatagentype(tippag, 0, 'Active/Desactive', 0, 22, 'nom');
 
     floaddatagentype(tiposueldo, 0, 'Active/Desactive', 0, 37, 'nom');
+
+    floaddatagentype(categrEmp, 0, 'Active/Desactive', 0, 42, 'nom');
+
+    floaddatagentype(pagoPorEm, 0, 'Active/Desactive', 0, 43, 'nom');
 
     floaddatanacionalidades = () => {
         try {

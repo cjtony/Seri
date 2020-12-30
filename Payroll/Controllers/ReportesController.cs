@@ -399,6 +399,10 @@ namespace Payroll.Controllers
                         worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
                         worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR GASTO";
 
+                        ii += 1;
+                        worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
+                        worksheet.Cells[1, ii + 1].Value = "TOTAL GENERAL";
+
                         // * INICIO CODIGO NUEVO * \\
 
                         //listRenglonesC1 = reportDao.sp_Renglones_HC_Consecutivo(keyOptionSel, numberPeriod, typePeriod, yearPeriod, 0);
@@ -599,19 +603,7 @@ namespace Payroll.Controllers
 
                                 cant1 = RenglonesNom.Length;
                                 cant2 = cant1 + RenglonesNomDeduc.Length;
-                                cant3 = cant2 + RenglonesNomEspejo.Length;
-
-                                //worksheet.Cells[p + 1, cant1 + 2 + 30].Style.Numberformat.Format = "0.00";
-                                //worksheet.Cells[p + 1, cant1 + 2 + 30].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                                //worksheet.Cells[p + 1, cant1 + 2 + 30].Value = Total_Percepciones_Fiscal;
-                                //m1 = m;
-
-                                //int rest1 = 0;
-                                //if (RenglonesNomDeduc.Length > cant1) {
-                                //    rest1 = RenglonesNomDeduc.Length - cant1;
-                                //} else {
-                                //    rest1 = cant1 - RenglonesNomDeduc.Length;
-                                //}
+                                cant3 = cant2 + RenglonesNomEspejo.Length; 
 
                                 Total_Deducciones_Fiscal = 0;
 
@@ -630,10 +622,6 @@ namespace Payroll.Controllers
                                     }
                                 }
 
-                                //worksheet.Cells[p + 1, cant1 + m + rest1 + 30].Style.Numberformat.Format = "0.00";
-                                //worksheet.Cells[p + 1, cant1 + m + rest1 + 30].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                                //worksheet.Cells[p + 1, cant1 + m + rest1 + 30].Value = Total_Deducciones_Fiscal;
-                                //m2 = m + m1;
 
                                 ////// Monto neto a pagar (FISCAL)
                                 renglonNoEspejo = reportDao.sp_Liquidos_Espejo_No_Espejo(business, typePeriod, numberPeriod, yearPeriod, 0, payroll);
@@ -641,18 +629,6 @@ namespace Payroll.Controllers
                                 worksheet.Cells[p + 1, cant1 + m + 2 + 30].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
                                 worksheet.Cells[p + 1, cant1 + m + 2 + 30].Value = renglonNoEspejo.dSaldo;
 
-                                //cant2 = RenglonesNomDeduc.Length;
-
-                                //int rest2 = 0;
-
-                                //if (RenglonesNomEspejo.Length > cant2)
-                                //{
-                                //    rest2 = RenglonesNomEspejo.Length - cant2;
-                                //}
-                                //else
-                                //{
-                                //    rest2 = cant2 - RenglonesNomEspejo.Length;
-                                //}
                                 Total_Percepciones_Espejo = 0;
                                 for (m = 0; m < RenglonesNomEspejo.Count(); m++)
                                 {
@@ -668,25 +644,6 @@ namespace Payroll.Controllers
                                         worksheet.Cells[p + 1, cant2 + m + 3 + 30].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
                                     }
                                 }
-                                //int re1 = cant2 + cant1 + m + rest2 + rest3 + 30 + 1;
-                                //worksheet.Cells[p + 1, cant2 + cant1 + m + rest2 + rest3 + 30].Style.Numberformat.Format = "0.00";
-                                //worksheet.Cells[p + 1, cant2 + cant1 + m + rest2 + rest3 + 30].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                                //worksheet.Cells[p + 1, cant2 + cant1 + m + rest2 + rest3 + 30].Value = Total_Percepciones_Espejo;
-                                ////// m1 += 43;
-                                //// m3 = m2 + m;
-
-                                //cant3 = RenglonesNomEspejo.Length;
-
-                                //int rest4 = 0;
-
-                                //if (RenglonesNomDeducEspejo.Length > cant3)
-                                //{
-                                //    rest4 = RenglonesNomDeducEspejo.Length - cant3;
-                                //}
-                                //else
-                                //{
-                                //    rest4 = cant3 - RenglonesNomDeducEspejo.Length;
-                                //}
 
                                 Total_Deducciones_Espejo = 0;
 
@@ -708,17 +665,11 @@ namespace Payroll.Controllers
                                 renglonSiEspejo = reportDao.sp_Liquidos_Espejo_No_Espejo(business, typePeriod, numberPeriod, yearPeriod, 1, payroll);
                                 worksheet.Cells[p + 1, cant3 + m + 3 + 30].Style.Numberformat.Format = "0.00";
                                 worksheet.Cells[p + 1, cant3 + m + 3 + 30].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                                worksheet.Cells[p + 1, cant3 + m + 3 + 30].Value = Total_Deducciones_Espejo;
+                                worksheet.Cells[p + 1, cant3 + m + 3 + 30].Value = renglonSiEspejo.dSaldo;
 
-                                ////// Neto a Pagar Espejo
-
-                                //worksheet.Cells[p + 1, cant1 + cant2 + cant3 + m + rest2 + rest3 + 30 + 2].Style.Numberformat.Format = "0.00";
-                                //worksheet.Cells[p + 1, cant1 + cant2 + cant3 + m + rest2 + rest3 + 30 + 2].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
-                                //worksheet.Cells[p + 1, cant1 + cant2 + cant3 + m + rest2 + rest3 + 30 + 2].Value = Total_Percepciones_Espejo - Total_Deducciones_Espejo;
-
-                                //worksheet.Cells[p + 1, cant1 + cant2 + cant3 + m + rest2 + rest3 + 30 + 3].Style.Numberformat.Format = "0.00";
-                                //worksheet.Cells[p + 1, cant1 + cant2 + cant3 + m + rest2 + rest3 + 30 + 3].Style.Fill.SetBackground(System.Drawing.Color.LightCyan);
-                                //worksheet.Cells[p + 1, cant1 + cant2 + cant3 + m + rest2 + rest3 + 30 + 3].Value = Total_Percepciones_Fiscal - Total_Deducciones_Fiscal + Total_Percepciones_Espejo - Total_Deducciones_Espejo;
+                                worksheet.Cells[p + 1, cant3 + m + 4 + 30].Style.Numberformat.Format = "0.00";
+                                worksheet.Cells[p + 1, cant3 + m + 4 + 30].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
+                                worksheet.Cells[p + 1, cant3 + m + 4 + 30].Value = renglonNoEspejo.dSaldo + renglonSiEspejo.dSaldo;
 
                                 p += 1;
                             }
