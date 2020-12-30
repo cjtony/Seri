@@ -80,9 +80,11 @@
           politica    = document.getElementById('politica'),
           diferencia  = document.getElementById('diferencia'),
           transporte  = document.getElementById('transporte'),
-          retroactivo = document.getElementById('retroactivo');
+          retroactivo = document.getElementById('retroactivo'),
+          categoriaem = document.getElementById('categoria_emp'),
+          pagopor     = document.getElementById('pago_por');
 
-    const dataNomina = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, cunuse, banuse, tiposueldo, politica, diferencia, transporte, retroactivo];
+    const dataNomina = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, cunuse, banuse, tiposueldo, politica, diferencia, transporte, retroactivo, categoriaem, pagopor];
 
     for (let i = 0; i < dataNomina.length; i++) {
         dataNomina[i].style.transition = "1s";

@@ -393,6 +393,33 @@ namespace Payroll.Models.Daos
                     } else {
                         nominaBean.iRetroactivo = 0;
                     }
+
+                    if (data["Con_fondo_ahorro"].ToString().Length != 0)
+                    {
+                        if (data["Con_fondo_ahorro"].ToString() == "False")
+                        {
+                            nominaBean.iConFondo = 0;
+                        }
+                        else
+                        {
+                            nominaBean.iConFondo = 1;
+                        }
+                    }
+                    else
+                    {
+                        nominaBean.iConFondo = 0;
+                    }
+
+                    if (data["Cg_categoria_id"].ToString().Length != 0) {
+                        nominaBean.iCategoriaId = Convert.ToInt32(data["Cg_categoria_id"]);
+                    } else {
+                        nominaBean.iCategoriaId = 0;
+                    }
+                    if (data["Cg_pago_por"].ToString().Length != 0) {
+                        nominaBean.iPagoPor = Convert.ToInt32(data["Cg_pago_por"]);
+                    } else {
+                        nominaBean.iPagoPor = 0;
+                    }
                     nominaBean.sUlt_sdi = data["Ult_sdi"].ToString();
                     nominaBean.sCuentaCheques = (String.IsNullOrEmpty(data["Cta_Cheques"].ToString())) ? "" : data["Cta_Cheques"].ToString();
                     nominaBean.iUsuarioAlta_id = Convert.ToInt32(data["Usuario_Alta_id"].ToString());
