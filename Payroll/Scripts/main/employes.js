@@ -891,7 +891,7 @@
                             btnsaveeditdatanomina.classList.remove('d-none');
                             document.getElementById('content-new-inpt-movsal').classList.remove('d-none');
                             document.getElementById('content-new-inpt-fecsal').classList.remove('d-none');
-                            document.getElementById('content-new-inpt-ultsdi').classList.remove('d-none');
+                            //document.getElementById('content-new-inpt-ultsdi').classList.remove('d-none');
                             document.getElementById('content-new-inpt-movsal').innerHTML = `
                                 <label for="motmovisal" class="col-sm-4 col-form-label font-labels col-ico font-weight-bold" id="label-motmovi">
                                     Motivo del movimiento
@@ -1329,6 +1329,42 @@
             }
         }
     }
+
+    /* FUNCION QUE GUARDA EL CAMBIO DEL ULTIMO SDI */
+    fsaveeditultsdi = () => {
+        try {
+            let sdiSend = 0.00;
+            if (ultSdi.value != "") {
+                sdiSend = parseFloat(ultSdi.value);
+            }
+            const dataSend = { clvNom: clvnom.value, ultSdi: parseFloat(sdiSend), keyEmployee: clvemp.value };
+            $.ajax({
+                url: "../SaveDataGeneral/SaveUltSdi",
+                type: "POST",
+                data: dataSend,
+                beforeSend: () => {
+                    btnsaveeditdataimss.disabled = true;
+                }, success: (request) => {
+                    if (request.bandera == true) {
+                        btnsaveeditdataimss.disabled = false;
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
     /* EJECUCION DE FUNCION QUE EDITA LOS DATOS GENERALES DEL EMPLEADO */
     btnsaveeditdatagen.addEventListener('click', fsaveeditdatagen);
     /* FUNCION QUE GUARDA LA EDICION DE LOS DATOS DEL IMSS DEL EMPLEADO */
@@ -1349,19 +1385,6 @@
                     } else {
                         fechAct = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
                     }
-                    //if (arrInput[i].value != "" && attrdate == "higher") {
-                    //    if (localStorage.getItem("modeedit") == null) {
-                    //        if (arrInput[i].value < fechAct) {
-                    //            fshowtypealert('Atención', 'La fecha de ' + arrInput[i].placeholder + ' seleccionada ' + arrInput[i].value + ' no puede ser menor a la fecha actual', 'warning', arrInput[i], 1);
-                    //            validatedatanom = 1;
-                    //            break;
-                    //        }
-                    //    }
-                    //} else {
-                    //    fshowtypealert('Atención', 'Completa el campo ' + String(arrInput[i].placeholder), 'warning', arrInput[i], 0);
-                    //    validatedatanom = 1;
-                    //    break;
-                    //}
                 } else {
                     if (arrInput[i].hasAttribute("tp-select")) {
                         if (arrInput[i].value == "0") {
@@ -1384,19 +1407,26 @@
                     url: "../EditDataGeneral/EditDataImss",
                     type: "POST",
                     data: dataSendImssEdit,
+                    beforeSend: () => {
+                        btnsaveeditdataimss.disabled = true;
+                    },
                     success: (data) => {
                         if (data.Bandera === true && data.MensajeError === "none") {
-                            Swal.fire({
-                                title: 'Correcto!', text: "Datos del imss actualizados", icon: 'success',
-                                showClass: { popup: 'animated fadeInDown faster' },
-                                hideClass: { popup: 'animated fadeOutUp faster' },
-                                confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
-                            }).then((acepta) => {
-                                floaddatatabgeneral(clvemp.value);
-                                $("html, body").animate({
-                                    scrollTop: $('#nav-imss-tab').offset().top - 50
-                                }, 1000);
-                            });
+                            fsaveeditultsdi();
+                            setTimeout(() => {
+                                Swal.fire({
+                                    title: 'Correcto!', text: "Datos del imss actualizados", icon: 'success',
+                                    showClass: { popup: 'animated fadeInDown faster' },
+                                    hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    btnsaveeditdataimss.disabled = false;
+                                    floaddatatabgeneral(clvemp.value);
+                                    $("html, body").animate({
+                                        scrollTop: $('#nav-imss-tab').offset().top - 50
+                                    }, 1000);
+                                });
+                            }, 2000);
                         } else {
                             Swal.fire({
                                 title: 'Error!', text: "Contacte a sistemas", icon: 'error',
@@ -1447,7 +1477,7 @@
                 tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
                 empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
                 tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: clvemp.value, tiposueldo: tiposueldo.value, politica: politica.value,
-                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE
+                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE, ultSdi: ultSdi.value
             };
         } else {
             url = "../EditDataGeneral/EditDataNomina";
