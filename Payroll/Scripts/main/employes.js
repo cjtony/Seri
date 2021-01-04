@@ -1333,7 +1333,11 @@
     /* FUNCION QUE GUARDA EL CAMBIO DEL ULTIMO SDI */
     fsaveeditultsdi = () => {
         try {
-            const dataSend = { clvNom: clvnom.value, ultSdi: ultSdi.value, keyEmployee: clvemp.value };
+            let sdiSend = 0.00;
+            if (ultSdi.value != "") {
+                sdiSend = parseFloat(ultSdi.value);
+            }
+            const dataSend = { clvNom: clvnom.value, ultSdi: parseFloat(sdiSend), keyEmployee: clvemp.value };
             $.ajax({
                 url: "../SaveDataGeneral/SaveUltSdi",
                 type: "POST",
