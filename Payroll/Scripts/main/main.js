@@ -123,9 +123,11 @@
     const nivest          = document.getElementById('nivest');
     const nivsoc          = document.getElementById('nivsoc');
     const fecefe          = document.getElementById('fecefe');
+    const ultSdi          = document.getElementById('view-ultSdi');
     const btnsaveeditdataimss = document.getElementById('btn-save-edit-data-imss');
     const vardataimss = [clvimss, fechefecactimss, fecefe, imss, rfc, curp, nivest, nivsoc];
     fclearfieldsvar2 = () => {
+        ultSdi.value = 0;
         for (let i = 0; i < vardataimss.length; i++) {
             if (vardataimss[i].getAttribute('tp-select') != null) {
                 vardataimss[i].value = "0";
@@ -161,8 +163,7 @@
     const conFondo     = document.getElementById('con_fondo');
     const categoriaEmp = document.getElementById('categoria_emp');
     const pagoPorEmple = document.getElementById('pago_por');
-    const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
-    const ultSdi = document.getElementById('view-ultSdi');
+    const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina'); 
 
     const vardatanomina = [
         clvnom, fechefectact, fecefecnom, tipper, salmen, salmenact, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple
@@ -317,7 +318,7 @@
             `;
             document.getElementById('content-new-inpt-movsal').classList.remove("d-none");
             document.getElementById('content-new-inpt-fecsal').classList.remove("d-none");
-            document.getElementById('content-new-inpt-ultsdi').classList.remove("d-none");
+            //document.getElementById('content-new-inpt-ultsdi').classList.remove("d-none");
             cntIFechMovi.classList.remove('d-none');
             fLoadMotivesMovements('motmovisal');
             fLoadMotivesMovements('motmovi');
@@ -436,6 +437,7 @@
                     curp.value            = getDataTabImss[i].data.curp;
                     nivest.value          = getDataTabImss[i].data.nivest;
                     nivsoc.value          = getDataTabImss[i].data.nivsoc;
+                    ultSdi.value          = getDataTabImss[i].data.sdi;
                 }
             }
         }
@@ -484,6 +486,7 @@
                     if (localStorage.getItem("modeedit") != null) {
                         ultSdi.value = getDataTabNom[i].data.ultSdi;
                     }
+                    ultSdi.value = getDataTabNom[i].data.ultSdi;
                 }
             }
         }
@@ -541,12 +544,12 @@
         document.getElementById('content-new-inpt-motmovi').innerHTML = "";
         document.getElementById('content-new-inpt-movsal').innerHTML = "";
         document.getElementById('content-new-inpt-fecsal').innerHTML = "";
-        document.getElementById('content-new-inpt-ultsdi').innerHTML = "";
+        //document.getElementById('content-new-inpt-ultsdi').innerHTML = "";
         document.getElementById('content-new-inpt-fechmovits').classList.add('d-none');
         document.getElementById('content-new-inpt-motmovi').classList.add('d-none');
         document.getElementById('content-new-inpt-movsal').classList.add('d-none');
         document.getElementById('content-new-inpt-fecsal').classList.add('d-none');
-        document.getElementById('content-new-inpt-ultsdi').classList.add('d-none');
+        //document.getElementById('content-new-inpt-ultsdi').classList.add('d-none');
         fchecklocalstotab();
         fselectlocalstotab();
         floaddatatabs();
@@ -926,6 +929,7 @@
                                 curp: curp.value,
                                 nivest: nivest.value,
                                 nivsoc: nivsoc.value,
+                                sdi: ultSdi.value
                             }
                         };
                         objectDataTabImss.dataimss = dataLocSto;

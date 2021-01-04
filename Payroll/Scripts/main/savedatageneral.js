@@ -514,6 +514,7 @@
     const curp = document.getElementById('curp');
     const nivest = document.getElementById('nivest');
     const nivsoc = document.getElementById('nivsoc');
+    const ultSdi = document.getElementById('view-ultSdi');
 
     /*
      * Funcion que guarda los datos del imss
@@ -617,7 +618,7 @@
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
             tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value, politica: politica.value,
-            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend
+            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend, ultSdi: parseFloat(ultSdi.value)
         };
         //console.log('Datos de nomina');
         //console.log(dataSend);
