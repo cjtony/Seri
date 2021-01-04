@@ -418,7 +418,33 @@ namespace Payroll.Models.Daos
 
     }
     public class DatosNominaDao : Conexion
-    {
+    { 
+
+        public DatosNominaBean sp_Actualiza_Ult_Sdi(int clvNom, double ultSdi, int keyBusiness, int keyEmployee)
+        {
+            DatosNominaBean datosNominaBean = new DatosNominaBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Actualiza_Ult_Sdi", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdNomina", clvNom));
+                cmd.Parameters.Add(new SqlParameter("@UltSdi",   ultSdi));
+                cmd.Parameters.Add(new SqlParameter("@EmpresaId", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@EmpleadoId", keyEmployee));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    datosNominaBean.sMensaje = "SUCCESS";
+                } else {
+                    datosNominaBean.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                datosNominaBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosNominaBean;
+        }
+
         public InfoPositionInsert sp_Valida_Posicion_Carga_Masiva(int keyBusiness, int codePosition)
         {
             InfoPositionInsert infoPositionInsert = new InfoPositionInsert();
@@ -446,7 +472,7 @@ namespace Payroll.Models.Daos
             return infoPositionInsert;
         }
 
-        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, int categoria, int pagopor, int fondo)
+        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, int categoria, int pagopor, int fondo, double sdi)
         {
             DatosNominaBean datoNominaBean = new DatosNominaBean();
             try
@@ -486,6 +512,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@categoria", categoria));
                 cmd.Parameters.Add(new SqlParameter("@pago", pagopor));
                 cmd.Parameters.Add(new SqlParameter("@fondo", fondo));
+                cmd.Parameters.Add(new SqlParameter("@sdi", sdi));
                 if (cmd.ExecuteNonQuery() > 0) {
                     datoNominaBean.sMensaje = "success";
                 } else {
