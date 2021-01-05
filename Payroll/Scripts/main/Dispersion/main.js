@@ -35,6 +35,8 @@
     const periodis1   = document.getElementById('periodis1');
     const datedis1 = document.getElementById('datedis1');
 
+    const optionGroup = document.getElementById('option-group');
+
     //const isMirror = document.getElementById('ismirror');
 
     const spanish = {
@@ -376,6 +378,72 @@
         }
     }
 
+    // Destruimos la tabla
+    fDestroyTable = (type) => {
+        if (type == "table") {
+            const dataTable = $("#dataTableSpecial").DataTable();
+            dataTable.destroy();
+            document.getElementById('data-groupbusiness').innerHTML = "";
+        }
+    }
+
+    fLoadGroupBusiness = (type, selectid) => {
+        fDestroyTable("table");
+        try {
+            if (type == "table") {
+                $("#groupBusiness").modal("show");
+            }
+            $.ajax({
+                url: "../Dispersion/LoadGroupBusiness",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == true && request.MensajeError == "none") {
+                        if (type == "table") {
+                            if (request.Datos.length > 0) {
+                                document.getElementById('data-groupbusiness').innerHTML = request.Html;
+                            }
+                            setTimeout(() => {
+                                $("#dataTableSpecial").DataTable({
+                                    language: spanish
+                                });
+                            }, 500);
+                        } else {
+                            for (let i = 0; i < request.Datos.length; i++) {
+                                document.getElementById(selectid).innerHTML += `<option value="${request.Datos[i].iIdGrupoEmpresa}">
+                                    ${request.Datos[i].sNombreGrupo}
+                                </option>`;
+                            }
+                        }
+                    } else {
+                        if (type == "table") {
+                            setTimeout(() => {
+                                $("#dataTableSpecial").DataTable({
+                                    language: spanish
+                                });
+                            }, 500);
+                        }
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     /* Funcion que carga informacion en los inputs de dispersion */
     fLoadInfoDataDispersion = () => {
         const d = new Date();
@@ -392,6 +460,47 @@
         datedis1.value = yer + '-' + mth + '-' + day;
     }
 
+    fLoadGroupBusiness("select", "option-group");
+
+
+    // Funcion que añade los campos nuevos
+    fLoadNewFieldsOptionDisEsp = () => {
+        //floadgroupbusiness("select", "option-group");
+        containerBtnsProDepBankSpecial.innerHTML += `
+            <div class="row animated fadeInDown delay-1s mt-4 border-left-primary border-right-primary shadow rounded p-2">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-form-label font-labels" for="type-dispersion">Tipo dispersion</label>
+                        <select class="form-control form-control-sm" id="type-dispersion">
+                            <option value="none">Selecciona</option>
+                            <option value="NOM">Nomina</option>
+                            <option value="INT">Interbancarios</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group form-check mt-1 rounded text-primary font-weight-bold mt-4" style="">
+                        <input type="checkbox" class="form-check-input" id="ismirrorspecial">
+                        <label class="form-check-label" for="ismirrorspecial">Espejo</label>
+                    </div>
+                </div>
+                <div class="col-md-8 offset-2"><hr /></div>
+                <div class="col-md-4 offset-2 text-center">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-dispersion-special" onclick="fnSendDataDispersionSpecial();"> <i class="fas fa-play mr-2"></i>Procesar depositos</button>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-report-ds" onclick="fnSendReportDs();"> <i class="fas fa-file mr-2"></i> Generar reporte </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    //fLoadNewFieldsOptionDisEsp();
+
     fToDeployInfoDispersionEspecial = () => {
         btndesplegarespecialtab.innerHTML = `<i class="fas fa-play-circle mr-2"></i> Desplegar `;
         btndesplegarespecialtab.classList.remove('active'); 
@@ -399,8 +508,8 @@
         tableDataDepositsSpecial.innerHTML = '';
         alertDataDepositsSpecial.innerHTML = "";
         containerBtnsProDepBankSpecial.innerHTML = "";
-        document.getElementById('divbtndownzip1').innerHTML = "";
-        document.getElementById('div-controls1').innerHTML = "";
+        document.getElementById('divbtndownzip1').innerHTML    = "";
+        document.getElementById('div-controls1').innerHTML     = "";
         document.getElementById('divbtndownzipint1').innerHTML = "";
         document.getElementById('div-controls-int1').innerHTML = "";
         try {
@@ -411,6 +520,13 @@
                     fShowTypeAlert('Atencion', 'Completa el campo ' + String(arrInput[i].placeholder), 'warning', arrInput[i], 2);
                     validate = 1;
                     break;
+                }
+                if (arrInput[i].id == "option-group") {
+                    if (optionGroup.value == "none") {
+                        fShowTypeAlert('Atención', 'Selecciona un grupo de empresas', 'warning', arrInput[i], 2);
+                        validate = 1;
+                        break;
+                    }
                 }
             }
             if (validate === 0) {
@@ -490,46 +606,46 @@
                                                 </tr>
                                             `;
                                         }
-                                        fLoadGroupBusiness("select", "option-group");
-                                        containerBtnsProDepBankSpecial.innerHTML += `
-                                            <div class="row animated fadeInDown delay-1s mt-4 border-left-primary border-right-primary shadow rounded p-2">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label font-labels" for="option-group">Grupo de empresas</label>
-                                                        <select class="form-control form-control-sm" id="option-group">
-                                                            <option value="none">Selecciona</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label font-labels" for="type-dispersion">Tipo dispersion</label>
-                                                        <select class="form-control form-control-sm" id="type-dispersion">
-                                                            <option value="none">Selecciona</option>
-                                                            <option value="NOM">Nomina</option>
-                                                            <option value="INT">Interbancarios</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group form-check mt-1 rounded text-primary font-weight-bold mt-4" style="">
-                                                        <input type="checkbox" class="form-check-input" id="ismirrorspecial">
-                                                        <label class="form-check-label" for="ismirrorspecial">Espejo</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8 offset-2"><hr/></div>
-                                                <div class="col-md-4 offset-2 text-center">
-                                                    <div class="form-group">
-                                                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-dispersion-special" onclick="fnSendDataDispersionSpecial();"> <i class="fas fa-play mr-2"></i>Procesar depositos</button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 text-center">
-                                                    <div class="form-group">
-                                                        <button class="btn btn-primary btn-sm" type="button" id="btn-send-report-ds" onclick="fnSendReportDs();"> <i class="fas fa-file mr-2"></i> Generar reporte </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        `;
+                                        //fLoadGroupBusiness("select", "option-group");
+                                        //containerBtnsProDepBankSpecial.innerHTML += `
+                                        //    <div class="row animated fadeInDown delay-1s mt-4 border-left-primary border-right-primary shadow rounded p-2">
+                                        //        <div class="col-md-4">
+                                        //            <div class="form-group">
+                                        //                <label class="col-form-label font-labels" for="option-group">Grupo de empresas</label>
+                                        //                <select class="form-control form-control-sm" id="option-group">
+                                        //                    <option value="none">Selecciona</option>
+                                        //                </select>
+                                        //            </div>
+                                        //        </div>
+                                        //        <div class="col-md-4">
+                                        //            <div class="form-group">
+                                        //                <label class="col-form-label font-labels" for="type-dispersion">Tipo dispersion</label>
+                                        //                <select class="form-control form-control-sm" id="type-dispersion">
+                                        //                    <option value="none">Selecciona</option>
+                                        //                    <option value="NOM">Nomina</option>
+                                        //                    <option value="INT">Interbancarios</option>
+                                        //                </select>
+                                        //            </div>
+                                        //        </div>
+                                        //        <div class="col-md-4">
+                                        //            <div class="form-group form-check mt-1 rounded text-primary font-weight-bold mt-4" style="">
+                                        //                <input type="checkbox" class="form-check-input" id="ismirrorspecial">
+                                        //                <label class="form-check-label" for="ismirrorspecial">Espejo</label>
+                                        //            </div>
+                                        //        </div>
+                                        //        <div class="col-md-8 offset-2"><hr/></div>
+                                        //        <div class="col-md-4 offset-2 text-center">
+                                        //            <div class="form-group">
+                                        //                <button class="btn btn-primary btn-sm" type="button" id="btn-send-dispersion-special" onclick="fnSendDataDispersionSpecial();"> <i class="fas fa-play mr-2"></i>Procesar depositos</button>
+                                        //            </div>
+                                        //        </div>
+                                        //        <div class="col-md-4 text-center">
+                                        //            <div class="form-group">
+                                        //                <button class="btn btn-primary btn-sm" type="button" id="btn-send-report-ds" onclick="fnSendReportDs();"> <i class="fas fa-file mr-2"></i> Generar reporte </button>
+                                        //            </div>
+                                        //        </div>
+                                        //    </div>
+                                        //`;
                                     } else {
                                         fShowTypeAlert('Atención!', 'No se encontraron depositos', 'warning', btndesplegarespecialtab, 0);
                                     }
@@ -1009,74 +1125,6 @@
     const icoCloseViewGroupBusiness = document.getElementById('ico-close-view-group-business');
     const btnCloseViewGroupBusiness = document.getElementById('btn-close-view-group-business');
 
-
-
-    // Destruimos la tabla
-    fDestroyTable = (type) => {
-        if (type == "table") {
-            const dataTable = $("#dataTableSpecial").DataTable();
-            dataTable.destroy();
-            document.getElementById('data-groupbusiness').innerHTML = "";
-        }
-    }
-
-    fLoadGroupBusiness = (type, selectid) => {
-        fDestroyTable("table");
-        try {
-            if (type == "table") {
-                $("#groupBusiness").modal("show");
-            }
-            $.ajax({
-                url: "../Dispersion/LoadGroupBusiness",
-                type: "POST",
-                data: {},
-                beforeSend: () => {
-
-                }, success: (request) => {
-                    console.log(request);
-                    if (request.Bandera == true && request.MensajeError == "none") {
-                        if (type == "table") {
-                            if (request.Datos.length > 0) {
-                                document.getElementById('data-groupbusiness').innerHTML = request.Html;
-                            }
-                            setTimeout(() => {
-                                $("#dataTableSpecial").DataTable({
-                                    language: spanish
-                                });
-                            }, 500);
-                        } else {
-                            for (let i = 0; i < request.Datos.length; i++) {
-                                document.getElementById(selectid).innerHTML += `<option value="${request.Datos[i].iIdGrupoEmpresa}">
-                                    ${request.Datos[i].sNombreGrupo}
-                                </option>`;
-                            } 
-                        }
-                    } else {
-                        if (type == "table") {
-                            setTimeout(() => {
-                                $("#dataTableSpecial").DataTable({
-                                    language: spanish
-                                });
-                            }, 500);
-                        }
-                    }
-                }, error: (jqXHR, exception) => {
-                    fcaptureaerrorsajax(jqXHR, exception);
-                }
-            });
-        } catch (error) {
-            if (error instanceof EvalError) {
-                console.error('EvalError: ', error.message);
-            } else if (error instanceof TypeError) {
-                console.error('TypeError: ', error.message);
-            } else if (error instanceof RangeError) {
-                console.error('RangeError: ', error.message);
-            } else {
-                console.error('Error: ', error);
-            }
-        }
-    }
-
     // Guardamos un nuevo grupo de empresas
     fSaveNewGroupBusiness = () => {
         try {
@@ -1157,7 +1205,7 @@
                 if (request.Bandera == true && request.MensajeError == "none") {
                     for (let i = 0; i < request.Datos.length; i++) {
                         document.getElementById('select-business').innerHTML += `<option value="${request.Datos[i].iIdEmpresa}">
-                           ${request.Datos[i].sNombreEmpresa}
+                           [${request.Datos[i].iIdEmpresa}] ${request.Datos[i].sNombreEmpresa}
                         </option>`;
                     }
                 } else if (request.Bandera == false && request.MensajeError == "none") {
@@ -1278,7 +1326,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${request.Datos[i].fRfc}</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">${request.Datos[i].sNombreEmpresa}</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"> <small class="text-primary"># ${request.Datos[i].iIdEmpresa}</small> ${request.Datos[i].sNombreEmpresa}</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-building fa-2x text-gray-300"></i>

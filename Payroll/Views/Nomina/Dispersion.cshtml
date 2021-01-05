@@ -155,11 +155,11 @@
                                         <span class="text">Nuevo registro</span>
                                     </button>
                                     @*<button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btn-view-banks">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-piggy-bank"></i>
-                                            </span>
-                                            <span class="text">Bancos</span>
-                                        </button>*@
+                <span class="icon text-white-50">
+                    <i class="fas fa-piggy-bank"></i>
+                </span>
+                <span class="text">Bancos</span>
+            </button>*@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -182,6 +182,14 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
+                                        <label class="col-form-label font-labels" for="option-group">Grupo de empresas</label>
+                                        <select class="form-control form-control-sm" id="option-group">
+                                            <option value="none">Selecciona</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 offset-4">
+                                    <div class="form-group">
                                         <label class="col-form-label font-labels"></label>
                                         <button id="btn-desplegar-especial-tab" class="btn btn-primary btn-sm btn-block mt-2 rounded shadow">
                                             <i class="fas fa-play-circle mr-2"></i> Desplegar
@@ -192,7 +200,8 @@
                                     <div id="alert-data-deposits-special" class="text-center"></div>
                                     <table class="table table-bordered table-hover table-sm shadow rounded" id="table-data-deposits-especial">
                                     </table>
-                                    <div id="container-btns-process-deposits-bank-special"></div>
+                                    <div id="container-btns-process-deposits-bank-special">
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-6 offset-3 mt-4" id="div-show-alert-loading1"></div>
                                         <div class="col-md-6 mt-4">
@@ -727,7 +736,7 @@
 </div>
 
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=1.7"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=1.9"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/databankspecial.js?v=1.0"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/mainspecial.js?v=0.8"></script>
