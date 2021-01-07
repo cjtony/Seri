@@ -646,6 +646,38 @@ namespace Payroll.Models.Daos
             }
             return datosCuenta;
         }
+
+        public List<DataDepositsBankingBean> sp_Obtiene_Depositos_Bancarios_Especial(int keyGroup, int yearDispersion, int typePeriod, int period, string type)
+        {
+            List<DataDepositsBankingBean> dataDeposits = new List<DataDepositsBankingBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Obtiene_Depositos_Bancarios_Especial", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdGrupo", keyGroup));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearDispersion));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                cmd.Parameters.Add(new SqlParameter("@IdPeriodo", typePeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        dataDeposits.Add(new DataDepositsBankingBean {
+                            iIdEmpresa = keyGroup,
+                            iIdBanco   = Convert.ToInt32(data["banco"].ToString()),
+                            iIdRenglon = Convert.ToInt32(data["Renglon_id"].ToString()),
+                            iDepositos = Convert.ToInt32(data["depositos"].ToString()),
+                            sImporte   = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["importe"])))
+                        });
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataDeposits;
+        }
         public List<DataDepositsBankingBean> sp_Obtiene_Depositos_Bancarios(int keyBusiness, int yearDispersion, int typePeriodDisp, int periodDispersion, string type)
         {
             List<DataDepositsBankingBean> listDaDepBankingBean = new List<DataDepositsBankingBean>();

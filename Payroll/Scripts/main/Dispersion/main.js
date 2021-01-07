@@ -450,7 +450,7 @@
         yeardis.value  = d.getFullYear();
         yeardis1.value = d.getFullYear();
         yeardis.setAttribute('readonly', 'true');
-        yeardis1.setAttribute('readonly', 'true');
+        //yeardis1.setAttribute('readonly', 'true');
         periodis.setAttribute('readonly', 'true');
         //periodis1.setAttribute('readonly', 'true');
         const day = (d.getDate() < 10) ? "0" + d.getDate() : d.getDate();
@@ -468,7 +468,7 @@
         //floadgroupbusiness("select", "option-group");
         containerBtnsProDepBankSpecial.innerHTML += `
             <div class="row animated fadeInDown delay-1s mt-4 border-left-primary border-right-primary shadow rounded p-2">
-                <div class="col-md-4">
+                <div class="col-md-3 text-center">
                     <div class="form-group">
                         <label class="col-form-label font-labels" for="type-dispersion">Tipo dispersion</label>
                         <select class="form-control form-control-sm" id="type-dispersion">
@@ -478,28 +478,25 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3 text-center">
                     <div class="form-group form-check mt-1 rounded text-primary font-weight-bold mt-4" style="">
                         <input type="checkbox" class="form-check-input" id="ismirrorspecial">
                         <label class="form-check-label" for="ismirrorspecial">Espejo</label>
                     </div>
                 </div>
-                <div class="col-md-8 offset-2"><hr /></div>
-                <div class="col-md-4 offset-2 text-center">
-                    <div class="form-group">
+                <div class="col-md-3 text-center">
+                    <div class="form-group mt-4">
                         <button class="btn btn-primary btn-sm" type="button" id="btn-send-dispersion-special" onclick="fnSendDataDispersionSpecial();"> <i class="fas fa-play mr-2"></i>Procesar depositos</button>
                     </div>
                 </div>
-                <div class="col-md-4 text-center">
-                    <div class="form-group">
+                <div class="col-md-3 text-center">
+                    <div class="form-group mt-4">
                         <button class="btn btn-primary btn-sm" type="button" id="btn-send-report-ds" onclick="fnSendReportDs();"> <i class="fas fa-file mr-2"></i> Generar reporte </button>
                     </div>
                 </div>
             </div>
         `;
     }
-
-    //fLoadNewFieldsOptionDisEsp();
 
     fToDeployInfoDispersionEspecial = () => {
         btndesplegarespecialtab.innerHTML = `<i class="fas fa-play-circle mr-2"></i> Desplegar `;
@@ -513,7 +510,7 @@
         document.getElementById('divbtndownzipint1').innerHTML = "";
         document.getElementById('div-controls-int1').innerHTML = "";
         try {
-            const arrInput = [yeardis1, periodis1, datedis1];
+            const arrInput = [yeardis1, periodis1, datedis1, optionGroup];
             let validate = 0;
             for (let i = 0; i < arrInput.length; i++) {
                 if (arrInput[i].value === "") {
@@ -522,7 +519,7 @@
                     break;
                 }
                 if (arrInput[i].id == "option-group") {
-                    if (optionGroup.value == "none") {
+                    if (arrInput[i].value == "none") {
                         fShowTypeAlert('Atención', 'Selecciona un grupo de empresas', 'warning', arrInput[i], 2);
                         validate = 1;
                         break;
@@ -531,13 +528,14 @@
             }
             if (validate === 0) {
                 $.ajax({
-                    url: "../Dispersion/ToDeployDispersion",
+                    url: "../Dispersion/ToDeployDispersionSpecial",
                     type: "POST",
                     data: {
-                        yearDispersion: parseInt(yeardis1.value),
-                        typePeriodDisp: parseInt(typeperiod1.value),
-                        periodDispersion: parseInt(periodis1.value),
-                        dateDispersion: datedis1.value,
+                        keyGroup: parseInt(optionGroup.value),
+                        year: parseInt(yeardis1.value),
+                        typePeriod: parseInt(typeperiod1.value),
+                        period: parseInt(periodis1.value),
+                        date: datedis1.value,
                         type: "test"
                     },
                     beforeSend: () => {
@@ -549,6 +547,8 @@
                         btndesplegarespecialtab.disabled = true;
                     },
                     success: (data) => {
+                        console.log('Mostrando los datos de dis especial')
+                        console.log(data);
                         btndesplegarespecialtab.classList.add('active');
                         btndesplegarespecialtab.innerHTML = `<i class="fas fa-play mr-2"></i> Desplegar`;
                         btndesplegarespecialtab.disabled  = false;
@@ -606,6 +606,7 @@
                                                 </tr>
                                             `;
                                         }
+                                        fLoadNewFieldsOptionDisEsp();
                                         //fLoadGroupBusiness("select", "option-group");
                                         //containerBtnsProDepBankSpecial.innerHTML += `
                                         //    <div class="row animated fadeInDown delay-1s mt-4 border-left-primary border-right-primary shadow rounded p-2">
@@ -656,7 +657,7 @@
                                 fShowTypeAlert('Atención!', 'No hay bancos definidos', 'warning', btndesplegarespecialtab, 0);
                             }
                         } else {
-                            fShowTypeAlert('Atención!', 'No se encontro informacion bancaria', 'warning', btndesplegarespecialtab, 0);
+                            fShowTypeAlert('Atención!', 'No se encontro informacion bancaria, verifique que la nomina haya sido ejecutada.', 'warning', btndesplegarespecialtab, 0);
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -818,7 +819,7 @@
                                 fShowTypeAlert('Atención!', 'No hay bancos definidos', 'warning', btndesplegartab, 0);
                             }
                         } else {
-                            fShowTypeAlert('Atención!', 'No se encontro informacion bancaria', 'warning', btndesplegartab, 0);
+                            fShowTypeAlert('Atención!', 'No se encontro informacion bancaria, verifique que la nomina haya sido ejecutada.', 'warning', btndesplegartab, 0);
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
@@ -988,7 +989,7 @@
                             document.getElementById('ismirror').disabled = false;
                             document.getElementById('ismirror').checked  = 0;
                             document.getElementById('divbtndownzip').innerHTML = "";
-                            document.getElementById('div-controls').innerHTML = "";
+                            document.getElementById('div-controls').innerHTML  = "";
                             document.getElementById('divbtndownzipint').innerHTML = "";
                             document.getElementById('div-controls-int').innerHTML = "";
                             $("html, body").animate({ scrollTop: $('#btn-desplegar-tab').offset().top - 50 }, 1000);
