@@ -229,9 +229,12 @@
                                     <div class="animated fadeInDown delay-1s">
                                         <h6 class="text-primary font-weight-bold"> <i class="fas fa-check-circle mr-2"></i> Archivo generado!</h6>
                                         <hr />
-                                        <button id="btn-restart-to-deploy-special" class="btn btn-sm btn-primary" type="button" onclick="fRestartReportFile('${request.Folder}', '${request.Archivo}');"> <i class="fas fa-undo mr-2"></i> Activar botones </button>
+                                        <button id="btn-restart-to-deploy-special" class="btn btn-sm btn-primary" type="button" onclick="fRestartReportFile('${request.Folder}', '${request.Archivo}', 1);"> <i class="fas fa-undo mr-2"></i> Activar botones </button>
                                     </div>
                                 `;
+                            } else if (request.Bandera == false && request.Rows == 0) {
+                                fShowTypeAlert('Atención!', 'No se encontraron registros para generar el reporte', 'info', document.getElementById('btn-send-dispersion-special'), 0);
+                                fRestartReportFile('none','none', 2);
                             } else {
                                 fShowTypeAlert('Error!', 'Ocurrio un error interno en la aplicacion', 'error', document.getElementById('btn-send-dispersion-special'), 0);
                             }
@@ -250,39 +253,54 @@
         }
     }
 
-    fRestartReportFile = (paramFolder, paramFile) => {
+    fRestartReportFile = (paramFolder, paramFile, type) => {
         try {
-            if (paramFolder != "" && paramFile != "") {
-                $.ajax({
-                    url: "../DispersionSpecial/RestartReportFile",
-                    type: "POST",
-                    data: { folder: String(paramFolder), file: String(paramFile) },
-                    beforeSend: () => {
-                        document.getElementById('btn-send-dispersion-special').disabled = true;
-                        document.getElementById('btn-send-report-ds').disabled = true;
-                        document.getElementById('option-group').disabled       = true;
-                        document.getElementById('type-dispersion').disabled    = true;
-                    }, success: (request) => {
-                        console.log(request);
-                        document.getElementById('btn-send-dispersion-special').disabled = false;
-                        document.getElementById('btn-send-report-ds').disabled          = false;
-                        document.getElementById('option-group').disabled    = false;
-                        document.getElementById('type-dispersion').disabled = false;
-                        document.getElementById('ismirrorspecial').checked  = 0;
-                        document.getElementById('option-group').value       = "none";
-                        document.getElementById('type-dispersion').value    = "none";
-                        document.getElementById('divbtndownzip1').innerHTML = "";
-                        document.getElementById('div-controls1').innerHTML  = "";
-                        document.getElementById('divbtndownzipint1').innerHTML = "";
-                        document.getElementById('div-controls-int1').innerHTML = "";
-                        document.getElementById('ismirrorspecial').disabled    = false;
-                    }, error: (jqXHR, exception) => {
-                        fcaptureaerrorsajax(jqXHR, exception);
-                    }
-                });
+            if (type == 1) {
+                if (paramFolder != "" && paramFile != "") {
+                    $.ajax({
+                        url: "../DispersionSpecial/RestartReportFile",
+                        type: "POST",
+                        data: { folder: String(paramFolder), file: String(paramFile) },
+                        beforeSend: () => {
+                            document.getElementById('btn-send-dispersion-special').disabled = true;
+                            document.getElementById('btn-send-report-ds').disabled = true;
+                            document.getElementById('option-group').disabled = true;
+                            document.getElementById('type-dispersion').disabled = true;
+                        }, success: (request) => {
+                            console.log(request);
+                            document.getElementById('btn-send-dispersion-special').disabled = false;
+                            document.getElementById('btn-send-report-ds').disabled = false;
+                            document.getElementById('option-group').disabled = false;
+                            document.getElementById('type-dispersion').disabled = false;
+                            document.getElementById('ismirrorspecial').checked = 0;
+                            //document.getElementById('option-group').value = "none";
+                            document.getElementById('type-dispersion').value = "none";
+                            document.getElementById('divbtndownzip1').innerHTML = "";
+                            document.getElementById('div-controls1').innerHTML = "";
+                            document.getElementById('divbtndownzipint1').innerHTML = "";
+                            document.getElementById('div-controls-int1').innerHTML = "";
+                            document.getElementById('ismirrorspecial').disabled = false;
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    alert('Accion invalida');
+                    location.reload();
+                }
             } else {
-                alert('Accion invalida');
-                location.reload();
+                document.getElementById('btn-send-dispersion-special').disabled = false;
+                document.getElementById('btn-send-report-ds').disabled = false;
+                document.getElementById('option-group').disabled = false;
+                document.getElementById('type-dispersion').disabled = false;
+                document.getElementById('ismirrorspecial').checked = 0;
+                //document.getElementById('option-group').value = "none";
+                document.getElementById('type-dispersion').value = "none";
+                document.getElementById('divbtndownzip1').innerHTML = "";
+                document.getElementById('div-controls1').innerHTML = "";
+                document.getElementById('divbtndownzipint1').innerHTML = "";
+                document.getElementById('div-controls-int1').innerHTML = "";
+                document.getElementById('ismirrorspecial').disabled = false;
             }
         } catch (error) {
             console.log(fCatchError(error));
