@@ -206,6 +206,29 @@ namespace Payroll.Controllers
             return Json(new { BanderaDispersion = flag1, BanderaBancos = flag2, MensajeError = messageError, DatosDepositos = daDepBankingBean, DatosBancos = bankDetailsBean });
         }
 
+        [HttpPost]
+        public JsonResult ToDeployDispersionSpecial(int keyGroup, int year, int typePeriod, int period, string date, string type)
+        {
+            Boolean flag1 = false;
+            Boolean flag2 = false;
+            String  messageError = "none";
+            List<DataDepositsBankingBean> dataDeposits = new List<DataDepositsBankingBean>();
+            DataDispersionBusiness dataDispersion      = new DataDispersionBusiness();
+            List<BankDetailsBean> bankDetails          = new List<BankDetailsBean>();
+            try {
+                dataDeposits = dataDispersion.sp_Obtiene_Depositos_Bancarios_Especial(keyGroup, year, typePeriod, period, "");
+                if (dataDeposits.Count > 0) {
+                    flag1       = true;
+                    bankDetails = dataDispersion.sp_Datos_Banco(dataDeposits);
+                    flag2       = (bankDetails.Count > 0) ? true : false;
+                }
+            } catch (Exception exc) {
+                flag1        = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { BanderaDispersion = flag1, BanderaBancos = flag2, MensajeError = messageError, DatosDepositos = dataDeposits, DatosBancos = bankDetails });
+        }
+
         // Archivo Banamex
         public DatosDispersionArchivosBanamex FileToDeployBanamex(string nameFileTxt)
         {
