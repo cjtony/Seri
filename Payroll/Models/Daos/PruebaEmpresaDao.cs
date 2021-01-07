@@ -435,7 +435,7 @@ namespace Payroll.Models.Daos
             data.Close();
 
             return list;
-        }
+        }   
         public List<string> sp_Registro_Patronal_Insert_Registros_Patronales(int Empresa_id, string Afiliacion_IMSS, string NombreAfiliacion, string Riesgo_Trabajo, int ClasesRegPat, int Status)
         {
             List<string> res = new List<string>();
@@ -1073,6 +1073,35 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
-        
+        public List<string> CGruposEmpresas_Insert_Grupo(string NombreGrupo)
+        {
+            List<string> lista = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("CGruposEmpresas_Insert_Grupo", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlNombreGrupo", NombreGrupo));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    lista.Add(data["iFlag"].ToString());
+                    lista.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                lista.Add("0");
+                lista.Add("Error en BD, informar a sistemas");
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return lista;
+        }
     }
 }

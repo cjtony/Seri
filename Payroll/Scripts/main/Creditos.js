@@ -45,7 +45,6 @@
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
                     if (data[0] == '0') {
                         Swal.fire({
                             icon: 'warning',
@@ -82,7 +81,6 @@
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
 
-                    console.log(data[0]["iFlag"]);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -113,8 +111,6 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-
                 var iconb = "";
                 var colorb = "";
                 if (data[0]["TipoEmpleado"] > 163) {
@@ -141,7 +137,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                console.log(data);
                 document.getElementById("tcbody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     if (data[i]["Cancelado"] == "True") {
@@ -236,7 +231,6 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: (data) => {
-                        console.log(data);
                         if (data[0] == '0') {
                             Swal.fire({
                                 icon: 'warning',
@@ -261,7 +255,6 @@
     //cambia el valor del campo segun el select 
     $("#inTipoDescuento").change(function () {
         var select = document.getElementById("inTipoDescuento");
-        //console.log(select.value);
         switch (select.value) {
             case '289':
                 $("#lblInDescuento").html(" Monto ");
@@ -295,31 +288,15 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                console.log()
                 $("#inTipoDescuento option[value=" + data[0]["Descontar"] + "]").attr("selected", true);
 
                 document.getElementById("inDescuento").value = data[0]["Descuento"];
                 document.getElementById("inNoCredito").value = data[0]["NoCredito"];
 
-                var ano = data[0]["FechaAprovacionCredito"].substr(6, 4);
-                var mes = data[0]["FechaAprovacionCredito"].substr(3, 2);
-                var dia = data[0]["FechaAprovacionCredito"].substr(0, 2);
-                console.log(ano + '-' + mes + '-' + dia + ' ... ' + data[0]["FechaAprovacionCredito"]);
-
                 $('#inFechaAprovacionCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
 
-                $('#inFechaBajaCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
+                $('#inFechaBajaCredito').val(data[0]["FechaBaja"].substr(6, 4) + '-' + data[0]["FechaBaja"].substr(3, 2) + '-' + data[0]["FechaBaja"].substr(0, 2));
 
-                $('#inFechaBajaCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
-
-                //document.getElementById("inFechaAprovacionCredito").value = 
-                //var fechab = document.getElementById("inFechaBajaCredito");
-                //var fechar = document.getElementById("inFechaReinicioCredito");
-
-                //console.log(data);
-                //ncredito.value = data[0]["NoCredito"];
-                //descuento.value = data[0]["Descuento"];
-                //de
                 $("#btnUpdateCredito").removeClass("invisible");
                 $("#btnSaveCredito").addClass("invisible");
             }
