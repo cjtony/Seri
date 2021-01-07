@@ -127,7 +127,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var tab = document.getElementById("bodytab-fechas-periodos");
                 tab.innerHTML = "";
                 var empresa;
@@ -247,8 +246,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-                console.log(pilltab.replace(/ /g, ""));
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table-in-fechas-periodos text-center col-md-12'>" +
                     "<thead class='col-md-12'>" +
@@ -306,8 +303,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
-                //console.log(pilltab);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table-in-politicas-vacaciones col-md-8'>" +
                     "<thead class='col-md-12'>" +
@@ -321,7 +316,6 @@
                     "<tbody id='tabp" + pilltab + "'></tbody>" + "</table>";
                 for (var j = 0; j < data.length; j++) {
                     if (j == 0) {
-                        console.log("NOMBRE EMPRESA " + data[j]["NombreEmpresa"]);
                         document.getElementById("politicas-modal-title").innerHTML = data[j]["NombreEmpresa"];
                     }
                     document.getElementById("tabp" + pilltab).innerHTML += "<tr>" +
@@ -331,9 +325,7 @@
                         "<td class=''>" + data[j]["Dias_Aguinaldo"] + "</td>" +
                         "</tr>";
                 }
-                //console.log($("#tabp" + pilltab).html());
                 document.getElementById("modal-body-politicas").innerHTML = $("#" + pilltab).html();
-                //$("#" + pilltab).collapse("toggle");
 
                 $("#modalMostrarPoliticas").modal("show");
             }
@@ -348,8 +340,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id, Effdt: Effdt }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
-                //console.log(pilltab);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table-in-politicas-vacaciones col-md-8'>" +
                     "<thead class='col-md-12'>" +
@@ -363,7 +353,6 @@
                     "<tbody id='tabp" + pilltab + "'></tbody>" + "</table>";
                 for (var j = 0; j < data.length; j++) {
                     if (j == 0) {
-                        console.log("NOMBRE EMPRESA " + data[j]["NombreEmpresa"]);
                         document.getElementById("politicas-modal-title").innerHTML = data[j]["NombreEmpresa"];
                     }
                     document.getElementById("tabp" + pilltab).innerHTML += "<tr>" +
@@ -373,9 +362,7 @@
                         "<td class=''>" + data[j]["Dias_Aguinaldo"] + "</td>" +
                         "</tr>";
                 }
-                //console.log($("#tabp" + pilltab).html());
                 document.getElementById("modal-body-politicas").innerHTML = $("#" + pilltab).html();
-                //$("#" + pilltab).collapse("toggle");
 
                 $("#modalMostrarPoliticas").modal("show");
             }
@@ -391,7 +378,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 $("#lblEdicion").html("Fechas - Periodos");
                 $("#Empresa_id_editar").val(data[0]["Empresa_id"]);
                 $("#bodybotonagregar").html("<div class='btn btn-info btn-sm col-md-6 font-label' onclick='addRegistroFechasPeriodos();'>Agregar Registro</div>");
@@ -517,7 +503,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id, Effdt: Effdt }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 $("#lblEdicion").html("Politicas Vacaciones " + data[0]["NombreEmpresa"]);
                 $("#Empresa_id_editar").val(data[0]["Empresa_id"]);
                 $("#infoEditar").addClass("invisible");
@@ -563,13 +548,11 @@
     }
     //mostrarModalNuevoPeriodo 
     mostrarModalNuevoPeriodo = (Empresa_id, Anio, Tipo_Periodo_id) => {
-        console.log(Tipo_Periodo_id);
         llenaMinAnios();
         $("#modalAgregarFechaPeriodo").modal("show");
         $("#inanio").val(Anio);
         $("#intipoperiodoid").val(Tipo_Periodo_id);
         $("#inEmpresa_id").val(Empresa_id);
-        console.log(Tipo_Periodo_id);
     }
 
     addNewPolitica = () => {
@@ -588,13 +571,9 @@
 
     // Guardar Fecha - Periodo
     $("#btnsavefechaperiodo").on("click", function () {
-        //savenew = () => { 
-        //console.log("si entra");
         var form = document.getElementById("frmNewFechasPeriodos");
         if (form.checkValidity() === false) {
-
             form.classList.add("was-validated");
-
         } else {
             var inano = document.getElementById("inano");
             var inperiodo = document.getElementById("inperiodo");
@@ -624,7 +603,6 @@
                     form.classList.add("was-validated");
                 },
                 success: (data) => {
-                    console.log(data);
                     if (data[0] == '0') {
                         Swal.fire({
                             icon: 'warning',
@@ -680,7 +658,6 @@
                     form.classList.add("was-validated");
                 },
                 success: (data) => {
-                    console.log(data);
                     if (data[0] == '0') {
                         Swal.fire({
                             icon: 'warning',
@@ -807,7 +784,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var select = document.getElementById("inEmpresa");
                 select.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
@@ -829,8 +805,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id, Effdt: Effdt, Anio: Anio }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-                console.log($("#Empresa_id_editar").val());
                 $("#EditarPoliticaAnio").val(data[0]["Anos"]);
                 $("#EditarPoliticaDias").val(data[0]["Dias"]);
                 $("#EditarPoliticaDiasa").val(data[0]["Dias_Aguinaldo"]);
@@ -857,7 +831,6 @@
             }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 $("#modalEditarPolitica").modal("hide");
                 if (data[0] == '0') {
                     Swal.fire({
@@ -893,7 +866,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id, Id: Id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 $("#editano").val(data[0]["Anio"]);
                 $("#editperiodo").val(data[0]["Periodo"]);
                 $("#editfinicio").attr("value", data[0]["Fecha_Inicio"].substring(6) + "-" + data[0]["Fecha_Inicio"].substring(3, 5) + "-" + data[0]["Fecha_Inicio"].substring(0, 2));
@@ -926,7 +898,6 @@
             }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 $(".collapse").collapse("hide");
                 $("#modalEditarFechaPeriodo").modal("hide");
             }
@@ -944,7 +915,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var select = document.getElementById("inGrupos");
                 select.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
@@ -967,7 +937,6 @@
             }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 if (data[0] == 0) {
                     Swal.fire({
                         timer: 1500,
@@ -1013,7 +982,6 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var acordeon = document.getElementById("accordeonGruposEmpresas");
                 acordeon.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
@@ -1044,7 +1012,6 @@
             data: JSON.stringify({ Grupo_id: Grupo_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 var lista = document.getElementById(ul)
                 lista.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
@@ -1072,41 +1039,59 @@
     //
     //AGREGAR GRUPOS DE EMPRESAS
     SaveNewGrupo = () => {
-        var inNewNombreGrupo = document.getElementById("inNewNombreGrupo");
-        $.ajax({
-            url: "../Empresas/SaveGrupo",
-            type: "POST",
-            data: JSON.stringify({
-                NombreGrupo: inNewNombreGrupo.value
-            }),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                console.log(data);
-                if (data[0] == 0) {
-                    Swal.fire({
-                        timer: 1500,
-                        showConfirmButton: false,
-                        position: 'top-end',
-                        title: 'Error!',
-                        icon: 'error',
-                        text: data[1],
-                        width: 400,
-                        height: 200
-                    });
-                } else if (data[0] == 1) {
-                    Swal.fire({
-                        timer: 1500,
-                        showConfirmButton: false,
-                        position: 'top-end',
-                        title: 'Correcto!',
-                        icon: 'success',
-                        text: data[1],
-                        width: 400,
-                        iconHeight: 200
-                    });
+        var inNewNombreGrupo = document.getElementById("innewgrupoempresa");
+        var form = document.getElementById("formnewgrupo");
+        if (form.checkValidity() == false) {
+            form.classList.add("was-validated");
+            setTimeout(() => {
+                form.classList.remove("was-validated");
+            }, 5000);
+        } else {
+            $.ajax({
+                url: "../Empresas/SaveGrupo",
+                type: "POST",
+                data: JSON.stringify({
+                    NombreGrupo: document.getElementById("innewgrupoempresa").value
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == 0) {
+                        Swal.fire({
+                            timer: 1500,
+                            showConfirmButton: false,
+                            position: 'top-end',
+                            title: 'Error!',
+                            icon: 'error',
+                            text: data[1],
+                            width: 400,
+                            height: 200
+                        });
+                    } else if (data[0] == 1) {
+                        Swal.fire({
+                            timer: 1500,
+                            showConfirmButton: false,
+                            position: 'top-end',
+                            title: 'Correcto!',
+                            icon: 'success',
+                            text: data[1],
+                            width: 400,
+                            iconHeight: 200
+                        });
+                        inNewNombreGrupo.value = "";
+                        LoadSelectEmpresas();
+                        LoadSelectGrupos();
+                        LoadAcordeonGrupos();
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        
+    }
+    //
+    //MOSTRAR MODAL DE AGREGADO DE NUEVO GRUPO
+    mostrarmodalnewgrupo = () => {
+        $("#modalnewgrupo").modal("show");
     }
     /////////////////////////////////////////////////////
     ///////////////        BANCOS         ///////////////
@@ -1182,7 +1167,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 document.getElementById(collapse).innerHTML = "";
                 document.getElementById(collapse).innerHTML += "<table class='table table-sm table-in-fechas-periodos col-md-12 m-3'>" +
                     "<thead class='col-md-12'>" +
@@ -1289,7 +1273,6 @@
             }
 
             var tb = document.getElementById("newtipobanco");
-            //console.log($("#newplaza").val());
             $.ajax({
                 url: "../Catalogos/SaveNewBanco",
                 type: "POST",
@@ -1335,7 +1318,6 @@
             data: JSON.stringify({ keyban: 0 }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 $("#editempresa").val(Empresa_id)
                 var select = document.getElementById("editbanco");
                 select.innerHTML = "";
@@ -1351,7 +1333,6 @@
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     success: (data) => {
-                        console.log(data);
                         var select = document.getElementById("edittipobanco");
                         select.innerHTML = "";
                         for (var j = 0; j < data.length; j++) {
@@ -1423,7 +1404,6 @@
                 }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
                     if (data[0] == '0') {
                         Swal.fire({
                             title: 'Error!',
@@ -1608,13 +1588,9 @@
     //
     // FUNCION PARA HACER SECUENCIA PARA DAR MOVIEMIENTO A LOS BADGES
     $(".btns").hover(function () {
-        $('.btns').removeClass('badge-light').addClass('badge-dark'); /*.css("background-color", "pink");*/
-        //$(this).removeClass('bg-white').addClass('bg-secondary');
-        console.log('si');
+        $('.btns').removeClass('badge-light').addClass('badge-dark'); 
     }, function () {
-        $('.btns').removeClass('badge-dark').addClass('badge-light'); /*.css("background-color", "pink");*/
-        //$(this).removeClass('bg-secondary').addClass('bg-white');
-        console.log('no');
+        $('.btns').removeClass('badge-dark').addClass('badge-light'); 
     });
 
     // FUNCION DE un CLICK EN EL ROW 
@@ -1639,16 +1615,13 @@
     loadcheck = (id, collapse) => {
         if ($('.' + collapse).prop('show')) {
 
-            console.log("Entro al if");
         } else {
-            console.log("No entro al if");
             $.ajax({
                 url: "../Catalogos/Loadonemenu",
                 type: "POST",
                 data: JSON.stringify({ Id: id }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
                     $("." + collapse).html("");
                     var body = "";
                     for (var i = 0; i < data.length; i++) {
@@ -1674,7 +1647,6 @@
 
     $("#btnnewperfil").on("click", function () {
         var data = $("#frmProfiles").serialize();
-        console.log(data);
     });
     ////////////////////////////////////////////
     //////////  CENTROS DE COSTO  //////////////
@@ -1857,7 +1829,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-registros-patronales col-md-12 pb-4'>" +
                     "<thead class='col-md-12'>" +
@@ -2210,8 +2181,6 @@
             data: JSON.stringify({ Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-
                 document.getElementById(pilltab).innerHTML = "";
                 document.getElementById(pilltab).innerHTML += "<table class='table table-sm table" + Empresa_id + " table-in-localidades col-md-12 pb-4'>" +
                     "<thead class='col-md-12'>" +
@@ -2242,7 +2211,6 @@
                         "<td>" + data[i]["Estado_id"] + "</td>" +
                         //"<td class=''>" + data[i]["Fecha_Alta"].substr(0, 10) + "</td>" +
                         "</tr>";
-
                 }
                 $(".collapse").collapse("hide").addClass("bg-light p-4 rounded");
                 $("#" + pilltab).collapse("toggle");

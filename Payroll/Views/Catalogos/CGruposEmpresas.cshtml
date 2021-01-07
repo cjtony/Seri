@@ -19,16 +19,51 @@
                         <span class="icon"><i class="fas fa-save"></i></span>
                         <span class="text">Actualizar</span>
                     </div>
+                    <div id="btnsavenewgrupo" class="btn btn-outline-primary btn-sm btn-icon-split" onclick="mostrarmodalnewgrupo();">
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span class="text">Agregar nuevo</span>
+                    </div>
                 </div>
             </form>
         </div>
-
         <div class="accordion col-md-12 pb-3" id="accordeonGruposEmpresas">
-            
         </div>
     </div>
 </div>
-<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=1"></script>
+<div class="modal fade" id="modalnewgrupo" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-plus fa-plus text-primary"></i> <strong>Nuevo Grupo</strong> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <fieldset class="border-left-primary border-right-primary rounded">
+                    <form class="col-md-12 py-3 px-5" id="formnewgrupo">
+                        <div class="form-group row">
+                            <label class="col-md-12 form-group form-group-sm"> Nombre Grupo </label>
+                            <input class="form-control form-control-sm" required type="text" id="innewgrupoempresa" placeholder="Ingresa el nombre del nuevo grupo" />
+                        </div>
+                    </form>
+                </fieldset>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-icon-split btn-sm" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text">Cancelar</span>
+                </button>
+                <button type="button" class="btn btn-primary btn-icon-split btn-sm" onclick="SaveNewGrupo();">
+                    <span class="icon"><i class="fas fa-save"></i></span>
+                    <span class="text">Guardar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=2"></script>
 <script>
     $(function () {
         LoadSelectEmpresas();
