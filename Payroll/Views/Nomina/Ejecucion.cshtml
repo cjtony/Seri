@@ -6,121 +6,107 @@
 <body>
   <div class="container bg-white">
     <div class="container-fluid">
-      <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
-        <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
-        <div class="col-md-6">
-          <div class="text-left">
-            <h6 class="col-ico font-nav-child">
-              <b>
-               <i class="fa fa-calculator mr-ico-05"></i>
-                Ejecucion de nomina
-              </b>
-            </h6>
-          </div>
-        </div>
-        <div class="col-md-12">
+     <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+      <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
+      <div class="col-md-6">
+       <div class="text-left">
+        <h6 class="col-ico font-nav-child">
+         <b><i class="fa fa-calculator mr-ico-05"></i>Ejecucion de nomina</b>
+        </h6>
+       </div>
+      </div>
+      <div class="col-md-12">
          <hr />
         </div>
-        <div class="col-12">
-          <center>
-            <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-11" id="content-tableComp">
-             <div>
-               <div class="row">
-                <div class="tab-pane fade show p-4 row table-responsive" id="navEjecucion" role="tabpanel" aria-labelledby="nav-Ejeciciones-tab">
-                 <nav>
-                  <div class="nav nav-tabs " id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link  font-navs  " id="nav-Ejecucion-tab" data-toggle="tab" href="#nav-Ejecucion" role="tab" aria-controls="nav-Ejecucion">
-                        <i class="fas fa-bolt col-ico mr-ico-05"></i> Ejecución
-                    </a>
-                    <a class="nav-item nav-link font-navs disabled " id="nav-VisCalculo-tab" data-toggle="tab" href="#nav-VistaCalculo" role="tab" aria-controls="nav-VisCalculo" pagPre="false">
+      <div class="col-12">
+       <center>
+       <div class="form-group text-center rounded shadow p-4 border-left-primary border-right-primary col-md-11" id="content-tableComp">
+        <div>
+         <div class="row">
+          <div class="tab-pane fade show p-4 row table-responsive" id="navEjecucion" role="tabpanel" aria-labelledby="nav-Ejeciciones-tab">
+           <nav>
+            <div class="nav nav-tabs " id="nav-tab" role="tablist">
+             <a class="nav-item nav-link  font-navs  " id="nav-Ejecucion-tab" data-toggle="tab" href="#nav-Ejecucion" role="tab" aria-controls="nav-Ejecucion">
+              <i class="fas fa-bolt col-ico mr-ico-05"></i> Ejecución
+             </a>
+            <a class="nav-item nav-link font-navs disabled " id="nav-VisCalculo-tab" data-toggle="tab" href="#nav-VistaCalculo" role="tab" aria-controls="nav-VisCalculo" pagPre="false">
                         <i class="fas fa-calculator col-ico mr-ico-05 disabled"></i> Vista de calculos
                     </a>
-                    <a class="nav-item nav-link font-navs disabled " id="nav-VisNomina-tab" data-toggle="tab" href="#nav-VistaNomina" role="tab" aria-controls="nav-VisCalculo" pagPre="false">
+            <a class="nav-item nav-link font-navs disabled " id="nav-VisNomina-tab" data-toggle="tab" href="#nav-VistaNomina" role="tab" aria-controls="nav-VisCalculo" pagPre="false">
                         <i class="fas fa-calculator col-ico mr-ico-05 disabled"></i> Vista de calculos Nomina
                     </a>
-                    <a class="nav-item nav-link font-navs " id="nav-NomCe-tab" data-toggle="tab" href="#nav-NomCe" role="tab" aria-controls="nav-NomCe" pagPre="false">
+            <a class="nav-item nav-link font-navs " id="nav-NomCe-tab" data-toggle="tab" href="#nav-NomCe" role="tab" aria-controls="nav-NomCe" pagPre="false">
                         <i class="fas fa-bolt col-ico col-ico mr-ico-05 disabled"></i> Ejecución Nominas Cerradas
                     </a>
-                    <a class="nav-item nav-link font-navs " id="nav-NomPeri-tab" data-toggle="tab" href="#nav-NomPer" role="tab" aria-controls="nav-NomPer" pagPre="false">
+            <a class="nav-item nav-link font-navs " id="nav-NomPeri-tab" data-toggle="tab" href="#nav-NomPer" role="tab" aria-controls="nav-NomPer" pagPre="false">
                         <i class="fas fa-pager col-ico col-ico mr-ico-05 disabled"></i> Abrir Periodos
                     </a>
+            </div>
+           </nav>
+          <div class="tab-content" id="nav-tabContent">
+               <!-- pantalla de Ejecucion tab-->
+
+            <div class="tab-pane fade show  p-4" id="nav-Ejecucion" role="tabpanel" aria-labelledby="nav-Ejecucion-tab">
+             <div class="row mt-4 ">
+             <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
+               <div class="col-md-6">
+                 <div class="form-group row">
+                   <label for="NombreDe" class="col-sm-4 col-form-label font-labels" id="LanombreDef" style="visibility:visible">
+                    <i class="fa fa-wpforms mr-2 col-ico"></i>                                                               
+                      Nombre de Definicion:
+                   </label>
+                   <div class="col-sm-8">
+                    <div id='jqxWidget'>
+                     <div id="jqxdropdownbutton" class="col-sm-11" style="visibility:visible">
+                      <div style="border-color: transparent;" id="TpDefinicion">
+                      </div>
+                      </div>
+                    </div>
                    </div>
-                 </nav>
-                  <div class="tab-content" id="nav-tabContent">
-
-                                            <!-- pantalla de Ejecucion tab-->
-
-                                            <div class="tab-pane fade show  p-4" id="nav-Ejecucion" role="tabpanel" aria-labelledby="nav-Ejecucion-tab">
-                                                <div class="row mt-4 ">
-                                                    <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
-                                             
-                                                    <div class="col-md-6">
-
-
-                                                        <div class="form-group row">
-
-                                                            <label for="NombreDe" class="col-sm-4 col-form-label font-labels" id="LanombreDef" style="visibility:visible">
-                                                                <i class="fa fa-wpforms mr-2 col-ico"></i>                                                               
-                                                                Nombre de Definicion:
-                                                            </label>
-                                                            <div class="col-sm-8">
-                                                                <div id='jqxWidget'>
-                                                                    <div id="jqxdropdownbutton" class="col-sm-11" style="visibility:visible">
-                                                                        <div style="border-color: transparent;" id="TpDefinicion">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="anoeje" class="col-sm-4 col-form-label font-labels">
+                 </div>
+                 <div class="form-group row">
+                   <label for="anoeje" class="col-sm-4 col-form-label font-labels">
                                                                 <i class="fas fa-calendar mr-2 col-ico"></i>
                                                                 Año:
                                                             </label>
-                                                            <div class="col-sm-8">
-                                                                <input placeholder="Año" type="text" id="TbAño" class="form-control form-control-sm text-capitalize" readonly />
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="=from-group row">
-                                                            <div class="custom-control custom-switch font-labels" style="margin-left:40%">
-                                                                <input type="checkbox" class="custom-control-input" id="CheckXEmpresa" style="visibility:visible">
-                                                                <label class="custom-control-label" for="CheckXEmpresa" id="LaCheckXEmpresa" style="visibility:visible">
-                                                                    <i class="fas fa fa-building mr-ico-05"></i>
-                                                                    Calculo por empresa
-                                                                </label>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="form-group row" style="margin-top:15px">
-                                                            <label for="NombEmpre" class="col-sm-4 col-form-label font-labels" id="NombEmpre" style="visibility:hidden">
+                   <div class="col-sm-8">
+                    <input placeholder="Año" type="text" id="TbAño" class="form-control form-control-sm text-capitalize" readonly />
+                   </div>
+                  </div>
+                 <div class="=from-group row">
+                   <div class="custom-control custom-switch font-labels" style="margin-left:40%">
+                     <input type="checkbox" class="custom-control-input" id="CheckXEmpresa" style="visibility:visible">
+                      <label class="custom-control-label" for="CheckXEmpresa" id="LaCheckXEmpresa" style="visibility:visible">
+                         <i class="fas fa fa-building mr-ico-05"></i>Calculo por empresa
+                      </label>
+                    </div>
+                 </div>
+                 <div class="form-group row" style="margin-top:15px">
+                   <label for="NombEmpre" class="col-sm-4 col-form-label font-labels" id="NombEmpre" style="visibility:hidden">
                                                                 <i class="fas fa-building mr-2 col-ico"></i>
                                                                 Empresa:
                                                             </label>
-                                                            <div class="col-sm-8">
-                                                                <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="EjeEmpresa" style="visibility:hidden">
-                                                                    <option value="0">Selecciona</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row hidden">
-                                                        
-                                                            <div class="custom-control custom-switch font-labels" style="margin-left:40%">
-                                                                <input type="checkbox" class="custom-control-input" id="CheckXempleado" style="visibility:hidden">
-                                                                <label class="custom-control-label" for="CheckXempleado" id="LaCheckXEmpleado" style="visibility:hidden">
-                                                                    <i class="fa fa-address-card mr-ico-05"></i>
-                                                                    Calculo por empleado
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="Empleados" class="col-sm-4 col-form-label font-labels" id="Empleadoseje" style="visibility:hidden; margin-top:-5px">
-                                                                <i class="fa fa-user-circle-o mr-2 col-ico"></i>
-                                                                Empleados:
-                                                            </label>
-                                                            <div class="col-sm-8">
+                   <div class="col-sm-8">
+                     <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="EjeEmpresa" style="visibility:hidden">
+                      <option value="0">Selecciona</option>
+                     </select>
+                   </div>
+                 </div>
+                 <div class="form-group row hidden"> 
+                  <div class="custom-control custom-switch font-labels" style="margin-left:40%">
+                   <input type="checkbox" class="custom-control-input" id="CheckXempleado" style="visibility:hidden">
+                   <label class="custom-control-label" for="CheckXempleado" id="LaCheckXEmpleado" style="visibility:hidden">
+                   <i class="fa fa-address-card mr-ico-05"></i>
+                    Calculo por empleado
+                   </label>
+                   </div>
+                 </div>
+                 <div class="form-group row">
+                  <label for="Empleados" class="col-sm-4 col-form-label font-labels" id="Empleadoseje" style="visibility:hidden; margin-top:-5px">
+                   <i class="fa fa-user-circle-o mr-2 col-ico"></i>
+                   Empleados:
+                   </label>
+                  <div class="col-sm-8">
                                                                 <div>
                                                                     <div style='float: left;' id='DropLitEmple'>
                                                                     </div>
@@ -131,10 +117,10 @@
 
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group row">
+                 </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group row">
                                                             <label for="TipoperiodoEje" class="col-sm-4 col-form-label font-labels">
                                                                 <i class="fas fa-pallet mr-2 col-ico"></i>
                                                                 Tipo de periodo:
@@ -143,7 +129,7 @@
                                                                 <input placeholder="Tipo de periodo" type="text" id="TxbTipoPeriodo" class="form-control form-control-sm text-capitalize" readonly />
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
+                  <div class="form-group row">
                                                             <label for="PeridoEje" class="col-sm-4 col-form-label font-labels">
                                                                 <i class="fas fa-pager mr-2 col-ico"></i>
                                                                 Periodo:
@@ -154,24 +140,24 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-sm-4 col-form-label font-labels"><input type="checkbox" id="ChNCerrada">  Nomina cerrada</label>
-                                                        </div>
-                                                        <div class="form-group row">
+                  <div class="form-group row">
+                   <label class="col-sm-4 col-form-label font-labels"><input type="checkbox" id="ChNCerrada">Cerrar Nomina</label>
+                   </div>
+                  <div class="form-group row">
                                                             <div id="messageNotification" style="margin-top:85%">
                                                                 <label for="Lamens" class="col-sm-4 col-form-label font-labels">
                                                                     Ejecución terminada
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
+                  <div class="form-group row">
                                                             <div id="messageNotification2" style="margin-top:85%">
                                                                 <label for="Lamens" class="col-sm-4 col-form-label font-labels">
                                                                     Ejecución en cola
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
+                  <div class="form-group row">
                                                             <div id="timerNotification" style="margin-top:85%">
                                                                 <div>
                                                                     Realizando ejecición
@@ -179,129 +165,134 @@
                                                             </div>
                                                             <div id="jqxLoader"></div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+               </div>
+             </div>
+            </div>
 
-                                            <!-- pantalla de vista calculo tab-->
+               <!-- pantalla de vista calculo tab-->
 
-                                            <div class="tab-pane fade p-4" id="nav-VistaCalculo" role="tabpanel" aria-labelledby="nav-VisCalculo-tab">
-                                                <div class="row mt-4 ">
-                                                    <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
-                                               
-                                                    <div class="form-group row" style="margin-left:15px">
-                                                        <label for="DefinicionCal" class="col-sm-5 col-form-label font-labels">
-                                                            <i class="fa fa-wpforms mr-2 col-ico"></i>
-                                                            Definicion:
-                                                        </label>
-                                                        <div class="col-sm-7">
-                                                            <input placeholder="Definicion" type="text" id="DefinicionCal" class="form-control form-control-sm text-capitalize" readonly />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row" style="margin-left:50px">
-                                                        <label for="TipoPeridoCal" class="col-sm-6 col-form-label font-labels">
-                                                            <i class="fas fa-pallet mr-2 col-ico"></i>
-                                                            Tipo de periodo:
-                                                        </label>
-                                                        <div class="col-sm-6">
-                                                            <input placeholder="Tipo de periodo" type="text" id="TipoPeridoCal" class="form-control form-control-sm text-capitalize" readonly />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row" style="margin-left:13px">
-                                                        <label for="PeriodoCal" class="col-sm-5 col-form-label font-labels">
-                                                            <i class="fas fa-pager mr-2 col-ico"></i>
-                                                            Periodo:
-                                                        </label>
-                                                        <div class="col-sm-7">
-                                                            <input placeholder="Periodo" type="text" id="PeriodoCal" class="form-control form-control-sm text-capitalize" readonly />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row" style="margin-left:70px">
-                                                        <label for="EmpresaCal" class="col-sm-5 col-form-label font-labels">
-                                                            <i class="fas fa-building mr-2 col-ico"></i>
-                                                            Empresa:
-                                                        </label>
-                                                        <div class="col-sm-7">
-                                                            <select placeholder="Empresa" tp-select="EmpresaCal" class="form-control form-control-sm" id="EmpresaCal">
-                                                                <option value="0">Selecciona</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-body col-12">
-                                                        <div class="">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;margin-left:20%">
-                                                                        <div id="TbCalculos">
-                                                                        </div>
-                                                                        <div id="eventslog" style="margin-top: 30px;">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                @*<div class="table-responsive" style="text-align:center">
-                                                                    <div id="TbCalculos" class="table-responsive"></div>
-                                                            </div>*@
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-4">
-                                                        <div class="form-group row" style="margin-left:15px">
-                                                            <label for="PercepCal" class="col-sm-6 col-form-label font-labels">
-                                                                Total Percepciones:
-                                                            </label>
-                                                            <div class="col-sm-6">
-                                                                <input placeholder="Total Percepciones" type="text" id="PercepCal" class="form-control form-control-sm text-capitalize" readonly />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row" style="margin-left:7px">
+            <div class="tab-pane fade p-4" id="nav-VistaCalculo" role="tabpanel" aria-labelledby="nav-VisCalculo-tab">
 
-                                                            <label for="deduCal" class="col-sm-5 col-form-label font-labels">
-                                                                Total deducciones:
-                                                            </label>
-                                                            <div class="col-sm-6">
-                                                                <input placeholder="Total Deducciones" type="text" id="DeduCal" class="form-control form-control-sm text-capitalize" readonly />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row" style="margin-left:0px">
-                                                            <label for="PeriodoCal" class="col-sm-5 col-form-label font-labels">
-                                                                Total:
-                                                            </label>
-                                                            <div class="col-sm-7">
-                                                                <input placeholder="Total" type="text" id="totalCal" class="form-control form-control-sm text-capitalize" readonly />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                  
-                                                    <div class="form-group row" style="margin-left:80%">
-                                                        <div class="col-sm-12">
-                                                            <button type="submit" class="btn btn-primary mb-2 " id="btnPdfCal"><span class="far fa-file-pdf mr-2"></span>Caratula PDF </button>
-                                                        </div>
-                                                    </div>
+                <div class="row mt-6">
+                    <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
+                    <div class="col-md-6">
+                        <div class="form-group row" style="margin-left:2%">
+                            <label for="DefinicionCal" class="col-sm-4 col-form-label font-labels">
+                                <i class="fa fa-wpforms mr-2 col-ico"></i>  Definicion:
+                            </label>
+                            <div class="col-sm-6">
+                                <input placeholder="Definicion" type="text" id="DefinicionCal" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px">
+                            <label for="PeriodoCal" class="col-sm-4 col-form-label font-labels">
+                                <i class="fas fa-pager mr-2 col-ico"></i>
+                                Periodo:
+                            </label>
+                            <div class="col-sm-6">
+                                <input placeholder="Periodo" type="text" id="PeriodoCal" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row" style="margin-left:0%">
+                            <label for="TipoPeridoCal" class="col-sm-5 col-form-label font-labels">
+                                <i class="fas fa-pallet mr-2 col-ico"></i>
+                                Tipo de periodo:
+                            </label>
+                            <div class="col-sm-6">
+                                <input placeholder="Tipo de periodo" type="text" id="TipoPeridoCal" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px">
+                            <label for="EmpresaCal" class="col-sm-4 col-form-label font-labels">
+                                <i class="fas fa-building mr-2 col-ico"></i>
+                                Empresa:
+                            </label>
+                            <div class="col-sm-6">
+                                <select placeholder="Empresa" tp-select="EmpresaCal" class="form-control form-control-sm" id="EmpresaCal">
+                                    <option value="0">Selecciona</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-                                                </div>
+                </div>
 
-                                            </div>
+                <div class="row mt-4 ">
+                    <div class="modal-body col-12">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;margin-left:20%">
+                                        <div id="TbCalculos">
+                                        </div>
+                                        <div id="eventslog" style="margin-top: 30px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="table-responsive" style="text-align:center">
+                                <div id="TbCalculos" class="table-responsive"></div>
+                        </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="form-group row" style="margin-left:15px">
+                            <label id="LaTotalPer" for="PercepCal" class="col-sm-6 col-form-label font-labels">
+                                Total Percepciones:
+                            </label>
+                            <div class="col-sm-6">
+                                <input placeholder="Total Percepciones" type="text" id="PercepCal" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:7px">
+
+                            <label id="LaTotDeduc" for="deduCal" class="col-sm-5 col-form-label font-labels">
+                                Total deducciones:
+                            </label>
+                            <div class="col-sm-6">
+                                <input placeholder="Total Deducciones" type="text" id="DeduCal" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-left:0px">
+                            <label id="Latotal" for="PeriodoCal" class="col-sm-5 col-form-label font-labels">
+                                Total:
+                            </label>
+                            <div class="col-sm-7">
+                                <input placeholder="Total" type="text" id="totalCal" class="form-control form-control-sm text-capitalize" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-left:80%">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary mb-2 " id="btnPdfCal"><span class="far fa-file-pdf mr-2"></span>Caratula PDF </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
 
-                                            @*pantalla vista de Calculos Nom*@
+                @*pantalla vista de Calculos Nom*@
 
-                                            <div class="tab-pane fade p-4" id="nav-VistaNomina" role="tabpanel" aria-labelledby="nav-VisNomina-tab">
-                                                <div class="row mt-4">
-                                                    <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group row">
-                                                            <div class="form-group row" style="margin-left:25px">
-                                                                <label for="EmpresaNom" class="col-sm-5 col-form-label font-labels">
-                                                                    <i class="fas fa-building mr-2 col-ico"></i>
-                                                                    Empresa:
-                                                                </label>
-                                                                <div class="col-sm-7">
-                                                                    <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="EmpresaNom">
-                                                                        <option value="0">Selecciona</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row" style="margin-left:0px">
+            <div class="tab-pane fade p-4" id="nav-VistaNomina" role="tabpanel" aria-labelledby="nav-VisNomina-tab">
+             <div class="row mt-4">
+              <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
+              <div class="col-md-12">
+               <div class="form-group row">
+                <div class="form-group row" style="margin-left:25px">
+                 <label for="EmpresaNom" class="col-sm-5 col-form-label font-labels">
+                    <i class="fas fa-building mr-2 col-ico"></i>
+                     Empresa:
+                  </label>
+                 <div class="col-sm-7">
+                   <select placeholder="Empresa" tp-select="EmpresaNom" class="form-control form-control-sm" id="EmpresaNom">
+                      <option value="0">Selecciona</option>
+                    </select>
+                    </div>
+                 </div>
+                <div class="form-group row" style="margin-left:0px">
                                                                 <label for="EmpleadoNom" class="col-sm-4 col-form-label font-labels">
                                                                     <i class="fa fa-user-circle-o mr-2 col-ico"></i>
                                                                     Empleados:
@@ -312,7 +303,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="=from-group row">
+                <div class="=from-group row">
                                                                 <div class="custom-control custom-switch" style="margin-left:10%;margin-top:-30%">
                                                                     <input type="checkbox" class="custom-control-input" id="CheckRecibo2">
                                                                     <label class="custom-control-label col-form-label font-labels col-sm-5 " for="CheckRecibo2">
@@ -320,9 +311,9 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
+                </div>
+              </div>
+              <div class="col-md-12">
                                                         <div class="form-group row">
                                                             <div class="form-group row col-md-12" style="margin-left:5%">
                                                                 <div id='jqxWidget'>
@@ -341,14 +332,13 @@
 
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
+              </div>
+            </div>
 
+               @*--pantalla de vista Ejecucion Nom Cerradas--*@
 
-                                            @*--pantalla de vista Ejecucion Nom Cerradas--*@
-
-                                            <div class="tab-pane fade  p-4" id="nav-NomCe" role="tabpanel" aria-labelledby="nav-NomCe-tab">
-                                                <div class="row mt-4 ">
+           <div class="tab-pane fade  p-4" id="nav-NomCe" role="tabpanel" aria-labelledby="nav-NomCe-tab">
+            <div class="row mt-4 ">
                                                     <div id="div-most-alert-data-gen" class="col-md-6 offset-3"></div>
 
                                                     <div class="col-md-6">
@@ -465,12 +455,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+           </div>
 
-                                            </div>
+            @*--pantalla Abrir periodo--*@
 
-                                            @*--pantalla Abrir periodo--*@
-
-                                            <div class="tab-pane fade  p-4" id="nav-NomPer" role="tabpanel" aria-labelledby="nav-NomPeri-tab">
+           <div class="tab-pane fade  p-4" id="nav-NomPer" role="tabpanel" aria-labelledby="nav-NomPeri-tab">
                                                 <center>
                                                     <div class="row mt-4 ">
                                                         <div class="col-md-12">
@@ -539,13 +528,13 @@
                                                 </center>
                                             </div>
 
-                                        </div>
-                </div>
-               </div>
-             </div>
-            </div>
-          </center>
-        </div>   
+          </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       </center>
+      </div>   
             @*Botones de flotantes*@
        <div>
 
@@ -572,7 +561,7 @@
    </div>
 </body>
 
-<script type="text/javascript" src="~/Scripts/Nomoper/OperNomEjecucion.js?n=6"></script>
+<script type="text/javascript" src="~/Scripts/Nomoper/OperNomEjecucion.js?n=19"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jspdf.min.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqx-all.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>

@@ -6,7 +6,7 @@
     //var DeCancelados = document.getElementById('DeCancelados');
     var dato;
     var empresaSelect = document.getElementById("btnNameEmpresaSelected").innerHTML; 
-
+    var IdEmpresaSess = '<%= Session["IdEmpresa"] %>';
 
     // declaracion de Botone
 
@@ -159,17 +159,6 @@
 
     Fllenagrip();
 
-    //$('#DeNombre').change(function () {
-
-    //    FRecargaGrip();
-    //    $("#TpDefinicion").jqxGrid('clearselection');
-
-    //});
-
-    //$('#DeCancelados').change(function () {
-
-    //    FRecargaGrip();
-    //});
 
 
     FSelectDefinicion = () => {
@@ -510,6 +499,7 @@
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
+                BAgregarPer.value = data[0].iIdEmpresaSess;
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("RegEmpresa").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
                 }
@@ -1085,7 +1075,7 @@
                separador = " ",
                 limite = 2,
                 arreglosubcadena = datoempresa.split(separador, limite);
-            if (arreglosubcadena[1] == empresaSelect) {
+            if (arreglosubcadena[0] == BAgregarPer.value) {
                 // seleccionamos el valor que coincide
                 RegEmpresa.selectedIndex = i;
                 RecargaLisRenglon2(arreglosubcadena[0]);

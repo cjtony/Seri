@@ -70,15 +70,20 @@ namespace Payroll.Controllers
         // llena  listado de empresas
         [HttpPost]
         public JsonResult LisEmpresas()
-        { 
+ 
+        {
+            int idPerfil = int.Parse(Session["Profile"].ToString());
+            int idempresa = int.Parse(Session["IdEmpresa"].ToString()); 
             List<EmpresasBean> LE = new List<EmpresasBean>();
             FuncionesNomina Dao = new FuncionesNomina(); 
             int Perfil_id = int.Parse(Session["Profile"].ToString());
             LE = Dao.sp_CEmpresas_Retrieve_Empresas(Perfil_id); 
             if (LE.Count > 0)
             {
+                LE[0].iIdEmpresaSess = idempresa;
                 for (int i = 0; i < LE.Count; i++)
                 {
+                    
                     LE[i].sNombreEmpresa = LE[i].iIdEmpresa + " " + LE[i].sNombreEmpresa;
                 }
             }
@@ -345,12 +350,18 @@ namespace Payroll.Controllers
             return Json(Bean);
         }
         [HttpPost]
-        public JsonResult CompruRegistroExit(int iIdDefinicionHd)
+        public JsonResult CompruRegistroExit(int iIdDefinicionHd,int  iperiodo,int NomCerr,int Anio)
         {
             List<TpCalculosHd> LNND = new List<TpCalculosHd>();
+            List<CTipoPeriodoBean> LTP = new List<CTipoPeriodoBean>();
+            List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();          
             FuncionesNomina Dao = new FuncionesNomina();
             LNND = Dao.sp_ExiteDefinicionTpCalculo_Retrieve_ExiteDefinicionTpCalculo(iIdDefinicionHd);
-            return Json(LNND);
+            LTP = Dao.sp_TipoPeridoTpDefinicionNomina_Retrieve_TpDefinicionNomina(iIdDefinicionHd);
+            LPe = Dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(iIdDefinicionHd, iperiodo, NomCerr, Anio);
+            var result = new { Result = LNND, LTP, LPe};
+            return Json(result);
+            //return Json(LNND);
 
         }
         //Guarda los datos de TpCalculos
@@ -359,13 +370,12 @@ namespace Payroll.Controllers
         {
             string sFolio = "";
             int iFolio = 0;
+            int Idusuario = int.Parse(Session["iIdUsuario"].ToString());
             TpCalculosHd bean = new TpCalculosHd();
             List<CInicioFechasPeriodoBean> DaFolio = new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
             DaFolio = dao.sp_DatFolioDefNomina_Retreieve(iIdDefinicionHd);
             if (DaFolio != null) {
-
-              
                 //iFolio = int.Parse(DaFolio[0].ianio.ToString()) * 100000 + int.Parse(DaFolio[0].iTipoPeriodo.ToString()) * 10000 +int.Parse( DaFolio[0].iPeriodo.ToString()) * 10;
                 if (DaFolio[0].iPeriodo > 9)
                 {
@@ -393,12 +403,10 @@ namespace Payroll.Controllers
                 }
 
                 iFolio = int.Parse(sFolio);
-                bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada);
+                bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada, Idusuario);
             }
 
-
             return Json(bean);
-
         }
         // Actualiza PTCalculoshd
         [HttpPost]
@@ -506,19 +514,38 @@ namespace Payroll.Controllers
         public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa, int Anio)
         {
             List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
-
-            //List<NominaLnDatBean> DA = new List<NominaLnDatBean>();
+            List<TPProcesos> LProce= new List<TPProcesos>();
+            List<EmpresasBean> LisEmpreCal = new List<EmpresasBean>();
+            //List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
             FuncionesNomina dao = new FuncionesNomina();
             dao.sp_EstatusTpProcesosJobs_Update_EstatusTpProcesosJobs();
-            Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa, Anio);
-            if (Dta.Count > 1) {
-                for (int i = 0; i < Dta.Count; i++) {
+            Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa, Anio);           
+         
+            LProce = Statusproc(iIdCalculosHd, iTipoPeriodo, iPeriodo,  idEmpresa,  Anio);
+            LisEmpreCal = dao.sp_Empresa_Retrieve_TpCalculosLN(iIdCalculosHd, iTipoPeriodo, 0);
+
+            if (Dta[0].sMensaje == "No hay datos") {
+
+                for (int i = 0; i < LisEmpreCal.Count ; i++) {                                            /// cambiar empresda de lista
+                    Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(0, iTipoPeriodo, iPeriodo, LisEmpreCal[i].iIdEmpresa, Anio);
+                    if (Dta[0].sMensaje == "success") {
+                        i = Dta.Count + 5;
+
+                    }
+                };           
+            };
+            if (Dta.Count > 1)
+            {
+                for (int i = 0; i < Dta.Count; i++)
+                {
                     Dta[i].sTotal = "$ " + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Dta[i].dTotal);
                 }
 
             }
 
-            return Json(Dta);
+            var result = new { Result = Dta, LProce, LisEmpreCal };
+            return Json(result);
+            
         }
 
         [HttpPost]
@@ -551,8 +578,8 @@ namespace Payroll.Controllers
             return Json(LTbProc);
         }
         public JsonResult ProcesosPots(int IdDefinicionHD, int anio, int iTipoPeriodo, int iperiodo, int iIdempresa, int iCalEmpleado)
-
         {
+            string Nameuse = Session["Susuario"].ToString();
             string Path = Server.MapPath("Archivos\\porlotes\\");
             Path = Path.Replace("\\Nomina", "");
             Path = Path + "prueba.bat";
@@ -560,7 +587,8 @@ namespace Payroll.Controllers
             Startup obj = new Startup();
             string NomProceso = "CNomina";
             FuncionesNomina Dao2 = new FuncionesNomina();
-            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path);
+           
+            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path, Nameuse);
             return null;
         }
         [HttpPost]
@@ -662,8 +690,7 @@ namespace Payroll.Controllers
         }
 
 
-        [HttpPost]
-        public JsonResult Statusproc(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa, int anio)
+        public List<TPProcesos> Statusproc(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa, int anio)
         {
             FuncionesNomina dao = new FuncionesNomina();
             List<TPProcesos> Dta = new List<TPProcesos>();
@@ -709,7 +736,7 @@ namespace Payroll.Controllers
                 Dta[0].sMensaje = "No hay datos";
 
             }
-            return Json(Dta);
+            return Dta;
         }
 
         // Lista Empleado
@@ -968,7 +995,7 @@ namespace Payroll.Controllers
             }
             TpCalculosHd ls = new TpCalculosHd();
             {
-                ls.sMensaje = Correcto;
+                ls.sMensaje = "success";
 
             };
             LiExit.Add(ls);
@@ -1103,6 +1130,16 @@ namespace Payroll.Controllers
             return Json(LPro);
         }
 
+        // verifica que exita la definicion en calculos hd
+
+        [HttpPost]
+        public JsonResult CompruRegistroExitdef(int iIdDefinicionHd)
+        {
+            List<TpCalculosHd> LNND = new List<TpCalculosHd>();         
+            FuncionesNomina Dao = new FuncionesNomina();
+            LNND = Dao.sp_ExiteDefinicionTpCalculo_Retrieve_ExiteDefinicionTpCalculo(iIdDefinicionHd);         
+            return Json(LNND);
+        }
 
     }
 }
