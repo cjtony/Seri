@@ -8,16 +8,28 @@ namespace Payroll.Models.Beans
 
     public class RenglonesHCBean
     {
-        public int iIdRenglon        { get; set; }
+        public int iIdRenglon { get; set; }
         public string sNombreRenglon { get; set; }
-        public int iConsecutivo      { get; set; }
+        public int iConsecutivo { get; set; }
     }
     public class ReporteNominaBean
     {
 
         public int iIdEmpleado { get; set; }
-        public int iIdEmpresa  { get; set; }
+        public int iIdEmpresa { get; set; }
 
+    }
+
+    public class PeriodoBean {
+        public int iPeriodo { get; set; }
+        public string sFechaInicio { get; set; }
+        public string sFechaFinal { get; set; }
+    }
+
+    public class TipoPeriodoBean
+    {
+        public int iTipoPeriodo { get; set; }
+        public string sValor { get; set; }
     }
 
     public class DatosGeneralesHC

@@ -787,14 +787,14 @@ namespace Payroll.Models.Daos
             return datosEmpresaBeanDispersion;
         }
 
-        public DatosEmpresaBeanDispersion sp_Datos_Empresa_Dispersion_Grupos(int keyBusiness)
+        public DatosEmpresaBeanDispersion sp_Datos_Empresa_Dispersion_Grupos(int keyGroup)
         {
             DatosEmpresaBeanDispersion datosEmpresaBeanDispersion = new DatosEmpresaBeanDispersion();
             try
             {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Datos_Empresa_Dispersion_Grupos", this.conexion) { CommandType = CommandType.StoredProcedure };
-                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdGrupo", keyGroup));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read())
                 {

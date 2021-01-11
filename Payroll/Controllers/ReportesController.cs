@@ -1180,5 +1180,34 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
         }
 
+        [HttpPost]
+        public JsonResult SearchOptionsNPHC(int year, int key, int type, int option, int period)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<PeriodoBean> periodos         = new List<PeriodoBean>();
+            List<TipoPeriodoBean> tipoPeriodos = new List<TipoPeriodoBean>();
+            ReportesDao reportesDao            = new ReportesDao();                                                                                                                     
+            try { 
+                if (option == 1) {
+                    periodos     = reportesDao.sp_Available_Periods_Business(year, key, type);
+                    if (periodos.Count > 0) {
+                        flag = true;
+                    }
+                    return Json(new { Bandera = flag, MensajeError = messageError, Datos = periodos});
+                } else {
+                    tipoPeriodos = reportesDao.sp_Available_Type_Periods_Business(year, key, type, period);
+                    if (tipoPeriodos.Count > 0) {
+                        flag = true;
+                    }
+                    return Json(new { Bandera = flag, MensajeError = messageError, Datos = tipoPeriodos });
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Periodos = periodos, Tipos = tipoPeriodos });
+        }
+
     }
 }

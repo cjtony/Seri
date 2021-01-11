@@ -18,9 +18,11 @@
     const frday = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
     const fechact = date.getFullYear() + '-' + frmonth + '-' + frday; 
 
-    const parameterYear     = `<input type="number" class="form-control form-control-sm" id="paramYear"/>`;
+    const parameterYear     = `<input type="number" class="form-control form-control-sm" id="paramYear" value="${date.getFullYear()}"/>`;
     const parameterNPer     = `<input type="number" class="form-control form-control-sm" id="paramNper"/>`;
     const parameterTPer     = '<input type="number" class="form-control form-control-sm" id="paramTper"/>';
+    const parameterNPerSel  = '<select class="form-control form-control-sm" id="paramNperSel" disabled> <option value="none">Selecciona</option> </select>';
+    const parameterTPerSel  = '<select class="form-control form-control-sm" id="paramTperSel" disabled> <option value="none">Selecciona</option> </select>';
     const parameterDate     = `<input type="date" class="form-control form-control-sm" id="paramDate" value="${fechact}"/>`;
     const parameterYears    = `<input type="number" class="form-control form-control-sm" id="paramYearS"/>`;
     const parameterYearE    = `<input type="number" class="form-control form-control-sm" id="paramYearE"/>`;
@@ -457,7 +459,37 @@
                             </div>
                         </div>
                     `;
-                } else if (typeReportselect.value == "SABANA" || typeReportselect.value == "HOJACALCULO" || typeReportselect.value == "HOJACALCULOBAJAS") {
+                } else if (typeReportselect.value == "HOJACALCULO") {
+                    contentParameters.innerHTML += `
+                        <div class="row mt-3 animated fadeInDown">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="col-form-label font-labels" class="text-left"> Año </label> ${parameterYear} 
+                                </div> 
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mt-4 text-center">
+                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="fSearchOptionsNPHC();"> <i class="fas fa-search mr-1"></i></button>
+                                </div> 
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label font-labels"> Numero periodo </label> ${parameterNPerSel} 
+                                </div> 
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mt-4 text-center">
+                                    <button class="btn btn-sm btn-outline-primary mt-2" disabled onclick="fSearchOptionsTPHC();" id="btn-optionsTPHC"> <i class="fas fa-search mr-1"></i></button>
+                                </div> 
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label font-labels"> Tipo periodo </label> ${parameterTPerSel} 
+                                </div> 
+                            </div>
+                        </div>
+                    `;
+                } else if (typeReportselect.value == "SABANA" || typeReportselect.value == "HOJACALCULOBAJAS") {
                     contentParameters.innerHTML += `
                     <div class="row mt-3 animated fadeInDown">
                         <div class="col-md-4">
@@ -555,6 +587,7 @@
                 if (typeReport === "SABANA") {
                     await fGenerateReportPayroll(optionBusiness, keyBusinessOpt, 1);
                 } else if (typeReport === "HOJACALCULO") {
+                    localStorage.setItem("report", "HC");
                     await fGenerateReportPayroll(optionBusiness, keyBusinessOpt, 2);
                 } else if (typeReport === "HOJACALCULOBAJAS") {
                     await fGenerateReportPayroll(optionBusiness, keyBusinessOpt, 3);
@@ -661,11 +694,122 @@
                 </div>`;
     }
 
+    // Funcion que completa los parametros de periodo
+    fSearchOptionsNPHC = () => {
+        try {
+            const paramYear = document.getElementById('paramYear');
+            document.getElementById('paramNperSel').innerHTML = '<option value="none">Selecciona</option>';
+            if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
+                document.getElementById('btn-optionsTPHC').disabled = false;
+                const valueOptionReport = $("input:radio[name=optionReportGenerate]:checked").val();
+                const reportGenerateOpt = (parseInt(valueOptionReport) === 0) ? "BUSINESS" : "GRPBUSINESS";
+                const keySend  = (reportGenerateOpt == "BUSINESS") ? selectOneBusiness.value : selectGroupBusiness.value;
+                const typeSend = (reportGenerateOpt == "BUSINESS") ? 1 : 2;
+                const dataSend = { year: paramYear.value, key: keySend, type: typeSend, option: 1, period: 0 };
+                $.ajax({
+                    url: "../Reportes/SearchOptionsNPHC",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        let count1 = 0;
+                        if (request.Datos.length > 0) {
+                            document.getElementById('paramNperSel').disabled = false;
+                            for (var i = 0; i < request.Datos.length; i++) {
+                                document.getElementById('paramNperSel').innerHTML += `<option value="${request.Datos[i].iPeriodo}"> ${request.Datos[i].iPeriodo}. ${request.Datos[i].sFechaInicio} - ${request.Datos[i].sFechaFinal} </option>`;
+                                count1 += 1;
+                            }
+                        } else {
+                            document.getElementById('paramNperSel').disabled    = true;
+                            document.getElementById('btn-optionsTPHC').disabled = true;
+                        }
+                        if (count1 == 0) {
+                            fShowTypeAlert('Atención!', 'No se encontraron numeros de periodos de nomina ejecutados', 'warning', paramYear, 0);
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                document.getElementById('btn-optionsTPHC').disabled = true;
+                document.getElementById('paramNperSel').disabled    = true;
+                fShowTypeAlert('Atención', 'Complete el campo Año, la longitud debe de ser 4 caracteres', 'warning', paramYear, 2);
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que completa los parametros de tipo
+    fSearchOptionsTPHC = () => {
+        try {
+            const paramYear        = document.getElementById('paramYear');
+            const paramNPerSel     = document.getElementById('paramNperSel');
+            const paramTPerSel     = document.getElementById('paramTperSel');
+            paramTPerSel.innerHTML = "<option value='none'>Selecciona</option>";
+            if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
+                if (paramNPerSel.value != "none") {
+                    const valueOptionReport = $("input:radio[name=optionReportGenerate]:checked").val();
+                    const reportGenerateOpt = (parseInt(valueOptionReport) === 0) ? "BUSINESS" : "GRPBUSINESS";
+                    const keySend = (reportGenerateOpt == "BUSINESS") ? selectOneBusiness.value : selectGroupBusiness.value;
+                    const typeSend = (reportGenerateOpt == "BUSINESS") ? 1 : 2;
+                    const dataSend = { year: paramYear.value, key: keySend, type: typeSend, option: 2, period: paramNPerSel.value };
+                    $.ajax({
+                        url: "../Reportes/SearchOptionsNPHC",
+                        type: "POST",
+                        data: dataSend,
+                        beforeSend: () => {
+
+                        }, success: (request) => {
+                            console.log(request);
+                            let count1 = 0;
+                            if (request.Datos.length > 0) {
+                                paramTPerSel.disabled = false;
+                                for (var i = 0; i < request.Datos.length; i++) {
+                                    document.getElementById('paramTperSel').innerHTML += `<option value="${request.Datos[i].iTipoPeriodo}"> ${request.Datos[i].iTipoPeriodo}. ${request.Datos[i].sValor} </option>`;
+                                    count1 += 1;
+                                }
+                            } else {
+                                paramTPerSel.disabled = true;
+                            }
+                            if (count1 == 0) {
+                                fShowTypeAlert('Atención!', 'No se encontraron periodos de nomina ejecutados', 'warning', paramYear, 0);
+                            }
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    paramTPerSel.disabled = true;
+                }
+            } else {
+                fShowTypeAlert('Atención', 'Complete el campo Año, la longitud debe de ser 4 caracteres', 'warning', paramYear, 2);
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     // Funcion que genera el reporte de la hoja de calculo
-    fGenerateReportPayroll = (option, keyOption, type) => {
-        //console.log("opcion: " + option);
-        //console.log("llave: "  + keyOption);
-        //console.log("tipo: "   + type);
+    fGenerateReportPayroll = (option, keyOption, type) => { 
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 let urlSend  = "";
@@ -682,15 +826,17 @@
                 const paramYear = document.getElementById('paramYear');
                 const paramNper = document.getElementById('paramNper');
                 const paramTper = document.getElementById('paramTper');
+                const paramNPerSel = document.getElementById('paramNperSel');
+                const paramTPerSel = document.getElementById('paramTperSel');
                 let paramRDat = 0;
                 if ($("input[id='paramRDat']:checkbox").is(':checked')) {
                     paramRDat = 1;
                 }
                 if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
-                    if (paramNper.value != "" && paramNper.value > 0) {
-                        if (paramTper.value != "") {
+                    if (paramNPerSel.value != "none") {
+                        if (paramTPerSel.value != "none") {
                             const period   = localStorage.getItem("period");
-                            const dataSend = { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTper.value), numberPeriod: parseInt(paramNper.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) };
+                            const dataSend = { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTPerSel.value), numberPeriod: parseInt(paramNPerSel.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) };
                             console.log(dataSend);
                             $.ajax({
                                 url: "../Reportes/" + urlSend,
@@ -723,10 +869,10 @@
                                 }
                             });
                         } else {
-                            fShowTypeAlert('Atención', 'Complete el campo Tipo de periodo', 'warning', paramTper, 2);
+                            fShowTypeAlert('Atención', 'Complete el campo Tipo de periodo', 'warning', paramTPerSel, 2);
                         }
                     } else {
-                        fShowTypeAlert('Atención', 'Complete el campo Numero de periodo', 'warning', paramNper, 2);
+                        fShowTypeAlert('Atención', 'Complete el campo Numero de periodo', 'warning', paramNPerSel, 2);
                     }
                 } else {
                     fShowTypeAlert('Atención', 'Complete el campo Año, la longitud debe de ser 4 caracteres', 'warning', paramYear, 2);
