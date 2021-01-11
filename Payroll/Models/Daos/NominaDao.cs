@@ -925,7 +925,7 @@ namespace Payroll.Models.Daos
 
         }
 
-        public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliFolio, int CtrliNominaCerrada)
+        public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliFolio, int CtrliNominaCerrada, int CtrliIdUsuarios)
         {
             TpCalculosHd bean = new TpCalculosHd();
             try
@@ -938,7 +938,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicionHd", CtrliIdDefinicionHd));
                 cmd.Parameters.Add(new SqlParameter("@CtrliFolio", CtrliFolio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNominaCerrada", CtrliNominaCerrada));
-               
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuarios));
+
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     bean.sMensaje = "success";
@@ -947,7 +948,7 @@ namespace Payroll.Models.Daos
                 {
                     bean.sMensaje = "error";
                 }
-                cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
