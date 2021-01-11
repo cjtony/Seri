@@ -698,6 +698,9 @@
     fSearchOptionsNPHC = () => {
         try {
             const paramYear = document.getElementById('paramYear');
+            const paramTPerSel     = document.getElementById('paramTperSel');
+            paramTPerSel.disabled  = true;
+            paramTPerSel.innerHTML = "<option value='none'>Selecciona</option>";
             document.getElementById('paramNperSel').innerHTML = '<option value="none">Selecciona</option>';
             if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
                 document.getElementById('btn-optionsTPHC').disabled = false;
