@@ -283,7 +283,6 @@
 
     };
 
-
     btnNuevaComp.addEventListener('click', FBlockInsert);
 
     // inserta Compensancion 

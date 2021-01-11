@@ -30,10 +30,12 @@ namespace Payroll
         /// <param name="app"></param>
         public void Configuration(IAppBuilder app)
         {
-            // Para obtener más información sobre cómo configurar la aplicación, visite https://go.microsoft.com/fwlink/?LinkID=316888
-            // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
-            // Desarrollo
-            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog= IPSNet; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions
+           // Para obtener más información sobre cómo configurar la aplicación, visite https://go.microsoft.com/fwlink/?LinkID=316888
+           // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
+           // Desarrollo  
+           // string nombre = Nameuser;
+
+            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet_Copia ; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions
             {
                 
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
@@ -44,7 +46,6 @@ namespace Payroll
 
             });
            
-        
             //  GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = 201.149.34.185,15002; Initial Catalog=IPSNet_original; User ID= IPSNet;Password= IPSNet2;Integrated Security= False");
             
             // Produccion
@@ -179,14 +180,14 @@ namespace Payroll
             return fechajobs;
         }
 
-        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple,string Path)
+        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple,string Path,string NameUser)
         {
             string FechaProceso = Fecha();
 
             if (NomProceso == "CNomina")
             {
 
-                var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso, Path));
+                var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso, Path, NameUser));
               
                     //Task checkJobState = Task.Factory.StartNew(() =>
                     //{
@@ -215,27 +216,23 @@ namespace Payroll
 
         }
 
-        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, int IdEmpresa, int LisEmpleado, string fecha, string Path) {
-
+        public void Cnomia(int anio, int TipoPeriodo, int Periodo, int IdDefinicion, int IdEmpresa, int LisEmpleado, string fecha, string Path,string NameUsuario) {
             if (Path == null) {
 
                 NominaController contol = new NominaController();
 
                 Path = contol.path();
             };
-          
-
             //    string path2 = Path;
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
+            psi.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado+","+ NameUsuario;
             psi.CreateNoWindow = true;
             psi.WindowStyle = ProcessWindowStyle.Hidden;
             psi.FileName = Path;
-
             Process.Start(psi);
 
-     //       Path = Path.Replace("prueba.bat", "Prueba2.bat");
-      //      ProcessStartInfo psi2 = new ProcessStartInfo();
+            //Path = Path.Replace("prueba.bat", "Prueba2.bat");
+            //ProcessStartInfo psi2 = new ProcessStartInfo();
             //psi2.Arguments = anio + "," + TipoPeriodo + "," + Periodo + "," + IdDefinicion + "," + IdEmpresa + "," + LisEmpleado;
             //psi2.CreateNoWindow = true;
             //psi2.WindowStyle = ProcessWindowStyle.Hidden;
