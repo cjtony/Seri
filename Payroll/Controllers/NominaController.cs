@@ -370,7 +370,7 @@ namespace Payroll.Controllers
         {
             string sFolio = "";
             int iFolio = 0;
-            int Idusuario = int.Parse(Session["iIdUsuario"].ToString());
+            int Idusuarios = int.Parse(Session["iIdUsuario"].ToString());
             TpCalculosHd bean = new TpCalculosHd();
             List<CInicioFechasPeriodoBean> DaFolio = new List<CInicioFechasPeriodoBean>();
             FuncionesNomina dao = new FuncionesNomina();
@@ -403,7 +403,7 @@ namespace Payroll.Controllers
                 }
 
                 iFolio = int.Parse(sFolio);
-                bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada, Idusuario);
+                bean = dao.sp_TpCalculos_Insert_TpCalculos(iIdDefinicionHd, iFolio, iNominaCerrada, Idusuarios);
             }
 
             return Json(bean);
