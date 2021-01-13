@@ -284,8 +284,9 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                $("#inTipoDescuento option[value=" + data[0]["Descontar"] + "]").attr("selected", true);
-
+                //console.log(data);
+                //$("#inTipoDescuento option[value=" + data[0]["Descontar"] + "]").attr("selected", true);
+                document.getElementById("inTipoDescuento").value = data[0]["Descontar"];
                 document.getElementById("inDescuento").value = data[0]["Descuento"];
                 document.getElementById("inNoCredito").value = data[0]["NoCredito"];
 
