@@ -2,18 +2,23 @@
     <label class="h5 col-md-12">Catálogo de empleados</label>
     <div class="dropdown-divider col-md-12"></div>
     <div class="col-md-12 row">
-        <div class="col-md-3 pt-5 ">
-            <label class="col-md-12 text-dark font-weight-bold ">&nbsp;&nbsp;&nbsp; Empleados por empresa</label>
-            <div id="body-cards-empresas" class="col-md-12 row bg-light border-left-secondary rounded py-3 px-1"></div>
+
+        <div class="col-md-4 pt-5">
+            <label class="col-md-12 alert alert-secondary mb-0 border-0 text-center text-dark font-weight-bold ">&nbsp;&nbsp;&nbsp; Empleados por empresa</label>
+                <div class="modal-dialog-scrollable col-md-12 h-25">
+                    <div class="modal-body d-flex justify-content-center">
+                        <div id="body-cards-empresas" class="col-md-12 row pt-1 px-1"></div>
+                    </div>
+                </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="col-md-12 mb-3 text-right">
                 <div class="btn btn-sm btn-info btn-icon-split" data-toggle="modal" data-target="#modalBusquedaEmpleado">
                     <span class="icon"><i class="fas fa-search"></i></span>
                     <span class="text">Buscar empleado</span>
                 </div>
             </div>
-            @*<div class="collapse collapseDataEmp col-md-12 pr-3 mt-3">*@
+            
                 <nav class="col-md-12">
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <div class="nav-item nav-link active" id="nav-general-tab" data-toggle="tab" data-target="#nav-general" role="tab" aria-controls="nav-general" aria-selected="true"><i class="fas fa-book"></i> Datos Generales</div>
@@ -256,9 +261,6 @@
                 </div>
             @*</div>*@
         </div>
-
-
-        
     </div>
 </div>
 <!-- Modal Mostrar Busqueda de empleados -->
@@ -296,7 +298,7 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/Catalogos/Consulta.js?n=1"></script>
+<script src="~/Scripts/Catalogos/Consulta.js?n=2"></script>
 <script>
     $(function () {
         LoadBodyCards();

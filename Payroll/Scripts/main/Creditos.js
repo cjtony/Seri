@@ -45,7 +45,6 @@
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
                     if (data[0] == '0') {
                         Swal.fire({
                             icon: 'warning',
@@ -82,7 +81,6 @@
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
 
-                    console.log(data[0]["iFlag"]);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -113,8 +111,6 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-
                 var iconb = "";
                 var colorb = "";
                 if (data[0]["TipoEmpleado"] > 163) {
@@ -236,7 +232,6 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: (data) => {
-                        console.log(data);
                         if (data[0] == '0') {
                             Swal.fire({
                                 icon: 'warning',
@@ -261,27 +256,21 @@
     //cambia el valor del campo segun el select 
     $("#inTipoDescuento").change(function () {
         var select = document.getElementById("inTipoDescuento");
-        //console.log(select.value);
         switch (select.value) {
             case '289':
                 $("#lblInDescuento").html(" Monto ");
-                factor.disabled = true;
                 break;
             case '290':
                 $("#lblInDescuento").html(" Porcentaje ");
-                factor.disabled = true;
                 break;
             case '291':
                 $("#lblInDescuento").html(" No. Veces ");
-                factor.disabled = false;
                 break;
             case '292':
                 $("#lblInDescuento").html(" Factor Descuento ");
-                factor.disabled = true;
                 break;
             default:
                 $("#lblInDescuento").html(" Monto ");
-                factor.disabled = true;
                 break;
         }
     });
@@ -295,34 +284,81 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                console.log()
-                $("#inTipoDescuento option[value=" + data[0]["Descontar"] + "]").attr("selected", true);
-
+                //console.log(data);
+                //$("#inTipoDescuento option[value=" + data[0]["Descontar"] + "]").attr("selected", true);
+                document.getElementById("inTipoDescuento").value = data[0]["Descontar"];
                 document.getElementById("inDescuento").value = data[0]["Descuento"];
                 document.getElementById("inNoCredito").value = data[0]["NoCredito"];
 
-                var ano = data[0]["FechaAprovacionCredito"].substr(6, 4);
-                var mes = data[0]["FechaAprovacionCredito"].substr(3, 2);
-                var dia = data[0]["FechaAprovacionCredito"].substr(0, 2);
-                console.log(ano + '-' + mes + '-' + dia + ' ... ' + data[0]["FechaAprovacionCredito"]);
-
                 $('#inFechaAprovacionCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
 
-                $('#inFechaBajaCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
+                $('#inFechaBajaCredito').val(data[0]["FechaBaja"].substr(6, 4) + '-' + data[0]["FechaBaja"].substr(3, 2) + '-' + data[0]["FechaBaja"].substr(0, 2));
 
-                $('#inFechaBajaCredito').val(data[0]["FechaAprovacionCredito"].substr(6, 4) + '-' + data[0]["FechaAprovacionCredito"].substr(3, 2) + '-' + data[0]["FechaAprovacionCredito"].substr(0, 2));
-
-                //document.getElementById("inFechaAprovacionCredito").value = 
-                //var fechab = document.getElementById("inFechaBajaCredito");
-                //var fechar = document.getElementById("inFechaReinicioCredito");
-
-                //console.log(data);
-                //ncredito.value = data[0]["NoCredito"];
-                //descuento.value = data[0]["Descuento"];
-                //de
                 $("#btnUpdateCredito").removeClass("invisible");
                 $("#btnSaveCredito").addClass("invisible");
+                document.getElementById("inCredito_id").value = Credito_id;
             }
         });
     }
+
+    //reinicia el form de insertar credito
+    $("#btnResetFormCredito").click(function () {
+        $("#btnUpdateCredito").addClass("invisible");
+        $("#btnSaveCredito").removeClass("invisible");
+    });
+
+    //actualizar el credito 
+    $("#btnUpdateCredito").click(function () {
+        var tdescuento = document.getElementById("inTipoDescuento");
+        var descuento = document.getElementById("inDescuento");
+        var ncredito = document.getElementById("inNoCredito");
+        var fechaa = document.getElementById("inFechaAprovacionCredito");
+        var descontar = document.getElementById("inDescontar");
+        var fechab = document.getElementById("inFechaBajaCredito");
+        var credito_id = document.getElementById("inCredito_id");
+        
+        
+        var form = document.getElementById("frmCreditos");
+        if (form.checkValidity() == false) {
+            form.classList.add("was-validated");
+            setTimeout(() => {
+                form.classList.remove("was-validated");
+            }, 5000);
+        } else {
+            
+            $.ajax({
+                url: "../Incidencias/UpdateCredito",
+                data: JSON.stringify({
+                    Credito_id: credito_id.value,
+                    TipoDescuento_id: tdescuento.value,
+                    Descontar_id: descontar.value,
+                    Descuento: descuento.value,
+                    NoCredito: ncredito.value,
+                    FechaAprovacion: fechaa.value,
+                    FechaBaja: fechab.value
+                }),
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Aviso!',
+                            text: data[1]
+                        });
+                    } else if (data[0] == '1') {
+                        createTab();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Completado!',
+                            text: data[1],
+                            timer: 1000
+                        });
+                        $("#btnResetFormCredito").click();
+                        createTab();
+                    }
+                }
+            });
+        }
+    });
 });

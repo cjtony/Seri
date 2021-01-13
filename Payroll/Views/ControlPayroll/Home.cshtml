@@ -69,7 +69,7 @@
                             }),
                             contentType: "application/json; charset=utf-8",
                             success: (dat) => {
-                                document.getElementById("btnNameEmpresaSelected").innerHTML = nombre;
+                                document.getElementById("btnNameEmpresaSelected").innerHTML = id + " " + nombre;
                                 document.getElementById("lblPeriodoId").innerHTML = data[4];
                                 document.getElementById("lblRangoPeriodo").innerHTML = "&nbsp;&nbsp;-&nbsp;&nbsp;" + data[6] + " - " + data[7];
                                 $("#bodySubmenus").empty();

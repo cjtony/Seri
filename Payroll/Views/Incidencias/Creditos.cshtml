@@ -31,15 +31,13 @@
                 </div>
                 <hr />
                 <div class="form-group col-md-4 text-right">
-                    
                     <div class="btn btn-sm btn-primary font-labels col-md-12" id="btnSaveCredito">Registrar credito <i class="far fa-save"></i></div>
                 </div>
                 <div class="form-group col-md-4 text-right">
-                    
                     <div class="btn btn-sm btn-success font-labels col-md-12" id="btnUpdateCredito">Actualizar credito <i class="fas fa-pencil-alt"></i></div>
+                    <input type="hidden" id="inCredito_id" value=""/>
                 </div>
                 <div class="form-group col-md-4 text-right">
-                    
                     <button type="reset" class="btn btn-sm btn-warning font-labels col-md-12" id="btnResetFormCredito">Limpiar formulario <i class="fas fa-trash"></i></button>
                 </div>
             </form>
@@ -52,7 +50,7 @@
                         <th scope="col">Tipo Descuento</th>
                         <th scope="col">Descuento</th>
                         <th scope="col">Descontar</th>
-                        <th scope="col">Factor</th>
+                        @*<th scope="col">Factor</th>*@
                         <th scope="col">Fecha Baja</th>
                         @*<th scope="col">Effdt</th>*@
                         <th scope="col">Acciones</th>
@@ -89,7 +87,7 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Creditos.js?n=3"></script>
+<script src="~/Scripts/main/Creditos.js?n=4"></script>
 <script>
     $(function () {
         LoadSelectTipoDescuento();
