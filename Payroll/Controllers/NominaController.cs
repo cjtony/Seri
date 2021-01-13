@@ -526,7 +526,7 @@ namespace Payroll.Controllers
 
             if (Dta[0].sMensaje == "No hay datos") {
 
-                for (int i = 0; i < LisEmpreCal.Count ; i++) {                                            /// cambiar empresda de lista
+                for (int i = 0; i < LisEmpreCal.Count ; i++) {           
                     Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(0, iTipoPeriodo, iPeriodo, LisEmpreCal[i].iIdEmpresa, Anio);
                     if (Dta[0].sMensaje == "success") {
                         i = Dta.Count + 5;
@@ -580,14 +580,50 @@ namespace Payroll.Controllers
         public JsonResult ProcesosPots(int IdDefinicionHD, int anio, int iTipoPeriodo, int iperiodo, int iIdempresa, int iCalEmpleado)
         {
             string Nameuse = Session["Susuario"].ToString();
+            int UsuarioId = int.Parse(Session["iIdUsuario"].ToString());
             string Path = Server.MapPath("Archivos\\porlotes\\");
+            List<TPProcesos> Exist = new List<TPProcesos>();
+            string sFolio="";
+            int iFolio = 0;
             Path = Path.Replace("\\Nomina", "");
             Path = Path + "prueba.bat";
 
             Startup obj = new Startup();
             string NomProceso = "CNomina";
             FuncionesNomina Dao2 = new FuncionesNomina();
-           
+
+            if (iperiodo > 9)
+            {
+                if (iTipoPeriodo > 0)
+                {
+                    sFolio = anio + (iTipoPeriodo * 10) + iperiodo + "0";
+                }
+                if (iTipoPeriodo < 1)
+                {
+                    sFolio = anio + "00" + iperiodo + "0";
+                }
+
+            }
+            if (iperiodo > 0 && iperiodo < 10)
+            {
+                if (iTipoPeriodo > 0)
+                {
+                    sFolio = anio + (iTipoPeriodo * 10) + "0" + iperiodo + "0";
+                }
+                if (iTipoPeriodo < 1)
+                {
+                    sFolio = anio + "00" + "0" + iperiodo + "0";
+
+                }
+            }
+            iFolio = int.Parse(sFolio);
+            Exist = Dao2.sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs(UsuarioId);
+
+            if (Exist[0].iExistUsuario == 0) {
+                UsuarioId = 0;
+                Nameuse = "IPSNet";
+            }
+            Dao2.sp_Usuario_Update_TplantillaCalculosHd(IdDefinicionHD, iFolio, UsuarioId);
             obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path, Nameuse);
             return null;
         }
@@ -1124,13 +1160,23 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult ProcesEjecuEsta()
         {
+            string Nameuse = Session["Susuario"].ToString();
+            int Idusuario = int.Parse(Session["iIdUsuario"].ToString());
             List<TPProcesos> LPro = new List<TPProcesos>();
+            List<TPProcesos> Exist = new List<TPProcesos>();
             FuncionesNomina Dao = new FuncionesNomina();
-            LPro = Dao.sp_ProcesEje_Retrieve_TpProcesosJobs();
+            if (Exist[0].iExistUsuario == 0)
+            {
+                Idusuario = 0;
+            }
+            Exist = Dao.sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs(Idusuario);
+
+
+            LPro = Dao.sp_ProcesEje_Retrieve_TpProcesosJobs(Idusuario);
             return Json(LPro);
         }
 
-        // verifica que exita la definicion en calculos hd
+        // verifica que exite el id de la definicion en calculos hd
 
         [HttpPost]
         public JsonResult CompruRegistroExitdef(int iIdDefinicionHd)
@@ -1140,6 +1186,9 @@ namespace Payroll.Controllers
             LNND = Dao.sp_ExiteDefinicionTpCalculo_Retrieve_ExiteDefinicionTpCalculo(iIdDefinicionHd);         
             return Json(LNND);
         }
+   
+
+
 
     }
 }
