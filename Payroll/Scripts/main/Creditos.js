@@ -137,6 +137,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
+                console.log(data);
                 document.getElementById("tcbody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     if (data[i]["Cancelado"] == "True") {
@@ -258,23 +259,18 @@
         switch (select.value) {
             case '289':
                 $("#lblInDescuento").html(" Monto ");
-                factor.disabled = true;
                 break;
             case '290':
                 $("#lblInDescuento").html(" Porcentaje ");
-                factor.disabled = true;
                 break;
             case '291':
                 $("#lblInDescuento").html(" No. Veces ");
-                factor.disabled = false;
                 break;
             case '292':
                 $("#lblInDescuento").html(" Factor Descuento ");
-                factor.disabled = true;
                 break;
             default:
                 $("#lblInDescuento").html(" Monto ");
-                factor.disabled = true;
                 break;
         }
     });
@@ -299,7 +295,69 @@
 
                 $("#btnUpdateCredito").removeClass("invisible");
                 $("#btnSaveCredito").addClass("invisible");
+                document.getElementById("inCredito_id").value = Credito_id;
             }
         });
     }
+
+    //reinicia el form de insertar credito
+    $("#btnResetFormCredito").click(function () {
+        $("#btnUpdateCredito").addClass("invisible");
+        $("#btnSaveCredito").removeClass("invisible");
+    });
+
+    //actualizar el credito 
+    $("#btnUpdateCredito").click(function () {
+        var tdescuento = document.getElementById("inTipoDescuento");
+        var descuento = document.getElementById("inDescuento");
+        var ncredito = document.getElementById("inNoCredito");
+        var fechaa = document.getElementById("inFechaAprovacionCredito");
+        var descontar = document.getElementById("inDescontar");
+        var fechab = document.getElementById("inFechaBajaCredito");
+        var credito_id = document.getElementById("inCredito_id");
+        
+        
+        var form = document.getElementById("frmCreditos");
+        if (form.checkValidity() == false) {
+            form.classList.add("was-validated");
+            setTimeout(() => {
+                form.classList.remove("was-validated");
+            }, 5000);
+        } else {
+            
+            $.ajax({
+                url: "../Incidencias/UpdateCredito",
+                data: JSON.stringify({
+                    Credito_id: credito_id.value,
+                    TipoDescuento_id: tdescuento.value,
+                    Descontar_id: descontar.value,
+                    Descuento: descuento.value,
+                    NoCredito: ncredito.value,
+                    FechaAprovacion: fechaa.value,
+                    FechaBaja: fechab.value
+                }),
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    if (data[0] == '0') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Aviso!',
+                            text: data[1]
+                        });
+                    } else if (data[0] == '1') {
+                        createTab();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Completado!',
+                            text: data[1],
+                            timer: 1000
+                        });
+                        $("#btnResetFormCredito").click();
+                        createTab();
+                    }
+                }
+            });
+        }
+    });
 });

@@ -129,12 +129,13 @@
             success: (data) => {
                 var tab = document.getElementById("bodytab-fechas-periodos");
                 tab.innerHTML = "";
+                tab.innerHTML = "";
                 var empresa;
                 for (var i = 0; i < data.length; i++) {
                     if (i == 0) {
                         empresa = data[i]["Empresa_id"];
                     }
-                    
+
                     tab.innerHTML += "" +
                         "<tr>" +
                         "<td colspan='3' >" +
@@ -146,6 +147,7 @@
                         "</td >" +
                         "</tr >";
                 }
+
             }
         });
     }
@@ -603,14 +605,7 @@
                     form.classList.add("was-validated");
                 },
                 success: (data) => {
-                    if (data[0] == '0') {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Error!',
-                            text: data[1],
-                            timer: 3000
-                        });
-                    } else {
+                    if (data[0] == '1') {
                         Swal.fire({
                             icon: 'success',
                             title: 'Correcto!',
@@ -620,6 +615,13 @@
                         editarFechasPeriodos(inEmpresa_id.value);
                         $("#modalAgregarFechaPeriodo").modal("hide");
                         document.getElementById("frmNewFechasPeriodos").reset();
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Error!',
+                            text: data[1],
+                            timer: 3000
+                        });
                     }
 
 
@@ -795,7 +797,7 @@
     //
     //CAMBIO DE SELECT GRUPOS
     $("#inGrupos").on("change", function () {
-    //
+        //
     });
     // CARGA MODAL DE EDITAR POLITICAS
     cargaModalEditarPolitica = (Empresa_id, Effdt, Anio) => {
@@ -1032,7 +1034,7 @@
             }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
+
             }
         });
     }
@@ -1086,7 +1088,7 @@
             });
         }
 
-        
+
     }
     //
     //MOSTRAR MODAL DE AGREGADO DE NUEVO GRUPO
@@ -1588,9 +1590,9 @@
     //
     // FUNCION PARA HACER SECUENCIA PARA DAR MOVIEMIENTO A LOS BADGES
     $(".btns").hover(function () {
-        $('.btns').removeClass('badge-light').addClass('badge-dark'); 
+        $('.btns').removeClass('badge-light').addClass('badge-dark');
     }, function () {
-        $('.btns').removeClass('badge-dark').addClass('badge-light'); 
+        $('.btns').removeClass('badge-dark').addClass('badge-light');
     });
 
     // FUNCION DE un CLICK EN EL ROW 

@@ -580,5 +580,15 @@ namespace Payroll.Controllers
             list.Add(RutaSitio + "/Content/FilesCargaMasivaIncidencias/FormatoDeIncidencias/Layout_Carga_Incidencias.xlsx");
             return Json(list);
         }
+        [HttpPost]
+        public JsonResult UpdateCredito(int Credito_id, int TipoDescuento_id, int Descontar_id, string Descuento, string NoCredito, string FechaAprovacion, string FechaBaja)
+        {
+            List<string> Lista;
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
+            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+            Lista = Dao.sp_TCreditos_update_credito(Empresa_id, Credito_id, Empleado_id, TipoDescuento_id, Descontar_id, Descuento, NoCredito, FechaAprovacion, FechaBaja);
+            return Json(Lista);
+        }
     }
 }

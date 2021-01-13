@@ -252,8 +252,8 @@
                 tab.innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     tab.innerHTML += "<div class='col-md-12 row'>"
-                        + "<small class='col-md-8'>" + data[i]["Empresa_id"] + " " + data[i]["NombreEmpresa"] + "</small>"
-                        + "<small class='col-md-4'><span class='badge badge-primary col-md-12'><i class='fas fa-users'></i>&nbsp;" + data[i]["No"] + "</span></small>"
+                        + "<small class='col-md-9'>" + data[i]["Empresa_id"] + " " + data[i]["NombreEmpresa"] + "</small>"
+                        + "<small class='col-md-3'><span class='badge badge-primary px-2'><i class='fas fa-users'></i>&nbsp;" + data[i]["No"] + "</span></small>"
                         + "</div>";
                 }
             }
