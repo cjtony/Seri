@@ -3114,7 +3114,7 @@ namespace Payroll.Models.Daos
             try
             {
                 this.Conectar();
-                SqlCommand cmd = new SqlCommand("sp_DefineNom_insert_DefineNom", this.conexion)
+                SqlCommand cmd = new SqlCommand("sp_Usuario_Update_TplantillaCalculosHd", this.conexion)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -3149,8 +3149,8 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                cmd.Parameters.Add(new SqlParameter("@CrltriIdUsuario", IdUsuario));
-                cmd.Parameters.Add(new SqlParameter("@CntrliOp", 0));
+                cmd.Parameters.Add(new SqlParameter("@CntrliUsuarioId", IdUsuario));
+                cmd.Parameters.Add(new SqlParameter("@CntrliOp", "0"));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
