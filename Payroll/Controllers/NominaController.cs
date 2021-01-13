@@ -594,11 +594,11 @@ namespace Payroll.Controllers
             {
                 if (iTipoPeriodo > 0)
                 {
-                    sFolio = anio + (iTipoPeriodo * 10) + iperiodo + "0";
+                    sFolio = anio.ToString() + (iTipoPeriodo * 10) + iperiodo.ToString() + "0";
                 }
                 if (iTipoPeriodo < 1)
                 {
-                    sFolio = anio + "00" + iperiodo + "0";
+                    sFolio = anio.ToString() + "00" + iperiodo.ToString() + "0";
                 }
 
             }
@@ -606,11 +606,11 @@ namespace Payroll.Controllers
             {
                 if (iTipoPeriodo > 0)
                 {
-                    sFolio = anio + (iTipoPeriodo * 10) + "0" + iperiodo + "0";
+                    sFolio = anio.ToString() + (iTipoPeriodo * 10) + "0" + iperiodo.ToString() + "0";
                 }
                 if (iTipoPeriodo < 1)
                 {
-                    sFolio = anio + "00" + "0" + iperiodo + "0";
+                    sFolio = anio.ToString() + "00" + "0" + iperiodo.ToString() + "0";
 
                 }
             }
@@ -1163,11 +1163,12 @@ namespace Payroll.Controllers
             List<TPProcesos> LPro = new List<TPProcesos>();
             List<TPProcesos> Exist = new List<TPProcesos>();
             FuncionesNomina Dao = new FuncionesNomina();
+            Exist = Dao.sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs(Idusuario);
             if (Exist[0].iExistUsuario == 0)
             {
                 Idusuario = 0;
             }
-            Exist = Dao.sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs(Idusuario);
+           
 
 
             LPro = Dao.sp_ProcesEje_Retrieve_TpProcesosJobs(Idusuario);
@@ -1185,8 +1186,5 @@ namespace Payroll.Controllers
             return Json(LNND);
         }
    
-
-
-
     }
 }

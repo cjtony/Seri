@@ -265,7 +265,7 @@
                     }
                     if (Result.LPe[0].sMensaje == "error") {
 
-                     fshowtypealert('Ejecucion', 'Periodo exite ', 'warning')
+                        fshowtypealert('Ejecucion', 'Periodo no existe favor de crearlo ', 'warning')
                     }
                 }
                 if (Result.Result[0].iIdCalculosHd == 0) {
