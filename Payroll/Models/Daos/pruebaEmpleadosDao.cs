@@ -1224,5 +1224,42 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
+        public List<string> sp_TCreditos_update_credito(int Empresa_id, int Credito_id, int Empleado_id, int TipoDescuento_id, int Descontar_id, string Descuento, string NoCredito, string FechaAprovacion, string FechaBaja)
+        {
+            List<string> lista = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TCreditos_update_credito", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCredito_id", Credito_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipoDescuento_id", TipoDescuento_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescontar_id", Descontar_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescuento", Descuento));
+            cmd.Parameters.Add(new SqlParameter("@ctrlNoCredito", NoCredito));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaAprovacion", FechaAprovacion));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaBaja", FechaBaja));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    lista.Add(data["iFlag"].ToString());
+                    lista.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return lista;
+        }
+
     }
 }

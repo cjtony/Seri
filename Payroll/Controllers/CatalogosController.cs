@@ -539,5 +539,6 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CatalogoGeneral_Retrieve_RecuperaAusentismos();
             return Json(Lista);
         }
+        
     }
 }
