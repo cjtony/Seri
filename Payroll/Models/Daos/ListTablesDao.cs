@@ -1441,12 +1441,13 @@ namespace Payroll.Models.Daos
                                                     lengRenglon = "001";
                                                 }
                                                 lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
-                                                //int idReglontama = IdRenglon.Length;
-                                                //if (idReglontama == 1) { IdRenglon = "00" + IdRenglon; };
-                                                //if (idReglontama == 2) { IdRenglon = "0" + IdRenglon; };
-                                                int idReglontama = lengRenglon.Length;
-                                                if (idReglontama == 1) { IdRenglon = "00" + LisTRecibo[a].sIdSat; };
-                                                if (idReglontama == 2) { IdRenglon = "0" + LisTRecibo[a].sIdSat; };
+                                                int idReglontama = IdRenglon.Length;
+                                                if (idReglontama == 1) { IdRenglon = "00" + IdRenglon; };
+                                                if (idReglontama == 2) { IdRenglon = "0" + IdRenglon; };
+
+                                                //int idReglontama = lengRenglon.Length;
+                                                //if (idReglontama == 1) { IdRenglon = "00" + LisTRecibo[a].sIdSat; };
+                                                //if (idReglontama == 2) { IdRenglon = "0" + LisTRecibo[a].sIdSat; };
 
 
 
@@ -1493,19 +1494,19 @@ namespace Payroll.Models.Daos
                                                 string concepto = LisTRecibo[a].sNombre_Renglon;
 
 
-                                                //lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
-                                                //int idReglontama = IdRenglon.Length;
-                                                //if (idReglontama == 1) { IdRenglon = "00" + IdRenglon; };
-                                                //if (idReglontama == 2) { IdRenglon = "0" + IdRenglon; };
-                                                //if (idReglontama == 3) { lengRenglon = "100"; };
-                                                //if (IdRenglon == "1001") { lengRenglon = "02"; }
-
                                                 lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
-                                                int idReglontama = lengRenglon.Length;
-                                                if (idReglontama == 1) { IdRenglon = "00" + LisTRecibo[a].sIdSat; };
-                                                if (idReglontama == 2) { IdRenglon = "0" + LisTRecibo[a].sIdSat; };
+                                                int idReglontama = IdRenglon.Length;
+                                                if (idReglontama == 1) { IdRenglon = "00" + IdRenglon; };
+                                                if (idReglontama == 2) { IdRenglon = "0" + IdRenglon; };
                                                 if (idReglontama == 3) { lengRenglon = "100"; };
                                                 if (IdRenglon == "1001") { lengRenglon = "02"; }
+
+                                                //lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
+                                                //int idReglontama = lengRenglon.Length;
+                                                //if (idReglontama == 1) { IdRenglon = "00" + LisTRecibo[a].sIdSat; };
+                                                //if (idReglontama == 2) { IdRenglon = "0" + LisTRecibo[a].sIdSat; };
+                                                //if (idReglontama == 3) { lengRenglon = "100"; };
+                                                //if (IdRenglon == "1001") { lengRenglon = "02"; }
 
 
 

@@ -197,6 +197,7 @@ namespace Payroll.Models.Beans
         public string sEstatusJobs { get; set; }
         public string sNombre { get; set; }
         public string sParametros { get; set; }
+        public int iExistUsuario { get; set; }
         public string sMensaje { get; set; }
 
     }
