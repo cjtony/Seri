@@ -119,15 +119,7 @@
             success: (data) => {
                 console.log(data);
                 for (i = 0; i < data.length; i++) {
-                    if (valorChekFint.checked == false) {
-                        if (data[i].sNominaCerrada == "True") {
-                            document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
-                        }
-
-                    }
-                    if (valorChekFint.checked == true) { 
-                       document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
-                    }                    
+                  document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;                        
                 }
             },
         });
@@ -493,9 +485,6 @@
                     }
                 }
             }); 
-
-
-
         }    
     };
 
@@ -620,7 +609,6 @@
 
     /// seleciona el tipo de finiquito y muestra el los calculos 
 
-
     
     $('#LaDropFiniquito').change(function () {
 
@@ -633,7 +621,6 @@
         NoEmpleado;
 
         const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0, idTipFiniquito: LaDropFiniquito};
-
         FGridRecibos(dataSend2);
 
 

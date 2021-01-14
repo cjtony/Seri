@@ -1023,7 +1023,7 @@ namespace Payroll.Models.Daos
 
         }
 
-        public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliFolio, int CtrliNominaCerrada)
+        public TpCalculosHd sp_TpCalculos_Insert_TpCalculos(int CtrliIdDefinicionHd, int CtrliFolio, int CtrliNominaCerrada, int CtrliIdUsuarios)
         {
             TpCalculosHd bean = new TpCalculosHd();
             try
@@ -1036,7 +1036,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicionHd", CtrliIdDefinicionHd));
                 cmd.Parameters.Add(new SqlParameter("@CtrliFolio", CtrliFolio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliNominaCerrada", CtrliNominaCerrada));
-               
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdUsuario", CtrliIdUsuarios));
+
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     bean.sMensaje = "success";
@@ -1045,7 +1046,7 @@ namespace Payroll.Models.Daos
                 {
                     bean.sMensaje = "error";
                 }
-                cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
@@ -3364,7 +3365,7 @@ namespace Payroll.Models.Daos
         }
 
        // verifica si hay un proceso en ejecucion 
-        public List<TPProcesos> sp_ProcesEje_Retrieve_TpProcesosJobs()
+        public List<TPProcesos> sp_ProcesEje_Retrieve_TpProcesosJobs(int IdUsuario)
         {
             List<TPProcesos> list = new List<TPProcesos>();
             try
@@ -3376,7 +3377,7 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@CrltriOpc", "0"));
                 cmd.Parameters.Add(new SqlParameter("@Crltr1Opc2", "0"));
-                cmd.Parameters.Add(new SqlParameter("@Crltrs", "0"));
+                cmd.Parameters.Add(new SqlParameter("@CrltriIdUsuario", IdUsuario));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -3398,6 +3399,82 @@ namespace Payroll.Models.Daos
                 }
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
                   
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+
+        }
+
+        // Actulaiza el Usuario de la Plantillas de tabla CalculoHd
+
+        public TpCalculosHd sp_Usuario_Update_TplantillaCalculosHd(int CtrliDefinicionId, int CtrliFolio, int  @CtrliUduarioId)
+        {
+            TpCalculosHd bean = new TpCalculosHd();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Usuario_Update_TplantillaCalculosHd", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliDefinicionId", CtrliDefinicionId));
+                cmd.Parameters.Add(new SqlParameter("@CtrliFolio", CtrliFolio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliUduarioId", CtrliUduarioId));
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
+        public List<TPProcesos> sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs(int IdUsuario)
+        {
+            List<TPProcesos> list = new List<TPProcesos>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CntrliUsuarioId", IdUsuario));
+                cmd.Parameters.Add(new SqlParameter("@CntrliOp", "0"));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TPProcesos ls = new TPProcesos
+                        {
+
+                            iExistUsuario = int.Parse(data["Estatus"].ToString())
+
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+
             }
             catch (Exception exc)
             {
