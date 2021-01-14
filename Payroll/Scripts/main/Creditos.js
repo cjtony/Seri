@@ -274,7 +274,6 @@
                 break;
         }
     });
-
     //selecciona el credito y lo dej alisto para modificarlo 
     updateCredito = (Credito_id, IncidenciaProg_id) => {
         $.ajax({

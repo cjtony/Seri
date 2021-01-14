@@ -423,7 +423,7 @@ namespace Payroll.Controllers
                             Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo);
                         }
                         list.Add("1");
-                        list.Add("Carga de Insidencias correcta");
+                        list.Add("Carga de Incidencias correcta, se cargaron " + i + " registos.");
                     }
                     else
                     {
@@ -461,7 +461,7 @@ namespace Payroll.Controllers
                         {
                             Dao.InsertaCargaMasivaAusentismo(table.Rows[k], Periodo, IsCargaMasiva);
                             list.Add("1");
-                            list.Add("Carga de Ausentismos correcta");
+                            list.Add("Carga de Ausentismos correcta, se cargaron " + i + " registos.");
                         }
                     }
                     else
@@ -478,7 +478,7 @@ namespace Payroll.Controllers
                     }
 
                     break;
-                case "creditos":
+                case "créditos":
 
                     for (i = 0; i < table.Rows.Count; i++)
                     {
@@ -503,7 +503,7 @@ namespace Payroll.Controllers
                             Dao.InsertaCargaMasivaCreditos(table.Rows[k], Periodo, IsCargaMasiva);
                         }
                         list.Add("1");
-                        list.Add("Carga de Creditos correcta");
+                        list.Add("Carga de Créditos correcta, se cargaron " + i + " registos.");
                     }
                     else
                     {
@@ -544,7 +544,7 @@ namespace Payroll.Controllers
                             Dao.InsertaCargaMasivaPensionesAlimenticias(table.Rows[k], Periodo, IsCargaMasiva);
                         }
                         list.Add("1");
-                        list.Add("Carga de Pensiones correcta");
+                        list.Add("Carga de Pensiones correcta, se cargaron " + i + " registos.");
                     }
                     else
                     {

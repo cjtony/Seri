@@ -25,7 +25,7 @@ namespace Payroll.Models.Daos
                 case "ausentismos":
                     typeoffile = 1;
                     break;
-                case "creditos":
+                case "créditos":
                     typeoffile = 2;
                     break;
                 case "pensiones":

@@ -72,7 +72,7 @@
             //console.log("si");
             $("#lblCantidad").html("Dias");
             //$("#inflbl").html("<small class='px-2'> *Si selecciona por días se insertaran en el periodo actual, si selecciona por fechas solo aplicara dentro del rango agregado.<small>").attr("class", "alert-warning text-center col-md-12 mx-3 mb-2");
-            $("#inCantidad").attr("placeholder", "#");
+            $("#inCantidad").attr("placeholder", "00.0");
             document.getElementById("inPlazos").disabled = true;
             //$("#collapsefechas").collapse("show");
             //$("#lbloptions").html(""
@@ -99,7 +99,7 @@
             //console.log("no");
             $("#lblCantidad").html("Cantidad");
             //$("#inflbl").html("").attr("class", "");
-            $("#inCantidad").attr("placeholder", "$ 0000.00");
+            $("#inCantidad").attr("placeholder", "$00.0");
             //$("#collapsefechas").collapse("hide");
             //$("#lbloptions").html("");
             document.getElementById("inPlazos").disabled = false;
