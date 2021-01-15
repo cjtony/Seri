@@ -29,7 +29,10 @@
 
     const dateLocSto = localStorage.getItem("dateedit");
     const modeLocSto = localStorage.getItem("modeedit");
-    
+
+    if (modeLocSto == null) {
+        console.log('Lanzamos la ventana');
+    } 
 
     const dateact = document.getElementById('dateact');
     let d = new Date();

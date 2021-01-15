@@ -9,6 +9,7 @@ using static iTextSharp.text.Font;
 using System.IO;
 using System.Text;
 using System.IO.Compression;
+using System.Globalization;
 
 namespace Payroll.Controllers
 {
@@ -244,7 +245,7 @@ namespace Payroll.Controllers
 
         // Valida existencia de banco interbancario
         [HttpPost]
-        public JsonResult ValidateBankInterbank()
+        public JsonResult ValidateBankInterbank(int type)
         {
             Boolean flag = false;
             String  messageError = "none";
@@ -252,7 +253,7 @@ namespace Payroll.Controllers
             LoadDataTableDaoD loadDataTableDao = new LoadDataTableDaoD();
             try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
-                loadDataTable = loadDataTableDao.sp_Valida_Existencia_Banco_Interbancario(keyBusiness);
+                loadDataTable = loadDataTableDao.sp_Valida_Existencia_Banco_Interbancario(keyBusiness, type);
                 if (loadDataTable.sMensaje == "SUCCESS") {
                     flag = true;
                 }
@@ -265,7 +266,7 @@ namespace Payroll.Controllers
 
         // Procesa los depositos de nomina
         [HttpPost]
-        public JsonResult ProcessDepositsPayroll(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror)
+        public JsonResult ProcessDepositsPayroll(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror, int type)
         {
             Boolean flag            = false;
             Boolean flagMirror      = false;
@@ -288,7 +289,7 @@ namespace Payroll.Controllers
                 int typeReceipt   = (yearPeriod == yearActually) ? 1 : 0;
                 int invoiceId     = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10;
                 int invoiceIdMirror        = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10 + 8;
-                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion(keyBusiness);
+                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion(keyBusiness, type);
                 nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2);
                 flagProsecutors = ProcessDepositsProsecutors(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc);
                 if (mirror == 1) {
@@ -717,13 +718,14 @@ namespace Payroll.Controllers
                                         clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                                         clBeneficiario.BorderWidth = 0;
                                         clBeneficiario.Bottom = 80;
-                                        clImporte = new PdfPCell(new Phrase("$" + payroll.dImporte, _standardFont));
+                                        clImporte = new PdfPCell(new Phrase("$ " + Convert.ToDecimal(payroll.doImporte).ToString("#,##0.00"), _standardFont));
                                         clImporte.BorderWidth = 0;
                                         clImporte.Bottom = 80;
                                         clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
                                         clNomina.BorderWidth = 0;
                                         clNomina.Bottom = 80;
                                         // Añadimos las celdas a la tabla
+                                        //clImporte = new PdfPCell(new Phrase("$ " + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(payroll.dImporte)), _standardFont));
                                         tblPrueba.AddCell(clCtaCheques);
                                         tblPrueba.AddCell(clBeneficiario);
                                         tblPrueba.AddCell(clImporte);
@@ -1113,7 +1115,7 @@ namespace Payroll.Controllers
                                         clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                                         clBeneficiario.BorderWidth = 0;
                                         clBeneficiario.Bottom = 80;
-                                        clImporte = new PdfPCell(new Phrase("$" + payroll.dImporte, _standardFont));
+                                        clImporte = new PdfPCell(new Phrase("$ " + Convert.ToDecimal(payroll.doImporte).ToString("#, ##"), _standardFont));
                                         clImporte.BorderWidth = 0;
                                         clImporte.Bottom = 80;
                                         clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
@@ -1169,7 +1171,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ProcessDepositsInterbank(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror)
+        public JsonResult ProcessDepositsInterbank(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror, int type)
         {
             Boolean flag            = false;
             Boolean flagMirror      = false;
@@ -1203,7 +1205,7 @@ namespace Payroll.Controllers
                 int invoiceId       = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10;
                 int invoiceIdMirror = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10 + 8;
                 int invoiceSendSP;
-                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion(keyBusiness);
+                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion(keyBusiness, type);
                 if (datosEmpresaBeanDispersion.iBanco_id.GetType().Name == "DBNull") {
                     // Retornar error
                 }
@@ -1319,7 +1321,7 @@ namespace Payroll.Controllers
                             clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                             clBeneficiario.BorderWidth = 0;
                             clBeneficiario.Bottom = 80;
-                            clImporte = new PdfPCell(new Phrase("$" + payroll.dImporte, _standardFont));
+                            clImporte = new PdfPCell(new Phrase("$ " + Convert.ToDecimal(payroll.doImporte).ToString("#, ##"), _standardFont));
                             clImporte.BorderWidth = 0;
                             clImporte.Bottom = 80;
                             clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));

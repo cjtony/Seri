@@ -231,6 +231,14 @@
                                 </div>
                             </div>
                             <div class="col-md-12 shadow border-left-primary border-right-primary rounded p-3">
+                                <div class="text-right mb-4">
+                                    <button type="button" class="btn btn-warning btn-sm btn-icon-split" id="btn-banks-canceled" data-target="#activeBanks" data-toggle="modal">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-times-circle"></i>
+                                        </span>
+                                        <span class="text">Bancos cancelados</span>
+                                    </button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table" id="table-test">
                                         <thead>
@@ -735,9 +743,38 @@
     </div>
 </div>
 
+<!-- Modal bancos cancelados -->
+<div class="modal fade" id="activeBanks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Activar bancos.</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" id="ico-close-view-cd">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="content-general-config-int">
+                    <div class="row" id="content-banks-active">
+
+                    </div> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-view-cd">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=2.4"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=2.5"></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js?v=0.2"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/databankspecial.js?v=1.0"></script>
 <script type="text/javascript" src="~/Scripts/main/Dispersion/mainspecial.js?v=1.1"></script>
 <script type="text/javascript">

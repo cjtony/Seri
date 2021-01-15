@@ -497,7 +497,7 @@ namespace Payroll.Controllers
                             clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                             clBeneficiario.BorderWidth = 0;
                             clBeneficiario.Bottom = 80;
-                            clImporte = new PdfPCell(new Phrase("$" + payroll.dImporte, _standardFont));
+                            clImporte = new PdfPCell(new Phrase("$" + Convert.ToDecimal(payroll.doImporte).ToString("#, ##"), _standardFont));
                             clImporte.BorderWidth = 0;
                             clImporte.Bottom = 80;
                             clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));

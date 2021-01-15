@@ -868,11 +868,13 @@
 
     // Funcion valida banco interbancario existe
     fValidateBankInterbank = (paramcode) => {
+        const valSend = (paramcode == "NOM") ? 285 : 286;
+        let labelSend = (paramcode == "NOM") ? "de nomina" : "interbancarios";
         try {
             $.ajax({
                 url: "../Dispersion/ValidateBankInterbank",
                 type: "POST",
-                data: {},
+                data: { type: parseInt(valSend) },
                 beforeSend: () => {
                     console.log('validando');
                 }, success: (data) => {
@@ -886,7 +888,7 @@
                             alert('Accion invalida');
                         }
                     } else {
-                        fShowTypeAlert('Atención!', 'No hay bancos interbancarios definidos, defina uno para continuar', 'warning', btndesplegartab, 0);
+                        fShowTypeAlert('Atención!', 'No hay bancos ' + labelSend + ' definidos, defina uno para continuar', 'warning', btndesplegartab, 0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -918,7 +920,8 @@
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
                 dateDeposits: datedis.value,
-                mirror: mirrorSend
+                mirror: mirrorSend,
+                type: 285
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsPayroll",
@@ -1056,7 +1059,8 @@
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
                 dateDeposits: datedis.value,
-                mirror: mirrorSend
+                mirror: mirrorSend,
+                type: 286
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsInterbank",

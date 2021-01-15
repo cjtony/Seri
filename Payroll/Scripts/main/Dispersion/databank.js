@@ -20,6 +20,8 @@
 
     const typeDispersionBank = document.getElementById('type-dispersion-bank');
 
+    const btnBanksCanceled = document.getElementById('btn-banks-canceled');
+
     const spanish = {
         "decimal": "",
         "emptyTable": "No hay información",
@@ -130,6 +132,7 @@
                                             </span>
                                             <span class="text">Editar</span>
                                         </button>
+                                        <button title="Cancelar" onclick="fCancelActiveBank(${data.DatosBancos[i].iIdBancoEmpresa}, 1);" type="button" class="btn btn-sm btn-danger shadow"> <i class="fas fa-times"></i> </button>
                                     </td>
                                 </tr>
                             `;
@@ -141,8 +144,7 @@
                                     language: spanish
                                 });
                             }, 1000);
-                        }
-                        //<td class="text-center"><button class="btn btn-warning btn-sm text-white" onclick="fShowDetailsBank(${data.DatosBancos[i].iIdBanco}, '${data.DatosBancos[i].sNombreBanco}', ${data.DatosBancos[i].sNumeroCliente}, ${data.DatosBancos[i].sNumeroCuenta}, ${data.DatosBancos[i].sNumeroPlaza}, ${data.DatosBancos[i].sClabe}, ${data.DatosBancos[i].iCodigoBanco}, ${data.DatosBancos[i].iGeneraInterface})"> <i class="fas fa-file"></i></button></td>
+                        } 
                     } else {
                         //Swal.fire({
                         //    title: "Ocurrio un error", text: "Reporte el problema al area de TI indicando el siguiente código: #CODERRfLoadTableDataBanksDATABANKDIS# ", icon: "error",
@@ -157,6 +159,109 @@
                                 language: spanish
                             });
                         }, 1000);
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que cancela o activa un banco
+    fCancelActiveBank = (paramid, paramtype) => {
+        try {
+            let typeMsj = (paramtype == 1) ? "Cancelado" : "Activado";
+            if (parseInt(paramid) > 0) {
+                $.ajax({
+                    url: "../ConfigDataBank/CancelActiveBank",
+                    type: "POST",
+                    data: { key: parseInt(paramid), type: parseInt(paramtype) },
+                    beforeSend: () => {
+
+                    }, success: (request) => {
+                        console.log(request);
+                        if (request.Bandera == true) { 
+                            Swal.fire({
+                                position: "top-end",
+                                html: "<b></b>",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500,
+                                onBeforeOpen: () => {
+                                    const content = Swal.getContent();
+                                    if (content) {
+                                        const b = content.querySelector('b');
+                                        if (b) { b.textContent = String('Banco ' + typeMsj + ' !'); }
+                                    }
+                                }
+                            }); 
+                            const tableData = $("#table-test").DataTable();
+                            tableData.destroy();
+                            setTimeout(() => { fLoadTableDataBanks(); }, 1000);
+                            if (paramtype == 2) {
+                                fShowBanksCanceled();
+                            } 
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
+    }
+
+    // Funcion que muestra los bancos cancelados
+    fShowBanksCanceled = () => {
+        document.getElementById('content-banks-active').innerHTML = "";
+        try {
+            $.ajax({
+                url: "../ConfigDataBank/ShowBanksCanceled",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == true) {
+                        for (let i = 0; i < request.DatosBancos.length; i++) {
+                            document.getElementById('content-banks-active').innerHTML += `
+                                <div class="col-md-4">
+                                    <div class="form-group shadow p-3 rounded text-center">
+                                        <h6 class="text-primary mt-3 mb-3"> <i onclick="fCancelActiveBank(${request.DatosBancos[i].iIdBancoEmpresa}, 2);" class="fas fa-check-circle text-success mr-1" title="Activar" style="cursor:pointer !important;"></i> ${request.DatosBancos[i].sNombreBanco} </h6>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    } else {
+                        document.getElementById('content-banks-active').innerHTML += `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          <strong>Hola!</strong> al parecer no hay ningun banco cancelado!
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>`;
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -356,6 +461,8 @@
     btnCloseConfigBank.addEventListener('click', fClearFieldsConfigBank);
 
     btnSaveConfigBank.addEventListener('click', fUpdateConfigBank);
+
+    btnBanksCanceled.addEventListener('click', fShowBanksCanceled);
 
     //let reloadtable = setInterval(() => {
     //    if (tableDataBank.innerHTML == "") {

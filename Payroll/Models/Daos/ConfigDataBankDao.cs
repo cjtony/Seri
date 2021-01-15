@@ -12,13 +12,14 @@ namespace Payroll.Models.Daos
     public class LoadDataTableDaoD : Conexion
     {
 
-        public LoadDataTableBean sp_Valida_Existencia_Banco_Interbancario(int keyBusiness)
+        public LoadDataTableBean sp_Valida_Existencia_Banco_Interbancario(int keyBusiness, int type)
         {
             LoadDataTableBean loadDataTable = new LoadDataTableBean();
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Valida_Existencia_Banco_Interbancario", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", type));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read()) {
                     if (data["Respuesta"].ToString() == "EXISTS") {
@@ -36,6 +37,30 @@ namespace Payroll.Models.Daos
                 this.Conectar().Close();
             }
             return loadDataTable;
+        }
+
+        public LoadDataTableBean sp_Cancel_Active_Bank(int keyBank, int keyBusiness, int type)
+        {
+            LoadDataTableBean tableBean = new LoadDataTableBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Cancel_Active_Bank", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdBancoEmpresa", keyBank));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", type));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    tableBean.sMensaje = "SUCCESS";
+                } else {
+                    tableBean.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                tableBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return tableBean;
         }
 
         public List<CatalogoGeneralBean> sp_TiposDispersion_Retrieve_TiposDispersion()
@@ -65,7 +90,7 @@ namespace Payroll.Models.Daos
             return lTypeDispersion;
         }
 
-        public List<LoadDataTableBean> sp_Carga_Bancos_Empresa(int keyBusiness)
+        public List<LoadDataTableBean> sp_Carga_Bancos_Empresa(int keyBusiness, int canceled)
         {
             List<LoadDataTableBean> lDataTableBean = new List<LoadDataTableBean>();
             try
@@ -73,6 +98,7 @@ namespace Payroll.Models.Daos
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Carga_Bancos_Empresa", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Cancelado", canceled));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {
