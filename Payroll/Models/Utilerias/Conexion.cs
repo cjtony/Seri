@@ -13,8 +13,6 @@ namespace Payroll.Models.Utilerias
         //static readonly string Db = "IPSNet_Copia";
         //static readonly string User = "IPSNet";
         //static readonly string Pass = "IPSNet2";
-
-        // BD Server produccion 
         static readonly string User = "IPSNet";
         static readonly string Pass = "IPSNet2";
 

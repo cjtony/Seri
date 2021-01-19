@@ -330,12 +330,14 @@
         var dedu;
         var total;
         $.ajax({
+
             url: "../Nomina/ListTpCalculoln",
             type: "POST",
             data: dataSend,
             success: (Result) => {
                 RosTabCountCalculo = Result.Result.length;
                 var dato = Result.Result[0].sMensaje;
+                console.log(dato);
                 if (dato == "No hay datos") {
                     var dato = Result.LProce[0].sMensaje;
                     if (dato == "No hay datos") {
@@ -366,6 +368,11 @@
                             $("#nav-VisNomina-tab").addClass("disabled");
                         }
                         if (Result.LProce[0].sEstatusJobs == "Terminado") {
+                            console.log('mensaje de terminado');
+                            if (btnFloEjecutar.value > 0) {
+                                $("#messageNotification").jqxNotification("open");
+                                btnFloEjecutar.value = 0;
+                            }
                             btnFloActualiza.style.visibility = 'hidden';
                             $("#nav-VisCalculo-tab").addClass("disabled");
                             $("#nav-VisNomina-tab").addClass("disabled");
@@ -395,18 +402,16 @@
                                 total = total / 100;
 
                             }
-
                             if (Result.Result[i].iIdRenglon == 9999) {
                                 totalCal.value = Result.Result[i].sTotal;
 
                             }
-
-
-
                         }
                         var dato = Result.LProce[0].sMensaje;
                         if (dato == "success") {
+                            console.log('datos' + btnFloEjecutar.value)
                             if (Result.LProce[0].sEstatusJobs == "Terminado") {
+                                console.log('datos' + btnFloEjecutar.value);
                                 btnFloActualiza.style.visibility = 'hidden';
                                 if (btnFloEjecutar.value > 0) {
                                     $("#messageNotification").jqxNotification("open");
@@ -720,6 +725,7 @@
 
     Frefresh = () => {
         btnFloEjecutar.style.visibility = 'visible';
+        btnFloEjecutar.value = 1;
         $('#jqxLoader').jqxLoader('close');
         TipodePeridoDroplip = TxbTipoPeriodo.value;
         periodo = PeridoEje.options[PeridoEje.selectedIndex].text;

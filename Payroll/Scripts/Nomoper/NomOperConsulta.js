@@ -274,9 +274,13 @@
     // Actualiza Definicion de platilla 
 
     FActualiza = () => {
+        var opcion = 0;
 
         var opselesc = cande.options[cande.selectedIndex].text;
         if (DatoNombrede != Nombrede.value || DatoDescripcion != Descripcionde.value || Datoano != iAnode.value || DatoCancel != opselesc) {
+            if (Datoano != iAnode.value) {
+                opcion = 1;
+            }
             const dataSend = {
                 sNombreDefinicion: Nombrede.value, sDescripcion: Descripcionde.value,
                 iAno: iAnode.value, iCancelado: cande.value, iIdDefinicionhd: IdDh
@@ -291,6 +295,7 @@
                         fshowtypealert('Actualizacion correcta!', 'Definicion plantilla actualizada', 'success');
                         Fllenagrip();
                         FRecargaGrip();
+
 
                     } else {
                         fshowtypealert('Error', 'Contacte a sistemas', 'error');
