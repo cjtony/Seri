@@ -322,6 +322,7 @@ namespace Payroll.Controllers
             NominahdBean bean = new NominahdBean();
             FuncionesNomina dao = new FuncionesNomina();
             bean = dao.sp_TpDefinicion_Update_TpDefinicion(sNombreDefinicion, sDescripcion, iAno, iCancelado, iIdDefinicionhd);
+                     
             return Json(bean);
         }
         [HttpPost]
@@ -1186,6 +1187,7 @@ namespace Payroll.Controllers
             FuncionesNomina Dao = new FuncionesNomina();
             LNND = Dao.sp_ExiteDefinicionTpCalculo_Retrieve_ExiteDefinicionTpCalculo(iIdDefinicionHd);         
             return Json(LNND);
+
         }
    
     }
