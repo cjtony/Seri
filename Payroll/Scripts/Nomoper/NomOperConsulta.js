@@ -283,7 +283,7 @@
             }
             const dataSend = {
                 sNombreDefinicion: Nombrede.value, sDescripcion: Descripcionde.value,
-                iAno: iAnode.value, iCancelado: cande.value, iIdDefinicionhd: IdDh
+                iAno: iAnode.value, iCancelado: cande.value, iIdDefinicionhd: IdDh, OptAnio: opcion,
             };
 
             $.ajax({

@@ -315,12 +315,18 @@ namespace Payroll.Controllers
             return Json(TD);
         }
         [HttpPost]
-        public JsonResult UpdatePtDefinicion(string sNombreDefinicion, string sDescripcion, int iAno, int iCancelado, int iIdDefinicionhd)
+        public JsonResult UpdatePtDefinicion(string sNombreDefinicion, string sDescripcion, int iAno, int iCancelado, int iIdDefinicionhd, int OptAnio)
         {
+            int UsuarioId =int.Parse(Session["iIdUsuario"].ToString());
             NominahdBean bean = new NominahdBean();
-            FuncionesNomina dao = new FuncionesNomina();
+            TpCalculosHd bean2 = new TpCalculosHd();
+            FuncionesNomina dao  = new FuncionesNomina();
             bean = dao.sp_TpDefinicion_Update_TpDefinicion(sNombreDefinicion, sDescripcion, iAno, iCancelado, iIdDefinicionhd);
-                     
+            if (OptAnio > 0) {
+                bean2 = dao.sp_updateAnio_Insert_TPlantilla_Calculos_Hd(iIdDefinicionhd, UsuarioId);
+            }
+
+
             return Json(bean);
         }
         [HttpPost]
