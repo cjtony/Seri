@@ -3181,7 +3181,37 @@ namespace Payroll.Models.Daos
 
         }
 
+        /// inserte definicion en la tabla de calculos Hd cuando el cambia el año
+        public TpCalculosHd sp_updateAnio_Insert_TPlantilla_Calculos_Hd(int CtrliIdDefinicionHd, int CtrliIdUsuarios)
+        {
+            TpCalculosHd bean = new TpCalculosHd();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_updateAnio_Insert_TPlantilla_Calculos_Hd", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliDefinicionIdHd", CtrliIdDefinicionHd));
+                cmd.Parameters.Add(new SqlParameter("@CtrliUserId", CtrliIdUsuarios));
 
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
     }
 }
 
