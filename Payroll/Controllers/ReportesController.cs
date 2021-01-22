@@ -327,23 +327,30 @@ namespace Payroll.Controllers
                         listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 1000, 2000, typeOption);
                         if (listRenglones1.Count > 0)
                         {
-                            if (listRenglones1.Any(x => x.iIdRenglon == 1041)) {
-                                RenglonesNomDeduc = new int[listRenglones1.Count - 1];
-                            } else {
-                                RenglonesNomDeduc = new int[listRenglones1.Count];
-                            }
+                            //if (listRenglones1.Any(x => x.iIdRenglon == 1041)) {
+                            //    RenglonesNomDeduc = new int[listRenglones1.Count - 1];
+                            //} else {
+                            //    RenglonesNomDeduc = new int[listRenglones1.Count];
+                            //}
+                            RenglonesNomDeduc = new int[listRenglones1.Count];
                             int j = 0;
                             foreach (RenglonesHCBean renglon in listRenglones1)
                             {
                                 // Omitimos el renglon 1041 y agregamos los que no coincidan
-                                if (renglon.iIdRenglon != 1041) {
-                                    ii += 1;
-                                    Renglon              = Convert.ToInt32(renglon.iIdRenglon);
-                                    RenglonesNomDeduc[j] = Renglon;
-                                    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                                    worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                                    j += 1;
-                                }
+                                //if (renglon.iIdRenglon != 1041) {
+                                //    ii += 1;
+                                //    Renglon              = Convert.ToInt32(renglon.iIdRenglon);
+                                //    RenglonesNomDeduc[j] = Renglon;
+                                //    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                                //    worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                                //    j += 1;
+                                //}
+                                ii += 1;
+                                Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                                RenglonesNomDeduc[j] = Renglon;
+                                worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                                worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                                j += 1;
                             }
                         }
                         else
