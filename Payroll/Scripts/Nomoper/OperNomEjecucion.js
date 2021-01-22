@@ -1228,8 +1228,8 @@
                             { name: 'sConcepto', type: 'string' },
                             { name: 'dPercepciones', type: 'number' },
                             { name: 'dDeducciones', type: 'number' },
-                            { name: 'dSaldos', type: 'number' },
-                            { name: 'dInformativos', type: 'number' }
+                            { name: 'dGravados', type: 'number' },
+                            { name: 'dExcento', type: 'number' }
                         ]
                 };
 
@@ -1263,7 +1263,6 @@
 
                                 },
                                 aggregatesrenderer: function (aggregates, column, element) {
-
                                     var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
                                     return renderstring;
@@ -1290,7 +1289,7 @@
                                 }
                             },
                             {
-                                text: 'Saldos', datafield: 'dSaldos', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                                text: 'Gravado', datafield: 'dGravados', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1309,7 +1308,7 @@
                                 }
                             },
                             {
-                                text: 'Informativos', datafield: 'dInformativos', aggregates: ["sum"], width: 150, cellsformat: 'c2',
+                                text: 'Excento', datafield: 'dExcento', aggregates: ["sum"], width: 150, cellsformat: 'c2',
                                 cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
@@ -1329,7 +1328,6 @@
                                 }
 
                             }
-
 
                         ]
                     });

@@ -1816,6 +1816,11 @@ namespace Payroll.Models.Daos
                             ls.sNombre_Renglon = data["Nombre_Renglon"].ToString();
                             if (data["Saldo"].ToString() == "") { ls.dSaldo = 0; }
                             if (data["Saldo"].ToString() != "") { ls.dSaldo = decimal.Parse(data["Saldo"].ToString()); }
+                            if (data["Excento"].ToString() == "") { ls.dExcento = 0; }
+                            if (data["Excento"].ToString() != "") { ls.dExcento = decimal.Parse(data["Excento"].ToString()); }
+                            if (data["Gravado"].ToString() == "") { ls.dGravado = 0; }
+                            if (data["Gravado"].ToString() != "") { ls.dGravado = decimal.Parse(data["Gravado"].ToString()); }
+
                             ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
                             //ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
@@ -2602,6 +2607,8 @@ namespace Payroll.Models.Daos
                             ls.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
                             ls.sNombre_Renglon = data["Nombre_Renglon"].ToString();
                             ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
+                            ls.dGravado = decimal.Parse(data["Gravado"].ToString());
+                            ls.dExcento = decimal.Parse(data["Excento"].ToString());
                             //ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
                             //ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
@@ -3484,7 +3491,37 @@ namespace Payroll.Models.Daos
 
         }
 
+        /// inserte definicion en la tabla de calculos Hd cuando el cambia el año
+        public TpCalculosHd sp_updateAnio_Insert_TPlantilla_Calculos_Hd(int CtrliIdDefinicionHd, int CtrliIdUsuarios)
+        {
+            TpCalculosHd bean = new TpCalculosHd();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_updateAnio_Insert_TPlantilla_Calculos_Hd", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliDefinicionIdHd", CtrliIdDefinicionHd));
+                cmd.Parameters.Add(new SqlParameter("@CtrliUserId", CtrliIdUsuarios));
 
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
     }
 }
 
