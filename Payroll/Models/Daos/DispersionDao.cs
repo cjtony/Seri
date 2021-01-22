@@ -753,13 +753,14 @@ namespace Payroll.Models.Daos
             return listBankDetailsBean;
         }
 
-        public DatosEmpresaBeanDispersion sp_Datos_Empresa_Dispersion(int keyBusiness)
+        public DatosEmpresaBeanDispersion sp_Datos_Empresa_Dispersion(int keyBusiness, int type)
         {
             DatosEmpresaBeanDispersion datosEmpresaBeanDispersion = new DatosEmpresaBeanDispersion();
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Datos_Empresa_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", type));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read()) {
                     datosEmpresaBeanDispersion.sNombreEmpresa = data["NombreEmpresa"].ToString();
@@ -909,6 +910,7 @@ namespace Payroll.Models.Daos
                         datosProcesaCheques.sNomina    = data["Nomina"].ToString();
                         datosProcesaCheques.sCuenta    = data["Cuenta"].ToString();
                         datosProcesaCheques.dImporte   = Convert.ToDecimal(data["Importe"].ToString());
+                        datosProcesaCheques.doImporte  = Convert.ToDouble(data["ImporteDo"]);
                         datosProcesaCheques.sNombre    = data["Nombre"].ToString();
                         datosProcesaCheques.sPaterno   = data["Paterno"].ToString();
                         datosProcesaCheques.sMaterno   = data["Materno"].ToString();
@@ -947,6 +949,7 @@ namespace Payroll.Models.Daos
                         datosProcesaCheques.sNomina = data["Nomina"].ToString();
                         datosProcesaCheques.sCuenta = data["Cuenta"].ToString();
                         datosProcesaCheques.dImporte = Convert.ToDecimal(data["Importe"].ToString());
+                        datosProcesaCheques.doImporte = Convert.ToDouble(data["ImporteDo"]);
                         datosProcesaCheques.sNombre = data["Nombre"].ToString();
                         datosProcesaCheques.sPaterno = data["Paterno"].ToString();
                         datosProcesaCheques.sMaterno = data["Materno"].ToString();

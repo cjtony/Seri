@@ -129,6 +129,7 @@ namespace Payroll.Models.Daos
                         datos.sNomina    = dataReader["Nomina"].ToString();
                         datos.sCuenta    = dataReader["Cuenta"].ToString();
                         datos.dImporte   = Convert.ToDecimal(dataReader["Importe"]);
+                        datos.doImporte  = Convert.ToDouble(dataReader["ImporteDo"]);
                         datos.sNombre    = dataReader["Nombre"].ToString();
                         datos.sPaterno   = dataReader["Paterno"].ToString();
                         datos.sMaterno   = dataReader["Materno"].ToString();
