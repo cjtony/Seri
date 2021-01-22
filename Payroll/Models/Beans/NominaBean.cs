@@ -273,6 +273,8 @@ namespace Payroll.Models.Beans
         public int iIdTipoPeriodo { get; set; }
         public string sNombre_Renglon { get; set; }
         public decimal dSaldo { get; set; }
+        public decimal dGravado { get; set; }
+        public decimal dExcento { get; set; }
         public int iConsecutivo { get; set; }
         public int iIdCalculoshd { get; set; }
         public int iElementoNomina { get; set; }
@@ -290,6 +292,8 @@ namespace Payroll.Models.Beans
         public string dDeducciones { get; set; }
         public string dSaldos { get; set; }
         public string dInformativos { get; set; }
+        public string dGravados { get; set; }
+        public string dExcento { get; set; }
         public string sMensaje { get; set; }
     }
 
