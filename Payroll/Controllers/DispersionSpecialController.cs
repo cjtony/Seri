@@ -94,7 +94,7 @@ namespace Payroll.Controllers
                 int invoiceId    = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10;
                 int invoiceIdMirror = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10 + 8;
                 // Comprobar este StoredProcedure -> Adaptarlo al grupo que se selecciona
-                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion_Grupos(keyBusiness);
+                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion_Grupos(group);
                 nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy-MM-dd");
                 flagProsecutors = ProcessDepositsProsecutors(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group);
                 flagMirror = ProcessDepositsMirror(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group);
@@ -497,7 +497,7 @@ namespace Payroll.Controllers
                             clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                             clBeneficiario.BorderWidth = 0;
                             clBeneficiario.Bottom = 80;
-                            clImporte = new PdfPCell(new Phrase("$" + payroll.dImporte, _standardFont));
+                            clImporte = new PdfPCell(new Phrase("$" + Convert.ToDecimal(payroll.doImporte).ToString("#, ##"), _standardFont));
                             clImporte.BorderWidth = 0;
                             clImporte.Bottom = 80;
                             clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
@@ -928,7 +928,7 @@ namespace Payroll.Controllers
                 int typeReceipt  = (yearPeriod == yearActually) ? 1 : 0;
                 int invoiceId    = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10;
                 int invoiceIdMirror = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10 + 8;
-                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion_Grupos(keyBusiness);
+                datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion_Grupos(group);
                 if (datosEmpresaBeanDispersion.iBanco_id.GetType().Name == "DBNull") {
                     // Retornar error
                 }

@@ -71,6 +71,67 @@ namespace Payroll.Models.Daos
     public class ReportesDao : Conexion
     {
 
+        // Tipos de periodos disponibles
+        public List<TipoPeriodoBean> sp_Available_Type_Periods_Business(int year, int key, int type, int period)
+        {
+            List<TipoPeriodoBean> tipoPeriodos = new List<TipoPeriodoBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Available_Type_Periods_Business", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Empresa", key));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", type));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        TipoPeriodoBean bean = new TipoPeriodoBean();
+                        bean.iTipoPeriodo    = Convert.ToInt32(dataReader["Tipo_Periodo_id"]);
+                        bean.sValor = dataReader["Valor"].ToString();
+                        tipoPeriodos.Add(bean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return tipoPeriodos;
+        }
+
+
+        // Periodos disponibles
+        public List<PeriodoBean> sp_Available_Periods_Business (int year, int key, int type)
+        {
+            List<PeriodoBean> periodos = new List<PeriodoBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Available_Periods_Business", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Empresa", key));
+                cmd.Parameters.Add(new SqlParameter("@Tipo", type));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        PeriodoBean bean = new PeriodoBean();
+                        bean.iPeriodo    = Convert.ToInt32(dataReader["Periodo"]);
+                        bean.sFechaInicio = dataReader["Fecha_Inicio"].ToString();
+                        bean.sFechaFinal  = dataReader["Fecha_Final"].ToString();
+                        periodos.Add(bean);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return periodos;
+        }
+
         // REPORTE BAJAS
         public List<RenglonesHCBean> sp_Renglones_Hoja_Calculo_BAJAS(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod, int ismirror, int start, int end)
         {

@@ -327,23 +327,30 @@ namespace Payroll.Controllers
                         listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 1000, 2000, typeOption);
                         if (listRenglones1.Count > 0)
                         {
-                            if (listRenglones1.Any(x => x.iIdRenglon == 1041)) {
-                                RenglonesNomDeduc = new int[listRenglones1.Count - 1];
-                            } else {
-                                RenglonesNomDeduc = new int[listRenglones1.Count];
-                            }
+                            //if (listRenglones1.Any(x => x.iIdRenglon == 1041)) {
+                            //    RenglonesNomDeduc = new int[listRenglones1.Count - 1];
+                            //} else {
+                            //    RenglonesNomDeduc = new int[listRenglones1.Count];
+                            //}
+                            RenglonesNomDeduc = new int[listRenglones1.Count];
                             int j = 0;
                             foreach (RenglonesHCBean renglon in listRenglones1)
                             {
                                 // Omitimos el renglon 1041 y agregamos los que no coincidan
-                                if (renglon.iIdRenglon != 1041) {
-                                    ii += 1;
-                                    Renglon              = Convert.ToInt32(renglon.iIdRenglon);
-                                    RenglonesNomDeduc[j] = Renglon;
-                                    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                                    worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                                    j += 1;
-                                }
+                                //if (renglon.iIdRenglon != 1041) {
+                                //    ii += 1;
+                                //    Renglon              = Convert.ToInt32(renglon.iIdRenglon);
+                                //    RenglonesNomDeduc[j] = Renglon;
+                                //    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                                //    worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                                //    j += 1;
+                                //}
+                                ii += 1;
+                                Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                                RenglonesNomDeduc[j] = Renglon;
+                                worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                                worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                                j += 1;
                             }
                         }
                         else
@@ -1178,6 +1185,35 @@ namespace Payroll.Controllers
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult SearchOptionsNPHC(int year, int key, int type, int option, int period)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            List<PeriodoBean> periodos         = new List<PeriodoBean>();
+            List<TipoPeriodoBean> tipoPeriodos = new List<TipoPeriodoBean>();
+            ReportesDao reportesDao            = new ReportesDao();                                                                                                                     
+            try { 
+                if (option == 1) {
+                    periodos     = reportesDao.sp_Available_Periods_Business(year, key, type);
+                    if (periodos.Count > 0) {
+                        flag = true;
+                    }
+                    return Json(new { Bandera = flag, MensajeError = messageError, Datos = periodos});
+                } else {
+                    tipoPeriodos = reportesDao.sp_Available_Type_Periods_Business(year, key, type, period);
+                    if (tipoPeriodos.Count > 0) {
+                        flag = true;
+                    }
+                    return Json(new { Bandera = flag, MensajeError = messageError, Datos = tipoPeriodos });
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Periodos = periodos, Tipos = tipoPeriodos });
         }
 
     }

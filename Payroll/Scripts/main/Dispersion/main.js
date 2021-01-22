@@ -449,9 +449,9 @@
         const d = new Date();
         yeardis.value  = d.getFullYear();
         yeardis1.value = d.getFullYear();
-        yeardis.setAttribute('readonly', 'true');
+        //yeardis.setAttribute('readonly', 'true');
         //yeardis1.setAttribute('readonly', 'true');
-        periodis.setAttribute('readonly', 'true');
+        //periodis.setAttribute('readonly', 'true');
         //periodis1.setAttribute('readonly', 'true');
         const day = (d.getDate() < 10) ? "0" + d.getDate() : d.getDate();
         const mth = ((d.getMonth() + 1) < 10) ? "0" + (d.getMonth() + 1) : d.getMonth() + 1;
@@ -783,7 +783,6 @@
                                                         <label class="form-check-label" for="ismirror">Con Archivos Espejo</label>
                                                     </div>
                                                 </div>
-                                                
                                                 <div class="col-md-4 text-center">
                                                     <div class="form-group">
                                                         <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow"
@@ -792,7 +791,7 @@
                                                                 <i class="fas fa-play mr-1"></i>
                                                                 <i class="fas fa-money-check-alt"></i>
                                                             </span>
-                                                            <span class="text">Depósitos Interbancarios</span>
+                                                            <span class="text">Interbancarios</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -803,7 +802,7 @@
                                                                 <i class="fas fa-play mr-1"></i>
                                                                 <i class="fas fa-money-bill-wave"></i>
                                                             </span>
-                                                            <span class="text">Depósitos de Nomina</span>
+                                                            <span class="text">Nómina</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -839,13 +838,43 @@
         }
     }
 
+    // Funcion genera el reporte en formato EXCEL
+    //fGenerateReportDis = () => {
+    //    try {
+    //        $.ajax({
+    //            url: "",
+    //            type: "POST",
+    //            data: {},
+    //            beforeSend: () => {
+
+    //            }, success: (request) => {
+    //                console.log(request);
+    //            }, error: (jqXHR, exception) => {
+    //                fcaptureaerrorsajax(jqXHR, exception);
+    //            }
+    //        });
+    //    } catch (error) {
+    //        if (error instanceof EvalError) {
+    //            console.log('EvalError ', error);
+    //        } else if (error instanceof RangeError) {
+    //            console.log('RangeError ', error);
+    //        } else if (error instanceof TypeError) {
+    //            console.log('TypeError ', error);
+    //        } else {
+    //            console.log('Error ', error);
+    //        }
+    //    }
+    //}
+
     // Funcion valida banco interbancario existe
     fValidateBankInterbank = (paramcode) => {
+        const valSend = (paramcode == "NOM") ? 285 : 286;
+        let labelSend = (paramcode == "NOM") ? "de nomina" : "interbancarios";
         try {
             $.ajax({
                 url: "../Dispersion/ValidateBankInterbank",
                 type: "POST",
-                data: {},
+                data: { type: parseInt(valSend) },
                 beforeSend: () => {
                     console.log('validando');
                 }, success: (data) => {
@@ -859,7 +888,7 @@
                             alert('Accion invalida');
                         }
                     } else {
-                        fShowTypeAlert('Atención!', 'No hay bancos interbancarios definidos, defina uno para continuar', 'warning', btndesplegartab, 0);
+                        fShowTypeAlert('Atención!', 'No hay bancos ' + labelSend + ' definidos, defina uno para continuar', 'warning', btndesplegartab, 0);
                     }
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
@@ -891,7 +920,8 @@
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
                 dateDeposits: datedis.value,
-                mirror: mirrorSend
+                mirror: mirrorSend,
+                type: 285
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsPayroll",
@@ -1029,7 +1059,8 @@
                 numberPeriod: parseInt(periodis.value),
                 typePeriod: parseInt(typeperiod.value),
                 dateDeposits: datedis.value,
-                mirror: mirrorSend
+                mirror: mirrorSend,
+                type: 286
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsInterbank",

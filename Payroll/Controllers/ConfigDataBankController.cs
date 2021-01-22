@@ -43,11 +43,50 @@ namespace Payroll.Controllers
             try
             {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
-                lDataBankBean = lDataBankDaoD.sp_Carga_Bancos_Empresa(keyBusiness);
+                lDataBankBean = lDataBankDaoD.sp_Carga_Bancos_Empresa(keyBusiness, 0);
                 flag = (lDataBankBean.Count > 0) ? true : false;
             }
             catch (Exception exc)
             {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, DatosBancos = lDataBankBean });
+        }
+
+        [HttpPost]
+        public JsonResult CancelActiveBank(int key, int type)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            LoadDataTableBean loadDataTable = new LoadDataTableBean();
+            LoadDataTableDaoD dataTableDaoD = new LoadDataTableDaoD();
+            try {
+                int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                loadDataTable   = dataTableDaoD.sp_Cancel_Active_Bank(key, keyBusiness, type);
+                if (loadDataTable.sMensaje == "SUCCESS") {
+                    flag = true;
+                } else {
+                    messageError = loadDataTable.sMensaje;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
+        public JsonResult ShowBanksCanceled()
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            List<LoadDataTableBean> lDataBankBean = new List<LoadDataTableBean>();
+            LoadDataTableDaoD lDataBankDaoD = new LoadDataTableDaoD();
+            try {
+                int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                lDataBankBean = lDataBankDaoD.sp_Carga_Bancos_Empresa(keyBusiness, 1);
+                flag = (lDataBankBean.Count > 0) ? true : false;
+            } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, MensajeError = messageError, DatosBancos = lDataBankBean });

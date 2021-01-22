@@ -103,6 +103,7 @@
         public string sNomina { get; set; }
         public string sCuenta { get; set; }
         public decimal dImporte { get; set; }
+        public double doImporte { get; set; }
         public string sNombre { get; set; }
         public string sPaterno { get; set; }
         public string sMaterno { get; set; }
