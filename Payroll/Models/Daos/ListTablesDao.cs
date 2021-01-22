@@ -1045,6 +1045,8 @@ namespace Payroll.Models.Daos
                             ls.iIdCalculoshd = int.Parse(data["Calculos_Hd_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.dSaldo = decimal.Parse(data["Saldo"].ToString());
+                            ls.dGravado = decimal.Parse(data["Gravado"].ToString());
+                            ls.dExcento = decimal.Parse(data["Excento"].ToString());
                             ls.sEspejo = data["es_espejo"].ToString();
                         }
 
@@ -1528,8 +1530,9 @@ namespace Payroll.Models.Daos
                                                 if (idReglontama == 1) { IdRenglon = "00" + IdRenglon; };
                                                 if (idReglontama == 2) { IdRenglon = "0" + IdRenglon; };
                                                 if (idReglontama == 3) { lengRenglon = "100"; };
-                                                if (IdRenglon == "1001") { lengRenglon = "02"; }
-
+                                                string TipoDeduccion = "010";
+                                                if (IdRenglon == "1001") { TipoDeduccion = "002"; }
+                                                
                                                 //lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
                                                 //int idReglontama = lengRenglon.Length;
                                                 //if (idReglontama == 1) { IdRenglon = "00" + LisTRecibo[a].sIdSat; };
@@ -1542,7 +1545,7 @@ namespace Payroll.Models.Daos
 
                                                 xmlWriter.WriteStartElement(Prefijo2, "Deduccion", EspacioDeNombreNomina);
                                                 xmlWriter.WriteAttributeString("Importe", ImporGra.ToString());
-                                                xmlWriter.WriteAttributeString("TipoDeduccion", "010");
+                                                xmlWriter.WriteAttributeString("TipoDeduccion", TipoDeduccion);
                                                 xmlWriter.WriteAttributeString("Clave", IdRenglon);
                                                 xmlWriter.WriteAttributeString("Concepto", concepto.ToString());
                                                 xmlWriter.WriteEndElement();

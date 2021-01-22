@@ -390,6 +390,12 @@ namespace Payroll.Controllers
                             }
 
                         }
+                      
+                        ls.dExcento = LCRecibo[i].dExcento.ToString("#.##");
+                        if (LCRecibo[i].dExcento < 1) { ls.dExcento = "0.00"; };
+                        ls.dGravados = LCRecibo[i].dGravado.ToString("#.##");
+                        if (LCRecibo[i].dGravado < 1) { ls.dGravados = "0.00"; };
+
                         ls.dSaldos = "0";
                         ls.dInformativos = "0";
                         LsTabla.Add(ls);
@@ -2097,6 +2103,12 @@ namespace Payroll.Controllers
                                 }
 
                             }
+                           
+                        ls.dExcento = LCRecibo[i].dExcento.ToString("#.##");
+                        if (LCRecibo[i].dExcento < 1) { ls.dExcento = "0.00"; };
+                        ls.dGravados = LCRecibo[i].dGravado.ToString("#.##");
+                        if (LCRecibo[i].dGravado < 1) { ls.dGravados = "0.00"; };
+
                             ls.dSaldos = "0";
                             ls.dInformativos = "0";
                             LsTabla.Add(ls);

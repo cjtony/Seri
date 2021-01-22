@@ -382,8 +382,8 @@
                                 { name: 'sConcepto', type: 'string' },
                                 { name: 'dPercepciones', type: 'decimal' },
                                 { name: 'dDeducciones', type: 'decimal' },
-                                { name: 'dSaldos', type: 'decimal' },
-                                { name: 'dInformativos', type: 'decimal' }
+                                { name: 'dGravados', type: 'decimal' },
+                                { name: 'dExcento', type: 'decimal' }
                             ]
                     };
 
@@ -399,8 +399,8 @@
                                 { text: 'Concepto', datafield: 'sConcepto', width: 300 },
                                 { text: 'Percepciones', datafield: 'dPercepciones', cellsformat: 'c2', width: 100 },
                                 { text: 'Deducciones ', datafield: 'dDeducciones', cellsformat: 'c2', width: 100 },
-                                { text: 'Saldos', datafield: 'dSaldos', cellsformat: 'c2', width: 100 },
-                                { text: 'Informativos', datafield: 'dInformativos', width: 100 }
+                                { text: 'Gravado', datafield: 'dGravados', cellsformat: 'c2', width: 100 },
+                                { text: 'Excento', datafield: 'dExcento', width: 100 }
                             ]
                         });
 
@@ -438,8 +438,8 @@
                                 { name: 'sConcepto', type: 'string' },
                                 { name: 'dPercepciones', type: 'decimal' },
                                 { name: 'dDeducciones', type: 'decimal' },
-                                { name: 'dSaldos', type: 'decimal' },
-                                { name: 'dInformativos', type: 'decimal' }
+                                { name: 'dGravados', type: 'decimal' },
+                                { name: 'dExcento', type: 'decimal' }
                             ]
                     };
 
@@ -455,8 +455,8 @@
                                 { text: 'Concepto', datafield: 'sConcepto', width: 300 },
                                 { text: 'Percepciones', datafield: 'dPercepciones', cellsformat: 'c2', width: 100 },
                                 { text: 'Deducciones ', datafield: 'dDeducciones', cellsformat: 'c2', width: 100 },
-                                { text: 'Saldos', datafield: 'dSaldos', cellsformat: 'c2', width: 100 },
-                                { text: 'Informativos', datafield: 'dInformativos', cellsformat: 'c2', width: 100 }
+                                { text: 'Gravado', datafield: 'dGravados', cellsformat: 'c2', width: 100 },
+                                { text: 'Excento', datafield: 'dExcento', cellsformat: 'c2', width: 100 }
                             ]
                         });
                 }
@@ -663,7 +663,6 @@
         }
 
     }
-
     CheckFiniquito.addEventListener('click', FvalorChechFin);
 
 
@@ -704,12 +703,10 @@
         });
 
     };
-
     btnXmlms.addEventListener('click',FdowXmlsMasivo)
 
     /// descarga masiva de PDF
 
-  
     FdowPDFMasivos = () => {
         btnXmlms.value = 0;
         btnPDFms.value = 1;
@@ -754,8 +751,6 @@
     btnPDFms.addEventListener('click', FdowPDFMasivos)
 
     FOpenFile = () => {
-
-
         if (btnPDFms.value == 1) {
             var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
             separador = " ",
@@ -767,15 +762,12 @@
             window.open(url);
             btnDowlan.style.visibility = 'hidden';
         };
-
         if (btnXmlms.value == 1) {
             var url = '\\Archivos\\ZipXML.zip';
             window.open(url);
             btnDowlan.style.visibility = 'hidden';
         };
-
     };
-
     btnDowlan.addEventListener('click', FOpenFile);
 
 
