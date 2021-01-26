@@ -590,5 +590,13 @@ namespace Payroll.Controllers
             Lista = Dao.sp_TCreditos_update_credito(Empresa_id, Credito_id, Empleado_id, TipoDescuento_id, Descontar_id, Descuento, NoCredito, FechaAprovacion, FechaBaja);
             return Json(Lista);
         }
+        [HttpPost]
+        public JsonResult LoadCargasMasivas()
+        {
+            List<List<string>> lista = new List<List<string>>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            lista = Dao.sp_Retrieve_CargasMasivas();
+            return Json(lista);
+        }
     }
 }

@@ -532,6 +532,7 @@ namespace Payroll.Models.Beans
         public string Agendadas { get; set; }
         public string Disfrutadas { get; set; }
         public string Cancelado { get; set; }
+        public string Aprobado { get; set; }
 
     }
     public class CreditosBean

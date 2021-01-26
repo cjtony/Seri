@@ -159,8 +159,6 @@ $(function () {
         //console.log("llega");
     });
 
-
-
     $(".btn-change-status").on("click", function () {
         Swal.fire({
             title: 'Are you sure?',
@@ -209,11 +207,21 @@ $(function () {
                 for (var i = 0; i < data.length; i++) {
                     $("#nomEmp").empty(); $("#nomEmp").append(data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + " " + data[i]["Apellido_Materno_Empleado"]);
                     $("#puesto_emp").empty(); $("#puesto_emp").append(data[i]["DescripcionPuesto"]);
-                    $("#area_emp").empty(); $("#area_emp").append(data[i]["DescripcionDepartamento"])
+                    $("#area_emp").empty(); $("#area_emp").append(data[i]["DescripcionDepartamento"]);
+                    $("#tipo_emp").empty();
+
+                    if (parseInt(data[i]["TipoEmpleado"]) < 164) {
+                        $("#tipo_emp").append("<span class='badge badge-pill badge-success'>" + data[i]["DescTipoEmpleado"] + "</span>");
+                    } else if (parseInt(data[i]["TipoEmpleado"]) > 163) {
+                        $("#tipo_emp").append("<span class='badge badge-pill badge-danger'>" + data[i]["DescTipoEmpleado"] + "</span>");
+                    }
+
+
                     $("#antig_emp").empty(); $("#antig_emp").append(data[i]["FechaIngreso"].substring(0, 10));
                     $("#vacacionesCollapse").collapse("show");
 
                 }
+                document.getElementById("tab1").innerHTML = "<tr><td colspan='4'><div class='d-flex justify-content-center'><div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div ></div></td></tr>";
                 CargarTabResumen();
                 document.getElementById("inputSearchEmpleados").value = '';
                 ftoggle();
@@ -232,6 +240,7 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 var id = data[0]["Id_Per_Vac_Ln"];
+                document.getElementById("tab1").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
 
                     document.getElementById("tab1").innerHTML += "<tr><td>" + data[i]["Periodo"] + " <input type='hidden' id='btn_id_periodo_ln' value=' " + data[i]["Id_Per_Vac_Ln"] + " '> </td><td>" + data[i]["DiasPrima"] + "</td><td>" + data[i]["DiasDisfrutados"] + "</td><td>" + data[i]["DiasRestantes"] + "</td></tr>";
@@ -252,26 +261,25 @@ $(function () {
                 console.log(data);
                 document.getElementById("tabBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-                    console.log(data[i]["Agendadas"]);
-
-                    if (data[i]["Agendadas"] == "True") {
-                        document.getElementById("tabBody").innerHTML += "<tr>" +
-                            "<td>" + data[i]["Dias"] + " <input type = 'hidden' class='btn_IdPer_vac_Dist' value = ' " + data[i]["IdPer_vac_Dist"] + " ' > </td>" +
-                            " <td>" + data[i]["Fecha_Inicio"] + "</td>" +
-                            " <td>" + data[i]["Fecha_Fin"] + "</td>" +
-                            " <td><div class='fas fa-check'></div></td>" +
-                            "<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + data[i]["IdPer_vac_Dist"] + ")'></div></td>" +
-                            "</tr > ";
-                    } else {
-                        document.getElementById("tabBody").innerHTML += "<tr>" +
-                            "<td>" + data[i]["Dias"] + " <input type='hidden' class='btn_IdPer_vac_Dist' value=' " + data[i]["IdPer_vac_Dist"] + " '> </td>" +
-                            "<td>" + data[i]["Fecha_Inicio"] + "</td>" +
-                            "<td>" + data[i]["Fecha_Fin"] + "</td>" +
-                            "<td></td>" +
-                            "<td><div class='fas fa-check'></div></td>" +
-                            "</tr>";
+                    var aprobado = "";
+                    var agendado = "";
+                    if (data[i]["Aprobado"] == "True") {
+                        aprobado = "<div class='fas fa-check'></div>";
+                    } else if (data[i]["Aprobado"] == "False"){
+                        aprobado = "";
                     }
-
+                    if (data[i]["Agendadas"] == "True") {
+                        agendado = "<div class='fas fa-check'></div>";
+                    } else if (data[i]["Agendadas"] == "False"){
+                        agendado = "";
+                    }
+                    document.getElementById("tabBody").innerHTML += "<tr>" +
+                        "<td>" + data[i]["Dias"] + " <input type = 'hidden' class='btn_IdPer_vac_Dist' value = ' " + data[i]["IdPer_vac_Dist"] + " ' > </td>" +
+                        " <td>" + data[i]["Fecha_Inicio"] + "</td>" +
+                        " <td>" + data[i]["Fecha_Fin"] + "</td>" +
+                        " <td>" + agendado + "</td>" +
+                        " <td>" + aprobado + "</td>" +//"<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + data[i]["IdPer_vac_Dist"] + ")'></div></td>" +
+                            "</tr > ";
 
                 }
             }
@@ -346,7 +354,7 @@ $(function () {
                                             " <td>" + res[i]["Fecha_Inicio"] + "</td>" +
                                             " <td>" + res[i]["Fecha_Fin"] + "</td>" +
                                             " <td><div class='fas fa-check'></div></td>" +
-                                            "<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + res[i]["IdPer_vac_Dist"] + ")'></div></td>" +
+                                            " <td></td>" +//"<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + res[i]["IdPer_vac_Dist"] + ")'></div></td>" +
                                             "</tr > ";
                                     } else {
                                         document.getElementById("tabBody").innerHTML += "<tr>" +
@@ -366,8 +374,6 @@ $(function () {
                                 );
                             }
                         });
-
-
                     }
                 });
 
