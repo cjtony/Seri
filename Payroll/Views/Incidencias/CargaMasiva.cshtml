@@ -1,15 +1,15 @@
-﻿<div class="container col-md-10">
+﻿<div class="container col-md-12">
     <form method="post" enctype="multipart/form-data" class="row">
-        <div class="col-md-8 mt-4">
+        <div class="col-md-6 mt-4">
             <div class="card shadow rounded border-left-primary border-right-primary">
-                <div class="card-body"> 
-                    
+                <div class="card-body">
+
                     <h5 class="card-title text-center">
                         <i class="fas fa-file-excel text-success"></i> Selecciona tu EXCEL .xlsx
                     </h5>
                     <a id="btnDownLoadCM" class="text-decoration-none btn btn-info btn-sm font-labels" href="~/Content/FilesCargaMasivaIncidencias/FormatoDeIncidencias/Layout_Carga_Incidencias.xlsx" download target="_blank">
                         <i class="fas fa-file-download fa-lg text-white"></i>
-                        
+
                     </a>
                     <hr />
                     <div class="row">
@@ -43,25 +43,47 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mt-4 rounded">
-            <div class="bg-white shadow rounded border-left-primary border-right-primary p-3 " data-spy="scroll">
+        <div class="col-md-6 mt-4 rounded">
+            <div class="bg-white shadow rounded border-left-primary border-right-primary p-3 font-labels" data-spy="scroll">
                 <div class="h6 mt-1 text-primary font-weight-bold text-center">Cargas del Periodo</div>
 
-                <table class="table table-sm font-labels">
+                <table class="table table-sm font-labels" id="tabCargasMasivas">
                     <thead class="font-labels">
                         <tr>
                             <th scope="col"> Tabla </th>
                             <th scope="col"> Folio </th>
                             <th scope="col"> Referencia </th>
+                            <th scope="col"> Status </th>
                             <th scope="col"> Acciones </th>
                         </tr>
                     </thead>
-                    <tbody id="tabIncProg" class="font-labels">
-                        
+                    <tbody id="tabCargasMasivasDetalle" class="font-labels">
                     </tbody>
                 </table>
             </div>
         </div>
     </form>
 </div>
-<script src="~/Scripts/main/cargamasiva.js?n=3"></script>
+<!-- Modal cancelar carga -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Cancelar carga</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCancelarCarga">
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/main/cargamasiva.js?n=6"></script>

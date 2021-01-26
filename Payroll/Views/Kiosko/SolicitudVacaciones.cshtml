@@ -2,21 +2,25 @@
     <div class="media row border-bottom pb-3 border-primary">
         <div class="media-body col-md-12 ">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col">
                     <label for="" class="font-italic">Nombre </label><br>
                     <div id="nomEmp" class="font-weight-bold"></div>
                 </div>
-                <div class="col-md-3">
+                <div class="col">
                     <label for="" class=" font-italic">Puesto </label><br>
                     <div id="puesto_emp" class=" font-weight-bold"></div>
                 </div>
-                <div class="col-md-3">
+                <div class="col">
                     <label for="" class=" font-italic">Departamento</label><br>
                     <div id="area_emp" class=" font-weight-bold"></div>
                 </div>
-                <div class="col-md-3 ">
+                <div class="col ">
                     <label for="" class=" font-italic">Antigüedad </label><br>
                     <div id="antig_emp" class=" font-weight-bold"></div>
+                </div>
+                <div class="col">
+                    <label class="font-italic">Tipo Empleado</label>
+                    <div id="tipo_emp" class="font-weight-bold"> </div>
                 </div>
             </div>
         </div>
@@ -46,7 +50,7 @@
                         <th>Fecha Inicio</th>
                         <th>Fecha Termino</th>
                         <th>Agendadas</th>
-                        <th>Disfrutadas</th>
+                        <th>Aprobadas</th>
                     </tr>
                 </thead>
                 <tbody id="tabBody">
@@ -57,7 +61,12 @@
     <div class="container col-12 align-content-center">
         <div class="row">
             <div class="col-12">
-                <div class="col-12 text-center font-button">Agregar nuevo periodo de vacaciones</div>
+                <div class="alert alert-light text-center" role="alert">
+                    <div class="alert-heading font-button text-center"> Agregar nuevo periodo de vacaciones </div>
+
+                    @*<p class="m-0 p-0 col-12"> <div class=" badge badge-warning">Las vacaciones solo se pueden pedir con una semana de anticipación.</div> </p>*@
+                </div>
+                @*<div class="col-12 text-center font-button">Agregar nuevo periodo de vacaciones</div>*@
                 <form action="#" class="needs-validation text-white rounded px-4 py-3 mb-4" id="frmAddPeriodo" novalidate>
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
@@ -75,6 +84,7 @@
                         <div class="col-md-2">
                             <button class="btn btn-primary font-weight-bold w-100 h-100" disabled id="btnCalcVacaciones" type="button">Registrar</button>
                         </div>
+                        <u class="small col-12 text-danger">* Las vacaciones solo se pueden pedir con una semana de anticipación.</u>
                     </div>
                 </form>
             </div>
@@ -107,4 +117,4 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Vacaciones.js"></script>
+<script src="~/Scripts/main/Vacaciones.js?n=4"></script>
