@@ -248,6 +248,7 @@ namespace Payroll.Models.Beans
         public string sCURP { get; set; }
         public string sDescripcion { get; set; }
         public String sCtaCheques { get; set; }
+        public string sCodiBanco { get; set; }
         public int iRegimenFiscal { get; set; }
         public int iIdNomina { get; set; }
         public string sUrl { get; set; }
