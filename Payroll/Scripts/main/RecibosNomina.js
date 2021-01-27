@@ -692,9 +692,12 @@
                     btnDowlan.style.visibility = 'visible';
                     $('#jqxLoader2').jqxLoader('close');
                     fshowtypealert('Recibos de nomina', 'sean generado los archivos XML correctamente', 'success');
-
                 }
-                else {
+                if(data[0].sMensaje == "NorCert"){
+                    $('#jqxLoader2').jqxLoader('close');
+                    fshowtypealert('Error', 'Contacte a sistemas falta el archivo certificado', 'error');
+                }
+                if (data.rowscount < 0 || data == null){
                     $('#jqxLoader2').jqxLoader('close');
                     fshowtypealert('Error', 'Contacte a sistemas', 'error');
                 }

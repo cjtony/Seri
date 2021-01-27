@@ -151,8 +151,6 @@
     btnFloEjecutar.value = 0;
     /* desaparece botones de ejecucion dependiendo el tab que se eligan */
 
-
-
     /// quita logo de carga 
 
     $('#jqxLoader').jqxLoader('close');
@@ -989,8 +987,9 @@
                         data: dataSend,
                         success: (data) => {
                             if (data[0].iIdCalculosHd == 1) {
-                                fshowtypealert("Ejecucion", "Los calculos de la nomina se estan realizando", "success")
+                                fshowtypealert2("Ejecucion", "Los calculos de la nomina se estan realizando", "success")
                                 $.ajax({
+                                    timeout: 5000,
                                     url: "../Nomina/ProcesosPots",
                                     type: "POST",
                                     data: dataSend2,
@@ -1120,10 +1119,7 @@
         var idempresa = EmpresaCal.value;
         var perido = PeriodoCal.value;
         Tipoperiodocal = 0;
-
         FllenaCalculos(periodo, idempresa, Tipoperiodocal);
-
-
     });
 
     ////// selecccion de los empleado de la empresa
@@ -1375,7 +1371,6 @@
             const dataSend2 = { iIdEmpresa: EmpresaNom.value, iIdEmpleado: NoEmpleado, ianio: AnioDropList, iTipodePerido: arreglosubcadena3[0], iPeriodo: arreglosubcadena[0], iespejo: 0 };
             FGridCalculos(dataSend2);        
         }
-
     };
 
     CheckRecibo2.addEventListener('click',FRecibo2)
@@ -1415,7 +1410,6 @@
 
         var opDeNombre = "Selecciona"; /*EjeNombreDef.options[EjeNombreDef.selectedIndex].text*/;
         var opDeCancelados = 2;
-
         $.ajax({
             url: "../Nomina/QryDifinicionPeriodoCerrado",
             type: "POST",
@@ -1920,12 +1914,19 @@
             showClass: { popup: 'animated fadeInDown faster' },
             hideClass: { popup: 'animated fadeOutUp faster' },
             confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+
         }).then((acepta) => {
-
-
         });
     };
 
+    fshowtypealert2 = (title, text, icon) => {
+        Swal.fire({
+            title: title, text: text, icon: icon,
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true
+        });
+    };
 
 
                      /* Notificaciones*/
