@@ -124,7 +124,7 @@ $(function () {
 
                 if (data[0] == "1") {
                     //console.log("periodo guardado");
-                    //console.log(data);
+                    console.log(data);
                     document.getElementById("frmAddPeriodo").reset();
                     $("#to").addClass("disabled");
                     $("#from").datepicker({

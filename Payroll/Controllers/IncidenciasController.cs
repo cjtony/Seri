@@ -215,14 +215,14 @@ namespace Payroll.Controllers
             return Json(res);
         }
         [HttpPost]
-        public JsonResult SaveRegistroIncidencia(int inRenglon, decimal inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
+        public JsonResult SaveRegistroIncidencia(int inRenglon, string inCantidad, int inDias, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
         {
             List<string> res = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
             int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
+            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inDias, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
             return Json(res);
         }
         [HttpPost]
