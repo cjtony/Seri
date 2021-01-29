@@ -114,6 +114,9 @@
                         referencia_incidencia.value = '';
                         fecha_incidencia.value = '';
                         createTab();
+                        form.reset();
+                        document.getElementById("inDias").disabled = false;
+                        document.getElementById("inCantidad").disabled = false;
                         Swal.fire({
                             icon: 'success',
                             title: 'Completado!',
@@ -166,7 +169,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                
+
                 document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     var period = $("#lblPeriodoId").html();
@@ -182,10 +185,11 @@
                         aplicado = "<i class='fas fa-clipboard-check fa-lg text-info mx-1' title='Aplicado en Nómina'></i>";
                     }
 
-                    if ( data[i]["Cancelado"] == "True" ) {
+                    if (data[i]["Cancelado"] == "True") {
                         cancelado = "<i class='fas fa-ban fa-lg mx-1' title='Incidencia Cancelada'></i>";
                     } else if (data[i]["Cancelado"] == "False") {
-                        cancelado = " ";
+                        cancelado = "<div class='badge badge-success btn mx-1' onclick='editarIncidencia(" + data[i]["Incidencia_id"] + ");' title='Editar'><i class='fas fa-pencil-alt'></i></div>" +
+                            "<div class='badge badge-danger btn mx-1' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + incidenciaProg_id + ");' title='Eliminar'><i class='fas fa-minus'></i></div>";
                     }
 
                     document.getElementById("tabIncidenciasBody").innerHTML += "" +
@@ -202,9 +206,7 @@
                         "<td class='text-center'>" +
                         aplicado +
                         cancelado +
-                        "<div class='badge badge-success btn mx-1' onclick='editarIncidencia(" + data[i]["Incidencia_id"] + ");' title='Editar'><i class='fas fa-pencil-alt'></i></div>" +
                         //"<div class='badge badge-success btn' onclick='adelantarPagoIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Adelantar Pago'><i class='fas fa-donate'></i></div>" +
-                        "<div class='badge badge-danger btn mx-1' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + incidenciaProg_id + ");' title='Eliminar'><i class='fas fa-minus'></i></div>" +
                         //"<div class='badge badge-success btn' title='Adelantar Pago'><i class='fas fa-donate'></i></div>" +
                         //"<div class='badge badge-danger btn' title='Eliminar'><i class='fas fa-minus'></i></div>" +
                         "</td>" +
@@ -294,10 +296,21 @@
                     document.getElementById("edRenglon").disabled = false;
                     $("#edRenglon").val(data[0]["Renglon"]);
                     document.getElementById("edRenglon").disabled = true;
-                    $("#edCantidad").val(parseFloat(data[0]["Cantidad"]));//.substring(0, data[0]["Cantidad"].length - 2));
-                    $("#actualCantidad").val(data[0]["Cantidad"].substring(0, data[0]["Cantidad"].length - 2));
-                    $("#edDias").val(parseFloat(data[0]["Numero_dias"]));//.substring(0, data[0]["Numero_dias"].length - 2));
-                    //document.getElementById("edDias").disabled = true;
+
+                    if (parseFloat(data[0]["Cantidad"]) == 0) {
+                        $("#edCantidad").val("");//.substring(0, data[0]["Cantidad"].length - 2));
+                        $("#actualCantidad").val("");
+                        $("#edDias").val(parseFloat(data[0]["Numero_dias"]));//.substring(0, data[0]["Numero_dias"].length - 2));
+                        document.getElementById("edCantidad").disabled = true;
+                    }
+                    if (parseFloat(data[0]["Numero_dias"]) == 0) {
+                        $("#edCantidad").val(parseFloat(data[0]["Cantidad"]));//.substring(0, data[0]["Cantidad"].length - 2));
+                        $("#actualCantidad").val(data[0]["Cantidad"].substring(0, data[0]["Cantidad"].length - 2));
+                        $("#edDias").val("");//.substring(0, data[0]["Numero_dias"].length - 2));
+                        document.getElementById("edDias").disabled = true;
+                    }
+
+
                     document.getElementById("edSaldo").disabled = false;
                     $("#edSaldo").val(parseFloat(data[0]["Saldo"]));//.substring(0, data[0]["Saldo"].length - 2));
                     $("#actualSaldo").val(parseFloat(data[0]["Saldo"]));//.substring(0, data[0]["Saldo"].length - 2));
@@ -406,7 +419,7 @@
 
     // FUNCION PARA LA ACTUALIZACION DE LAS INCIDENCIAS
     updateIncidencia = () => {
-            
+
         var form = document.getElementById("frmEditIncidencia");
         if (form.checkValidity() == false) {
             setTimeout(() => {
@@ -443,6 +456,7 @@
                     } else {
                         document.getElementById("tabIncidenciasBody").innerHTML = "";
                         createTab();
+                        form.reset();
                         $("#editIncidencia").modal("hide");
                         Swal.fire({
                             icon: 'success',
@@ -518,6 +532,22 @@
             document.getElementById("inCantidad").disabled = false;
         } else if (this.value.length > 0) {
             document.getElementById("inCantidad").disabled = true;
+        }
+    });
+    //VALIDACION DE INSERT EN INPUT
+    $('#edCantidad').on('input', function () {
+        if (this.value.length == 0) {
+            document.getElementById("edDias").disabled = false;
+        } else if (this.value.length > 0) {
+            document.getElementById("edDias").disabled = true;
+        }
+    });
+    //VALIDACION DE INSERT EN INPUT
+    $('#edDias').on('input', function () {
+        if (this.value.length == 0) {
+            document.getElementById("edCantidad").disabled = false;
+        } else if (this.value.length > 0) {
+            document.getElementById("edCantidad").disabled = true;
         }
     });
 });
