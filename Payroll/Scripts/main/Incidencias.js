@@ -457,6 +457,8 @@
                         document.getElementById("tabIncidenciasBody").innerHTML = "";
                         createTab();
                         form.reset();
+                        document.getElementById("edDias").disabled = false;
+                        document.getElementById("edCantidad").disabled = false;
                         $("#editIncidencia").modal("hide");
                         Swal.fire({
                             icon: 'success',
