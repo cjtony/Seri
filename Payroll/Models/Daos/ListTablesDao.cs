@@ -1197,7 +1197,7 @@ namespace Payroll.Models.Daos
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                     if (Nombre.Length > 0) {
                         NomEmple = "";
-                        for (int a = 1; a < Nombre.Length; a++) {
+                        for (int a = 0; a < Nombre.Length; a++) {
                             NomEmple = NomEmple + Nombre[a].ToString() +" ";
                         };
                     
@@ -1213,7 +1213,7 @@ namespace Payroll.Models.Daos
                     if (Nombre.Length > 0)
                     {
                         NomEmple = "";
-                        for (int a = 1; a < Nombre.Length; a++)
+                        for (int a = 0; a < Nombre.Length; a++)
                         {
                             NomEmple = NomEmple + Nombre[a].ToString() + " ";
                         };
@@ -1346,14 +1346,14 @@ namespace Payroll.Models.Daos
 
                                     // Nombre del archivo XML
                                     int NoidCalhd = ListTotales[0].iIdCalculoshd;
-                                    NomArch = NomArch + NoidCalhd + "_CFDI_E16_F" + anoarchivo;
+                                    NomArch = NomArch + NoidCalhd + "_CFDI_E"+IdEmpresa+"_F" + anoarchivo;
                                     if (LFechaPerido[0].iPeriodo > 9)
                                     {
-                                        NomArch = NomArch + ListTotales[0].iIdTipoPeriodo + "0" + LFechaPerido[0].iPeriodo + tipoNom + "_N" + ListDatEmisor[0].iIdNomina;
+                                        NomArch = NomArch + ListTotales[0].iIdTipoPeriodo + "0" + LFechaPerido[0].iPeriodo + tipoNom + "_N" + id;
                                     }
                                     if (LFechaPerido[0].iPeriodo < 10)
                                     {
-                                        NomArch = NomArch + ListTotales[0].iIdTipoPeriodo + "00" + LFechaPerido[0].iPeriodo + tipoNom + "_N" + ListDatEmisor[0].iIdNomina;
+                                        NomArch = NomArch + ListTotales[0].iIdTipoPeriodo + "00" + LFechaPerido[0].iPeriodo + tipoNom + "_N" + id;
                                     }
 
                                     ArchivoXmlFile = ArchivoXmlFile + NomArch;
@@ -1526,8 +1526,6 @@ namespace Payroll.Models.Daos
                                                 {    
                                                         row195 = a;
                                                 };
-
-
 
                                                 
                                                 string lengRenglon = "";

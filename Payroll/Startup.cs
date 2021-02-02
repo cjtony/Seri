@@ -40,7 +40,6 @@ namespace Payroll
            // Para obtener más información sobre cómo configurar la aplicación, visite https://go.microsoft.com/fwlink/?LinkID=316888
            // GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
            // Desarrollo  
-           // string nombre = Nameuser; 
             {
                 
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
