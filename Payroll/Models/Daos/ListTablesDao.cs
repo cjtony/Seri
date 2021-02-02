@@ -1153,7 +1153,7 @@ namespace Payroll.Models.Daos
                ListTotales = sp_SaldosTotales_Retrieve_TPlantillasCalculos(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo,0);
                 LisTRecibo = null;
                 LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(IdEmpresa, id, LFechaPerido[0].iPeriodo, Tipodeperido, anios, 0);
-               if (ListTotales != null)
+               if (ListTotales != null && LisTRecibo !=null)
                 {
                     if (ListDatEmisor.Count > 0)
                     {
