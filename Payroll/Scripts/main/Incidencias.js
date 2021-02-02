@@ -297,19 +297,24 @@
                     $("#edRenglon").val(data[0]["Renglon"]);
                     document.getElementById("edRenglon").disabled = true;
 
-                    if (parseFloat(data[0]["Cantidad"]) == 0) {
+                    if (parseFloat(data[0]["Numero_dias"]) == 0 && parseFloat(data[0]["Cantidad"]) == 0) {
+                        $("#edCantidad").val("");
+                        $("#actualCantidad").val("");
+                        $("#edDias").val("");
+                        document.getElementById("inDias").disabled = false;
+                        document.getElementById("inCantidad").disabled = false;
+                    } else if (parseFloat(data[0]["Cantidad"]) == 0) {
                         $("#edCantidad").val("");//.substring(0, data[0]["Cantidad"].length - 2));
                         $("#actualCantidad").val("");
                         $("#edDias").val(parseFloat(data[0]["Numero_dias"]));//.substring(0, data[0]["Numero_dias"].length - 2));
                         document.getElementById("edCantidad").disabled = true;
-                    }
-                    if (parseFloat(data[0]["Numero_dias"]) == 0) {
+                    } else if (parseFloat(data[0]["Numero_dias"]) == 0) {
                         $("#edCantidad").val(parseFloat(data[0]["Cantidad"]));//.substring(0, data[0]["Cantidad"].length - 2));
                         $("#actualCantidad").val(data[0]["Cantidad"].substring(0, data[0]["Cantidad"].length - 2));
                         $("#edDias").val("");//.substring(0, data[0]["Numero_dias"].length - 2));
                         document.getElementById("edDias").disabled = true;
                     }
-
+                    
 
                     document.getElementById("edSaldo").disabled = false;
                     $("#edSaldo").val(parseFloat(data[0]["Saldo"]));//.substring(0, data[0]["Saldo"].length - 2));
@@ -481,6 +486,8 @@
         $("#edPagosRestantes").removeClass("is-invalid");
         $("#edPlazos").removeClass("is-valid");
         $("#edPagosRestantes").removeClass("is-valid");
+        document.getElementById("edDias").disabled = false;
+        document.getElementById("edCantidad").disabled = false;
     });
 
     $("#txtsearchtipoincidencia").keyup(function () {
