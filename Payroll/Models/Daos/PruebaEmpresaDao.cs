@@ -788,17 +788,16 @@ namespace Payroll.Models.Daos
             {
                 while (data.Read())
                 {
-                    PeriodosVacacionesBean list = new PeriodosVacacionesBean
-                    {
-                        IdPer_vac_Dist = int.Parse(data["IdPer_vac_Dist"].ToString()),
-                        Per_vac_Ln_id = int.Parse(data["Per_vac_Ln_id"].ToString()),
-                        Fecha_Inicio = data["Fecha_Inicio"].ToString(),
-                        Fecha_Fin = data["Fecha_Fin"].ToString(),
-                        Dias = int.Parse(data["Dias"].ToString()),
-                        Agendadas = data["Agendadas"].ToString(),
-                        Disfrutadas = data["Disfrutadas"].ToString(),
-                        Cancelado = data["Cancelado"].ToString()
-                    };
+                    PeriodosVacacionesBean list = new PeriodosVacacionesBean();
+                    list.IdPer_vac_Dist = int.Parse(data["IdPer_vac_Dist"].ToString());
+                    list.Per_vac_Ln_id = int.Parse(data["Per_vac_Ln_id"].ToString());
+                    list.Fecha_Inicio = data["Fecha_Inicio"].ToString();
+                    list.Fecha_Fin = data["Fecha_Fin"].ToString();
+                    list.Dias = int.Parse(data["Dias"].ToString());
+                    list.Agendadas = data["Agendadas"].ToString();
+                    list.Disfrutadas = data["Disfrutadas"].ToString();
+                    list.Cancelado = data["Cancelado"].ToString();
+                    list.Aprobado = data["Aprobado"].ToString();
                     lista.Add(list);
                 }
             }
@@ -1100,6 +1099,40 @@ namespace Payroll.Models.Daos
             {
                 lista.Add("0");
                 lista.Add("Error en BD, informar a sistemas");
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return lista;
+        }
+        public List<List<string>> sp_Retrieve_CargasMasivas()
+        {
+            List<List<string>> lista = new List<List<string>>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Retrieve_CargasMasivas", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    List<string> list = new List<string>();
+                    list.Add(data["Tabla"].ToString());
+                    list.Add(data["Folio"].ToString());
+                    list.Add(data["Referencia"].ToString());
+                    list.Add(data["Cancelado"].ToString());
+
+                    lista.Add(list);
+                }
+            }
+            else
+            {
+                lista = null;
             }
             data.Close();
             this.conexion.Close(); this.Conectar().Close();

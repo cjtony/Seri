@@ -6,10 +6,6 @@
     var leyenda_incidencia = document.getElementById("inLeyenda");
     var referencia_incidencia = document.getElementById("inReferencia");
     var fecha_incidencia = document.getElementById("inFechaA");
-    //var infinicio = document.getElementById("infinicio");
-    //var inffinal = document.getElementById("inffinal");
-    //document.getElementById("lbloptions").style.visibility = "none";
-
 
     // SE LANZA LA INSTRUCCION DE MOSTRAR EL MODAL DE BUSQUEDA DE EMPLEADOS
     $("#modalLiveSearchEmpleado").modal("show");
@@ -51,72 +47,17 @@
     $('.input-number').on('input', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
-    ////CARGA CONCEPTO 
-    ////////$.ajax({
-    ////////    url: "../Incidencias/LoadTipoIncidencia",
-    ////////    type: "POST",
-    ////////    dataType: "json",
-    ////////    contentType: "application/json; charset=utf-8",
-    ////////    success: (data) => {
-    ////////        document.getElementById("inConcepto_incidencia").innerHTML = "<option class='' value=''> Selecciona </option>"
-    ////////        for (var i = 0; i < data.length; i++) {
-    ////////            document.getElementById("inConcepto_incidencia").innerHTML += "<option class='' value='" + data[i]["Ren_incid_id"] + "'> " + data[i]["Ren_incid_id"] + " : " + data[i]["Descripcion"] + "</option>";
-    ////////        }
-    ////////    }
-    ////////});
-    //CAMBIOS EN EL SELECT Y EL RENGLON
-    //////////////////$("#inRenglon").on("change", function () {
     checkrenglon = () => {
-        //ren_incidencia.value = concepto_incidencia.value;
         if (ren_incidencia.value == '71') {
-            //console.log("si");
-            $("#lblCantidad").html("Dias");
-            //$("#inflbl").html("<small class='px-2'> *Si selecciona por días se insertaran en el periodo actual, si selecciona por fechas solo aplicara dentro del rango agregado.<small>").attr("class", "alert-warning text-center col-md-12 mx-3 mb-2");
-            $("#inCantidad").attr("placeholder", "00.0");
+            //$("#lblCantidad").html("Días *");
+            //$("#inCantidad").attr("placeholder", "00.0");
             document.getElementById("inPlazos").disabled = true;
-            //$("#collapsefechas").collapse("show");
-            //$("#lbloptions").html(""
-            //    + "<div class='btn-group btn-group-toggle' data-toggle='buttons' >"
-            //    + "<label class='btn btn-sm btn-outline-info font-labels active btn-option-1' onclick='checkPorDias();'>"
-            //    + "<input type='radio' name='options' id='opt1' checked> Por Días"
-            //    + "</label>"
-            //    + "<label class='btn btn-sm btn-outline-info font-labels  btn-option-2' onclick='checkPorFecha();'>"
-            //    + "<input type='radio' name='options' id='opt2'> Por Fechas"
-            //    + "</label>"
-            //    + "</div>"
-            //    //+ "<div class='btn-group' role='group' aria-label='Basic example'>"
-            //    //+ "<button type='button' id='opt1' class='btn btn-outline-info btn-sm'><small> <i class='fas fa-calendar-day'></i> Por Dias </small> </button>"
-            //    //+ "<button type='button' id='opt2' class='btn btn-outline-info btn-sm'><small> <i class='fas fa-calendar-alt'></i> Por Fechas </small> </button>"
-            //    //+ "</div >"
-            //);
-
-            //setTimeout(() => {
-            //    document.getElementById("opt1").click();
-            //}, 500);
-
-            //$("#opt1").click();
         } else {
-            //console.log("no");
-            $("#lblCantidad").html("Cantidad");
-            //$("#inflbl").html("").attr("class", "");
-            $("#inCantidad").attr("placeholder", "$00.0");
-            //$("#collapsefechas").collapse("hide");
-            //$("#lbloptions").html("");
+            //$("#lblCantidad").html("Monto o Cantidad *");
+            //$("#inCantidad").attr("placeholder", "00.0");
             document.getElementById("inPlazos").disabled = false;
-
         }
     }
-    ///////////////});
-    //checkPorDias = () => {
-    //    document.getElementById("inCantidad").disabled = false;
-    //    document.getElementById("infinicio").disabled = true;
-    //    document.getElementById("inffinal").disabled = true;
-    //}
-    //checkPorFecha = () => {
-    //    document.getElementById("inCantidad").disabled = true;
-    //    document.getElementById("infinicio").disabled = false;
-    //    document.getElementById("inffinal").disabled = false;
-    //}
     // ABRE EL COLLAPSE PARA INSERTAR NUEVAS INCIDENCIAS 
     mostrarFormNewIncidencias = () => {
         $("#incidenciasCollapse").collapse("show");
@@ -126,38 +67,20 @@
 
     //GUARDAR INCIDENCIA
     $("#btnSaveIncidencias").on("click", function () {
-
-        var tipo = 0;
-        var fi = "";
-        var ff = "";
+        var dias = 0;
         var cant = 0;
-
         var form = document.getElementById("frmIncidencias");
         if (form.checkValidity() == false) {
             setTimeout(() => {
                 form.classList.add("was-validated");
             }, 5000);
         } else {
-            //if (concepto_incidencia.value == "71") {
-            //    if ($("#opt1").prop('checked')) {
-            //        console.log("Por dias");
-            //        fi = "0";
-            //        ff = "0";
-            //        tipo = 0;
-            //        cant = document.getElementById("inCantidad").value;
-
-            //    } else if ($("#opt2").prop('checked')) {
-            //        console.log("Por dias");
-            //        fi = document.getElementById("infinicio").value;
-            //        ff = document.getElementById("inffinal").value;
-            //        tipo = 1;
-            //        cant = 0;
-
-            //    }
-            //} else {
-            cant = document.getElementById("inCantidad").value;
-            //}
-
+            if (document.getElementById("inCantidad").value.length > 0) {
+                cant = document.getElementById("inCantidad").value;
+            }
+            if (document.getElementById("inDias").value.length > 0) {
+                dias = document.getElementById("inDias").value;
+            }
             var Vform = $("#frmIncidencias").serialize();
             $.ajax({
                 url: "../Incidencias/SaveRegistroIncidencia",
@@ -165,13 +88,11 @@
                 data: JSON.stringify({
                     inRenglon: ren_incidencia.value,
                     inCantidad: cant,
+                    inDias: dias,
                     inPlazos: plazos_incidencia.value,
                     inLeyenda: leyenda_incidencia.value,
                     inReferencia: referencia_incidencia.value,
-                    inFechaA: fecha_incidencia.value,
-                    //infinicio: fi,
-                    //inffinal: ff,
-                    //intipo: tipo
+                    inFechaA: fecha_incidencia.value
                 }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -193,6 +114,9 @@
                         referencia_incidencia.value = '';
                         fecha_incidencia.value = '';
                         createTab();
+                        form.reset();
+                        document.getElementById("inDias").disabled = false;
+                        document.getElementById("inCantidad").disabled = false;
                         Swal.fire({
                             icon: 'success',
                             title: 'Completado!',
@@ -245,38 +169,44 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                console.log(data);
+
                 document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     var period = $("#lblPeriodoId").html();
                     var incidenciaProg_id;
-                    var cantidad;
-                    console.log(data[i]["IncidenciaP_id"]);
+                    var cancelado = "";
+                    var aplicado = "";
+
                     if (data[i]["IncidenciaP_id"] == "" || data[i]["IncidenciaP_id"] == 0) {
                         incidenciaProg_id = 0;
+                        aplicado = " ";
                     } else {
                         incidenciaProg_id = data[i]["IncidenciaP_id"];
+                        aplicado = "<i class='fas fa-clipboard-check fa-lg text-info mx-1' title='Aplicado en Nómina'></i>";
                     }
 
-                    if (data[i]["VW_TipoIncidencia_id"] == 71 || data[i]["VW_TipoIncidencia_id"] == "71") {
-                        cantidad = parseFloat(data[i]["Numero_dias"]);
-                    } else {
-                        cantidad = parseFloat(data[i]["Cantidad"]);
+                    if (data[i]["Cancelado"] == "True") {
+                        cancelado = "<i class='fas fa-ban fa-lg mx-1' title='Incidencia Cancelada'></i>";
+                    } else if (data[i]["Cancelado"] == "False") {
+                        cancelado = "<div class='badge badge-success btn mx-1' onclick='editarIncidencia(" + data[i]["Incidencia_id"] + ");' title='Editar'><i class='fas fa-pencil-alt'></i></div>" +
+                            "<div class='badge badge-danger btn mx-1' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + incidenciaProg_id + ");' title='Eliminar'><i class='fas fa-minus'></i></div>";
                     }
 
                     document.getElementById("tabIncidenciasBody").innerHTML += "" +
                         "<tr>" +
                         "<td scope='row'>" + data[i]["Nombre_Renglon"] + "</td>" +
                         "<td class='text-center'>" + data[i]["VW_TipoIncidencia_id"] + "</td>" +
-                        "<td class='text-center'>" + cantidad + "</td>" +
+                        "<td class='text-center'>" + parseFloat(data[i]["Cantidad"]) + "</td>" +
+                        "<td class='text-center'>" + parseFloat(data[i]["Numero_dias"]) + "</td>" +
                         "<td class='text-center'>" + data[i]["Plazos"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Descripcion"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
                         "<td class='text-center'>" + data[i]["NPeriodo"] + "</td>" +
+                        //"<td class='text-center'>" + aplicado + "</td>" +
                         "<td class='text-center'>" +
-                        "<div class='badge badge-success btn mx-1' onclick='editarIncidencia(" + data[i]["Incidencia_id"] + ");' title='Editar'><i class='fas fa-pencil-alt'></i></div>" +
+                        aplicado +
+                        cancelado +
                         //"<div class='badge badge-success btn' onclick='adelantarPagoIncidencia(" + data[i]["Incidencia_id"] + "," + data[i]["IncidenciaP_id"] + ");' title='Adelantar Pago'><i class='fas fa-donate'></i></div>" +
-                        "<div class='badge badge-danger btn mx-1' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + incidenciaProg_id + ");' title='Eliminar'><i class='fas fa-minus'></i></div>" +
                         //"<div class='badge badge-success btn' title='Adelantar Pago'><i class='fas fa-donate'></i></div>" +
                         //"<div class='badge badge-danger btn' title='Eliminar'><i class='fas fa-minus'></i></div>" +
                         "</td>" +
@@ -346,9 +276,10 @@
                     document.getElementById("edRenglon").disabled = false;
                     $("#edRenglon").val(data[0]["Renglon"]);
                     document.getElementById("edRenglon").disabled = true;
-                    $("#edCantidad").val(data[0]["Numero_dias"].substring(0, data[0]["Numero_dias"].length - 2));
+                    $("#edCantidad").val(parseFloat(data[0]["Cantidad"]));//.substring(0, data[0]["Cantidad"].length - 2));
+                    $("#edDias").val(parseFloat(data[0]["Numero_dias"]));//.substring(0, data[0]["Numero_dias"].length - 2));
                     document.getElementById("edSaldo").disabled = false;
-                    $("#edSaldo").val(data[0]["Saldo"].substring(0, data[0]["Saldo"].length - 2));
+                    $("#edSaldo").val(parseFloat(data[0]["Saldo"]));//.substring(0, data[0]["Saldo"].length - 2));
                     document.getElementById("edSaldo").disabled = true;
                     document.getElementById("edPlazos").disabled = false;
                     $("#edPlazos").val(data[0]["Plazos"]);
@@ -365,11 +296,29 @@
                     document.getElementById("edRenglon").disabled = false;
                     $("#edRenglon").val(data[0]["Renglon"]);
                     document.getElementById("edRenglon").disabled = true;
-                    $("#edCantidad").val(data[0]["Cantidad"].substring(0, data[0]["Cantidad"].length - 2));
-                    $("#actualCantidad").val(data[0]["Cantidad"].substring(0, data[0]["Cantidad"].length - 2));
+
+                    if (parseFloat(data[0]["Numero_dias"]) == 0 && parseFloat(data[0]["Cantidad"]) == 0) {
+                        $("#edCantidad").val("");
+                        $("#actualCantidad").val("");
+                        $("#edDias").val("");
+                        document.getElementById("inDias").disabled = false;
+                        document.getElementById("inCantidad").disabled = false;
+                    } else if (parseFloat(data[0]["Cantidad"]) == 0) {
+                        $("#edCantidad").val("");//.substring(0, data[0]["Cantidad"].length - 2));
+                        $("#actualCantidad").val("");
+                        $("#edDias").val(parseFloat(data[0]["Numero_dias"]));//.substring(0, data[0]["Numero_dias"].length - 2));
+                        document.getElementById("edCantidad").disabled = true;
+                    } else if (parseFloat(data[0]["Numero_dias"]) == 0) {
+                        $("#edCantidad").val(parseFloat(data[0]["Cantidad"]));//.substring(0, data[0]["Cantidad"].length - 2));
+                        $("#actualCantidad").val(data[0]["Cantidad"].substring(0, data[0]["Cantidad"].length - 2));
+                        $("#edDias").val("");//.substring(0, data[0]["Numero_dias"].length - 2));
+                        document.getElementById("edDias").disabled = true;
+                    }
+                    
+
                     document.getElementById("edSaldo").disabled = false;
-                    $("#edSaldo").val(data[0]["Saldo"].substring(0, data[0]["Saldo"].length - 2));
-                    $("#actualSaldo").val(data[0]["Saldo"].substring(0, data[0]["Saldo"].length - 2));
+                    $("#edSaldo").val(parseFloat(data[0]["Saldo"]));//.substring(0, data[0]["Saldo"].length - 2));
+                    $("#actualSaldo").val(parseFloat(data[0]["Saldo"]));//.substring(0, data[0]["Saldo"].length - 2));
                     document.getElementById("edPlazos").disabled = false;
                     $("#edPlazos").val(data[0]["Plazos"]);
                     $("#actualPlazos").val(data[0]["Plazos"]);
@@ -408,8 +357,6 @@
             }
 
             if (cant < sal) {
-                //console.log($("#edCantidad").val());
-                //console.log($("#edSaldo").val());
                 $("#edCantidad").removeClass("is-valid");
                 $("#edSaldo").removeClass("is-valid");
                 $("#edCantidad").addClass("is-invalid");
@@ -477,16 +424,6 @@
 
     // FUNCION PARA LA ACTUALIZACION DE LAS INCIDENCIAS
     updateIncidencia = () => {
-        var dias;
-        var cantidad;
-
-        if ($("#edRenglon").val() == "71") {
-            cantidad = 0;
-            dias = $("#edCantidad").val();
-        } else {
-            cantidad = $("#edCantidad").val();
-            dias = 0;
-        }
 
         var form = document.getElementById("frmEditIncidencia");
         if (form.checkValidity() == false) {
@@ -500,14 +437,14 @@
                 data: JSON.stringify({
                     Incidencia_id: document.getElementById("edConcepto").value,
                     Renglon_id: $("#edRenglon").val(),
-                    Cantidad: cantidad,
+                    Cantidad: $("#edCantidad").val(),
                     Saldo: $("#edSaldo").val(),
                     Plazos: $("#edPlazos").val(),
                     Pagos_restantes: $("#edPagosRestantes").val(),
                     Leyenda: $("#edLeyenda").val(),
                     Referencia: $("#edReferencia").val(),
                     Fecha_Aplicacion: $("#edFechaAplicacion").val(),
-                    Numero_dias: dias
+                    Numero_dias: $("#edDias").val()
                 }),
                 url: "../Incidencias/UpdateIncidencia",
                 contentType: "application/json; charset=utf-8",
@@ -524,6 +461,9 @@
                     } else {
                         document.getElementById("tabIncidenciasBody").innerHTML = "";
                         createTab();
+                        form.reset();
+                        document.getElementById("edDias").disabled = false;
+                        document.getElementById("edCantidad").disabled = false;
                         $("#editIncidencia").modal("hide");
                         Swal.fire({
                             icon: 'success',
@@ -546,6 +486,8 @@
         $("#edPagosRestantes").removeClass("is-invalid");
         $("#edPlazos").removeClass("is-valid");
         $("#edPagosRestantes").removeClass("is-valid");
+        document.getElementById("edDias").disabled = false;
+        document.getElementById("edCantidad").disabled = false;
     });
 
     $("#txtsearchtipoincidencia").keyup(function () {
@@ -584,4 +526,37 @@
         $("#inRenglon").val(Renglon_id);
         checkrenglon();
     }
+
+    //VALIDACION DE INSERT EN INPUT
+    $('#inCantidad').on('input', function () {
+        if (this.value.length == 0) {
+            document.getElementById("inDias").disabled = false;
+        } else if (this.value.length > 0) {
+            document.getElementById("inDias").disabled = true;
+        }
+    });
+    //VALIDACION DE INSERT EN INPUT
+    $('#inDias').on('input', function () {
+        if (this.value.length == 0) {
+            document.getElementById("inCantidad").disabled = false;
+        } else if (this.value.length > 0) {
+            document.getElementById("inCantidad").disabled = true;
+        }
+    });
+    //VALIDACION DE INSERT EN INPUT
+    $('#edCantidad').on('input', function () {
+        if (this.value.length == 0) {
+            document.getElementById("edDias").disabled = false;
+        } else if (this.value.length > 0) {
+            document.getElementById("edDias").disabled = true;
+        }
+    });
+    //VALIDACION DE INSERT EN INPUT
+    $('#edDias').on('input', function () {
+        if (this.value.length == 0) {
+            document.getElementById("edCantidad").disabled = false;
+        } else if (this.value.length > 0) {
+            document.getElementById("edCantidad").disabled = true;
+        }
+    });
 });

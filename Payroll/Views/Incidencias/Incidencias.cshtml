@@ -2,13 +2,14 @@
     <div class="border-bottom border-secondary pt-4 pb-2 font-weight-bold d-flex justify-content-between"><div>Registrar Incidencia a empleado : </div><strong class="font-button" id="EmpDes"></strong><div class="btn btn-info btn-sm font-labels" id="btn-cambiar-empleado" title="Cambia de usuario"><i class="fas fa-users"></i></div></div>
     <div class="form-group">
         <div class="form-group col-md-12 row">
-            <div class="form-group col-md-9">
+            <div class="form-group col-md-10">
                 <table class="table table-sm mt-2">
                     <thead class="">
                         <tr>
                             <th>Concepto</th>
                             <th class='text-center'>Renglon</th>
                             <th class='text-center'>Cantidad</th>
+                            <th class='text-center'>Días</th>
                             <th class='text-center'>Plazos</th>
                             <th class='text-center'>Leyenda</th>
                             <th class='text-center'>Fecha</th>
@@ -20,7 +21,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row mt-3 aling-items-center form-group col-md-3 font-button">
+            <div class="row mt-3 aling-items-center form-group col-md-2 font-button">
                 <div class="col"></div>
                 <a class="btn btn-sm btn-primary mt-3 mb-auto" id="btnNewIncidencia" href="#" onclick="mostrarFormNewIncidencias();"> <i class="fas fa-plus"></i> Nueva Incidencia </a>
                 <div class="col"></div>
@@ -35,22 +36,24 @@
                             <div class="form-group row">
                                 <div class="form-group col-md-6">
                                     <label>Concepto *</label>
-
                                     <input type="text" class="form-control form-control-sm" autocomplete="off" id="txtsearchtipoincidencia" required>
                                     <div id="resulttipoincidencia"></div>
-                                    @*<input type="hidden"  value="" />*@
-                                    @*<select class="custom-select custom-select-sm font-labels" id="inConcepto_incidencia" name="inConcepto_incidencia" required>
-                                    </select>*@
-
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Renglón *</label>
                                     <input type="text" name="inRenglon" id="inRenglon" class="form-control form-control-sm disabled" readonly placeholder="#" required />
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label id="lblCantidad">Monto o cantidad *</label>
-                                    <input type="text" name="inCantidad" id="inCantidad" class="form-control form-control-sm" placeholder="00.0" required/>
-
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label id="lblCantidad">Monto o cantidad *</label>
+                                            <input type="text" name="inCantidad" id="inCantidad" class="form-control form-control-sm" placeholder="00.0" required />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label id="lblDias">Días *</label>
+                                            <input type="text" name="inDias" id="inDias" class="form-control form-control-sm" placeholder="00" required />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Plazos *</label>
@@ -147,11 +150,16 @@
                         <label class="col-2"> Renglón </label>
                         <input class="col form-control form-control-sm" id="edRenglon" type="text" value="" />
                     </div>
-
                     <div class="form-group col-md-6 row">
-                        <label class="col-4"> Cantidad </label>
-                        <input class="col form-control form-control-sm" id="edCantidad" onkeyup="validaCantidad();" type="text" value="" />
+                        <label class="col-6">Monto o Cantidad <small>*</small> </label>
+                        <input class="col form-control form-control-sm" id="edCantidad" onkeyup="validaCantidad();" type="text" value="" placeholder="00.0" />
+                        <small class="text-black-50 col-md-12"> <strong>*</strong> Esta es la cantidad total y se dividira entre los plazos</small>
                         <input id="actualCantidad" type="hidden" value="" />
+                    </div>
+                    <div class="form-group col-md-6 row">
+                        <label class="col-4"> Días </label>
+                        <input class="col form-control form-control-sm" id="edDias" type="text" value="" placeholder="00.0" />
+                        <input id="actualDias" type="hidden" value="" />
                     </div>
                     <div class="form-group col-md-6 row">
                         <label class="col-4"> Saldo </label>
@@ -161,7 +169,7 @@
 
                     <div class="form-group col-md-6 row">
                         <label class="col-4"> Plazos </label>
-                        <input class="col form-control form-control-sm input-number" id="edPlazos" onkeyup="validaPlazos();" type="text" value="" />
+                        <input class="col form-control form-control-sm input-number" id="edPlazos" onkeyup="validaPlazos();" type="number" value="" />
                         <input id="actualPlazos" type="hidden" value="" />
                     </div>
 
@@ -172,8 +180,8 @@
                         <input id="actualPagosrestantes" type="hidden" value="" />
                     </div>
 
-                    <div class="form-group col-md-12 row">
-                        <label class="col-2"> Leyenda </label>
+                    <div class="form-group col-md-6 row">
+                        <label class="col-4"> Leyenda </label>
                         <input class="col form-control form-control-sm" id="edLeyenda" type="text" value="" />
                     </div>
 
@@ -214,4 +222,4 @@
     </div>
 </div>
 
-<script src="~/Scripts/main/Incidencias.js?n=2"></script>
+<script src="~/Scripts/main/Incidencias.js?n=4"></script>

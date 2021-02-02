@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
 
+    $("#tabCargasMasivas").fadeOut();
+
     beforeValidarFile = () => {
 
         $("#btnCargaMasiva").html("<span class='spinner-grow spinner-grow-sm' role='status' aria-hidden='true'></span> Cargando...");
@@ -89,17 +91,58 @@
         //document.getElementById("btnDownLoadCM").style.width = 30;
     });
 
-    loadLayout = () => {
+    loadCargasMasivas = () => {
         $.ajax({
-            url: "../Incidencias/loadLayout",
+            url: "../Incidencias/LoadCargasMasivas",
             type: "POST",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                console.log(data[0]);
-                //$("#btnDownLoadCM").attr("href", data[0].substring(2, data[0].Length));
+
+                console.log(data);
+                var status;
+                var tab = "";
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i][3] == "False") {
+                        status = "<span class='center text-success col-md-12'><i class='fas fa-check-circle fa-lg'></i></span>";
+                    } else if (data[i][3] == "True") {
+                        status = "<span class='center text-danger col-md-12'><i class='fas fa-times-circle fa-lg'></i></span>";
+                    }
+
+                    tab += "<tr>" +
+
+                        "<td>" + data[i][0] + "</td>" +
+                        "<td>" + data[i][1] + "</td>" +
+                        "<td>" + data[i][2] + "</td>" +
+                        "<td>" + status + "</td>" +
+                        "<td class='text-center'>" +
+                        "<a class='badge badge-pill badge-danger text-white' title='Cancelar carga' onclick='loadmodalcancelar(\"" + data[i][0] + "\",\"" + data[i][1] + "\",\"" + data[i][2] +"\")'><i class='fas fa-minus'></i></a>" +
+                        //"<a class='badge badge-pill badge-danger text-white' title='Cancelar carga completa'><i class='fas fa-minus'></i></a>" +
+                        //"<a class='badge badge-pill badge-danger text-white' title='Cancelar carga completa'><i class='fas fa-minus'></i></a>" +
+                        "</td>" +
+                        "</tr>";
+                }
+
+                document.getElementById("tabCargasMasivasDetalle").innerHTML = tab;
+
+                setTimeout(function () {
+                    $('.table').DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        },
+                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]]
+                    });
+                    $("#tabCargasMasivas").fadeIn();
+                }, 2000);
+
             }
         });
     }
-    loadLayout();
+    loadCargasMasivas();
+
+    loadmodalcancelar = (tabla, folio, referencia) => {
+        $("#staticBackdrop").modal("show");
+    }
+
 });

@@ -536,6 +536,7 @@ namespace Payroll.Models.Beans
         public string Agendadas { get; set; }
         public string Disfrutadas { get; set; }
         public string Cancelado { get; set; }
+        public string Aprobado { get; set; }
 
     }
     public class CreditosBean
@@ -668,6 +669,7 @@ namespace Payroll.Models.Beans
         public string Fecha_Aplicacion { get; set; }
         public string NPeriodo { get; set; }
         public string Numero_dias { get; set; }
+        public string Cancelado { get; set; }
     }
     public class InicioFechasPeriodoBean
     {

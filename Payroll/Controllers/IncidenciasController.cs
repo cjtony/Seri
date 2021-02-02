@@ -215,14 +215,14 @@ namespace Payroll.Controllers
             return Json(res);
         }
         [HttpPost]
-        public JsonResult SaveRegistroIncidencia(int inRenglon, decimal inCantidad, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
+        public JsonResult SaveRegistroIncidencia(int inRenglon, string inCantidad, int inDias, int inPlazos, string inLeyenda, string inReferencia, string inFechaA)
         {
             List<string> res = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
             int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
+            res = Dao.sp_TRegistro_incidencias_Insert_Incidencia(Empresa_id, Empleado_id, inRenglon, inCantidad, inDias, inPlazos, inLeyenda, inReferencia, inFechaA, Periodo);
             return Json(res);
         }
         [HttpPost]
@@ -589,6 +589,14 @@ namespace Payroll.Controllers
             int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
             Lista = Dao.sp_TCreditos_update_credito(Empresa_id, Credito_id, Empleado_id, TipoDescuento_id, Descontar_id, Descuento, NoCredito, FechaAprovacion, FechaBaja);
             return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult LoadCargasMasivas()
+        {
+            List<List<string>> lista = new List<List<string>>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            lista = Dao.sp_Retrieve_CargasMasivas();
+            return Json(lista);
         }
     }
 }
