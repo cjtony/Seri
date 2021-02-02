@@ -8,7 +8,7 @@ namespace Payroll.Models.Utilerias
 
 
         // static readonly string Server = "GSERIPROD01";
-        //static readonly string Db = "IPSNet_Copia";
+       // static readonly string Db = "IPSNet_Copia";
         //static readonly string User = "IPSNet";
         //static readonly string Pass = "IPSNet2";
 
