@@ -1,7 +1,7 @@
 @echo off
-SET linea="Exec sp_CNomina_Revisa_Incidencias %1,%2,%3,%4,0"
+SET linea="Exec sp_CNomina_Revisa_Incidencias %1,%2,%3,%4,%5,%6,0"
 sqlcmd  -S 201.149.34.185,15002 -d IPSNet_Copia -U %7 -P IPSNet2 -Q %linea%
-SET linea="Exec sp_CNomina_Revisa_Incidencias %1,%2,%3,%4,1"
+SET linea="Exec sp_CNomina_Revisa_Incidencias %1,%2,%3,%4,%5,%6,1"
 sqlcmd  -S 201.149.34.185,15002 -d IPSNet_Copia -U %7 -P IPSNet2 -Q %linea%
 SET linea="Exec sp_CNomina_1_Retroactivo %1,%2,%3,%4,%5,%6"
 sqlcmd  -S 201.149.34.185,15002 -d IPSNet_Copia -U %7 -P IPSNet2 -Q %linea%
