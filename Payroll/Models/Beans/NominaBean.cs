@@ -253,6 +253,7 @@ namespace Payroll.Models.Beans
         public int iIdNomina { get; set; }
         public string sUrl { get; set; }
         public int iCP { get; set; }
+        public string sRiesgoTrabajo { get; set; }
         public string SDINT {get;set;}
         public int iNoEjecutados { get; set; }
         public string sMensaje { get; set; }
