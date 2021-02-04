@@ -1079,9 +1079,7 @@
         EmpleadoDEmp(EjeEmpresa.value);
     });
 
-
     EmpleadoDEmp = (IdEmpresa) => {
-
         var source = " ";
         const dataSend2 = { iIdEmpresa: IdEmpresa };
         $.ajax({
@@ -1259,7 +1257,7 @@
 
                                 },
                                 aggregatesrenderer: function (aggregates, column, element) {
-                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
+                                    var renderstring = '<div style=" margin-top: 4px; margin-right:5px; text-align: left; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
                                     return renderstring;
 
@@ -1278,50 +1276,50 @@
 
                                 aggregatesrenderer: function (aggregates, column, element) {
 
-                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
+                                    var renderstring = '<div style=" margin-top: 4px; margin-right:5px; text-align:left; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
                                     return renderstring;
 
                                 }
                             },
                             {
-                                text: 'Gravado', datafield: 'dGravados', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                                text: 'Gravado', datafield: 'dGravados', /*aggregates: ["sum"],*/ width: 150, cellsformat: 'c2' /*cellsrenderer: function (row, column, value, defaultRender, column, rowData) {*/
 
-                                    if (value.toString().indexOf("Sum") >= 0) {
+                                //    //if (value.toString().indexOf("Sum") >= 0) {
 
-                                        return defaultRender.replace("Sum", "Total");
+                                //    //    return defaultRender.replace("Sum", "Total");
 
-                                    }
+                                //    //}
 
-                                },
+                                //},
 
-                                aggregatesrenderer: function (aggregates, column, element) {
+                                //aggregatesrenderer: function (aggregates, column, element) {
 
-                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
+                                //    var renderstring = '<div style=" margin-top: 4px; margin-right:5px; text-align: left; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
-                                    return renderstring;
+                                //    return renderstring;
 
-                                }
+                                //}
                             },
                             {
-                                text: 'Excento', datafield: 'dExcento', aggregates: ["sum"], width: 150, cellsformat: 'c2',
-                                cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                                text: 'Excento', datafield: 'dExcento', /*aggregates: ["sum"],*/ width: 150, cellsformat: 'c2'
+                                //cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
-                                    if (value.toString().indexOf("Sum") >= 0) {
+                                //    //if (value.toString().indexOf("Sum") >= 0) {
 
-                                        return defaultRender.replace("Sum", "Total");
+                                //    //    return defaultRender.replace("Sum", "Total");
 
-                                    }
+                                //    //}
 
-                                },
+                                //},
 
-                                aggregatesrenderer: function (aggregates, column, element) {
+                                //aggregatesrenderer: function (aggregates, column, element) {
 
-                                    var renderstring = '<div style="position: relative; margin-top: 4px; margin-right:5px; text-align: right; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
+                                //    var renderstring = '<div style=" margin-top: 4px; margin-right:15px;text-align: left ; overflow: hidden;">' + "Total" + ': ' + aggregates.sum + '</div>';
 
-                                    return renderstring;
+                                //    return renderstring;
 
-                                }
+                                //}
 
                             }
 
@@ -1351,8 +1349,7 @@
                     Tbtotal.style.visibility = 'visible';
                     LaTotal.style.visibility = 'visible';
                     Total = TotalPercep - TotalDedu;
-                    console.log('PEr: ' + TotalPercep + ' Dedu: ' + TotalDedu + 'Igual: ' + Total)
-                    Tbtotal.value = formatter.format(Total)
+                   Tbtotal.value = formatter.format(Total)
 
                 }
             }
