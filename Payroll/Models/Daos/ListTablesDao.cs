@@ -900,6 +900,16 @@ namespace Payroll.Models.Daos
                             ls.SDINT = data["Ult_sdi"].ToString();
                         }
 
+                        if (data["ClasesRegPat_id"].ToString() == null)
+                        {
+                            ls.sRiesgoTrabajo = "TRegistro_Patronal";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sRiesgoTrabajo = data["ClasesRegPat_id"].ToString();
+                        }
+
                         list.Add(ls);
                     }
                 }
@@ -1461,6 +1471,7 @@ namespace Payroll.Models.Daos
                                     xmlWriter.WriteAttributeString("RegistroPatronal", sRegistroPatronal);
                                     xmlWriter.WriteEndElement();
 
+                                    string TipoRiesgo = ListDatEmisor[0].sRiesgoTrabajo.ToString();
                                     xmlWriter.WriteStartElement(Prefijo2, "Receptor", EspacioDeNombreNomina);
                                     xmlWriter.WriteAttributeString("Curp", ReceptorCurp);
                                     xmlWriter.WriteAttributeString("NumSeguridadSocial", sNumSeguridadSocial);
@@ -1473,7 +1484,7 @@ namespace Payroll.Models.Daos
                                     xmlWriter.WriteAttributeString("NumEmpleado", sNumEmpleado);
                                     xmlWriter.WriteAttributeString("Departamento", sDepartamento);
                                     xmlWriter.WriteAttributeString("Puesto", sPuesto);
-                                    xmlWriter.WriteAttributeString("RiesgoPuesto", "1");
+                                    xmlWriter.WriteAttributeString("RiesgoPuesto", TipoRiesgo);//1
                                     xmlWriter.WriteAttributeString("PeriodicidadPago", "04");
                                     if (sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18)
                                     {
