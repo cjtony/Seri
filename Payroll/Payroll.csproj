@@ -499,7 +499,6 @@
     <Content Include="Content\REPORTES\NOMINA\HCalculo_E4_A2020_P3_A.xlsx" />
     <Content Include="Content\REPORTES\NOMINA\HCalculo_E8_A2020_NP19_TP3_A.xlsx" />
     <Content Include="Content\REPORTES\NOMINA\HCBajas_E18_A2020_NP15_TP3_A.xlsx" />
-    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout Carga Incidencias.xlsx" />
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
