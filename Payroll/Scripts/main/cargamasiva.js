@@ -72,6 +72,10 @@
                                 $("#collapse-validation-cm").html(txt);
                                 $("#collapse-validation-cm").collapse("show");
                                 $("#file-toup").val('');
+
+                                $("#tabCargasMasivas").fadeOut();
+                                $('.table').DataTable.destroy();
+                                loadCargasMasivas();
                             }
                         }
                     });

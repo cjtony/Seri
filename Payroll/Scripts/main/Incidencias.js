@@ -169,14 +169,19 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-
-                document.getElementById("tabIncidenciasBody").innerHTML = "";
+            	document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     var period = $("#lblPeriodoId").html();
                     var incidenciaProg_id;
                     var cancelado = "";
                     var aplicado = "";
+                    var aplazado = "";
 
+                    if (data[i]["Aplazado"] == "True") {
+                        aplazado = "<a class='badge badge-light'> Activar <i class='fas fa-power-off fa-lg text-success mx-1' title=''></i></a>";
+                    } else if (data[i]["Aplazado"] == "False"){
+                        aplazado = "<a class='badge badge-light'>Desactivar <i class='fas fa-power-off fa-lg text-danger mx-1' title='Aplicado en Nómina'></i></a>";
+                    }
                     if (data[i]["IncidenciaP_id"] == "" || data[i]["IncidenciaP_id"] == 0) {
                         incidenciaProg_id = 0;
                         aplicado = " ";
@@ -188,8 +193,9 @@
                     if (data[i]["Cancelado"] == "True") {
                         cancelado = "<i class='fas fa-ban fa-lg mx-1' title='Incidencia Cancelada'></i>";
                     } else if (data[i]["Cancelado"] == "False") {
-                        cancelado = "<div class='badge badge-success btn mx-1' onclick='editarIncidencia(" + data[i]["Incidencia_id"] + ");' title='Editar'><i class='fas fa-pencil-alt'></i></div>" +
-                            "<div class='badge badge-danger btn mx-1' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + incidenciaProg_id + ");' title='Eliminar'><i class='fas fa-minus'></i></div>";
+
+                        cancelado = aplazado + "<div class='badge badge-success btn mx-1' onclick='editarIncidencia(" + data[i]["Incidencia_id"] + ");' title='Editar'><i class='fas fa-pencil-alt'></i></div>" +
+                            "<div class='badge badge-danger btn mx-1' onclick='deleteIncidencia(" + data[i]["Incidencia_id"] + "," + incidenciaProg_id + ");' title='Cancelar Incidencia'><i class='fas fa-minus'></i></div>";
                     }
 
                     document.getElementById("tabIncidenciasBody").innerHTML += "" +
