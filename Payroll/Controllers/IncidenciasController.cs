@@ -599,5 +599,13 @@ namespace Payroll.Controllers
             lista = Dao.sp_Retrieve_CargasMasivas();
             return Json(lista);
         }
+        [HttpPost]
+        public JsonResult AplazarIncidencia(int Incidencia_id, int Aplazar)
+        {
+            List<string> lista = new List<string>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            lista = Dao.TRegistro_Incidencias_aplaza_Incidencia(Incidencia_id, Aplazar);
+            return Json(lista);
+        }
     }
 }

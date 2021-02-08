@@ -169,18 +169,19 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-            	document.getElementById("tabIncidenciasBody").innerHTML = "";
+                document.getElementById("tabIncidenciasBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     var period = $("#lblPeriodoId").html();
                     var incidenciaProg_id;
                     var cancelado = "";
+                    var status_incidencia
                     var aplicado = "";
                     var aplazado = "";
 
                     if (data[i]["Aplazado"] == "True") {
-                        aplazado = "<a class='badge badge-light'> Activar <i class='fas fa-power-off fa-lg text-success mx-1' title=''></i></a>";
-                    } else if (data[i]["Aplazado"] == "False"){
-                        aplazado = "<a class='badge badge-light'>Desactivar <i class='fas fa-power-off fa-lg text-danger mx-1' title='Aplicado en Nómina'></i></a>";
+                        aplazado = "<a class='badge badge-light' onclick='aplazarIncidencia(" + data[i]['Incidencia_id'] + "," + 0 + ");' > Activar <i class='fas fa-power-off fa-lg text-success mx-1' title=''></i></a>";
+                    } else if (data[i]["Aplazado"] == "False") {
+                        aplazado = "<a class='badge badge-light' onclick='aplazarIncidencia(" + data[i]["Incidencia_id"] + "," + 1 + ");' >Desactivar <i class='fas fa-power-off fa-lg text-danger mx-1' title='Aplicado en Nómina'></i></a>";
                     }
                     if (data[i]["IncidenciaP_id"] == "" || data[i]["IncidenciaP_id"] == 0) {
                         incidenciaProg_id = 0;
@@ -320,7 +321,7 @@
                         $("#edDias").val("");//.substring(0, data[0]["Numero_dias"].length - 2));
                         document.getElementById("edDias").disabled = true;
                     }
-                    
+
 
                     document.getElementById("edSaldo").disabled = false;
                     $("#edSaldo").val(parseFloat(data[0]["Saldo"]));//.substring(0, data[0]["Saldo"].length - 2));
@@ -339,7 +340,56 @@
             }
         });
     }
+    aplazarIncidencia = (Incidencia_id, Aplazar) => {
+        var estado = "";
+        if (Aplazar == 1 || Aplazar == "1") {
+            estado = "Desactivar";
+        } else if (Aplazar == 0 || Aplazar == "0") {
+            estado = "Activar";
+        }
 
+        Swal.fire({
+            title: 'Quieres ' + estado + ' la incidencia',
+            text: "Es correcto?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#A52A0F',
+            cancelButtonColor: 'secondary',
+            confirmButtonText: 'Aceptar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "POST",
+                    data: JSON.stringify({ Incidencia_id: Incidencia_id, Aplazar: Aplazar }),
+                    url: "../Incidencias/AplazarIncidencia",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (data) => {
+                        document.getElementById("tabIncidenciasBody").innerHTML = "";
+                        createTab();
+                        if (data[0] == '0') {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data[1],
+                                icon: 'warning',
+                                timer: 1000
+                            });
+                        } else {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Correcto!',
+                                text: data[1],
+                                timer: 1000
+                            });
+
+                        }
+                    }
+                });
+            }
+        });
+    }
     validaCantidad = () => {
         var cant = parseFloat($("#edCantidad").val());
         var sal = parseFloat($("#edSaldo").val());

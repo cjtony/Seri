@@ -1263,6 +1263,34 @@ namespace Payroll.Models.Daos
 
             return lista;
         }
+        public List<string> TRegistro_Incidencias_aplaza_Incidencia(int Incidencia_id, int Aplazado)
+        {
+            List<string> lista = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("TRegistro_Incidencias_aplaza_Incidencia", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlIncidencia_id", Incidencia_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplazado", Aplazado));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    lista.Add(data["iFlag"].ToString());
+                    lista.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
 
+            return lista;
+        }
     }
 }
