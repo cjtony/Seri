@@ -291,6 +291,12 @@ namespace Payroll.Controllers
                 int invoiceIdMirror        = yearPeriod * 100000 + typePeriod * 10000 + numberPeriod * 10 + 8;
                 datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion(keyBusiness, type);
                 nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2);
+                if (System.IO.File.Exists(directoryZip + @"\\" + nameFolderYear + @"\\" + "NOMINAS" + @"\" + nameFolder  + ".zip")) {
+                    System.IO.File.Delete(directoryZip + @"\\" + nameFolderYear + @"\\" + "NOMINAS" + @"\" + nameFolder + ".zip");
+                }
+                if (Directory.Exists(directoryTxt + @"\\" + nameFolderYear + @"\\" + "NOMINAS" + @"\" + nameFolder)) {
+                    Directory.Delete(directoryTxt + @"\\" + nameFolderYear + @"\\" + "NOMINAS" + @"\" + nameFolder, recursive: true);
+                }
                 flagProsecutors = ProcessDepositsProsecutors(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc);
                 if (mirror == 1) {
                     flagMirror = ProcessDepositsMirror(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc);
@@ -688,6 +694,10 @@ namespace Payroll.Controllers
                                 PdfPTable tblPrueba = new PdfPTable(4);
                                 tblPrueba.WidthPercentage = 100;
                                 // Configuramos el título de las columnas de la tabla
+                                //PdfPCell consecutive = new PdfPCell(new Phrase("Cta. Cheques", _standardFont));
+                                //consecutive.BorderWidth = 0;
+                                //consecutive.BorderWidthBottom = 0.75f;
+                                //consecutive.Bottom = 80;
                                 PdfPCell clCtaCheques = new PdfPCell(new Phrase("Cta. Cheques", _standardFont));
                                 clCtaCheques.BorderWidth = 0;
                                 clCtaCheques.BorderWidthBottom = 0.75f;
@@ -705,12 +715,18 @@ namespace Payroll.Controllers
                                 clNomina.BorderWidthBottom = 0.75f;
                                 clNomina.Bottom = 20;
                                 // Añadimos las celdas a la tabla
+                                //tblPrueba.AddCell(consecutive);
                                 tblPrueba.AddCell(clCtaCheques);
                                 tblPrueba.AddCell(clBeneficiario);
                                 tblPrueba.AddCell(clImporte);
                                 tblPrueba.AddCell(clNomina);
+                                int d = 0;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                     if (payroll.iIdBanco == bankResult) {
+                                        d += 1;
+                                        //consecutive = new PdfPCell(new Phrase(d.ToString(), _standardFont));
+                                        //consecutive.BorderWidth = 0;
+                                        //consecutive.Bottom = 80;
                                         // Llenamos la tabla con información
                                         clCtaCheques = new PdfPCell(new Phrase(payroll.sCuenta, _standardFont));
                                         clCtaCheques.BorderWidth = 0;
@@ -726,6 +742,7 @@ namespace Payroll.Controllers
                                         clNomina.Bottom = 80;
                                         // Añadimos las celdas a la tabla
                                         //clImporte = new PdfPCell(new Phrase("$ " + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(payroll.dImporte)), _standardFont));
+                                        //tblPrueba.AddCell(consecutive);
                                         tblPrueba.AddCell(clCtaCheques);
                                         tblPrueba.AddCell(clBeneficiario);
                                         tblPrueba.AddCell(clImporte);
@@ -1115,7 +1132,7 @@ namespace Payroll.Controllers
                                         clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                                         clBeneficiario.BorderWidth = 0;
                                         clBeneficiario.Bottom = 80;
-                                        clImporte = new PdfPCell(new Phrase("$ " + Convert.ToDecimal(payroll.doImporte).ToString("#, ##"), _standardFont));
+                                        clImporte = new PdfPCell(new Phrase("$ " + Convert.ToDecimal(payroll.doImporte).ToString("#,##0.00"), _standardFont));
                                         clImporte.BorderWidth = 0;
                                         clImporte.Bottom = 80;
                                         clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
@@ -1211,6 +1228,12 @@ namespace Payroll.Controllers
                 }
                 nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2);
                 // -------------------------
+                if (System.IO.File.Exists(directoryZip + @"\\" + nameFolderYear + @"\\" + "INTERBANCARIOS" + @"\" + nameFolder + ".zip")) {
+                    System.IO.File.Delete(directoryZip + @"\\" + nameFolderYear + @"\\" + "INTERBANCARIOS" + @"\" + nameFolder + ".zip");
+                }
+                if (Directory.Exists(directoryTxt + @"\\" + nameFolder)) {
+                    Directory.Delete(directoryTxt + @"\\" + nameFolder, recursive: true);
+                }
                 if (!System.IO.Directory.Exists(directoryTxt + @"\\" + nameFolder)) {
                     System.IO.Directory.CreateDirectory(directoryTxt + @"\\" + nameFolder);
                 }
@@ -1292,6 +1315,10 @@ namespace Payroll.Controllers
                         PdfPTable tblPrueba = new PdfPTable(4);
                         tblPrueba.WidthPercentage = 100;
                         // Configuramos el título de las columnas de la tabla
+                        //PdfPCell consecutive = new PdfPCell(new Phrase("Cta. Cheques", _standardFont));
+                        //consecutive.BorderWidth = 0;
+                        //consecutive.BorderWidthBottom = 0.75f;
+                        //consecutive.Bottom = 80;
                         PdfPCell clCtaCheques = new PdfPCell(new Phrase("Cta. Cheques", _standardFont));
                         clCtaCheques.BorderWidth = 0;
                         clCtaCheques.BorderWidthBottom = 0.75f;
@@ -1309,25 +1336,32 @@ namespace Payroll.Controllers
                         clNomina.BorderWidthBottom = 0.75f;
                         clNomina.Bottom = 20;
                         // Añadimos las celdas a la tabla
+                        //tblPrueba.AddCell(consecutive);
                         tblPrueba.AddCell(clCtaCheques);
                         tblPrueba.AddCell(clBeneficiario);
                         tblPrueba.AddCell(clImporte);
                         tblPrueba.AddCell(clNomina);
+                        int dc = 0;
                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                             // Llenamos la tabla con información
+                            dc += 1;
+                            //consecutive = new PdfPCell(new Phrase(dc.ToString(), _standardFont));
+                            //consecutive.BorderWidth = 0;
+                            //consecutive.Bottom = 80;
                             clCtaCheques = new PdfPCell(new Phrase(payroll.sCuenta, _standardFont));
                             clCtaCheques.BorderWidth = 0;
                             clCtaCheques.Bottom = 80;
                             clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                             clBeneficiario.BorderWidth = 0;
                             clBeneficiario.Bottom = 80;
-                            clImporte = new PdfPCell(new Phrase("$ " + Convert.ToDecimal(payroll.doImporte).ToString("#, ##"), _standardFont));
+                            clImporte = new PdfPCell(new Phrase("$ " + Convert.ToDecimal(payroll.doImporte).ToString("#,##0.00"), _standardFont));
                             clImporte.BorderWidth = 0;
                             clImporte.Bottom = 80;
                             clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
                             clNomina.BorderWidth = 0;
                             clNomina.Bottom = 80;
                             // Añadimos las celdas a la tabla
+                            //tblPrueba.AddCell(consecutive);
                             tblPrueba.AddCell(clCtaCheques);
                             tblPrueba.AddCell(clBeneficiario);
                             tblPrueba.AddCell(clImporte);
@@ -1359,8 +1393,14 @@ namespace Payroll.Controllers
                                         nombreEmpIntSantander = nameEmployee;
                                     }
                                     string clave = "";
-                                    if (bank.sBanco.Length > 6) {
+                                    if (bank.sBanco.Length >= 6) {
                                         clave = "B" + bank.sBanco.Substring(0,4);
+                                    } else if(bank.sBanco.Length == 5) {
+                                        clave = "B" + bank.sBanco.Substring(0, 4);
+                                    } else if (bank.sBanco.Length == 4) {
+                                        clave = "B" + bank.sBanco.Substring(0, 4);
+                                    } else if (bank.sBanco.Length == 3) {
+                                        clave = "B0" + bank.sBanco.Substring(0, 3);
                                     }
                                     int longNomEmpIntSantanderResult = longNomEmpIntSan - nombreEmpIntSantander.Length;
                                     int longImpIntSantanderResult = longImpIntSan - bank.dImporte.ToString().Length;
@@ -1549,9 +1589,9 @@ namespace Payroll.Controllers
                                 fileIntBanorte.Close();
                             }
                         }
-                    }
+                        flag = true;
+                    } 
                 }
-                flag = true;
                 if (flag) {
                     // CREACCION DEL ZIP CON LOS ARCHIVOS
                     FileStream stream = new FileStream(directoryZip + @"\\" + nameFolderYear + @"\\" + "INTERBANCARIOS" + @"\" + nameFolder + ".zip", FileMode.OpenOrCreate);

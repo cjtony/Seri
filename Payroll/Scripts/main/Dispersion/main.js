@@ -876,9 +876,9 @@
                 type: "POST",
                 data: { type: parseInt(valSend) },
                 beforeSend: () => {
-                    console.log('validando');
+                    //console.log('validando');
                 }, success: (data) => {
-                    console.log(data);
+                    //console.log(data);
                     if (data.Bandera === true && data.MensajeError == "none") {
                         if (String(paramcode) == "INT") {
                             fProcessDepositsInterbank();
@@ -940,6 +940,8 @@
                         </div>
                     `;
                 }, success: (data) => {
+                    console.log('Imprimiendo valor de data Nomina');
+                    console.log(data);
                     document.getElementById('div-show-alert-loading').innerHTML = '';
                     if (data.Bandera == true) {
                         document.getElementById('divbtndownzip').innerHTML += `
@@ -1079,6 +1081,8 @@
                         </div>
                     `;
                 }, success: (data) => {
+                    console.log('Imprimiendo valor de data Interbancario');
+                    console.log(data);
                     document.getElementById('div-show-alert-loading').innerHTML = '';
                     if (data.Bandera == true) {
                         document.getElementById('divbtndownzipint').innerHTML += `

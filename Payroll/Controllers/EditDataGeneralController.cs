@@ -14,6 +14,23 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult CheckAvailableNumberSave(int key, int newNumber, int keyImss, int keyNom)
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            EmpleadosBean empleados            = new EmpleadosBean();
+            EditDataGeneralDao editDataGeneral = new EditDataGeneralDao();
+            try {
+                int business = int.Parse(Session["IdEmpresa"].ToString());
+                empleados = editDataGeneral.sp_Check_Available_Number_Payroll_Save(business, key, newNumber, keyImss, keyNom); 
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
+        [HttpPost]
         public JsonResult EditDepartament(string edidepart, string edidescdepart, string edinivestuc, string nivsuptxtedit, int ediedific, string edipiso, string ediubicac, int edicentrcost, int edireportaa, string edidgatxt, string edidirgentxt, string edidirejetxt, string edidiraretxt, int edidirgen, int edidireje, int edidirare, int clvdepart)
         {
             DepartamentosBean editDepartamentoBean = new DepartamentosBean();

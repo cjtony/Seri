@@ -758,8 +758,11 @@
                         depart.value    = data.Datos.sDeptoCodigo;
                         localty.value   = data.Datos.sLocalidad;
                         emprep.value    = data.Datos.sRegistroPat;
-                        report.value    = data.Datos.iIdReportaAPosicion;
-                        fechefectpos.value   = data.Datos.sFechaEffectiva;
+                        report.value         = data.Datos.iIdReportaAPosicion;
+                        const dateMain       = new Date();
+                        const dayMain        = (dateMain.getDate() < 10) ? "0" + dateMain.getDate() : dateMain.getDate();
+                        const monthMain      = ((dateMain.getMonth() + 1) < 10) ? "0" + (dateMain.getMonth() + 1) : (dateMain.getMonth() + 1); 
+                        fechefectpos.value   = dateMain.getFullYear() + "-" + monthMain + "-" + dayMain;
                         fechefecposact.value = data.Datos.sFechaEffectiva;
                         document.getElementById('btn-save-data-all').disabled = true;
                         flocalstodatatabstructure();
@@ -1014,6 +1017,7 @@
                         btnsavedatagen.classList.add('d-none');
                     }
                     if (data.MensajeError === "none" && data.Bandera === true) {
+                        document.getElementById('payrollAct').value = data.Datos.iIdEmpleado;
                         clvemp.value   = data.Datos.iIdEmpleado;
                         name.value     = data.Datos.sNombreEmpleado;
                         apepat.value   = data.Datos.sApellidoPaterno;

@@ -28,8 +28,8 @@ namespace Payroll.Models.Daos
                     periodBean.iAnio = Convert.ToInt32(data["Anio"].ToString());
                     periodBean.iTipoPeriodo = Convert.ToInt32(data["Tipo_Periodo_id"].ToString());
                     periodBean.iPeriodo = Convert.ToInt32(data["Periodo"].ToString());
-                    periodBean.sFechaInicio = Convert.ToDateTime(data["Fecha_Inicio"].ToString()).ToString("yyyy-MM-dd");
-                    periodBean.sFechaFinal = Convert.ToDateTime(data["Fecha_Final"].ToString()).ToString("yyyy-MM-dd");
+                    periodBean.sFechaInicio = data["Fecha_Inicio"].ToString();
+                    periodBean.sFechaFinal  = data["Fecha_Final"].ToString();
                     periodBean.sMensaje = "success";
                 }
                 else
@@ -904,8 +904,8 @@ namespace Payroll.Models.Daos
                 if (data.HasRows) {
                     while (data.Read()) {
                         DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
-                        datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
-                        datosProcesaCheques.sBanco   = data["Banco"].ToString();
+                        datosProcesaCheques.iIdBanco   = Convert.ToInt32(data["IdBanco"].ToString());
+                        datosProcesaCheques.sBanco     = data["Banco"].ToString();
                         datosProcesaCheques.iIdEmpresa = Convert.ToInt32(data["Empresa"].ToString());
                         datosProcesaCheques.sNomina    = data["Nomina"].ToString();
                         datosProcesaCheques.sCuenta    = data["Cuenta"].ToString();
@@ -1080,6 +1080,7 @@ namespace Payroll.Models.Daos
                         datosProcesaCheques.sNomina = data["Nomina"].ToString();
                         datosProcesaCheques.sCuenta = data["Cuenta"].ToString();
                         datosProcesaCheques.dImporte = Convert.ToDecimal(data["Importe"].ToString());
+                        datosProcesaCheques.doImporte = Convert.ToDouble(data["ImporteDo"]);
                         datosProcesaCheques.sNombre = data["Nombre"].ToString();
                         datosProcesaCheques.sPaterno = data["Paterno"].ToString();
                         datosProcesaCheques.sMaterno = data["Materno"].ToString();
