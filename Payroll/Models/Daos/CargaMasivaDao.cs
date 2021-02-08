@@ -31,28 +31,10 @@ namespace Payroll.Models.Daos
                 case "pensiones":
                     typeoffile = 3;
                     break;
+                case "vacaciones":
+                    typeoffile = 4;
+                    break;
             }
-            //using (var stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
-            //{
-            //    using (var reader = ExcelReaderFactory.CreateReader(stream))
-            //    {
-            //        var contador = reader.ResultsCount;
-            //        var i = 1;
-            //        while (reader.Read() /*&& i <= reader.RowCount*/ )
-            //        {
-            //            dataset = reader.AsDataSet(new ExcelDataSetConfiguration()
-
-            //            {
-            //                FilterSheet = (tableReader, sheetIndex) => true,
-            //                ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
-            //                {
-            //                    UseHeaderRow = true
-            //                }
-            //            });
-            //            i++;
-            //        }
-            //    }
-            //}
             using (var stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -368,6 +350,45 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
             cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", rows[12].ToString()));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
+            }
+            data.Close(); this.conexion.Close(); this.Conectar().Close();
+            return list;
+        }
+        public List<string> InsertaCargaMasivaVacaciones(DataRow rows, int Periodo, int IsCargaMasiva, string Referencia)
+        {
+            string dia = DateTime.Today.ToString("dd");
+            string mes = DateTime.Today.ToString("MM");
+            string año = DateTime.Today.ToString("yyyy");
+
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TCreditos_Insert_Credito", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows[1].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows[0].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTipoDescuento", rows[2].ToString().Substring(0, 3).Trim()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescuento", rows[4].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlNoCredito", rows[5].ToString().Substring(1, rows[5].ToString().Length - 1)));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaAprovacionCredito", rows[6].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDescontar", rows[3].ToString().Substring(0, 3).Trim()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", rows[7].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", ""));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaFiniquito", rows[8].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 
