@@ -69,18 +69,21 @@
                                 <a class="nav-item nav-link font-navs" id="nav-estructure-tab" data-toggle="tab" href="#nav-estructure" role="tab" aria-controls="nav-estructure" aria-selected="false">
                                     <i class="fas fa-project-diagram col-ico mr-ico-05"></i> Estructura
                                 </a>
+                                <a class="nav-item nav-link font-navs d-none" id="nav-numberpayroll-tab"  data-toggle="tab" href="#nav-numberpayroll" role="tab" aria-controls="nav-numberpayroll" aria-selected="false">
+                                    <i class="fas fa-circle col-ico mr-ico-05"></i> Numero Nomina
+                                </a>
                                 <a class="nav-item nav-link disabled" id="name-employee-action" data-toggle="tab" role="tab" aria-controls="nav-estructure" aria-selected="false">
                                     <div class="text-right">
                                         <i class="fas fa-user-edit text-primary d-none" id="icouser"></i>
                                         <span id="nameuser" class="text-capitalize" style="font-size:13px;"></span>
                                     </div>
                                 </a>
-                                <a class="nav-item nav-link rounded border-left-primary shadow border-top-primary border-right-primary" id="mode-night">
+                                @*<a class="nav-item nav-link rounded border-left-primary shadow border-top-primary border-right-primary" id="mode-night">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="modeNightCheck" value="1">
                                         <label id="label-mode-night" class="form-check-label font-navs" for="modeNightCheck"><i id="ico-mode-night" class="fas fa-moon mr-1 ml-1"></i> M.O</label>
                                     </div>
-                                </a>
+                                </a>*@
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -109,7 +112,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <input type="hidden" value="0" readonly class="form-control form-control-sm" id="clvemp" />
+                                            <input type="hidden" readonly class="form-control form-control-sm" id="clvemp" />
                                             <label for="name" class="col-sm-4 col-form-label font-labels" id="label-name">
                                                 Nombre:
                                             </label>
@@ -972,6 +975,33 @@
                                                         Editar <i class="fas fa-edit ml-ico-05"></i>
                                                     </button>*@
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="nav-numberpayroll" class="tab-pane fade p-3">
+                                <div class="row mt-4 border-left-primary border-right-primary rounded shadow rounded p-3">
+                                    <div class="col-md-5 mt-3">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 font-labels col-form-label">Nomina Actual</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control form-control-sm" id="payrollAct" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 mt-3">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 font-labels col-form-label">Nueva Nomina</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control form-control-sm" id="payrollNew" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 mt-3">
+                                        <div class="form-group">
+                                            <button class="btn btn-sm btn-block btn-primary" type="button" id="btnCheckAvailableNumber">
+                                                <i class="fas fa-check mr-2"></i> Guardar
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -3769,7 +3799,7 @@
 </div>
 
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/main.js?n=5.5"></script>
+<script type="text/javascript" src="~/Scripts/main/main.js?n=5.7"></script>
 <script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.6"></script>
 <script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3.6"></script>
 <script type="text/javascript" src="~/Scripts/main/puestos.js?n=2"></script>
@@ -3781,7 +3811,7 @@
 <script type="text/javascript" src="~/Scripts/main/localitys.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/centrcost.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3.8"></script>
-<script type="text/javascript" src="~/Scripts/main/employes.js?n=9.9"></script>
+<script type="text/javascript" src="~/Scripts/main/employes.js?n=9.13"></script>
 <script src="~/Scripts/main/modenight.js?n=2"></script>
 <script type="text/javascript">
     $(function () {

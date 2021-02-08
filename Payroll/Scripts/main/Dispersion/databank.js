@@ -127,10 +127,9 @@
                                     <td class="text-center">${data.DatosBancos[i].sValor}</td>
                                     <td class="text-center">
                                         <button type="button" onclick="fChangeTypeBank(${data.DatosBancos[i].iIdBancoEmpresa}, '${data.DatosBancos[i].sNombreBanco}',${data.DatosBancos[i].sNumeroCliente}, ${data.DatosBancos[i].sNumeroCuenta}, ${data.DatosBancos[i].sNumeroPlaza}, ${data.DatosBancos[i].sClabe}, ${data.DatosBancos[i].iCg_tipo_dispersion})" class="btn btn-warning btn-sm btn-icon-split shadow">
-                                            <span class="icon text-white-50">
+                                            <span class="icon text-white-50" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </span>
-                                            <span class="text">Editar</span>
                                         </button>
                                         <button title="Cancelar" onclick="fCancelActiveBank(${data.DatosBancos[i].iIdBancoEmpresa}, 1);" type="button" class="btn btn-sm btn-danger shadow"> <i class="fas fa-times"></i> </button>
                                     </td>
@@ -256,11 +255,8 @@
                             `;
                         }
                     } else {
-                        document.getElementById('content-banks-active').innerHTML += `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                          <strong>Hola!</strong> al parecer no hay ningun banco cancelado!
-                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
+                        document.getElementById('content-banks-active').innerHTML += `<div class="alert alert-warning alert-dismissible fade show col-md-8 offset-2 text-center" role="alert">
+                          <strong>Hola!</strong> al parecer no hay ningun banco cancelado! 
                         </div>`;
                     }
                 }, error: (jqXHR, exception) => {
