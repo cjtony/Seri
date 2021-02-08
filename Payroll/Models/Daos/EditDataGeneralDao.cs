@@ -6,7 +6,36 @@ using System.Data.SqlClient;
 
 namespace Payroll.Models.Daos
 {
-    public class EditDataGeneralDao { }
+    public class EditDataGeneralDao : Conexion { 
+    
+        public EmpleadosBean sp_Check_Available_Number_Payroll_Save(int business, int key, int newNumber, int keyImss, int keyNom)
+        {
+            EmpleadosBean empleado = new EmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Check_Available_Number_Payroll_Save", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", business));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", key));
+                cmd.Parameters.Add(new SqlParameter("@IdImss", keyImss));
+                cmd.Parameters.Add(new SqlParameter("@IdNomina", keyNom));
+                cmd.Parameters.Add(new SqlParameter("@NuevaNomina", newNumber));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+
+                } else {
+
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                empleado.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return empleado;
+        }
+
+    }
 
     public class EditDepartamentosDao : Conexion
     {

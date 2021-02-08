@@ -100,8 +100,7 @@ namespace Payroll.Controllers
             String messageError = "none";
             LoadDataTableBean dataBankBean = new LoadDataTableBean();
             LoadDataTableDaoD dataBankDaoD = new LoadDataTableDaoD();
-            try
-            {
+            try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
                 dataBankBean = dataBankDaoD.sp_Valida_TipoDispersion_Banco(keyBusiness, interfaceGen, keyBank);
                 if (dataBankBean.sMensaje == "CONTINUE") {
@@ -110,9 +109,7 @@ namespace Payroll.Controllers
                 } else if (dataBankBean.sMensaje == "EXISTS") {
                     flagVal = true;
                 }
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             }
             return Json(new { Bandera = flag, Validacion = flagVal, MensajeError = messageError });

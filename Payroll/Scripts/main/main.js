@@ -67,6 +67,9 @@
     const btnSaveDataNomina     = document.getElementById('btn-save-data-nomina');
     const btnSaveDataEstructure = document.getElementById('btn-save-data-estructure');
     const btnSaveDataAll        = document.getElementById('btn-save-data-all');
+    const btnCheckAvailableNumber = document.getElementById('btnCheckAvailableNumber');
+    const payrollAct = document.getElementById('payrollAct');
+    const payrollNew = document.getElementById('payrollNew');
 
     let objectDataTabDataGen    = {};
     let objectDataTabImss       = {};
@@ -234,6 +237,18 @@
         console.log('Fechas asignadas');
     };
 
+    // Funcion que muestra y cambia el numero de nomina
+    fChangeNumberPayrollEmployee = () => {
+        if (localStorage.getItem("modeedit") != null) {
+            document.getElementById('nav-numberpayroll-tab').classList.remove("d-none");
+        } else {
+            document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
+            payrollAct.value = "";
+        }
+    }
+
+    fChangeNumberPayrollEmployee();
+
     //Funcion que carga los motivos de movimiento
     fLoadMotivesMovements = (paramstreid) => {
         //console.log('IdFallo');
@@ -398,6 +413,7 @@
             let dcolony;
             for (i in getDataTabDataGen) {
                 if (getDataTabDataGen[i].key === "general") {
+                    payrollAct.value = getDataTabDataGen[i].data.clvemp;
                     clvemp.value  = getDataTabDataGen[i].data.clvemp;
                     name.value    = getDataTabDataGen[i].data.name;
                     apep.value    = getDataTabDataGen[i].data.apep;
@@ -578,6 +594,7 @@
 
     fclearlocsto = (type) => {
         let timerInterval;
+        fChangeNumberPayrollEmployee();
         if (type == 1) {
             Swal.fire({
                 title: "Esta seguro", text: "de limpiar los campos?", icon: "warning",
@@ -1253,5 +1270,72 @@
     }
 
     fShowFieldsRequiredPositions();
+
+    // Funcion que valida la existencia y guarda el nuevo numero de nomina
+    fCheckAvailableNumberSave = () => {
+        try {
+            let numberOK   = 0;
+            let numberImss = 0;
+            let numberNomi = 0;
+            if (JSON.parse(localStorage.getItem('objectTabDataGen')) != null) {
+                const getDataTabDataGen = JSON.parse(localStorage.getItem('objectTabDataGen'));
+                for (i in getDataTabDataGen) {
+                    if (getDataTabDataGen[i].key === "general") {
+                        numberOK = getDataTabDataGen[i].data.clvemp;
+                    }
+                }
+            }
+            if (JSON.parse(localStorage.getItem('objectDataTabImss')) != null) {
+                const getDataTabImss = JSON.parse(localStorage.getItem('objectDataTabImss'));
+                for (i in getDataTabImss) {
+                    if (getDataTabImss[i].key === "imss") {
+                        numberImss = getDataTabImss[i].data.clvimss;
+                    }
+                }
+            }
+            if (JSON.parse(localStorage.getItem('objectDataTabNom')) != null) {
+                const getDataTabNom = JSON.parse(localStorage.getItem('objectDataTabNom'));
+                for (i in getDataTabNom) {
+                    if (getDataTabNom[i].key == "nom") {
+                        numberNomi = getDataTabNom[i].data.clvnom;
+                    }
+                }
+            }
+            if (payrollAct.value != "" && payrollAct.value > 0 && payrollAct.value == numberOK) {
+                if (payrollNew.value != "" && payrollNew.value > 0) {
+                    const dataSend = { key: parseInt(payrollAct.value), newNumber: parseInt(payrollNew.value), keyImss: parseInt(numberImss), keyNom: parseInt(numberNomi) };
+                    $.ajax({
+                        url: "../EditDataGeneral/CheckAvailableNumberSave",
+                        type: "POST",
+                        data: dataSend,
+                        beforeSend: () => {
+                            btnCheckAvailableNumber.disabled = true;
+                            console.log('Consultando disponibilidad');
+                        }, success: (request) => {
+                            console.log(request);
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    alert('Complete el campo nuevo numero de nomina');
+                }
+            } else {
+                alert('error');
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    btnCheckAvailableNumber.addEventListener('click', fCheckAvailableNumberSave);
 
 });

@@ -265,6 +265,7 @@ namespace Payroll.Models.Beans
         public string sFechaRegistroEmpleado { get; set; }
         public int iNumeroNomina { get; set; }
         public string sMensaje { get; set; }
+        public int iNuevoNumeroNomina { get; set; }
     }
     public class ImssBean
     {
