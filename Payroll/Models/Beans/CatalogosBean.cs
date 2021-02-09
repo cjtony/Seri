@@ -671,6 +671,7 @@ namespace Payroll.Models.Beans
         public string NPeriodo { get; set; }
         public string Numero_dias { get; set; }
         public string Cancelado { get; set; }
+        public string Aplazado { get; set; }
     }
     public class InicioFechasPeriodoBean
     {

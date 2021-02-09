@@ -376,6 +376,7 @@ namespace Payroll.Controllers
             string hora = DateTime.Now.ToString("HH");
             string minuto = DateTime.Now.ToString("mm");
 
+			string Referencia = dia + "/" + mes + "/" + año + " " + hora + ":" + minuto + " " + Session["sUsuario"].ToString();
             if (!Directory.Exists(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/"))
             {
                 Directory.CreateDirectory(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/");
@@ -420,7 +421,7 @@ namespace Payroll.Controllers
                         //Console.WriteLine("Se manda al modulo de insercion la tabla");
                         for (int k = 0; k < table.Rows.Count; k++)
                         {
-                            Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo);
+                            Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo, Referencia);
                         }
                         list.Add("1");
                         list.Add("Carga de Incidencias correcta, se cargaron " + i + " registos.");
@@ -459,7 +460,7 @@ namespace Payroll.Controllers
                     {
                         for (int k = 0; k < table.Rows.Count; k++)
                         {
-                            Dao.InsertaCargaMasivaAusentismo(table.Rows[k], Periodo, IsCargaMasiva);
+                            Dao.InsertaCargaMasivaAusentismo(table.Rows[k], Periodo, IsCargaMasiva, Referencia);
                             list.Add("1");
                             list.Add("Carga de Ausentismos correcta, se cargaron " + i + " registos.");
                         }
@@ -500,7 +501,7 @@ namespace Payroll.Controllers
                     {
                         for (int k = 0; k < table.Rows.Count; k++)
                         {
-                            Dao.InsertaCargaMasivaCreditos(table.Rows[k], Periodo, IsCargaMasiva);
+                            Dao.InsertaCargaMasivaCreditos(table.Rows[k], Periodo, IsCargaMasiva, Referencia);
                         }
                         list.Add("1");
                         list.Add("Carga de Créditos correcta, se cargaron " + i + " registos.");
@@ -541,7 +542,7 @@ namespace Payroll.Controllers
                     {
                         for (int k = 0; k < table.Rows.Count; k++)
                         {
-                            Dao.InsertaCargaMasivaPensionesAlimenticias(table.Rows[k], Periodo, IsCargaMasiva);
+                            Dao.InsertaCargaMasivaPensionesAlimenticias(table.Rows[k], Periodo, IsCargaMasiva, Referencia);
                         }
                         list.Add("1");
                         list.Add("Carga de Pensiones correcta, se cargaron " + i + " registos.");
@@ -596,6 +597,14 @@ namespace Payroll.Controllers
             List<List<string>> lista = new List<List<string>>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             lista = Dao.sp_Retrieve_CargasMasivas();
+            return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult AplazarIncidencia(int Incidencia_id, int Aplazar)
+        {
+            List<string> lista = new List<string>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            lista = Dao.TRegistro_Incidencias_aplaza_Incidencia(Incidencia_id, Aplazar);
             return Json(lista);
         }
     }
