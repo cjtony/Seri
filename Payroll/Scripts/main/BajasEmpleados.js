@@ -135,12 +135,12 @@
     const dateDownEmp = document.getElementById('dateDownEmp');
     const daysPendings = document.getElementById('daysPendings');
     const dateSendDown = document.getElementById('dateSendDown');
-    const compSendEsp = document.getElementById('compSendEsp');
+    //const compSendEsp = document.getElementById('compSendEsp');
     const propSettlement = document.getElementById('prop-settlement');
     const divContentP0 = document.getElementById('div-content-param0');
     const divContentP1 = document.getElementById('div-content-param1');
     const divContentP2 = document.getElementById('div-content-param2');
-    const divContentP3 = document.getElementById('div-content-param3');
+    //const divContentP3 = document.getElementById('div-content-param3');
     const divContentP4 = document.getElementById('div-content-param4');
 
 
@@ -168,7 +168,7 @@
     divContentP0.classList.add('d-none');
     divContentP1.classList.add('d-none');
     divContentP2.classList.add('d-none');
-    divContentP3.classList.add('d-none');
+    //divContentP3.classList.add('d-none');
     divContentP4.classList.add('d-none');
 
 
@@ -302,20 +302,20 @@
                     fAddAnimatedFields(divContentP0);
                     fAddAnimatedFields(divContentP1);
                     fAddAnimatedFields(divContentP2);
-                    fAddAnimatedFields(divContentP3);
+                    //fAddAnimatedFields(divContentP3);
                     fAddAnimatedFields(divContentP4);
                 } else {
                     fRemAnimatedFields(divContentP0);
                     fRemAnimatedFields(divContentP1);
                     fRemAnimatedFields(divContentP2);
-                    fRemAnimatedFields(divContentP3);
+                    //fRemAnimatedFields(divContentP3);
                     fRemAnimatedFields(divContentP4);
                 }
             } else {
                 fRemAnimatedFields(divContentP0);
                 fRemAnimatedFields(divContentP1);
                 fRemAnimatedFields(divContentP2);
-                fRemAnimatedFields(divContentP3);
+                //fRemAnimatedFields(divContentP3);
                 fRemAnimatedFields(divContentP4);
             }
         } catch (error) {
@@ -581,12 +581,12 @@
         dateDownEmp.value    = "";
         daysPendings.value   = 0;
         dateSendDown.value   = "none";
-        compSendEsp.value    = "none";
+        //compSendEsp.value    = "none";
         propSettlement.checked = 0;
         fRemAnimatedFields(divContentP0);
         fRemAnimatedFields(divContentP1);
         fRemAnimatedFields(divContentP2);
-        fRemAnimatedFields(divContentP3);
+        //fRemAnimatedFields(divContentP3);
         fRemAnimatedFields(divContentP4);
     }
 
@@ -963,6 +963,7 @@
         if (propSettlement.checked) {
             propSet = 1;
         }
+        let compSendDefault = "0";
         try {
             if (downSettlement.value != "none") {
                 flagTypeValt = (downSettlement.value == "1") ? true : false;
@@ -971,13 +972,10 @@
                         if (dateDownEmp.value != "") {
                             if (!flagTypeValt) {
                                 dateSendDown.value = "0";
-                                compSendEsp.value = "0";
+                                compSendDefault = "0";
                             }
-                            console.log('Valor de la bandera: ' + flagTypeValt);
-                            console.log('Valor de fecha a usar: ' + dateSendDown.value);
-                            console.log('Valor de compensacion: ' + compSendEsp.value);
                             if (dateSendDown.value == "1" || dateSendDown.value == "0") {
-                                if (compSendEsp.value == "1" || compSendEsp.value == "0") {
+                                if (compSendDefault == "0") {
                                     const dataSend = {
                                         keyEmployee: parseInt(keyEmployee.value),
                                         dateAntiquityEmp: (dateAntiquityEmp.value),
@@ -986,10 +984,11 @@
                                         dateDownEmp: String(dateDownEmp.value),
                                         daysPending: parseInt(valDaysPendings),
                                         typeDate: parseInt(dateSendDown.value),
-                                        typeCompensation: parseInt(compSendEsp.value),
+                                        typeCompensation: parseInt(compSendDefault),
                                         flagTypeSettlement: flagTypeValt,
                                         typeOper: optionSettlement.value,
-                                        propSet: propSet
+                                        propSet: propSet, 
+                                        daysYearsAftr: daysYearsAftr.value
                                     };
                                     console.log('Datos a enviar: ');
                                     console.log(dataSend);
@@ -1034,7 +1033,7 @@
                                         }
                                     });
                                 } else {
-                                    fShowTypeAlertDE('Atención', 'Seleccione una opción para el campo compensacion especial', 'info', compSendEsp, 2, 0);
+                                    fShowTypeAlertDE('Atención', 'Seleccione una opción para el campo compensacion especial', 'info', dateSendDown, 2, 0);
                                 }
                             } else {
                                 fShowTypeAlertDE('Atención', 'Seleccione una opción para el campo fecha a usar', 'info', dateSendDown, 2, 0);
@@ -1619,18 +1618,22 @@
 
                     }, success: (request) => {
                         console.log(request);
-                        if (request.Bandera == true) {
-                            fShowComplementsSettlement(paramsettlement, paramemployee);
+                        if (request.Alerta == true) {
+                            fShowTypeAlertDE('Atención', 'Un complemento de finiquito de un periodo anterior al actual no se puede cancelar', 'info', downSettlement, 2, 1);
                         } else {
-                            Swal.fire({
-                                title: "Error",
-                                text: "al cancelar el complemento del finiquito",
-                                icon: "error",
-                                showClass: { popup: 'animated fadeInDown faster' },
-                                hideClass: { popup: 'animated fadeOutUp faster' },
-                                confirmButtonText: "Aceptar", allowOutsideClick: false,
-                                allowEscapeKey: false, allowEnterKey: false,
-                            });
+                            if (request.Bandera == true) {
+                                fShowComplementsSettlement(paramsettlement, paramemployee);
+                            } else {
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "al cancelar el complemento del finiquito",
+                                    icon: "error",
+                                    showClass: { popup: 'animated fadeInDown faster' },
+                                    hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false,
+                                    allowEscapeKey: false, allowEnterKey: false,
+                                });
+                            }
                         }
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
