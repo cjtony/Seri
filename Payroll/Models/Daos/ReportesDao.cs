@@ -205,8 +205,8 @@ namespace Payroll.Models.Daos
                         dato.iSucursal = (data["IdSucursal"].ToString() != "") ? Convert.ToInt32(data["IdSucursal"].ToString()) : 0;
                         dato.sClvSucursal = (data["Clave_Sucursal"].ToString() != "") ? data["Clave_Sucursal"].ToString() : "NA";
                         dato.sDescSucursal = (data["Descripcion_Sucursal"].ToString() != "") ? data["Descripcion_Sucursal"].ToString() : "NA";
-                        dato.sFechaAnt = (data["FechaAntiguedad"].ToString() != "") ? Convert.ToDateTime(data["FechaAntiguedad"]).ToString("yyyy-MM-dd") : "NA";
-                        dato.sFechaIng = (data["FechaIngreso"].ToString() != "") ? Convert.ToDateTime(data["FechaIngreso"]).ToString("yyyy-MM-dd") : "NA";
+                        dato.sFechaAnt = (data["FechaAntiguedad"].ToString() != "") ? data["FechaAntiguedad"].ToString() : "NA";
+                        dato.sFechaIng = (data["FechaIngreso"].ToString() != "") ? data["FechaIngreso"].ToString() : "NA";
                         dato.dSueldo = (data["SalarioMensual"].ToString() != "") ? Convert.ToDecimal(data["SalarioMensual"].ToString()) : 0;
                         dato.iVacanteC = (data["Posicion_id"].ToString() != "") ? Convert.ToInt32(data["Posicion_id"].ToString()) : 0;
                         dato.iUltimaPos = (data["UltimaPos"].ToString() != "") ? Convert.ToInt32(data["UltimaPos"].ToString()) : 0;
