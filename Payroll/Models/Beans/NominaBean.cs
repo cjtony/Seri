@@ -256,6 +256,8 @@ namespace Payroll.Models.Beans
         public string sRiesgoTrabajo { get; set; }
         public string SDINT {get;set;}
         public int iNoEjecutados { get; set; }
+        public int GrupoEmpresas { get; set; }
+        public int iTipoJordana { get; set; }
         public string sMensaje { get; set; }
 
     }
@@ -283,6 +285,8 @@ namespace Payroll.Models.Beans
         public string sValor { get; set; }
         public string sEspejo { get; set; }
         public int sIdSat { get; set; }
+        public int iIdInsidencia { get; set; }
+        public decimal dHoras { get; set; }
        public string sMensaje { get; set; }
 
     }
