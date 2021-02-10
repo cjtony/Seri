@@ -812,10 +812,10 @@
     }
 
     // Funcion que genera el reporte de la hoja de calculo
-    fGenerateReportPayroll = (option, keyOption, type) => { 
+    fGenerateReportPayroll = (option, keyOption, type) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
-                let urlSend  = "";
+                let urlSend = "";
                 let typeSend = 0;
                 if (type == 1) {
                     urlSend = "ReportPayroll";
@@ -829,8 +829,15 @@
                 const paramYear = document.getElementById('paramYear');
                 const paramNper = document.getElementById('paramNper');
                 const paramTper = document.getElementById('paramTper');
-                const paramNPerSel = document.getElementById('paramNperSel');
-                const paramTPerSel = document.getElementById('paramTperSel');
+                let paramNPerSel = "";
+                let paramTPerSel = "";
+                if (type == 2) {
+                    paramNPerSel = document.getElementById('paramNperSel');
+                    paramTPerSel = document.getElementById('paramTperSel');
+                } else if (type == 3) {
+                    paramNPerSel = document.getElementById('paramNper');
+                    paramTPerSel = document.getElementById('paramTper');
+                }
                 let paramRDat = 0;
                 if ($("input[id='paramRDat']:checkbox").is(':checked')) {
                     paramRDat = 1;
@@ -883,8 +890,8 @@
             } else {
                 alert('Accion invalida');
                 location.reload();
-            }
-        } catch (error) {
+            } 
+        }catch (error) {
             if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
             } else if (error instanceof TypeError) {

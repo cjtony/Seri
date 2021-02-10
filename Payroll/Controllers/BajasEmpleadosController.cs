@@ -68,7 +68,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement, int typeOper, int propSet)
+        public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement, int typeOper, int propSet, int daysYearsAftr)
         {
             Boolean flag       = false;
             Boolean validation = true;
@@ -103,7 +103,7 @@ namespace Payroll.Controllers
                 }
                 if (!validation) {
                     if (flagTypeSettlement) {
-                        downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment, typeOper, propSetSend);
+                        downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment, typeOper, propSetSend, daysYearsAftr);
                     } else {
                         downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct);
                     }
@@ -1935,7 +1935,7 @@ namespace Payroll.Controllers
                 int keyBusiness    = Convert.ToInt32(Session["IdEmpresa"].ToString());
                 datosFiniquito = empleadosDaoD.sp_Consulta_Info_Finiquito(keySettlement, keyBusiness, keyEmploye);
                 if (datosFiniquito.sMensaje == "SUCCESS") {
-                    bajasEmpleados = empleadosDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmploye, datosFiniquito.sFechaAntiguedad, datosFiniquito.iTipoFiniquitoId, datosFiniquito.iMotivoBajaId, datosFiniquito.sFechaBaja, datosFiniquito.sFechaRecibo, datosFiniquito.iBanFechaIngreso, datosFiniquito.iBanCompEspecial, datosFiniquito.iDiasPendientes, datosFiniquito.iAnio, datosFiniquito.iPeriodo, datosFiniquito.sFechaPagoInicio, datosFiniquito.sFechaPFin, 1, 0);
+                    bajasEmpleados = empleadosDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmploye, datosFiniquito.sFechaAntiguedad, datosFiniquito.iTipoFiniquitoId, datosFiniquito.iMotivoBajaId, datosFiniquito.sFechaBaja, datosFiniquito.sFechaRecibo, datosFiniquito.iBanFechaIngreso, datosFiniquito.iBanCompEspecial, datosFiniquito.iDiasPendientes, datosFiniquito.iAnio, datosFiniquito.iPeriodo, datosFiniquito.sFechaPagoInicio, datosFiniquito.sFechaPFin, 1, 0, 0);
                     if (bajasEmpleados.sMensaje == "SUCCESS") {
                         flag = true;
                     }
@@ -2023,10 +2023,29 @@ namespace Payroll.Controllers
         {
             Boolean flag = false;
             String  messageError = "none";
+            List<ComplementosFiniquitos> complementosDet = new List<ComplementosFiniquitos>();
             ComplementosFiniquitos complementos   = new ComplementosFiniquitos();
             BajasEmpleadosDaoD bajasEmpleadosDaoD = new BajasEmpleadosDaoD();
+            PeriodoActualBean periodoActualBean   = new PeriodoActualBean();
             try {
-                complementos = bajasEmpleadosDaoD.sp_Cancel_Complement_Settlement(keyBusiness, keySettlement, keySeq);
+                int periodComplement   = 0;
+                int yearComplement     = 0;
+                int yearPeriodActually = 0;
+                int periodActually     = 0;
+                periodoActualBean = bajasEmpleadosDaoD.sp_Load_Info_Periodo_Empr(keyBusiness, DateTime.Now.Year);
+                if (periodoActualBean.sMensaje == "success") {
+                    periodActually     = periodoActualBean.iPeriodo;
+                    yearPeriodActually = periodoActualBean.iAnio;
+                }
+                complementosDet = bajasEmpleadosDaoD.sp_View_Details_Complement(keySettlement, keyBusiness, keySeq);
+                foreach (ComplementosFiniquitos data in complementosDet) {
+                    periodComplement = data.iPeriodo;
+                    yearComplement   = data.iAnio;
+                }
+                if (periodComplement != periodActually && yearComplement != yearPeriodActually) {
+                    return Json(new { Bandera = false, MensajeError = "NOTCANCEL", Alerta = true });
+                }
+                complementos    = bajasEmpleadosDaoD.sp_Cancel_Complement_Settlement(keyBusiness, keySettlement, keySeq);
                 if (complementos.sMensaje == "SUCCESS") {
                     flag = true;
                 }
@@ -2035,7 +2054,7 @@ namespace Payroll.Controllers
                 messageError = exc.Message.ToString();
             }
 
-            return Json(new { Bandera = flag, MensajeError = messageError });
+            return Json(new { Bandera = flag, MensajeError = messageError, Alerta = false });
         }
 
         [HttpPost]
