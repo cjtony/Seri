@@ -1647,7 +1647,12 @@ namespace Payroll.Models.Daos
                             if (data["Excento"].ToString() != "") { ls.dExcento = decimal.Parse(data["Excento"].ToString()); }
                             if (data["Gravado"].ToString() == "") { ls.dGravado = 0; }
                             if (data["Gravado"].ToString() != "") { ls.dGravado = decimal.Parse(data["Gravado"].ToString()); }
+                            if (data["Cantidad"].ToString() == "") { ls.dHoras = 0; }
+                            if (data["Cantidad"].ToString() != "") { 
+                                ls.dHoras = decimal.Parse(data["Cantidad"].ToString());
+                            }
 
+                            
                             ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
                             //ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
