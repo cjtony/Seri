@@ -867,6 +867,7 @@ namespace Payroll.Models.Daos
                     lista.NPeriodo = data["NPeriodo"].ToString();
                     lista.Cancelado = data["Cancelado"].ToString();
                     lista.Aplazado = data["Aplazado"].ToString();
+                    lista.Pagos_restantes = data["Pagos_restantes"].ToString();
                     list.Add(lista);
                 }
             }
