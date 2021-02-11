@@ -206,6 +206,7 @@
                         "<td class='text-center'>" + parseFloat(data[i]["Cantidad"]) + "</td>" +
                         "<td class='text-center'>" + parseFloat(data[i]["Numero_dias"]) + "</td>" +
                         "<td class='text-center'>" + data[i]["Plazos"] + "</td>" +
+                        "<td class='text-center'>" + data[i]["Pagos_restantes"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Descripcion"] + "</td>" +
                         "<td class='text-center'>" + data[i]["Fecha_Aplicacion"] + "</td>" +
                         "<td class='text-center'>" + data[i]["NPeriodo"] + "</td>" +
