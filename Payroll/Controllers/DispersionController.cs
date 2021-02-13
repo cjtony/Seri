@@ -598,10 +598,20 @@ namespace Payroll.Controllers
                                     string generaCNumRegistros    = "";
                                     int longNumEmpresa   = 5; 
                                     int longNumRegistros = 6;
-                                    int longAmoutTotal   = 13;
+                                    int longAmoutTotal   = 15;
                                     int resultLongAmount = longAmoutTotal - importeTotalBanorte.Length;
+                                    string cerosImp2 = "";
+                                    string quantityRegistersLong = "";
+                                    int quantityRegisters = listDatosProcesaChequesNominaBean.Count;
+                                    int longQuantityRegisters = 6;
+                                    int resultLongQuantityRegisters = longQuantityRegisters - quantityRegisters.ToString().Length;
+                                    for (var f = 0; f < resultLongQuantityRegisters; f++)
+                                    {
+                                        quantityRegistersLong += "0";
+                                    }
+                                    quantityRegistersLong += quantityRegisters.ToString();
                                     for (var j = 0; j < resultLongAmount; j++) { cerosImporteTotal += "0"; }
-                                    string headerLayoutBanorte    = tipoRegistroBanorteE + claveServicioBanorte + promotorBanorte + dateGeneration.ToString("yyyyMMdd") +                 consecutivoBanorte + cerosImporteTotal + importeTotalBanorte + importeTotalAYBBanorte + fillerBanorte;
+                                    string headerLayoutBanorte    = tipoRegistroBanorteE + claveServicioBanorte + promotorBanorte + dateGeneration.ToString("yyyyMMdd") +  consecutivoBanorte + quantityRegistersLong + cerosImp2 + cerosImporteTotal + importeTotalBanorte + importeTotalAYBBanorte + fillerBanorte;
                                     // - DETALLE - \\
                                     string tipoRegistroBanorteD     = "D";
                                     string fechaAplicacionBanorte   = dateGeneration.ToString("yyyyMMdd");
@@ -617,13 +627,25 @@ namespace Payroll.Controllers
                                         string generaCNumEmpleadoB = "", generaCNumImporteB = "", generaCNumCuentaB = "";
                                         int longNumEmpleado = 10, longNumImporte = 15, longNumCuenta = 18;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
+                                            int longAcortAccount = payroll.sCuenta.Length;
+                                            string accountUser = payroll.sCuenta;
+                                            string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
+                                            string formatAccount = "";
+                                            if (longAcortAccount == 18) {
+                                                formatAccount = formatAccountSubstring.Substring(0, 7);
+                                            }
+                                            string cerosAccount = "";
+                                            for (var t = 0; t < formatAccount.Length + 1; t++) {
+                                                cerosAccount += "0";
+                                            }
+                                            string finallyAccount = cerosAccount + formatAccountSubstring.Substring(7, 10);
                                             int longNumEmp = longNumEmpleado - payroll.sNomina.Length;
-                                            int longNumImp = longNumImporte - payroll.dImporte.ToString().Length;
-                                            int longNumCta = longNumCuenta - payroll.sCuenta.Length;
+                                            int longNumImp = longNumImporte  - payroll.dImporte.ToString().Length;
+                                            int longNumCta = longNumCuenta   - payroll.sCuenta.Length;
                                             for (var b = 0; b < longNumEmp; b++) { generaCNumEmpleadoB += "0"; }
-                                            for (var v = 0; v < longNumImp; v++) { generaCNumImporteB += "0"; }
-                                            for (var p = 0; p < longNumCta; p++) { generaCNumCuentaB += "0"; }
-                                            fileBanorte.Write(tipoRegistroBanorteD + fechaAplicacionBanorte + generaCNumEmpleadoB + payroll.sNomina + fillerBanorteD + generaCNumImporteB + payroll.dImporte.ToString() + numBancoReceptorBanorteD + tipoCuentaBanorteD + generaCNumCuentaB + payroll.sCuenta + tipoMovimientoBanorteD + fillerBanorteD0 + importeIvaBanorteD + fillerBanorteD1 + "\n");
+                                            for (var v = 0; v < longNumImp; v++) { generaCNumImporteB  += "0"; }
+                                            for (var p = 0; p < longNumCta; p++) { generaCNumCuentaB   += "0"; }
+                                            fileBanorte.Write(tipoRegistroBanorteD + fechaAplicacionBanorte + generaCNumEmpleadoB + payroll.sNomina + fillerBanorteD + generaCNumImporteB + payroll.dImporte.ToString() + numBancoReceptorBanorteD + tipoCuentaBanorteD + generaCNumCuentaB + finallyAccount + tipoMovimientoBanorteD + fillerBanorteD0 + importeIvaBanorteD + fillerBanorteD1 + "\n");
                                             generaCNumEmpleadoB = "";
                                             generaCNumImporteB  = "";
                                             generaCNumCuentaB   = "";
@@ -643,18 +665,34 @@ namespace Payroll.Controllers
                                         int longConBncmD = 9, longImpBncmD = 15, longNomBenBncmD = 40;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             string nameCompleteEmployee = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno;
+                                            int longAcortAccount = payroll.sCuenta.Length;
+                                            string accountUser = payroll.sCuenta;
+                                            string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
+                                            string formatAccount = "";
+                                            if (longAcortAccount == 18) {
+                                                formatAccount = formatAccountSubstring.Substring(0, 7);
+                                            }
+                                            string cerosAccount = "";
+                                            for (var t = 0; t < formatAccount.Length + 1; t++) {
+                                                cerosAccount += "0";
+                                            }
+                                            string finallyAccount = formatAccountSubstring.Substring(7, 10);
                                             if (nameCompleteEmployee.Length > 40) {
                                                 nombreBenBancomerD = nameCompleteEmployee.Substring(0, 39);
                                             } else {
                                                 nombreBenBancomerD = nameCompleteEmployee;
                                             }
-                                            consecutivoBancomerD1 += 1;
-                                            int longConBncmDResult = longConBncmD - consecutivoBancomerD1.ToString().Length;
-                                            int longImpBncmDResult = longImpBncmD - payroll.dImporte.ToString().Length;
+                                            consecutivoBancomerD1   += 1;
+                                            int longAmoutTotal       = 15;
+                                            string cerosImporteTotal = "";
+                                            int resultLongAmount     = longAmoutTotal - payroll.dImporte.ToString().Length;
+                                            for (var j = 0; j < resultLongAmount; j++) { cerosImporteTotal += "0"; }
+                                            int longConBncmDResult = longConBncmD   - consecutivoBancomerD1.ToString().Length;
+                                            int longImpBncmDResult = longImpBncmD   - payroll.dImporte.ToString().Length;
                                             int longNomBenBncmDResult = longNomBenBncmD - nombreBenBancomerD.Length;
                                             for (var c = 0; c < longConBncmDResult; c++) { cerosConBncmD += "0"; }
                                             for (var r = 0; r < longNomBenBncmDResult; r++) { espaciosNomBenBncmD += " "; }
-                                            fileBancomer.Write(cerosConBncmD + consecutivoBancomerD1.ToString() + fillerBancomerD1 + consecutivoBancomerD2 + payroll.sCuenta + fillerBancomerD2 + cerosImpBncmD + payroll.dImporte.ToString() + nombreBenBancomerD + espaciosNomBenBncmD + valorFijoBancomerD + "\n");
+                                            fileBancomer.Write(cerosConBncmD + consecutivoBancomerD1.ToString() + fillerBancomerD1 + consecutivoBancomerD2 + finallyAccount + fillerBancomerD2 + cerosImporteTotal + payroll.dImporte.ToString() + nombreBenBancomerD + espaciosNomBenBncmD + valorFijoBancomerD + "\n");
                                             cerosConBncmD = "";
                                             espaciosNomBenBncmD = "";
                                         }
@@ -677,7 +715,7 @@ namespace Payroll.Controllers
                                 Paragraph pr = new Paragraph();
                                 DateTime datePdf = DateTime.Now;
                                 pr.Font = fontDefault;
-                                pr.Add("Fecha: " + datePdf.ToString("yyyy-MM-dd"));
+                                pr.Add("Fecha: " + datePdf.ToString("yyyy-MM-dd") + " Periodo: " + numberPeriod.ToString());
                                 pr.Alignment = Element.ALIGN_LEFT;
                                 doc.Add(pr);
                                 pr.Clear();
@@ -820,7 +858,7 @@ namespace Payroll.Controllers
                                     System.IO.Directory.CreateDirectory(directoryTxt + @"\\" + nameFolder);
                                 }
                                 // -------------------------
-                                if (bankResult == 72)  {
+                                if (bankResult == 72) {
                                     vFileName = "NOMINAS_NI" + string.Format("{0:00000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.sNumeroCliente)) + "01_ESP";
                                 } else {
                                     vFileName = "E" + string.Format("{0:000}", keyBusiness.ToString()) + "A" + yearPeriod + yearPeriod.ToString() + "P" + string.Format("{0:000}", numberPeriod.ToString()) + "_BE_" + bankResult.ToString();
@@ -830,22 +868,22 @@ namespace Payroll.Controllers
                                     // ARCHIVO TXT PARA BANAMEX
                                     datosDispersionArchivosBanamex = FileToDeployBanamex(vFileName);
                                     // ENCABEZADO
-                                    string tipoRegistroBanamexE  = "1";
+                                    string tipoRegistroBanamexE = "1";
                                     string numeroClienteBanamexE = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
-                                    string fechaBanamexE         = dateGeneration.ToString("ddMM") + dateGeneration.ToString("yyyy").Substring(2, 2); 
-                                    string valorFijoBanamex0     = "0001";
-                                    string nombreEmpresaBanamex  = "";
+                                    string fechaBanamexE = dateGeneration.ToString("ddMM") + dateGeneration.ToString("yyyy").Substring(2, 2);
+                                    string valorFijoBanamex0 = "0001";
+                                    string nombreEmpresaBanamex = "";
                                     if (nameBusiness.Length > 35) {
                                         nombreEmpresaBanamex = nameBusiness.Substring(0, 35);
                                     } else {
                                         nombreEmpresaBanamex = nameBusiness;
                                     }
-                                    string valorFijoBanamex1     = "NOMINA"; 
-                                    string fillerBanamexE1       = " ";
-                                    string fechaBanamexE1        = dateGeneration.ToString("ddMMyyyy") + "     ";
-                                    string valorFijoBanamex2     = "05"; 
-                                    string fillerBanamexE2       = "                                        ";
-                                    string valorFijoBanamex3     = "C00";
+                                    string valorFijoBanamex1 = "NOMINA";
+                                    string fillerBanamexE1 = " ";
+                                    string fechaBanamexE1 = dateGeneration.ToString("ddMMyyyy") + "     ";
+                                    string valorFijoBanamex2 = "05";
+                                    string fillerBanamexE2 = "                                        ";
+                                    string valorFijoBanamex3 = "C00";
                                     //HEADER
                                     string headerLayoutBanamex = tipoRegistroBanamexE + numeroClienteBanamexE + fechaBanamexE + valorFijoBanamex0 + nombreEmpresaBanamex + valorFijoBanamex1 + fillerBanamexE1 + fechaBanamexE1 + valorFijoBanamex2 + fillerBanamexE2 + valorFijoBanamex3;
                                     // FOREACH DATOS TOTALES
@@ -858,42 +896,42 @@ namespace Payroll.Controllers
                                     }
                                     // - GLOBAL - \\
                                     string tipoRegistroBanamexG = "2";
-                                    string cargoBanamexG        = "1";
-                                    string monedaBanamexG       = "001"; 
-                                    string tipoCuentaBanamexG   = "01";
+                                    string cargoBanamexG = "1";
+                                    string monedaBanamexG = "001";
+                                    string tipoCuentaBanamexG = "01";
                                     // PENDIENTE SUCURSAL
-                                    string sucursalBanamexG     = "7009"; 
-                                    string valorFijoBanamexG1   = "0000000000000";
-                                    string numeroCuentaBanamex  = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
-                                    string generaCImporteTBG    = "";
-                                    int longImporteTotalBG      = 18;
+                                    string sucursalBanamexG = "7009";
+                                    string valorFijoBanamexG1 = "0000000000000";
+                                    string numeroCuentaBanamex = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                                    string generaCImporteTBG = "";
+                                    int longImporteTotalBG = 18;
                                     int longITBG = longImporteTotalBG - importeTotalBanamexG.Length;
                                     for (var u = 0; u < longITBG; u++) { generaCImporteTBG += "0"; }
                                     string globalLayoutBanamex = tipoRegistroBanamexG + cargoBanamexG + monedaBanamexG + generaCImporteTBG + importeTotalBanamexG + tipoCuentaBanamexG + sucursalBanamexG + valorFijoBanamexG1 + numeroCuentaBanamex;
                                     // - DETALLE - \\
                                     string tipoRegistroBanamexD = "3";
-                                    string abonoBanamexD        = "0";
-                                    string metodoPagoBanamexD   = "001";
-                                    string tipoCuentaBanamexD   = "01";
-                                    string fillerBanamexD1      = "                              ";
-                                    string valorFijoBanamexD1   = "NOMINA";
-                                    string fillerBanamexD2      = "                                                          ";
-                                    string valorFijoBanamexD2   = "0000";
-                                    string fillerBanamexD3      = "       "; 
-                                    string valorFijoBanamexD3   = "00";
+                                    string abonoBanamexD = "0";
+                                    string metodoPagoBanamexD = "001";
+                                    string tipoCuentaBanamexD = "01";
+                                    string fillerBanamexD1 = "                              ";
+                                    string valorFijoBanamexD1 = "NOMINA";
+                                    string fillerBanamexD2 = "                                                          ";
+                                    string valorFijoBanamexD2 = "0000";
+                                    string fillerBanamexD3 = "       ";
+                                    string valorFijoBanamexD3 = "00";
                                     using (StreamWriter fileBanamex = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt", false, Encoding.UTF8)) {
                                         fileBanamex.Write(headerLayoutBanamex + "\n");
                                         fileBanamex.Write(globalLayoutBanamex + "\n");
-                                        string cerosImpTotBnxD    = "";
-                                        string cerosNumCueBnxD    = "";
-                                        string cerosNumNomBnxD    = "";
+                                        string cerosImpTotBnxD = "";
+                                        string cerosNumCueBnxD = "";
+                                        string cerosNumNomBnxD = "";
                                         string espaciosNomEmpBnxD = "";
-                                        int longImpTotBnxD        = 18;
-                                        int longNumCueBnxD        = 20;
-                                        int longNumNomBnxD        = 10;
-                                        int cantidadMovBanamexT   = 0;
-                                        int sumaImpTotBanamexT    = 0;
-                                        int longNomEmpBnxD        = 55;
+                                        int longImpTotBnxD = 18;
+                                        int longNumCueBnxD = 20;
+                                        int longNumNomBnxD = 10;
+                                        int cantidadMovBanamexT = 0;
+                                        int sumaImpTotBanamexT = 0;
+                                        int longNomEmpBnxD = 55;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             if (payroll.iIdBanco == bankResult) {
                                                 string nameEmployee = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno;
@@ -914,9 +952,9 @@ namespace Payroll.Controllers
                                                 for (var c = 0; c < longNumNomBnxDResult; c++) { cerosNumNomBnxD += "0"; }
                                                 for (var s = 0; s < longNomEmpBnxDResult; s++) { espaciosNomEmpBnxD += " "; }
                                                 fileBanamex.Write(tipoRegistroBanamexD + abonoBanamexD + metodoPagoBanamexD + cerosImpTotBnxD + payroll.dImporte.ToString() + tipoCuentaBanamexD + cerosNumCueBnxD + payroll.sCuenta + fillerBanamexD1 + cerosNumNomBnxD + payroll.sNomina + nombreCEmp + espaciosNomEmpBnxD + valorFijoBanamexD1 + fillerBanamexD2 + valorFijoBanamexD2 + fillerBanamexD3 + valorFijoBanamexD3 + "\n");
-                                                cerosImpTotBnxD    = "";
-                                                cerosNumCueBnxD    = "";
-                                                cerosNumNomBnxD    = "";
+                                                cerosImpTotBnxD = "";
+                                                cerosNumCueBnxD = "";
+                                                cerosNumNomBnxD = "";
                                                 espaciosNomEmpBnxD = "";
                                             }
                                         }
@@ -942,12 +980,12 @@ namespace Payroll.Controllers
                                 if (bankResult == 14) {
                                     // - ENCABEZADO - \\
                                     int initConsecutiveNbOneN = 1;
-                                    string typeRegisterN  = "1";
+                                    string typeRegisterN = "1";
                                     string consecutiveNumberOneN = "0000";
-                                    string senseA         = "E";
+                                    string senseA = "E";
                                     string numCtaBusiness = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
-                                    string fillerLayout   = "     ";
-                                    string headerLayout   = typeRegisterN + consecutiveNumberOneN + initConsecutiveNbOneN.ToString() + senseA + dateGenerationFormat + numCtaBusiness + fillerLayout + dateGenerationFormat;
+                                    string fillerLayout = "     ";
+                                    string headerLayout = typeRegisterN + consecutiveNumberOneN + initConsecutiveNbOneN.ToString() + senseA + dateGenerationFormat + numCtaBusiness + fillerLayout + dateGenerationFormat;
                                     // - DETALLE - \\                                                                          
                                     string typeRegisterD = "2";
                                     using (StreamWriter fileTxt = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt", false, Encoding.UTF8)) {
@@ -992,21 +1030,30 @@ namespace Payroll.Controllers
                                         if (deposits.iIdBanco == bankResult) { importeTotalBanorte = deposits.sImporte; break; }
                                     }
                                     // - ENCABEZADO - \\ 
-                                    string cerosImporteTotal      = "";
-                                    string tipoRegistroBanorteE   = "H";
-                                    string claveServicioBanorte   = "NE";
-                                    string promotorBanorte        = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
-                                    string consecutivoBanorte     = "01";
+                                    string cerosImporteTotal = "";
+                                    string tipoRegistroBanorteE = "H";
+                                    string claveServicioBanorte = "NE";
+                                    string promotorBanorte = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
+                                    string consecutivoBanorte = "01";
                                     string importeTotalAYBBanorte = "0000000000000000000000000000000000000000000000000";
-                                    string fillerBanorte          = "                                                                             ";
-                                    string generaCNumEmpresa      = "";
-                                    string generaCNumRegistros    = "";
-                                    int longNumEmpresa   = 5;
+                                    string fillerBanorte = "                                                                             ";
+                                    string generaCNumEmpresa = "";
+                                    string generaCNumRegistros = "";
+                                    string cerosImp2 = "";
+                                    string quantityRegistersLong = "";
+                                    int quantityRegisters = listDatosProcesaChequesNominaBean.Count;
+                                    int longQuantityRegisters = 6;
+                                    int longNumEmpresa = 5;
                                     int longNumRegistros = 6;
-                                    int longAmoutTotal   = 13;
+                                    int longAmoutTotal = 13;
+                                    int resultLongQuantityRegisters = longQuantityRegisters - quantityRegisters.ToString().Length;
+                                    for (var f = 0; f < resultLongQuantityRegisters; f++) {
+                                        quantityRegistersLong += "0";
+                                    }
+                                    quantityRegistersLong += quantityRegisters.ToString();
                                     int resultLongAmount = longAmoutTotal - importeTotalBanorte.Length;
                                     for (var j = 0; j < resultLongAmount; j++) { cerosImporteTotal += "0"; }
-                                    string headerLayoutBanorte = tipoRegistroBanorteE + claveServicioBanorte + promotorBanorte + dateGeneration.ToString("yyyyMMdd") + consecutivoBanorte + cerosImporteTotal + importeTotalBanorte + importeTotalAYBBanorte + fillerBanorte;
+                                    string headerLayoutBanorte = tipoRegistroBanorteE + claveServicioBanorte + promotorBanorte + dateGeneration.ToString("yyyyMMdd") + consecutivoBanorte + quantityRegistersLong + cerosImp2 + cerosImporteTotal + importeTotalBanorte + importeTotalAYBBanorte + fillerBanorte;
                                     // - DETALLE - \\
                                     string tipoRegistroBanorteD     = "D";
                                     string fechaAplicacionBanorte   = dateGeneration.ToString("yyyyMMdd");
@@ -1085,7 +1132,7 @@ namespace Payroll.Controllers
                                 Paragraph pr = new Paragraph();
                                 DateTime datePdf = DateTime.Now;
                                 pr.Font = fontDefault;
-                                pr.Add("Fecha: " + datePdf.ToString("yyyy-MM-dd"));
+                                pr.Add("Fecha: " + datePdf.ToString("yyyy-MM-dd") + " Periodo: " + numberPeriod.ToString());
                                 pr.Alignment = Element.ALIGN_LEFT;
                                 doc.Add(pr);
                                 pr.Clear();
@@ -1298,7 +1345,7 @@ namespace Payroll.Controllers
                         Paragraph pr = new Paragraph();
                         DateTime datePdf = DateTime.Now;
                         pr.Font = fontDefault;
-                        pr.Add("Fecha: " + datePdf.ToString("yyyy-MM-dd"));
+                        pr.Add("Fecha: " + datePdf.ToString("yyyy-MM-dd") + " Periodo: " + numberPeriod.ToString());
                         pr.Alignment = Element.ALIGN_LEFT;
                         doc.Add(pr);
                         pr.Clear();
