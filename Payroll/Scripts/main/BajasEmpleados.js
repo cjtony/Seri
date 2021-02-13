@@ -452,7 +452,7 @@
                                 } else if (data.DatosFiniquito[i].iEstatus == 4) {
                                     enabledPay    = "disabled";
                                     actionSavePay = "disabled"; 
-                                    disabledCancelSettlement = "disabled";
+                                    disabledCancelSettlement = "";
                                     spanDownNotSet = `<span class="badge ml-2 badge-info"><i class="fas fa-file mr-1"></i>Finiquito sin baja en firme</span>`;
                                     btnApplyDown = `<button onclick="fApplyDown(${data.DatosFiniquito[i].iIdFiniquito}, ${data.DatosFiniquito[i].iEmpleado_id});" class="btn btn-sm btn-danger" title="Aplicar baja en firme"> <i class="fas fa-user-times"></i> </button>`;
                                 }
