@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿
+$(function () {
     $("#pills-catalogos.nav-link.active").addClass('bg-secondary');
     $("#pills-catalogos.nav-link").on("click", function () {
         $("#pills-catalogos.nav-link").removeClass('bg-secondary');
@@ -1578,8 +1579,7 @@
                     "language": {
                         "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                     },
-                    searching: false,
-                    paging: false
+                    searching: false
                 });
             }
         });
@@ -1610,6 +1610,73 @@
         );
     });
     //
+    // carga los menus principales
+    //
+
+    var mainmenus;
+    var submenus;
+
+
+    loadmainchecks = () => {
+        
+        loadmainmenus();
+        
+        var btns = "";
+        var item;
+        var nom;
+        for (var i = 0; i < mainmenus.length; i++) {
+            item = mainmenus[i]['iIdItem'];
+            nom = mainmenus[i]['sNombre'];
+            
+            var collapse = "<div class='list-group col-md-12'>";
+
+
+            for (var k = 0; k < submenus.length; k++) {
+                collapse += "<button type='button' class='list-group-item list-group-item-action' id='" + submenus[k]['iIdItem'] + "-" + submenus[k]['sNombre'].replace(/ /g, "_") + "'><span class='" + submenus[k]['iIdItem'] + "'></span>&nbsp;&nbsp;" + submenus[k]['sNombre'] + "</button>";
+            }
+            collapse += "</div>";
+            var btn = "<button type='button' class='btn btn-primary col-md-5 my-1  d-flex justify-content-between align-items-center' id='" + item + "-" + nom.replace(/ /g, "_") + "'>" + nom + "<span class='fas fa-chevron-circle-down fa-lg'></span>" + collapse + "</button>";
+            console.log("btn");
+            console.log(btn);
+            btns += btn;
+
+        }
+        console.log("btns");
+        console.log(btns);
+        setTimeout(function () {
+            $("#formbodyprofiles").html(btns);
+        }, 2000);
+
+
+    }
+
+    loadmainmenus = () => {
+
+        $.ajax({
+            url: "../Catalogos/Loadmainmenus",
+            type: "POST",
+            data: JSON.stringify({}),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                mainmenus = data;
+            }
+        });
+    }
+
+    laodsubmenus = (id) => {
+
+        $.ajax({
+            url: "../Catalogos/Loadonemenu",
+            type: "POST",
+            data: JSON.stringify({ Id: id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                submenus = data;
+            }
+        });
+
+    }
+
     // carga los checks que pertenecen a cada menu principal
     loadcheck = (id, collapse) => {
         if ($('.' + collapse).prop('show')) {
@@ -1639,9 +1706,7 @@
     }
     // CARGA MODAL DEL NUEVO USUARIO
     mostarmodalnewusuario = () => {
-
         $("#modalnewusuario").modal("show");
-
     }
 
     $("#btnnewperfil").on("click", function () {
