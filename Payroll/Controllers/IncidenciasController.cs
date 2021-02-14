@@ -560,6 +560,46 @@ namespace Payroll.Controllers
                         list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
                     }
                     break;
+                case "vacaciones":
+
+                    for (i = 0; i < table.Rows.Count; i++)
+                    {
+                        var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
+                        if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+
+                        var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
+                        if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+
+                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
+                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
+                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
+
+                        List<string> resultvVacaciones = Dao.Valida_Vacaciones(table.Rows[i]["Empleado_id"].ToString(), table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Año"].ToString(), table.Rows[i]["Dias"].ToString());
+                        if (resultvVacaciones[0] == "0") { ResutLog.Add(resultvVacaciones[1]); }
+                    }
+                    int Usuario_id = int.Parse(Session["iIdUsuario"].ToString());
+                    if (ResutLog.Count == 0)
+                    {
+                        for (int k = 0; k < table.Rows.Count; k++)
+                        {
+                            Dao.InsertaCargaMasivaVacaciones(table.Rows[k], Periodo, IsCargaMasiva, Referencia, Usuario_id);
+                        }
+                        list.Add("1");
+                        list.Add("Carga de Vacaciones correcta, se cargaron " + i + " registos.");
+                    }
+                    else
+                    {
+                        StreamWriter txtfile = new StreamWriter(pathLogs);
+                        foreach (var error in ResutLog)
+                        {
+                            txtfile.WriteLine(error);
+                        }
+                        txtfile.Close();
+                        list.Clear();
+                        list.Add("0");
+                        list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
+                    }
+                    break;
             }
 
 
