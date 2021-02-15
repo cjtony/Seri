@@ -233,6 +233,7 @@
     <Compile Include="Models\Utilerias\CapturaErrores.cs" />
     <Compile Include="Models\Utilerias\Conexion.cs" />
     <Compile Include="Models\Utilerias\ConversorMoneda.cs" />
+    <Compile Include="Models\Utilerias\Utilerias.cs" />
     <Compile Include="Models\Utilerias\Encriptamiento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

@@ -712,6 +712,52 @@
                             } else if (data.InfoFiniquito[0].iEstatus == 2) {
                                 infoPaid = `<span class="badge ml-2 badge-success p-2"><i class="fas fa-check-circle mr-2"></i>Pagado</span>`;
                             }
+                            let contentPercepciones = "";
+                            let contentDeducciones  = "";
+                            let flagPercepciones    = false;
+                            let flagDeducciones     = false;
+                            if (data.Datos.length > 0) {
+                                contentPercepciones = `<div class='col-md-6 mt-5'> <ul class='list-group' id="list-percepciones"> <h5 class='text-center font-weight-bold mb-3'> <i class="text-success fas fa-money-check-alt mr-2"></i>Percepciones</h5>`;
+                                for (let v = 0; v < data.Datos.length; v++) {
+                                    let amountFixed = parseFloat(data.Datos[v].sSaldo).toFixed(2);
+                                    if (data.Datos[v].sTipo == "Percepciones" && data.Datos[v].iRenglon_id != 990) {
+                                        contentPercepciones += `<li class="list-group-item d-flex justify-content-between 
+                                            align-items-center">
+                                            [${data.Datos[v].iRenglon_id}] ${data.Datos[v].sNombre_Renglon}
+                                            <span class="badge badge-success p-2">$ ${amountFixed}</span>
+                                        </li>`;
+                                        flagPercepciones = true;
+                                    }
+                                }
+                                if (flagPercepciones) {
+                                    contentPercepciones += `<li class="list-group-item d-flex justify-content-between 
+                                            align-items-center">
+                                            <b>Total Percepciones:</b>
+                                            <span class="badge badge-success p-2">$ ${data.Percepcion}</span>
+                                        </li>`;
+                                }
+                                contentPercepciones += "</ul></div>";
+                                contentDeducciones = `<div class='col-md-6 mt-5'> <ul class='list-group'> <h5 class='text-center font-weight-bold mb-3'> <i class="text-danger fas fa-money-check-alt mr-2"></i>Deducciones</h5>`;
+                                for (let v = 0; v < data.Datos.length; v++) {
+                                    let amountFixed = parseFloat(data.Datos[v].sSaldo).toFixed(2);
+                                    if (data.Datos[v].sTipo == "Deducciones" && data.Datos[v].iRenglon_id != 1990) {
+                                        contentDeducciones += `<li class="list-group-item d-flex justify-content-between 
+                                            align-items-center">
+                                            [${data.Datos[v].iRenglon_id}] ${data.Datos[v].sNombre_Renglon}
+                                            <span class="badge badge-danger p-2">$ ${amountFixed}</span>
+                                        </li>`;
+                                        flagDeducciones = true;
+                                    }
+                                }
+                                if (flagDeducciones) {
+                                    contentDeducciones += `<li class="list-group-item d-flex justify-content-between 
+                                            align-items-center">
+                                            <b>Total Deducciones:</b>
+                                            <span class="badge badge-danger p-2">$ ${data.Deduccion}</span>
+                                        </li>`;
+                                }
+                                contentDeducciones += "</ul></div>";
+                            }
                             document.getElementById("div-details").innerHTML += `
                                 <div class="col-md-6 mt-4">
                                     <ul class="list-group shadow card rounded">
@@ -760,6 +806,11 @@
                                             <span class="badge bg-light text-primary font-weight-bold p-2">$ ${salario_diario}</span>
                                         </li> 
                                     </ul>
+                                </div>
+                                ${contentPercepciones}
+                                ${contentDeducciones}
+                                <div class="col-md-12 mt-5">
+                                    <h4 class="text-center font-weight-bold"> Total: <span class="text-success">${data.Total}</span> </h4>
                                 </div>
                                 <div class="form-group mt-4 col-md-4 offset-4 text-center">
                                     <a class="btn btn-primary btn-sm btn-icon-split" id="btnprint${paramid}">

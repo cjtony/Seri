@@ -176,35 +176,20 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, DatosFiniquito = listDataDownEmp });
         }
 
-        public String ConvertDateText(string dateConvert)
-        {
-            String convertDate = "";
-            try
-            {
-                string year = dateConvert.Substring(0, 4);
-                string month = dateConvert.Substring(5, 2);
-                string day = dateConvert.Substring(8, 2);
-                string[] days = new string[] { "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" };
-                string[] months = new string[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
-                convertDate = day + " de " + months[Convert.ToInt32(month) - 1] + " del " + year;
-            }
-            catch (Exception exc)
-            {
-                Console.WriteLine(exc.Message.ToString());
-            }
-            return convertDate;
-        }
-
         // Genera pdf de finiquito cancelado
         //[HttpPost]
         public DatosPDFCancelado GenerateReceiptDownCancel(List<BajasEmpleadosBean> dataDownEmployee, List<DatosFiniquito> listDataDownBean, int keyEmployee, int keyBusiness)
         {
             string pathSaveDocs = Server.MapPath("~/Content/");
-            string nameFolder = "DOCSFINIQUITOSCANCELADOS";
+            string nameFolder   = "DOCSFINIQUITOSCANCELADOS";
             string nameFileTest = "test.txt";
             string nameEmployee = "";
-            string nameFilePdf = "";
+            string nameFilePdf  = "";
             DatosPDFCancelado dataR = new DatosPDFCancelado();
+            Utilerias utilerias     = new Utilerias();
+            string totalPercepcion = "";
+            string totalDeduccion  = "";
+            string totalBalance = "";
             try
             {
                 // Comprobamos que exista la carpeta, si no la creamos
@@ -231,7 +216,6 @@ namespace Payroll.Controllers
                 string sDaysAntiquity = "";
                 string typeSettlement = "";
                 string nameBusiness = "";
-                string totalBalance = "";
                 string centrCost = "";
                 string salaryMonth = "";
                 string salaryDay = "";
@@ -293,15 +277,17 @@ namespace Payroll.Controllers
                 doc.Open();
 
                 iTextSharp.text.Font _standardFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-                Font fontBold = new Font(FontFamily.HELVETICA, 10, Font.BOLD);
-                Font fontDefault = new Font(FontFamily.HELVETICA, 10);
-                Font fontTitle = new Font(FontFamily.HELVETICA, 14);
-                Font fontParagraph = new Font(FontFamily.HELVETICA, 8, Font.ITALIC);
-                Font fontCells = new Font(FontFactory.GetFont("Arial", 8, Font.NORMAL));
-                Paragraph pr = new Paragraph();
-                DateTime datePdf = DateTime.Now;
-                string datePrintReceipt = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
-                string dateAntiquityConvert = ConvertDateText(Convert.ToDateTime(dateAntiquity).ToString("yyyy-MM-dd"));
+                Font fontBold       = new Font(FontFamily.HELVETICA, 10, Font.BOLD);
+                Font fontDefault    = new Font(FontFamily.HELVETICA, 10);
+                Font fontTitle      = new Font(FontFamily.HELVETICA, 14);
+                Font fontParagraph  = new Font(FontFamily.HELVETICA, 8, Font.ITALIC);
+                Font fontCells      = new Font(FontFactory.GetFont("Arial", 8, Font.NORMAL));
+                Paragraph pr        = new Paragraph();
+                DateTime datePdf    = DateTime.Now;
+                string convertDateDown      = utilerias.ConvertDateFormat_year_month_day(dateDown);
+                string convertDateAnti      = utilerias.ConvertDateFormat_year_month_day(dateAntiquity);
+                string datePrintReceipt     = utilerias.ConvertDateText(convertDateDown);
+                string dateAntiquityConvert = utilerias.ConvertDateText(convertDateAnti);
                 pr.Font = fontTitle;
                 pr.Add("COMPROBANTE DE PERCEPCIONES Y DEDUCCIONES");
                 pr.Alignment = Element.ALIGN_CENTER;
@@ -369,7 +355,11 @@ namespace Payroll.Controllers
                 doc.Add(tableDataEm);
                 doc.Add(new Chunk("\n"));
                 pr.Font = fontBold;
-                pr.Add("Fecha de pago del " + ConvertDateText(Convert.ToDateTime(dateStartPay).ToString("yyyy-MM-dd")) + " al " + ConvertDateText(Convert.ToDateTime(dateEndPay).ToString("yyyy-MM-dd")) + " Periodo " + periodPay);
+                string convertDateStartPay = utilerias.ConvertDateFormat_year_month_day(dateStartPay);
+                string convertDateEndPay   = utilerias.ConvertDateFormat_year_month_day(dateEndPay);
+                string startPay   = utilerias.ConvertDateText(convertDateStartPay);
+                string   endPay   = utilerias.ConvertDateText(convertDateEndPay);
+                pr.Add("Fecha de pago del " + startPay + " al " + endPay + " Periodo " + periodPay);
                 pr.Alignment = Element.ALIGN_RIGHT;
                 doc.Add(pr);
                 pr.Clear();
@@ -463,6 +453,7 @@ namespace Payroll.Controllers
                         clPercepciones = new PdfPCell(new Phrase("    - $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo)), _standardFont));
                         clPercepciones.Colspan = 1;
                         tableInfo.AddCell(clPercepciones);
+                        totalPercepcion = data.sSaldo;
                     }
                     if (data.iIdValor == 2 && data.iRenglon_id == 1990)
                     {
@@ -474,6 +465,7 @@ namespace Payroll.Controllers
                         clDeducciones = new PdfPCell(new Phrase("    - $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo)), _standardFont));
                         clDeducciones.Colspan = 1;
                         tableInfo.AddCell(clDeducciones);
+                        totalDeduccion = data.sSaldo;
                     }
                 }
                 pr.Clear();
@@ -518,22 +510,29 @@ namespace Payroll.Controllers
             {
                 Console.WriteLine(exc.Message.ToString());
             }
-            dataR.sNombrePDF = nameFilePdf;
+            dataR.sNombrePDF    = nameFilePdf;
             dataR.sNombreFolder = nameFolder;
+            dataR.sTotalDeduccion  = totalDeduccion;
+            dataR.sTotalPercepcion = totalPercepcion;
+            dataR.sTotal = totalBalance;
             return dataR;
         }
 
         [HttpPost]
         public JsonResult GenerateReceiptDown(int keySettlement, int keyEmployee)
         {
-            Boolean flag = false;
+            Boolean flag        = false;
             String messageError = "none";
-            string nameFilePdf = "";
-            string nameFolder = "";
+            string nameFilePdf  = "";
+            string nameFolder   = "";
+            Utilerias utilerias = new Utilerias();
             List<BajasEmpleadosBean> dataDownEmployee = new List<BajasEmpleadosBean>();
-            List<DatosFiniquito> listDataDownBean = new List<DatosFiniquito>();
-            BajasEmpleadosDaoD dataDownEmplDaoD = new BajasEmpleadosDaoD();
+            List<DatosFiniquito> listDataDownBean     = new List<DatosFiniquito>();
+            BajasEmpleadosDaoD dataDownEmplDaoD       = new BajasEmpleadosDaoD();
             string nameEmployee = "";
+            string totalPercepcion = "";
+            string totalDeduccion  = "";
+            string totalBalance = "";
             try
             { 
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
@@ -560,7 +559,10 @@ namespace Payroll.Controllers
                             DatosPDFCancelado data = new DatosPDFCancelado();
                             data = GenerateReceiptDownCancel(dataDownEmployee, listDataDownBean, keyEmployee, keyBusiness);
                             nameFilePdf = data.sNombrePDF;
-                            nameFolder = data.sNombreFolder;
+                            nameFolder  = data.sNombreFolder;
+                            totalDeduccion  = data.sTotalDeduccion;
+                            totalPercepcion = data.sTotalPercepcion;
+                            totalBalance    = data.sTotal;
                         }
                         else
                         {
@@ -590,7 +592,7 @@ namespace Payroll.Controllers
                             string sDaysAntiquity = "";
                             string typeSettlement = "";
                             string nameBusiness = "";
-                            string totalBalance = "";
+                            
                             string centrCost = "";
                             string salaryMonth = "";
                             string salaryDay = "";
@@ -650,7 +652,8 @@ namespace Payroll.Controllers
                             Font fontParagraph = new Font(FontFamily.HELVETICA, 8, Font.ITALIC);
                             Paragraph pr = new Paragraph();
                             DateTime datePdf = DateTime.Now;
-                            string datePrintReceipt = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
+                            string convertDateDown  = utilerias.ConvertDateFormat_year_month_day(dateDown);
+                            string datePrintReceipt = utilerias.ConvertDateText(convertDateDown);
                             pr.Font = fontBold;
                             pr.Add(nameBusiness.ToUpper() + ".");
                             doc.Add(pr);
@@ -670,7 +673,7 @@ namespace Payroll.Controllers
                             doc.Add(new Chunk("\n"));
                             pr.Font = fontParagraph;
                             string balanceConvertText = convertMon.Convertir(Convert.ToDouble(totalBalance).ToString(), true, "PESOS");
-                            string dateDownConvert = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
+                            string dateDownConvert = utilerias.ConvertDateText(convertDateDown);
                             string paragraphDescription = "Recibí de " + nameBusiness.ToUpper() + " la cantidad neta de $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalBalance)) + " (" + balanceConvertText + "). Por los conceptos detallados en la hoja de desglose de finiquito que me corresponde, con motivo de mi renuncia a esta institución, por lo que dejo de prestar mis servicios de manera voluntaria a partir del día " + dateDownConvert + ".";
                             pr.Add(paragraphDescription);
                             pr.Alignment = Element.ALIGN_JUSTIFIED;
@@ -773,6 +776,7 @@ namespace Payroll.Controllers
                                     clPercepciones = new PdfPCell(new Phrase("     $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo)), _standardFont));
                                     clPercepciones.Colspan = 1;
                                     tableInfo.AddCell(clPercepciones);
+                                    totalPercepcion = data.sSaldo;
                                 }
                                 if (data.iIdValor == 2 && data.iRenglon_id == 1990)
                                 {
@@ -784,6 +788,7 @@ namespace Payroll.Controllers
                                     clDeducciones = new PdfPCell(new Phrase("     $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(data.sSaldo)), _standardFont));
                                     clDeducciones.Colspan = 1;
                                     tableInfo.AddCell(clDeducciones);
+                                    totalDeduccion = data.sSaldo;
                                 }
                             }
                             Font fontCells = new Font(FontFactory.GetFont("Arial", 8, Font.NORMAL));
@@ -1161,7 +1166,7 @@ namespace Payroll.Controllers
             }
             string nameFileSession = Path.GetFileNameWithoutExtension(nameFilePdf);
             Session[nameFilePdf] = nameFilePdf;
-            return Json(new { Bandera = flag, MensajeError = messageError, NombrePDF = nameFilePdf, InfoFiniquito = dataDownEmployee, NombreFolder = nameFolder });
+            return Json(new { Bandera = flag, MensajeError = messageError, NombrePDF = nameFilePdf, InfoFiniquito = dataDownEmployee, NombreFolder = nameFolder, Datos = listDataDownBean, Deduccion = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalDeduccion)), Percepcion = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalPercepcion)), Total = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalBalance)) });
         }
 
         [HttpPost]
@@ -1283,6 +1288,7 @@ namespace Payroll.Controllers
             String messageError = "none";
             string nameFilePdf = "";
             string nameFolder = "";
+            Utilerias utilerias = new Utilerias();
             List<BajasEmpleadosBean> dataDownEmployee = new List<BajasEmpleadosBean>();
             List<DatosFiniquito> listDataDownBean = new List<DatosFiniquito>();
             BajasEmpleadosDaoD dataDownEmplDaoD = new BajasEmpleadosDaoD();
@@ -1408,7 +1414,8 @@ namespace Payroll.Controllers
                             Font fontParagraph = new Font(FontFamily.HELVETICA, 8, Font.ITALIC);
                             Paragraph pr = new Paragraph();
                             DateTime datePdf = DateTime.Now;
-                            string datePrintReceipt = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
+                            string convertDateDown  = utilerias.ConvertDateFormat_year_month_day(dateDown);
+                            string datePrintReceipt = utilerias.ConvertDateText(convertDateDown);
                             pr.Font = fontBold;
                             pr.Add(nameBusiness.ToUpper() + ".");
                             doc.Add(pr);
@@ -1428,7 +1435,7 @@ namespace Payroll.Controllers
                             doc.Add(new Chunk("\n"));
                             pr.Font = fontParagraph;
                             string balanceConvertText = convertMon.Convertir(Convert.ToDouble(totalBalance).ToString(), true, "PESOS");
-                            string dateDownConvert = ConvertDateText(Convert.ToDateTime(dateDown).ToString("yyyy-MM-dd"));
+                            string dateDownConvert = utilerias.ConvertDateText(convertDateDown);
                             string paragraphDescription = "Recibí de " + nameBusiness.ToUpper() + " la cantidad neta de $" + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(totalBalance)) + " (" + balanceConvertText + "). Por los conceptos detallados en la hoja de desglose de finiquito que me corresponde, con motivo de mi renuncia a esta institución, por lo que dejo de prestar mis servicios de manera voluntaria a partir del día " + dateDownConvert + ".";
                             pr.Add(paragraphDescription);
                             pr.Alignment = Element.ALIGN_JUSTIFIED;

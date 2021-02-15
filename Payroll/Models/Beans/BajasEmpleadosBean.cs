@@ -93,6 +93,9 @@ namespace Payroll.Models.Beans
     {
         public string sNombrePDF { get; set; }
         public string sNombreFolder { get; set; }
+        public string sTotalPercepcion { get; set; }
+        public string sTotalDeduccion { get; set; }
+        public string sTotal { get; set; }
     }
     public class DatosFiniquito
     {
