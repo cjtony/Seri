@@ -784,11 +784,11 @@
                                     );
                                     periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
                                     separador = " ",
-                                        limite = 2,
-                                        arreglosubcadena = periodo.split(separador, limite);
+                                    limite = 2,
+                                    arreglosubcadena = periodo.split(separador, limite);
                                     const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 1, Anio: TbAño.value, IdTipoPeriodo: 0, IdEmpresa: 0 };
 
-                                    $.ajax({
+                                   $.ajax({
                                         url: "../Nomina/UpdateCInicioFechasPeriodo",
                                         type: "POST",
                                         data: dataSend3,
