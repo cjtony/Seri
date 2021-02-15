@@ -1408,7 +1408,6 @@ namespace Payroll.Models.Daos
 
                                     }
 
-
                                     string Otrospagos = "0.00";
                                     decimal DotrosPagos=0;
                                     if (LisTRecibo.Count > 0)
@@ -1417,12 +1416,12 @@ namespace Payroll.Models.Daos
                                         {
                                             if (LisTRecibo[a].iIdRenglon == 198)
                                             {
-                                                DotrosPagos = LisTRecibo[a].dSaldo;
                                                
+                                                DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
+
                                             }
                                             if (LisTRecibo[a].iIdRenglon == 17)
                                             {
-
                                                 DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
                                             }
 
@@ -1447,28 +1446,23 @@ namespace Payroll.Models.Daos
                                     if (ListDatEmisor[0].GrupoEmpresas != 2) {
                                         xmlWriter.WriteAttributeString("RfcPatronOrigen", EmisorRFC);
                                     }
+                                    if (IdEmpresa != 101) {
+                                        xmlWriter.WriteAttributeString("RegistroPatronal", sRegistroPatronal);
 
-                                    xmlWriter.WriteAttributeString("RegistroPatronal", sRegistroPatronal);
+                                    }
+
                                     xmlWriter.WriteEndElement();
 
                                     string TipoRiesgo = ListDatEmisor[0].sRiesgoTrabajo.ToString();
                                     xmlWriter.WriteStartElement(Prefijo2, "Receptor", EspacioDeNombreNomina);
                                     xmlWriter.WriteAttributeString("Curp", ReceptorCurp);
-                                    xmlWriter.WriteAttributeString("NumSeguridadSocial", sNumSeguridadSocial);
-                                    xmlWriter.WriteAttributeString("FechaInicioRelLaboral", sFechaInicioRelLaboral);
-                                    xmlWriter.WriteAttributeString("Antigüedad", sAntiguedad);
-                                    xmlWriter.WriteAttributeString("TipoContrato", sTipoContrato);
-                                    xmlWriter.WriteAttributeString("Sindicalizado", "No");
-                                    string TipJordana = "";
+                                   string TipJordana = "";
                                     if (ListDatEmisor[0].iTipoJordana < 10) { TipJordana = "0" + ListDatEmisor[0].iTipoJordana; };
                                     if (ListDatEmisor[0].iTipoJordana > 9) { TipJordana = Convert.ToString(ListDatEmisor[0].iTipoJordana); };
-                                    xmlWriter.WriteAttributeString("TipoJornada", TipJordana);
-                                    xmlWriter.WriteAttributeString("TipoRegimen", "02");
                                     xmlWriter.WriteAttributeString("NumEmpleado", sNumEmpleado);
                                     xmlWriter.WriteAttributeString("Departamento", sDepartamento);
                                     xmlWriter.WriteAttributeString("Puesto", sPuesto);
-                                    xmlWriter.WriteAttributeString("RiesgoPuesto", TipoRiesgo);//1
-                                    if (Tipodeperido == 0) {
+                                   if (Tipodeperido == 0) {
                                         xmlWriter.WriteAttributeString("PeriodicidadPago", "02");
                                     }
                                     if (Tipodeperido == 1)
@@ -1516,8 +1510,19 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
                                     }
 
-                                    xmlWriter.WriteAttributeString("SalarioBaseCotApor", SuedoAgravado);
-                                    xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SueldoDiario);
+                                    if (IdEmpresa != 166 && IdEmpresa != 199) {
+                                        xmlWriter.WriteAttributeString("SalarioBaseCotApor", SuedoAgravado);
+                                        xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SueldoDiario);
+                                        xmlWriter.WriteAttributeString("RiesgoPuesto", TipoRiesgo);//1
+                                        xmlWriter.WriteAttributeString("TipoJornada", TipJordana);
+                                        xmlWriter.WriteAttributeString("TipoRegimen", "02");
+                                        xmlWriter.WriteAttributeString("Sindicalizado", "No");
+                                        xmlWriter.WriteAttributeString("NumSeguridadSocial", sNumSeguridadSocial);
+                                        xmlWriter.WriteAttributeString("FechaInicioRelLaboral", sFechaInicioRelLaboral);
+                                        xmlWriter.WriteAttributeString("Antigüedad", sAntiguedad);
+                                        xmlWriter.WriteAttributeString("TipoContrato", sTipoContrato);
+
+                                    }
                                     xmlWriter.WriteAttributeString("ClaveEntFed", "DIF");
                                     xmlWriter.WriteEndElement();
 
