@@ -729,6 +729,16 @@ namespace Payroll.Controllers
                                 doc.Add(pr);
                                 doc.Add(Chunk.NEWLINE);
                                 // Creamos una tabla que contendrá los datos
+                                PdfPTable tblTotal  = new PdfPTable(2);
+                                tblTotal.WidthPercentage = 100;
+                                PdfPCell clTotal = new PdfPCell(new Phrase("Total: ", _standardFont));
+                                clTotal.BorderWidth = 0;
+                                clTotal.BorderWidthBottom = 0.75f;
+                                clTotal.Bottom = 80;
+                                PdfPCell clImporteTotal = new PdfPCell(new Phrase("", _standardFont));
+                                clImporteTotal.BorderWidth = 0;
+                                clImporteTotal.BorderWidthBottom = 0.75f;
+                                clImporteTotal.Bottom = 80;
                                 PdfPTable tblPrueba = new PdfPTable(4);
                                 tblPrueba.WidthPercentage = 100;
                                 // Configuramos el título de las columnas de la tabla
@@ -788,6 +798,7 @@ namespace Payroll.Controllers
                                     }
                                 }
                                 doc.Add(tblPrueba);
+                                doc.Add(tblTotal);
                                 doc.Close();
                                 pw.Close();
                                 flag = true;
