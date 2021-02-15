@@ -356,25 +356,29 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, Zip = nameFolder, EstadoZip = msgEstatusZip, Estado = msgEstatus, Anio = nameFolderYear });
         }
 
+        public class DataErrorAccountBank
+        {
+            public string sBanco { get; set; }
+            public string sNomina { get; set; }
+            public string sEmpresa { get; set; }
+            public string sCuenta { get; set; }
+        }
+
         public Boolean ProcessDepositsProsecutors(int keyBusiness, int invoiceId, int typeReceipt, string dateDeposits, int yearPeriod, int typePeriod, int numberPeriod, string nameBusiness, string rfcBusiness)
         {
-            Boolean flag    = false;
-            Boolean created = false;
+            Boolean flag    = false; 
             Boolean notData = true;
-            int k;
-            int typePay      = 0;
-            int bankResult   = 0;
-            int totalRecords = 0;
-            int totalAmount  = 0;
+            int k; 
+            int bankResult   = 0;  
             string nameBankResult = "";
             string fileNamePDF    = "";
-            string vFileName      = "";
-            string folderCreateF  = "NOMINAS";
+            string vFileName      = ""; 
             List<DatosDepositosBancariosBean>   listDatosDepositosBancariosBeans  = new List<DatosDepositosBancariosBean>();
             DataDispersionBusiness              dataDispersionBusiness            = new DataDispersionBusiness();
             List<DatosProcesaChequesNominaBean> listDatosProcesaChequesNominaBean = new List<DatosProcesaChequesNominaBean>();
             DatosCuentaClienteBancoEmpresaBean  datoCuentaClienteBancoEmpresaBean = new DatosCuentaClienteBancoEmpresaBean();
             DatosDispersionArchivosBanamex datosDispersionArchivosBanamex = new DatosDispersionArchivosBanamex();
+            List<DataErrorAccountBank> dataErrors = new List<DataErrorAccountBank>();
             try {
                 listDatosDepositosBancariosBeans = dataDispersionBusiness.sp_Procesa_Cheques_Total_Nomina(keyBusiness, typePeriod, numberPeriod, yearPeriod);
                 if (listDatosDepositosBancariosBeans.Count > 0) {
@@ -628,17 +632,28 @@ namespace Payroll.Controllers
                                         int longNumEmpleado = 10, longNumImporte = 15, longNumCuenta = 18;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             int longAcortAccount = payroll.sCuenta.Length;
-                                            string accountUser = payroll.sCuenta;
-                                            string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
-                                            string formatAccount = "";
-                                            if (longAcortAccount == 18) {
-                                                formatAccount = formatAccountSubstring.Substring(0, 7);
+                                            string finallyAccount = payroll.sCuenta;
+                                            if (longAcortAccount  == 18) {
+                                                string accountUser = payroll.sCuenta;
+                                                string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
+                                                string formatAccount = "";
+                                                if (longAcortAccount == 18) {
+                                                    formatAccount = formatAccountSubstring.Substring(0, 7);
+                                                }
+                                                string cerosAccount = "";
+                                                for (var t = 0; t < formatAccount.Length + 1; t++) {
+                                                    cerosAccount += "0";
+                                                }
+                                                finallyAccount = cerosAccount + formatAccountSubstring.Substring(7, 10);
+                                            } else {
+                                                dataErrors.Add(
+                                                        new DataErrorAccountBank
+                                                        {
+                                                            sBanco = "Banamex",
+                                                            sCuenta = payroll.sCuenta,
+                                                            sNomina = payroll.sNomina
+                                                        });
                                             }
-                                            string cerosAccount = "";
-                                            for (var t = 0; t < formatAccount.Length + 1; t++) {
-                                                cerosAccount += "0";
-                                            }
-                                            string finallyAccount = cerosAccount + formatAccountSubstring.Substring(7, 10);
                                             int longNumEmp = longNumEmpleado - payroll.sNomina.Length;
                                             int longNumImp = longNumImporte  - payroll.dImporte.ToString().Length;
                                             int longNumCta = longNumCuenta   - payroll.sCuenta.Length;
@@ -665,18 +680,28 @@ namespace Payroll.Controllers
                                         int longConBncmD = 9, longImpBncmD = 15, longNomBenBncmD = 40;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             string nameCompleteEmployee = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno;
-                                            int longAcortAccount = payroll.sCuenta.Length;
-                                            string accountUser = payroll.sCuenta;
-                                            string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
-                                            string formatAccount = "";
+                                            int longAcortAccount  = payroll.sCuenta.Length;
+                                            string finallyAccount = payroll.sCuenta;
                                             if (longAcortAccount == 18) {
-                                                formatAccount = formatAccountSubstring.Substring(0, 7);
+                                                string accountUser = payroll.sCuenta;
+                                                string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
+                                                string formatAccount = "";
+                                                if (longAcortAccount == 18) {
+                                                    formatAccount = formatAccountSubstring.Substring(0, 7);
+                                                }
+                                                string cerosAccount = "";
+                                                for (var t = 0; t < formatAccount.Length + 1; t++) {
+                                                    cerosAccount += "0";
+                                                }
+                                                finallyAccount = formatAccountSubstring.Substring(7, 10);
+                                            } else {
+                                                dataErrors.Add(
+                                                        new DataErrorAccountBank {
+                                                            sBanco = "Banamex",
+                                                            sCuenta = payroll.sCuenta,
+                                                            sNomina = payroll.sNomina
+                                                        });
                                             }
-                                            string cerosAccount = "";
-                                            for (var t = 0; t < formatAccount.Length + 1; t++) {
-                                                cerosAccount += "0";
-                                            }
-                                            string finallyAccount = formatAccountSubstring.Substring(7, 10);
                                             if (nameCompleteEmployee.Length > 40) {
                                                 nombreBenBancomerD = nameCompleteEmployee.Substring(0, 39);
                                             } else {
@@ -728,14 +753,9 @@ namespace Payroll.Controllers
                                 pr.Alignment = Element.ALIGN_CENTER;
                                 doc.Add(pr);
                                 doc.Add(Chunk.NEWLINE);
-                                // Creamos una tabla que contendrá los datos
+                                
                                 PdfPTable tblPrueba = new PdfPTable(4);
                                 tblPrueba.WidthPercentage = 100;
-                                // Configuramos el título de las columnas de la tabla
-                                //PdfPCell consecutive = new PdfPCell(new Phrase("Cta. Cheques", _standardFont));
-                                //consecutive.BorderWidth = 0;
-                                //consecutive.BorderWidthBottom = 0.75f;
-                                //consecutive.Bottom = 80;
                                 PdfPCell clCtaCheques = new PdfPCell(new Phrase("Cta. Cheques", _standardFont));
                                 clCtaCheques.BorderWidth = 0;
                                 clCtaCheques.BorderWidthBottom = 0.75f;
@@ -751,21 +771,17 @@ namespace Payroll.Controllers
                                 PdfPCell clNomina = new PdfPCell(new Phrase("Nomina", _standardFont));
                                 clNomina.BorderWidth = 0;
                                 clNomina.BorderWidthBottom = 0.75f;
-                                clNomina.Bottom = 20;
-                                // Añadimos las celdas a la tabla
-                                //tblPrueba.AddCell(consecutive);
+                                clNomina.Bottom = 20; 
                                 tblPrueba.AddCell(clCtaCheques);
                                 tblPrueba.AddCell(clBeneficiario);
                                 tblPrueba.AddCell(clImporte);
                                 tblPrueba.AddCell(clNomina);
                                 int d = 0;
+                                Decimal sumTotal = 0;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                     if (payroll.iIdBanco == bankResult) {
-                                        d += 1;
-                                        //consecutive = new PdfPCell(new Phrase(d.ToString(), _standardFont));
-                                        //consecutive.BorderWidth = 0;
-                                        //consecutive.Bottom = 80;
-                                        // Llenamos la tabla con información
+                                        sumTotal += Convert.ToDecimal(payroll.doImporte);
+                                        d += 1; 
                                         clCtaCheques = new PdfPCell(new Phrase(payroll.sCuenta, _standardFont));
                                         clCtaCheques.BorderWidth = 0;
                                         clCtaCheques.Bottom = 80;
@@ -777,10 +793,7 @@ namespace Payroll.Controllers
                                         clImporte.Bottom = 80;
                                         clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
                                         clNomina.BorderWidth = 0;
-                                        clNomina.Bottom = 80;
-                                        // Añadimos las celdas a la tabla
-                                        //clImporte = new PdfPCell(new Phrase("$ " + string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal(payroll.dImporte)), _standardFont));
-                                        //tblPrueba.AddCell(consecutive);
+                                        clNomina.Bottom = 80; 
                                         tblPrueba.AddCell(clCtaCheques);
                                         tblPrueba.AddCell(clBeneficiario);
                                         tblPrueba.AddCell(clImporte);
@@ -788,9 +801,37 @@ namespace Payroll.Controllers
                                     }
                                 }
                                 doc.Add(tblPrueba);
+                                doc.Add(Chunk.NEWLINE);
+                                iTextSharp.text.Font _standardFont2 = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                                // Creamos una tabla que contendrá los datos
+                                PdfPTable tblTotal = new PdfPTable(2);
+                                tblTotal.WidthPercentage = 100;
+                                PdfPCell clTotal = new PdfPCell(new Phrase("Total: ", _standardFont2));
+                                clTotal.BorderWidth = 0; 
+                                clTotal.Bottom = 80;
+                                PdfPCell clImporteTotal = new PdfPCell(new Phrase(sumTotal.ToString("#,##0.00"), _standardFont2));
+                                clImporteTotal.BorderWidth = 0; 
+                                clImporteTotal.Bottom = 80;
+                                tblTotal.AddCell(clTotal);
+                                tblTotal.AddCell(clImporteTotal);
+                                doc.Add(tblTotal);
                                 doc.Close();
                                 pw.Close();
                                 flag = true;
+                                if (dataErrors.Count > 0) {
+                                    using (StreamWriter fileLog = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + "LOG_ACCOUNTS" + ".txt", false, Encoding.UTF8))
+                                    {
+                                        fileLog.Write("Fecha: " + DateTime.Now.ToString() + "\n");
+                                        fileLog.Write("\n");
+                                        fileLog.Write("CUENTAS CON LONGITUD MENOR A 18 CARACTERES");
+                                        fileLog.Write("\n");
+                                        foreach (DataErrorAccountBank err in dataErrors) {
+                                            fileLog.Write("Nomina: " + err.sNomina + ". Banco: " + err.sBanco + ". Cuenta: " + err.sCuenta);
+                                            fileLog.Write("\n");
+                                        }
+                                        fileLog.Close();
+                                    }
+                                }
                             }
                         }
                     }
