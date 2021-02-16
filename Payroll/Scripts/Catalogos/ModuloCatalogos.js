@@ -1532,7 +1532,7 @@ $(function () {
                         "<td>" + text + "</td>" +
                         "<td>" +
                         "<div class='badge badge-success btn'><i class='fas fa-edit fa-lg'></i> Editar</div>" +
-                        "<div class='badge badge-info btn mx-1' onclick='mostarmodalnewusuario();'><i class='fas fa-plus fa-lg'></i> Nuevo</div>" +
+                        "<div class='badge badge-info btn mx-1' onclick='mostarmodalnewperfil();'><i class='fas fa-plus fa-lg'></i> Nuevo</div>" +
                         btns +
                         "</td>" +
                         "</tr>";
@@ -1613,44 +1613,12 @@ $(function () {
     // carga los menus principales
     //
 
-    var mainmenus;
-    var submenus;
-
 
     loadmainchecks = () => {
-        
-        loadmainmenus();
-        
+
         var btns = "";
         var item;
         var nom;
-        for (var i = 0; i < mainmenus.length; i++) {
-            item = mainmenus[i]['iIdItem'];
-            nom = mainmenus[i]['sNombre'];
-            
-            var collapse = "<div class='list-group col-md-12'>";
-
-
-            for (var k = 0; k < submenus.length; k++) {
-                collapse += "<button type='button' class='list-group-item list-group-item-action' id='" + submenus[k]['iIdItem'] + "-" + submenus[k]['sNombre'].replace(/ /g, "_") + "'><span class='" + submenus[k]['iIdItem'] + "'></span>&nbsp;&nbsp;" + submenus[k]['sNombre'] + "</button>";
-            }
-            collapse += "</div>";
-            var btn = "<button type='button' class='btn btn-primary col-md-5 my-1  d-flex justify-content-between align-items-center' id='" + item + "-" + nom.replace(/ /g, "_") + "'>" + nom + "<span class='fas fa-chevron-circle-down fa-lg'></span>" + collapse + "</button>";
-            console.log("btn");
-            console.log(btn);
-            btns += btn;
-
-        }
-        console.log("btns");
-        console.log(btns);
-        setTimeout(function () {
-            $("#formbodyprofiles").html(btns);
-        }, 2000);
-
-
-    }
-
-    loadmainmenus = () => {
 
         $.ajax({
             url: "../Catalogos/Loadmainmenus",
@@ -1658,23 +1626,96 @@ $(function () {
             data: JSON.stringify({}),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                mainmenus = data;
+
+                for (var i = 0; i < data.length; i++) {
+                    item = data[i]['iIdItem'];
+                    nom = data[i]['sNombre'];
+
+                    var collapse =
+                        "<div class='accordion col-md-6 my-0 py-0' id='accordion" + item + "'>" +
+                        "<div class='card' >" +
+                        "<div class='my-0 py-0 btn btn-light my-0' id='heading" + item + "'>" +
+                        "<div class='row d-flex justify-content-between align-content-end flex-wrap'>" +
+                        "<div class='custom-control custom-checkbox ml-3  h6 py-1'>" +
+                        "<input type='checkbox' class='custom-control-input' id='check" + item + "' name='maincheck' value='" + item + "' status='0' onclick='loadsubchecks(\"check" + item + "\",\"collapse" + item + "\", " + item + ");'>" +
+                        "<label class='custom-control-label pt-1' for='check" + item + "'>" + nom + "</label>" +
+                        "</div>" +
+                        "<div class='btn btn-link' onclick='changeicon(\"collapse" + item + "\",\"icon" + item + "\");' data-toggle='collapse' data-target='#collapse" + item + "' aria-expanded='true' aria-controls='collapse" + item + "'>" +
+                        "<span id='icon" + item + "' class='fas fa-bars text-success fa-lg' status='0'></span>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div id='collapse" + item + "' class='collapse my-0 py-0' aria-labelledby='heading" + item + "' data-parent='#accordion" + item + "'>" +
+                        "<div class='card-body my-0 py-0' id='card-body-" + item + "'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>";
+                    btns += collapse
+                }
+
+                $("#formbodyprofiles").html(btns);
+
             }
         });
+
     }
 
-    laodsubmenus = (id) => {
+    loadsubchecks = (check, collapse, item) => {
+        var status = $("#" + check).attr("status");
+        var subcheck = "";
+        var subchecks = "";
+        if (status == "0" || status == 0) {
 
-        $.ajax({
-            url: "../Catalogos/Loadonemenu",
-            type: "POST",
-            data: JSON.stringify({ Id: id }),
-            contentType: "application/json; charset=utf-8",
-            success: (data) => {
-                submenus = data;
-            }
-        });
+            $.ajax({
+                url: "../Catalogos/Loadonemenu",
+                type: "POST",
+                data: JSON.stringify({ Id: item }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    subchecks = "<ul class='list-group list-group-flush'>"
+                    if (data.length == 0 || data == null || data == "") {
 
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            subcheck =
+                                "<li class='list-group-item my-0 py-0 d-flex justify-content-start font-labels align-items-center'>" +
+                                "<div class='custom-control custom-checkbox ml-3'>" +
+                                "<input type='checkbox' class='custom-control-input' id='check" + data[i]["iIdItem"] + "' name='subcheck' value='"+data[i]["iIdItem"]+"' parent='" + item + "'>" +
+                                "<label class='custom-control-label' for='check" + data[i]["iIdItem"] + "'>" + data[i]["sNombre"] + "</label>" +
+                                "</div>" +
+                                "</li>";
+                            subchecks += subcheck;
+                        }
+                        console.log(subchecks);
+                    }
+                    subchecks += "</ul>";
+                    $("#" + "card-body-" + item).html(subchecks);
+                }
+            });
+
+            $("#" + check).attr("status", "1");
+            changeicon(collapse, "icon" + item);
+        } else if (status == "1" || status == 1) {
+            changeicon(collapse, "icon" + item);
+        }
+    }
+
+    changeicon = (collapse, icon) => {
+
+        var status = $("#" + icon).attr("status");
+
+        if (status == "0" || status == 0) {
+            $("#" + collapse).collapse("show");
+
+            $("#" + icon).attr("class", "fas fa-times text-success fa-lg");
+            $("#" + icon).attr("status", "1");
+        } else if (status == "1" || status == 1) {
+            $("#" + collapse).collapse("hide");
+
+            $("#" + icon).attr("class", "fas fa-bars text-success fa-lg");
+            $("#" + icon).attr("status", "0");
+        }
     }
 
     // carga los checks que pertenecen a cada menu principal
@@ -1704,8 +1745,29 @@ $(function () {
             });
         }
     }
+
+    carganewperfil = () => {
+
+        var form = $("#frmProfiles").serialize();
+        console.log(form);
+
+
+
+
+
+        $.ajax({
+            url: "../Catalogos/Loadonemenu",
+            type: "POST",
+            data: JSON.stringify({ form }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                
+            }
+        });
+    }
+
     // CARGA MODAL DEL NUEVO USUARIO
-    mostarmodalnewusuario = () => {
+    mostarmodalnewperfil = () => {
         $("#modalnewusuario").modal("show");
     }
 
