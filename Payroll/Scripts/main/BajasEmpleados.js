@@ -453,7 +453,7 @@
                                     enabledPay    = "disabled";
                                     actionSavePay = "disabled"; 
                                     disabledCancelSettlement = "";
-                                    spanDownNotSet = `<span class="badge ml-2 badge-info"><i class="fas fa-file mr-1"></i>Finiquito sin baja en firme</span>`;
+                                    spanDownNotSet = `<span class="badge ml-2 badge-info"><i class="fas fa-file mr-1"></i>Proyecto</span>`;
                                     btnApplyDown = `<button onclick="fApplyDown(${data.DatosFiniquito[i].iIdFiniquito}, ${data.DatosFiniquito[i].iEmpleado_id});" class="btn btn-sm btn-danger" title="Aplicar baja en firme"> <i class="fas fa-user-times"></i> </button>`;
                                 }
                                 document.getElementById('list-data-down').innerHTML += `
@@ -1262,10 +1262,10 @@
 
     // Funcion que agrega los complementos a una tabla
     fAddComplementTable = (type) => {
-        bodyComplements.innerHTML = "";
         if (type == 1) {
-            if (conceptComplement.value != "") {
+            if (conceptComplement.value != "0") {
                 if (importConcept.value != "") {
+                    bodyComplements.innerHTML = "";
                     let quantityObj = 0;
                     let totalAmount = 0;
                     console.log('concepto');
@@ -1301,12 +1301,13 @@
                         btnSaveComplementSettlement.disabled = true;
                     }
                 } else {
-
+                    fShowTypeAlertDE("Atención!", "Añade un importe", "warning", importConcept, null, 1);
                 }
             } else {
-
+                fShowTypeAlertDE("Atención!", "Selecciona un concepto", "warning", conceptComplement, null, 1);
             }
         } else {
+            bodyComplements.innerHTML = "";
             let quantityObj = 0; 
             let totalAmount = 0;
             for (let i = 0; i < objectData.length; i++) {
@@ -1339,6 +1340,14 @@
             }
         }
     }
+
+    // Funcion que limpia el importe al cambiar de concepto
+    conceptComplement.addEventListener('change', () => {
+        importConcept.value = "";
+        setTimeout(() => {
+            importConcept.focus();
+        }, 500);
+    });
 
     // Funcion que elimina un concepto a partir de su posicion
     fDeleteConcept = (position) => {
