@@ -603,6 +603,8 @@
                     await fGenerateReportBillsChecksDetailsTotals(optionBusiness, keyBusinessOpt, typeReport);
                 } else if (typeReport === "MOVIMIENTOS") {
                     await fGenerateReportMovements(optionBusiness, keyBusinessOpt);
+                } else if (typeReport === "GENEMPLOYES") {
+                    await fGenerateReportGeneralEmployees(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -942,6 +944,51 @@
                 } else {
                     fShowTypeAlert('Atención', 'Complete el campo Fecha inicio', 'warning', paramDateS, 2);
                 }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte general de empleados
+    fGenerateReportGeneralEmployees = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                $.ajax({
+                    url: "../Reportes/ReportGeneralEmployees",
+                    type: "POST",
+                    data: { typeOption: option, keyOptionSel: parseInt(keyOption) },
+                    beforeSend: () => {
+                        fDisabledButtonsRep();
+                    }, success: (data) => {
+                        setTimeout(() => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, 2000);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                })
             } else {
                 alert('Accion invalida');
                 location.reload();
