@@ -334,5 +334,27 @@ namespace Payroll.Controllers
             }
             return Json(new { Bandera = flag, MensajeError = messageError });
         }
+
+        [HttpPost]
+        public JsonResult SaveEditPosition(int newLocality, int position)
+        {
+            Boolean flag         = false;
+            String  messageError = "none";
+            DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
+            DatosPosicionesDao savePosicionDao  = new DatosPosicionesDao();
+            try {
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                addPosicionBean = savePosicionDao.sp_Save_Edit_Position(position, newLocality, keyBusiness);
+                if (addPosicionBean.sMensaje == "SUCCESS") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag         = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
     }
+
 }

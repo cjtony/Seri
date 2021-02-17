@@ -540,6 +540,30 @@ namespace Payroll.Models.Daos
     public class DatosPosicionesDao : Conexion
     {
 
+        public DatosPosicionesBean sp_Save_Edit_Position(int position, int newLocality, int keyBusiness)
+        {
+            DatosPosicionesBean posicionesBean = new DatosPosicionesBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Save_Edit_Position", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdPosicion", position));
+                cmd.Parameters.Add(new SqlParameter("@IdLocalidad", newLocality));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    posicionesBean.sMensaje = "SUCCESS";
+                } else {
+                    posicionesBean.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                posicionesBean.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return posicionesBean;
+        }
+
         public DatosMovimientosBean sp_Save_Data_History_Movements_Employee(int keyEmployee, int keyBusiness, string typeMov, string descMov, string newValue, string beforeValue, string dateMov, int keyUser, int keyPeriod, int period, int year)
         {
             DatosMovimientosBean datosMovimientos = new DatosMovimientosBean();

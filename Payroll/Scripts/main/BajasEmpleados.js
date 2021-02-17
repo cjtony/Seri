@@ -824,6 +824,11 @@
                             document.getElementById("typeSettlement").textContent = data.InfoFiniquito[0].sFiniquito_valor + " - ";
                             const dataInfo = data.InfoFiniquito[0];
                             document.getElementById('typeDown').textContent = dataInfo.sMotivo_baja;
+                            if (dataInfo.iEstatus == 4) {
+                                document.getElementById('proyect').textContent = "Proyecto.";
+                            } else {
+                                document.getElementById('proyect').textContent = "";
+                            }
                             document.getElementById("headerSettlement").innerHTML += infoPaid;
                             document.getElementById("btnprint" + String(paramid)).setAttribute("download", data.NombrePDF);
                             document.getElementById("btnprint" + String(paramid)).setAttribute("href", "../../Content/" + data.NombreFolder + "/" + data.NombrePDF);
