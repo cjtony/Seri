@@ -260,6 +260,7 @@
         resultpositions.innerHTML = '';
         document.getElementById('noresultpositions').innerHTML = '';
         try {
+            alert('hola');
             if (searchpositions.value != "") {
                 $.ajax({
                     url: "../SearchDataCat/SearchPositions",
@@ -561,7 +562,7 @@
                         //puesidedit.value  = data.iPuesto_id;
                         pueusuedit.value = data.sNombrePuesto;
                         editatcla.innerHTML = `<option value="${data.iIdRegistroPat}">${data.sRegistroPat}</option>`;
-                        //editlocalityr.value = data.iIdLocalidad;
+                        editlocalityr.value = data.iIdLocalidad;
                         edilocalityrtxt.value = data.sLocalidad;
                         //emprepedit.value = data.iIdReportaAPosicion;
                         emprepregtxtedit.value = data.sCodRepPosicion;
@@ -710,4 +711,167 @@
     //        }
     //    }
     //});
+
+    // new code
+    const btnSearchEditLocality = document.getElementById('btn-search-localidad-edit');
+    const searchlocalityaddedit = document.getElementById('searchlocalityaddedit');
+    const icoCloseSearchLocalitysEdit = document.getElementById('ico-close-search-localitys-edit');
+    const btnCloseSearchLocalitysEdit = document.getElementById('btn-close-search-localitys-edit');
+    const noresultslocalityedit = document.getElementById('noresultslocalityedit');
+    const resultlocalityaddedit = document.getElementById('resultlocalityaddedit');
+    const btnsaveeditposition = document.getElementById('btnsaveeditposition');
+
+    btnSearchEditLocality.addEventListener('click', () => {
+        $("#editposition").modal("hide");
+        setTimeout(() => {
+            searchlocalityaddedit.focus();
+        }, 500);
+    });
+
+    fCloseSearchLocalitysEdit = () => {
+        $("#searchlocalidadedit").modal("hide");
+        setTimeout(() => {
+            $("#editposition").modal("show");
+        }, 500);
+    }
+
+    icoCloseSearchLocalitysEdit.addEventListener('click', fCloseSearchLocalitysEdit);
+    btnCloseSearchLocalitysEdit.addEventListener('click', fCloseSearchLocalitysEdit);
+
+    fsearchlocalitysaddedit = () => {
+        try {
+            noresultslocalityedit.innerHTML = '';
+            resultlocalityaddedit.innerHTML = '';
+            if (searchlocalityaddedit.value != "") {
+                $.ajax({
+                    url: "../SearchDataCat/SearchLocalitys",
+                    type: "POST",
+                    data: { wordsearch: searchlocalityaddedit.value },
+                    success: (data) => {
+                        resultlocalityaddedit.innerHTML = '';
+                        if (data.length > 0) {
+                            let number = 0;
+                            for (let i = 0; i < data.length; i++) {
+                                number += 1;
+                                resultlocalityaddedit.innerHTML += `<button onclick="fselectlocalityeditp(${data[i].iIdLocalidad}, '${data[i].sDescripcion}',${data[i].iRegistroPatronal_id}, '${data[i].sRegistroPatronal}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. ${data[i].iCodigoLocalidad} - ${data[i].sDescripcion} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
+                            }
+                        } else {
+                            document.getElementById('noresultslocalityedit').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron localidades con el termino <b>${searchlocalityadd.value}</b>
+                                </div>
+                            `;
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                resultlocalityaddedit.innerHTML = '';
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    searchlocalityaddedit.addEventListener('keyup', fsearchlocalitysaddedit);
+
+    fselectlocalityeditp = (paramid, paramstr, paramregpat, paramstrregpat) => {
+        try {
+            $("#searchlocalidadedit").modal('hide');
+            searchlocalityaddedit.value = '';
+            resultlocalityaddedit.innerHTML = '';
+            $("#editposition").modal('show');
+            document.getElementById('editlocalityrnew').value = paramid;
+            edilocalityrtxt.value = paramstr;
+            document.getElementById('editatcla').innerHTML = `<option value="${paramregpat}">${paramstrregpat}</option>`; 
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    // Funcion que guarda la edicion de la posicion
+    fSaveEditPosition = () => {
+        try {
+            const newLocality = document.getElementById('editlocalityrnew');
+            if (newLocality.value != "0") {
+                if (parseInt(newLocality.value) != parseInt(editlocalityr.value)) {
+                    const dataSend = { newLocality: parseInt(newLocality.value), position: parseInt(clvposition.value) };
+                    console.log(dataSend);
+                    $.ajax({
+                        url: "../SaveDataGeneral/SaveEditPosition",
+                        type: "POST",
+                        data: dataSend,
+                        beforeSend: () => {
+                            btnsaveeditposition.disabled = true;
+                        }, success: (data) => {
+                            console.log(data);
+                            if (data.Bandera == true && data.MensajeError == "none") {
+                                Swal.fire({
+                                    title: 'Posicion Actualizada', icon: 'success',
+                                    showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    btnsaveeditposition.disabled = false;
+                                    editlocalityr.value = newLocality.value;
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error', text: "Ocurrio un error interno en la aplicación", icon: 'success',
+                                    showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((acepta) => {
+                                    $("#editposition").modal('hide');
+                                    btnsaveeditposition.disabled = false;
+                                });
+                            }
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Atención!', text: 'No hay cambios que actualizar', icon: 'warning',
+                        showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                        confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                    });
+                }
+            } else {
+                Swal.fire({
+                    title: 'Atención!', text: 'No hay cambios que actualizar', icon: 'warning',
+                    showClass: { popup: 'animated fadeInDown faster' }, hideClass: { popup: 'animated fadeOutUp faster' },
+                    confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                });
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    btnsaveeditposition.addEventListener('click', fSaveEditPosition);
+
 });
