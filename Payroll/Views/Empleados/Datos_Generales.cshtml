@@ -69,7 +69,7 @@
                                 <a class="nav-item nav-link font-navs" id="nav-estructure-tab" data-toggle="tab" href="#nav-estructure" role="tab" aria-controls="nav-estructure" aria-selected="false">
                                     <i class="fas fa-project-diagram col-ico mr-ico-05"></i> Estructura
                                 </a>
-                                <a class="nav-item nav-link font-navs d-none" id="nav-numberpayroll-tab"  data-toggle="tab" href="#nav-numberpayroll" role="tab" aria-controls="nav-numberpayroll" aria-selected="false">
+                                <a class="nav-item nav-link font-navs d-none" id="nav-numberpayroll-tab" data-toggle="tab" href="#nav-numberpayroll" role="tab" aria-controls="nav-numberpayroll" aria-selected="false">
                                     <i class="fas fa-circle col-ico mr-ico-05"></i> Numero Nomina
                                 </a>
                                 <a class="nav-item nav-link disabled" id="name-employee-action" data-toggle="tab" role="tab" aria-controls="nav-estructure" aria-selected="false">
@@ -79,11 +79,11 @@
                                     </div>
                                 </a>
                                 @*<a class="nav-item nav-link rounded border-left-primary shadow border-top-primary border-right-primary" id="mode-night">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="modeNightCheck" value="1">
-                                        <label id="label-mode-night" class="form-check-label font-navs" for="modeNightCheck"><i id="ico-mode-night" class="fas fa-moon mr-1 ml-1"></i> M.O</label>
-                                    </div>
-                                </a>*@
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="modeNightCheck" value="1">
+                                            <label id="label-mode-night" class="form-check-label font-navs" for="modeNightCheck"><i id="ico-mode-night" class="fas fa-moon mr-1 ml-1"></i> M.O</label>
+                                        </div>
+                                    </a>*@
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -528,7 +528,7 @@
                                         <div class="form-group row">
                                             <input type="hidden" readonly class="form-control form-control-sm" id="clvnom" />
                                             <input type="hidden" readonly class="form-control form-control-sm" id="fechefectact" />
-                                            <input type="hidden" placeholder="Salario mensual" id="salmenact" class="form-control form-control-sm" /> 
+                                            <input type="hidden" placeholder="Salario mensual" id="salmenact" class="form-control form-control-sm" />
                                             <label for="fecefecnom" class="col-sm-4 col-form-label font-labels" id="label-efnom">
                                                 Fecha Efectiva
                                             </label>
@@ -1233,6 +1233,52 @@
                     <span class="text">Agregar nuevo</span>
                 </button>
                 <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-localitys">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchlocalidadedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-map-marked-alt mr-2 col-ico"></i> Localidades</h5>
+                <button id="ico-close-search-localitys-edit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-2 col-md-8">
+                            <div class="form-group row">
+                                <label for="searchlocalityaddedit" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i>
+                                    Localidad:
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchlocalityaddedit" placeholder="Ingresa la localidad" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultlocalityaddedit">
+                            </div>
+                            <div class="animated fadeIn" id="noresultslocalityedit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-localitys-edit">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
                     </span>
@@ -2338,7 +2384,7 @@
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
                                 <label for="searchpositionkey" class="col-form-label col-md-5 font-weight-bold">
-                                    <i class="fas fa-terminal mr-1"></i> Código posicion:
+                                    <i class="fas fa-terminal mr-1"></i> Nombre puesto:
                                 </label>
                                 <div class="col-md-7">
                                     <input type="text" class="form-control form-control-sm text-uppercase" id="searchpositionkey" placeholder="Ingresa el código" />
@@ -2619,7 +2665,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable rounded" role="document">
         <div class="modal-content border-left-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-eye mr-2 col-ico"></i> Detalles de posicion: <span id="codtxtinf"></span></h5>
+                <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit mr-2 col-ico"></i> Edición de la posicion: <span id="codtxtinf"></span></h5>
                 <button id="ico-clear-positions-edit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -2677,8 +2723,14 @@
                                 </label>
                                 <div class="col-sm-8">
                                     <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-localidad-edit" data-toggle="modal" data-target="#searchlocalidadedit">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
                                         <input type="hidden" readonly id="editlocalityr" placeholder="Localidad" class="form-control form-control-sm" />
-                                        <input type="text" readonly id="edilocalityrtxt" class="form-control form-control-sm" placeholder="Localidad" />
+                                        <input type="hidden" value="0" readonly id="editlocalityrnew" placeholder="Localidad" class="form-control form-control-sm" />
+                                        <input type="text" id="edilocalityrtxt" class="form-control form-control-sm" placeholder="Localidad" />
                                     </div>
                                 </div>
                             </div>
@@ -2687,7 +2739,7 @@
                                     Reporta a posicion:
                                 </label>
                                 <div class="col-sm-8">
-                                    <div class="input-group mb-2"> 
+                                    <div class="input-group mb-2">
                                         <input type="hidden" readonly id="emprepedit" placeholder="Posicion" class="form-control form-control-sm" />
                                         <input type="text" readonly id="emprepregtxtedit" class="form-control form-control-sm" placeholder="Posicion" />
                                     </div>
@@ -2707,13 +2759,19 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsaveeditposition">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check-circle"></i>
+                    </span>
+                    <span class="text">Actualizar</span>
+                </button>
                 <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-positions-edit">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
                     </span>
                     <span class="text">Cerrar</span>
-                </button>  
+                </button>
             </div>
         </div>
     </div>
@@ -2763,13 +2821,13 @@
                     </span>
                     <span class="text">Agregar nuevo</span>
                 </button>
-                 
+
                 <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-regionales">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
                     </span>
                     <span class="text">Cerrar</span>
-                </button> 
+                </button>
             </div>
         </div>
     </div>
@@ -2811,7 +2869,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
                 <button data-toggle="modal" data-target="#registerregion" id="btnregisterregionbtndy" type="button" class="btn btn-success btn-sm btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
@@ -2823,7 +2881,7 @@
                         <i class="fas fa-times"></i>
                     </span>
                     <span class="text">Cerrar</span>
-                </button> 
+                </button>
             </div>
         </div>
     </div>
@@ -2865,13 +2923,13 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregistersucursalbtndy" data-toggle="modal" data-target="#registersucursal">
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                     </span>
                     <span class="text">Agregar nuevo</span>
-                </button> 
+                </button>
                 <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-offices-dy">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
@@ -2960,14 +3018,14 @@
                     </span>
                     <span class="text">Guardar</span>
                 </button>
-                 
+
 
                 <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-clear-fields-regiones">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
                     </span>
                     <span class="text">Cerrar</span>
-                </button> 
+                </button>
             </div>
         </div>
     </div>
@@ -3001,7 +3059,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
 
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsaveergionedit">
                     <span class="icon text-white-50">
@@ -3016,7 +3074,7 @@
                     </span>
                     <span class="text">Cerrar</span>
                 </button>
-                 
+
             </div>
         </div>
     </div>
@@ -3065,7 +3123,7 @@
                         <i class="fas fa-plus"></i>
                     </span>
                     <span class="text">Agregar nuevo</span>
-                </button> 
+                </button>
 
                 <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-offices">
                     <span class="icon text-white-50">
@@ -3073,7 +3131,7 @@
                     </span>
                     <span class="text">Cerrar</span>
                 </button>
-                 
+
             </div>
         </div>
     </div>
@@ -3107,7 +3165,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavesucursal">
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
@@ -3120,7 +3178,7 @@
                     </span>
                     <span class="text">Cerrar</span>
                 </button>
-                 
+
             </div>
         </div>
     </div>
@@ -3155,7 +3213,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
 
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnsavesucursaledit">
                     <span class="icon text-white-50">
@@ -3168,7 +3226,7 @@
                         <i class="fas fa-times"></i>
                     </span>
                     <span class="text">Cerrar</span>
-                </button> 
+                </button>
             </div>
         </div>
     </div>
@@ -3803,7 +3861,7 @@
 <script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.6"></script>
 <script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3.6"></script>
 <script type="text/javascript" src="~/Scripts/main/puestos.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/positions.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/positions.js?n=2.3"></script>
 <script type="text/javascript" src="~/Scripts/main/regionales.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/branchoffices.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/departments.js?n=2"></script>
