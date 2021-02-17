@@ -535,6 +535,65 @@ namespace Payroll.Controllers
                                 }
 
 
+                                // ARCHIVO CSV PARA HSBC -> NOMINA
+                                if (bankResult == 21) {
+                                    // FOREACH DATOS TOTALES
+                                    double totalAmountHSBC = 0;
+                                    foreach (DatosProcesaChequesNominaBean deposits in listDatosProcesaChequesNominaBean) {
+                                        if (deposits.iIdBanco == bankResult) {
+                                            totalAmountHSBC += deposits.doImporte;
+                                        }
+                                    }
+                                    string nameBank   = "HSBC";
+                                    string outCsvFile = string.Format(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".csv", nameBank + DateTime.Now.ToString("_yyyyMMdd HHmms"));
+                                    String header  = "";
+                                    String details = ""; 
+                                    var stream = System.IO.File.CreateText(outCsvFile);
+                                    // HEADER
+                                    string hValuePermanent1    = "MXPALF";
+                                    string hNivelAuthorization = "F";
+                                    string hReferenceNumber    = "4064770902";
+                                    string hTotalAmount        = totalAmountHSBC.ToString();
+                                    string hQuantityDeposits   = "436";
+                                    string hDateActually       = DateTime.Now.ToString("ddMMyyyy");
+                                    string hSpaceWhite1        = "";
+                                    string hReferenceAlpa      = "PAGONOM1QFEB";
+                                    header = hValuePermanent1 + "," + hNivelAuthorization + "," + hReferenceNumber + "," + hTotalAmount + "," + hQuantityDeposits + "," + hDateActually + "," + hSpaceWhite1 + "," + hReferenceAlpa;
+                                    stream.WriteLine(header);
+                                    foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
+                                        int longAcortAccount = payroll.sCuenta.Length;
+                                        string finallyAccount = payroll.sCuenta;
+                                        if (longAcortAccount == 18) {
+                                            string accountUser = payroll.sCuenta;
+                                            string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
+                                            string formatAccount = "";
+                                            if (longAcortAccount == 18) {
+                                                formatAccount = formatAccountSubstring.Substring(0, 7);
+                                            }
+                                            string cerosAccount = "";
+                                            for (var t = 0; t < formatAccount.Length + 1; t++) {
+                                                cerosAccount += "0";
+                                            }
+                                            finallyAccount = cerosAccount + formatAccountSubstring.Substring(7, 10);
+                                        } else if (longAcortAccount == 9) {
+                                            finallyAccount = "0" + payroll.sCuenta;
+                                        } else {
+                                            dataErrors.Add(
+                                                    new DataErrorAccountBank {
+                                                        sBanco = "Banamex",
+                                                        sCuenta = payroll.sCuenta,
+                                                        sNomina = payroll.sNomina
+                                                    });
+                                        }
+                                        string amount  = payroll.doImporte.ToString();
+                                        string nameBen = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno;
+                                        header = finallyAccount + "," + amount + "," + hReferenceAlpa + "," + nameBen;
+                                        stream.WriteLine(header);
+                                    }
+                                    stream.Close();
+
+                                }
+
                                 // ARCHIVO TXT PARA SANTANDER -> NOMINA
 
                                 if (bankResult == 14) {
