@@ -554,10 +554,10 @@ namespace Payroll.Controllers
                                     string hNivelAuthorization = "F";
                                     string hReferenceNumber    = "4064770902";
                                     string hTotalAmount        = totalAmountHSBC.ToString();
-                                    string hQuantityDeposits   = "436";
+                                    string hQuantityDeposits   = listDatosProcesaChequesNominaBean.Count.ToString();
                                     string hDateActually       = DateTime.Now.ToString("ddMMyyyy");
                                     string hSpaceWhite1        = "";
-                                    string hReferenceAlpa      = "PAGONOM1QFEB";
+                                    string hReferenceAlpa      = "PAGONOM" + numberPeriod + "QFEB";
                                     header = hValuePermanent1 + "," + hNivelAuthorization + "," + hReferenceNumber + "," + hTotalAmount + "," + hQuantityDeposits + "," + hDateActually + "," + hSpaceWhite1 + "," + hReferenceAlpa;
                                     stream.WriteLine(header);
                                     foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
