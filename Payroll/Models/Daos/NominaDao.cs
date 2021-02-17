@@ -636,7 +636,7 @@ namespace Payroll.Models.Daos
             return list;
 
         }
-        public List<NominahdBean> sp_TpDefinicionesNom_Retrieve_TpDefinicionNom()
+        public List<NominahdBean> sp_TpDefinicionesNom_Retrieve_TpDefinicionNom(int usuarioid)
         {
             List<NominahdBean> list = new List<NominahdBean>();
             try
@@ -646,7 +646,7 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                //cmd.Parameters.Add(new SqlParameter("@ctrlNombreEmpresa", txt));
+                cmd.Parameters.Add(new SqlParameter("@CtrliUsuarioId", usuarioid));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)
@@ -676,7 +676,7 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
-        public List<NominahdBean> sp_DeficionNominaCancelados_Retrieve_DeficionNominaCancelados(string CrtlsNombreDefinicio, int CrtliCanceldo)
+        public List<NominahdBean> sp_DeficionNominaCancelados_Retrieve_DeficionNominaCancelados(string CrtlsNombreDefinicio, int CrtliCanceldo, int CtrliUsuarioId)
         {
 
             List<NominahdBean> list = new List<NominahdBean>();
@@ -689,6 +689,7 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@CrtlsNombreDefinicio", CrtlsNombreDefinicio));
                 cmd.Parameters.Add(new SqlParameter("@CrtliCanceldo ", CrtliCanceldo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliUsuarioId", CtrliUsuarioId));
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)

@@ -266,7 +266,8 @@ namespace Payroll.Controllers
 
             List<NominahdBean> LNH = new List<NominahdBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            LNH = dao.sp_TpDefinicionesNom_Retrieve_TpDefinicionNom();
+            int usuarioid = int.Parse(Session["iIdUsuario"].ToString());
+            LNH = dao.sp_TpDefinicionesNom_Retrieve_TpDefinicionNom(usuarioid);
 
             for (int i = 0; i < LNH.Count; i++)
             {
@@ -292,10 +293,10 @@ namespace Payroll.Controllers
             {
                 sNombreDefinicion = "";
             }
-
+            int usuarioid = int.Parse(Session["iIdUsuario"].ToString());
             List<NominahdBean> TD = new List<NominahdBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            TD = dao.sp_DeficionNominaCancelados_Retrieve_DeficionNominaCancelados(sNombreDefinicion, iCancelado);
+            TD = dao.sp_DeficionNominaCancelados_Retrieve_DeficionNominaCancelados(sNombreDefinicion, iCancelado, usuarioid);
 
             if (TD != null)
             {
