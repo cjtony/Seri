@@ -550,9 +550,9 @@ namespace Payroll.Controllers
                                     String details = ""; 
                                     var stream = System.IO.File.CreateText(outCsvFile);
                                     // HEADER
-                                    string hValuePermanent1    = "MXPALF";
+                                    string hValuePermanent1    = "MXPRLF";
                                     string hNivelAuthorization = "F";
-                                    string hReferenceNumber    = "4064770902";
+                                    string hReferenceNumber = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     string hTotalAmount        = totalAmountHSBC.ToString();
                                     string hQuantityDeposits   = listDatosProcesaChequesNominaBean.Count.ToString();
                                     string hDateActually       = DateTime.Now.ToString("ddMMyyyy");
