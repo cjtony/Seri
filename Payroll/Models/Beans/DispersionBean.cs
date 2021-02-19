@@ -2,6 +2,14 @@
 {
     public class DispersionBean { }
 
+    public class DataErrorAccountBank
+    {
+        public string sBanco { get; set; }
+        public string sNomina { get; set; }
+        public string sEmpresa { get; set; }
+        public string sCuenta { get; set; }
+    }
+
     public class GroupBusinessDispersionBean
     {
         public int iIdGrupoEmpresa { get; set; }
