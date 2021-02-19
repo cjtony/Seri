@@ -102,12 +102,15 @@ namespace Payroll.Controllers
         public JsonResult SavePositions(string codposic, int depaid, int puesid, int regpatcla, int localityr, int emprepreg, int reportempr)
         {
             DatosPosicionesBean addPosicionBean = new DatosPosicionesBean();
+            PuestosBean puestos = new PuestosBean();
+            PuestosDao puestosDao = new PuestosDao();
+            puestos = puestosDao.sp_Puestos_Retrieve_Puesto(puesid);
             DatosPosicionesDao savePosicionDao = new DatosPosicionesDao();
             int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
             // Reemplazar por la sesion de la empresa
             int keyemp = int.Parse(Session["IdEmpresa"].ToString());
             addPosicionBean = savePosicionDao.sp_Posiciones_Insert_Posicion(codposic, depaid, puesid, regpatcla, localityr, emprepreg, reportempr, usuario, keyemp);
-            var data = new { result = addPosicionBean.sMensaje };
+            var data = new { result = addPosicionBean.sMensaje, Puesto = puestos.sNombrePuesto };
             return Json(data);
 
         }

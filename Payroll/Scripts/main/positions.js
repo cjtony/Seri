@@ -260,7 +260,6 @@
         resultpositions.innerHTML = '';
         document.getElementById('noresultpositions').innerHTML = '';
         try {
-            alert('hola');
             if (searchpositions.value != "") {
                 $.ajax({
                     url: "../SearchDataCat/SearchPositions",
@@ -488,16 +487,18 @@
                                 setTimeout(() => {
                                     if (JSON.parse(localStorage.getItem('modalbtnpositions')) != null) {
                                         $("#searchpositionstab").modal('show');
-                                        searchpositionkey.value = codposic.value;
-                                        searchpositionkey.value = codposic.value;
+                                        searchpositionkey.value = data.Puesto;
+                                        searchpositionkey.value = data.Puesto;
                                         setTimeout(() => {
                                             searchpositionkey.focus();
+                                            fsearchkeyuppositions();
                                         }, 1000);
                                     } else {
                                         $("#searchpositionstab").modal('show');
-                                        searchpositionkey.value = codposic.value;
+                                        searchpositionkey.value = data.Puesto;
                                         setTimeout(() => {
                                             searchpositionkey.focus();
+                                            fsearchkeyuppositions();
                                         }, 1000);
                                     }
                                 }, 1000);
