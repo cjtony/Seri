@@ -187,8 +187,8 @@ namespace Payroll.Controllers
             string nameFilePdf  = "";
             DatosPDFCancelado dataR = new DatosPDFCancelado();
             Utilerias utilerias     = new Utilerias();
-            string totalPercepcion = "";
-            string totalDeduccion  = "";
+            string totalPercepcion = "0";
+            string totalDeduccion  = "0";
             string totalBalance = "";
             try
             {
@@ -530,8 +530,8 @@ namespace Payroll.Controllers
             List<DatosFiniquito> listDataDownBean     = new List<DatosFiniquito>();
             BajasEmpleadosDaoD dataDownEmplDaoD       = new BajasEmpleadosDaoD();
             string nameEmployee = "";
-            string totalPercepcion = "";
-            string totalDeduccion  = "";
+            string totalPercepcion = "0";
+            string totalDeduccion  = "0";
             string totalBalance = "";
             try
             { 
