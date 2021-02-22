@@ -748,7 +748,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, string Cantidad, int Dias, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo)
+        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, string Cantidad, int Dias, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo, int inDiashrs)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -768,6 +768,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
             cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDiashrs", inDiashrs));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)

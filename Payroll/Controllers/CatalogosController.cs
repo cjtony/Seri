@@ -539,6 +539,14 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CatalogoGeneral_Retrieve_RecuperaAusentismos();
             return Json(Lista);
         }
+        [HttpPost]
+        public JsonResult SaveNewPerfil(List<int> maincheck, List<int> subcheck)
+        {
+            List<List<string>> Lista;
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            Lista = Dao.sp_CatalogoGeneral_Retrieve_RecuperaAusentismos();
+            return Json(Lista);
+        }
         
     }
 }

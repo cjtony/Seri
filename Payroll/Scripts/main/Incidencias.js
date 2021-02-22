@@ -6,6 +6,7 @@
     var leyenda_incidencia = document.getElementById("inLeyenda");
     var referencia_incidencia = document.getElementById("inReferencia");
     var fecha_incidencia = document.getElementById("inFechaA");
+    var Diashrs = document.getElementById("inDiashrs");
 
     // SE LANZA LA INSTRUCCION DE MOSTRAR EL MODAL DE BUSQUEDA DE EMPLEADOS
     $("#modalLiveSearchEmpleado").modal("show");
@@ -27,7 +28,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
+                    //console.log(data);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -92,7 +93,8 @@
                     inPlazos: plazos_incidencia.value,
                     inLeyenda: leyenda_incidencia.value,
                     inReferencia: referencia_incidencia.value,
-                    inFechaA: fecha_incidencia.value
+                    inFechaA: fecha_incidencia.value,
+                    inDiashrs: Diashrs.value
                 }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -113,6 +115,7 @@
                         leyenda_incidencia.value = '';
                         referencia_incidencia.value = '';
                         fecha_incidencia.value = '';
+                        Diashrs.value = '';
                         createTab();
                         form.reset();
                         document.getElementById("inDias").disabled = false;
@@ -278,7 +281,8 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                //console.log(data);
+                console.log(data[0]["Fecha_Aplicacion"].substring(6, data[0]["Fecha_Aplicacion"].length) + "-" + data[0]["Fecha_Aplicacion"].substring(3, data[0]["Fecha_Aplicacion"].length - 5) + "-" + data[0]["Fecha_Aplicacion"].substring(0, data[0]["Fecha_Aplicacion"].length - 8));
+
                 if (data[0]["Renglon"] == "71" || data[0]["Renglon"] == 71) {
                     $("#edConcepto").html("<option value='" + data[0]["IdTRegistro_Incidencia"] + "'>" + data[0]["Concepto"] + "</option>");
                     document.getElementById("edRenglon").disabled = false;
@@ -297,7 +301,7 @@
                     document.getElementById("edPagosRestantes").disabled = true;
                     $("#edLeyenda").val(data[0]["Descripcion"]);
                     $("#edReferencia").val(data[0]["Referencia"]);
-                    $("#edFechaAplicacion").val(data[0]["Fecha_Aplicacion"]);
+                    $("#edFechaAplicacion").val(data[0]["Fecha_Aplicacion"].substring(6, data[0]["Fecha_Aplicacion"].length) + "-" + data[0]["Fecha_Aplicacion"].substring(3, data[0]["Fecha_Aplicacion"].length - 5) + "-" + data[0]["Fecha_Aplicacion"].substring(0, data[0]["Fecha_Aplicacion"].length - 8));
                     $("#editIncidencia").modal("show");
                 } else {
                     $("#edConcepto").html("<option value='" + data[0]["IdTRegistro_Incidencia"] + "'>" + data[0]["Concepto"] + "</option>");
@@ -335,7 +339,7 @@
                     $("#actualPagosrestantes").val(data[0]["Pagos_restantes"]);
                     $("#edLeyenda").val(data[0]["Descripcion"]);
                     $("#edReferencia").val(data[0]["Referencia"]);
-                    $("#edFechaAplicacion").val(data[0]["Fecha_Aplicacion"]);
+                    $("#edFechaAplicacion").val(data[0]["Fecha_Aplicacion"].substring(6, data[0]["Fecha_Aplicacion"].length) + "-" + data[0]["Fecha_Aplicacion"].substring(3, data[0]["Fecha_Aplicacion"].length - 5) + "-" + data[0]["Fecha_Aplicacion"].substring(0, data[0]["Fecha_Aplicacion"].length - 8));
                     $("#editIncidencia").modal("show");
                 }
             }
@@ -397,7 +401,7 @@
         var actCantidad = parseFloat($("#actualCantidad").val());
         var actSaldo = parseFloat($("#actualSaldo").val());
 
-        if ($("#edRenglon").val() == "71" || $("#edRenglon").val() == 71) {
+        if ($("#edRenglon").val() == "71" || $("#edRenglon").val() == 71 || $("#edRenglon").val() == "50" || $("#edRenglon").val() == 50) {
 
         } else {
 
@@ -614,6 +618,14 @@
             document.getElementById("edCantidad").disabled = false;
         } else if (this.value.length > 0) {
             document.getElementById("edCantidad").disabled = true;
+        }
+    });
+    //VALIDACION DE INSERT EN INPUT
+    $('#inDiashrs').on('keyup', function () {
+        if (this.value.length == 0) {
+            document.getElementById("inDiashrs").value = 0;
+        } else if (this.value.length > 0) {
+            
         }
     });
 });

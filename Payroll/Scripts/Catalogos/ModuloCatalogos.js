@@ -1634,7 +1634,7 @@ $(function () {
                     var collapse =
                         "<div class='accordion col-md-6 my-0 py-0' id='accordion" + item + "'>" +
                         "<div class='card' >" +
-                        "<div class='my-0 py-0 btn btn-light my-0' id='heading" + item + "'>" +
+                        "<div class='my-0 py-0 btn btn-light' id='heading" + item + "'>" +
                         "<div class='row d-flex justify-content-between align-content-end flex-wrap'>" +
                         "<div class='custom-control custom-checkbox ml-3  h6 py-1'>" +
                         "<input type='checkbox' class='custom-control-input' id='check" + item + "' name='maincheck' value='" + item + "' status='0' onclick='loadsubchecks(\"check" + item + "\",\"collapse" + item + "\", " + item + ");'>" +
@@ -1751,12 +1751,8 @@ $(function () {
         var form = $("#frmProfiles").serialize();
         console.log(form);
 
-
-
-
-
         $.ajax({
-            url: "../Catalogos/Loadonemenu",
+            url: "../Catalogos/SaveNewPerfil",
             type: "POST",
             data: JSON.stringify({ form }),
             contentType: "application/json; charset=utf-8",
