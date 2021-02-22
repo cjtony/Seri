@@ -1179,6 +1179,7 @@ namespace Payroll.Models.Daos
                     lista.Referencia = data["Referencia"].ToString();
                     lista.Fecha_Aplicacion = data["Fecha_Aplicacion"].ToString();
                     lista.Numero_dias = data["Numero_dias"].ToString();
+                    lista.Dias_hrs = int.Parse(data["Dias_hrs"].ToString());
                     list.Add(lista);
                 }
             }

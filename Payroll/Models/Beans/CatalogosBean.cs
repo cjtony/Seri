@@ -631,10 +631,7 @@ namespace Payroll.Models.Beans
         public string Referencia { get; set; }
         public string Fecha_Aplicacion { get; set; }
         public string Numero_dias { get; set; }
-
-
-
-
+        public int Dias_hrs { get; set; }
     }
     public class VW_TipoIncidenciaBean
     {

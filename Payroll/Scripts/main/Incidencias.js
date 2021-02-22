@@ -193,7 +193,6 @@
                         incidenciaProg_id = data[i]["IncidenciaP_id"];
                         aplicado = "<i class='fas fa-clipboard-check fa-lg text-info mx-1' title='Aplicado en Nómina'></i>";
                     }
-
                     if (data[i]["Cancelado"] == "True") {
                         cancelado = "<i class='fas fa-ban fa-lg mx-1' title='Incidencia Cancelada'></i>";
                     } else if (data[i]["Cancelado"] == "False") {
@@ -281,8 +280,8 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                console.log(data[0]["Fecha_Aplicacion"].substring(6, data[0]["Fecha_Aplicacion"].length) + "-" + data[0]["Fecha_Aplicacion"].substring(3, data[0]["Fecha_Aplicacion"].length - 5) + "-" + data[0]["Fecha_Aplicacion"].substring(0, data[0]["Fecha_Aplicacion"].length - 8));
-
+                //console.log(data[0]["Fecha_Aplicacion"].substring(6, data[0]["Fecha_Aplicacion"].length) + "-" + data[0]["Fecha_Aplicacion"].substring(3, data[0]["Fecha_Aplicacion"].length - 5) + "-" + data[0]["Fecha_Aplicacion"].substring(0, data[0]["Fecha_Aplicacion"].length - 8));
+                $("#edDiashrs").val(data[0]["Dias_hrs"]);
                 if (data[0]["Renglon"] == "71" || data[0]["Renglon"] == 71) {
                     $("#edConcepto").html("<option value='" + data[0]["IdTRegistro_Incidencia"] + "'>" + data[0]["Concepto"] + "</option>");
                     document.getElementById("edRenglon").disabled = false;
@@ -556,7 +555,7 @@
 
         document.getElementById("resulttipoincidencia").innerHTML = "";
         $("#inRenglon").val("");
-        $.ajax({
+        $.ajax({ 
             url: "../Incidencias/LoadTipoIncidencia",
             type: "POST",
             cache: false,
