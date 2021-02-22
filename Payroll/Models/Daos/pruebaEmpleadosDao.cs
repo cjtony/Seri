@@ -748,7 +748,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, string Cantidad, int Dias, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo)
+        public List<string> sp_TRegistro_incidencias_Insert_Incidencia(int Empresa_id, int Empleado_id, int Renglon, string Cantidad, int Dias, int Plazos, string Leyenda, string Referencia, string Fecha_Aplicacion, int Periodo, int inDiashrs)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -768,6 +768,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", "0"));
             cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", "0"));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDiashrs", inDiashrs));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
             if (data.HasRows)
@@ -867,6 +868,7 @@ namespace Payroll.Models.Daos
                     lista.NPeriodo = data["NPeriodo"].ToString();
                     lista.Cancelado = data["Cancelado"].ToString();
                     lista.Aplazado = data["Aplazado"].ToString();
+                    lista.Pagos_restantes = data["Pagos_restantes"].ToString();
                     list.Add(lista);
                 }
             }
@@ -1177,6 +1179,7 @@ namespace Payroll.Models.Daos
                     lista.Referencia = data["Referencia"].ToString();
                     lista.Fecha_Aplicacion = data["Fecha_Aplicacion"].ToString();
                     lista.Numero_dias = data["Numero_dias"].ToString();
+                    lista.Dias_hrs = int.Parse(data["Dias_hrs"].ToString());
                     list.Add(lista);
                 }
             }

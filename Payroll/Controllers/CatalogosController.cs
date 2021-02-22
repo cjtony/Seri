@@ -374,15 +374,15 @@ namespace Payroll.Controllers
             return Json(Lista);
         }
         [HttpPost]
-        public JsonResult Loadmainmenus(int Id)
+        public JsonResult Loadmainmenus()
         {
             List<MainMenuBean> Lista;
             MainMenuDao Dao = new MainMenuDao();
-            Lista = Dao.sp_Retrieve_Menu_Paths(1);
+            Lista = Dao.sp_Retrieve_Menu_Paths(3);
             return Json(Lista);
         }
         [HttpPost]
-        public JsonResult Loadonemenu(int Id)
+        public JsonResult Loadonemenu(int Id )
         {
             List<MainMenuBean> Lista;
             MainMenuDao Dao = new MainMenuDao();
@@ -533,6 +533,14 @@ namespace Payroll.Controllers
 
         [HttpPost]
         public JsonResult LoadTipoRecuperaAusentismo()
+        {
+            List<List<string>> Lista;
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            Lista = Dao.sp_CatalogoGeneral_Retrieve_RecuperaAusentismos();
+            return Json(Lista);
+        }
+        [HttpPost]
+        public JsonResult SaveNewPerfil(List<int> maincheck, List<int> subcheck)
         {
             List<List<string>> Lista;
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();

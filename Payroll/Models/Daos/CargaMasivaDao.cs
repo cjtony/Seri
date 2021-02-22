@@ -162,6 +162,35 @@ namespace Payroll.Models.Daos
 
             return value;
         }
+        public List<string> Valida_Vacaciones(string Empresa_id, string Empleado_id, string Anio, string Dias)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Valida_CM_Vacaciones", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAnio", Anio));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDias", Dias));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["Result"].ToString());
+                    list.Add(data["sMensaje"].ToString());
+                }
+            }
+
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return list;
+        }
         public int Valida_Existe_Carga_Masiva(int Empresa_id, int Periodo, int Renglon, string Tabla, string Referencia)
         {
             int value = 0;
@@ -363,31 +392,26 @@ namespace Payroll.Models.Daos
             data.Close(); this.conexion.Close(); this.Conectar().Close();
             return list;
         }
-        public List<string> InsertaCargaMasivaVacaciones(DataRow rows, int Periodo, int IsCargaMasiva, string Referencia)
+        public List<string> InsertaCargaMasivaVacaciones(DataRow rows, int Periodo, int IsCargaMasiva, string Referencia, int Usuario_id)
         {
-            string dia = DateTime.Today.ToString("dd");
-            string mes = DateTime.Today.ToString("MM");
-            string año = DateTime.Today.ToString("yyyy");
-
             List<string> list = new List<string>();
             this.Conectar();
-            SqlCommand cmd = new SqlCommand("sp_TCreditos_Insert_Credito", this.conexion)
+            SqlCommand cmd = new SqlCommand("sp_TPeriodosVacaciones_insert_Vacaciones", this.conexion)
             {
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpleado_id", rows[1].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", rows[0].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlTipoDescuento", rows[2].ToString().Substring(0, 3).Trim()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlDescuento", rows[4].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlNoCredito", rows[5].ToString().Substring(1, rows[5].ToString().Length - 1)));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaAprovacionCredito", rows[6].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlDescontar", rows[3].ToString().Substring(0, 3).Trim()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", rows[7].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", ""));
-            cmd.Parameters.Add(new SqlParameter("@ctrlAplicaFiniquito", rows[8].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
+            cmd.Parameters.Add(new SqlParameter("@ctrlAnio", rows[2].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFecha_inicio", rows[3].ToString()));
+            if (rows[4].ToString() == "" || rows[4] == null || rows[4].ToString().Length == 0)
+            {   cmd.Parameters.Add(new SqlParameter("@ctrlFecha_fin", "0"));    }
+            else {  cmd.Parameters.Add(new SqlParameter("@ctrlFecha_fin", rows[4].ToString())); }
+            cmd.Parameters.Add(new SqlParameter("@ctrlDias", rows[5].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 
@@ -396,7 +420,7 @@ namespace Payroll.Models.Daos
                 while (data.Read())
                 {
                     list.Add(data["iFlag"].ToString());
-                    list.Add(data["sRespuesta"].ToString());
+                    list.Add(data["sMensaje"].ToString());
                 }
             }
             data.Close(); this.conexion.Close(); this.Conectar().Close();
