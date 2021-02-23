@@ -571,6 +571,7 @@ namespace Payroll.Controllers
         {
             int op1 = 0, op2 = 0, op3 = 0, CrtliIdJobs = 0, CtrliIdTarea = 0;
             List<TPProcesos> LTbProc = new List<TPProcesos>();
+            // entra en monitor 
             FuncionesNomina dao = new FuncionesNomina();
             LTbProc = dao.sp_TPProcesosJobs_Retrieve_TPProcesosJobs(op1, op2, op3, CrtliIdJobs, CtrliIdTarea);
             return Json(LTbProc);
@@ -626,12 +627,11 @@ namespace Payroll.Controllers
             }
             iFolio = int.Parse(sFolio);
             Exist = Dao2.sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs(UsuarioId);
-
+            Dao2.sp_Usuario_Update_TplantillaCalculosHd(IdDefinicionHD, iFolio, UsuarioId);
             if (Exist[0].iExistUsuario == 0) {
                 UsuarioId = 0;
                 Nameuse = "IPSNet";
             }
-            Dao2.sp_Usuario_Update_TplantillaCalculosHd(IdDefinicionHD, iFolio, UsuarioId);
             obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path, Nameuse);
             return null;
         }
@@ -732,7 +732,6 @@ namespace Payroll.Controllers
 
             return Json(TD);
         }
-
 
         public List<TPProcesos> Statusproc(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa, int anio)
         {
@@ -1079,9 +1078,7 @@ namespace Payroll.Controllers
             LPe = dao.sp_ComparativoNominaXEmpresa_Retrieve_TpCalculosLN(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CtrliPeriodo2);
             return Json(LPe);
         }
-
-
-     
+   
         // Muestra la diferencias de nomina de una empresa o varias empresas 
 
         [HttpPost]
@@ -1092,8 +1089,6 @@ namespace Payroll.Controllers
             LPe = dao.sp_ComparativoNomXEmpleado_Retrieve_TpCalculosLN(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CtrliPeriodo2, CtrliTipoPAgo, recibo);
             return Json(LPe);
         }
-
-
         //Muestra el listado de renglones de la diferencia de nomina de una empresa
 
 
@@ -1105,7 +1100,6 @@ namespace Payroll.Controllers
             LPe = dao.sp_CompativoNomina_Retrieve_TPCalculosln(CrtliIdEmpresa, CrtliAnio, CrtliTipoPeriodo, CtrliPeriodo, CtrliPeriodoAnte, CtrliIdEmpleado, CtrliEspejo);
             return Json(LPe);
         }
-
 
         /// lista de perido por empleado 
         [HttpPost]

@@ -26,7 +26,6 @@
     DropContEje.value = 1;
     $('#DropContEje').change(function () {
         var descrip;
-      //  console.log(DropContEje.value);
         if (DropContEje.value == "1") {
             LisEmpresa();
             descrip = DropContEje.options[DropContEje.selectedIndex].text;
@@ -67,6 +66,7 @@
 
     };
     LisEmpresa();
+
     $("#DropEmpresa").on('checkChange', function (event) {
         if (event.args) {
             var item = event.args.item;
@@ -98,9 +98,6 @@
             }
         }
     });
-
-
-
 
     /// Limpias el campo de Texttarea
     limpTextarea = () => {
@@ -136,7 +133,6 @@
      // suma el numero de empleados de las Empresas selecionadas
     FNoEmpeleados = (Empresas) => {
         const dataSend = { IdEmpresas: Empresas };
-
         $.ajax({
             url: "../Nomina/NoEmpleados",
             type: "POST",
@@ -145,12 +141,10 @@
                 TextBTotalEmple.value = data[0].iNoEmpleados;
             },
         });
-
     };
 
     // Verifica que todas las empresas contengan el mismo tipo de periodo y lo llena el drop
     FTipodePeriodo = (sdEMpresa, op,tp) => {
-
         if (tp == 0) {
             const dataSend = { IdEmpresas: sdEMpresa, OP: op };
             $("#DroTipoPeriodo").empty();
@@ -166,8 +160,6 @@
                     }
                 },
             });
-
-
         }
         if (tp == 1) {
             const dataSend = { IdEmpresas: sdEMpresa, OP: op };
@@ -191,9 +183,6 @@
             }
 
         }
-
-
-
     };
 
 
@@ -212,8 +201,6 @@
                 }
             },
         });
-
-
     };
 
     /// Genera los pdf 

@@ -39,10 +39,10 @@ namespace Payroll.Controllers
             return PartialView();
         }
 
-        //public PartialViewResult TimbradosXML()
-        //{
-        //    return PartialView();
-        //}
+        public PartialViewResult XML()
+        {
+            return PartialView();
+        }
 
         public ActionResult TimbradosXML()
         {

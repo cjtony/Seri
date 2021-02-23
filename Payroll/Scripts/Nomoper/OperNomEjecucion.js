@@ -993,7 +993,8 @@
                                     url: "../Nomina/ProcesosPots",
                                     type: "POST",
                                     data: dataSend2,
-                                    success: (data) => {
+                                    success: (data) => { 
+                                        console.log('manda a ejecuccion ' + data)
                                        FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
                                     }
                                 });
@@ -1231,7 +1232,7 @@
                 $("#TbCalculosNom").jqxGrid(
                     {
                         theme: 'bootstrap',
-                        width: 870,
+                        width: 700,
                         source: dataAdapter,
                         showfilterrow: true,
                         filterable: true,
@@ -1245,9 +1246,9 @@
                         showaggregates: true,
                         statusbarheight: 25,
                         columns: [
-                            { text: 'Concepto', datafield: 'sConcepto', width: 250 },
+                            { text: 'Concepto', datafield: 'sConcepto', width: 280 },
                             {
-                                text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                                text: 'Percepciones', datafield: 'dPercepciones', aggregates: ["sum"], width: 100, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1264,7 +1265,7 @@
                                 }
                             },
                             {
-                                text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 150, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
+                                text: 'Deducciones ', datafield: 'dDeducciones', aggregates: ["sum"], width: 100, cellsformat: 'c2', cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                     if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1283,7 +1284,7 @@
                                 }
                             },
                             {
-                                text: 'Gravado', datafield: 'dGravados', /*aggregates: ["sum"],*/ width: 150, cellsformat: 'c2' /*cellsrenderer: function (row, column, value, defaultRender, column, rowData) {*/
+                                text: 'Gravado', datafield: 'dGravados', /*aggregates: ["sum"],*/ width: 100, cellsformat: 'c2' /*cellsrenderer: function (row, column, value, defaultRender, column, rowData) {*/
 
                                 //    //if (value.toString().indexOf("Sum") >= 0) {
 
@@ -1302,7 +1303,7 @@
                                 //}
                             },
                             {
-                                text: 'Excento', datafield: 'dExcento', /*aggregates: ["sum"],*/ width: 150, cellsformat: 'c2'
+                                text: 'Excento', datafield: 'dExcento', /*aggregates: ["sum"],*/ width: 100, cellsformat: 'c2'
                                 //cellsrenderer: function (row, column, value, defaultRender, column, rowData) {
 
                                 //    //if (value.toString().indexOf("Sum") >= 0) {

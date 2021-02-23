@@ -198,6 +198,12 @@ namespace Payroll.Models.Beans
         public string sNombre { get; set; }
         public string sParametros { get; set; }
         public int iExistUsuario { get; set; }
+        public int iDefinicionhdId { get; set; }
+        public string sNombreDefinicion { get; set; }
+        public string sUsuario { get; set; }
+        public string sFechaIni { get; set; }
+        public string sFechaFinal { get; set; }
+        public string sEstatusFinal { get; set; }
         public string sMensaje { get; set; }
 
     }
