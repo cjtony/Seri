@@ -808,7 +808,6 @@
                                 // seleccionamos el valor que coincide
                                 RegAcumulado.selectedIndex = i;
                             }
-
                         }
                     },
                 });
