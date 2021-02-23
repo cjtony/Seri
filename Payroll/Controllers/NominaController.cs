@@ -627,6 +627,7 @@ namespace Payroll.Controllers
                 }
             }
             iFolio = int.Parse(sFolio);
+
             Exist = Dao2.sp_ExistUsuProcesJobs_Retrieve_Tp_Usuario_ProcesJobs(UsuarioId);
             Dao2.sp_Usuario_Update_TplantillaCalculosHd(IdDefinicionHD, iFolio, UsuarioId);
             if (Exist[0].iExistUsuario == 0) {

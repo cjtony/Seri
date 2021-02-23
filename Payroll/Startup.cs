@@ -58,7 +58,7 @@ namespace Payroll
             string StatusJobs = "En Cola";
             string Nombrejobs = "ConsultaTpJobs";
             string Parametros =  op +","+ iIdjobs+"," + iIdTarea+","+ FechaProceso;
-            Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros);
+            Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros,0);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Payroll
             string StatusJobs = "En Cola";
             string Nombrejobs = "ActualizaCalculoshd";
             string Parametros = iNominaCerrada + ","+ idNum+"," + FechaProceso;
-            Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros);
+            Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros,0);
         }
 
         ///Procoeso cunsulta BD en la tabla TPProcesosJobs
@@ -177,29 +177,58 @@ namespace Payroll
             {
 
                 var jobId = BackgroundJob.Enqueue(() => Cnomia(anio, TipoPeriodo, periodo, idDefinicionhd, idEmpresa, iCalxEmple, FechaProceso, Path, NameUser));
-              
-                    //Task checkJobState = Task.Factory.StartNew(() =>
-                    //{
-                    //    while (true)
-                    //    {
-                    //        var monitoringApi = JobStorage.Current.GetMonitoringApi();
-                    //        JobDetailsDto jobDetails = monitoringApi.JobDetails(jobId);
-                    //        string currentState = jobDetails.History[0].StateName;
-                    //        if (currentState != "Enqueued" && currentState != "Processing")
-                    //        {
-                    //            break;
-                    //        }
-                    //        TimeSpan.FromSeconds(30); // adjust to a coarse enough value for your scenario
-                    //    }
-                    //});            
+
+                //Task checkJobState = Task.Factory.StartNew(() =>
+                //{
+                //    while (true)
+                //    {
+                //        var monitoringApi = JobStorage.Current.GetMonitoringApi();
+                //        JobDetailsDto jobDetails = monitoringApi.JobDetails(jobId);
+                //        string currentState = jobDetails.History[0].StateName;
+                //        if (currentState != "Enqueued" && currentState != "Processing")
+                //        {
+                //            break;
+                //        }
+                //        TimeSpan.FromSeconds(30); // adjust to a coarse enough value for your scenario
+                //    }
+                //});            
+
+                string sFolio = "";
+                if (periodo > 9)
+                {
+                    if (TipoPeriodo > 0)
+                    {
+                        sFolio = anio.ToString() + (TipoPeriodo * 10) + periodo + "0";
+                    }
+                    if (TipoPeriodo < 1)
+                    {
+                        sFolio = anio.ToString() + "00" + periodo + "0";
+                    }
+
+                }
+                if (periodo > 0 && periodo < 10)
+                {
+                    if (TipoPeriodo > 0)
+                    {
+                        sFolio = anio.ToString() + (TipoPeriodo * 10) + "0" + periodo + "0";
+                    }
+                    if (TipoPeriodo < 1)
+                    {
+                        sFolio = anio.ToString() + "00" + "0" + periodo + "0";
+
+                    }
+                }
+
+       
+
                 List<HangfireJobs> id = new List<HangfireJobs>();
                 FuncionesNomina Dao = new FuncionesNomina();
-                id = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
-                int Idjobs = Convert.ToInt32(id[0].iId.ToString());
+                id = Dao.sp_CalculosHd_IDProcesJobs_Retrieve_TPlantillaCalculosHD(idDefinicionhd,int.Parse(sFolio));
+                int Idjobs = Convert.ToInt32(jobId);
                 string StatusJobs = "En Cola";
                 string Nombrejobs = "CNomina1";
                 string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + "," + idEmpresa + "," + iCalxEmple + "," + FechaProceso;
-                Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros);
+                Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros, id[0].iId);
 
             }
 
