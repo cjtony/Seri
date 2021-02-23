@@ -303,55 +303,55 @@ $(function () {
 
     /// descarga masiva de PDF
 
-    FdowPDFMasivos = () => {
+    //FdowPDFMasivos = () => {
 
-        if (valorCheckxEmpleado.checked == false) {
-            btnXmlms.value = 0;
-            btnPDFms.value = 1;
-            console.log('prueba');
-            var oprefis = 0;
+    //    if (valorCheckxEmpleado.checked == false) {
+    //        btnXmlms.value = 0;
+    //        btnPDFms.value = 1;
+    //        console.log('prueba');
+    //        var oprefis = 0;
 
-            IdEmpresa = EmpresaNom.value;
-            var nom = $('#jqxInput').jqxInput('val');
-            NombreEmpleado = nom.label;
-            IdEmpresa = EmpresaNom.value;
-            anio = anoNom.value;
-            Tipoperiodo = TipodePerdioRec.value;
-            datosPeriodo = PeridoNom.value;
-            const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, iRecibo: 1 };
-            $.ajax({
-                url: "../Empleados/GPDFMasivos",
-                type: "POST",
-                data: dataSend,
-                beforeSend: function (data) {
-                    $('#jqxLoader').jqxLoader('open');
-                },
-                success: function (data) {
-                    if (data[0].sMensaje != "NorCert") {
-                        btnDowlan.style.visibility = 'visible';
-                        btnDowlan.value = data[0].sUrl;
-                        $('#jqxLoader').jqxLoader('close');
-                        fshowtypealert('Recibos de nomina', 'sean generado el PDF correctamente', 'success');
+    //        IdEmpresa = EmpresaNom.value;
+    //        var nom = $('#jqxInput').jqxInput('val');
+    //        NombreEmpleado = nom.label;
+    //        IdEmpresa = EmpresaNom.value;
+    //        anio = anoNom.value;
+    //        Tipoperiodo = TipodePerdioRec.value;
+    //        datosPeriodo = PeridoNom.value;
+    //        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, iRecibo: 1 };
+    //        $.ajax({
+    //            url: "../Empleados/GPDFMasivos",
+    //            type: "POST",
+    //            data: dataSend,
+    //            beforeSend: function (data) {
+    //                $('#jqxLoader').jqxLoader('open');
+    //            },
+    //            success: function (data) {
+    //                if (data[0].sMensaje != "NorCert") {
+    //                    btnDowlan.style.visibility = 'visible';
+    //                    btnDowlan.value = data[0].sUrl;
+    //                    $('#jqxLoader').jqxLoader('close');
+    //                    fshowtypealert('Recibos de nomina', 'sean generado el PDF correctamente', 'success');
 
-                    }
-                    else {
+    //                }
+    //                else {
 
-                        $('#jqxLoader').jqxLoader('close');
-                        fshowtypealert('Error', 'Contacte a sistemas', 'error');
-                    }
+    //                    $('#jqxLoader').jqxLoader('close');
+    //                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+    //                }
 
-                }
-            });
+    //            }
+    //        });
 
-        }
-        if (valorCheckxEmpleado.checked == true) {
+    //    }
+    //    if (valorCheckxEmpleado.checked == true) {
 
 
-        }
+    //    }
 
-    };
+    //};
 
-    btnPDFms.addEventListener('click', FdowPDFMasivos)
+    //btnPDFms.addEventListener('click', FdowPDFMasivos)
 
     FOpenFile = () => {
         if (btnPDFms.value == 1) {
