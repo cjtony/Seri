@@ -1,4 +1,4 @@
-﻿                                                                $(function () {
+﻿ $(function () {
 
     /// Funcion de progres bar //
     var EnCola = 0;
@@ -10,14 +10,12 @@
     FprogresBar = () => {
 
         //// pone los valores a los estados de procesos de trabajos/// 
-
         $.ajax({
             url: "../Nomina/ListStatusProcesosJobs",
             type: "POST",
             data: JSON.stringify(),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 if (data.length > 0) {
                   var  rosw = data.length;
                 }
@@ -92,7 +90,7 @@
             },
 
         });
-     
+ 
     }
 
     FprogresBar();
@@ -112,10 +110,11 @@
                     datafields:
                         [
                             { name: 'iIdTarea', type: 'string' },
-                            { name: 'iIdJobs', type: 'string' },
-                            { name: 'sEstatusJobs', type: 'string' },
-                            { name: 'sNombre', type: 'string' },
-                            { name: 'sParametros', type: 'string'},
+                            { name: 'sNombreDefinicion', type: 'string' },
+                            { name: 'sUsuario', type: 'string' },
+                            { name: 'sFechaIni', type: 'string' },
+                            { name: 'sFechaFinal', type: 'string' },
+                            { name: 'sEstatusFinal', type: 'string'}
                         ]
                 };
 
@@ -127,11 +126,13 @@
                         source: dataAdapter,
                         columnsresize: true,
                         columns: [
+
                             { text: 'No Tarea', datafield: 'iIdTarea', width: 100 },
-                            { text: 'Id Proceso', datafield: 'iIdJobs', width: 200 },
-                            { text: 'Estatus de procesos', datafield: 'sEstatusJobs', whidth: 200 },
-                            { text: 'Nombre de Proceso', datafield: 'sNombre', whidt: 100 },
-                            { text: 'Parametros', datafield: 'sParametros', whidt: 100 },                          
+                            { text: 'Definicion', datafield: 'sNombreDefinicion', width: 200 },
+                            { text: 'Usuario', datafield: 'sUsuario', whidth: 200 },
+                            { text: 'Fecha inicio', datafield: 'sFechaIni', whidt: 100 },
+                            { text: 'Fecha Final', datafield: 'sFechaFinal', whidt: 100 },
+                            { text: 'Estatus', datafield: 'sEstatusFinal', whidt: 100 },                          
                         ]
                    });
             }

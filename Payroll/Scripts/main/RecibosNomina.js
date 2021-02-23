@@ -217,6 +217,7 @@
         }
 
     };
+
     /// seleciona al empleado 
     $("#jqxInput").on('select', function (event) {
         if (event.args) {
@@ -243,10 +244,10 @@
         IdEmpresa = EmpresaNom.value;
         NombreEmpleado;
         var periodo = PeridoNom.options[PeridoNom.selectedIndex].text;
-        
-
+       
         const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado };
-         $.ajax({
+
+        $.ajax({
              url: "../Empleados/EmisorEmpresa",
              type: "POST",
              data: dataSend,
@@ -268,6 +269,7 @@
         
         const dataSendFinQ = { iIdEmpresa: IdEmpresa, TipoPeriodo: TipodePerdioRec.value, periodo: arreglosubcadena[0], Anio: anoNom.value, IdEmpleado: NoEmpleado };
         console.log(dataSendFinQ);
+
         $.ajax({
             url: "../Empleados/ListEmpleadoFin",
             type: "POST",
@@ -293,12 +295,12 @@
         const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: arreglosubcadena[0], iespejo: 0, idTipFiniquito: 0 };
         FGridRecibos(dataSend2);
       
-        FPeriodosEmpleado(IdEmpresa, anoNom.value, TipodePerdioRec.value, NoEmpleado);
+        FPeriodosEmpleado(IdEmpresa, anoNom.value, TipodePerdioRec.value, NoEmpleado, arreglosubcadena[0]);
     };
 
     /// Periodo de empleados 
 
-    FPeriodosEmpleado = (empresa, anios, iTipoPeriodo, NoEmpleado) => {
+    FPeriodosEmpleado = (empresa, anios, iTipoPeriodo, NoEmpleado,periodo) => {
         const dataSend = { Idempresa: empresa, Anio: anios, TipoPeriodo: iTipoPeriodo, idEmpleado:NoEmpleado };
       
         $("#dropPeriodoEmple").empty();
@@ -312,8 +314,20 @@
                 for (i = 0; i < data.length; i++) {
                   document.getElementById("dropPeriodoEmple").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo}</option>`;
                 }
+           
+                for (var i = 0; i < dropPeriodoEmple.length; i++) {
+                    console.log(dropPeriodoEmple.options[i].text + '= ' + periodo)
+                    if (dropPeriodoEmple.options[i].text == periodo) {
+                        // seleccionamos el valor que coincide
+                        dropPeriodoEmple.selectedIndex = i;
+                    }
+                }
+
+
             },
         });
+
+
 
     };
 
@@ -332,6 +346,24 @@
         IdEmpresa = EmpresaNom.value;
         NombreEmpleado;
         NoEmpleado;
+
+        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado };
+
+        $.ajax({
+            url: "../Empleados/EmisorEmpresa",
+            type: "POST",
+            data: dataSend,
+            success: function (data) {
+                if (data[0].sMensaje == "success") {
+                    EmpresNom = data[0].sNombreComp + ' ' + 'RFC: ' + data[0].sRFCEmpleado + '  en el periodo: ' + periodoEmple;
+                    $('#Emisor').html(EmpresNom);
+                }
+                else {
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                }
+
+            }
+        }); 
 
         const dataSendFinQ = { iIdEmpresa: IdEmpresa, TipoPeriodo: TipodePerdioRec.value, periodo: periodoEmple, Anio: anoNom.value, IdEmpleado: NoEmpleado };
        
@@ -360,7 +392,7 @@
         const dataSend2 = { iIdEmpresa: IdEmpresa, iIdEmpleado: NoEmpleado, ianio: anoNom.value, iTipodePerido: TipodePerdioRec.value, iPeriodo: periodoEmple, iespejo: 0, idTipFiniquito: 0 };
         FGridRecibos(dataSend2);
 
-        FPeriodosEmpleado(IdEmpresa, anoNom.value, TipodePerdioRec.value, NoEmpleado);
+        FPeriodosEmpleado(IdEmpresa, anoNom.value, TipodePerdioRec.value, NoEmpleado, periodoEmple );
     };
 
 

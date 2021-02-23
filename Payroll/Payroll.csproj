@@ -1059,6 +1059,7 @@
     <Content Include="Scripts\main\startMenu.js" />
     <Content Include="Scripts\main\Timbradosxml.js" />
     <Content Include="Scripts\main\Vacaciones.js" />
+    <Content Include="Scripts\main\XMLs.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Nomoper\CompensacionF.js" />
     <Content Include="Scripts\Nomoper\MonitorProcesos.js" />
@@ -1158,6 +1159,7 @@
     <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
     <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
     <Content Include="Views\Incidencias\PIncidencias.cshtml" />
+    <Content Include="Views\Empleados\XML.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
