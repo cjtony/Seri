@@ -171,6 +171,7 @@ namespace Payroll.Models.Beans
         public string sMensaje { get; set; }
         public int iIdDetalleGrupo { get; set; }
         public int iIdEmpresaSess { get; set; }
+        public int iPerfilPdf { get; set; }
     }
     public class CentrosCostosBean
     {

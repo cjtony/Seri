@@ -80,10 +80,16 @@ namespace Payroll.Controllers
             LE = Dao.sp_CEmpresas_Retrieve_Empresas(Perfil_id);
             if (LE.Count > 0)
             {
+                if (idPerfil == 32)
+                {
+                    LE[0].iPerfilPdf = 1;
+                }
+                else {
+                    LE[0].iPerfilPdf = 0;
+                }
                 LE[0].iIdEmpresaSess = idempresa;
                 for (int i = 0; i < LE.Count; i++)
                 {
-                    
                     LE[i].sNombreEmpresa = LE[i].iIdEmpresa + " " + LE[i].sNombreEmpresa;
                 }
             }
@@ -109,7 +115,7 @@ namespace Payroll.Controllers
             LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa, iElemntoNOm);
             return Json(LR);
         }
-        // regresa el listado de acumulado 
+        // regresa el listado de acumulado -
         [HttpPost]
         public JsonResult LisAcumulado(int iIdEmpresa, int iIdRenglon)
         {
