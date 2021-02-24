@@ -1,9 +1,18 @@
-﻿<div class="col-md-10 container font-labels bg-white p-4 shadow shadow-lg">
+﻿<div class="col-md-10 container font-labels bg-white p-4 shadow shadow-lg border-left-primary border-right-primary rounded">
     <div class="col-md-12 ">
         <div class="col-md-12 d-flex justify-content-between">
-            <span class="h5">Fechas - Periodos</span>
+            <span class="h5 font-weight-bold text-danger">Fechas - Periodos</span>
+            <div class="form-group row my-0">
+                <div class="btn btn-dark btn-icon-split btn-sm mx-1">
+                    <span class="icon text-success"><i class="fas fa-file-excel"></i></span>
+                    <span class="text font-labels"> Descargar Formato </span>
+                </div>
+                <div class="btn btn-success btn-icon-split btn-sm mx-1" data-toggle="modal" data-target="#modalCargaMasiva">
+                    <span class="icon"><i class="fas fa-upload"></i></span>
+                    <span class="text font-labels"> Carga Masiva </span>
+                </div>
+            </div>
         </div>
-        
         <hr class="col-md-12" />
         <table class="table table-sm table-striped table-fechas-periodos col-md-12" id="tabfechasperiodos">
             <thead>
@@ -130,7 +139,7 @@
                         <input class="form-control form-control-sm" type="text" name="indiaspago" id="indiaspago" value="15" required />
                     </div>
                 </form>
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -139,10 +148,61 @@
         </div>
     </div>
 </div>
+<!-- Modal Carga masiva de periodos -->
+<div class="modal fade" id="modalCargaMasiva" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-left-primary border-right-primary">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> <i class="fas fa-upload text-success"></i>  Carga Masiva de Periodos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmPeriodosCM" method="post" enctype="multipart/form-data" class="col-md-12 row justify-content-center">
 
-<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=3"></script>
+                    <div class="custom-file col-md-12" id="customFile">
+                        <input type="file" class="custom-file-input custom-file-input-sm" id="file-toup" aria-describedby="fileHelp" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                        <label class="custom-file-label" for="file-toup">
+                            Seleccionar Archivo
+                        </label>
+                    </div>
+                    <hr />
+                    <div class="form-group mt-4">
+                        <button class="btn btn-sm btn-outline-primary mx-auto" id="btnCargaMasiva" type="button" onclick="beforeValidarFile();">
+                            <i class="fas fa-check-circle mr-2"></i> Cargar archivo
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <div id="results-file-upload-up" class="d-none col-md-12"></div>
+                    </div>
+                    <div class="col-md-12 mx-auto collapse" id="collapse-validation-cm"></div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-icon-split btn-sm" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text">Cerrar</span>
+                </button>
+                @*<button type="button" class="btn btn-primary btn-icon-split btn-sm">
+                        <span class="icon"><i class="fas fa-file-upload"></i></span>
+                        <span class="text"> Cargar </span>
+                    </button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=1"></script>
 <script>
     $(function () {
         LoadTabFechasPeriodos();
     });
 </script>
+<style>
+    .custom-file-input ~ .custom-file-label::after {
+        content: "\1F50E";
+    }
+</style>

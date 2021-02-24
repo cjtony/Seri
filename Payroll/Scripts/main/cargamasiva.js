@@ -24,6 +24,8 @@
                 title: 'Aviso!',
                 text: 'Aun no selecciona un archivo'
             });
+            $("#btnCargaMasiva").html("<i class='fas fa-check-circle mr-2'></i> Cargar archivo");
+            document.getElementById("btnCargaMasiva").disabled = false;
         } else {
 
             Swal.fire({
