@@ -334,10 +334,6 @@ namespace Payroll.Models.Daos
         }
         public List<string> InsertaCargaMasivaIncidencias(DataRow rows, int IsCargaMasiva, int Periodo, string Referencia)
         {
-            string dia = DateTime.Today.ToString("dd");
-            string mes = DateTime.Today.ToString("MM");
-            string año = DateTime.Today.ToString("yyyy");
-
             List<string> list = new List<string>();
             this.Conectar();
             SqlCommand cmd = new SqlCommand("sp_TRegistro_incidencias_Insert_Incidencia", this.conexion)
@@ -352,10 +348,11 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlPlazos", rows["Plazos"].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlLeyenda", rows["Leyenda"].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", Referencia));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaAplicacion", dia + "/" + mes + "/" + año));
+            cmd.Parameters.Add(new SqlParameter("@ctrlFechaAplicacion", rows["Fecha_Aplicacion"].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo", Periodo));
             cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
             cmd.Parameters.Add(new SqlParameter("@ctrlAplicaEnFiniquito", rows["Aplica_En_Finiquito"].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDiashrs", rows["Dias_hrs"].ToString()));
 
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();

@@ -411,6 +411,8 @@ namespace Payroll.Controllers
                         var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
                         if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
 
+
+
                     }
 
                     if (ResutLog.Count == 0)
