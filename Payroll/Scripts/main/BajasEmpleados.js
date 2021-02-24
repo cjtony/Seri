@@ -1083,7 +1083,9 @@
                                             } else {
                                                 fShowTypeAlertDE('Atención!', 'No puedes generar 2 finiquitos en un mismo periodo', 'warning', btnShowWindowDataDown, 0, 0);
                                             }
-                                            btnGuardaBaja.disabled = false;
+                                            setTimeout(() => {
+                                                btnGuardaBaja.disabled = false;
+                                            }, 2000);
                                         }, error: (jqXHR, exception) => {
                                             fcaptureaerrorsajax(jqXHR, exception);
                                         }

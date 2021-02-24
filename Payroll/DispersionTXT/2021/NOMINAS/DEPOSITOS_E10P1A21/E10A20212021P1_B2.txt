@@ -1,0 +1,25 @@
+﻿10001068587471902210001ASESORES EN ADMINISTRACION Y SERVICCNOMINA 19022021     05                                        C00
+2100100000000000703912801700900000000000004522887
+300010000000000001047760100002103901376988290                              0000070047CLAUDIA ZUNIGA ALTAMIRANO                              NOMINA                                                          0000       00
+300010000000000004578740100002133902179425851                              0000070063MARIA GABRIELA MANZO LORENZO                           NOMINA                                                          0000       00
+300010000000000002736960100002133901664549638                              0000070074ERNESTO ENRIQUE AGUILAR SOLIS                          NOMINA                                                          0000       00
+300010000000000005331060100002133901668399541                              0000070081MARIA DE LOURDES ORTEGA HERNANDEZ                      NOMINA                                                          0000       00
+300010000000000001581710100002133902627192775                              0000070084ADRIAN TOLEDO SANTOS                                   NOMINA                                                          0000       00
+300010000000000004345800100002135902513825992                              0000070090JAVIER PERALTA ROJAS                                   NOMINA                                                          0000       00
+300010000000000000570160100002133902134966025                              0000070100MARIANITO DE JESUS GARCIA ROBLES                       NOMINA                                                          0000       00
+300010000000000005331290100002133902166602098                              0000070107ADRIANA RUBIO LOPEZ                                    NOMINA                                                          0000       00
+300010000000000005281470100002133903773965282                              0000070176ALEJANDRA CONCEPCION TOVAR ANTONIO                     NOMINA                                                          0000       00
+300010000000000004048030100002103901655617156                              0000070193JORGE ALBERTO MARTINEZ SILVAS                          NOMINA                                                          0000       00
+300010000000000004691470100002103901707261968                              0000070196SAMUEL QUINTANILLA HERNANDEZ                           NOMINA                                                          0000       00
+300010000000000003179650100002135903296225672                              0000070228DANIEL MAYORAL MURAKAHUA                               NOMINA                                                          0000       00
+300010000000000002337540100002133903916277371                              0000070478LIZBETH MORENO GONZALEZ                                NOMINA                                                          0000       00
+300010000000000003061450100002114903920597325                              0000070626JUAN ARTURO HIDALGO RIOS                               NOMINA                                                          0000       00
+300010000000000002411800100002100701127480496                              0000070631CRUZ IVVET VAZQUEZ ARMENTO                             NOMINA                                                          0000       00
+300010000000000002982350100002135700889607240                              0000070636GUADALUPE PENA MADARIAGA                               NOMINA                                                          0000       00
+300010000000000002765010100002133902461515385                              0000070777ROBERTO CARLOS GOMEZ MORENO                            NOMINA                                                          0000       00
+300010000000000003040030100002133904037176567                              0000070916PABLO DE JESUS SANCHEZ MARTINEZ                        NOMINA                                                          0000       00
+300010000000000002764800100002580904361531117                              0000070976EDUARDO VERDUGO MAZARIEGOS                             NOMINA                                                          0000       00
+300010000000000002562210100002114904214207841                              0000070982JULIO CESAR TOVILLA ZAMUDIO                            NOMINA                                                          0000       00
+300010000000000003179810100002135904516793676                              0000902877RITO CONCEPCION OCHOA MARTINEZ                         NOMINA                                                          0000       00
+300010000000000002562180100002133904190780175                              0000903303MARCO ANTONIO BRAVO LORENZO                            NOMINA                                                          0000       00
+4001000022000000000007039128000001000000000007039128
