@@ -134,9 +134,8 @@ namespace Payroll.Models.Daos
                         EmpresasBean ls = new EmpresasBean
                         {
                             iIdEmpresa = int.Parse(data["IdEmpresa"].ToString()),
-                            sNombreEmpresa = data["NombreEmpresa"].ToString()
-
-                        };
+                            sNombreEmpresa = data["NombreEmpresa"].ToString(),
+                       };
                         list.Add(ls);
                     }
                 }
@@ -144,7 +143,7 @@ namespace Payroll.Models.Daos
                 {
                     list = null;
                 }
-                data.Close(); cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
@@ -1902,7 +1901,7 @@ namespace Payroll.Models.Daos
                    
                     list.Add(0);
 
-                   
+         
                 }
                 data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
@@ -1939,10 +1938,9 @@ namespace Payroll.Models.Daos
                             TDN.iAno = int.Parse(data["Anio"].ToString());
                             TDN.iCancelado = data["Cancelado"].ToString();
                         };
-
-
                         list.Add(TDN);
                     }
+                
                 }
                 else
                 {
@@ -1994,7 +1992,7 @@ namespace Payroll.Models.Daos
                 {
                     bean.sMensaje = "error";
                 }
-                cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
