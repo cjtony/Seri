@@ -3,6 +3,8 @@ using Payroll.Models.Daos;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
@@ -95,7 +97,8 @@ namespace Payroll.Controllers
             return PartialView();
         }
         // POST: PETICIONES
-        public PartialViewResult VistaRenglones() {
+        public PartialViewResult VistaRenglones()
+        {
             return PartialView();
         }
         public PartialViewResult CBancos()
@@ -255,7 +258,7 @@ namespace Payroll.Controllers
             List<CRenglonesBean> LR = new List<CRenglonesBean>();
             ModCatalogosDao Dao = new ModCatalogosDao();
             LR = Dao.sp_CRenglones_Retrieve_CRenglones(IdEmpresa, iElemntoNOm);
-                  
+
             return Json(LR);
         }
 
@@ -316,7 +319,7 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Periodo(Empresa_id, editid, editano, editperiodo, editfinicio, editffinal, editfproceso, editfpago, editdiaspago);
             return Json(Lista);
         }
-        
+
         [HttpPost]
         public JsonResult LoadBancosEmpresa(int Empresa_id)
         {
@@ -382,11 +385,11 @@ namespace Payroll.Controllers
             return Json(Lista);
         }
         [HttpPost]
-        public JsonResult Loadonemenu(int Id )
+        public JsonResult Loadonemenu(int Id)
         {
             List<MainMenuBean> Lista;
             MainMenuDao Dao = new MainMenuDao();
-            Lista = Dao.Bring_Main_Menus(1,Id);
+            Lista = Dao.Bring_Main_Menus(1, Id);
             return Json(Lista);
         }
         [HttpPost]
@@ -494,15 +497,15 @@ namespace Payroll.Controllers
 
         //Guarda los datos en la tabla Crenglones
         [HttpPost]
-        public JsonResult SaveRenglon(int iIdEmpresa, int iIdRenglon, string sNombreRenglon,int iElementoNom, int iIdReporte
-           ,int IdAcumulado, int icancel,int iTipodeRenglon,int iEspejo,int idCalculo, string sCuentaCont,string sDespCuenta,
-            string sCargaCuenta,int iIdSat, int PenAlin)
+        public JsonResult SaveRenglon(int iIdEmpresa, int iIdRenglon, string sNombreRenglon, int iElementoNom, int iIdReporte
+           , int IdAcumulado, int icancel, int iTipodeRenglon, int iEspejo, int idCalculo, string sCuentaCont, string sDespCuenta,
+            string sCargaCuenta, int iIdSat, int PenAlin)
         {
 
             CRenglonesBean bean = new CRenglonesBean();
             ModCatalogosDao dao = new ModCatalogosDao();
             bean = dao.ps_Renglon_Insert_CRenglones(iIdEmpresa, iIdRenglon, sNombreRenglon, iElementoNom, iIdReporte, IdAcumulado
-            ,icancel, iTipodeRenglon, iEspejo, idCalculo, sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
+            , icancel, iTipodeRenglon, iEspejo, idCalculo, sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
             return Json(bean);
         }
 
@@ -520,14 +523,14 @@ namespace Payroll.Controllers
         //Actualiza los datos en la tabla Crenglones
         [HttpPost]
         public JsonResult UpdateRenglon(int iIdEmpresa, int iIdRenglon, string sNombreRenglon, int iIdReporte
-        , int IdAcumulado, int icancel,  int iEspejo, string sCuentaCont, string sDespCuenta,
+        , int IdAcumulado, int icancel, int iEspejo, string sCuentaCont, string sDespCuenta,
          string sCargaCuenta, int iIdSat, int PenAlin)
         {
 
             CRenglonesBean bean = new CRenglonesBean();
             ModCatalogosDao dao = new ModCatalogosDao();
             bean = dao.ps_Renglon_Update_CRenglones(iIdEmpresa, iIdRenglon, sNombreRenglon, iIdReporte, IdAcumulado
-            , icancel, iEspejo,  sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
+            , icancel, iEspejo, sCuentaCont, sDespCuenta, sCargaCuenta, iIdSat, PenAlin);
             return Json(bean);
         }
 
@@ -547,6 +550,84 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CatalogoGeneral_Retrieve_RecuperaAusentismos();
             return Json(Lista);
         }
-        
+        [HttpPost]
+        public JsonResult LoadFilePeriodos(HttpPostedFileBase fileUpload)
+        {
+            List<object> list = new List<object>();
+
+            string RutaSitio = Server.MapPath("~/");
+            string dia = DateTime.Today.ToString("dd");
+            string mes = DateTime.Today.ToString("MM");
+            string año = DateTime.Today.ToString("yyyy");
+            string hora = DateTime.Now.ToString("HH");
+            string minuto = DateTime.Now.ToString("mm");
+
+            if (!Directory.Exists(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/"))
+            {
+                Directory.CreateDirectory(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/");
+            }
+
+            string pathGuardado = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/" + dia + "_" + mes + "_" + año + "_" + hora + "_" + minuto + "_" + "Periodos" + Path.GetExtension(fileUpload.FileName));
+            string pathLogs = Path.Combine(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
+            fileUpload.SaveAs(pathGuardado);
+            CargaMasivaDao Dao = new CargaMasivaDao();
+            DataTable table = Dao.ValidaArchivo(pathGuardado);
+
+            List<string> ResutLog = new List<string>();
+            int i;
+            string errorh = "Error en la linea: ";
+            
+            for (i = 0; i < table.Rows.Count; i++)
+            {
+
+                var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
+                if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
+
+                var resulTipoPeriodo = Dao.ValidaEmpresaTipoPeriodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["TipoPeriodo"].ToString());
+                if (resulTipoPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no tiene el tipo de periodo" + table.Rows[i]["TipoPeriodo"].ToString()); }
+
+                var isValidDate1 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_inicio"].ToString());
+                if (isValidDate1 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Inicio es incorrecto a dd/mm/aaaa"); }
+
+                var isValidDate2 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_fin"].ToString());
+                if (isValidDate2 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Fin es incorrecto a dd/mm/aaaa"); }
+
+                var isValidDate3 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_pago"].ToString());
+                if (isValidDate3 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Pago es incorrecto a dd/mm/aaaa"); }
+
+                var isValidDate4 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_proceso"].ToString());
+                if (isValidDate4 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Proceso es incorrecto a dd/mm/aaaa"); }
+
+                var resultExistePeriodos = Dao.Valida_PeriodoExistente(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Anio"].ToString(), table.Rows[i]["TipoPeriodo"].ToString(), table.Rows[i]["Periodo"].ToString());
+                if (resultExistePeriodos > 0 && resultExistePeriodos < 100) { ResutLog.Add(errorh + (i + 1) + ", La empresa " + table.Rows[i]["Empresa_id"].ToString() +" tipo periodo "+ table.Rows[i]["TipoPeriodo"].ToString() + " en el año " + table.Rows[i]["Anio"].ToString() + " ya cuenta con un periodo " + table.Rows[i]["Periodo"].ToString()); }
+                else if (resultExistePeriodos == 100) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Anio"].ToString() + " se encuentra fuera del rango valido para insertar periodos."); }
+
+
+            }
+
+            if (ResutLog.Count == 0)
+            {   
+                for (int k = 0; k < table.Rows.Count; k++)
+                {
+                    Dao.InsertaCargaMasivaPeriodos(table.Rows[k]);
+                }
+                list.Add("1");
+                list.Add("Carga de Periodos correcta, se cargaron " + i + " registos.");
+            }
+            else
+            {
+                StreamWriter txtfile = new StreamWriter(pathLogs);
+                foreach (var error in ResutLog)
+                {
+                    txtfile.WriteLine(error);
+                }
+                txtfile.Close();
+                list.Clear();
+                list.Add("0");
+                list.Add("/Content/FilesCargaMasivaIncidencias/LogsCarga/Notas_de_carga.txt");
+            }
+
+            return Json(list);
+        }
     }
 }

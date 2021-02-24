@@ -316,3 +316,20 @@ span > .paginate_button {
 .bg-inpt-mode-night {
     background-color: #c6c6c6 !important;
 }
+/*.btn-orange {
+    color: #fff;
+    background-color: #FF5733;
+    border-color: #6f74dd;
+}
+
+    .btn-orange:focus {
+        color: #fff;
+        background-color: #FF5733;
+        border-color: #8e99f3;
+    }
+
+    .btn-orange:hover {
+        color: #fff;
+        background-color: #FF5733;
+        border-color: #8e99f3;
+    }*/
