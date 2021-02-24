@@ -777,32 +777,39 @@
                                         }
                                         containerBtnsProDepBank.innerHTML += `
                                             <div class="row animated fadeInDown delay-1s mt-4">
-                                                <div class="col-md-4 text-center">
+                                                <div class="col-md-3 text-center">
                                                     <div class="form-group form-check mt-1 rounded text-primary font-weight-bold" style="">
                                                         <input type="checkbox" class="form-check-input" id="ismirror">
                                                         <label class="form-check-label" for="ismirror">Con Archivos Espejo</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 text-center">
+                                                <div class="col-md-3 text-center">
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow"
+                                                        <button type="button" class="btn btn-primary btn-sm btn-block shadow"
                                                             onclick="fValidateBankInterbank('INT');" id="btn-process-deposits-interbank">
-                                                            <span class="icon text-white">
-                                                                <i class="fas fa-play mr-1"></i>
-                                                                <i class="fas fa-money-check-alt"></i>
-                                                            </span>
+                                                            <i class="fas fa-play mr-1"></i>
+                                                            <i class="fas fa-money-check-alt mr-2"></i>
                                                             <span class="text">Interbancarios</span>
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 text-center">
+                                                <div class="col-md-3 text-center">
                                                     <div class="form-group">
-                                                        <button type="button" class="btn btn-primary btn-sm btn-icon-split shadow"                                      onclick="fValidateBankInterbank('NOM');" id="btn-process-deposits-payroll">
-                                                            <span class="icon text-white">
-                                                                <i class="fas fa-play mr-1"></i>
-                                                                <i class="fas fa-money-bill-wave"></i>
-                                                            </span>
+                                                        <button type="button" class="btn btn-primary btn-sm btn-block shadow"                                      onclick="fValidateBankInterbank('NOM');" id="btn-process-deposits-payroll">
+                                                           
+                                                            <i class="fas fa-play mr-1"></i>
+                                                            <i class="fas fa-money-bill-wave mr-1"></i>
                                                             <span class="text">Nómina</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-center">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-success btn-sm btn-block shadow" 
+                                                            id="btn-process-report" onclick="fGenerateReportDispersion();">
+                                                            <i class="fas fa-play mr-1"></i>
+                                                            <i class="fas fa-file mr-1"></i>
+                                                            <span class="text">Reporte</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -901,6 +908,123 @@
                 console.error('TypeError: ', error.message);
             } else if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+
+    fRestartReportFileDN = (paramFolder, paramFile, type) => {
+        try {
+            if (type == 1) {
+                if (paramFolder != "" && paramFile != "") {
+                    $.ajax({
+                        url: "../DispersionSpecial/RestartReportFile",
+                        type: "POST",
+                        data: { folder: String(paramFolder), file: String(paramFile) },
+                        beforeSend: () => {
+
+                        }, success: (request) => {
+                            console.log(request);
+                            document.getElementById('btn-process-deposits-payroll').disabled   = false;
+                            document.getElementById('btn-process-deposits-interbank').disabled = false;
+                            document.getElementById('ismirror').disabled           = false;
+                            document.getElementById('btn-process-report').disabled = false;
+                            document.getElementById('divbtndownzip').innerHTML     = "";
+                            document.getElementById('div-controls').innerHTML      = "";
+                            document.getElementById('divbtndownzipint').innerHTML  = "";
+                            document.getElementById('div-controls-int').innerHTML  = "";
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    alert('Accion invalida');
+                    location.reload();
+                }
+            } else {
+                document.getElementById('btn-process-deposits-payroll').disabled   = false;
+                document.getElementById('btn-process-deposits-interbank').disabled = false;
+                document.getElementById('ismirror').disabled           = false;
+                document.getElementById('btn-process-report').disabled = false;
+                document.getElementById('divbtndownzip').innerHTML     = "";
+                document.getElementById('div-controls').innerHTML      = "";
+                document.getElementById('divbtndownzipint').innerHTML  = "";
+                document.getElementById('div-controls-int').innerHTML  = "";
+            }
+        } catch (error) {
+            console.log(fCatchError(error));
+        }
+    }
+
+    // Funcion que genera el reporte de la dispersion
+    fGenerateReportDispersion = () => {
+        try {
+            const dataSendProcessDepPayroll = {
+                yearPeriod: parseInt(yeardis.value),
+                numberPeriod: parseInt(periodis.value),
+                typePeriod: parseInt(typeperiod.value),
+            };
+            $.ajax({
+                url: "../Dispersion/GenerateReportDispersion",
+                type: "POST",
+                data: dataSendProcessDepPayroll,
+                beforeSend: () => {
+                    document.getElementById('btn-process-deposits-payroll').disabled = true;
+                    document.getElementById('btn-process-deposits-interbank').disabled = true;
+                    document.getElementById('ismirror').disabled = true;
+                    document.getElementById('btn-process-report').disabled = true;
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == true && request.MensajeError == "none") {
+                        document.getElementById('divbtndownzip').innerHTML += `
+                                    <div class="card border-left-success shadow h-100 py-2 animated fadeInRight delay-2s">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">${request.Archivo}.zip</div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a title="Descargar archivo ${request.Archivo}.xlsx" id="btn-down-txt" download="${request.Archivo}" href="/Content/DISPERSION/${request.Folder}/${request.Archivo}" ><i class="fas fa-download fa-2x text-gray-300"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                        document.getElementById('div-controls').innerHTML += `
+                                    <div class="animated fadeInDown delay-1s">
+                                        <h6 class="text-primary font-weight-bold"> <i class="fas fa-check-circle mr-2"></i> Archivo generado!</h6>
+                                        <hr />
+                                        <button id="btn-restart-to-deploy-special" class="btn btn-sm btn-primary" type="button" onclick="fRestartReportFileDN('${request.Folder}', '${request.Archivo}', 1);"> <i class="fas fa-undo mr-2"></i> Activar botones </button>
+                                    </div>
+                                `;
+                    } else if (request.Bandera == false && request.Rows == 0) {
+                        fShowTypeAlert('Atención!', 'No se encontraron registros para generar el reporte', 'info', document.getElementById('btn-send-dispersion-special'), 0);
+                        fRestartReportFileDN('none', 'none', 2);
+                    } else {
+                        fShowTypeAlert('Error!', 'Ocurrio un error interno en la aplicacion', 'error', document.getElementById('btn-send-dispersion-special'), 0);
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
             } else {
                 console.error('Error: ', error);
             }

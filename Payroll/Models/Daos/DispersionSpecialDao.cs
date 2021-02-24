@@ -173,5 +173,28 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
+        public DataTable sp_Reporte_Dispersion(int keyBusines, int yearPeriod, int typePeriod, int period)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Reporte_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusines));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
     }
 }

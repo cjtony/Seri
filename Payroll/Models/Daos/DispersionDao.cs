@@ -1076,6 +1076,7 @@ namespace Payroll.Models.Daos
                         DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
                         datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
                         datosProcesaCheques.sBanco = data["Banco"].ToString();
+                        datosProcesaCheques.sCodigo = data["Codigo"].ToString();
                         datosProcesaCheques.iIdEmpresa = Convert.ToInt32(data["Empresa"].ToString());
                         datosProcesaCheques.sNomina = data["Nomina"].ToString();
                         datosProcesaCheques.sCuenta = data["Cuenta"].ToString();
