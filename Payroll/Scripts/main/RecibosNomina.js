@@ -69,8 +69,17 @@
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("EmpresaNom").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
                 }
+                if (data[0].iPerfilPdf == 1) {
+                    btnPDFms.style.visibility = 'visible';
+
+                }
+                if (data[0].iPerfilPdf == 0) {
+                    btnPDFms.style.visibility = 'hidden';
+
+                }
             }
         });
+
     };
     FListadoEmpresa();
 
@@ -188,8 +197,7 @@
                          }
 
                      }
-                 });
-             
+                 });            
 
          }
         

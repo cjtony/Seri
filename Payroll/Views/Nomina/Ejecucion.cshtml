@@ -66,9 +66,9 @@
                  </div>
                  <div class="form-group row">
                    <label for="anoeje" class="col-sm-4 col-form-label font-labels">
-                                                                <i class="fas fa-calendar mr-2 col-ico"></i>
-                                                                Año:
-                                                            </label>
+                    <i class="fas fa-calendar mr-2 col-ico"></i>
+                       Año:
+                    </label>
                    <div class="col-sm-8">
                     <input placeholder="Año" type="text" id="TbAño" class="form-control form-control-sm text-capitalize" readonly />
                    </div>
@@ -83,9 +83,9 @@
                  </div>
                  <div class="form-group row" style="margin-top:15px">
                    <label for="NombEmpre" class="col-sm-4 col-form-label font-labels" id="NombEmpre" style="visibility:hidden">
-                                                                <i class="fas fa-building mr-2 col-ico"></i>
-                                                                Empresa:
-                                                            </label>
+                     <i class="fas fa-building mr-2 col-ico"></i>
+                        Empresa:
+                     </label>
                    <div class="col-sm-8">
                      <select placeholder="Empresa" tp-select="Empresa" class="form-control form-control-sm" id="EjeEmpresa" style="visibility:hidden">
                       <option value="0">Selecciona</option>
@@ -107,64 +107,66 @@
                    Empleados:
                    </label>
                   <div class="col-sm-8">
-                                                                <div>
-                                                                    <div style='float: left;' id='DropLitEmple'>
-                                                                    </div>
-                                                                    <div style="float: left; margin-left: 20px; font-size: 13px; font-family: Verdana;" id="dialog">
-                                                                        <div id="selectionlog"></div>
-                                                                        <div style='max-width: 300px; margin-top: 20px;' id="checkedItemsLog"></div>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
+                   <div>
+                      <div style='float: left;' id='DropLitEmple'>
+                      </div>
+                       <div style="float: left; margin-left: 20px; font-size: 13px; font-family: Verdana;" id="dialog">
+                       <div id="selectionlog"></div>
+                       <div style='max-width: 300px; margin-top: 20px;' id="checkedItemsLog"></div>
+                       </div>
+                    </div>
+                   </div>
                  </div>
                </div>
                <div class="col-md-6">
-                  <div class="form-group row">
-                                                            <label for="TipoperiodoEje" class="col-sm-4 col-form-label font-labels">
-                                                                <i class="fas fa-pallet mr-2 col-ico"></i>
-                                                                Tipo de periodo:
-                                                            </label>
-                                                            <div class="col-sm-8">
-                                                                <input placeholder="Tipo de periodo" type="text" id="TxbTipoPeriodo" class="form-control form-control-sm text-capitalize" readonly />
-                                                            </div>
-                                                        </div>
-                  <div class="form-group row">
-                                                            <label for="PeridoEje" class="col-sm-4 col-form-label font-labels">
-                                                                <i class="fas fa-pager mr-2 col-ico"></i>
-                                                                Periodo:
-                                                            </label>
-                                                            <div class="col-sm-8">
-                                                                <select placeholder="Periodo" tp-select="PeridoEje" class="form-control form-control-sm" id="PeridoEje">
-                                                                    <option value="0">Selecciona</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                  <div class="form-group row">
-                   <label class="col-sm-4 col-form-label font-labels"><input type="checkbox" id="ChNCerrada">Cerrar Nomina</label>
+                   <div class="form-group row">
+                       <label for="TipoperiodoEje" class="col-sm-4 col-form-label font-labels">
+                           <i class="fas fa-pallet mr-2 col-ico"></i>
+                           Tipo de periodo:
+                       </label>
+                       <div class="col-sm-8">
+                           <input placeholder="Tipo de periodo" type="text" id="TxbTipoPeriodo" class="form-control form-control-sm text-capitalize" readonly />
+                       </div>
                    </div>
-                  <div class="form-group row">
-                                                            <div id="messageNotification" style="margin-top:85%">
-                                                                <label for="Lamens" class="col-sm-4 col-form-label font-labels">
-                                                                    Ejecución terminada
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                  <div class="form-group row">
-                                                            <div id="messageNotification2" style="margin-top:85%">
-                                                                <label for="Lamens" class="col-sm-4 col-form-label font-labels">
-                                                                    Ejecución en cola
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                  <div class="form-group row">
-                                                            <div id="timerNotification" style="margin-top:85%">
-                                                                <div>
-                                                                    Realizando ejecición
-                                                                </div>
-                                                            </div>
-                                                            <div id="jqxLoader"></div>
-                                                        </div>
+                   <div class="form-group row">
+                       <label for="PeridoEje" class="col-sm-4 col-form-label font-labels">
+                           <i class="fas fa-pager mr-2 col-ico"></i>
+                           Periodo:
+                       </label>
+                       <div class="col-sm-8">
+                           <select placeholder="Periodo" tp-select="PeridoEje" class="form-control form-control-sm" id="PeridoEje">
+                               <option value="0">Selecciona</option>
+                           </select>
+                       </div>
+                   </div>
+                   <div class="form-group row">
+                       <label class="col-sm-7 col-form-label font-labels"><input type="checkbox" id="ChekEnFirme">Correr Nomina en firme</label>
+                   </div>
+                   <div class="form-group row" style="visibility:hidden">
+                       <label class="col-sm-4 col-form-label font-labels"><input type="checkbox" id="ChNCerrada">Cerrar Nomina</label>
+                   </div>
+                   <div class="form-group row">
+                       <div id="messageNotification" style="margin-top:85%">
+                           <label for="Lamens" class="col-sm-4 col-form-label font-labels">
+                               Ejecución terminada
+                           </label>
+                       </div>
+                   </div>
+                   <div class="form-group row">
+                       <div id="messageNotification2" style="margin-top:85%">
+                           <label for="Lamens" class="col-sm-4 col-form-label font-labels">
+                               Ejecución en cola
+                           </label>
+                       </div>
+                   </div>
+                   <div class="form-group row">
+                       <div id="timerNotification" style="margin-top:85%">
+                           <div>
+                               Realizando ejecición
+                           </div>
+                       </div>
+                       <div id="jqxLoader"></div>
+                   </div>
                </div>
              </div>
             </div>
@@ -558,7 +560,7 @@
    </div>
 </body>
 
-<script type="text/javascript" src="~/Scripts/Nomoper/OperNomEjecucion.js?n=1"></script>
+<script type="text/javascript" src="~/Scripts/Nomoper/OperNomEjecucion.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jspdf.min.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqx-all.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
