@@ -5,11 +5,11 @@ namespace Payroll.Models.Utilerias
 {
     public class Conexion
     { 
-        //static readonly string Server = "201.149.34.185,15002";
         static readonly string Server = "GSERIPROD01"; 
         static readonly string Db     = "IPSNet"; 
         static readonly string User   = "IPSNet";
         static readonly string Pass   = "IPSNet2";
+
         protected SqlConnection conexion { get; set; }
 
         protected SqlConnection Conectar()

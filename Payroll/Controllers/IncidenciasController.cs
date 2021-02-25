@@ -376,7 +376,7 @@ namespace Payroll.Controllers
             string hora = DateTime.Now.ToString("HH");
             string minuto = DateTime.Now.ToString("mm");
 
-			string Referencia = dia + "/" + mes + "/" + año + " " + hora + ":" + minuto + " " + Session["sUsuario"].ToString();
+            string Referencia = dia + "/" + mes + "/" + año + " " + hora + ":" + minuto + " " + Session["sUsuario"].ToString();
             if (!Directory.Exists(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/"))
             {
                 Directory.CreateDirectory(RutaSitio + "/Content/FilesCargaMasivaIncidencias/LogsCarga/");
@@ -405,20 +405,18 @@ namespace Payroll.Controllers
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
                         if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe o esta dado de baja"); }
 
-                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
-                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
-                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
+                        var isValidDate1 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_Aplicacion"].ToString());
+                        if (isValidDate1 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha_Aplicacion es incorrecto a dd/mm/aaaa"); }
 
                         var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
                         if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
 
-                        //var ResultExisteCarga = Dao.Valida_Existe_Carga_Masiva(int.Parse(table.Rows[i]["Empresa_id"].ToString()),Periodo, int.Parse(table.Rows[i]["Renglon_id"].ToString()), fileType, table.Rows[i]["Referencia"].ToString());
-                        //if (ResultExisteCarga == 0) { ResutLog.Add(errorh + (i + 1) + ", Se ha cargado una incidencia similar antes "); }
+
+
                     }
 
                     if (ResutLog.Count == 0)
                     {
-                        //Console.WriteLine("Se manda al modulo de insercion la tabla");
                         for (int k = 0; k < table.Rows.Count; k++)
                         {
                             Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo, Referencia);
@@ -446,15 +444,12 @@ namespace Payroll.Controllers
                         var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
                         if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
 
+                        var isValidDate1 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha Ausentismo"].ToString());
+                        if (isValidDate1 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Ausentismo es incorrecto a dd/mm/aaaa"); }
+
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
                         if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
 
-                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
-                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
-                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
-
-                        //var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
-                        //if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
                     }
                     if (ResutLog.Count == 0)
                     {
@@ -486,15 +481,12 @@ namespace Payroll.Controllers
                         var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
                         if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
 
+                        var isValidDate1 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha Aprobación"].ToString());
+                        if (isValidDate1 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Aprobación es incorrecto a dd/mm/aaaa"); }
+
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
                         if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
 
-                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
-                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
-                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
-
-                        //var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
-                        //if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
                     }
 
                     if (ResutLog.Count == 0)
@@ -527,15 +519,12 @@ namespace Payroll.Controllers
                         var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
                         if (resultvEmpresa == 0) { ResutLog.Add(errorh + (i + 1) + ", La empresa" + table.Rows[i]["Empresa_id"].ToString() + " no existe"); }
 
+                        var isValidDate1 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_oficio"].ToString());
+                        if (isValidDate1 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Oficio es incorrecto a dd/mm/aaaa"); }
+
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
                         if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
 
-                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
-                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
-                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
-
-                        //var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
-                        //if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
                     }
 
                     if (ResutLog.Count == 0)
@@ -570,12 +559,14 @@ namespace Payroll.Controllers
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
                         if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
 
-                        //var resultvPeriodo = Dao.Valida_Periodo(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo"].ToString(), table.Rows[i]["Año"].ToString());
-                        //if (resultvPeriodo == 0) { ResutLog.Add(errorh + (i + 1) + ", El Periodo " + table.Rows[i]["Periodo"].ToString() + " es incorrecto"); }
-                        //if (resultvPeriodo == 2) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Año"].ToString() + " del periodo es incorrecto"); }
+                        var isValidDate1 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_inicio"].ToString());
+                        if (isValidDate1 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Inicio es incorrecto a dd/mm/aaaa"); }
+
+                        var isValidDate2 = Dao.Valida_FormatoFechas(table.Rows[i]["Fecha_fin"].ToString());
+                        if (isValidDate2 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Fin es incorrecto a dd/mm/aaaa"); }
 
                         List<string> resultvVacaciones = Dao.Valida_Vacaciones(table.Rows[i]["Empleado_id"].ToString(), table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Año"].ToString(), table.Rows[i]["Dias"].ToString());
-                        if (resultvVacaciones[0] == "0") { ResutLog.Add(resultvVacaciones[1]); }
+                        if (resultvVacaciones[0] == "0") { ResutLog.Add(errorh + (i + 1) + ", " + resultvVacaciones[1]); }
                     }
                     int Usuario_id = int.Parse(Session["iIdUsuario"].ToString());
                     if (ResutLog.Count == 0)

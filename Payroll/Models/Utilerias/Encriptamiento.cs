@@ -9,7 +9,7 @@ namespace Payroll.Models.Utilerias
         public static string SHA512(string str)
         {
             SHA512 sha512 = SHA512Managed.Create();
-            ASCIIEncoding encoding = new ASCIIEncoding();  
+            ASCIIEncoding encoding = new ASCIIEncoding();
             byte[] stream = null;
             StringBuilder sb = new StringBuilder();
             stream = sha512.ComputeHash(encoding.GetBytes(str));
