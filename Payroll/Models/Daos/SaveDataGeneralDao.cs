@@ -168,6 +168,35 @@ namespace Payroll.Models.Daos
     }
     public class EmpleadosDao : Conexion
     {
+        public EmpleadosBean sp_Valida_Existencia_Numero_Nomina(int keyEmployee, int keyBusiness)
+        {
+            EmpleadosBean empleados = new EmpleadosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Valida_Existencia_Numero_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Existe"].ToString() == "1") {
+                        empleados.sMensaje = "EXISTS";
+                    } else if (dataReader["Existe"].ToString() == "0") {
+                        empleados.sMensaje = "NOTEXISTS";
+                    } else {
+                        empleados.sMensaje = "NOTDATA";
+                    }
+                } else {
+                    empleados.sMensaje = "ERROR";
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                empleados.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return empleados;
+        }
 
         public EmpleadosBean sp_Empleados_Validate_DatosImss(int keyemp, string fieldCurp, string fieldRfc, int keyUser)
         {
@@ -195,7 +224,7 @@ namespace Payroll.Models.Daos
             return employeeBean;
         }
 
-        public EmpleadosBean sp_Empleados_Insert_Empleado(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, string nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, int usuario, int keyemp, string tipsan, string fecmat)
+        public EmpleadosBean sp_Empleados_Insert_Empleado(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, string nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, int usuario, int keyemp, string tipsan, string fecmat, int keyEmployee)
         {
             EmpleadosBean empleadoBean = new EmpleadosBean();
             try
@@ -205,6 +234,7 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", keyEmployee));
                 cmd.Parameters.Add(new SqlParameter("@ctrlNombre", name.ToUpper()));
                 cmd.Parameters.Add(new SqlParameter("@ctrlApellidoPaterno", apepat.ToUpper()));
                 cmd.Parameters.Add(new SqlParameter("@ctrlApellidoMaterno", apemat.ToUpper()));

@@ -134,7 +134,7 @@ namespace Payroll.Controllers
             try {
                 int usuario     = Convert.ToInt32(Session["iIdUsuario"].ToString());
                 int empresa     = int.Parse(Session["IdEmpresa"].ToString());
-                addEmpleadoBean = empleadoDao.sp_Empleados_Insert_Empleado(name, apepat, apemat, sex, estciv, convertFNaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, usuario, empresa, tipsan, convertFMatr);
+                addEmpleadoBean = empleadoDao.sp_Empleados_Insert_Empleado(name, apepat, apemat, sex, estciv, convertFNaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, usuario, empresa, tipsan, convertFMatr, 0);
             } catch (Exception exc) {
                 flag         = false;
                 messageError = exc.Message.ToString();
