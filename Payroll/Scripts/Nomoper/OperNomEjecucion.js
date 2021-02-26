@@ -374,10 +374,16 @@
                             if (btnFloEjecutar.value > 0) {
                                 $("#messageNotification").jqxNotification("open");
                                 btnFloEjecutar.value = 0;
+
                             }
                             btnFloActualiza.style.visibility = 'hidden';
                             $("#nav-VisCalculo-tab").addClass("disabled");
                             $("#nav-VisNomina-tab").addClass("disabled");
+                            if (ValorChekEnFirme.checked == true) {
+
+                                FLimpiaCamp();
+                            }
+
 
                         }
                     }
@@ -732,8 +738,8 @@
         TipodePeridoDroplip = TxbTipoPeriodo.value;
         periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
         separador = " ",
-            limite = 2,
-            arreglosubcadena2 = periodo.split(separador, limite);
+        limite = 2,
+        arreglosubcadena2 = periodo.split(separador, limite);
         FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
     };
 
@@ -953,12 +959,9 @@
                                                     data: dataSend2,
                                                     success: (data) => {
                                                         FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
-
+                                                      
                                                     }
-                                                });
-                                                
-                                             
-
+                                                });                   
                                             }
                                             else {
                                                 fshowtypealert('Error', 'Contacte a sistemas', 'error');
@@ -2192,6 +2195,8 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
+
+
                     document.getElementById("DropEmpresaPeri").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
 
                 }
@@ -2234,7 +2239,10 @@
             data: dataSend,
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
-                    document.getElementById("DropPeridoPer").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
+                    if (data[i].sNominaCerrada == "True") {
+                        document.getElementById("DropPeridoPer").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
+
+                    }  
                 }
                 for (i = 0; i < data.length - 1; i++) {
                     document.getElementById("DropPerido2").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
@@ -2258,6 +2266,13 @@
 
                 if (data.sMensaje == "success") {
                     fshowtypealert('Nomina', 'El Periodo se Abrio', 'correcto');
+
+                    $('#DropEmpresaPeri').append('<option value="0" selected="selected">Selecciona</option>');
+                    TxtAnioPer.value = "";
+                    $('#DropTipodePerdioPer').append('<option value="0" selected="selected">Selecciona</option>');
+                    $('#DropPeridoPer').append('<option value="0" selected="selected">Selecciona</option>');
+
+
                     
                 }
                 else {
