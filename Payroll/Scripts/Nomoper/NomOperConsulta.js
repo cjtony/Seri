@@ -1967,7 +1967,6 @@
                 type: "POST",
                 data: dataSend3,
                 success: function (data) {
-                    console.log(data[0].iIdDefinicionHd);
                     if (data[0].iIdDefinicionHd == 0) {
                         $.ajax({
                             url: "../Nomina/UpdatePtDefinicionNl",

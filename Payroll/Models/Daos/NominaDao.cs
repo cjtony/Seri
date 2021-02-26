@@ -1159,7 +1159,6 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrlsParametrosJobs", CtrlsParametrosJobs));
                 cmd.Parameters.Add(new SqlParameter("@CtrliCalculosHD_id", CtrliCalculosHD_id));
 
-
                 
                 if (cmd.ExecuteNonQuery() > 0)
                 {
@@ -2779,6 +2778,7 @@ namespace Payroll.Models.Daos
                         {
                           
                             LP.iPeriodo = int.Parse(data["Periodo"].ToString());
+                            LP.sNominaCerrada = data["Nomina_Cerrada"].ToString();
                             LP.sMensaje = "success";
                         };
 
