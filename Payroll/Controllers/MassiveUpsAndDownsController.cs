@@ -100,6 +100,7 @@ namespace Payroll.Controllers
             public int iFilaInsert { get; set; }
             public string sEmpresa { get; set; }
             public string sNombre { get; set; }
+            public string sNomina { get; set; }
         }
 
         public class ExceptionsBean
@@ -592,6 +593,32 @@ namespace Payroll.Controllers
                                             validationErMe.Append("[*] El valor de retroactivo no puede ir vacío, si no conoce el dato puede poner 0. ");
                                             flagVE = true;
                                         }
+                                        // Validamos que el numero de nomina no venga vacio
+                                        if (dr[50].ToString().Trim() != "") {
+                                            int payroll = 0;
+                                            bool convertirNNomina = int.TryParse(dr[50].ToString().Trim(), out payroll);
+                                            if (!convertirNNomina) {
+                                                validationErMe.Append("[*] El valor ingresado " + dr[50].ToString().Trim() 
+                                                    + " debe de ser un valor entero . ");
+                                                flagVE = true;
+                                            } else {
+                                                empleadosBean = empleadosDao.sp_Valida_Existencia_Numero_Nomina(
+                                                    Convert.ToInt32(dr[50].ToString().Trim()), Convert.ToInt32(dr[3].ToString().Trim()));
+                                                string msj = "";
+                                                if (empleadosBean.sMensaje == "EXISTS") {
+                                                    msj = "EXISTENTE";
+                                                } else if (empleadosBean.sMensaje == "NOTDATA" || empleadosBean.sMensaje == "ERROR") {
+                                                    msj = "ERROR";
+                                                }
+                                                if (empleadosBean.sMensaje != "NOTEXISTS") {
+                                                    validationErMe.Append("[*] El numero de nomina " + dr[50].ToString().Trim() + " ya se encuentra ocupado, compruebe el siguiente mensaje = " + msj + " . ");
+                                                    flagVE = true;
+                                                }
+                                            }
+                                        } else {
+                                            validationErMe.Append("[*] El valor de nomina no puede ir vacío, si no quiere indicar un número de nomina puede poner 0. ");
+                                            flagVE = true;
+                                        }
                                         // Validamos que el empleado no exista
                                         validaEmpleado = empleadosDao.sp_Empleados_Validate_DatosImss(empresa, dr[27].ToString().Trim(), dr[26].ToString().Trim(), 0);
                                         if (validaEmpleado.sMensaje != "continue")
@@ -616,28 +643,30 @@ namespace Payroll.Controllers
 
                                         // Variables, TEmpleado
                                         //int empresa = Convert.ToInt32(dr[3].ToString());
-                                        string nombre = dr[4].ToString().ToUpper().Trim();
+                                        int numeroNomina = Convert.ToInt32(dr[50].ToString().Trim());
+                                        string nombre    = dr[4].ToString().ToUpper().Trim();
+                                        string[] fechaNA = dr[7].ToString().Trim().Split('-');
                                         string paterno = dr[5].ToString().ToUpper().Trim();
                                         string materno = dr[6].ToString().ToUpper().Trim();
-                                        string fechaNa = Convert.ToDateTime(dr[7].ToString()).ToString("dd/MM/yyyy").Trim();
+                                        string fechaNa = fechaNA[0] + "/" + fechaNA[1] + "/" + fechaNA[2];
                                         string lugarNa = dr[8].ToString().ToUpper().Trim();
-                                        int titulo_id = Convert.ToInt32(dr[9].ToString().Trim());
-                                        int genero_id = Convert.ToInt32(dr[10].ToString().Trim());
-                                        int nacion_id = Convert.ToInt32(dr[11].ToString().Trim());
-                                        int estado_id = Convert.ToInt32(dr[12].ToString().Trim());
+                                        int titulo_id  = Convert.ToInt32(dr[9].ToString().Trim());
+                                        int genero_id  = Convert.ToInt32(dr[10].ToString().Trim());
+                                        int nacion_id  = Convert.ToInt32(dr[11].ToString().Trim());
+                                        int estado_id  = Convert.ToInt32(dr[12].ToString().Trim());
                                         string codigop = dr[13].ToString().Trim();
                                         int estadod_id = Convert.ToInt32(dr[14].ToString().Trim());
-                                        string ciudad = dr[15].ToString().ToUpper().Trim();
+                                        string ciudad  = dr[15].ToString().ToUpper().Trim();
                                         string colonia = dr[16].ToString().ToUpper().Trim();
-                                        string calle = dr[17].ToString().ToUpper().Trim();
+                                        string calle   = dr[17].ToString().ToUpper().Trim();
                                         string numeroc = dr[18].ToString().Trim();
                                         string telefof = dr[19].ToString().Trim();
                                         string telefom = dr[20].ToString().Trim();
                                         string correoe = dr[21].ToString().Trim();
                                         string fechama = "";
-                                        if (dr[22].ToString().Trim() != "")
-                                        {
-                                            fechama = Convert.ToDateTime(dr[22].ToString().Trim()).ToString("dd/MM/yyyy");
+                                        if (dr[22].ToString().Trim() != "") { 
+                                            string[] fechaMA = dr[22].ToString().Trim().Split('-');
+                                            fechama = fechaMA[0] + "/" + fechaMA[1] + "/" + fechaMA[2];
                                         }
                                         string tiposan = dr[23].ToString().Trim();
                                         int usuario_id = Convert.ToInt32(Session["iIdUsuario"].ToString().Trim());
@@ -649,7 +678,8 @@ namespace Payroll.Controllers
                                         int nivelestud = Convert.ToInt32(dr[28].ToString().Trim());
                                         int nivelsocio = Convert.ToInt32(dr[29].ToString().Trim());
                                         // Variables, TEmpleado_nomina
-                                        string fechaen = Convert.ToDateTime(dr[30].ToString()).ToString("dd/MM/yyyy").Trim();
+                                        string[] fechaEA = dr[30].ToString().Trim().Split('-');
+                                        string fechaen = fechaEA[0] + "/" + fechaEA[1] + "/" + fechaEA[2];
                                         double salamen = Convert.ToDouble(dr[31].ToString().Trim());
                                         int tipoperiod = Convert.ToInt32(dr[32].ToString().Trim());
                                         int tipoemplea = Convert.ToInt32(dr[33].ToString().Trim());
@@ -670,7 +700,7 @@ namespace Payroll.Controllers
                                         string cuentau = dr[43].ToString().Trim();
                                         //int posicionid = Convert.ToInt32(dr[44].ToString());
                                         //Insertamos el registro en TEmpleado
-                                        empleadosBean = empleadosDao.sp_Empleados_Insert_Empleado(nombre, paterno, materno, genero_id, estado_id, fechaNa, lugarNa, titulo_id, nacion_id.ToString(), estadod_id, codigop, ciudad, colonia, calle, numeroc, telefof, telefom, correoe, usuario_id, empresa, tiposan, fechama);
+                                        empleadosBean = empleadosDao.sp_Empleados_Insert_Empleado(nombre, paterno, materno, genero_id, estado_id, fechaNa, lugarNa, titulo_id, nacion_id.ToString(), estadod_id, codigop, ciudad, colonia, calle, numeroc, telefof, telefom, correoe, usuario_id, empresa, tiposan, fechama, numeroNomina);
                                         // Insertamos el registro en TEmpleado_imss
                                         imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, 0);
                                         // Insertamos el registro en TEmpleado_nomina
@@ -680,7 +710,7 @@ namespace Payroll.Controllers
                                         // Validamos que los registros se hayan hecho correctamente
                                         if (empleadosBean.sMensaje == "success" && imssBean.sMensaje == "success" && datosNominaBean.sMensaje == "success" && addPosicionBean.sMensaje == "success")
                                         {
-                                            correctDataInsertBeans.Add(new CorrectDataInsertBean { iFilaInsert = rowActu, sEmpresa = dr[3].ToString(), sNombre = nombre + " " + paterno + " " + materno });
+                                            correctDataInsertBeans.Add(new CorrectDataInsertBean { iFilaInsert = rowActu, sEmpresa = dr[3].ToString(), sNombre = nombre + " " + paterno + " " + materno, sNomina = numeroNomina.ToString() });
                                             flagInsert = true;
                                             rowInsert += 1;
                                         }

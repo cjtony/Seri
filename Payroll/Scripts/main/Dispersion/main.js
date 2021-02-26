@@ -2,7 +2,7 @@
 
 	/*
 	 * Constantes dispersion
-	 */ 
+	 */
 
     const navDispersion           = document.getElementById('nav-dispersion');
     const containerDataDeploy     = document.getElementById('container-data-deploy');
