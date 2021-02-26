@@ -80,7 +80,7 @@
     const EmpresaNoCe = document.getElementById('EmpresaNoCe');
     const EmpresaNom = document.getElementById('EmpresaNom');
     const BntBusRecibo = document.getElementById('btnFloBuscar');
-
+    const ChekEnFirme = document.getElementById('ChekEnFirme');
 
 
 
@@ -103,6 +103,10 @@
     var ValorChek = document.getElementById('ChNCerrada');
     var valorCheckRec = document.getElementById('CheckRecibo2');
     var valorCheckXempleado = document.getElementById('CheckXempleado');
+    var ValorChekEnFirme = document.getElementById('ChekEnFirme');
+    
+
+
 
     var DatoEjeCerrada;
     var IdDropList = 0;
@@ -370,10 +374,16 @@
                             if (btnFloEjecutar.value > 0) {
                                 $("#messageNotification").jqxNotification("open");
                                 btnFloEjecutar.value = 0;
+
                             }
                             btnFloActualiza.style.visibility = 'hidden';
                             $("#nav-VisCalculo-tab").addClass("disabled");
                             $("#nav-VisNomina-tab").addClass("disabled");
+                            if (ValorChekEnFirme.checked == true) {
+
+                                FLimpiaCamp();
+                            }
+
 
                         }
                     }
@@ -728,8 +738,8 @@
         TipodePeridoDroplip = TxbTipoPeriodo.value;
         periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
         separador = " ",
-            limite = 2,
-            arreglosubcadena2 = periodo.split(separador, limite);
+        limite = 2,
+        arreglosubcadena2 = periodo.split(separador, limite);
         FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
     };
 
@@ -740,11 +750,149 @@
 
     FValorChec = () => {
 
+        if (ValorChekEnFirme.checked == false) {
+            if (ValorChek.checked == true) {
 
-        if (ValorChek.checked == true) {
+                Swal.fire({
+                    title: 'Seguro que deseas cerrar la Nomina?',
+                    text: "Si es asi da clic en aceptar!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aceptar!'
+                }).then((result) => {
+                    if (result.value) {
+                        console.log('proceso de cerrar nomina');
+                        periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+                        separador = " ",
+                            limite = 2,
+                            arreglosubcadena2 = periodo.split(separador, limite);
+                        periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+                        var tipPer = TxbTipoPeriodo.value
+                        separador = " ",
+                            limite = 2,
+                            arreglosubcadena3 = tipPer.split(separador, limite);
+
+                        const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], idEmpresa: 0, Anio: TbAño.value };
+
+                        var rows;
+                        $.ajax({
+                            url: "../Nomina/ListTpCalculoln",
+                            type: "POST",
+                            data: dataSend,
+                            success: (Result) => {
+                                if (Result.Result[0].sMensaje == "success") {
+                                    rows = Result.Result.length;
+
+                                    if (rows > 0) {
+
+                                        Swal.fire(
+                                            'Nomina!',
+                                            'Cerrada.',
+                                            'success'
+                                        );
+                                        periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+                                        separador = " ",
+                                            limite = 2,
+                                            arreglosubcadena = periodo.split(separador, limite);
+                                        const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 1, Anio: TbAño.value, IdTipoPeriodo: 0, IdEmpresa: 0 };
+
+                                        $.ajax({
+                                            url: "../Nomina/UpdateCInicioFechasPeriodo",
+                                            type: "POST",
+                                            data: dataSend3,
+                                            success: (data) => {
+
+                                                if (data.sMensaje == "success") {
+                                                    FLimpiaCamp();
+
+                                                }
+                                                else {
+                                                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+
+                                                }
+                                            },
+
+                                            error: function (jqXHR, exception) {
+                                                fcaptureaerrorsajax(jqXHR, exception);
+                                            }
+                                        });
+
+                                    }
+                                }
+                                else {
+                                    ValorChek.checked = false;
+                                    console.log('no hay calculos');
+                                    Swal.fire('La Nomina!', 'No contiene ningun calculo , no se puede cerrar', 'warning');
+
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        ValorChek.checked = false;
+
+                    }
+                });
+
+            }
+            if (ValorChek.checked == false) {
+
+                //Swal.fire({
+                //    title: 'Seguro que deseas abrir la Nomina?',
+                //    text: "Si es asi da clic en aceptar!",
+                //    icon: 'warning',
+                //    showCancelButton: true,
+                //    confirmButtonColor: '#3085d6',
+                //    cancelButtonColor: '#d33',
+                //    confirmButtonText: 'Aceptar!'
+                //}).then((result) => {
+                //    if (result.value) {
+                //        Swal.fire(
+                //            'Nomina!',
+                //            'Abierta.',
+                //            'success'
+                //        );
+                //        periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+                //        separador = " ",
+                //            limite = 2,
+                //            arreglosubcadena = periodo.split(separador, limite);
+                //        const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 0 };
+                //        console.log('nominacerrada');
+                //        console.log(dataSend3);
+                //        $.ajax({
+                //            url: "../Nomina/UpdateCInicioFechasPeriodo",
+                //            type: "POST",
+                //            data: dataSend3,
+                //            success: (data) => {
+
+                //                if (data.sMensaje == "success") {
+                //                    console.log(data);
+                //                    $("#2").empty();
+                //                    $("#TpDefinicion").jqxGrid('clearselection');    
+                //                }
+                //                else {
+                //                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+
+                //                }
+                //            },
+
+                //            error: function (jqXHR, exception) {
+                //                fcaptureaerrorsajax(jqXHR, exception);
+                //            }
+                //        });
+                //    }
+                //});
+
+
+            }
+        }
+
+        if (ValorChekEnFirme.checked == true) {
 
             Swal.fire({
-                title: 'Seguro que deseas cerrar la Nomina?',
+                title: 'Seguro que deseas correr la Nomina en firme?',
                 text: "Si es asi da clic en aceptar!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -774,29 +922,46 @@
                         success: (Result) => {
                             if (Result.Result[0].sMensaje == "success") {
                                 rows = Result.Result.length;
-                           
+
                                 if (rows > 0) {
 
                                     Swal.fire(
                                         'Nomina!',
-                                        'Cerrada.',
+                                        'Realizando los calculos en firme',
                                         'success'
                                     );
+                                    btnFloEjecutar.value = 1;
+                                    IdDropList;
+                                    AnioDropList;
+                                    TipodePeridoDroplip = TxbTipoPeriodo.value;
+                                    separador = " ",
+                                    limite = 2,
+                                    arreglosubcadena3 = TipodePeridoDroplip.split(separador, limite);
                                     periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
                                     separador = " ",
                                     limite = 2,
                                     arreglosubcadena = periodo.split(separador, limite);
                                     const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 1, Anio: TbAño.value, IdTipoPeriodo: 0, IdEmpresa: 0 };
+                                    var dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
 
-                                   $.ajax({
+                                    $.ajax({
                                         url: "../Nomina/UpdateCInicioFechasPeriodo",
                                         type: "POST",
                                         data: dataSend3,
                                         success: (data) => {
 
                                             if (data.sMensaje == "success") {
-                                                FLimpiaCamp();
-
+                                                console.log('manda a ejecuccion 23')
+                                                $.ajax({
+                                                    timeout: 5000,
+                                                    url: "../Nomina/ProcesosPots",
+                                                    type: "POST",
+                                                    data: dataSend2,
+                                                    success: (data) => {
+                                                        FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
+                                                      
+                                                    }
+                                                });                   
                                             }
                                             else {
                                                 fshowtypealert('Error', 'Contacte a sistemas', 'error');
@@ -825,64 +990,12 @@
 
                 }
             });
-
-        }
-
-        if (ValorChek.checked == false) {
-
-            //Swal.fire({
-            //    title: 'Seguro que deseas abrir la Nomina?',
-            //    text: "Si es asi da clic en aceptar!",
-            //    icon: 'warning',
-            //    showCancelButton: true,
-            //    confirmButtonColor: '#3085d6',
-            //    cancelButtonColor: '#d33',
-            //    confirmButtonText: 'Aceptar!'
-            //}).then((result) => {
-            //    if (result.value) {
-            //        Swal.fire(
-            //            'Nomina!',
-            //            'Abierta.',
-            //            'success'
-            //        );
-            //        periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
-            //        separador = " ",
-            //            limite = 2,
-            //            arreglosubcadena = periodo.split(separador, limite);
-            //        const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 0 };
-            //        console.log('nominacerrada');
-            //        console.log(dataSend3);
-            //        $.ajax({
-            //            url: "../Nomina/UpdateCInicioFechasPeriodo",
-            //            type: "POST",
-            //            data: dataSend3,
-            //            success: (data) => {
-
-            //                if (data.sMensaje == "success") {
-            //                    console.log(data);
-            //                    $("#2").empty();
-            //                    $("#TpDefinicion").jqxGrid('clearselection');    
-            //                }
-            //                else {
-            //                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
-
-            //                }
-            //            },
-
-            //            error: function (jqXHR, exception) {
-            //                fcaptureaerrorsajax(jqXHR, exception);
-            //            }
-            //        });
-            //    }
-            //});
-
-
-        }
-
+        };
+        
     };
     ChNCerrada.addEventListener('click', FValorChec);
 
-
+    ChekEnFirme.addEventListener('click', FValorChec);
     /*  Procesos de Ejecucion */
 
     Fejecucion = () => {
@@ -994,11 +1107,10 @@
                                     type: "POST",
                                     data: dataSend2,
                                     success: (data) => { 
-                                        console.log('manda a ejecuccion ' + data)
+                                       console.log('manda a ejecuccion ' + data)
                                        FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
                                     }
                                 });
-
                             }
 
                             if (data[0].iIdCalculosHd == 0) {
@@ -2083,6 +2195,8 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
+
+
                     document.getElementById("DropEmpresaPeri").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
 
                 }
@@ -2125,7 +2239,10 @@
             data: dataSend,
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
-                    document.getElementById("DropPeridoPer").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
+                    if (data[i].sNominaCerrada == "True") {
+                        document.getElementById("DropPeridoPer").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
+
+                    }  
                 }
                 for (i = 0; i < data.length - 1; i++) {
                     document.getElementById("DropPerido2").innerHTML += `<option value='${data[i].iPeriodo}'>${data[i].iPeriodo} </option>`;
@@ -2149,6 +2266,13 @@
 
                 if (data.sMensaje == "success") {
                     fshowtypealert('Nomina', 'El Periodo se Abrio', 'correcto');
+
+                    $('#DropEmpresaPeri').append('<option value="0" selected="selected">Selecciona</option>');
+                    TxtAnioPer.value = "";
+                    $('#DropTipodePerdioPer').append('<option value="0" selected="selected">Selecciona</option>');
+                    $('#DropPeridoPer').append('<option value="0" selected="selected">Selecciona</option>');
+
+
                     
                 }
                 else {

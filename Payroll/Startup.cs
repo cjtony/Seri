@@ -31,6 +31,7 @@ namespace Payroll
         public void Configuration(IAppBuilder app)
         {
             GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GSERIPROD01; Initial Catalog=IPSNet_Copia; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions
+
             {
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                 SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
