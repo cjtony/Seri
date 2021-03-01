@@ -1108,7 +1108,7 @@ namespace Payroll.Models.Daos
         public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido,int masivo)
         {
             int IdCalcHD,iperiodo;
-            int NumEmpleado = 0,NoXmlx=1,id=0,row198=0,row195=0,rowTper=0 , row17=0;
+            int NumEmpleado = 0,NoXmlx=1,id=0,row198=0,row195=0,rowTper=0 , row17=0, row113 = 0;
             string[] Nombre= sNombreComple.Split(' ');
             string NomEmple = "";
             List<string> NomArchXML = new List<string>();
@@ -1539,7 +1539,7 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
                                     }
 
-                                    if (IdEmpresa != 166 && IdEmpresa != 199) {
+                                    if (IdEmpresa != 166 && IdEmpresa != 199 && IdEmpresa != 2048) {
                                         xmlWriter.WriteAttributeString("SalarioBaseCotApor", SuedoAgravado);
                                         xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SueldoDiario);
                                         xmlWriter.WriteAttributeString("RiesgoPuesto", TipoRiesgo);//1
@@ -1581,8 +1581,12 @@ namespace Payroll.Models.Daos
                                                 };
                                                 if (LisTRecibo[a].iIdRenglon == 17) {
                                                     row17 = a;
+                                                }; 
+                                                if (LisTRecibo[a].iIdRenglon == 113)
+                                                {
+                                                    row113 = a;
                                                 };
-                                                
+
                                                 string lengRenglon = "";
                                                 string IporPagado = string.Format("{0:N2}", LisTRecibo[a].dSaldo);
                                                 string  ImporGra = string.Format("{0:N2}", LisTRecibo[a].dGravado);

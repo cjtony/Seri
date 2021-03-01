@@ -107,7 +107,7 @@ $(function () {
             success: (data) => {
                 console.log(data);
                 for (i = 0; i < data.length; i++) {
-                    if (data[i].sNominaCerrada == 1) {
+                    if (data[i].sNominaCerrada == "True") {
                         document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
                     }
                     
