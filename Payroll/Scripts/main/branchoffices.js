@@ -1,4 +1,88 @@
 ﻿$(function () {
+
+    const btndownloadreportcenterscost = document.getElementById('btndownloadreportcenterscost');
+
+    // Funcion que realiza la descarga del reporte de posiciones \\
+    fGenerateReportCentersCost = () => {
+        $("#modalDownloadCatalogs").modal("show");
+        try {
+            $.ajax({
+                url: "../Reportes/GenerateReportCatalogs",
+                type: "POST",
+                data: { key: "CENTROSCOSTO" },
+                beforeSend: () => {
+                    $("#btnsearchcentrscost").modal("hide");
+                    document.getElementById('contenDownloadReport').innerHTML = `
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                    `;
+                }, success: (request) => {
+                    console.log(request);
+                    document.getElementById('nameReport').textContent = "CENTROS de COSTO";
+                    if (request.Bandera == true) {
+                        document.getElementById('contenDownloadReport').innerHTML = `
+                            <a class='btn btn-primary btn-sm' download='${request.Archivo}' href='/Content/REPORTES/${request.Folder}/${request.Archivo}'> <i class='fas fa-file-download mr-2'></i> Descargar </a>
+                        `;
+                        document.getElementById('icoCloseDownloadReport').setAttribute("onclick", `fRestoreReportCC('${request.Archivo}', '${request.Folder}');`);
+                        document.getElementById('btnCloseDownloadReport').setAttribute("onclick", `fRestoreReportCC('${request.Archivo}', '${request.Folder}');`);
+                    } else {
+                        document.getElementById('contenDownloadReport').innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                              Ocurrio un error al generar el reporte
+                            </div>
+                        `;
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    btndownloadreportcenterscost.addEventListener('click', fGenerateReportCentersCost);
+
+    fRestoreReportCC = (archivo, folder) => {
+        try {
+            if (archivo != "" && folder != "") {
+                const dataSend = { file: archivo, folder: folder };
+                $.ajax({
+                    url: "../Reportes/DeleteReportCatalogs",
+                    type: "POST",
+                    data: dataSend,
+                    success: () => {
+                        $("#btnsearchcentrscost").modal("show");
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     localStorage.removeItem('modalbtnsucursal');
     /* FUNCION QUE CARGA LOS DATOS DE LA SUCURSAL SELECCIONADA POR EL USUARIO */
     fselectoffice = (param) => {

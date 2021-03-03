@@ -1,5 +1,88 @@
 ﻿$(function () {
 
+    const btndownloadreportlocalitys = document.getElementById('btndownloadreportlocalitys');
+
+    // Funcion que realiza la descarga del reporte de posiciones \\
+    fGenerateReportLocalitys = () => {
+        $("#modalDownloadCatalogs").modal("show");
+        try {
+            $.ajax({
+                url: "../Reportes/GenerateReportCatalogs",
+                type: "POST",
+                data: { key: "LOCALIDADES" },
+                beforeSend: () => {
+                    $("#searchlocalidadbtn").modal("hide");
+                    document.getElementById('contenDownloadReport').innerHTML = `
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                    `;
+                }, success: (request) => {
+                    console.log(request);
+                    document.getElementById('nameReport').textContent = "LOCALIDADES";
+                    if (request.Bandera == true) {
+                        document.getElementById('contenDownloadReport').innerHTML = `
+                            <a class='btn btn-primary btn-sm' download='${request.Archivo}' href='/Content/REPORTES/${request.Folder}/${request.Archivo}'> <i class='fas fa-file-download mr-2'></i> Descargar </a>
+                        `;
+                        document.getElementById('icoCloseDownloadReport').setAttribute("onclick", `fRestoreReportLC('${request.Archivo}', '${request.Folder}');`);
+                        document.getElementById('btnCloseDownloadReport').setAttribute("onclick", `fRestoreReportLC('${request.Archivo}', '${request.Folder}');`);
+                    } else {
+                        document.getElementById('contenDownloadReport').innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                              Ocurrio un error al generar el reporte
+                            </div>
+                        `;
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    btndownloadreportlocalitys.addEventListener('click', fGenerateReportLocalitys);
+
+    fRestoreReportLC = (archivo, folder) => {
+        try {
+            if (archivo != "" && folder != "") {
+                const dataSend = { file: archivo, folder: folder };
+                $.ajax({
+                    url: "../Reportes/DeleteReportCatalogs",
+                    type: "POST",
+                    data: dataSend,
+                    success: () => {
+                        $("#searchlocalidadbtn").modal("show");
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     fshowtypealertloc = (title, text, icon, element, clear) => {
         Swal.fire({
             title: title, text: text, icon: icon,

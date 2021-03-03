@@ -1168,6 +1168,13 @@
             </div>
             <div class="modal-footer">
 
+                <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btndownloadreportdepartaments">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-play"></i>
+                    </span>
+                    <span class="text">Generar reporte</span>
+                </button>
+
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" data-toggle="modal" data-target="#registerdepartament" id="btnregisterdepartamentbtn">
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
@@ -1324,6 +1331,12 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btndownloadreportlocalitys">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-play"></i>
+                    </span>
+                    <span class="text">Generar reporte</span>
+                </button>
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" data-toggle="modal" data-target="#registerlocality" id="btnregisterlocalitybtn">
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
@@ -1660,6 +1673,13 @@
                 </div>
             </div>
             <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btndownloadreportposts">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-play"></i>
+                    </span>
+                    <span class="text">Generar reporte</span>
+                </button>
 
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterpuestobtn" data-toggle="modal" data-target="#registerpuesto">
                     <span class="icon text-white-50">
@@ -2484,13 +2504,32 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row mb-4 p-2 border-left-primary border-right-primary rounded shadow">
+                                <div class="col-md-4 mt-2">
+                                    <h6 class="text-center">Buscar por: </h6>
+                                </div>
+                                <div class="col-md-4 text-center mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="filtrosposition" id="filtrocode" value="codigo" checked />
+                                        <label class="form-check-label font-weight-bold" for="filtrocode" id="labelfiltrocode">Código</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-center mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="filtrosposition" id="filtropuesto" value="puesto" />
+                                        <label class="form-check-label font-weight-bold" for="filtropuesto" id="labelfiltropost">Nombre de puesto</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="offset-1 col-md-10">
                             <div class="form-group row">
-                                <label for="searchpositionkeybtn" class="col-form-label col-md-5 font-weight-bold">
+                                <label for="searchpositionkeybtn" class="col-form-label col-md-5 font-weight-bold" id="labelsearchposition">
                                     <i class="fas fa-terminal mr-1 col-ico"></i> Código posicion:
                                 </label>
                                 <div class="col-md-7">
-                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchpositionkeybtn" placeholder="Ingresa el código" />
+                                    <input type="number" class="form-control form-control-sm text-uppercase" id="searchpositionkeybtn" placeholder="Ingresa el código" />
                                 </div>
                             </div>
                         </div>
@@ -2505,6 +2544,13 @@
                 </div>
             </div>
             <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btndownloadreportpositions">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-play"></i>
+                    </span>
+                    <span class="text">Generar reporte</span>
+                </button>
 
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregisterpositionbtnadd" data-toggle="modal" data-target="#registerposition">
                     <span class="icon text-white-50">
@@ -3550,6 +3596,12 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm btn-icon-split" id="btndownloadreportcenterscost">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-play"></i>
+                    </span>
+                    <span class="text">Generar reporte</span>
+                </button>
                 <button type="button" class="btn btn-success btn-sm btn-icon-split" id="btnregistercentrcost" data-toggle="modal" data-target="#registercentrcost">
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
@@ -3856,17 +3908,46 @@
     </div>
 </div>
 
+<!-- Modal DESCARGA REPORTES CATALOGOS -->
+<div class="modal fade" id="modalDownloadCatalogs" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="staticBackdropLabel">Descargar reporte de <span id="nameReport" class="font-weight-bold"></span> </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="icoCloseDownloadReport">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 offset-3 text-center" id="contenDownloadReport">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btnCloseDownloadReport">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/main.js?n=5.7"></script>
 <script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.6"></script>
 <script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=3.6"></script>
-<script type="text/javascript" src="~/Scripts/main/puestos.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/positions.js?n=2.4"></script>
+<script type="text/javascript" src="~/Scripts/main/puestos.js?n=2.1"></script>
+<script type="text/javascript" src="~/Scripts/main/positions.js?n=2.5"></script>
 <script type="text/javascript" src="~/Scripts/main/regionales.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/branchoffices.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/departments.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/branchoffices.js?n=2.1"></script>
+<script type="text/javascript" src="~/Scripts/main/departments.js?n=2.1"></script>
 <script type="text/javascript" src="~/Scripts/main/estructura.js?n=2"></script>
-<script type="text/javascript" src="~/Scripts/main/localitys.js?n=2"></script>
+<script type="text/javascript" src="~/Scripts/main/localitys.js?n=2.2"></script>
 <script type="text/javascript" src="~/Scripts/main/centrcost.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3.8"></script>
 <script type="text/javascript" src="~/Scripts/main/employes.js?n=9.13"></script>

@@ -126,8 +126,7 @@
                     if (data.Bandera === true && data.MensajeError === "none") {
                         let lengthData = data.Datos.length;
                         let dataLength = 0;
-                        for (let i = 0; i < data.Datos.length; i++) {
-                            console.log(data.Datos[i]);
+                        for (let i = 0; i < data.Datos.length; i++) { 
                             if (type == "table") {
                                 document.getElementById('data-groupbusiness').innerHTML += `
                                 <tr>
@@ -183,8 +182,7 @@
                     url: "../Reportes/BusinessGroup",
                     type: "POST",
                     data: { keyBusinessGroup: parseInt(paramid) },
-                    beforeSend: () => {
-                        console.log('Cargando...');
+                    beforeSend: () => { 
                     }, success: (data) => {
                         if (data.Bandera === true && data.MensajeError === "none") {
                             const lengthData = data.Datos.length;
@@ -469,7 +467,7 @@
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group mt-4 text-center">
-                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="fSearchOptionsNPHC();"> <i class="fas fa-search mr-1"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="fSearchOptionsNPHC();" id="btnSearchOptionsNPHC"> <i class="fas fa-search mr-1"></i></button>
                                 </div> 
                             </div>
                             <div class="col-md-4">
@@ -518,6 +516,7 @@
                             </span>
                             <span class="text" id="txtBtnGR">Generar Reporte</span>
                         </button>
+                        <div id="contentAlertReports"></div>
                     </div>
                 `;
                 //contentBtnGenerate.innerHTML += `<div class="text-center animated fadeIn delay-1s"><button class="btn btn-primary-new text-white btn-sm" onclick="fGenerateReport('${typeReportselect.value}')">
@@ -631,11 +630,22 @@
         document.getElementById('btnGenerateReport').disabled = true;
         document.getElementById('btnGenerateReport').classList.remove('btn-primary');
         document.getElementById('btnGenerateReport').classList.add('btn-info');
-        selectOneBusiness.disabled = true;
+        selectOneBusiness.disabled   = true;
         selectGroupBusiness.disabled = true;
-        typeReportselect.disabled = true;
-        oneRadioBusiness.disabled = true;
-        groupRadioBusiness.disabled = true;
+        typeReportselect.disabled    = true;
+        oneRadioBusiness.disabled    = true;
+        groupRadioBusiness.disabled  = true;
+        if (document.getElementById('typeReportselect').value == "HOJACALCULO") {
+            document.getElementById('btnSearchOptionsNPHC').disabled = true;
+            document.getElementById('btn-optionsTPHC').disabled = true;
+            if (document.getElementById('groupRadioBusiness').checked) {
+                document.getElementById('contentAlertReports').innerHTML += `
+                    <div class="alert alert-info alert-dismissible fade show text-center mt-4 shadow-lg" role="alert">
+                      <strong>Hola este proceso puede demorar un aproximado de 5 minutos, puede ir por un café mientras termino...!</strong> 
+                    </div>
+                `;
+            }
+        }
     }
 
     // Funcion que habilita los botones
@@ -717,8 +727,7 @@
                     data: dataSend,
                     beforeSend: () => {
 
-                    }, success: (request) => {
-                        console.log(request);
+                    }, success: (request) => { 
                         let count1 = 0;
                         if (request.Datos.length > 0) {
                             document.getElementById('paramNperSel').disabled = false;
@@ -775,8 +784,7 @@
                         data: dataSend,
                         beforeSend: () => {
 
-                        }, success: (request) => {
-                            console.log(request);
+                        }, success: (request) => { 
                             let count1 = 0;
                             if (request.Datos.length > 0) {
                                 paramTPerSel.disabled = false;
@@ -815,6 +823,9 @@
 
     // Funcion que genera el reporte de la hoja de calculo
     fGenerateReportPayroll = (option, keyOption, type) => {
+        //console.log(option);
+        //console.log(keyOption);
+        //console.log(type);
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 let urlSend = "";
@@ -849,7 +860,8 @@
                         if (paramTPerSel.value != "none") {
                             const period   = localStorage.getItem("period");
                             const dataSend = { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTPerSel.value), numberPeriod: parseInt(paramNPerSel.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) };
-                            console.log(dataSend);
+                            //console.log(dataSend);
+                            //fDisabledButtonsRep();
                             $.ajax({
                                 url: "../Reportes/" + urlSend,
                                 type: "POST",
@@ -860,6 +872,7 @@
                                 }, success: (data) => {
                                     console.log(data);
                                     setTimeout(() => {
+                                        document.getElementById('contentAlertReports').innerHTML = "";
                                         if (data.Validacion === true) {
                                             if (data.Bandera === true && data.MensajeError === "none") {
                                                 if (data.Rows > 0) {
@@ -1091,7 +1104,6 @@
                                         alert('Algo fallo al realizar el reporte');
                                         location.reload();
                                     }
-                                    console.log(data);
                                     fEnabledButtonsRep();
                                 }, error: (jqXHR, exception) => {
                                     fcaptureaerrorsajax(jqXHR, exception);
@@ -1250,7 +1262,6 @@
                                         alert('Algo fallo al realizar el reporte');
                                         location.reload();
                                     }
-                                    console.log(data);
                                     fEnabledButtonsRep();
                                 }, error: (jqXHR, exception) => {
                                     fcaptureaerrorsajax(jqXHR, exception);
