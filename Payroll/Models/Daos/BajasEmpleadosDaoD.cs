@@ -546,7 +546,8 @@ namespace Payroll.Models.Daos
                             sFecha_Pago_Fin    = data["Fecha_Pago_Fin"].ToString(),
                             sMotivo_baja = data["Motivo_baja"].ToString(),
                             iMotivo_baja = Convert.ToInt32(data["Cg_motivo_baja_id"].ToString()),
-                            sTipo_Operacion = data["Tipo_operacion"].ToString()
+                            sTipo_Operacion = data["Tipo_operacion"].ToString(),
+                            sFecha = data["Fecha"].ToString()
                         });
                     }
                 }
