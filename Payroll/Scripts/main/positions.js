@@ -48,7 +48,7 @@
                         </div>
                     `;
                 }, success: (request) => {
-                    console.log(request);
+                    //console.log(request);
                     document.getElementById('nameReport').textContent = "POSICIONES";
                     if (request.Bandera == true) {
                         document.getElementById('contenDownloadReport').innerHTML = `
@@ -115,7 +115,7 @@
 
     /* FUNCION QUE CARGA LOS DATOS DE LA POSICION SELECCIONADA POR EL USUARIO */
     fselectposition = (param) => {
-        console.log(param);
+        //console.log(param);
         try {
             searchpositionkey.value = '';
             resultpositions.innerHTML = '';
@@ -349,7 +349,7 @@
                     if (data.mesage == "success") {
                         codposic.value = data.result;
                     }
-                    console.log(data);
+                    //console.log(data);
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
                 }
@@ -393,7 +393,7 @@
                                 </div>
                             `;
                         }
-                        console.log(data);
+                        //console.log(data);
                     }, error: (jqXHR, exception) => {
                         fcaptureaerrorsajax(jqXHR, exception);
                     }
@@ -491,7 +491,7 @@
                     type: "POST",
                     data: { wordsearch: searchpositionkeyadd.value, type: 'ALL' },
                     success: (data) => {
-                        console.log(data);
+                        //console.log(data);
                         resultpositionsadd.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
@@ -584,7 +584,7 @@
                     codposic: codposic.value, depaid: depaid.value, puesid: puesid.value, regpatcla: regpatcla.value,
                     localityr: localityr.value, emprepreg: emprepreg.value, reportempr: reportempr.value
                 };
-                console.log(dataSend);
+                //console.log(dataSend);
                 $.ajax({
                     url: "../SaveDataGeneral/SavePositions",
                     type: "POST",
@@ -928,7 +928,7 @@
             if (newLocality.value != "0") {
                 if (parseInt(newLocality.value) != parseInt(editlocalityr.value)) {
                     const dataSend = { newLocality: parseInt(newLocality.value), position: parseInt(clvposition.value) };
-                    console.log(dataSend);
+                    //console.log(dataSend);
                     $.ajax({
                         url: "../SaveDataGeneral/SaveEditPosition",
                         type: "POST",

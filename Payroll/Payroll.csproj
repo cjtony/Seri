@@ -1053,6 +1053,7 @@
     <Content Include="Scripts\main\localitys.js" />
     <Content Include="Scripts\main\main.js" />
     <Content Include="Scripts\Catalogos\ModuloCatalogos.js" />
+    <Content Include="Scripts\main\mainrespaldo.js" />
     <Content Include="Scripts\main\modenight.js" />
     <Content Include="Scripts\main\PensionesAlimenticias.js" />
     <Content Include="Scripts\main\positions.js" />

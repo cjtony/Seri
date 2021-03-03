@@ -18,7 +18,7 @@
                         </div>
                     `;
                 }, success: (request) => {
-                    console.log(request);
+                    //console.log(request);
                     document.getElementById('nameReport').textContent = "DEPARTAMENTOS";
                     if (request.Bandera == true) {
                         document.getElementById('contenDownloadReport').innerHTML = `
@@ -492,7 +492,7 @@
                 type: "POST",
                 data: { clvdep: param },
                 success: (data) => {
-                    console.log(data);
+                    //console.log(data);
                     /* EJECUCIÓN DE FUNCION QUE CARGA EL SELECT REPORTA A */
                     floadbusinessedit(0, 'Active/Desactive', 0);
                     searchdepartmentkey.value = ''; resultdepartments.innerHTML = '';
@@ -698,7 +698,7 @@
                 diraretxt: diraretxt.value, dirgen: dirgen.value,
                 direje: direje.value, dirare: dirare.value,
             };
-            console.log(dataEnv)
+            //console.log(dataEnv)
             try {
                 $.ajax({
                     url: "../SaveDataGeneral/SaveDepartament",
@@ -828,7 +828,7 @@
         searchdepartmentkeynew.value = '';
         resultdepartmentsnew.innerHTML = '';
         noresultdepartamentsnew.innerHTML = "";
-        console.log('Desde funcion!');
+        //console.log('Desde funcion!');
     }
     /* EJECUCION QUE MUESTRA LA VENTANA DE NUEVO DEPARTAMENTO AL MOMENTO DE CERRAR LA BUSQUEDA DE LOS DEPARTAMENTOS */
     btnclosesearchclosedepbtn.addEventListener('click', () => {

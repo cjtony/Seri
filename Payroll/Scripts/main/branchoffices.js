@@ -18,7 +18,7 @@
                         </div>
                     `;
                 }, success: (request) => {
-                    console.log(request);
+                    //console.log(request);
                     document.getElementById('nameReport').textContent = "CENTROS de COSTO";
                     if (request.Bandera == true) {
                         document.getElementById('contenDownloadReport').innerHTML = `
@@ -86,7 +86,7 @@
     localStorage.removeItem('modalbtnsucursal');
     /* FUNCION QUE CARGA LOS DATOS DE LA SUCURSAL SELECCIONADA POR EL USUARIO */
     fselectoffice = (param) => {
-        console.log(param);
+        //console.log(param);
         try {
             $.ajax({
                 url: "../SearchDataCat/DataSelectOffices",
@@ -95,7 +95,7 @@
                 success: (data) => {
                     $("#searchsucursales").modal('hide');
                     $("#editsucursal").modal('show');
-                    console.log(data);
+                    //console.log(data);
                     clvsucursal.value = data.iIdSucursal;
                     descsucursaledit.value = data.sDescripcionSucursal;
                     clasucursaledit.value = data.sClaveSucursal;
@@ -184,7 +184,7 @@
                             let number = 0;
                             for (let i = 0; i < data.length; i++) {
                                 number += 1;
-                                console.log(data[i]);
+                                //console.log(data[i]);
                                 resultoffices.innerHTML += `<button title="Editar" onclick="fselectoffice(${data[i].iIdSucursal})" class="animated fadeIn border-left-primary list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded">${number}. - ${data[i].sClaveSucursal} - ${data[i].sDescripcionSucursal} <i class="fas fa-edit ml-2 text-warning fa-lg"></i> </button>`;
                             }
                         } else {

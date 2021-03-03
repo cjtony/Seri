@@ -172,8 +172,8 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log("Datos de la estructura del empleado con el id: " + String(paramid));
-                    console.log(data);
+                    //console.log("Datos de la estructura del empleado con el id: " + String(paramid));
+                    //console.log(data);
                     if (data.sMensaje === "success") {
                         clvstr.value = data.iIdPosicion;
                         numpla.value = data.iPosicion;
@@ -213,8 +213,8 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log('Datos de nomina del empleado con el id: ' + String(paramid));
-                    console.log(data);
+                    //console.log('Datos de nomina del empleado con el id: ' + String(paramid));
+                    //console.log(data);
                     if (data.sMensaje === "success") {
                         clvnom.value = data.iIdNomina;
                         numnom.value = data.iNumeroNomina;
@@ -254,8 +254,8 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log('Datos del imss del empleado con el id: ' + String(paramid));
-                    console.log(data);
+                    //console.log('Datos del imss del empleado con el id: ' + String(paramid));
+                    //console.log(data);
                     if (data.sMensaje === "success") {
                         clvimss.value = data.iIdImss;
                         regimss.value = data.sRegistroImss;
@@ -288,8 +288,8 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log('Datos del empleado con el id: ' + String(paramid));
-                    console.log(data);
+                    //console.log('Datos del empleado con el id: ' + String(paramid));
+                    //console.log(data);
                     if (data.sMensaje === "success") {
                         clvemp.value = data.iIdEmpleado;
                         name.value = data.sNombreEmpleado;
@@ -454,8 +454,8 @@
             title: title.value, nacion: nacion.value, state: state.value, codpost: codpost.value, city: city.value, colony: colony.value, street: street.value,
             numberst: numberst.value, telfij: telfij.value, telmov: telmov.value, email: mailus.value, tipsan: tipsan.value, fecmat: fecmat.value
         };
-        console.log('Datos generales');
-        console.log(dataSend);
+        //console.log('Datos generales');
+        //console.log(dataSend);
         try {
             document.getElementById('txtsave1').textContent = 'Guardando...';
             $.ajax({
@@ -466,7 +466,7 @@
                     if (data.sMensaje == "success") {
                         icosave1.classList.add('text-success');
                         txtsave1.textContent = 'Guardado';
-                        console.log('Guardado datos generales');
+                        //console.log('Guardado datos generales');
                         setTimeout(() => {
                             fsavedataimss();
                         }, 1500);
@@ -487,7 +487,7 @@
                             $("#processsave").modal('hide');
                             fclearsavestyle();
                         }, 1500);
-                        console.log(data);
+                        //console.log(data);
                     }
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
@@ -524,8 +524,8 @@
             fecefe: fecefe.value, regimss: regimss.value, rfc: rfc.value, curp: curp.value, nivest: nivest.value, nivsoc: nivsoc.value, empleado: name.value,
             apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value
         };
-        console.log('Datos de imss');
-        console.log(dataSend);
+        //console.log('Datos de imss');
+        //console.log(dataSend);
         try {
             document.getElementById('txtsave2').textContent = 'Guardando...';
             $.ajax({
@@ -536,7 +536,7 @@
                     if (data.result == "success") {
                         icosave2.classList.add('text-success');
                         txtsave2.textContent = 'Guardado';
-                        console.log('Guardado imss');
+                        //console.log('Guardado imss');
                         setTimeout(() => {
                             fsavedatanomina();
                         }, 1500);
@@ -547,7 +547,7 @@
                             $("#processsave").modal('hide');
                             fclearsavestyle();
                         }, 1500);
-                        console.log(data);
+                        //console.log(data);
                     }
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
@@ -628,7 +628,7 @@
         //console.log(dataSend);
         try {
             document.getElementById('txtsave3').textContent = 'Guardando';
-            console.log(dataSend);
+            //console.log(dataSend);
             $.ajax({
                 url: "../SaveDataGeneral/DataNomina",
                 type: "POST",
@@ -640,7 +640,7 @@
                         setTimeout(() => {
                             fsavedataestructure();
                         }, 1500);
-                        console.log('Guardo nomina!');
+                        //console.log('Guardo nomina!');
                     } else {
                         icosave3.classList.add('text-danger');
                         txtsave3.textContent = 'Error!';
@@ -648,7 +648,7 @@
                             $("#processsave").modal('hide');
                             fclearsavestyle();
                         }, 1500);
-                        console.log(data);
+                        //console.log(data);
                     }
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
@@ -699,7 +699,7 @@
                         icosave4.classList.add('text-success');
                         txtsave4.textContent = 'Guardado';
                         document.getElementById('successdiv').classList.remove('d-none');
-                        console.log('Guardado todo');
+                        //console.log('Guardado todo');
                         setTimeout(() => {
                             $("#processsave").modal('hide');
                             document.getElementById('successdiv').classList.add('d-none');
@@ -708,7 +708,7 @@
                             fclearsavestyle();
                         }, 1500);
                     } else {
-                        console.log(data);
+                        //console.log(data);
                         setTimeout(() => {
                             $("#processsave").modal('hide');
                             fclearsavestyle();
@@ -1209,7 +1209,7 @@
             }
         }
         if (validatedatagen == 0) {
-            console.log('Listo para guardar edicion datos generales');
+            //console.log('Listo para guardar edicion datos generales');
             const arrInput = [regimss, rfc, curp, nivest, nivsoc];
             for (let i = 0; i < arrInput.length; i++) {
                 if (arrInput[i].hasAttribute("tp-select")) {
@@ -1228,7 +1228,7 @@
                 }
             }
             if (validatedataimss == 0) {
-                console.log('Listo para guardar edicion datos imss');
+                //console.log('Listo para guardar edicion datos imss');
                 const arrInput = [numnom, salmen, pagret, tipemp, nivemp, tipjor, tipcon, fecing];
                 for (let t = 0; t < arrInput.length; t++) {
                     if (arrInput[t].hasAttribute("tp-select")) {
@@ -1273,7 +1273,7 @@
                     }
                 }
                 if (validatedatanom == 0) {
-                    console.log('Listo para editar datos de nomina');
+                    //console.log('Listo para editar datos de nomina');
                     const arrInput = [numpla, depart, pueusu, emprep, report, tippag];
                     for (let i = 0; i < arrInput.length; i++) {
                         if (arrInput[i].hasAttribute('tp-select')) {

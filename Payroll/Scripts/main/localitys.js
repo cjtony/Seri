@@ -18,7 +18,7 @@
                         </div>
                     `;
                 }, success: (request) => {
-                    console.log(request);
+                    //console.log(request);
                     document.getElementById('nameReport').textContent = "LOCALIDADES";
                     if (request.Bandera == true) {
                         document.getElementById('contenDownloadReport').innerHTML = `
@@ -414,7 +414,7 @@
                     data: { keyLocality: parseInt(paramid) },
                     success: (data) => {
                         if (data.Bandera === true && data.MensajeError === "none") {
-                            console.log(data.Datos);
+                            //console.log(data.Datos);
                             $("#localityedit").modal('show');
                             keylocalityedit.readOnly  = true;
                             keylocalityedit.value     = data.Datos.IdLocalidad;
@@ -826,7 +826,7 @@
                                             beforeSend: () => {
                                                 btnsavelocality.disabled = true;
                                             }, success: (data) => {
-                                                console.log(data);
+                                                //console.log(data);
                                                 if (data.Bandera === true && data.MensajeError === "none") {
                                                     Swal.fire({
                                                         title: "Correcto!", text: "Codigo de localidad: " + String(data.Codigo), icon: "success",
