@@ -92,6 +92,7 @@ $(function () {
     //// Muestra fecha de inicio y fin de peridodos
 
     $('#TipodePerdioRec').change(function () {
+                type: "POST",
         // ListPeriodoEmpresa
         IdEmpresa = EmpresaNom.value;
         anio = anoNom.value;
@@ -249,7 +250,6 @@ $(function () {
             const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 1 };
             $.ajax({
                 url: "../Empleados/XMLNomina",
-                type: "POST",
                 data: dataSend,
                 beforeSend: function (data) {
                     $('#jqxLoader2').jqxLoader('open');
