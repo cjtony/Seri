@@ -204,7 +204,7 @@
                             btnClearFieldsNEstr.disabled  = true;
                             icoClearFieldsNEstr.disabled  = true;
                         }, success: (data) => {
-                            console.log(data);
+                            //console.log(data);
                             if (data.Bandera === true && data.MensajeError === "none") {
                                 Swal.fire({
                                     title: 'Registro correcto', icon: 'success',
