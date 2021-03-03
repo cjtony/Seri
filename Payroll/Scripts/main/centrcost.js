@@ -117,7 +117,7 @@
                     type: "POST",
                     data: { keycentrcost: parseInt(paramid) },
                     beforeSend: () => {
-                        console.log('Cargando datos');
+                        //console.log('Cargando datos');
                     }, success: (data) => {
                         if (data.Bandera === true && data.MensajeError === "none") {
                             $("#editcentrcost").modal('show');
@@ -173,7 +173,7 @@
                                 dcentrocosto: dcentrocosto.value
                             },
                             beforeSend: () => {
-                                console.log('Guardando datos');
+                                //console.log('Guardando datos');
                             }, success: (data) => {
                                 if (data.Bandera === true && data.MensajeError === "none") {
                                     Swal.fire({
@@ -273,9 +273,9 @@
                         type: "POST",
                         data: dataSend,
                         beforeSend: () => {
-                            console.log('Guardando centro de costo');
+                            //console.log('Guardando centro de costo');
                         }, success: (data) => {
-                            console.log(data);
+                            //console.log(data);
                             if (data.Bandera === true && data.MensajeError === "none") {
                                 Swal.fire({
                                     title: "Correcto", text: "Datos registrados", icon: "success",

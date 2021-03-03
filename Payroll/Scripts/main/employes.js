@@ -12,7 +12,7 @@
             let seconds  = parseInt(fRandHours(1, 60));
             let secondsF = (seconds >= 10) ? seconds : "0" + String(seconds);
             let minutesF = (minutes >= 10) ? minutes : "0" + String(minutes);
-            console.log("0" + hours + ":" + minutesF + ":" + secondsF);
+            //console.log("0" + hours + ":" + minutesF + ":" + secondsF);
             i += 1;
         }
     }
@@ -73,9 +73,9 @@
                     type: "POST",
                     data: { key: String(key), keyEmployee: parseInt(keyEmp) },
                     beforeSend: () => {
-                        console.log('Cargando historial....');
+                        //console.log('Cargando historial....');
                     }, success: (data) => {
-                        console.log(data);
+                        //console.log(data);
                         if (data.Bandera === true && data.MensajeError == "none") {
                             $("#modalHistoryImss").modal("show");
                             setTimeout(() => {
@@ -187,9 +187,9 @@
                     type: "POST",
                     data: { key: String(key), keyEmployee: parseInt(keyEmp) },
                     beforeSend: () => {
-                        console.log('Cargando historial....');
+                        //console.log('Cargando historial....');
                     }, success: (data) => {
-                        console.log(data);
+                        //console.log(data);
                         if (data.Bandera === true && data.MensajeError == "none") {
                             $("#modalHistoryNomina").modal("show");
                             setTimeout(() => {
@@ -360,9 +360,9 @@
                     type: "POST",
                     data: { key: String(key), keyEmployee: parseInt(keyEmp) },
                     beforeSend: () => {
-                        console.log('Cargando historial....');
+                        //console.log('Cargando historial....');
                     }, success: (data) => {
-                        console.log(data);
+                        //console.log(data);
                         if (data.Bandera === true && data.MensajeError == "none") {
                             $("#modalHistoryPosicion").modal("show");
                             setTimeout(() => {
@@ -584,9 +584,9 @@
         navEstructureTab = document.getElementById('nav-estructure-tab');
     /* FUNCION QUE EJECUTA UN SP PARA ACTUALIZAR LA POSICION DEL EMPLEADO EN TB -> EMPLEADO_NOMINA */
     fupdateposnew = () => {
-        console.log('Actualizando posicion');
-        console.log('idempleado');
-        console.log(clvemp);
+        //console.log('Actualizando posicion');
+        //console.log('idempleado');
+        //console.log(clvemp);
         try {
             if (clvemp.value != "" && clvemp.value > 0) {
                 $.ajax({
@@ -594,8 +594,8 @@
                     type: "POST",
                     data: { clvemp: clvemp.value },
                     success: (data) => {
-                        console.log('Datos actualizacion');
-                        console.log(data);
+                        //console.log('Datos actualizacion');
+                        //console.log(data);
                         if (data.result == "Actualizado") {
                             alert('Detectamos que existe un cambio por aplicar...');
                             floaddatatabgeneral(data.empleado);
@@ -747,8 +747,8 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log('Datos de estructura');
-                    console.log(data);
+                    //console.log('Datos de estructura');
+                    //console.log(data);
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvstract.value = data.Datos.iIdPosicion;
                         numpla.value    = data.Datos.sPosicionCodigo;
@@ -847,7 +847,7 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    console.log(data);
+                    //console.log(data);
                     let retroactivoShow = 0;
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvnom.value       = data.Datos.iIdNomina;
@@ -1139,7 +1139,7 @@
     /* FUNCION QUE CARGA LOS DATOS DEL EMPLEADO SELECCIONADO EN UN REPORTE */
     fviewdetailsemploye = (paramid) => {
         alert('Listo para generar reporte de ' + String(paramid));
-        console.log(paramid)
+        //console.log(paramid)
     }
     /* FUNCION QUE COMPRUEBA QUE TIPO DE FILTRO SE APLICARA A LA BUSQUEDA DE EMPLEADOS */
     fselectfilterdsearchemploye = () => {
@@ -1573,13 +1573,13 @@
                 }
             }
             if (validatedatanom == 0) {
-                console.log(datasend);
+                //console.log(datasend);
                 $.ajax({
                     url: url,
                     type: "POST",
                     data: datasend,
                     success: (data) => {
-                        console.log(data);
+                        //console.log(data);
                         if (data.Bandera === true && data.MensajeError === "none") {
                             Swal.fire({
                                 title: 'Correcto!', text: "Datos de nomina actualizados", icon: 'success',
@@ -1671,8 +1671,8 @@
                 //    dataSend.fechmovi = fechmovi.value;
                 //    dataSend.motmovi  = motmovi.value;
                 //}
-                console.log('Datos estructura');
-                console.log(dataSend);
+                //console.log('Datos estructura');
+                //console.log(dataSend);
                 if (validateSend == 0) {
                     $.ajax({
                         url: "../SaveDataGeneral/DataEstructuraEdit",

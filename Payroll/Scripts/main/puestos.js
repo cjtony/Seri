@@ -18,7 +18,7 @@
                         </div>
                     `;
                 }, success: (request) => {
-                    console.log(request);
+                    //console.log(request);
                     document.getElementById('nameReport').textContent = "PUESTOS";
                     if (request.Bandera == true) {
                         document.getElementById('contenDownloadReport').innerHTML = `
@@ -341,7 +341,7 @@
                 type: "POST",
                 data: { clvpuesto: param },
                 success: (data) => {
-                    console.log(data);
+                    //console.log(data);
                     $("#searchpuestobtn").modal('hide');
                     $("#editpuesto").modal('show');
                     setTimeout(() => { edicodpuesto.focus(); }, 1000);
@@ -525,7 +525,7 @@
                 regcodpuesto: regcodpuesto.value, regpuesto: regpuesto.value, regdescpuesto: regdescpuesto.value, proffamily: proffamily.value, clasifpuesto: clasifpuesto.value,
                 regcolect: regcolect.value, nivjerarpuesto: nivjerarpuesto.value, perfmanager: perfmanager.value, tabpuesto: tabpuesto.value
             };  
-            console.log(dataEnv);
+            //console.log(dataEnv);
             try {
                 $.ajax({
                     url: "../SaveDataGeneral/SaveDataPuestos",
