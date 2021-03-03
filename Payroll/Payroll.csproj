@@ -502,6 +502,7 @@
     <Content Include="Content\REPORTES\NOMINA\HCBajas_E18_A2020_NP15_TP3_A.xlsx" />
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout Carga Incidencias.xlsx" />
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
