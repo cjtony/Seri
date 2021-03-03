@@ -456,7 +456,7 @@
                                     spanDownNotSet = `<span class="badge ml-2 badge-info"><i class="fas fa-file mr-1"></i>Proyecto</span>`;
                                     btnApplyDown = `<button onclick="fApplyDown(${data.DatosFiniquito[i].iIdFiniquito}, ${data.DatosFiniquito[i].iEmpleado_id});" class="btn btn-sm btn-danger" title="Aplicar baja en firme"> <i class="fas fa-user-times"></i> </button>`;
                                 }
-                                document.getElementById('list-data-down').innerHTML += `
+                                document.getElementById('list-data-down').innerHTML += `<b class="ml-2">Generado: ${data.DatosFiniquito[i].sFecha} </b>
                                 <li class="list-group-item d-flex justify-content-between align-items-center shadow rounded">
                                     <span>
                                         <div class="form-check mb-2" id="divSelectPay${data.DatosFiniquito[i].iIdFiniquito}">
@@ -489,7 +489,7 @@
                                             ${icoCancel}
                                         </button>
                                     </span>
-                                </li>
+                                </li><br/>
                             `;
                             }
                         } else if (data.Bandera == false && data.MensajeError == "NOTLOADINFO") {
@@ -1162,7 +1162,6 @@
                 type: "POST",
                 data: {},
                 beforeSend: () => {
-                    console.log('Enciandooo')
                 }, success: (request) => {
                     console.log(request);
                     if (request.Bandera == true) {
