@@ -1,5 +1,118 @@
 ﻿$(function () {
 
+    const labelsearchposition = document.getElementById('labelsearchposition');
+    const filtrocode   = document.getElementById('filtrocode');
+    const filtropuesto = document.getElementById('filtropuesto');
+
+    filtrocode.style.cursor   = "pointer";
+    filtropuesto.style.cursor = "pointer";
+    document.getElementById('labelfiltrocode').style.cursor = "pointer";
+    document.getElementById('labelfiltropost').style.cursor = "pointer";
+
+    /* FUNCION QUE COMPRUEBA QUE TIPO DE FILTRO SE APLICARA A LA BUSQUEDA DE POSICIONES */
+    fselectfilterdsearchpositions = () => {
+        const filtered = $("input:radio[name=filtrosposition]:checked").val();
+        if (filtered == "codigo") {
+            document.getElementById('searchpositionkeybtn').placeholder = "CODIGO DE LA POSICION";
+            document.getElementById('searchpositionkeybtn').type  = "number";
+            labelsearchposition.textContent = "Código";
+        } else if (filtered == "puesto") {
+            document.getElementById('searchpositionkeybtn').placeholder = "NOMBRE DEL PUESTO";
+            document.getElementById('searchpositionkeybtn').type  = "text";
+            labelsearchposition.textContent = "Puesto";
+        }
+        document.getElementById('searchpositionkeybtn').value   = ""; 
+        document.getElementById('resultpositionsbtn').innerHTML = "";
+        setTimeout(() => { document.getElementById('searchpositionkeybtn').focus() }, 500);
+    }
+
+    /* EJECUCION DE FUNCION QUE APLICA FILTRO A LA BUSQUEDA DE Las posiciones */
+    filtrocode.addEventListener('click', fselectfilterdsearchpositions);
+    filtropuesto.addEventListener('click', fselectfilterdsearchpositions);
+
+    const btndownloadreportpositions = document.getElementById('btndownloadreportpositions');
+
+    // Funcion que realiza la descarga del reporte de posiciones \\
+    fGenerateReportPositions = () => {
+        $("#modalDownloadCatalogs").modal("show");
+        try {
+            $.ajax({
+                url: "../Reportes/GenerateReportCatalogs",
+                type: "POST",
+                data: {key : "POSICIONES"},
+                beforeSend: () => {
+                    $("#searchpositions").modal("hide");
+                    document.getElementById('contenDownloadReport').innerHTML = `
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                    `;
+                }, success: (request) => {
+                    console.log(request);
+                    document.getElementById('nameReport').textContent = "POSICIONES";
+                    if (request.Bandera == true) {
+                        document.getElementById('contenDownloadReport').innerHTML = `
+                            <a class='btn btn-primary btn-sm' download='${request.Archivo}' href='/Content/REPORTES/${request.Folder}/${request.Archivo}'> <i class='fas fa-file-download mr-2'></i> Descargar </a>
+                        `;
+                        document.getElementById('icoCloseDownloadReport').setAttribute("onclick", `fRestoreReportPS('${request.Archivo}', '${request.Folder}');`);
+                        document.getElementById('btnCloseDownloadReport').setAttribute("onclick", `fRestoreReportPS('${request.Archivo}', '${request.Folder}');`);
+                    } else {
+                        document.getElementById('contenDownloadReport').innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                              Ocurrio un error al generar el reporte
+                            </div>
+                        `;
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    btndownloadreportpositions.addEventListener('click', fGenerateReportPositions);
+
+    fRestoreReportPS = (archivo, folder) => {
+        try {
+            if (archivo != "" && folder != "") {
+                const dataSend = { file: archivo, folder: folder };
+                $.ajax({
+                    url: "../Reportes/DeleteReportCatalogs",
+                    type: "POST",
+                    data: dataSend,
+                    success: () => {
+                        $("#searchpositions").modal("show");
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     /* FUNCION QUE CARGA LOS DATOS DE LA POSICION SELECCIONADA POR EL USUARIO */
     fselectposition = (param) => {
         console.log(param);
@@ -588,6 +701,7 @@
     }
     /* FUNCION QUE REALIZA LA BUSQUEDA EN TIEMPO REAL DE POSICIONES AL DAR CLICK EN EL BOTON DE POSICIONES */
     fsearchkeyuppositionsbtn = async () => {
+        const filtered = $("input:radio[name=filtrosposition]:checked").val();
         try {
             resultpositionsbtn.innerHTML = '';
             document.getElementById('noresultpositions3').innerHTML = '';
@@ -595,7 +709,7 @@
                 await $.ajax({
                     url: "../SearchDataCat/SearchPositionsList",
                     type: "POST",
-                    data: { wordsearch: searchpositionkeybtn.value },
+                    data: { wordsearch: searchpositionkeybtn.value, search: filtered },
                     success: (data) => {
                         resultpositionsbtn.innerHTML = '';
                         if (data.length > 0) {

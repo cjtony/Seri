@@ -727,7 +727,7 @@ namespace Payroll.Models.Daos
             }
             return posicionBean;
         }
-        public List<DatosPosicionesBean> sp_Posiciones_Retrieve_Search_Disp_Posiciones(string wordsearch, int keyemp)
+        public List<DatosPosicionesBean> sp_Posiciones_Retrieve_Search_Disp_Posiciones(string wordsearch, int keyemp, string search)
         {
             List<DatosPosicionesBean> listPosicionBean = new List<DatosPosicionesBean>();
             try
@@ -739,6 +739,7 @@ namespace Payroll.Models.Daos
                 };
                 cmd.Parameters.Add(new SqlParameter("@ctrlWordSearch", wordsearch));
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyemp));
+                cmd.Parameters.Add(new SqlParameter("@ctrlSearch", search));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {
