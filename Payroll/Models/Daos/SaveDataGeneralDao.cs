@@ -682,6 +682,7 @@ namespace Payroll.Models.Daos
         public DatosPosicionesBean sp_Posiciones_Retrieve_Posicion(int clvposition)
         {
             DatosPosicionesBean posicionBean = new DatosPosicionesBean();
+            Validaciones v = new Validaciones();
             try
             {
                 this.Conectar();
@@ -694,19 +695,19 @@ namespace Payroll.Models.Daos
                 if (data.Read())
                 {
                     posicionBean.sCodRepPosicion = data["CodRep"].ToString();
-                    posicionBean.iIdPosicion = Convert.ToInt32(data["IdPosicion"].ToString());
-                    posicionBean.iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
+                    posicionBean.iIdPosicion     = Convert.ToInt32(v.ValidationsInts(data["IdPosicion"].ToString()));
+                    posicionBean.iEmpresa_id     = Convert.ToInt32(v.ValidationsInts(data["Empresa_id"].ToString()));
                     posicionBean.sPosicionCodigo = data["PosicionCodigo"].ToString();
-                    posicionBean.iPuesto_id = Convert.ToInt32(data["Puesto_id"].ToString());
-                    posicionBean.sNombrePuesto = data["NombrePuesto"].ToString();
-                    posicionBean.iDepartamento_id = Convert.ToInt32(data["Departamento_id"].ToString());
+                    posicionBean.iPuesto_id      = Convert.ToInt32(v.ValidationsInts(data["Puesto_id"].ToString()));
+                    posicionBean.sNombrePuesto   = data["NombrePuesto"].ToString();
+                    posicionBean.iDepartamento_id    = Convert.ToInt32(v.ValidationsInts(data["Departamento_id"].ToString()));
                     posicionBean.sNombreDepartamento = data["DescripcionDepartamento"].ToString();
                     posicionBean.iIdReportaAPosicion = Convert.ToInt32(data["CodRep"].ToString());
-                    posicionBean.iIdReportaAEmpresa = Convert.ToInt32(data["Reporta_A_Empresa"].ToString());
-                    posicionBean.iIdRegistroPat = Convert.ToInt32(data["IdRegPat"].ToString());
-                    posicionBean.sRegistroPat = data["Afiliacion_IMSS"].ToString();
-                    posicionBean.iIdLocalidad = Convert.ToInt32(data["IdLocalidad"].ToString());
-                    posicionBean.sLocalidad = data["Descripcion"].ToString();
+                    posicionBean.iIdReportaAEmpresa  = Convert.ToInt32(v.ValidationsInts(data["Reporta_A_Empresa"].ToString()));
+                    posicionBean.iIdRegistroPat = Convert.ToInt32(v.ValidationsInts(data["IdRegPat"].ToString()));
+                    posicionBean.sRegistroPat   = data["Afiliacion_IMSS"].ToString();
+                    posicionBean.iIdLocalidad   = Convert.ToInt32(v.ValidationsInts(data["IdLocalidad"].ToString()));
+                    posicionBean.sLocalidad     = data["Descripcion"].ToString();
 
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
@@ -727,6 +728,22 @@ namespace Payroll.Models.Daos
             }
             return posicionBean;
         }
+
+        public string ValidationsIns (string value)
+        {
+            string result = "";
+            try {
+                if (value.Trim() != "") {
+                    result = value.Trim();
+                } else {
+                    result = "0";
+                }
+            } catch (Exception exc) {
+                result = "0";
+            }
+            return result;
+        }
+
         public List<DatosPosicionesBean> sp_Posiciones_Retrieve_Search_Disp_Posiciones(string wordsearch, int keyemp, string search)
         {
             List<DatosPosicionesBean> listPosicionBean = new List<DatosPosicionesBean>();
@@ -746,18 +763,18 @@ namespace Payroll.Models.Daos
                     while (data.Read())
                     {
                         DatosPosicionesBean posicionBean = new DatosPosicionesBean();
-                        posicionBean.iIdPosicion = Convert.ToInt32(data["IdPosicion"].ToString());
-                        posicionBean.iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
+                        posicionBean.iIdPosicion = Convert.ToInt32(ValidationsIns(data["IdPosicion"].ToString()));
+                        posicionBean.iEmpresa_id = Convert.ToInt32(ValidationsIns(data["Empresa_id"].ToString()));
                         posicionBean.sPosicionCodigo = data["PosicionCodigo"].ToString();
-                        posicionBean.iPuesto_id = Convert.ToInt32(data["Puesto_id"].ToString());
+                        posicionBean.iPuesto_id = Convert.ToInt32(ValidationsIns(data["Puesto_id"].ToString()));
                         posicionBean.sNombrePuesto = data["NombrePuesto"].ToString();
-                        posicionBean.iDepartamento_id = Convert.ToInt32(data["Departamento_id"].ToString());
+                        posicionBean.iDepartamento_id = Convert.ToInt32(ValidationsIns(data["Departamento_id"].ToString()));
                         posicionBean.sNombreDepartamento = data["Depto_Codigo"].ToString();
-                        posicionBean.iIdReportaAPosicion = Convert.ToInt32(data["Reporta_A_Posicion_id"].ToString());
-                        posicionBean.iIdReportaAEmpresa = Convert.ToInt32(data["Reporta_A_Empresa"].ToString());
-                        posicionBean.iIdRegistroPat = Convert.ToInt32(data["IdRegPat"].ToString());
+                        posicionBean.iIdReportaAPosicion = Convert.ToInt32(ValidationsIns(data["Reporta_A_Posicion_id"].ToString()));
+                        posicionBean.iIdReportaAEmpresa = Convert.ToInt32(ValidationsIns(data["Reporta_A_Empresa"].ToString()));
+                        posicionBean.iIdRegistroPat = Convert.ToInt32(ValidationsIns(data["IdRegPat"].ToString()));
                         posicionBean.sRegistroPat = data["Afiliacion_IMSS"].ToString();
-                        posicionBean.iIdLocalidad = Convert.ToInt32(data["IdLocalidad"].ToString());
+                        posicionBean.iIdLocalidad = Convert.ToInt32(ValidationsIns(data["IdLocalidad"].ToString()));
                         posicionBean.sLocalidad = data["Descripcion"].ToString();
                         listPosicionBean.Add(posicionBean);
                     }
@@ -820,7 +837,7 @@ namespace Payroll.Models.Daos
             }
             return datoPosicionBean;
         }
-        public List<DatosPosicionesBean> sp_Posiciones_Retrieve_Search_Posiciones(string wordsearch, int keyemp, string type)
+        public List<DatosPosicionesBean> sp_Posiciones_Retrieve_Search_Posiciones(string wordsearch, int keyemp, string type, string filter)
         {
             List<DatosPosicionesBean> listPosicionBean = new List<DatosPosicionesBean>();
             try
@@ -833,6 +850,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlWordSearch", wordsearch));
                 cmd.Parameters.Add(new SqlParameter("@ctrlEmpresaId", keyemp));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoFiltro", type));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFiltroBusqueda", filter));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {

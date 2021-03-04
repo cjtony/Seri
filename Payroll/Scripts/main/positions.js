@@ -1,5 +1,38 @@
 ﻿$(function () {
 
+
+    fselectfilterdsearchpositionsGN = (nameInpt, searchKey, labelPs, resultContent) => {
+        const filtered = $("input:radio[name=" + nameInpt + "]:checked").val();
+        if (filtered == "codigo") {
+            document.getElementById(searchKey).placeholder = "CODIGO DE LA POSICION";
+            document.getElementById(searchKey).type = "number";
+            document.getElementById(labelPs).textContent = "Código";
+        } else if (filtered == "puesto") {
+            document.getElementById(searchKey).placeholder = "NOMBRE DEL PUESTO";
+            document.getElementById(searchKey).type = "text";
+            document.getElementById(labelPs).textContent = "Puesto";
+        }
+        document.getElementById(searchKey).value = "";
+        document.getElementById(resultContent).innerHTML = "";
+        setTimeout(() => { document.getElementById(searchKey).focus() }, 500);
+    }
+
+    //const labelsearchposition1 = document.getElementById('labelsearchposition1');
+    //const filtrocode1   = document.getElementById('filtrocode1');
+    //const filtropuesto1 = document.getElementById('filtropuesto1');
+
+    //filtrocode1.style.cursor   = "pointer";
+    //filtropuesto1.style.cursor = "pointer";
+    //document.getElementById('labelfiltrocode1').style.cursor = "pointer";
+    //document.getElementById('labelfiltropost1').style.cursor = "pointer";
+
+    //filtrocode1.addEventListener('click', () => {
+    //    fselectfilterdsearchpositionsGN('filtrosposition1', 'searchpositionkeyadd', 'labelsearchposition1', 'resultpositionsadd');
+    //});
+    //filtropuesto1.addEventListener('click', () => {
+    //    fselectfilterdsearchpositionsGN('filtrosposition1', 'searchpositionkeyadd', 'labelsearchposition1', 'resultpositionsadd');
+    //});
+
     const labelsearchposition = document.getElementById('labelsearchposition');
     const filtrocode   = document.getElementById('filtrocode');
     const filtropuesto = document.getElementById('filtropuesto');
@@ -10,25 +43,15 @@
     document.getElementById('labelfiltropost').style.cursor = "pointer";
 
     /* FUNCION QUE COMPRUEBA QUE TIPO DE FILTRO SE APLICARA A LA BUSQUEDA DE POSICIONES */
-    fselectfilterdsearchpositions = () => {
-        const filtered = $("input:radio[name=filtrosposition]:checked").val();
-        if (filtered == "codigo") {
-            document.getElementById('searchpositionkeybtn').placeholder = "CODIGO DE LA POSICION";
-            document.getElementById('searchpositionkeybtn').type  = "number";
-            labelsearchposition.textContent = "Código";
-        } else if (filtered == "puesto") {
-            document.getElementById('searchpositionkeybtn').placeholder = "NOMBRE DEL PUESTO";
-            document.getElementById('searchpositionkeybtn').type  = "text";
-            labelsearchposition.textContent = "Puesto";
-        }
-        document.getElementById('searchpositionkeybtn').value   = ""; 
-        document.getElementById('resultpositionsbtn').innerHTML = "";
-        setTimeout(() => { document.getElementById('searchpositionkeybtn').focus() }, 500);
-    }
+
 
     /* EJECUCION DE FUNCION QUE APLICA FILTRO A LA BUSQUEDA DE Las posiciones */
-    filtrocode.addEventListener('click', fselectfilterdsearchpositions);
-    filtropuesto.addEventListener('click', fselectfilterdsearchpositions);
+    filtrocode.addEventListener('click', () => {
+        fselectfilterdsearchpositionsGN('filtrosposition', 'searchpositionkeybtn', 'labelsearchposition', 'resultpositionsbtn');
+    });
+    filtropuesto.addEventListener('click', () => {
+        fselectfilterdsearchpositionsGN('filtrosposition', 'searchpositionkeybtn', 'labelsearchposition', 'resultpositionsbtn');
+    });
 
     const btndownloadreportpositions = document.getElementById('btndownloadreportpositions');
 
@@ -480,8 +503,13 @@
             }
         }
     }
+
+    const btnSearchPositionKeyAdd1 = document.getElementById('btnSearchPositionKeyAdd1');
+
     /* FUNCION QUE REALIZA LA BUSQUEDA DE POSICIONES EN TIEMPO REAL AL MOMENTO DE AGREGAR UNA NUEVA POSICION */
     fsearchkeyuppositionsadd = () => {
+        //const filtered = $("input:radio[name=filtrosposition1]:checked").val();
+        const filtered = "codigo";
         try {
             resultpositionsadd.innerHTML = '';
             document.getElementById('noresultpositions2').innerHTML = '';
@@ -489,9 +517,11 @@
                 $.ajax({
                     url: "../SearchDataCat/SearchPositions",
                     type: "POST",
-                    data: { wordsearch: searchpositionkeyadd.value, type: 'ALL' },
-                    success: (data) => {
-                        //console.log(data);
+                    data: { wordsearch: searchpositionkeyadd.value, type: 'ALL', filter: filtered },
+                    beforeSend: () => {
+                        btnSearchPositionKeyAdd1.disabled = true;
+                    }, success: (data) => {
+                        btnSearchPositionKeyAdd1.disabled = false;
                         resultpositionsadd.innerHTML = '';
                         if (data.length > 0) {
                             let number = 0;
@@ -526,7 +556,7 @@
         }
     }
     /* EJECUCION DE FUNCION QUE REALIZA LA BUSQUEDA DE POSICIONES */
-    searchpositionkeyadd.addEventListener('keyup', fsearchkeyuppositionsadd);
+    btnSearchPositionKeyAdd1.addEventListener('click', fsearchkeyuppositionsadd);
     // Funcion que carga las empresas del sistema \\
     floadbusiness = (state, type, keyemp, elementid) => {
         try {
