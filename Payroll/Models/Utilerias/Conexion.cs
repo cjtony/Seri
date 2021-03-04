@@ -6,7 +6,7 @@ namespace Payroll.Models.Utilerias
     public class Conexion
     { 
         static readonly string Server = "GSERIPROD01";
-        static readonly string Db     = "IPSNet_Copia";  
+        static readonly string Db     = "IPSNet_Copia";
         static readonly string User   = "IPSNet";
         static readonly string Pass   = "IPSNet2";
 
@@ -16,9 +16,7 @@ namespace Payroll.Models.Utilerias
         {
             try
             {
-                conexion = new SqlConnection("Data Source=" + Server + ";Initial Catalog=" + Db + ";User ID=" + User + ";Password=" + Pass + ";Integrated Security=False");
-                //  conexion = new SqlConnection("Data Source = DESKTOP-CNPFA5C; Initial Catalog=IPSNet; Integrated Security = true");
-
+                conexion = new SqlConnection("Data Source=" + Server + ";Initial Catalog=" + Db + ";User ID=" + User + ";Password=" + Pass + ";Integrated Security=False"); 
                 conexion.Open();
                 return conexion;
             }

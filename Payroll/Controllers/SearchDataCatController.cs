@@ -65,12 +65,12 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult SearchPositions(string wordsearch, string type)
+        public JsonResult SearchPositions(string wordsearch, string type, string filter)
         {
             List<DatosPosicionesBean> listPosicionesBean = new List<DatosPosicionesBean>();
             DatosPosicionesDao posicionesDao = new DatosPosicionesDao();
             int keyemp = int.Parse(Session["IdEmpresa"].ToString());
-            listPosicionesBean = posicionesDao.sp_Posiciones_Retrieve_Search_Posiciones(wordsearch, keyemp, type);
+            listPosicionesBean = posicionesDao.sp_Posiciones_Retrieve_Search_Posiciones(wordsearch, keyemp, type, filter);
             return Json(listPosicionesBean);
         }
 
