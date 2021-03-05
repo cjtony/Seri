@@ -6,8 +6,7 @@ namespace Payroll.Models.Utilerias
     public class Conexion 
     { 
         static readonly string Server = "GSERIPROD01"; 
-        static readonly string Db     = "IPSNet"; 
- 
+        static readonly string Db     = "IPSNet";
         static readonly string User   = "IPSNet";
         static readonly string Pass   = "IPSNet2";
 
