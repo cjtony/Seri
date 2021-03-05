@@ -1,5 +1,6 @@
 ﻿$(function () {
 
+    const btnSearchPositions1 = document.getElementById('btnSearchPositions1');
 
     fselectfilterdsearchpositionsGN = (nameInpt, searchKey, labelPs, resultContent) => {
         const filtered = $("input:radio[name=" + nameInpt + "]:checked").val();
@@ -774,7 +775,7 @@
             }
         }
     }
-    searchpositionkeybtn.addEventListener('keyup', fsearchkeyuppositionsbtn);
+    btnSearchPositions1.addEventListener('click', fsearchkeyuppositionsbtn);
     /* EJECUCION DEL EVENTO QUE GUARDA LA EDICION DE LA POSICION */
     //btnsavepositionedit.addEventListener('click', () => {
     //    try {
