@@ -748,14 +748,14 @@
                 data: { keyemploye: paramid },
                 success: (data) => {
                     //console.log('Datos de estructura');
-                    //console.log(data);
+                    console.log(data);
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvstract.value = data.Datos.iIdPosicion;
                         numpla.value    = data.Datos.sPosicionCodigo;
                         puesid.value    = data.Datos.iPuesto_id;
                         pueusu.value    = data.Datos.sNombrePuesto;
                         depaid.value    = data.Datos.iDepartamento_id;
-                        depart.value    = data.Datos.sDeptoCodigo;
+                        depart.value    = '[' +  data.Datos.sDeptoCodigo + '] ' + data.Datos.sNombreDepartamento;
                         localty.value   = data.Datos.sLocalidad;
                         emprep.value    = data.Datos.sRegistroPat;
                         report.value         = data.Datos.iIdReportaAPosicion;

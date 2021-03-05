@@ -760,10 +760,15 @@ namespace Payroll.Controllers
                                 // ARCHIVO DISPERSION BANCOMER -> NOMINA
 
                                 if (bankResult == 12) {
+                                    string pathSaveFile = Server.MapPath("~/Content/");
+                                    string routeTXTBancomer = pathSaveFile + "DISPERSION" + @"\\" + "BANCOMER" + @"\\" + "BANCOMER.txt";
+                                    string pathCompleteTXT  = directoryTxt + @"\\" + nameFolder + @"\\" + "BANCOMER.txt";
+                                    System.IO.File.Copy(routeTXTBancomer, pathCompleteTXT, true);
+                                    //System.IO.File.Move(pathCompleteTXT, directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt");
                                     // - DETALLE - \\
                                     string fillerBancomerD1 = "                ", consecutivoBancomerD2 = "99", fillerBancomerD2 = "          ", valorFijoBancomerD = "001001";
                                     int consecutivoBancomerD1 = 0;
-                                    using (StreamWriter fileBancomer = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt", false, Encoding.UTF8)) {
+                                    using (StreamWriter fileBancomer = new StreamWriter(pathCompleteTXT, false, Encoding.UTF8)) {
                                         string cerosConBncmD = "", cerosImpBncmD = "", espaciosNomBenBncmD = "", nombreBenBancomerD = "";
                                         int longConBncmD = 9, longImpBncmD = 15, longNomBenBncmD = 40;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
@@ -1858,9 +1863,22 @@ namespace Payroll.Controllers
                             // SCOTIABANK -- ARCHIVO OK (INTERBANCARIO)
                             string tipoArchivoIntScotiabank = "EE", 
                                 tipoRegistroIntScotiabank   = "HA", 
-                                numeroContratoIntScotiabank = "88178", 
+                                numeroContratoIntScotiabank = "", 
                                 secuenciaIntScotiabank = "01",
                                 fillerIntScotiabankHA1 = "                                                                                                                                                                                                                                                                                                                                                                       ";
+
+                            if (keyBusiness == 8) {
+                                numeroContratoIntScotiabank = "88178";
+                            } else if (keyBusiness == 10) {
+                                numeroContratoIntScotiabank = "47848";
+                            } else if (keyBusiness == 7) {
+                                numeroContratoIntScotiabank = "48426";
+                            } else if (keyBusiness == 15) {
+                                numeroContratoIntScotiabank = "85301";
+                            } else {
+                                numeroContratoIntScotiabank = "00000";
+                            }
+
                             string headerLayoutAIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroIntScotiabank + numeroContratoIntScotiabank + secuenciaIntScotiabank + fillerIntScotiabankHA1;
                             // - ENCABEZADO BLOQUE - \\
                             string tipoRegistroBIntScotiabank = "HB", 
