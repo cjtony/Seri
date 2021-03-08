@@ -30,9 +30,7 @@ namespace Payroll
         /// <param name="app"></param>
         public void Configuration(IAppBuilder app)
         {
-            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GSERIPROD01; Initial Catalog=IPSNet_Copia; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions
-
-            {
+            GlobalConfiguration.Configuration.UseSqlServerStorage("Data Source = GSERIPROD01; Initial Catalog=IPSNet_Copia; User ID= IPSNet;Password= IPSNet2;Integrated Security= False;MultipleActiveResultSets=true", new SqlServerStorageOptions {
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                 SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
                 QueuePollInterval = TimeSpan.Zero,
@@ -170,7 +168,7 @@ namespace Payroll
             return fechajobs;
         }
 
-        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple,string Path,string NameUser)
+        public void  ProcesoNom( string NomProceso, int idDefinicionhd, int anio,int TipoPeriodo, int periodo, int idEmpresa,int iCalxEmple,string Path,string NameUser, string Nameuse2)
         {
             string FechaProceso = Fecha();
 
@@ -229,7 +227,8 @@ namespace Payroll
                 string StatusJobs = "En Cola";
                 string Nombrejobs = "CNomina1";
                 string Parametros = anio + "," + TipoPeriodo + "," + periodo + "," + idDefinicionhd + "," + idEmpresa + "," + iCalxEmple + "," + FechaProceso;
-                Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros, id[0].iId);
+                //Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs(Idjobs, StatusJobs, Nombrejobs, Parametros, id[0].iId);
+                Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs2(Idjobs, StatusJobs, Nombrejobs, Parametros, id[0].iId, Nameuse2);
 
             }
 

@@ -1091,17 +1091,24 @@ namespace Payroll.Models.Daos
                         {
                             ls.iIdTarea = int.Parse(data["IdTarea"].ToString());
                             ls.iIdJobs = int.Parse(data["IdJobs"].ToString());
-                            ls.sEstatusJobs = data["EstatusJobs"].ToString();
-                            ls.sNombre = data["NombreJobs"].ToString();
-                            ls.sParametros = data["ParametrosJobs"].ToString();
-                            ls.iDefinicionhdId = int.Parse(data["Definicion_Hd_id"].ToString());
-                            ls.sNombreDefinicion = int.Parse(data["Definicion_Hd_id"].ToString()) + " " + data["Nombre_Definicion"].ToString();
-                            ls.sFechaIni = data["Fecha"].ToString();
-                            ls.sFechaFinal = data["Fecha_fin"].ToString();
-                            if (Convert.ToDateTime(data["Fecha"].ToString()) < Convert.ToDateTime(data["Fecha_fin"].ToString()) && data["EstatusJobs"].ToString() == "Terminado" ) { ls.sEstatusFinal = "Terminado"; }
-                            if (Convert.ToDateTime(data["Fecha"].ToString()) > Convert.ToDateTime(data["Fecha_fin"].ToString())) { ls.sEstatusFinal = "Proceso"; }
-                            if (data["EstatusJobs"].ToString() =="En cola") { ls.sEstatusFinal = "En cola"; }
-                            ls.sUsuario = data["Usuario"].ToString();
+                            if (data["EstatusJobs"].ToString() != null) { ls.sEstatusJobs = data["EstatusJobs"].ToString(); }
+                            if (data["EstatusJobs"].ToString() == null) { ls.sEstatusJobs = "Error"; }
+                            if (data["NombreJobs"].ToString() != null) {ls.sNombre = data["NombreJobs"].ToString(); }
+                            if (data["NombreJobs"].ToString() == null) { ls.sNombre = " "; }
+                            if (data["ParametrosJobs"].ToString() !=null){ls.sParametros = data["ParametrosJobs"].ToString();}
+                            if (data["ParametrosJobs"].ToString() == null) { ls.sParametros = " "; }
+                            if (data["Definicion_Hd_id"].ToString() != null){ls.iDefinicionhdId = int.Parse(data["Definicion_Hd_id"].ToString());}
+                            if (data["Definicion_Hd_id"].ToString() == null) { ls.iDefinicionhdId = 0; }
+                            if (data["Nombre_Definicion"].ToString() != null) {ls.sNombreDefinicion = int.Parse(data["Definicion_Hd_id"].ToString()) + " " + data["Nombre_Definicion"].ToString();}
+                            if (data["Nombre_Definicion"].ToString() == null) { ls.sNombreDefinicion = " "; }
+                            if (data["Fecha_Inicial"].ToString() != "") { ls.sFechaIni = data["Fecha_Inicial"].ToString(); }
+                            if (data["Fecha_Inicial"].ToString() == ""){ls.sFechaIni = " ";}
+                            if (data["Fecha_Final"].ToString() != "") { ls.sFechaFinal = data["Fecha_Final"].ToString();
+                                if (Convert.ToDateTime(data["Fecha_Inicial"].ToString()) < Convert.ToDateTime(data["Fecha_Final"].ToString()) && data["EstatusJobs"].ToString() == "Terminado") { ls.sEstatusFinal = "Terminado"; }
+                                if (Convert.ToDateTime(data["Fecha_Inicial"].ToString()) > Convert.ToDateTime(data["Fecha_Final"].ToString())) { ls.sEstatusFinal = "Proceso"; }
+                            }
+                            if (data["EstatusJobs"].ToString() =="En cola") { ls.sEstatusFinal = "En Cola"; }
+                            if (data["Usuario"].ToString() != null){ ls.sUsuario = data["Usuario"].ToString(); }
                         };
                         list.Add(ls);
                     }
@@ -1372,7 +1379,7 @@ namespace Payroll.Models.Daos
                 {
                     bean.sMensaje = "error";
                 }
-                cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
@@ -3277,6 +3284,139 @@ namespace Payroll.Models.Daos
             return list;
 
         }
+
+        /// inserta datos en la tabla jobs
+        public TPProcesos Sp_TPProcesosJobs_insert_TPProcesosJobs2(int CtrliIdJobs, string CtrlsEstatusJobs, string CtrilsNombreJobs, string CtrlsParametrosJobs, int CtrliCalculosHD_id,string CtrlsUsiario)
+        {
+            TPProcesos bean = new TPProcesos();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("Sp_TPProcesosJobs_insert_TPProcesosJobs2", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdJobs", CtrliIdJobs));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsEstatusJobs", CtrlsEstatusJobs));
+                cmd.Parameters.Add(new SqlParameter("@CtrilsNombreJobs", CtrilsNombreJobs));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsParametrosJobs", CtrlsParametrosJobs));
+                cmd.Parameters.Add(new SqlParameter("@CtrliCalculosHD_id", CtrliCalculosHD_id));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsUsiario", CtrlsUsiario));
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
+        /// Actualiza la tabla TPProcesosJobs
+        public TPProcesos sp_ProcesoJobs_update_TPProcesosJobs()
+        {
+            TPProcesos bean = new TPProcesos();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_ProcesoJobs_update_TPProcesosJobs", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                // cmd.Parameters.Add(new SqlParameter("@CtrliIdDefinicionHd", CtrliIdDefinicionHd));
+
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+       // Monitor de procesos consulta el procesos del usuario en session
+        public List<TPProcesos> sp_TPProcesosJobs_Retrieve_TPProcesosJobs2(int Crtliop1, int Crtliop2, int Crtliop3, int CrtliIdJobs, int CtrliIdTarea,string CtrlsUsuario)
+        {
+            List<TPProcesos> list = new List<TPProcesos>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_TPProcesosJobs_Retrieve_TPProcesosJobs2", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@Crtliop1", Crtliop1));
+                cmd.Parameters.Add(new SqlParameter("@Crtliop2", Crtliop2));
+                cmd.Parameters.Add(new SqlParameter("@Crtliop3", Crtliop3));
+                cmd.Parameters.Add(new SqlParameter("@CrtliIdJobs", CrtliIdJobs));
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdTarea", CtrliIdTarea));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsUsuario", CtrlsUsuario));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TPProcesos ls = new TPProcesos();
+                        {
+                            ls.iIdTarea = int.Parse(data["IdTarea"].ToString());
+                            ls.iIdJobs = int.Parse(data["IdJobs"].ToString());
+                            if (data["EstatusJobs"].ToString() != null) { ls.sEstatusJobs = data["EstatusJobs"].ToString(); }
+                            if (data["EstatusJobs"].ToString() == null) { ls.sEstatusJobs = "Error"; }
+                            if (data["NombreJobs"].ToString() != null) { ls.sNombre = data["NombreJobs"].ToString(); }
+                            if (data["NombreJobs"].ToString() == null) { ls.sNombre = " "; }
+                            if (data["ParametrosJobs"].ToString() != null) { ls.sParametros = data["ParametrosJobs"].ToString(); }
+                            if (data["ParametrosJobs"].ToString() == null) { ls.sParametros = " "; }
+                            if (data["Definicion_Hd_id"].ToString() != null) { ls.iDefinicionhdId = int.Parse(data["Definicion_Hd_id"].ToString()); }
+                            if (data["Definicion_Hd_id"].ToString() == null) { ls.iDefinicionhdId = 0; }
+                            if (data["Nombre_Definicion"].ToString() != null) { ls.sNombreDefinicion = int.Parse(data["Definicion_Hd_id"].ToString()) + " " + data["Nombre_Definicion"].ToString(); }
+                            if (data["Nombre_Definicion"].ToString() == null) { ls.sNombreDefinicion = " "; }
+                            if (data["Fecha_Inicial"].ToString() != "") { ls.sFechaIni = data["Fecha_Inicial"].ToString(); }
+                            if (data["Fecha_Inicial"].ToString() == "") { ls.sFechaIni = " "; }
+                            if (data["Fecha_Final"].ToString() != "")
+                            {
+                                ls.sFechaFinal = data["Fecha_Final"].ToString();
+                                if (Convert.ToDateTime(data["Fecha_Inicial"].ToString()) < Convert.ToDateTime(data["Fecha_Final"].ToString()) && data["EstatusJobs"].ToString() == "Terminado") { ls.sEstatusFinal = "Terminado"; }
+                                if (Convert.ToDateTime(data["Fecha_Inicial"].ToString()) > Convert.ToDateTime(data["Fecha_Final"].ToString())) { ls.sEstatusFinal = "Proceso"; }
+                            }
+                            if (data["EstatusJobs"].ToString() == "En cola") { ls.sEstatusFinal = "En Cola"; }
+                            if (data["Usuario"].ToString() != null) { ls.sUsuario = data["Usuario"].ToString(); }
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
     }
 }
 

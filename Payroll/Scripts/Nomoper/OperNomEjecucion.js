@@ -332,7 +332,6 @@
         var dedu;
         var total;
         $.ajax({
-
             url: "../Nomina/ListTpCalculoln",
             type: "POST",
             data: dataSend,
