@@ -1,41 +1,70 @@
 ﻿
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
+
 <div class="container bg-white">
-    <div>
-        <div class="text-center">
-            <h5 class="col-ico">
-                <b>
-                    Monitor de Procesos
-                </b>
-            </h5>
-            <hr />
-        </div>
-        @*//////////////////////////////////////////Progresbar de Procesos//////////////////////////*@
-        <div class="container embed-responsive">
-            <div id='jqxWidget' style="font-size: 13px;">
-                <div style='margin-top: 10px; margin-left:30px'><b>Procesos terminados:</b>-.</div>
-                <div style='margin-top: 10px; margin-left:30px ;text-align:center' id='jqxProgressBar2'></div>
+    @*Botones Flotantes*@
+
+    <div class="container-fluid">
+
+        <div class="row mt-4 border-left-primary p-3 rounded shadow border-right-primary">
+            <div id="div-most-alert-data-gen" class="col-md-10 offset-2"></div>
+            <div class="col-md-6">
+                <div class="text-left">
+                    <h6 class="col-ico font-nav-child">
+                        <b>
+                            <i class="fas fa-circle fa-sm mr-ico-05"></i>
+                            Monitor de Procesos
+                        </b>
+                    </h6>
+
+                </div>      
             </div>
-        </div>
-        @*//////////////////////////////////////////tabla de Procesos//////////////////////////*@
-        <div class="modal-body">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive" style="text-align:center">
-                            <div id="TbProcesos" class="table-responsive"></div>
+
+            <div class="col-md-12">
+                <hr />
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group text-center rounded shadow p-1 border-left-primary">
+                    <div>
+                     
+                        @*//////////////////////////////////////////Progresbar de Procesos//////////////////////////*@
+                        @*<div class="container embed-responsive">
+                           <div id='jqxWidget' style="font-size: 13px;">
+                           <div style='margin-top: 10px; margin-left:30px'><b>Procesos terminados:</b>-.</div>
+                           <div style='margin-top: 10px; margin-left:30px ;text-align:center' id='jqxProgressBar2'></div>
+                           </div>
+                       </div>*@
+                        @*//////////////////////////////////////////tabla de Procesos//////////////////////////*@
+                        <div class="modal-body">
+                            <div>
+                                <div class="row col-md-3" style="margin-left:83%; top:0px">
+                                    <button type="submit" class="btn btn-primary mb-2" id="btnActu" data-toggle="modal" data-target="#Actualizar" title="Actualizar"><span class="fas fa-redo"></span> Actualizar</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="table-responsive" style="text-align:center">
+                                            <div id="TbProcesos" class="table-responsive"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+             </div>
+         </div>
+     </div>
+ </div>
+
+
+
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.base.css" type="text/css" />
 
 <link rel="stylesheet" href="~/Scripts/jqxGrid/jqwidgets/styles/jqx.arctic.css" type="text/css" />
 
-<script src="~/Scripts/Nomoper/MonitorProcesos.js?n=1"></script>
+<script src="~/Scripts/Nomoper/MonitorProcesos.js?n=2"></script>
 <script src="~/Scripts/jqxGrid/jqwidgets/jqxscrollbar.js"></script>
 <script src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
 <script src="~/Scripts/jqxGrid/jqwidgets/jqxprogressbar.js"></script>
