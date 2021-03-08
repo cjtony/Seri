@@ -1,11 +1,14 @@
 ﻿ $(function () {
 
     /// Funcion de progres bar //
-    var EnCola = 0;
-    var Procesando = 0;
-    var terminado = 0;
-    var PorMultiplicador;
-    var TotalRows=0;
+
+     var EnCola = 0;
+     var Procesando = 0;
+     var terminado = 0;
+     var PorMultiplicador;
+     var TotalRows = 0;
+
+    const btnActu = document.getElementById('btnActu');
 
     FprogresBar = () => {
 
@@ -93,11 +96,10 @@
  
     }
 
-    FprogresBar();
-
-    DgridTBProcesos = () => {       
+   
+     DgridTBProcesos = () => {       
         $.ajax({
-            url: "../Nomina/ListTBProcesosJobs  ",
+            url: "../Nomina/ListTBProcesosJobs2  ",
             type: "POST",
             data: JSON.stringify(),
             success: (data) => {
@@ -122,22 +124,37 @@
 
                 $("#TbProcesos").jqxGrid(
                     {
-                        width: 980,
+                        width: 950,
                         source: dataAdapter,
                         columnsresize: true,
                         columns: [
 
                             { text: 'No Tarea', datafield: 'iIdTarea', width: 100 },
                             { text: 'Definicion', datafield: 'sNombreDefinicion', width: 200 },
-                            { text: 'Usuario', datafield: 'sUsuario', whidth: 200 },
+                            { text: 'Usuario', datafield: 'sUsuario', whidth: 190 },
                             { text: 'Fecha inicio', datafield: 'sFechaIni', whidt: 100 },
                             { text: 'Fecha Final', datafield: 'sFechaFinal', whidt: 100 },
-                            { text: 'Estatus', datafield: 'sEstatusFinal', whidt: 100 },                          
+                            { text: 'Estatus', datafield: 'sEstatusFinal', whidt: 80 },                          
                         ]
                    });
             }
         });  
-    }
-    DgridTBProcesos();
+     }
+
+     DgridTBProcesos();
+
+     FActualizar = () => {
+         $.ajax({
+             url: "../Nomina/ActMonit  ",
+             type: "POST",
+             data: JSON.stringify(),
+             success: (data) => {
+                
+             }
+         });  
+         DgridTBProcesos();
+     };
+     btnActu.addEventListener('click', FActualizar);
+
 
 });
