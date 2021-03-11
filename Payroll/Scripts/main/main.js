@@ -243,7 +243,7 @@
         }
     }
 
-    //fChangeNumberPayrollEmployee();
+    fChangeNumberPayrollEmployee();
 
     //Funcion que carga los motivos de movimiento
     fLoadMotivesMovements = (paramstreid) => {
