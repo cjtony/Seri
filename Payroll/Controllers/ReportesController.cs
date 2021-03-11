@@ -598,7 +598,7 @@ namespace Payroll.Controllers
                                 worksheet.Cells[p + 1, 29].Value = dato.iUltimaPos;
                                 worksheet.Cells[p + 1, 30].Style.Numberformat.Format = "0.00";
                                 worksheet.Cells[p + 1, 30].Value = dato.dUltSdi;
-
+                                worksheet.Cells[p + 1, 31].Value = dato.sRegistroPatronal;
                                 Total_Percepciones_Fiscal = 0;
 
                                 for (m = 0; m < RenglonesNom.Count(); m++)
