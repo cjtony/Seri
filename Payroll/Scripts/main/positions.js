@@ -401,7 +401,7 @@
                 $.ajax({
                     url: "../SearchDataCat/SearchPositions",
                     type: "POST",
-                    data: { wordsearch: searchpositions.value, type: 'EMPR' },
+                    data: { wordsearch: searchpositions.value, type: 'EMPR', filter: 'puesto' },
                     success: (data) => {
                         resultpositions.innerHTML = '';
                         if (data.length > 0) {

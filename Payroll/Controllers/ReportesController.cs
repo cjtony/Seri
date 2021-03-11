@@ -290,12 +290,13 @@ namespace Payroll.Controllers
                     worksheet.Cells[1, 28].Value = "VACANTE CUBIERTA";
                     worksheet.Cells[1, 29].Value = "ULTIMA POSICION";
                     worksheet.Cells[1, 30].Value = "ULT. SDI";
+                    worksheet.Cells[1, 31].Value = "Registro Patronal";
 
-                    for (i = 1; i < 31; i++) {
+                    for (i = 1; i < 32; i++) {
                         worksheet.Cells[1, i].Style.Fill.SetBackground(System.Drawing.Color.LightSkyBlue);
                     }
 
-                    ii = 30;
+                    ii = 31;
 
                     if (typeSend == 1) {
                         // Obtenemos los renglones calculados
