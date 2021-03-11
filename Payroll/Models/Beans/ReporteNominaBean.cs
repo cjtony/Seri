@@ -63,6 +63,7 @@ namespace Payroll.Models.Beans
         public decimal dSueldo { get; set; }
         public int iVacanteC { get; set; }
         public int iUltimaPos { get; set; }
+        public string sRegistroPatronal { get; set; }
         public decimal dUltSdi { get; set; }
     }
 
