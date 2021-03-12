@@ -236,8 +236,9 @@ $(function () {
     /// descarga masiva de xml
 
     FdowXmlsMasivo = () => {
-
-        if (valorCheckxEmpleado.checked == false) {
+        console.log('entro a xml')
+        if (valorCheckxEmpleado.checked == false) { 
+            console.log('entro general');
             btnXmlms.value = 1;
             btnPDFms.value = 0;
             IdEmpresa = EmpresaNom.value;
@@ -250,6 +251,7 @@ $(function () {
             const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 1 };
             $.ajax({
                 url: "../Empleados/XMLNomina",
+                type: "POST",
                 data: dataSend,
                 beforeSend: function (data) {
                     $('#jqxLoader2').jqxLoader('open');
@@ -275,6 +277,7 @@ $(function () {
 
         }
         if (valorCheckxEmpleado.checked == true) {
+            console.log('entro por uno');
             IdEmpresa = EmpresaNom.value;
             var nom = $('#jqxInput').jqxInput('val');
             NombreEmpleado = nom.label;

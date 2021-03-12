@@ -1744,7 +1744,7 @@ namespace Payroll.Models.Daos
                                     if (row198>0) {
                                         xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo));
                                         xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
-                                        xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", LisTRecibo[row195].dSaldo));
+                                        xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo + LisTRecibo[row198].dExcento));
                                         xmlWriter.WriteEndElement();
                                         xmlWriter.WriteEndElement();
                                     };
