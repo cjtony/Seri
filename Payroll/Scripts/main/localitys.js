@@ -424,7 +424,11 @@
                             ivalocalityedit.value     = data.Datos.TasaIva;
                             regpatrlocalityedit.value = data.Datos.RegistroPatronal_id;
                             zoneecolocalityedit.value = data.Datos.ZonaEconomica_id;
-                            estatelocalityedit.value  = data.Datos.Estado_id;
+                            if (data.Datos.Estado_id == 0) {
+                                estatelocalityedit.value = "none";
+                            } else {
+                                estatelocalityedit.value = data.Datos.Estado_id;
+                            }
                             reglocalityedit.value     = data.Datos.ClaveRegional;
                             idreglocalityedit.value   = data.Datos.Regional_id;
                             suclocalityedit.value     = data.Datos.ClaveSucursal;
@@ -683,6 +687,10 @@
                             if (estatelocalityedit.value != "none") {
                                 if (idreglocalityedit.value != "") {
                                     if (idsuclocalityedit.value != "") {
+                                        let valueState = estatelocalityedit.value;
+                                        if (valueState == "none") {
+                                            valueState = 0;
+                                        }
                                         const dataSend = {
                                             keylocality: parseInt(keylocalityedit.value),
                                             desclocality: desclocalityedit.value,
@@ -693,6 +701,7 @@
                                             idreglocality: parseInt(idreglocalityedit.value),
                                             idsuclocality: parseInt(idsuclocalityedit.value)
                                         };
+                                        //console.log(dataSend);
                                         $.ajax({
                                             url: "../SearchDataCat/SaveEditLocality",
                                             type: "POST",
