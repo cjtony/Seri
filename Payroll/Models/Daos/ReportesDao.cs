@@ -579,6 +579,7 @@ namespace Payroll.Models.Daos
                         dato.iVacanteC = (data["Posicion_id"].ToString() != "") ? Convert.ToInt32(data["Posicion_id"].ToString()) : 0;
                         dato.iUltimaPos = (data["UltimaPos"].ToString() != "") ? Convert.ToInt32(data["UltimaPos"].ToString()) : 0;
                         dato.dUltSdi = (data["Ult_sdi"].ToString() != "") ? Convert.ToDecimal(data["Ult_sdi"].ToString()) : 0;
+                        dato.sRegistroPatronal = data["Registro_Patronal"].ToString();
                         datosGenerales.Add(dato);
                     }
                 }
