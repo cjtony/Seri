@@ -1686,6 +1686,7 @@ namespace Payroll.Models.Daos
         public LocalidadesBean sp_Dato_Localidad_Seleccionada(int keyLocality, int keyEmp)
         {
             LocalidadesBean localityBean = new LocalidadesBean();
+            Validaciones validaciones    = new Validaciones();
             try
             {
                 this.Conectar();
@@ -1693,22 +1694,21 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@IdLocalidad", keyLocality));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyEmp));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.Read())
-                {
-                    localityBean.IdLocalidad = Convert.ToInt32(data["IdLocalidad"].ToString());
-                    localityBean.Empresa_id = Convert.ToInt32(data["Empresa_id"].ToString());
-                    localityBean.Codigo_Localidad = Convert.ToInt32(data["Codigo_Localidad"].ToString());
+                if (data.Read()) {
+                    localityBean.IdLocalidad = Convert.ToInt32(validaciones.ValidationsInts(data["IdLocalidad"].ToString()));
+                    localityBean.Empresa_id = Convert.ToInt32(validaciones.ValidationsInts(data["Empresa_id"].ToString()));
+                    localityBean.Codigo_Localidad = Convert.ToInt32(validaciones.ValidationsInts(data["Codigo_Localidad"].ToString()));
                     localityBean.Descripcion = data["Descripcion"].ToString();
-                    localityBean.TasaIva = data["TazaIva"].ToString();
-                    localityBean.RegistroPatronal_id = Convert.ToInt32(data["RegistroPatronal_id"].ToString());
-                    localityBean.ZonaEconomica_id = Convert.ToInt32(data["ZonaEconomica_id"].ToString());
-                    localityBean.Regional_id = Convert.ToInt32(data["Regional_id"].ToString());
+                    localityBean.TasaIva     = data["TazaIva"].ToString();
+                    localityBean.RegistroPatronal_id = Convert.ToInt32(validaciones.ValidationsInts(data["RegistroPatronal_id"].ToString()));
+                    localityBean.ZonaEconomica_id = Convert.ToInt32(validaciones.ValidationsInts(data["ZonaEconomica_id"].ToString()));
+                    localityBean.Regional_id = Convert.ToInt32(validaciones.ValidationsInts(data["Regional_id"].ToString()));
                     localityBean.ClaveRegional = data["Clave_Regional"].ToString();
                     localityBean.DescripcionRegional = data["Descripcion_Regional"].ToString();
-                    localityBean.Sucursal_id = Convert.ToInt32(data["Sucursal_id"].ToString());
+                    localityBean.Sucursal_id = Convert.ToInt32(validaciones.ValidationsInts(data["Sucursal_id"].ToString()));
                     localityBean.ClaveSucursal = data["Clave_Sucursal"].ToString();
                     localityBean.DescripcionSucursal = data["Descripcion_Sucursal"].ToString();
-                    localityBean.Estado_id = Convert.ToInt32(data["Cg_Estado_id"].ToString());
+                    localityBean.Estado_id = Convert.ToInt32(validaciones.ValidationsInts(data["Cg_Estado_id"].ToString()));
                     localityBean.sMensaje = "success";
                 }
                 else
