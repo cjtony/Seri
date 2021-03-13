@@ -1674,7 +1674,7 @@ namespace Payroll.Models.Daos
                             //ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.sValor = data["Valor"].ToString();
-                            ls.sIdSat = int.Parse(data["Sat_id"].ToString());
+                            ls.sIdSat = int.Parse(data["codigo"].ToString());
                         }
 
                         list.Add(ls);
@@ -2485,6 +2485,7 @@ namespace Payroll.Models.Daos
                         ls.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
                         ls.iNumeroNomina = int.Parse(data["IdNomina"].ToString());
                         ls.sNombreEmpleado = data["Nombrecompleto"].ToString();
+                        ls.sMensaje = "succes";
                         list.Add(ls);
                     }
                 }
@@ -3390,12 +3391,11 @@ namespace Payroll.Models.Daos
                             if (data["Nombre_Definicion"].ToString() != null) { ls.sNombreDefinicion = int.Parse(data["Definicion_Hd_id"].ToString()) + " " + data["Nombre_Definicion"].ToString(); }
                             if (data["Nombre_Definicion"].ToString() == null) { ls.sNombreDefinicion = " "; }
                             if (data["Fecha_Inicial"].ToString() != "") { ls.sFechaIni = data["Fecha_Inicial"].ToString(); }
-                            if (data["Fecha_Inicial"].ToString() == "") { ls.sFechaIni = " "; }
+                            if (data["Fecha_Inicial"].ToString() == "") { ls.sFechaIni = " "; ls.sEstatusFinal = data["EstatusJobs"].ToString(); }
                             if (data["Fecha_Final"].ToString() != "")
                             {
                                 ls.sFechaFinal = data["Fecha_Final"].ToString();
-                                if (Convert.ToDateTime(data["Fecha_Inicial"].ToString()) < Convert.ToDateTime(data["Fecha_Final"].ToString()) && data["EstatusJobs"].ToString() == "Terminado") { ls.sEstatusFinal = "Terminado"; }
-                                if (Convert.ToDateTime(data["Fecha_Inicial"].ToString()) > Convert.ToDateTime(data["Fecha_Final"].ToString())) { ls.sEstatusFinal = "Proceso"; }
+                              
                             }
                             if (data["EstatusJobs"].ToString() == "En cola") { ls.sEstatusFinal = "En Cola"; }
                             if (data["Usuario"].ToString() != null) { ls.sUsuario = data["Usuario"].ToString(); }

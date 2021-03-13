@@ -236,8 +236,9 @@ $(function () {
     /// descarga masiva de xml
 
     FdowXmlsMasivo = () => {
-
-        if (valorCheckxEmpleado.checked == false) {
+        console.log('entro a xml')
+        if (valorCheckxEmpleado.checked == false) { 
+            console.log('entro general');
             btnXmlms.value = 1;
             btnPDFms.value = 0;
             IdEmpresa = EmpresaNom.value;
@@ -247,15 +248,22 @@ $(function () {
             anio = anoNom.value;
             Tipoperiodo = TipodePerdioRec.value;
             datosPeriodo = PeridoNom.value;
+
             const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 1 };
             $.ajax({
                 url: "../Empleados/XMLNomina",
+                type: "POST",
                 data: dataSend,
                 beforeSend: function (data) {
                     $('#jqxLoader2').jqxLoader('open');
                 },
                 success: function (data) {
-
+                    if (data[0].sMensaje == "Error") {
+                        $('#jqxLoader2').jqxLoader('close');
+                        fshowtypealert('Error', 'El periodo no tiene un empleado con los calculos de nomina', 'error');
+                    }
+                    if (data[0].sMensaje != "Error") {
+                    
                     if (data[0].sMensaje != "NorCert") {
                         btnDowlan.style.visibility = 'visible';
                         $('#jqxLoader2').jqxLoader('close');
@@ -269,12 +277,15 @@ $(function () {
                         $('#jqxLoader2').jqxLoader('close');
                         fshowtypealert('Error', 'Contacte a sistemas', 'error');
                     }
-
+                    }
                 }
             });
 
+
+     
         }
         if (valorCheckxEmpleado.checked == true) {
+            console.log('entro por uno');
             IdEmpresa = EmpresaNom.value;
             var nom = $('#jqxInput').jqxInput('val');
             NombreEmpleado = nom.label;

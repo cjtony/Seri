@@ -567,7 +567,7 @@
                         }
                         if (periodo != "Selecciona") {
                             separador = " ",
-                                limite = 2,
+                                limite = 2
                                 arreglosubcadena2 = periodo.split(separador, limite);
                             const dataSend5 = { iIdEmpresa: Result.LisEmpreCal[0].iIdEmpresa, TipoPeriodo: arreglosubcadena[0], periodo: arreglosubcadena2[0], Anio: TbAño.value };
                             $.ajax({
@@ -626,6 +626,11 @@
                 }
             },
         });
+
+        if (ValorChekEnFirme.checked == true) {
+            FLimpiaCamp();
+        }
+
 
     };
 
@@ -1086,7 +1091,7 @@
 
     FejecutarProceso = (dataSend, dataSend2, dataSend3) => {
 
-        console.log('entra aqui');
+     
         //$.ajax({
         //    url: "../Nomina/ExitCalculos",
         //    type: "POST",
