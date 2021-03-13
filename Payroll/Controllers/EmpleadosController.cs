@@ -417,7 +417,9 @@ namespace Payroll.Controllers
             String messageError = "none";
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
+            FuncionesNomina DaoNomi = new FuncionesNomina();
             String pathLog = Server.MapPath("~/Content/");
+
             try
             {
                 string path = Server.MapPath("Archivos\\XmlZip\\");
@@ -437,6 +439,7 @@ namespace Payroll.Controllers
                     file.Close();
                 }
             }
+
             return Json(ListDatEmisor);
 
         }

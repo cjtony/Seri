@@ -248,6 +248,7 @@ $(function () {
             anio = anoNom.value;
             Tipoperiodo = TipodePerdioRec.value;
             datosPeriodo = PeridoNom.value;
+
             const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 1 };
             $.ajax({
                 url: "../Empleados/XMLNomina",
@@ -257,7 +258,12 @@ $(function () {
                     $('#jqxLoader2').jqxLoader('open');
                 },
                 success: function (data) {
-
+                    if (data[0].sMensaje == "Error") {
+                        $('#jqxLoader2').jqxLoader('close');
+                        fshowtypealert('Error', 'El periodo no tiene un empleado con los calculos de nomina', 'error');
+                    }
+                    if (data[0].sMensaje != "Error") {
+                    
                     if (data[0].sMensaje != "NorCert") {
                         btnDowlan.style.visibility = 'visible';
                         $('#jqxLoader2').jqxLoader('close');
@@ -271,10 +277,12 @@ $(function () {
                         $('#jqxLoader2').jqxLoader('close');
                         fshowtypealert('Error', 'Contacte a sistemas', 'error');
                     }
-
+                    }
                 }
             });
 
+
+     
         }
         if (valorCheckxEmpleado.checked == true) {
             console.log('entro por uno');

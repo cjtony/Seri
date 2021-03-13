@@ -2485,6 +2485,7 @@ namespace Payroll.Models.Daos
                         ls.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
                         ls.iNumeroNomina = int.Parse(data["IdNomina"].ToString());
                         ls.sNombreEmpleado = data["Nombrecompleto"].ToString();
+                        ls.sMensaje = "succes";
                         list.Add(ls);
                     }
                 }
