@@ -596,6 +596,8 @@ namespace Payroll.Controllers
             obj.ActBDTbJobs();
             return Json(LTbProc);
         }
+
+        [HttpPost]
         public JsonResult ProcesosPots(int IdDefinicionHD, int anio, int iTipoPeriodo, int iperiodo, int iIdempresa, int iCalEmpleado)
         {
             string Nameuse = Session["Susuario"].ToString();
@@ -644,7 +646,64 @@ namespace Payroll.Controllers
                 UsuarioId = 0;
                 Nameuse = "IPSNet";
             }
-            obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path, Nameuse, Nameuse2);
+
+            if (Path == null)
+            {
+
+                NominaController contol = new NominaController();
+
+                Path = contol.path();
+            };
+
+
+
+            //   ejecucion directa ;
+
+            string FechaProceso = Fecha();
+
+            int error = 0; 
+            List<HangfireJobs> id = new List<HangfireJobs>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            id = Dao.sp_CalculosHd_IDProcesJobs_Retrieve_TPlantillaCalculosHD(IdDefinicionHD, int.Parse(sFolio));
+            List<HangfireJobs> IdJob = new List<HangfireJobs>();        
+            IdJob = Dao.sp_IdJobsHangfireJobs_Retrieve_IdJobsHangfireJobs(FechaProceso);
+            int Idjobs = Convert.ToInt32(id[0].iId.ToString());
+            string StatusJobs = "En Cola";
+            string Nombrejobs = "CNomina1";
+            string Parametros = anio + "," + iTipoPeriodo + "," + iperiodo + "," + IdDefinicionHD + "," + iIdempresa + "," + iCalEmpleado + "," + FechaProceso;
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.Arguments = anio + "," + iTipoPeriodo + "," + iperiodo + "," + IdDefinicionHD + "," + iIdempresa + "," + iCalEmpleado + "," + Nameuse;
+                psi.CreateNoWindow = true;
+                psi.WindowStyle = ProcessWindowStyle.Hidden;
+                psi.FileName = Path;
+                Process.Start(psi);
+            }
+            catch (Exception exc)
+            {
+                StatusJobs = "Error";
+                TPProcesos ls = new TPProcesos();
+                {
+                    ls.iIdTarea = Idjobs;
+                    ls.sMensaje = "Error";
+                };
+                Exist.Add(ls);
+                Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs2(Idjobs, StatusJobs, Nombrejobs, Parametros, id[0].iId, Nameuse2);
+                error = 1;
+                // Code to handle the exception goes here.
+            }
+            finally
+            {
+                if (error < 1) {
+                    StatusJobs = "Terminado";
+                    Dao.Sp_TPProcesosJobs_insert_TPProcesosJobs2(Idjobs, StatusJobs, Nombrejobs, Parametros, id[0].iId, Nameuse2);
+
+                }
+
+            }
+
+            // obj.ProcesoNom(NomProceso, IdDefinicionHD, anio, iTipoPeriodo, iperiodo, iIdempresa, iCalEmpleado, Path, Nameuse, Nameuse2);
             return null;
         }
         [HttpPost]
@@ -1226,6 +1285,23 @@ namespace Payroll.Controllers
 
             return Json(LNND);
          }
+        /// Fecha actual 
+        public string Fecha()
+        {
+            // fecha del procesos 
+            string tiempo = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss.fff");
+            DateTime fecha = new DateTime();
+            fecha = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss.fff"));
+            string day = fecha.Day.ToString();
+            string month = fecha.Month.ToString();
+            string year = fecha.Year.ToString();
+            string hora = fecha.Hour.ToString();
+            string minutos = fecha.Minute.ToString();
+            string segundos = fecha.Second.ToString();
+            string milsegundos = fecha.Millisecond.ToString();
+            string fechajobs = year + "-" + month + "-" + day + " " + hora + ":" + minutos + ":" + segundos + ":" + milsegundos;
+            return fechajobs;
+        }
 
     }
 }
