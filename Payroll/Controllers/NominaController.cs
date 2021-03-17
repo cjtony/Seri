@@ -1278,6 +1278,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult ActMonit()
         {
+            string Nameuse = Session["Susuario"].ToString();
             List<TPProcesos> LNND = new List<TPProcesos>();
             FuncionesNomina Dao = new FuncionesNomina();
             Dao.sp_EstatusTpProcesosJobs_Update_EstatusTpProcesosJobs();

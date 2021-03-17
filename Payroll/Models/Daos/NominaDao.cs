@@ -3701,6 +3701,9 @@ namespace Payroll.Models.Daos
                               
                             }
                             if (data["EstatusJobs"].ToString() == "En cola") { ls.sEstatusFinal = "En Cola"; }
+                            if (data["EstatusCalculosHD"].ToString() != "") {
+                                ls.sEstatusFinal = data["EstatusCalculosHD"].ToString();
+                            }
                             if (data["Usuario"].ToString() != null) { ls.sUsuario = data["Usuario"].ToString(); }
                         };
                         list.Add(ls);
