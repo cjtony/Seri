@@ -1627,7 +1627,7 @@ namespace Payroll.Models.Daos
                                                     string concepto = LisTRecibo[a].sNombre_Renglon;
                                                     if (IdRenglon == "1")
                                                     {
-                                                        concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
+                                                        concepto = LisTRecibo[a].sNombre_Renglon;
                                                         lengRenglon = "001";
                                                     }
                                                     lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
