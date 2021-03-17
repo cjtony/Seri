@@ -1262,6 +1262,7 @@ namespace Payroll.Models.Daos
 
                                 IdCalcHD = LisTRecibo[0].iIdCalculoshd;
                                 //Partidas
+                                decimal dTotalPercepciones=0;
                                 string tipoNom = " ";
                                 string TotalPercepciones = " ";
                                 string totalDeduciones = " ";
@@ -1274,7 +1275,7 @@ namespace Payroll.Models.Daos
                                     {
                                         if (ListTotales[a].sEspejo == "False") { tipoNom = "0"; }
                                         if (ListTotales[a].sEspejo == "True") { tipoNom = "1"; }
-                                        if (ListTotales[a].iIdRenglon == 990) { TotalPercepciones = string.Format("{0:N2}", ListTotales[a].dSaldo); rowTper = a; }
+                                        if (ListTotales[a].iIdRenglon == 990) { TotalPercepciones = string.Format("{0:N2}", ListTotales[a].dSaldo); rowTper = a; dTotalPercepciones = ListTotales[a].dSaldo; }
                                         if (ListTotales[a].iIdRenglon == 1990) { totalDeduciones = string.Format("{0:N2}", ListTotales[a].dSaldo); }
                                         if (ListTotales[a].iIdRenglon == 9999) { totalRecibo = string.Format("{0:N2}", ListTotales[a].dSaldo); }
                                         if (ListTotales[a].iIdRenglon == 9992) { SuedoAgravado = string.Format("{0:N2}", ListTotales[a].dSaldo); }
@@ -1487,7 +1488,7 @@ namespace Payroll.Models.Daos
                                         {
                                             xmlWriter.WriteAttributeString("RfcPatronOrigen", EmisorRFC);
                                         }
-                                        if (IdEmpresa != 101)
+                                        if (IdEmpresa != 101 && IdEmpresa != 166 && IdEmpresa != 192 && IdEmpresa != 2048)
                                         {
                                             xmlWriter.WriteAttributeString("RegistroPatronal", sRegistroPatronal);
 
@@ -1567,15 +1568,50 @@ namespace Payroll.Models.Daos
                                             xmlWriter.WriteAttributeString("TipoContrato", sTipoContrato);
 
                                         }
+                                        if (IdEmpresa == 166 || IdEmpresa == 199 || IdEmpresa == 2048) {
+                                            xmlWriter.WriteAttributeString("TipoRegimen", "09");
+                                            // xmlWriter.WriteAttributeString("TipoContrato", sTipoContrato);
+                                            xmlWriter.WriteAttributeString("TipoContrato", "99");
+                                        }
+                                           
                                         xmlWriter.WriteAttributeString("ClaveEntFed", "DIF");
                                         xmlWriter.WriteEndElement();
 
 
 
                                         // Percepciones
+
+                                        decimal ExtentoPer=0;
+                                        if (LisTRecibo.Count > 0)
+                                        {
+                                            for (int a = 0; a < LisTRecibo.Count; a++)
+                                            {
+                                                if (LisTRecibo[a].sValor == "Percepciones")
+                                                {
+
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 66 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
+                                                    {
+                                                        ExtentoPer= ExtentoPer + LisTRecibo[a].dExcento;
+                                                    }
+                                                    if (LisTRecibo[a].iIdRenglon == 50)
+                                                    {
+                                                       ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
+
+                                                    }
+
+
+                                                }
+                                               
+                                            }
+
+                                        }
+
+                                        dTotalPercepciones = dTotalPercepciones - ExtentoPer;
+                                        //string Totalexetoper = string.Format("{0:N2}", ExtentoPer);
+                                        //TotalPercepciones = TotalPercepciones.Replace(",", "");
                                         xmlWriter.WriteStartElement(Prefijo2, "Percepciones", EspacioDeNombreNomina);
-                                        xmlWriter.WriteAttributeString("TotalExento", "0.00");
-                                        xmlWriter.WriteAttributeString("TotalGravado", TotalPercepciones.ToString());
+                                        xmlWriter.WriteAttributeString("TotalExento", string.Format("{0:N2}", ExtentoPer).Replace(",",""));
+                                        xmlWriter.WriteAttributeString("TotalGravado", string.Format("{0:N2}", dTotalPercepciones).Replace(",",""));
                                         xmlWriter.WriteAttributeString("TotalSueldos", TotalPercepciones.ToString());
                                         decimal Isr = 0;
                                         if (LisTRecibo.Count > 0)
@@ -1631,7 +1667,7 @@ namespace Payroll.Models.Daos
                                                     if (iSatidNum == 1) { idSat = "00" + LisTRecibo[a].sIdSat; };
                                                     if (iSatidNum == 2) { idSat = "0" + LisTRecibo[a].sIdSat; };
 
-                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 66 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
                                                     {
                                                         xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
                                                         xmlWriter.WriteAttributeString("ImporteExento", ImporExt.ToString());
@@ -1704,6 +1740,8 @@ namespace Payroll.Models.Daos
                                             }
 
                                         }
+
+
                                         xmlWriter.WriteEndElement();
                                         decimal Deduciones = 0;
                                         if (totalDeduciones.ToString() != " " || totalDeduciones.ToString() != "") { Deduciones = Convert.ToDecimal(totalDeduciones.ToString()); }
@@ -1779,40 +1817,48 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteEndElement();
 
 
-
-                                        xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
-                                        xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
-                                        xmlWriter.WriteAttributeString("TipoOtroPago", "002");
-                                        xmlWriter.WriteAttributeString("Clave", "198");
-                                        xmlWriter.WriteAttributeString("Concepto", "Subsidio al Empleado");
-                                        if (row198 == 0)
-                                        {
-                                            xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", 0));
-                                            xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
-                                            xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", 0));
-                                            xmlWriter.WriteEndElement();
-                                            xmlWriter.WriteEndElement();
-                                        };
-                                        if (row198 > 0)
-                                        {
-                                            xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo));
-                                            xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
-                                            xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo + LisTRecibo[row198].dExcento));
-                                            xmlWriter.WriteEndElement();
-                                            xmlWriter.WriteEndElement();
-                                        };
-                                        if (row17 > 0)
-                                        {
+                                        if (IdEmpresa != 166 && IdEmpresa != 199 && IdEmpresa != 2048) {
+                                            xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
                                             xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
-                                            xmlWriter.WriteAttributeString("TipoOtroPago", "999");
-                                            xmlWriter.WriteAttributeString("Clave", "017");
-                                            xmlWriter.WriteAttributeString("Concepto", Convert.ToString(LisTRecibo[row17].sNombre_Renglon));
-                                            xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row17].dSaldo));
+                                            xmlWriter.WriteAttributeString("TipoOtroPago", "002");
+                                            xmlWriter.WriteAttributeString("Clave", "198");
+                                            xmlWriter.WriteAttributeString("Concepto", "Subsidio al Empleado");
+                                            if (row198 == 0)
+                                            {
+                                                xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", 0));
+                                                xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
+                                                xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", 0));
+                                                xmlWriter.WriteEndElement();
+                                                xmlWriter.WriteEndElement();
+                                            };
+                                            if (row198 > 0)
+                                            {
+                                                xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo));
+                                                xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
+                                                xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo + LisTRecibo[row198].dExcento));
+                                                xmlWriter.WriteEndElement();
+                                                xmlWriter.WriteEndElement();
+                                            };
+                                            if (row17 > 0)
+                                            {
+                                                xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
+                                                xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                xmlWriter.WriteAttributeString("Clave", "017");
+                                                xmlWriter.WriteAttributeString("Concepto", Convert.ToString(LisTRecibo[row17].sNombre_Renglon));
+                                                xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row17].dSaldo));
+                                                xmlWriter.WriteEndElement();
+                                                row17 = 0;
+                                            };
+
                                             xmlWriter.WriteEndElement();
-                                            row17 = 0;
+                                            xmlWriter.WriteEndElement();
+
                                         };
-                                        xmlWriter.WriteEndElement();
-                                        xmlWriter.WriteEndElement();
+
+                                        
+
+                                      
+                                       
                                         xmlWriter.WriteEndElement();
                                         xmlWriter.WriteEndElement();
                                         //Cerrar
