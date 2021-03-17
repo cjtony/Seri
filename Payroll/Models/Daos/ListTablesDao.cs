@@ -1584,7 +1584,9 @@ namespace Payroll.Models.Daos
 
                                         // Percepciones
 
-                                        decimal ExtentoPer = 0;
+
+                                        decimal ExtentoPer=0;
+                                        decimal Perpecio = 0;
                                         if (LisTRecibo.Count > 0)
                                         {
                                             for (int a = 0; a < LisTRecibo.Count; a++)
@@ -1594,12 +1596,15 @@ namespace Payroll.Models.Daos
 
                                                     if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 66 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
                                                     {
-                                                        ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
+}
+                                                        ExtentoPer= ExtentoPer + LisTRecibo[a].dExcento;
+                                                        Perpecio = Perpecio + LisTRecibo[a].dGravado;
                                                     }
                                                     if (LisTRecibo[a].iIdRenglon == 50)
                                                     {
-                                                        ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
-
+                                                       ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
+                                                        Perpecio = Perpecio + LisTRecibo[a].dGravado;
+}
                                                     }
 
 
@@ -1609,12 +1614,12 @@ namespace Payroll.Models.Daos
 
                                         }
 
-                                        dTotalPercepciones = dTotalPercepciones - ExtentoPer;
+                                          
                                         //string Totalexetoper = string.Format("{0:N2}", ExtentoPer);
                                         //TotalPercepciones = TotalPercepciones.Replace(",", "");
                                         xmlWriter.WriteStartElement(Prefijo2, "Percepciones", EspacioDeNombreNomina);
-                                        xmlWriter.WriteAttributeString("TotalExento", string.Format("{0:N2}", ExtentoPer).Replace(",", ""));
-                                        xmlWriter.WriteAttributeString("TotalGravado", string.Format("{0:N2}", dTotalPercepciones).Replace(",", ""));
+                                        xmlWriter.WriteAttributeString("TotalExento", string.Format("{0:N2}", ExtentoPer).Replace(",",""));
+                                        xmlWriter.WriteAttributeString("TotalGravado", string.Format("{0:N2}", Perpecio).Replace(",",""));
                                         xmlWriter.WriteAttributeString("TotalSueldos", TotalPercepciones.ToString());
                                         decimal Isr = 0;
                                         if (LisTRecibo.Count > 0)
@@ -1657,7 +1662,7 @@ namespace Payroll.Models.Daos
                                                     string concepto = LisTRecibo[a].sNombre_Renglon;
                                                     if (IdRenglon == "1")
                                                     {
-                                                        concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
+                                                        concepto = LisTRecibo[a].sNombre_Renglon;
                                                         lengRenglon = "001";
                                                     }
                                                     lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
