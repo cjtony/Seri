@@ -1087,5 +1087,30 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
+        public DataTable sp_Datos_Reporte_Acumulados_Matrix(int year, int periodStart, int periodEnd, int typePeriod, string option, int keyOption)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Acumulados_Matrix", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@PeriodoInicio", periodStart));
+                cmd.Parameters.Add(new SqlParameter("@PeriodoFinal", periodEnd));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", option));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOption));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
     }
 }
