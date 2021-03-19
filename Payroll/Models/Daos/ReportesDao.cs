@@ -70,6 +70,46 @@ namespace Payroll.Models.Daos
 
     public class ReportesCatalogos : Conexion
     {
+
+        // REPORTES GENERALES \\
+
+        public DataTable sp_Reporte_Catalogos_General(string report)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                string nameStored = "";
+                if (report == "DEPARTAMENTOS") {
+                    nameStored = "sp_Reporte_Departamentos_General";
+                } else if (report == "PUESTOS") {
+                    nameStored = "sp_Reporte_Puestos_General";
+                } else if (report == "LOCALIDADES") {
+                    nameStored = "sp_Reporte_Localidades_General"; 
+                } else if (report == "SUCURSALES") {
+                    nameStored = "sp_Reporte_Sucursales_General";
+                } else if (report == "POSICIONES") {
+                    nameStored = "sp_Reporte_Posiciones_General";
+                } else if (report == "CENTROSCOSTO") {
+                    nameStored = "sp_Reporte_CentrosCosto_General";
+                } else if (report == "REGIONALES") {
+                    nameStored = "sp_Reporte_Regionales_General";
+                }
+                SqlCommand cmd = new SqlCommand(nameStored, this.conexion) { CommandType = CommandType.StoredProcedure };
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear();
+                cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
+
         public DataTable sp_Reporte_Posiciones (int keyBusiness)
         {
             DataTable dataTable = new DataTable();
@@ -1010,6 +1050,30 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@TPeriodo", typePeriod));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOptionSel));
                 cmd.Parameters.Add(new SqlParameter("@TipoOpcion", typeOption));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
+        public DataTable sp_Datos_Reporte_Acumulados_Por_Periodo_Y_Nomina(int year, string periods, int payroll, int typePeriod, int business)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Acumulados_Por_Periodo_Y_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", business));
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Periodos", periods));
+                cmd.Parameters.Add(new SqlParameter("@Nomina", payroll));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
                 SqlDataAdapter dataAdapter = new SqlDataAdapter();
                 dataAdapter.SelectCommand = cmd;
                 dataAdapter.Fill(dataTable);

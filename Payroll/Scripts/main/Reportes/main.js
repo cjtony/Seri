@@ -33,8 +33,8 @@
     const parameterPStart   = `<input type="number" class="form-control form-control-sm" id="paramPStart"/>`;
     const parameterPEnd     = `<input type="number" class="form-control form-control-sm" id="paramPEnd"/>`;
     const parameterPeriod   = `<input type="number" class="form-control form-control-sm" id="paramPeriod"/>`;
-    const parameterNPeriods = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
-    const parameterNEmploye = `<input type="number" class="form-control form-control-sm" id="paramNPeriods"/>`;
+    const parameterNPeriods = `<input type="text" class="form-control form-control-sm" id="paramNPeriods"/>`;
+    const parameterNEmploye = `<input type="number" class="form-control form-control-sm" id="paramNPayroll"/>`;
 
     const oneRadioBusiness = document.getElementById('oneRadioBusiness');
     const groupRadioBusiness = document.getElementById('groupRadioBusiness');
@@ -442,12 +442,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="col-form-label font-labels">Numero periodos</label> ${parameterNPeriods}
+                                    <label class="col-form-label font-labels">Numero periodos (Separados por coma)</label> ${parameterNPeriods}
                                 </div>
                             </div>
                             <div class="col-md-4 offset-2">
                                 <div class="form-group">
-                                    <label class="col-form-label font-labels">Numero de empleado</label> ${parameterNEmploye}
+                                    <label class="col-form-label font-labels">Numero de nómina</label> ${parameterNEmploye}
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -604,6 +604,8 @@
                     await fGenerateReportMovements(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "GENEMPLOYES") {
                     await fGenerateReportGeneralEmployees(optionBusiness, keyBusinessOpt);
+                } else if (typeReport === "ACUM_NOM") {
+                    await fGenerateReportAccumulatedForPeriodAndPayroll(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -823,9 +825,6 @@
 
     // Funcion que genera el reporte de la hoja de calculo
     fGenerateReportPayroll = (option, keyOption, type) => {
-        //console.log(option);
-        //console.log(keyOption);
-        //console.log(type);
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 let urlSend = "";
@@ -860,8 +859,6 @@
                         if (paramTPerSel.value != "none") {
                             const period   = localStorage.getItem("period");
                             const dataSend = { typeOption: option, keyOptionSel: parseInt(keyOption), typePeriod: parseInt(paramTPerSel.value), numberPeriod: parseInt(paramNPerSel.value), yearPeriod: parseInt(paramYear.value), refreshData: parseInt(paramRDat), typeSend: parseInt(typeSend) };
-                            //console.log(dataSend);
-                            //fDisabledButtonsRep();
                             $.ajax({
                                 url: "../Reportes/" + urlSend,
                                 type: "POST",
@@ -907,6 +904,87 @@
                 location.reload();
             } 
         }catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de acumulados por periodo y nomina
+    fGenerateReportAccumulatedForPeriodAndPayroll = (option, keyOption) => {
+        console.log(option);
+        console.log(keyOption);
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramTper = document.getElementById('paramTper');
+                const paramYear = document.getElementById('paramYear');
+                const paramNPeriods = document.getElementById('paramNPeriods');
+                const paramNPayroll = document.getElementById('paramNPayroll');
+                if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
+                    if (paramNPeriods.value != "") {
+                        if (paramNPayroll.value != "" && paramNPayroll.value > 0) {
+                            if (paramTper.value != "") {
+                                let nPeriods = paramNPeriods.value;
+                                let endCharacter = paramNPeriods.value.charAt(paramNPeriods.value.length - 1);
+                                if (endCharacter == ",") {
+                                    nPeriods = paramNPeriods.value.substring(0, paramNPeriods.value.length - 1);
+                                }
+                                const dataSend = {
+                                    year: parseInt(paramYear.value),
+                                    periods: String(nPeriods),
+                                    payroll: parseInt(paramNPayroll.value),
+                                    typePeriod: parseInt(paramTper.value),
+                                    business: parseInt(keyOption)
+                                };
+                                console.log(dataSend);
+                                $.ajax({
+                                    url: "../Reportes/ReportAccumulatedForPeriodAndPayroll",
+                                    type: "POST",
+                                    data: dataSend,
+                                    beforeSend: () => {
+                                        fDisabledButtonsRep();
+                                    }, success: (data) => {
+                                        console.log(data);
+                                        setTimeout(() => {
+                                            if (data.Bandera === true && data.MensajeError === "none") {
+                                                if (data.Rows > 0) {
+                                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                                } else {
+                                                    fShowContentNoDataReport(contentGenerateRep);
+                                                }
+                                            } else {
+                                                alert('Algo fallo al realizar el reporte');
+                                                location.reload();
+                                            }
+                                            fEnabledButtonsRep();
+                                        }, 2000);
+                                    }, error: (jqXHR, exception) => {
+                                        fcaptureaerrorsajax(jqXHR, exception);
+                                    }
+                                });
+                            } else {
+                                fShowTypeAlert('Atención', 'Ingrese el tipo de periodo', 'warning', paramTper, 2);
+                            }
+                        } else {
+                            fShowTypeAlert('Atención', 'Ingrese el numero de nómina del empleado', 'warning', paramNPayroll, 2);
+                        }
+                    } else {
+                        fShowTypeAlert('Atención', 'Ingrese los numeros de los periodos a generar el reporte', 'warning', paramNPeriods, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo Año, la longitud debe de ser 4 caracteres', 'warning', paramYear, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
             if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
             } else if (error instanceof TypeError) {
