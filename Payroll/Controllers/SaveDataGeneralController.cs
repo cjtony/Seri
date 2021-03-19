@@ -173,7 +173,7 @@ namespace Payroll.Controllers
 
         //Guarda los datos de la nomina del empleado
         [HttpPost]
-        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, Boolean flagSal, string motMoviSal, string fechMoviSal, double salmenact, int categoria, int pagopor, int fondo, double ultSdi)
+        public JsonResult DataNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, string empleado, string apepat, string apemat, string fechanaci, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, Boolean flagSal, string motMoviSal, string fechMoviSal, double salmenact, int categoria, int pagopor, int fondo, double ultSdi, int clasif)
         {
             Boolean flag         = false;
             String  messageError = "none";
@@ -213,7 +213,7 @@ namespace Payroll.Controllers
                     periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(keyemp, Convert.ToInt32(DateTime.Now.Year.ToString()));
                     datosMovimientos = datoPosicionDao.sp_Save_Data_History_Movements_Employee(clvemp, keyemp, "SUELDO", motMoviSal, salmen.ToString(), salmenact.ToString(), fechMoviSal, usuario, periodBean.iTipoPeriodo, periodBean.iPeriodo, periodBean.iAnio);
                 }
-                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp, tiposueldo, politica, diferenciaE, transporteE, retroactivo, categoria, pagopor, fondo, ultSdi);
+                addDatoNomina = datoNominaDao.sp_DatosNomina_Insert_DatoNomina(convertFEffdt, salmen, tipemp, nivemp, tipjor, tipcon, convertFIngrs, convertFAcnti, convertFVenco, usuario, empleado, apepat, apemat, convertFNaciE, keyemp, tipper, tipcontra, tippag, banuse, cunuse, position, clvemp, tiposueldo, politica, diferenciaE, transporteE, retroactivo, categoria, pagopor, fondo, ultSdi, clasif);
                 if (addDatoNomina.sMensaje != "success") {
                     messageError = addDatoNomina.sMensaje;
                 }

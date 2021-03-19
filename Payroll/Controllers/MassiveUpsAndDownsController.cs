@@ -620,6 +620,18 @@ namespace Payroll.Controllers
                                             validationErMe.Append("[*] El valor de nomina no puede ir vacío, si no quiere indicar un número de nomina puede poner 0. ");
                                             flagVE = true;
                                         }
+                                        // Validamos que el clasif no venga vacio
+                                        if (dr[51].ToString().Trim() != "") {
+                                            int clasif = 0;
+                                            bool convertirClasif = int.TryParse(dr[50].ToString().Trim(), out clasif);
+                                            if (!convertirClasif) {
+                                                validationErMe.Append("[*] El valor ingresado " + dr[51].ToString().Trim() + " debe de ser un valor entero. ");
+                                                flagVE = true;
+                                            }
+                                        } else {
+                                            validationErMe.Append("[*] El valor de CLASIF no puede ir vacío, si no conoce el dato puede poner 0. ");
+                                            flagVE = true;
+                                        }
                                         // Validamos que el empleado no exista
                                         validaEmpleado = empleadosDao.sp_Empleados_Validate_DatosImss(empresa, dr[27].ToString().Trim(), dr[26].ToString().Trim(), 0);
                                         if (validaEmpleado.sMensaje != "continue")
@@ -641,7 +653,20 @@ namespace Payroll.Controllers
                                             rowErrVal += 1;
                                             continue;
                                         }
-
+                                        int filtroClasif = 0;
+                                        if (dr[51].ToString() == "0") {
+                                            filtroClasif = 368;
+                                        } else if (dr[51].ToString() == "11") {
+                                            filtroClasif = 369;
+                                        } else if (dr[51].ToString() == "22") {
+                                            filtroClasif = 370;
+                                        } else if (dr[51].ToString() == "44") {
+                                            filtroClasif = 371;
+                                        } else if (dr[51].ToString() == "55") {
+                                            filtroClasif = 372;
+                                        } else {
+                                            filtroClasif = 368;
+                                        }
                                         // Variables, TEmpleado
                                         //int empresa = Convert.ToInt32(dr[3].ToString());
                                         int numeroNomina = Convert.ToInt32(dr[50].ToString().Trim());
@@ -705,7 +730,7 @@ namespace Payroll.Controllers
                                         // Insertamos el registro en TEmpleado_imss
                                         imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, 0);
                                         // Insertamos el registro en TEmpleado_nomina
-                                        datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0, tiposalario, politica, diferencia, transporte, retroactivo, 0, 0, 0, 0.00);
+                                        datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0, tiposalario, politica, diferencia, transporte, retroactivo, 0, 0, 0, 0.00, filtroClasif);
                                         // Insertamos el registro en TPosiciones_asig
                                         addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(posicionid, fechaen, fechaen, nombre, paterno, materno, fechaNa, usuario_id, empresa);
                                         // Validamos que los registros se hayan hecho correctamente

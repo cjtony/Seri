@@ -134,6 +134,7 @@
                 nivemp: nivemp.value, tipjor: tipjor.value,
                 tipcon: tipcon.value, fecing: fecing.value,
                 fecant: fecant.value, vencon: vencon.value,
+                clasif: clasif.value
                 //estats: estats.value,
             }
         };
@@ -575,6 +576,7 @@
     const tipmon = document.getElementById('tipmon');
     const nivemp = document.getElementById('nivemp');
     const tipjor = document.getElementById('tipjor');
+    const clasif = document.getElementById('clasif');
     const tipcon = document.getElementById('tipcon');
     const fecing = document.getElementById('fecing');
     const fecant = document.getElementById('fecant');
@@ -622,7 +624,7 @@
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
             tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value, politica: politica.value,
-            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend, ultSdi: parseFloat(sdiSend)
+            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend, ultSdi: parseFloat(sdiSend), clasif: clasif.value
         };
         //console.log('Datos de nomina');
         //console.log(dataSend);
