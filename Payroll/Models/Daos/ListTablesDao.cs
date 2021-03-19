@@ -420,6 +420,11 @@ namespace Payroll.Models.Daos
                     } else {
                         nominaBean.iPagoPor = 0;
                     }
+                    if (data["Cg_Clasif"].ToString().Length != 0) {
+                        nominaBean.iClasif = Convert.ToInt32(data["Cg_Clasif"]);
+                    } else {
+                        nominaBean.iClasif = 368;
+                    }
                     nominaBean.sUlt_sdi = data["Ult_sdi"].ToString();
                     nominaBean.sCuentaCheques = (String.IsNullOrEmpty(data["Cta_Cheques"].ToString())) ? "" : data["Cta_Cheques"].ToString();
                     nominaBean.iUsuarioAlta_id = Convert.ToInt32(data["Usuario_Alta_id"].ToString());

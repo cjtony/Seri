@@ -281,12 +281,14 @@
     <Content Include="Content\img\icon-payroll-2.png" />
     <Content Include="Content\img\icon-payroll.png" />
     <Content Include="Content\img\icon-user.png" />
+    <Content Include="Content\img\undraw_Documents_re_isxv.svg" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\responsive.dataTables.css" />
     <Content Include="Content\scroller.dataTables.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\styles\animations.css" />
     <Content Include="Content\styles\home.css" />
     <Content Include="Content\styles\login.css" />
     <Content Include="Content\styles\main.css" />
@@ -1062,6 +1064,7 @@
     <Content Include="Scripts\main\puestos.js" />
     <Content Include="Scripts\main\RecibosNomina.js" />
     <Content Include="Scripts\main\regionales.js" />
+    <Content Include="Scripts\main\Reportes\catalogs.js" />
     <Content Include="Scripts\main\Reportes\main.js" />
     <Content Include="Scripts\main\savedatageneral.js" />
     <Content Include="Scripts\main\startMenu.js" />

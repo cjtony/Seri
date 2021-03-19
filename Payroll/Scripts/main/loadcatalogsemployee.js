@@ -126,6 +126,7 @@
     const tipcontra = document.getElementById('tipcontra');
     const categrEmp = document.getElementById('categoria_emp');
     const pagoPorEm = document.getElementById('pago_por');
+    const clasif = document.getElementById('clasif');
     //const motinc = document.getElementById('motinc');
 
 
@@ -236,6 +237,9 @@
 
     // ** Ejecución de la carga de los datos del tipo de contratacion del empleado M -> DATOS NOMINA ** \\
     floaddatagentype(tipcontra, 0, 'Active/Desactive', 0, 19, 'nom');
+
+    floaddatagentype(clasif, 0, 'Active/Desactive', 0, 44, 'nom');
+
 
     // ** Ejecución de la carga de los datos deL motivo de incremento del empleado M -> DATOS NOMINA ** \\
     //floaddatagentype(motinc, 0, 'Active/Desactive', 0, 21, 'nom');

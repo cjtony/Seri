@@ -4,6 +4,7 @@
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 <script type="text/javascript" src="~/Scripts/datatables-new/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="~/Scripts/datatables-new/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" href="~/Content/styles/animations.css?v=0.1" />
 
 <div class="container-fluid mb-5">
     <div>
@@ -20,6 +21,9 @@
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active font-navs" id="nav-reporte-tab" data-toggle="tab" href="#nav-reporte" role="tab" aria-controls="nav-reporte" aria-selected="true">
                         <i class="fas fa-book mr-2"></i> Reportes
+                    </a>
+                    <a class="nav-item nav-link font-navs" id="nav-catalogos-tab" data-toggle="tab" href="#nav-catalogos" role="tab" aria-controls="nav-catalogos" aria-selected="true">
+                        <i class="fas fa-book mr-2"></i> Catalogos
                     </a>
                 </div>
             </nav>
@@ -139,6 +143,49 @@
                         </div>
                     </div>
                 </div>
+                <div class="tab-pane fade show p-3" id="nav-catalogos" role="tabpanel" aria-labelledby="nav-catalogos-tab">
+                    <div class="tab-content" id="nav-tabContent2">
+                        <div class="tab-pane fade show active p-3" id="nav-catalogos-1" role="tabpanel" aria-labelledby="nav-catalogos-tab">
+                            <div class="row mt-2">
+                                <div id="div-most-alert-data-reporte-catalogos" class="col-md-6 offset-3"></div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="text-left">
+                                        <h6 class="col-ico font-navs">
+                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i> Selecciona una opción </b>
+                                        </h6>
+                                        <hr />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 offset-2 mt-5">
+                                    <div class="form-group">
+                                        <label class="col-form-label col-ico font-labels" for="typeReportselectCatalogs"> <i class="fas fa-book mr-2 col-ico"></i> Catalogo</label>
+                                        <select class="form-control form-control-sm" id="typeReportselectCatalogs">
+                                            <option value="none">Selecciona</option>
+                                            <option value="DEPARTAMENTOS">DEPARTAMENTOS</option>
+                                            <option value="PUESTOS">PUESTOS</option>
+                                            <option value="LOCALIDADES">LOCALIDADES</option>
+                                            <option value="SUCURSALES">SUCURSALES</option>
+                                            <option value="POSICIONES">POSICIONES</option>
+                                            <option value="CENTROSCOSTO">CENTROS DE COSTO</option>
+                                            <option value="REGIONALES">REGIONALES</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group text-center mt-4">
+                                        <button class="btn btn-sm btn-primary" id="btnGenerateReportCatalogs">
+                                            <i class="fas fa-play mr-2"></i> Generar reporte
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <img width="250" class="img-fluid" src="~/Content/img/undraw_Documents_re_isxv.svg" alt="Reports" id="img-reports" />
+                                    <h6 class="text-center mt-3 text-primary font-weight-bold" id="title-gr"></h6>
+                                </div>
+                                <div class="col-md-6 mt-3 offset-3 mt-4" id="contentGenerateRepCatalogs">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -224,4 +271,5 @@
     </div>
 </div>
 
-<script type="text/javascript" src="~/Scripts/main/Reportes/main.js?n=6.8"></script>
+<script type="text/javascript" src="~/Scripts/main/Reportes/main.js?n=7.0"></script>
+<script type="text/javascript" src="~/Scripts/main/Reportes/catalogs.js?n=0.2"></script>

@@ -517,6 +517,7 @@
     const tipemp = document.getElementById('tipemp');
     const nivemp = document.getElementById('nivemp');
     const tipjor = document.getElementById('tipjor');
+    const clasif = document.getElementById('clasif');
     const tipcon = document.getElementById('tipcon');
     const fecing = document.getElementById('fecing');
     const fecant = document.getElementById('fecant');
@@ -667,7 +668,7 @@
                 fecefecnom: fecefecnom.value,
                 salmen: salmen.value, salmenact: salmen.value, tipper: tipper.value,
                 tipemp: tipemp.value, nivemp: nivemp.value,
-                tipjor: tipjor.value, tipcon: tipcon.value,
+                tipjor: tipjor.value, tipcon: tipcon.value, clasif: clasif.value,
                 tipcontra: tipcontra.value,
                 tiposueldo: tiposueldo.value,
                 politica: politica.value,
@@ -859,6 +860,7 @@
                         tipemp.value       = data.Datos.iTipoEmpleado_id;
                         nivemp.value       = data.Datos.iNivelEmpleado_id;
                         tipjor.value       = data.Datos.iTipoJornada_id;
+                        clasif.value       = data.Datos.iClasif;
                         tipcon.value       = data.Datos.iTipoContrato_id;
                         tipcontra.value    = data.Datos.iTipoContratacion_id;
                         tiposueldo.value   = data.Datos.iTipoSueldo_id;
@@ -1491,7 +1493,7 @@
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
                 transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "0", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value,
-                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE
+                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE, clasif: clasif.value
             };
         }
         try {

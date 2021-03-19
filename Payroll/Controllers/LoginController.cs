@@ -15,6 +15,11 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult LoginValidate(string username, string password)
         {
+            try {
+
+            } catch (Exception exc) {
+
+            }
             UsuariosBean usuBean = new UsuariosBean();
             UsuariosDao usuDao = new UsuariosDao();
             usuBean = usuDao.sp_Login_Retrieve_Usuario_Inicia_Sesion(username, password);

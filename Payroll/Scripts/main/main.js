@@ -149,6 +149,7 @@
     const tipemp = document.getElementById('tipemp');
     const nivemp = document.getElementById('nivemp');
     const tipjor = document.getElementById('tipjor');
+    const clasif = document.getElementById('clasif');
     const tipcon = document.getElementById('tipcon');
     const fecing = document.getElementById('fecing');
     const fecant = document.getElementById('fecant');
@@ -168,7 +169,7 @@
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
 
     const vardatanomina = [
-        clvnom, fechefectact, fecefecnom, tipper, salmen, salmenact, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple
+        clvnom, fechefectact, fecefecnom, tipper, salmen, salmenact, tipemp, nivemp, tipjor, tipcon, fecing, fecant, vencon, tipcontra, tippag, banuse, cunuse, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple, clasif
     ];
     fclearfieldsvar3 = () => {
         retroactivo.checked = 0;
@@ -179,6 +180,9 @@
                     vardatanomina[i].value = "n";
                 } else {
                     vardatanomina[i].value = "0";
+                }
+                if (vardatanomina[i].id == 'clasif') {
+                    vardatanomina[i].value = 368;
                 }
             } else {
                 vardatanomina[i].value = "";
@@ -469,6 +473,7 @@
                     tipemp.value = getDataTabNom[i].data.tipemp;
                     nivemp.value = getDataTabNom[i].data.nivemp;
                     tipjor.value = getDataTabNom[i].data.tipjor;
+                    clasif.value = getDataTabNom[i].data.clasif;
                     tipcon.value = getDataTabNom[i].data.tipcon;
                     fecing.value = getDataTabNom[i].data.fecing;
                     fecant.value = getDataTabNom[i].data.fecant;
@@ -1061,7 +1066,7 @@
                                 clvnom: clvnom.value,
                                 fecefecnom: fecefecnom.value, salmen: salmen.value, salmenact: salmenact.value,
                                 tipper: tipper.value, tipemp: tipemp.value,
-                                nivemp: nivemp.value, tipjor: tipjor.value,
+                                nivemp: nivemp.value, tipjor: tipjor.value, clasif: clasif.value,
                                 tipcon: tipcon.value, fecing: fecing.value,
                                 fecant: fecant.value, vencon: vencon.value,
                                 tipcontra: tipcontra.value,
