@@ -1820,7 +1820,7 @@ namespace Payroll.Models.Daos
                 {
                     bean.sMensaje = "error";
                 }
-                cmd.Dispose(); conexion.Close(); //cmd.Parameters.Clear();
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
             }
             catch (Exception exc)
             {
@@ -2028,7 +2028,7 @@ namespace Payroll.Models.Daos
                     {
                         TPProcesos ls = new TPProcesos();
                         {
-                            ls.sEstatusJobs = data["EstatusJobs"].ToString();
+                            ls.sEstatusJobs = data["EstatusCalculosHD"].ToString();
                             ls.sMensaje = "success";
                         };
                         list.Add(ls);
