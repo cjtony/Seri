@@ -13,9 +13,9 @@
     const contentBtnGenerate = document.getElementById('contentBtnGenerate');
     const contentGenerateRep = document.getElementById('contentGenerateRep');
 
-    const date = new Date();
+    const date    = new Date();
     const frmonth = ((date.getMonth() + 1) < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-    const frday = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
+    const frday   = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate();
     const fechact = date.getFullYear() + '-' + frmonth + '-' + frday; 
 
     const parameterYear     = `<input type="number" class="form-control form-control-sm" id="paramYear" value="${date.getFullYear()}"/>`;
@@ -606,6 +606,8 @@
                     await fGenerateReportGeneralEmployees(optionBusiness, keyBusinessOpt);
                 } else if (typeReport === "ACUM_NOM") {
                     await fGenerateReportAccumulatedForPeriodAndPayroll(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "ACUMATRIX") {
+                    await fGenerateReportAccumulatedCrusaders(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -916,10 +918,79 @@
         }
     }
 
+    fGenerateReportAccumulatedCrusaders = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramYear = document.getElementById('paramYear');
+                const paramPStart = document.getElementById('paramPStart');
+                const paramPEnd   = document.getElementById('paramPEnd');
+                const paramTper   = document.getElementById('paramTper');
+                if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length == 4) {
+                    if (paramPStart.value != "" && paramPStart.value > 0) {
+                        if (paramPEnd.value != "" && paramPEnd.value > 0) {
+                            if (paramTper.value != "") {
+                                const dataSend = {
+                                    year:      parseInt(paramYear.value), periodStart: parseInt(paramPStart.value),
+                                    periodEnd: parseInt(paramPEnd.value), typePeriod: parseInt(paramTper.value),
+                                    option: String(option), keyOption: parseInt(keyOption)
+                                };
+                                console.log(dataSend);
+                                $.ajax({
+                                    url: "../Reportes/ReportAccumulatedCrusaders",
+                                    type: "POST",
+                                    data: dataSend,
+                                    beforeSend: () => {
+                                        fDisabledButtonsRep();
+                                    }, success: (data) => {
+                                        console.log(data);
+                                        setTimeout(() => {
+                                            if (data.Bandera === true && data.MensajeError === "none") {
+                                                if (data.Rows > 0) {
+                                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                                } else {
+                                                    fShowContentNoDataReport(contentGenerateRep);
+                                                }
+                                            } else {
+                                                alert('Algo fallo al realizar el reporte');
+                                                location.reload();
+                                            }
+                                            fEnabledButtonsRep();
+                                        }, 2000);
+                                    }, error: (jqXHR, exception) => {
+                                        fcaptureaerrorsajax(jqXHR, exception);
+                                    }
+                                });
+                            } else {
+                                fShowTypeAlert('Atención', 'Ingrese el tipo de periodo', 'warning', paramTper, 2);
+                            }
+                        } else {
+                            fShowTypeAlert('Atención', 'Ingrese el periodo final', 'warning', paramPStart, 2);
+                        }
+                    } else {
+                        fShowTypeAlert('Atención', 'Ingrese el periodo de inicio', 'warning', paramPStart, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo Año, la longitud debe de ser 4 caracteres', 'warning', paramYear, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
     // Funcion que genera el reporte de acumulados por periodo y nomina
     fGenerateReportAccumulatedForPeriodAndPayroll = (option, keyOption) => {
-        console.log(option);
-        console.log(keyOption);
         try {
             if (option != "" && parseInt(keyOption) > 0) {
                 const paramTper = document.getElementById('paramTper');
