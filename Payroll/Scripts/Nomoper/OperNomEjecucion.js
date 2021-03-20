@@ -297,6 +297,11 @@
         if (valorCeckxempresa.checked == true) {
             $("#CheckXEmpresa").click();
         }
+        if (ValorChekEnFirme.checked  == true) {
+            //$("#ChekEnFirme").click();
+            ValorChekEnFirme.checked = false;
+        }
+      
 
     };
     btnFloLimpiar.addEventListener('click', FLimpiaCamp);

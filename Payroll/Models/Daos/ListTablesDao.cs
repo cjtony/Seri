@@ -1712,8 +1712,17 @@ namespace Payroll.Models.Daos
                                                     string concepto = LisTRecibo[a].sNombre_Renglon;
                                                     if (IdRenglon == "1")
                                                     {
-                                                        concepto = LisTRecibo[a].sNombre_Renglon;
-                                                        lengRenglon = "001";
+                                                        if (IdEmpresa != 166 && IdEmpresa != 199 && IdEmpresa != 2048) {
+                                                            concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
+                                                            lengRenglon = "001";
+                                                        }
+
+                                                        if (IdEmpresa == 166 || IdEmpresa == 199|| IdEmpresa == 2048)
+                                                        {
+                                                            concepto = "Asimilados a salarios {" + sDiasEfectivos + " Dias}";
+                                                            lengRenglon = "001";
+                                                        }
+
                                                     }
                                                     lengRenglon = Convert.ToString(LisTRecibo[a].sIdSat);
                                                     int idReglontama = IdRenglon.Length;
@@ -1725,7 +1734,7 @@ namespace Payroll.Models.Daos
                                                     if (iSatidNum == 1) { idSat = "00" + LisTRecibo[a].sIdSat; };
                                                     if (iSatidNum == 2) { idSat = "0" + LisTRecibo[a].sIdSat; };
 
-                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 66 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
                                                     {
                                                         xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
                                                         xmlWriter.WriteAttributeString("ImporteExento", ImporExt.ToString());
