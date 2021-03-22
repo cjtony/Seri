@@ -1319,6 +1319,7 @@ namespace Payroll.Models.Daos
                                 string totalRecibo = " ";
                                 string SueldoDiario = " ";
                                 string SuedoAgravado = " ";
+                                
                                 if (ListTotales.Count > 0)
                                 {
                                     for (int a = 0; a < ListTotales.Count; a++)
@@ -1482,18 +1483,26 @@ namespace Payroll.Models.Daos
 
                                         if (Dias.Length > 7)
                                         {
-                                            if (LisTRecibo[0].iIdRenglon == 0)
+                                            if (LisTRecibo[0].iIdRenglon == 1)
                                             {
-                                                string[] dias = Dias.Split(':');
-                                                Dias = dias[1].ToString();
-                                                Dias = Dias.Replace("}", "");
+                                                if (LisTRecibo[0].sNombre_Renglon.Length > 28) {
+                                                    string[] dias = Dias.Split(':');
+                                                    Dias = dias[1].ToString();
+                                                    Dias = Dias.Replace("}", "");
+                                                }
+                                                else
+                                                {
+
+                                                    Dias = "0";
+                                                }
+                                            
                                             }
                                             else
                                             {
                                                 Dias = "0";
                                             }
                                             decimal DiasNo = Convert.ToDecimal(Dias);
-                                            iTdias = iTdias - DiasNo;
+                                            iTdias = iTdias - Convert.ToInt32(DiasNo);
                                             TDias = Convert.ToInt16(iTdias);
                                             sDiasEfectivos = Convert.ToString(TDias);
 
@@ -1643,7 +1652,7 @@ namespace Payroll.Models.Daos
                                                 if (LisTRecibo[a].sValor == "Percepciones")
                                                 {
 
-                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 66 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198)
                                                     {
 
                                                         ExtentoPer= ExtentoPer + LisTRecibo[a].dExcento;
