@@ -760,68 +760,107 @@ namespace Payroll.Controllers
                                 // ARCHIVO DISPERSION BANCOMER -> NOMINA
 
                                 if (bankResult == 12) {
+
+                                    // Inicio Codigo Nuevo
                                     string pathSaveFile = Server.MapPath("~/Content/");
                                     string routeTXTBancomer = pathSaveFile + "DISPERSION" + @"\\" + "BANCOMER" + @"\\" + "BANCOMER.txt";
-                                    string pathCompleteTXT  = directoryTxt + @"\\" + nameFolder + @"\\" + "BANCOMER.txt";
-                                    System.IO.File.Copy(routeTXTBancomer, pathCompleteTXT, true);
-                                    //System.IO.File.Move(pathCompleteTXT, directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt");
-                                    // - DETALLE - \\
-                                    string fillerBancomerD1 = "                ", consecutivoBancomerD2 = "99", fillerBancomerD2 = "          ", valorFijoBancomerD = "001001";
-                                    int consecutivoBancomerD1 = 0;
+                                    string pathCompleteTXT = directoryTxt + @"\\" + nameFolder + @"\\" + "BANCOMER.txt";
+                                    StringBuilder sb1;
+                                    //System.IO.File.Copy(routeTXTBancomer, pathCompleteTXT, true);
+                                    int totalRegistros = 0;
+                                    string V = "";
                                     using (StreamWriter fileBancomer = new StreamWriter(pathCompleteTXT, false, Encoding.UTF8)) {
-                                        string cerosConBncmD = "", cerosImpBncmD = "", espaciosNomBenBncmD = "", nombreBenBancomerD = "";
-                                        int longConBncmD = 9, longImpBncmD = 15, longNomBenBncmD = 40;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
-                                            if (bankResult == payroll.iIdBanco) {
-                                                string nameCompleteEmployee = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno;
-                                                int longAcortAccount = payroll.sCuenta.Length;
-                                                string finallyAccount = payroll.sCuenta;
-                                                if (longAcortAccount == 18) {
-                                                    string accountUser = payroll.sCuenta;
-                                                    string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
-                                                    string formatAccount = "";
-                                                    if (longAcortAccount == 18) {
-                                                        formatAccount = formatAccountSubstring.Substring(0, 7);
-                                                    }
-                                                    string cerosAccount = "";
-                                                    for (var t = 0; t < formatAccount.Length + 1; t++) {
-                                                        cerosAccount += "0";
-                                                    }
-                                                    finallyAccount = formatAccountSubstring.Substring(7, 10);
-                                                } else if (longAcortAccount == 9) {
-                                                    finallyAccount = "0" + payroll.sCuenta;
-                                                } else if (longAcortAccount == 10) {
-                                                    finallyAccount = payroll.sCuenta;
-                                                } else {
-                                                    dataErrors.Add(
-                                                            new DataErrorAccountBank {
-                                                                sBanco = "Bancomer",
-                                                                sCuenta = payroll.sCuenta,
-                                                                sNomina = payroll.sNomina
-                                                            });
-                                                }
-                                                if (nameCompleteEmployee.Length > 40) {
-                                                    nombreBenBancomerD = nameCompleteEmployee.Substring(0, 39);
-                                                } else {
-                                                    nombreBenBancomerD = nameCompleteEmployee;
-                                                }
-                                                consecutivoBancomerD1 += 1;
-                                                int longAmoutTotal = 15;
-                                                string cerosImporteTotal = "";
-                                                int resultLongAmount = longAmoutTotal - payroll.dImporte.ToString().Length;
-                                                for (var j = 0; j < resultLongAmount; j++) { cerosImporteTotal += "0"; }
-                                                int longConBncmDResult = longConBncmD - consecutivoBancomerD1.ToString().Length;
-                                                int longImpBncmDResult = longImpBncmD - payroll.dImporte.ToString().Length;
-                                                int longNomBenBncmDResult = longNomBenBncmD - nombreBenBancomerD.Length;
-                                                for (var c = 0; c < longConBncmDResult; c++) { cerosConBncmD += "0"; }
-                                                for (var r = 0; r < longNomBenBncmDResult; r++) { espaciosNomBenBncmD += " "; }
-                                                fileBancomer.Write(cerosConBncmD + consecutivoBancomerD1.ToString() + fillerBancomerD1 + consecutivoBancomerD2 + finallyAccount + fillerBancomerD2 + cerosImporteTotal + payroll.dImporte.ToString() + nombreBenBancomerD + espaciosNomBenBncmD + valorFijoBancomerD + "\n");
-                                                cerosConBncmD = "";
-                                                espaciosNomBenBncmD = "";
-                                            }
+                                            totalRegistros += 1;
+                                            sb1 = new StringBuilder("");
+                                            sb1.Append(string.Format("{0:000000000}", totalRegistros));
+                                            sb1.Append(" ".PadLeft(16, ' '));
+                                            sb1.Append("99");
+                                            V = payroll.sCuenta.Trim();
+                                            if (V.Length <= 10)
+                                                V = V.PadLeft(10, '0');
+                                            else                            // FCH
+                                                V = V.Substring(7, 10);         // FCH
+                                            sb1.Append(V);
+                                            sb1.Append(" ".PadLeft(10, ' '));
+                                            sb1.Append(string.Format("{0:000000000000000}", payroll.dImporte));
+                                            V = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno.Trim();
+                                            if (V.Length < 38)
+                                                V = V.PadRight(38, ' ');
+                                            else
+                                                V = V.Substring(0, 38);
+                                            sb1.Append(V);
+                                            sb1.Append("  001001");
+                                            fileBancomer.WriteLine(sb1.ToString());
                                         }
                                         fileBancomer.Close();
                                     }
+
+
+                                    // Fin Codigo Nuevo
+
+                                    //string pathSaveFile = Server.MapPath("~/Content/");
+                                    //string routeTXTBancomer = pathSaveFile + "DISPERSION" + @"\\" + "BANCOMER" + @"\\" + "BANCOMER.txt";
+                                    //string pathCompleteTXT  = directoryTxt + @"\\" + nameFolder + @"\\" + "BANCOMER.txt";
+                                    //System.IO.File.Copy(routeTXTBancomer, pathCompleteTXT, true);
+                                    //System.IO.File.Move(pathCompleteTXT, directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt");
+                                    // - DETALLE - \\
+                                    //string fillerBancomerD1 = "                ", consecutivoBancomerD2 = "99", fillerBancomerD2 = "          ", valorFijoBancomerD = "001001";
+                                    //int consecutivoBancomerD1 = 0;
+                                    //using (StreamWriter fileBancomer = new StreamWriter(pathCompleteTXT, false, Encoding.UTF8)) {
+                                    //    string cerosConBncmD = "", cerosImpBncmD = "", espaciosNomBenBncmD = "", nombreBenBancomerD = "";
+                                    //    int longConBncmD = 9, longImpBncmD = 15, longNomBenBncmD = 40;
+                                    //    foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
+                                    //        if (bankResult == payroll.iIdBanco) {
+                                    //            string nameCompleteEmployee = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno;
+                                    //            int longAcortAccount = payroll.sCuenta.Length;
+                                    //            string finallyAccount = payroll.sCuenta;
+                                    //            if (longAcortAccount == 18) {
+                                    //                string accountUser = payroll.sCuenta;
+                                    //                string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
+                                    //                string formatAccount = "";
+                                    //                if (longAcortAccount == 18) {
+                                    //                    formatAccount = formatAccountSubstring.Substring(0, 7);
+                                    //                }
+                                    //                string cerosAccount = "";
+                                    //                for (var t = 0; t < formatAccount.Length + 1; t++) {
+                                    //                    cerosAccount += "0";
+                                    //                }
+                                    //                finallyAccount = formatAccountSubstring.Substring(7, 10);
+                                    //            } else if (longAcortAccount == 9) {
+                                    //                finallyAccount = "0" + payroll.sCuenta;
+                                    //            } else if (longAcortAccount == 10) {
+                                    //                finallyAccount = payroll.sCuenta;
+                                    //            } else {
+                                    //                dataErrors.Add(
+                                    //                        new DataErrorAccountBank {
+                                    //                            sBanco = "Bancomer",
+                                    //                            sCuenta = payroll.sCuenta,
+                                    //                            sNomina = payroll.sNomina
+                                    //                        });
+                                    //            }
+                                    //            if (nameCompleteEmployee.Length > 40) {
+                                    //                nombreBenBancomerD = nameCompleteEmployee.Substring(0, 39);
+                                    //            } else {
+                                    //                nombreBenBancomerD = nameCompleteEmployee;
+                                    //            }
+                                    //            consecutivoBancomerD1 += 1;
+                                    //            int longAmoutTotal = 15;
+                                    //            string cerosImporteTotal = "";
+                                    //            int resultLongAmount = longAmoutTotal - payroll.dImporte.ToString().Length;
+                                    //            for (var j = 0; j < resultLongAmount; j++) { cerosImporteTotal += "0"; }
+                                    //            int longConBncmDResult = longConBncmD - consecutivoBancomerD1.ToString().Length;
+                                    //            int longImpBncmDResult = longImpBncmD - payroll.dImporte.ToString().Length;
+                                    //            int longNomBenBncmDResult = longNomBenBncmD - nombreBenBancomerD.Length;
+                                    //            for (var c = 0; c < longConBncmDResult; c++) { cerosConBncmD += "0"; }
+                                    //            for (var r = 0; r < longNomBenBncmDResult; r++) { espaciosNomBenBncmD += " "; }
+                                    //            fileBancomer.Write(cerosConBncmD + consecutivoBancomerD1.ToString() + fillerBancomerD1 + consecutivoBancomerD2 + finallyAccount + fillerBancomerD2 + cerosImporteTotal + payroll.dImporte.ToString() + nombreBenBancomerD + espaciosNomBenBncmD + valorFijoBancomerD + "\n");
+                                    //            cerosConBncmD = "";
+                                    //            espaciosNomBenBncmD = "";
+                                    //        }
+                                    //    }
+                                    //    fileBancomer.Close();
+                                    //}
                                 }
 
                                 FileStream fs = new FileStream(directoryTxt + @"\\" + nameFolder + @"\\" + fileNamePDF, FileMode.Create);
