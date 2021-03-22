@@ -1111,12 +1111,11 @@
                             if (data[0].iIdCalculosHd == 1) {
                                 fshowtypealert2("Ejecucion", "Los calculos de la nomina se estan realizando", "success")
                                 $.ajax({
-                                    timeout: 5000,
+                                    timeout: 9000,
                                     url: "../Nomina/ProcesosPots",
                                     type: "POST",
                                     data: dataSend2,
                                     success: (data) => { 
-                                       console.log('manda a ejecuccion ' + data)
                                        FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
                                     }
                                 });
