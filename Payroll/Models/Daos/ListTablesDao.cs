@@ -1688,21 +1688,15 @@ namespace Payroll.Models.Daos
                                                     string concepto = LisTRecibo[a].sNombre_Renglon;
                                                     if (IdRenglon == "1")
                                                     {
-<<<<<<< HEAD
-                                                        if (IdEmpresa != 166 && IdEmpresa != 199 && IdEmpresa != 2048)
-                                                        {
-=======
-                                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 164) {
->>>>>>> devacosta
+                                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
+
                                                             concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
                                                             lengRenglon = "001";
                                                         }
 
-<<<<<<< HEAD
-                                                        if (IdEmpresa == 166 || IdEmpresa == 199 || IdEmpresa == 2048)
-=======
-                                                        if (ListDatEmisor[0].iCgTipoEmpleadoId == 164)
->>>>>>> devacosta
+
+                                                        if (ListDatEmisor[0].iCgTipoEmpleadoId == 156)
+
                                                         {
                                                             concepto = "Asimilados a salarios {" + sDiasEfectivos + " Dias}";
                                                             lengRenglon = "001";
@@ -1869,12 +1863,8 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteEndElement();
 
 
-<<<<<<< HEAD
-                                        if (IdEmpresa != 166 && IdEmpresa != 199 && IdEmpresa != 2048)
-                                        {
-=======
-                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 164) {
->>>>>>> devacosta
+
+                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
                                             xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
                                             xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
                                             xmlWriter.WriteAttributeString("TipoOtroPago", "002");
