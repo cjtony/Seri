@@ -1907,12 +1907,8 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteEndElement();
 
 
-<<<<<<< HEAD
-                                        if (IdEmpresa != 166 && IdEmpresa != 199 && IdEmpresa != 2048)
-                                        {
-=======
-                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 164) {
->>>>>>> devacosta
+
+                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
                                             xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
                                             xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
                                             xmlWriter.WriteAttributeString("TipoOtroPago", "002");
