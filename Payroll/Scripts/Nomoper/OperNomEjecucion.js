@@ -358,7 +358,7 @@
                 }
                 if (dato == "success") {
                      if (dato == "success") {
-                        if (Result.LProce[0].sEstatusJobs == "En Cola") {
+                         if (Result.LProce[0].sEstatusJobs == "En Cola") {
 
                             $('#jqxLoader').jqxLoader('open');
                             btnFloEjecutar.style.visibility = 'hidden';
@@ -366,7 +366,7 @@
                             $("#nav-VisCalculo-tab").addClass("disabled");
                             $("#nav-VisNomina-tab").addClass("disabled");
                         }
-                        if (Result.LProce[0].sEstatusJobs == "Procesando") {
+                         if (Result.LProce[0].sEstatusJobs == "En Proceso") {
                             $('#jqxLoader').jqxLoader('open');
                             btnFloEjecutar.style.visibility = 'hidden';
                             btnFloActualiza.style.visibility = 'visible';
@@ -1111,7 +1111,7 @@
                             if (data[0].iIdCalculosHd == 1) {
                                 fshowtypealert2("Ejecucion", "Los calculos de la nomina se estan realizando", "success")
                                 $.ajax({
-                                    timeout: 9000,
+                                    //timeout: 9000,
                                     url: "../Nomina/ProcesosPots",
                                     type: "POST",
                                     data: dataSend2,

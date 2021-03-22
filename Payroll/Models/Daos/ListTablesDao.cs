@@ -1146,12 +1146,17 @@ namespace Payroll.Models.Daos
                 if (ListEmple != null)
                 {
                     NoXmlx = ListEmple.Count - 1;
+                    if (NoXmlx < 1) {
+                        NoXmlx = 1;
+                    }
                     error = 1;
                 }
             };
 
             if (NoXmlx > 0 && error >0)
             {
+                NoXmlx = ListEmple.Count - 1;
+
                 for (int i = 0; i <= NoXmlx; i++)
                 {
                     row198 = 0;
