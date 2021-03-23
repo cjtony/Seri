@@ -1451,6 +1451,7 @@ namespace Payroll.Models.Daos
                                         int TDias = 0;
                                         string Dias = LisTRecibo[0].sNombre_Renglon;
                                         sDiasEfectivos = Convert.ToString(iTdias);
+                                        
 
                                         if (Dias.Length > 7)
                                         {
@@ -1461,6 +1462,7 @@ namespace Payroll.Models.Daos
                                                     string[] dias = Dias.Split(':');
                                                     Dias = dias[1].ToString();
                                                     Dias = Dias.Replace("}", "");
+
                                                 }
                                                 else
                                                 {
@@ -1473,9 +1475,16 @@ namespace Payroll.Models.Daos
                                             {
                                                 Dias = "0";
                                             }
+                                            
                                             decimal DiasNo = Convert.ToDecimal(Dias);
-                                            iTdias = iTdias - Convert.ToInt32(DiasNo);
+                                            if (iTdias != DiasNo)
+                                            {
+                                                iTdias = iTdias - Convert.ToInt32(DiasNo);
+
+                                            }
+                                          
                                             TDias = Convert.ToInt16(iTdias);
+                                        
                                             sDiasEfectivos = Convert.ToString(TDias);
 
                                         }
