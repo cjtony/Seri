@@ -884,7 +884,15 @@ namespace Payroll.Models.Daos
                         {
                             ls.iCgTipoEmpleadoId = int.Parse(data["Cg_TipoEmpleado_id"].ToString());
                         }
-
+                        if (data["ClaveEnt"].ToString() == null)
+                        {
+                            ls.sClaveEnt = "Localidad";
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.sClaveEnt = data["ClaveEnt"].ToString();
+                        }
 
                         list.Add(ls);
                     }
@@ -1318,7 +1326,7 @@ namespace Payroll.Models.Daos
                                         string sSalarioDiarioIntegrado = SueldoDiario;
                                         string sNombreEmisor = ListDatEmisor[0].sNombreEmpresa;
                                         string sRegimenFiscal = Convert.ToString(ListDatEmisor[0].iRegimenFiscal);
-
+                                        string sCalveEntidad = ListDatEmisor[0].sClaveEnt;
 
 
                                         //Antiguedad
@@ -1577,7 +1585,7 @@ namespace Payroll.Models.Daos
                                             xmlWriter.WriteAttributeString("TipoContrato", "99");
                                         }
                                            
-                                        xmlWriter.WriteAttributeString("ClaveEntFed", "DIF");
+                                        xmlWriter.WriteAttributeString("ClaveEntFed", sCalveEntidad);
                                         xmlWriter.WriteEndElement();
 
 

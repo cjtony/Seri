@@ -265,6 +265,7 @@ namespace Payroll.Models.Beans
         public int GrupoEmpresas { get; set; }
         public int iTipoJordana { get; set; }
         public int iCgTipoEmpleadoId { get; set; }
+        public string sClaveEnt { get; set; }
         public string sMensaje { get; set; }
 
     }
