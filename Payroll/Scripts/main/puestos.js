@@ -670,11 +670,28 @@
     /* FUNCION QUE ASIGNA EL CODIGO DE PUESTO AL CAMPO REGCODPUESTO */
     typeregpuesto.addEventListener('change', () => {
         try {
-            const valueTypJob  = typeregpuesto.value;
-            const valuesArray  = valueTypJob.split(",");
-            const keyJobSelec  = parseInt(valuesArray[0]);
-            const codJobSelec  = valuesArray[1];
-            regcodpuesto.value = codJobSelec;
+            $.ajax({
+                url: "../SearchDataCat/LoadNumberCodePost",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (data) => {
+                    console.log(data);
+                    if (data.Bandera == true) {
+                        console.log('test');
+                        regcodpuesto.value = data.Consecutivo;
+                    } else {
+                        const valueTypJob  = typeregpuesto.value;
+                        const valuesArray  = valueTypJob.split(",");
+                        const keyJobSelec  = parseInt(valuesArray[0]);
+                        const codJobSelec  = valuesArray[1];
+                        regcodpuesto.value = codJobSelec;
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
         } catch (error) {
             if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
