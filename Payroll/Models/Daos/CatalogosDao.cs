@@ -333,6 +333,74 @@ namespace Payroll.Models.Daos
     }
     public class PuestosDao : Conexion
     {
+
+        public string[] sp_Valida_Empresa_Codigo_Puesto(int keyBusiness)
+        {
+            string[] results = new string[2];
+            results[0] = "false";
+            results[1] = "none";
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Valida_Empresa_Codigo_Puesto", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read()) {
+                    if (data["Existencia"].ToString() == "1") {
+                        results[0] = "true";
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                results[1] = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return results;
+        }
+
+        public int sp_Obtiene_Consecutivo_Codigo_Puesto(int keyBusiness)
+        {
+            int consecutive = 1;
+            List<int> numbers = new List<int>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Obtiene_Consecutivo_Codigo_Puesto", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        int i = 0;
+                        if (Convert.ToInt32(data["PuestoCodigo"]) > 0) {
+                            i = Convert.ToInt32(data["PuestoCodigo"]);
+                        }
+                        numbers.Add(i);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+                numbers.Sort();
+                if (numbers.Count > 0) {
+                    if (numbers.Count > 1) {
+                        int lastNumber = numbers[numbers.Count - 1];
+                        if (lastNumber == 9999) {
+                            lastNumber = numbers[numbers.Count - 2];
+                            consecutive = lastNumber + 1;
+                        } else {
+                            consecutive = lastNumber + 1;
+                        }
+                    } else {
+                        consecutive = numbers[numbers.Count - 1];
+                    }
+                }
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return consecutive;
+        }
+
         public List<PuestosBean> sp_Puestos_Retrieve_Search_Puestos(string wordsearch, int keyemp)
         {
             List<PuestosBean> listPuestoBean = new List<PuestosBean>();
