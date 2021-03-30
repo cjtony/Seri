@@ -657,6 +657,35 @@ namespace Payroll.Controllers
                                 // ARCHIVO DISPERSION BANORTE -> NOMINA
 
                                 if (bankResult == 72) {
+
+                                    // INICIO CODIGO NUEVO
+
+                                    long[] TotIAbonos = new long[201];
+                                    for (k = 0; k <= 200; k++)
+                                    {
+                                        TotIAbonos[k] = 0;
+                                    }
+                                    long TotalNumAbonos = 0;
+                                    foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean) {
+                                        if (bankResult == bank.iIdBanco) {
+                                            TotalNumAbonos += 1;
+                                        }
+                                    }
+                                    StringBuilder sb1;
+                                    sb1 = new StringBuilder("");
+                                    sb1.Append("H");
+                                    sb1.Append("NE");
+                                    sb1.Append(string.Format("{0:00000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.sNumeroCliente)));
+                                    sb1.Append(dateGeneration.ToString("yyyyMMdd"));
+                                    sb1.Append("01");
+                                    sb1.Append(string.Format("{0:000000}", TotalNumAbonos));
+                                    sb1.Append(string.Format("{0:000000000000000}", TotIAbonos[72]));
+                                    sb1.Append("0".PadRight(49, '0'));
+                                    sb1.Append(" ".PadLeft(77, ' '));
+                                    string ts = sb1.ToString();
+
+                                    // FIN CODIGO NUEVO
+
                                     string importeTotalBanorte = "";
                                     foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans) {
                                         if (deposits.iIdBanco == bankResult) { importeTotalBanorte = deposits.sImporte; break; }
@@ -2038,6 +2067,23 @@ namespace Payroll.Controllers
                             }
                         } 
                         if (bankInterbank == 72) {
+
+                            // INICIO CODIGO NUEVO
+
+                            //string v;
+                            //string v1;
+
+                            //StringBuilder sb1;
+                            //using (StreamWriter sr = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM)) {
+                            //    foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
+                            //        sb1 = new StringBuilder("");
+                            //        sb1.Append("04");
+                            //    }
+                            //}
+                            
+
+                            // FIN CODIGO NUEVO
+
                             // BANORTE -> INTERBANCARIO
                             string tipoOperacion = "04";
                             string cuentaOrigen  = "";

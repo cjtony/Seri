@@ -483,5 +483,29 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, Datos = posicionesBeans });
         }
 
+        [HttpPost]
+        public JsonResult LoadNumberCodePost ()
+        {
+            Boolean flag           = false;
+            string[] rValidation   = new string[2];
+            String  messageError   = "none";
+            int keyBusiness        = Convert.ToInt32(Session["IdEmpresa"]);
+            int consecutive        = 1;
+            List<int> numbers = new List<int>();
+            PuestosDao puestosDao  = new PuestosDao();
+            try {
+                rValidation = puestosDao.sp_Valida_Empresa_Codigo_Puesto(keyBusiness);
+                if (rValidation[1] == "none") {
+                    if (Convert.ToBoolean(rValidation[0]) == true) {
+                        consecutive = puestosDao.sp_Obtiene_Consecutivo_Codigo_Puesto(keyBusiness);
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Validaciones = rValidation, Consecutivo = consecutive });
+        }
+
     }
 }

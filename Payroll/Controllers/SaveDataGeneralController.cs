@@ -47,7 +47,13 @@ namespace Payroll.Controllers
             CodigoCatalogosDao codeCatDaoD = new CodigoCatalogosDao();
             PuestosBean addPuestoBean      = new PuestosBean();
             SavePuestosDao savePuestoDao   = new SavePuestosDao();
+            string[] rValidation = new string[2];
+            int consecutive = 1;
+            PuestosDao puestos = new PuestosDao();
             try {
+                int keyemp  = int.Parse(Session["IdEmpresa"].ToString());
+                rValidation = puestos.sp_Valida_Empresa_Codigo_Puesto(keyemp);
+                consecutive = puestos.sp_Obtiene_Consecutivo_Codigo_Puesto(keyemp);
                 codeCatBean         = codeCatDaoD.sp_Dato_Codigo_Catalogo_Seleccionado(typeregpuesto);
                 string codeTypeJob  = codeCatBean.sCodigo;
                 int consecutiveCode = codeCatBean.iConsecutivo;
@@ -62,8 +68,17 @@ namespace Payroll.Controllers
                 } else if (consecutiveCNew.ToString().Length == 4) {
                     ceros = "0";
                 }
-                regcodpuesto        = codeTypeJob + ceros + consecutiveCNew.ToString();
-                int keyemp          = int.Parse(Session["IdEmpresa"].ToString());
+                string codePuesto = regcodpuesto;
+                regcodpuesto = codeTypeJob + ceros + consecutiveCNew.ToString();
+                if (rValidation[1] == "none") {
+                    if (Convert.ToBoolean(rValidation[0]) == true) {
+                        if (consecutive == Convert.ToInt32(codePuesto.Trim())) {
+                            regcodpuesto = codePuesto.Trim();
+                        } else {
+                            regcodpuesto = consecutive.ToString();
+                        }
+                    }
+                }
                 int usuario         = Convert.ToInt32(Session["iIdUsuario"].ToString());
                 addPuestoBean       = savePuestoDao.sp_Puestos_Insert_Puestos(regcodpuesto, regpuesto, regdescpuesto, proffamily, clasifpuesto, regcolect, nivjerarpuesto, perfmanager, tabpuesto, usuario, keyemp, consecutiveCNew, typeregpuesto);
                 if (addPuestoBean.sMensaje != "success") {
