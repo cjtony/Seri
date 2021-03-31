@@ -571,6 +571,7 @@ namespace Payroll.Models.Beans
         public string RecuperaAusentismo { get; set; }
         public string Fecha_Ausentismo { get; set; }
         public int Dias_Ausentismo { get; set; }
+        public int Saldo_Dias_Ausentismo { get; set; }
         public string Certificado_imss { get; set; }
         public string Comentarios_imss { get; set; }
         public string Causa_FaltaInjustificada { get; set; }

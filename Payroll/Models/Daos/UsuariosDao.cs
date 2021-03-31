@@ -30,7 +30,9 @@ namespace Payroll.Models.Daos
                         usuBean.iIdUsuario = int.Parse(data["iIdUsuario"].ToString());
                         usuBean.iPerfil = int.Parse(data["iPerfil"].ToString());
                         usuBean.sUsuario = data["sUsuario"].ToString();
+                        usuBean.bPassword_d = data["bPassword_d"].ToString();
                         usuBean.sMensaje = "success";
+
                     }
                     else
                     {

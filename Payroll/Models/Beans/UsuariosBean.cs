@@ -7,5 +7,6 @@
         public string sUsuario { get; set; }
         public string sPassword { get; set; }
         public string sMensaje { get; set; }
+        public string bPassword_d { get; set; }
     }
 }

@@ -26,6 +26,5 @@ namespace Payroll.Models.Utilerias
                 return null;
             }
         }
-
     }
 }

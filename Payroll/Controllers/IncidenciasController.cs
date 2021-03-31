@@ -182,14 +182,14 @@ namespace Payroll.Controllers
             return Json(lista);
         }
         [HttpPost]
-        public JsonResult UpdateAusentismo(int id, int Tipo_Ausentismo_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, string FechaFin, int Tipo, int IncidenciaProgramada_id)
+        public JsonResult UpdateAusentismo(int id, int Tipo_Ausentismo_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, int Saldo_Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, string FechaFin, int Tipo, int IncidenciaProgramada_id)
         {
             List<string> lista = new List<string>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
             int Periodo = int.Parse(Session["Periodo_id"].ToString());
-            lista = Dao.sp_TAusentismos_Update_Ausentismo(id, Tipo_Ausentismo_id, id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada, Periodo, FechaFin, Tipo, IncidenciaProgramada_id);
+            lista = Dao.sp_TAusentismos_Update_Ausentismo(id, Tipo_Ausentismo_id, id1, id2, Recupera_Ausentismo, Fecha_Ausentismo, Dias_Ausentismo, Saldo_Dias_Ausentismo, Certificado_imss, Comentarios_imss, Causa_FaltaInjustificada, Periodo, FechaFin, Tipo, IncidenciaProgramada_id);
             //lista.Add("Ausentismo registrado con éxito");
             return Json(lista);
         }
@@ -524,7 +524,6 @@ namespace Payroll.Controllers
 
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
                         if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
-
                     }
 
                     if (ResutLog.Count == 0)
@@ -550,7 +549,6 @@ namespace Payroll.Controllers
                     }
                     break;
                 case "vacaciones":
-
                     for (i = 0; i < table.Rows.Count; i++)
                     {
                         var resultvEmpresa = Dao.ValidaEmpresa(table.Rows[i]["Empresa_id"].ToString());
