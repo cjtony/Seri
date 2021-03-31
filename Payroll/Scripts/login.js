@@ -49,20 +49,20 @@ $(function () {
     fClearValues = () => {
         try {
             $.ajax({
-                url: "./ClearValues",
+                url: "/ClearValues",
                 type: "POST",
                 data: {},
                 beforeSend: () => {
-                    //btnlogin.disabled = true;
+                    btnlogin.disabled = true;
                 },
                 success: (data) => {
                     if (data.Bandera != true) {
                         alert('Accion invalida');
                     }
-                    //else 
-                    //{ 
-                    //}
-                    //btnlogin.disabled = false;
+                    else 
+                    { 
+                    }
+                    btnlogin.disabled = false;
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
                 }
@@ -80,11 +80,11 @@ $(function () {
         }
     }
 
-    fClearValues();
+    //fClearValues();
 
     // FUNCION QUE MUESTRA ALERTAS AL USUARIO DEPENDIENDO LA ACCION QUE SE REALIZE \\
 
-    fshowalerts = (icon, title, text, element, validate, success) => {
+    fshowalerts = (icon, title, text, element, validate, success, p_default) => {
         if (validate === 1) {
             Swal.fire({
                 title: title, text: text, icon: icon,
@@ -92,8 +92,16 @@ $(function () {
                 hideClass: { popup: 'animated fadeOutUp faster' },
                 confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
             }).then((acepta) => {
+                console.log(success);
                 if (success === "yes") {
+                    //if (p_default == "True") {
+                    //    console.log("cambia contraseña");
+                    //    //location.href = "../../Login/PasswordChange";
+                    //} else {
+                    //    console.log("entra al menu");
                     location.href = "../../ControlPayroll/Home";
+                    //}
+                    
                 } else {
                     setTimeout(() => {
                         element.value = "";
@@ -132,14 +140,15 @@ $(function () {
                         document.getElementById('msjvalidateinfo').classList.remove('d-none');
                     },
                     success: (request) => {
+                        console.log(request);
                         document.getElementById('msjvalidateinfo').classList.add('d-none');
                         btnlogin.disabled = false;
                         if (request.sMensaje === "usererror") {
-                            fshowalerts("warning", "Atención!", "El usuario ingresado es incorrecto o se encuentra cancelado", username, 1, "n");
+                            fshowalerts("warning", "Atención!", "El usuario ingresado es incorrecto o se encuentra cancelado", username, 1, "n", request.bPassword_d);
                         } else if (request.sMensaje === "passerror") {
-                            fshowalerts("warning", "Atención!", "La contraseña ingresada es incorrecta", password, 1, "n");
+                            fshowalerts("warning", "Atención!", "La contraseña ingresada es incorrecta", password, 1, "n", request.bPassword_d);
                         } else if (request.sMensaje === "success") {
-                            fshowalerts("success", "Correcto!", "Iniciando sesion, preciona Aceptar...", "", 1, "yes");
+                            fshowalerts("success", "Correcto!", "Iniciando sesion, preciona Aceptar...", "", 1, "yes", request.bPassword_d);
                         }
                     }, error: (jqXHR, exception) => {
                         let msg = '';
@@ -169,10 +178,10 @@ $(function () {
                     }
                 });
             } else {
-                fshowalerts("warning", "Atención!", "Ingrese su contraseña...", password, 0, "n");
+                fshowalerts("warning", "Atención!", "Ingrese su contraseña...", password, 0, "n", "");
             }
         } else {
-            fshowalerts("warning","Atención!","Ingrese su nombre de usuario...", username, 0, "n");
+            fshowalerts("warning","Atención!","Ingrese su nombre de usuario...", username, 0, "n", "");
         }
         e.preventDefault();
     }

@@ -505,6 +505,7 @@
     <Content Include="Content\REPORTES\NOMINA\HCBajas_E18_A2020_NP15_TP3_A.xlsx" />
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Masiva_Periodos.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
@@ -1170,6 +1171,7 @@
     <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
     <Content Include="Views\Incidencias\PIncidencias.cshtml" />
     <Content Include="Views\Empleados\XML.cshtml" />
+    <Content Include="Views\Login\PasswordChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

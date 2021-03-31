@@ -19,28 +19,21 @@
                             <option value="No aplicar">No aplicar</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-12 text-right invisible">
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-sm btn-outline-info font-labels active btn-option-1" onclick="checkPorDias();">
-                                <input type="radio" name="options" id="option1" checked> Por Días
-                            </label>
-                            <label class="btn btn-sm btn-outline-info font-labels  btn-option-2" onclick="checkPorFecha();">
-                                <input type="radio" name="options" id="option2"> Por Fechas
-                            </label>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-12 px-0" id="frmtipo">
                         <div class="form-group col-md-12">
                             <label for="inFechaAusentismo">Fecha</label>
                             <input type="date" name="inFechaAusentismo" id="inFechaAusentismo" class="form-control form-control-sm font-labels" required />
-
                         </div>
                         <div class="form-group col-md-12">
                             <label for="inDiasAusentismo">Dias</label>
                             <input type="text" name="inDiasAusentismo" id="inDiasAusentismo" class="form-control input-number form-control-sm" placeholder="Escriba los dias de Ausentismo" min="1" maxlength="2" required />
                         </div>
+                        <div class="form-group col-md-12">
+                            <label for="inDiasAusentismo">Saldo Dias</label>
+                            <input type="text" name="inSaldoDiasAusentismo" id="inSaldoDiasAusentismo" disabled class=" form-control input-number form-control-sm" placeholder="Escriba el saldo de dias de Ausentismo" min="1" maxlength="2" required />
+                        </div>
                     </div>
-                    
                     <div class="form-group col-md-12">
                         <label for="inCausaAusentismo">Causa</label>
                         <input type="text" name="inCausaAusentismo" id="inCausaAusentismo" value="" class="form-control form-control-sm" placeholder="Escriba la causa del Ausentismo" required />
@@ -90,10 +83,10 @@
                                 <th scope="col">Motivo</th>
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Dias</th>
+                                <th scope="col">Saldo Dias</th>
                                 <th scope="col">Recupera</th>
                                 <th scope="col">Causa</th>
                                 <th scope="col">Certificado IMSS</th>
-                                <th scope="col">Comentarios IMSS</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>

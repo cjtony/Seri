@@ -9,7 +9,7 @@ namespace Payroll.Models.Utilerias
         static readonly string Db     = "IPSNet_Copia"; 
         static readonly string User   = "IPSNet";
         static readonly string Pass   = "IPSNet2";
-
+        
         protected SqlConnection conexion { get; set; }
 
         protected SqlConnection Conectar()
@@ -26,6 +26,5 @@ namespace Payroll.Models.Utilerias
                 return null;
             }
         }
-
     }
 }
