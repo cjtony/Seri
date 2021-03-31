@@ -1133,6 +1133,7 @@
                         setTimeout(() => {
                             $("#nav-datagen-tab").click();
                         }, 1000);
+                        fChangeNumberPayrollEmployee();
                     }
                 })
             }
