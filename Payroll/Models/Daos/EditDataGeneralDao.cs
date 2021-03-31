@@ -96,9 +96,9 @@ namespace Payroll.Models.Daos
                 {
                     CommandType = CommandType.StoredProcedure
                 };
-                cmd.Parameters.Add(new SqlParameter("@ctrlCodigoPuesto", edicodpuesto.ToUpper()));
-                cmd.Parameters.Add(new SqlParameter("@ctrlNombrePuesto", edipuesto.ToUpper()));
-                cmd.Parameters.Add(new SqlParameter("@ctrlDescriPuesto", edidescpuesto.ToUpper()));
+                cmd.Parameters.Add(new SqlParameter("@ctrlCodigoPuesto", edicodpuesto));
+                cmd.Parameters.Add(new SqlParameter("@ctrlNombrePuesto", edipuesto));
+                cmd.Parameters.Add(new SqlParameter("@ctrlDescriPuesto", edidescpuesto));
                 cmd.Parameters.Add(new SqlParameter("@ctrlProfesionFamId", ediproffamily));
                 cmd.Parameters.Add(new SqlParameter("@ctrlClasificacioId", ediclasifpuesto));
                 cmd.Parameters.Add(new SqlParameter("@ctrlColectivoId", edicolect));
