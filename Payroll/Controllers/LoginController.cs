@@ -12,6 +12,9 @@ namespace Payroll.Controllers
         {
             return View();
         }
+        public ActionResult PasswordChange() {
+            return View();
+        }
         [HttpPost]
         public JsonResult LoginValidate(string username, string password)
         {
@@ -20,12 +23,7 @@ namespace Payroll.Controllers
             usuBean = usuDao.sp_Login_Retrieve_Usuario_Inicia_Sesion(username, password);
             Session["iIdUsuario"] = usuBean.iIdUsuario;
             Session["sUsuario"] = usuBean.sUsuario;
-            //Session["Administrador"] = 0; Session["Nomina"] = 0; Session["Incidencias"] = 0; Session["Kiosko"] = 0; Session["RH"] = 0;
             Session["Profile"] = usuBean.iPerfil;
-            List<PermisosBean> permBean = new List<PermisosBean>();
-            MenuDao menDao = new MenuDao();
-            int usuSesion = int.Parse(Session["iIdUsuario"].ToString());
-            permBean = menDao.sp_Menu_Retrieve_Permisos_Usuario_Menu(usuSesion);
             return Json(usuBean);
         }
         public ActionResult Logout()

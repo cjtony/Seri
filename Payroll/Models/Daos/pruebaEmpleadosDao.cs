@@ -403,6 +403,7 @@ namespace Payroll.Models.Daos
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
+                    lista.Saldo_Dias_Ausentismo = int.Parse(data["Saldo_Dias"].ToString());
                     lista.Certificado_imss = data["Certificado_imss"].ToString();
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
@@ -446,6 +447,7 @@ namespace Payroll.Models.Daos
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
+                    lista.Saldo_Dias_Ausentismo = int.Parse(data["Saldo_Dias"].ToString());
                     lista.Certificado_imss = data["Certificado_imss"].ToString();
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
@@ -576,7 +578,7 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-        public List<string> sp_TAusentismos_Update_Ausentismo(int id, int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo, string FechaFin, int Tipo, int IncidenciaProgramada_id)
+        public List<string> sp_TAusentismos_Update_Ausentismo(int id, int Tipo_Ausentismo_id, int Empleado_id, int Empresa_id, string Recupera_Ausentismo, string Fecha_Ausentismo, int Dias_Ausentismo, int Saldo_Dias_Ausentismo, string Certificado_imss, string Comentarios_imss, string Causa_FaltaInjustificada, int Periodo, string FechaFin, int Tipo, int IncidenciaProgramada_id)
         {
             List<string> list = new List<string>();
             this.Conectar();
@@ -591,6 +593,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlRecupera_Ausentismo", Recupera_Ausentismo));
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Ausentismo", Fecha_Ausentismo));
             cmd.Parameters.Add(new SqlParameter("@ctrlDias_Ausentismo", Dias_Ausentismo));
+            cmd.Parameters.Add(new SqlParameter("@ctrlSaldo_Dias_Ausentismo", Saldo_Dias_Ausentismo));
             cmd.Parameters.Add(new SqlParameter("@ctrlCertificado_imss", Certificado_imss));
             cmd.Parameters.Add(new SqlParameter("@ctrlComentarios_imss", Comentarios_imss));
             cmd.Parameters.Add(new SqlParameter("@ctrlCausa_FaltaInjustificada", Causa_FaltaInjustificada));
