@@ -239,11 +239,37 @@
 
     // Funcion que muestra y cambia el numero de nomina
     fChangeNumberPayrollEmployee = () => {
-        if (localStorage.getItem("modeedit") != null) {
-            document.getElementById('nav-numberpayroll-tab').classList.remove("d-none");
-        } else {
-            document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
-            payrollAct.value = "";
+        try {
+            $.ajax({
+                url: "../SearchDataCat/ValidateBusinessChangeNumberPayroll",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == true) {
+                        if (localStorage.getItem("modeedit") != null) {
+                            document.getElementById('nav-numberpayroll-tab').classList.remove("d-none");
+                        } else {
+                            document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
+                            payrollAct.value = "";
+                        }
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
         }
     }
 
@@ -595,7 +621,6 @@
 
     fclearlocsto = (type) => {
         let timerInterval;
-        fChangeNumberPayrollEmployee();
         if (type == 1) {
             Swal.fire({
                 title: "Esta seguro", text: "de limpiar los campos?", icon: "warning",
@@ -629,6 +654,8 @@
             fGenRestore();
         }
         fasignsdates();
+        fChangeNumberPayrollEmployee();
+        document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
     }
 
     if (dataLocStoSave != null) {
@@ -1272,6 +1299,61 @@
 
     fShowFieldsRequiredPositions();
 
+    /* FUNCION QUE EJECUTA LA BUSUQEDA REAL DE LOS EMPLEADOS */
+    fsearchemployeschangepayroll = () => {
+        let resultemployekey = document.getElementById('resultemployekey');
+        let searchemployekey = document.getElementById('searchemployekey');
+        const filtered = $("input:radio[name=filtroemp]:checked").val();
+        try {
+            resultemployekey.innerHTML = '';
+            document.getElementById('noresultssearchemployees').innerHTML = "";
+            if (searchemployekey.value != "") {
+                $.ajax({
+                    url: "../SearchDataCat/SearchEmploye",
+                    type: "POST",
+                    data: { wordsearch: searchemployekey.value, filtered: filtered.trim() },
+                    success: (data) => {
+                        resultemployekey.innerHTML = '';
+                        document.getElementById('noresultssearchemployees').innerHTML = "";
+                        if (data.length > 0) {
+                            let number = 0;
+                            for (let i = 0; i < data.length; i++) {
+                                number += 1;
+                                resultemployekey.innerHTML += `
+                                    <button onclick="fselectemploye(${data[i].iIdEmpleado}, '${data[i].sNombreEmpleado}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back border-left-primary">
+                                        ${number}. ${data[i].iIdEmpleado} - ${data[i].sNombreEmpleado}
+                                       <span>
+                                             <i title="Editar" class="fas fa-edit ml-2 text-warning fa-lg shadow"></i> 
+                                       </span>
+                                    </button>`;
+                            }
+                        } else {
+                            document.getElementById('noresultssearchemployees').innerHTML += `
+                                <div class="alert alert-danger" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron Empleados activos con el termino: <b class="text-uppercase">${searchemployekey.value}</b>
+                                </div>
+                            `;
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                resultemployekey.innerHTML = '';
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
     // Funcion que valida la existencia y guarda el nuevo numero de nomina
     fCheckAvailableNumberSave = () => {
         try {
@@ -1313,7 +1395,42 @@
                             btnCheckAvailableNumber.disabled = true;
                             console.log('Consultando disponibilidad');
                         }, success: (request) => {
-                            console.log(request);
+                            if (request.Bandera == true && request.MensajeError == "Ninguna") {
+                                fclearlocsto(2);
+                                Swal.fire({
+                                    title: 'Cambio correcto!',
+                                    text: "Nomina asignada: " + payrollNew.value,
+                                    icon: 'success',
+                                    confirmButtonText: "Aceptar", showCancelButton: false,
+                                    allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $("#searchemploye").modal("show");
+                                        document.getElementById('searchemployekey').value = payrollNew.value;
+                                        document.getElementById('filtroname').checked = false;
+                                        document.getElementById('filtronumber').checked = true;
+                                        btnCheckAvailableNumber.disabled = false;
+                                        setTimeout(() => {
+                                            fsearchemployeschangepayroll();
+                                            payrollAct.value = "";
+                                            payrollNew.value = "";
+                                        }, 500);
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Atención!',
+                                    text: "Ocurrio la siguiente exepción: " + request.MensajeExepcion + " Exc: " + request.MensajeError + ".",
+                                    icon: 'warning',
+                                    confirmButtonText: "Aceptar", showCancelButton: false,
+                                    allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                }).then((result) => {
+                                    if (result.value) {
+                                        payrollNew.focus();
+                                        btnCheckAvailableNumber.disabled = false;
+                                    }
+                                });
+                            }
                         }, error: (jqXHR, exception) => {
                             fcaptureaerrorsajax(jqXHR, exception);
                         }

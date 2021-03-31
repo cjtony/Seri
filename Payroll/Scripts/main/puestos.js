@@ -679,7 +679,6 @@
                 }, success: (data) => {
                     console.log(data);
                     if (data.Bandera == true) {
-                        console.log('test');
                         regcodpuesto.value = data.Consecutivo;
                     } else {
                         const valueTypJob  = typeregpuesto.value;

@@ -17,17 +17,25 @@ namespace Payroll.Controllers
         public JsonResult CheckAvailableNumberSave(int key, int newNumber, int keyImss, int keyNom)
         {
             Boolean flag = false;
-            String  messageError = "none";
+            String  messageError = "Ninguna";
+            String  messageExepc = "none";
             EmpleadosBean empleados            = new EmpleadosBean();
             EditDataGeneralDao editDataGeneral = new EditDataGeneralDao();
+            // [0] -> MensajeErrorExcepcion, [1] -> EstadoActualizacion, [2] -> Existencia, [3] -> Disponibilidad, [4] -> Actualizado 
+            string[] resultsChangeNumber = new string[5];
             try {
                 int business = int.Parse(Session["IdEmpresa"].ToString());
-                empleados = editDataGeneral.sp_Check_Available_Number_Payroll_Save(business, key, newNumber, keyImss, keyNom); 
+                resultsChangeNumber = editDataGeneral.sp_Check_Available_Number_Payroll_Save(business, key, newNumber, keyImss, keyNom);
+                if (resultsChangeNumber[0] == "none" && resultsChangeNumber[1] == "success") {
+                    flag = true;
+                } else {
+                    messageExepc = "Existencia: " + resultsChangeNumber[2] + ". Disponibilidad de numero de nomina: " + resultsChangeNumber[3] + ". Actualizado: " + resultsChangeNumber[4] + ".";
+                }
             } catch (Exception exc) {
                 flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError });
+            return Json(new { Bandera = flag, MensajeError = messageError, MensajeExepcion = messageExepc });
         }
 
         [HttpPost]
