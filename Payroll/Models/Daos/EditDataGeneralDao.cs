@@ -8,31 +8,39 @@ namespace Payroll.Models.Daos
 {
     public class EditDataGeneralDao : Conexion { 
     
-        public EmpleadosBean sp_Check_Available_Number_Payroll_Save(int business, int key, int newNumber, int keyImss, int keyNom)
+        public string[] sp_Check_Available_Number_Payroll_Save(int business, int key, int newNumber, int keyImss, int keyNom)
         {
-            EmpleadosBean empleado = new EmpleadosBean();
+            string[] results = new string[5];
+            results[0]       = "none";
+            string existencia = "No", disponibilidad = "No", actualizado = "No";
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Check_Available_Number_Payroll_Save", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", business));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpleado", key));
-                cmd.Parameters.Add(new SqlParameter("@IdImss", keyImss));
-                cmd.Parameters.Add(new SqlParameter("@IdNomina", keyNom));
                 cmd.Parameters.Add(new SqlParameter("@NuevaNomina", newNumber));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read()) {
-
-                } else {
-
+                    if (data["ExistenciaE"].ToString() == "1" && data["Disponibilidad"].ToString() == "1" && data["ActualizadoE"].ToString() == "1") {
+                        results[1] = "success";
+                    } else {
+                        results[1] = "error";
+                    }
+                    existencia     = (data["ExistenciaE"].ToString() == "1")    ? "Si" : "No";
+                    disponibilidad = (data["Disponibilidad"].ToString() == "1") ? "Si" : "No";
+                    actualizado    = (data["ActualizadoE"].ToString() == "1")   ? "Si" : "No";
                 }
+                results[2] = existencia;
+                results[3] = disponibilidad;
+                results[4] = actualizado;
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
             } catch (Exception exc) {
-                empleado.sMensaje = exc.Message.ToString();
+                results[0] = exc.Message.ToString();
             } finally {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
-            return empleado;
+            return results;
         }
 
     }

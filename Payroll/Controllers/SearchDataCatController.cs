@@ -507,5 +507,26 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, Validaciones = rValidation, Consecutivo = consecutive });
         }
 
+        [HttpPost]
+        public JsonResult ValidateBusinessChangeNumberPayroll()
+        {
+            Boolean flag          = false;
+            string[] rValidation  = new string[2];
+            String messageError   = "none";
+            PuestosDao puestosDao = new PuestosDao();
+            int keyBusiness       = Convert.ToInt32(Session["IdEmpresa"]);
+            try {
+                rValidation = puestosDao.sp_Valida_Empresa_Codigo_Puesto(keyBusiness);
+                if (rValidation[1] == "none") {
+                    if (Convert.ToBoolean(rValidation[0]) == true) {
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
     }
 }
