@@ -239,11 +239,37 @@
 
     // Funcion que muestra y cambia el numero de nomina
     fChangeNumberPayrollEmployee = () => {
-        if (localStorage.getItem("modeedit") != null) {
-            document.getElementById('nav-numberpayroll-tab').classList.remove("d-none");
-        } else {
-            document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
-            payrollAct.value = "";
+        try {
+            $.ajax({
+                url: "../SearchDataCat/ValidateBusinessChangeNumberPayroll",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (request) => {
+                    console.log(request);
+                    if (request.Bandera == true) {
+                        if (localStorage.getItem("modeedit") != null) {
+                            document.getElementById('nav-numberpayroll-tab').classList.remove("d-none");
+                        } else {
+                            document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
+                            payrollAct.value = "";
+                        }
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
         }
     }
 
