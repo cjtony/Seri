@@ -15,6 +15,34 @@ namespace Payroll.Controllers
             return View();
         }
 
+        public Boolean CheckSession()
+        {
+            Boolean flag = true;
+            if (Session["iIdUsuario"] == null && Session["sUsuario"] == null) {
+                flag = false;
+            }
+            return flag;
+        }
+
+        [HttpPost]
+        public JsonResult ValidateBusinessSession ()
+        {
+            Boolean checkSession = CheckSession();
+            if (checkSession == false) {
+                return Json(new { Session = checkSession });
+            }
+            Boolean flag = false;
+            String  messageError = "none";
+            int keyBusiness = 0;
+            try {
+                keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                if (keyBusiness != 0) flag = true;
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Session = checkSession, Bandera = flag, MensajeError = messageError, Empresa = keyBusiness });
+        }
+
         [HttpPost]
         public JsonResult LoadMotivesMovements()
         {

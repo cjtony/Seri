@@ -1116,6 +1116,25 @@
                     onClose: () => { clearInterval(timerInterval); }
                 }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.timer) {
+                        $.ajax({
+                            url: "../SearchDataCat/ValidateBusinessSession",
+                            type: "POST",
+                            data: {},
+                            beforeSend: () => {
+                                console.log('Consultando empresa en sesion')
+                            }, success: (data) => {
+                                if (data.Session == true) {
+                                    if (data.Bandera == true && data.MensajeError == "none") {
+                                        localStorage.setItem("BusinessEmploye", data.Empresa);
+                                    }
+                                } else {
+                                    alert('Tu session ha terminado favor de iniciar sesion nuevamente');
+                                    location.href = "../Login/Logout";
+                                }
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
                         floaddatatabgeneral(paramid);
                         localStorage.setItem('modeedit', 1);
                         const date = new Date();
