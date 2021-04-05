@@ -650,12 +650,13 @@
                 }
             });
         } else {
-            Swal.fire({ title: "Atención!", timer: 2200, text: "Detectamos informacion capturada que supera el tiempo de almacenamiento. Los campos se limpiaran.", icon: "info", allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, showConfirmButton: false });
+            Swal.fire({ title: "Atención!", timer: 3500, text: "Detectamos informacion capturada que supera el tiempo de almacenamiento o no es valida para la empresa seleccionada. Los campos se limpiaran.", icon: "info", allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, showConfirmButton: false });
             fGenRestore();
         }
         fasignsdates();
         fChangeNumberPayrollEmployee();
         document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
+        localStorage.removeItem("BusinessEmploye");
     }
 
     if (dataLocStoSave != null) {
@@ -1436,7 +1437,8 @@
                         }
                     });
                 } else {
-                    alert('Complete el campo nuevo numero de nomina');
+                    fshowtypealert("Atención", "Ingrese un nuevo numero de nomina", "warning", payrollNew, 0);
+                    //alert('Complete el campo nuevo numero de nomina');
                 }
             } else {
                 alert('error');
@@ -1455,5 +1457,50 @@
     }
 
     btnCheckAvailableNumber.addEventListener('click', fCheckAvailableNumberSave);
+
+    // Funcion que valida que la informacion en los campos sea de la empresa padre
+    fValidateInformationBusinessSession = () => {
+        try {
+            $.ajax({
+                url: "../SearchDataCat/ValidateBusinessSession",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (data) => {
+                    console.log(data);
+                    if (data.Session == true) {
+                        if (data.Bandera == true && data.MensajeError == "none") {
+                            localStorage.setItem("Business", data.Empresa);
+                            const businessE = localStorage.getItem("BusinessEmploye");
+                            if (businessE != null) {
+                                const businessS = localStorage.getItem("Business");
+                                if (businessS != businessE) {
+                                    fclearlocsto(2);
+                                }
+                            }
+                        }
+                    } else {
+                        alert('Tu session ha terminado favor de iniciar sesion nuevamente');
+                        location.href = "../Login/Logout";
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    fValidateInformationBusinessSession();
 
 });
