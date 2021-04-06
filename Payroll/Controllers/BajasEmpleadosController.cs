@@ -70,8 +70,8 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult SendDataDownSettlement(int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, int daysPending, int typeDate, int typeCompensation, Boolean flagTypeSettlement, int typeOper, int propSet, int daysYearsAftr)
         {
-            Boolean flag       = false;
-            Boolean validation = true;
+            Boolean flag        = false;
+            Boolean validation  = true;
             String messageError = "none";
             DateTime dateAct = DateTime.Now;
             int yearAct = Convert.ToInt32(dateAct.Year);
