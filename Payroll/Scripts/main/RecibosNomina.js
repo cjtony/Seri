@@ -334,9 +334,6 @@
 
             },
         });
-
-
-
     };
 
     $('#dropPeriodoEmple').change(function () {
@@ -538,7 +535,7 @@
         arreglosubcadena = periodo.split(separador, limite);
         arreglosubcadena2 = NombreEmpleado.split(separador, limite);
 
-        const dataSend = { iIdEmpresa: IdEmpresa, iIdEmpleado: arreglosubcadena2[0], Anio: anoNom.value, periodo: arreglosubcadena[0] };
+        const dataSend = { iIdEmpresa: iIdEmpresa, iIdEmpleado: arreglosubcadena2[0], Anio: anoNom.value, periodo: arreglosubcadena[0] };
       
         $.ajax({
             url: "../Empleados/ListFiniquito",

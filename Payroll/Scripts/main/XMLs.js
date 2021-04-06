@@ -5,22 +5,31 @@ $(function () {
 
     /// declaracion de variables globales
 
+    const navxmlnortab = document.getElementById('nav-xmlnor-tab');
+    const navxmlFitab = document.getElementById('nav-xmlFi-tab');
+
     const EmpresaNom = document.getElementById('EmpresaNom');
     const anoNom = document.getElementById('anoNom');
     const TipodePerdioRec = document.getElementById('TipodePerdioRec');
     const PeridoNom = document.getElementById('PeridoNom');
     const CheckXEmpleado = document.getElementById('CheckXEmpleado');
     const dropbusemple = document.getElementById('dropbusemple');
-    
 
-   
+    const EmpresaNomFi = document.getElementById('EmpresaNomFi');
+    const anoNomFi = document.getElementById('anoNomFi');
+    const TipodePerdioRecFi = document.getElementById('TipodePerdioRecFi');
+    const PeridoNomFi = document.getElementById('PeridoNomFi');
+    const dropbusempleFi = document.getElementById('dropbusempleFi');
+
+
+
+
     const btnFloLimpiar = document.getElementById('btnFloLimpiar');
-    const btnPDFms = document.getElementById('btnPDFms');
+    // const btnPDFms = document.getElementById('btnPDFms');
     const btnXmlms = document.getElementById('btnXmlms');
-
     const btnDowlan = document.getElementById('btnDowlan');
-
     var valorCheckxEmpleado = document.getElementById('CheckXEmpleado');
+
     var EmpresNom;
     var IdEmpresa;
     var NombreEmpleado;
@@ -30,6 +39,8 @@ $(function () {
     var datosPeriodo;
     var datainformations;
     var rowscounts = 0;
+    var seleTaop1=0;
+    var seleTaop2=0;
 
     /// saca la fecha del dia 
 
@@ -39,15 +50,18 @@ $(function () {
 
 
     anoNom.value = y;
-
+    anoNomFi.value = y;
     ///Listbox de Empresas 
 
-    $("#jqxInput").jqxInput({ placeHolder: " Nombre del Empleado", width: 250, height: 30, minLength: 1 });
+    $("#jqxInput").jqxInput({ placeHolder: " Nombre del Empleado", width: 300, height: 30, minLength: 1 });
+    $("#jqxInputFi").jqxInput({ placeHolder: " Nombre del Empleado", width: 300, height: 30, minLength: 1 });
 
 
     FListadoEmpresa = () => {
         $("#EmpresaNom").empty();
         $('#EmpresaNom').append('<option value="0" selected="selected">Selecciona</option>');
+        $("#EmpresaNomFi").empty();
+        $('#EmpresaNomFi').append('<option value="0" selected="selected">Selecciona</option>');
         $.ajax({
             url: "../Nomina/LisEmpresas",
             type: "POST",
@@ -55,10 +69,13 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
+                    document.getElementById("EmpresaNomFi").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
                     document.getElementById("EmpresaNom").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+
                 }
             }
         });
+
     };
     FListadoEmpresa();
 
@@ -70,6 +87,8 @@ $(function () {
         const dataSend = { IdEmpresa: IdEmpresa };
         $("#TipodePerdioRec").empty();
         $('#TipodePerdioRec').append('<option value="0" selected="selected">Selecciona</option>');
+
+
         $.ajax({
             url: "../Nomina/LisTipPeriodo",
             type: "POST",
@@ -86,15 +105,39 @@ $(function () {
 
 
     });
+    $('#EmpresaNomFi').change(function () {
+
+        IdEmpresa = EmpresaNomFi.value;
+        const dataSend = { IdEmpresa: IdEmpresa };
+        $("#TipodePerdioRecFi").empty();
+        $('#TipodePerdioRecFi').append('<option value="0" selected="selected">Selecciona</option>');
+
+
+        $.ajax({
+            url: "../Nomina/LisTipPeriodo",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    document.getElementById("TipodePerdioRecFi").innerHTML += `<option value='${data[i].iId}'>${data[i].sValor}</option>`;
+                }
+            },
+            error: function (jqXHR, exception) {
+                fcaptureaerrorsajax(jqXHR, exception);
+            }
+        });
+
+
+    });
 
 
 
     //// Muestra fecha de inicio y fin de peridodos
 
     $('#TipodePerdioRec').change(function () {
-                type: "POST",
-        // ListPeriodoEmpresa
-        IdEmpresa = EmpresaNom.value;
+        type: "POST",
+            // ListPeriodoEmpresa
+            IdEmpresa = EmpresaNom.value;
         anio = anoNom.value;
         Tipodeperiodo = TipodePerdioRec.value;
         const dataSend = { iIdEmpresesas: IdEmpresa, ianio: anio, iTipoPeriodo: Tipodeperiodo };
@@ -111,7 +154,7 @@ $(function () {
                     if (data[i].sNominaCerrada == "True") {
                         document.getElementById("PeridoNom").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
                     }
-                    
+
                 }
             },
         });
@@ -119,6 +162,35 @@ $(function () {
         $("#jqxInput").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
 
     });
+
+    $('#TipodePerdioRecFi').change(function () {
+        type: "POST",
+            // ListPeriodoEmpresa
+        IdEmpresa = EmpresaNomFi.value;
+        anio = anoNomFi.value;
+        Tipodeperiodo = TipodePerdioRecFi.value;
+        const dataSend = { iIdEmpresesas: IdEmpresa, ianio: anio, iTipoPeriodo: Tipodeperiodo };
+        
+        $("#PeridoNomFi").empty();
+        $('#PeridoNomFi').append('<option value="0" selected="selected">Selecciona</option>');
+        $.ajax({
+            url: "../Nomina/ListPeriodo",
+            type: "POST",
+            data: dataSend,
+            success: (data) => {
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].sNominaCerrada == "True") {
+                        document.getElementById("PeridoNomFi").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
+                    }
+
+                }
+            },
+        });
+        $("#jqxInputFi").empty();
+        $("#jqxInputFi").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
+
+    });
+
 
     $('#PeridoNom').change(function () {
 
@@ -187,11 +259,77 @@ $(function () {
 
 
     });
+    $('#PeridoNomFi').change(function () {
+
+
+        IdEmpresa = EmpresaNomFi.value;
+        Tipodeperiodo = TipodePerdioRecFi.value;
+        var periodo = PeridoNomFi.options[PeridoNomFi.selectedIndex].text;
+        if (PeridoNomFi.value == 0) {
+            $("#jqxInputFi").empty();
+            $("#jqxInputFi").jqxInput({ source: null, placeHolder: "Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
+
+        }
+        if (periodo != "Selecciona") {
+            separador = " ",
+                limite = 2,
+                arreglosubcadena = periodo.split(separador, limite);
+
+            const dataSend = { iIdEmpresa: IdEmpresa, periodo: arreglosubcadena[0], Anio: anoNom.value };
+            $.ajax({
+                url: "../Empleados/DataListEmpleadoFi",
+                type: "POST",
+                data: dataSend,
+                success: (data) => {
+                    if (data.length > 0) {
+                        var source =
+                        {
+
+                            localdata: data,
+                            datatype: "array",
+                            datafields:
+                                [
+                                    { name: 'iIdEmpleado' },
+                                    { name: 'sNombreCompleto' }
+
+                                ]
+                        };
+                        var dataAdapter = new $.jqx.dataAdapter(source);
+                        $("#jqxInputFi").empty();
+                        $("#jqxInputFi").jqxInput({ source: dataAdapter, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
+                        $("#jqxInputFi").on('select', function (event) {
+                            if (event.args) {
+                                var item = event.args.item;
+                                if (item) {
+                                    var valueelement = $("<div></div>");
+                                    valueelement.text("Value: " + item.value);
+                                    var labelelement = $("<div></div>");
+                                    labelelement.text("Label: " + item.label);
+                                    NoEmpleado = item.value;
+                                    NombreEmpleado = item.label;
+                                }
+                            }
+
+                        });
+
+                    }
+                    else {
+                        $("#jqxInputFi").empty();
+                        $("#jqxInputFi").jqxInput({ source: null, placeHolder: " Nombre del Empleado", displayMember: "sNombreCompleto", valueMember: "iIdEmpleado", width: 250, height: 30, minLength: 1 });
+                    }
+
+                }
+            });
+        }
+    });
 
 
     /// validacion de año
 
     $("#iAnoDe").keyup(function () {
+        this.value = (this.value + '').replace(/[^0-9]/g, '');
+    });
+    $("#iAnoDefi").keyup(function () {
         this.value = (this.value + '').replace(/[^0-9]/g, '');
     });
 
@@ -223,11 +361,11 @@ $(function () {
         console.log('valor de check' + valorCheckxEmpleado.checked)
         if (valorCheckxEmpleado.checked == true) {
             dropbusemple.style.visibility = 'visible';
-        } 
+        }
 
         if (valorCheckxEmpleado.checked == false) {
             dropbusemple.style.visibility = 'hidden';
-        } 
+        }
     };
 
     CheckXEmpleado.addEventListener('click', FValorChecXemple);
@@ -236,65 +374,93 @@ $(function () {
     /// descarga masiva de xml
 
     FdowXmlsMasivo = () => {
-        console.log('entro a xml')
-        if (valorCheckxEmpleado.checked == false) { 
-            console.log('entro general');
-            btnXmlms.value = 1;
-            btnPDFms.value = 0;
-            IdEmpresa = EmpresaNom.value;
-            var nom = $('#jqxInput').jqxInput('val');
+        if (seleTaop2 != 1) {
+            if (valorCheckxEmpleado.checked == false) {
+                console.log('entro general');
+                btnXmlms.value = 1;
+                btnPDFms.value = 0;
+                IdEmpresa = EmpresaNom.value;
+                var nom = $('#jqxInput').jqxInput('val');
+                NombreEmpleado = nom.label;
+                IdEmpresa = EmpresaNom.value;
+                anio = anoNom.value;
+                Tipoperiodo = TipodePerdioRec.value;
+                datosPeriodo = PeridoNom.value;
+
+                const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 1 };
+                $.ajax({
+                    url: "../Empleados/XMLNomina",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: function (data) {
+                        $('#jqxLoader2').jqxLoader('open');
+                    },
+                    success: function (data) {
+                        if (data[0].sMensaje == "Error") {
+                            $('#jqxLoader2').jqxLoader('close');
+                            fshowtypealert('Error', 'El periodo no tiene un empleado con los calculos de nomina', 'error');
+                        }
+                        if (data[0].sMensaje != "Error") {
+
+                            if (data[0].sMensaje != "NorCert") {
+                                btnDowlan.style.visibility = 'visible';
+                                $('#jqxLoader2').jqxLoader('close');
+                                fshowtypealert('Recibos de nomina', 'sean generado los archivos XML correctamente', 'success');
+                            }
+                            if (data[0].sMensaje == "NorCert") {
+                                $('#jqxLoader2').jqxLoader('close');
+                                fshowtypealert('Error', 'Contacte a sistemas falta el archivo certificado', 'error');
+                            }
+                            if (data.rowscount < 0 || data == null) {
+                                $('#jqxLoader2').jqxLoader('close');
+                                fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                            }
+                        }
+                    }
+                });
+
+
+
+            }
+            if (valorCheckxEmpleado.checked == true) {
+                console.log('entro por uno');
+                IdEmpresa = EmpresaNom.value;
+                var nom = $('#jqxInput').jqxInput('val');
+                NombreEmpleado = nom.label;
+                IdEmpresa = EmpresaNom.value;
+                anio = anoNom.value;
+                Tipoperiodo = TipodePerdioRec.value;
+                datosPeriodo = PeridoNom.value;
+                const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 0 };
+                $.ajax({
+                    url: "../Empleados/XMLNomina",
+                    type: "POST",
+                    data: dataSend,
+                    success: function (data) {
+                        if (data[0].sMensaje != "NorCert") {
+                            var url = '\\Archivos\\ZipXML.zip';
+                            window.open(url);
+
+                        }
+                        else {
+                            fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                        }
+
+                    }
+                });
+            }
+        };
+        if (seleTaop2 == 1) {
+
+            IdEmpresa = EmpresaNomFi.value;
+            var nom = $('#jqxInputFi').jqxInput('val');
             NombreEmpleado = nom.label;
-            IdEmpresa = EmpresaNom.value;
-            anio = anoNom.value;
-            Tipoperiodo = TipodePerdioRec.value;
-            datosPeriodo = PeridoNom.value;
-
-            const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 1 };
-            $.ajax({
-                url: "../Empleados/XMLNomina",
-                type: "POST",
-                data: dataSend,
-                beforeSend: function (data) {
-                    $('#jqxLoader2').jqxLoader('open');
-                },
-                success: function (data) {
-                    if (data[0].sMensaje == "Error") {
-                        $('#jqxLoader2').jqxLoader('close');
-                        fshowtypealert('Error', 'El periodo no tiene un empleado con los calculos de nomina', 'error');
-                    }
-                    if (data[0].sMensaje != "Error") {
-                    
-                    if (data[0].sMensaje != "NorCert") {
-                        btnDowlan.style.visibility = 'visible';
-                        $('#jqxLoader2').jqxLoader('close');
-                        fshowtypealert('Recibos de nomina', 'sean generado los archivos XML correctamente', 'success');
-                    }
-                    if (data[0].sMensaje == "NorCert") {
-                        $('#jqxLoader2').jqxLoader('close');
-                        fshowtypealert('Error', 'Contacte a sistemas falta el archivo certificado', 'error');
-                    }
-                    if (data.rowscount < 0 || data == null) {
-                        $('#jqxLoader2').jqxLoader('close');
-                        fshowtypealert('Error', 'Contacte a sistemas', 'error');
-                    }
-                    }
-                }
-            });
-
-
-     
-        }
-        if (valorCheckxEmpleado.checked == true) {
-            console.log('entro por uno');
-            IdEmpresa = EmpresaNom.value;
-            var nom = $('#jqxInput').jqxInput('val');
-            NombreEmpleado = nom.label;
-            IdEmpresa = EmpresaNom.value;
-            anio = anoNom.value;
-            Tipoperiodo = TipodePerdioRec.value;
-            datosPeriodo = PeridoNom.value;
-            const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 0 };
-            $.ajax({
+            IdEmpresa = EmpresaNomFi.value;
+            anio = anoNomFi.value;
+            Tipoperiodo = TipodePerdioRecFi.value;
+            datosPeriodo = PeridoNomFi.value;
+            const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: NombreEmpleado, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, Masivo: 3 };
+           $.ajax({
                 url: "../Empleados/XMLNomina",
                 type: "POST",
                 data: dataSend,
@@ -310,62 +476,15 @@ $(function () {
 
                 }
             });
-        }
 
+
+
+
+        };
     };
     btnXmlms.addEventListener('click', FdowXmlsMasivo)
 
-    /// descarga masiva de PDF
 
-    //FdowPDFMasivos = () => {
-
-    //    if (valorCheckxEmpleado.checked == false) {
-    //        btnXmlms.value = 0;
-    //        btnPDFms.value = 1;
-    //        console.log('prueba');
-    //        var oprefis = 0;
-
-    //        IdEmpresa = EmpresaNom.value;
-    //        var nom = $('#jqxInput').jqxInput('val');
-    //        NombreEmpleado = nom.label;
-    //        IdEmpresa = EmpresaNom.value;
-    //        anio = anoNom.value;
-    //        Tipoperiodo = TipodePerdioRec.value;
-    //        datosPeriodo = PeridoNom.value;
-    //        const dataSend = { IdEmpresa: IdEmpresa, sNombreComple: 0, Periodo: datosPeriodo, anios: anio, Tipodeperido: Tipoperiodo, iRecibo: 1 };
-    //        $.ajax({
-    //            url: "../Empleados/GPDFMasivos",
-    //            type: "POST",
-    //            data: dataSend,
-    //            beforeSend: function (data) {
-    //                $('#jqxLoader').jqxLoader('open');
-    //            },
-    //            success: function (data) {
-    //                if (data[0].sMensaje != "NorCert") {
-    //                    btnDowlan.style.visibility = 'visible';
-    //                    btnDowlan.value = data[0].sUrl;
-    //                    $('#jqxLoader').jqxLoader('close');
-    //                    fshowtypealert('Recibos de nomina', 'sean generado el PDF correctamente', 'success');
-
-    //                }
-    //                else {
-
-    //                    $('#jqxLoader').jqxLoader('close');
-    //                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
-    //                }
-
-    //            }
-    //        });
-
-    //    }
-    //    if (valorCheckxEmpleado.checked == true) {
-
-
-    //    }
-
-    //};
-
-    //btnPDFms.addEventListener('click', FdowPDFMasivos)
 
     FOpenFile = () => {
         if (btnPDFms.value == 1) {
@@ -386,6 +505,24 @@ $(function () {
         };
     };
     btnDowlan.addEventListener('click', FOpenFile);
+
+
+
+         ///selecion de paguina
+
+    FSelecionTap1 = () => {
+        seleTaop1 = 1;
+        seleTaop2 = 0;
+    };
+
+    FSelecionTap2 = () => {
+        seleTaop1 = 0;
+        seleTaop2 = 1;
+    };
+
+    navxmlnortab.addEventListener('click', FSelecionTap1);
+    navxmlFitab.addEventListener('click', FSelecionTap2);
+
 
 
     /* FUNCION QUE MUESTRA ALERTAS */
