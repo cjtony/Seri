@@ -3083,5 +3083,16 @@ namespace Payroll.Controllers
             return Json(LPe);
 
         }
+
+        [HttpPost]
+        public JsonResult DataListEmpleadoFi(int iIdEmpresa, int periodo, int Anio)
+        {
+                List<EmpleadosEmpresaBean> ListEmple = new List<EmpleadosEmpresaBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            ListEmple = Dao.sp_EmpledoFi_Retrieve_TFiniquito(iIdEmpresa, periodo, Anio);
+            return Json(ListEmple);
+        }
+
+
     }
 }
