@@ -1625,7 +1625,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ProcessDepositsInterbank(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror, int type, string dateDisC)
+        public JsonResult ProcessDepositsInterbank(int yearPeriod, int numberPeriod, int typePeriod, string dateDeposits, int mirror, int type, string dateDisC, int tipPago)
         {
             Boolean flag            = false;
             Boolean flagMirror      = false;
@@ -1888,6 +1888,10 @@ namespace Payroll.Controllers
                             if (dateDisC != "") {
                                 fechaIntScotiabankD = Convert.ToDateTime(dateDisC.ToString()).ToString("yyyyMMdd");
                             }
+                            string conceptoPagoIntScotiabankD = "PAGO NOMINA";
+                            if (tipPago == 2) {
+                                conceptoPagoIntScotiabankD = "HONORARIOS ";
+                            }
                             string tipoRegistroCIntScotiabankD = "DA", 
                                 tipoPagoIntScotiabankD = "04", 
                                 claveMonedaIntScotiabank = "00",  
@@ -1900,8 +1904,7 @@ namespace Payroll.Controllers
                                 tipoCuentaIntScotiabankD1 = "9", 
                                 digitoIntScotiabankD1 = " ", 
                                 bancoEmisorIntScotiabankD1 = "044", 
-                                diasVigenciaIntScotiabankD = "001", 
-                                conceptoPagoIntScotiabankD = "PAGO NOMINA", 
+                                diasVigenciaIntScotiabankD = "001",  
                                 fillerIntScotiabankD3 = "                                       ", 
                                 fillerIntScotiabankD4 = "                                                            ", 
                                 fillerIntScotiabankD5 = "                      ";
@@ -2009,6 +2012,9 @@ namespace Payroll.Controllers
                                 referenceDate = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
                             }
                             string descriptionPd = "PAGO NOMINA                   ";
+                            if (tipPago == 2) {
+                                descriptionPd = "HONORARIOS                    ";
+                            }
                             string coinOrigin    = "1";
                             string coingDestiny  = "1";
                             string ivaBanorte    = "00000000000000";
