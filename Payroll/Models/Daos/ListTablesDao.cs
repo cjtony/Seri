@@ -1130,7 +1130,7 @@ namespace Payroll.Models.Daos
         public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido, int masivo)
         {
             int IdCalcHD,iperiodo;
-            int NumEmpleado = 0,NoXmlx=1,id=0,row198=0,row195=0,rowTper=0 , row17=0, row113 = 0, row27=0,row28=0,row29=0,Recibo2=0,FinR=0;
+            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0, Recibo2 = 0, FinR = 0,ISREs = 0;
             string[] Nombre= sNombreComple.Split(' ');
             string NomEmple = "";
             List<string> NomArchXML = new List<string>();
@@ -1658,7 +1658,10 @@ namespace Payroll.Models.Daos
 
                                         xmlWriter.WriteAttributeString("TotalPercepciones", TotalPercepciones.ToString());
                                         xmlWriter.WriteAttributeString("TotalDeducciones", totalDeduciones.ToString());
-                                        xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
+                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
+                                            xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
+                                        }
+
                                         xmlWriter.WriteAttributeString("xmlns", Prefijo2, null, EspacioDeNombreNomina);
 
                                         xmlWriter.WriteStartElement(Prefijo2, "Emisor", EspacioDeNombreNomina);
@@ -1735,8 +1738,8 @@ namespace Payroll.Models.Daos
 
                                         if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
                                         {
-                                            xmlWriter.WriteAttributeString("SalarioBaseCotApor", SuedoAgravado);
-                                            xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SueldoDiario);
+                                            xmlWriter.WriteAttributeString("SalarioBaseCotApor", SuedoAgravado.Replace(",",""));
+                                            xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SueldoDiario.Replace(",",""));
                                             xmlWriter.WriteAttributeString("RiesgoPuesto", TipoRiesgo);//1
                                             xmlWriter.WriteAttributeString("TipoJornada", TipJordana);
                                             xmlWriter.WriteAttributeString("TipoRegimen", "02");
@@ -2015,7 +2018,7 @@ namespace Payroll.Models.Daos
                                                             }
 
                                                         }
-                                                        xmlWriter.WriteAttributeString("TipodeHoras", "01");
+                                                        xmlWriter.WriteAttributeString("TipoHoras", "01");
 
                                                         xmlWriter.WriteEndElement();
                                                         xmlWriter.WriteEndElement();
@@ -2029,12 +2032,14 @@ namespace Payroll.Models.Daos
 
                                                     string IdRenglon = Convert.ToString(LisTRecibo[a].iIdRenglon);
                                                      
-                                                    if (IdRenglon == "1001") { Isr = LisTRecibo[a].dSaldo; }
+                                                    if (IdRenglon == "1001") { Isr = LisTRecibo[a].dSaldo;
+                                                        ISREs = 1;
+                                                    }
 
                                                     if (masivo ==1 &&  FinR ==0) {
                                                        if (IdRenglon == "1011") {
                                                             Isr = LisTRecibo[a].dSaldo;
-
+                                                            ISREs = 1;
                                                         }
                                                     
                                                     }
@@ -2044,7 +2049,7 @@ namespace Payroll.Models.Daos
                                                         if (IdRenglon == "1105")
                                                         {
                                                             Isr = LisTRecibo[a].dSaldo;
-
+                                                            ISREs = 1;
                                                         }
 
                                                     }
@@ -2065,7 +2070,10 @@ namespace Payroll.Models.Daos
                                         isr = isr.Replace(",", "");
                                         // Deducciones
                                         xmlWriter.WriteStartElement(Prefijo2, "Deducciones", EspacioDeNombreNomina);
-                                        xmlWriter.WriteAttributeString("TotalImpuestosRetenidos", isr);
+                                        if (ISREs == 1) {
+                                            xmlWriter.WriteAttributeString("TotalImpuestosRetenidos", isr);
+                                        }
+
                                         xmlWriter.WriteAttributeString("TotalOtrasDeducciones", deduciones);
                                         if (LisTRecibo.Count > 0)
                                         {
