@@ -112,11 +112,15 @@ namespace Payroll.Controllers
             return Json(empresas);
         }
         [HttpPost]
-        public JsonResult LoadEmpresa()
+        public JsonResult LoadEmpresa( int IdEmpresa)
         {
+            if (IdEmpresa < 1 ) {
+                IdEmpresa = int.Parse(Session["IdEmpresa"].ToString());
+            }
+
             List<string> empresas = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            int IdEmpresa = int.Parse(Session["IdEmpresa"].ToString());
+        
             empresas = Dao.sp_CEmpresas_Retrieve_Empresa(IdEmpresa);
             return Json(empresas);
         }
