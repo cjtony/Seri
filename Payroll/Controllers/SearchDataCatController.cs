@@ -556,5 +556,43 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError });
         }
 
+        [HttpPost]
+        public JsonResult LoadBanks()
+        {
+            Boolean flag = false;
+            String  messageError = "none";
+            CatalogosDao catalogos  = new CatalogosDao();
+            List<BancosBean> bancos = new List<BancosBean>();
+            try {
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                bancos = catalogos.sp_Lista_Bancos_Disponibles();
+                if (bancos.Count > 0) {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Bancos = bancos });
+        }
+
+        [HttpPost]
+        public JsonResult SaveNewConfigurationBank(int bank, string numberCli, string plaza, string numberAccount, string clabe, int typeDisp)
+        {
+            Boolean flag        = false;
+            String messageError = "none";
+            CatalogosDao catalogos = new CatalogosDao();
+            BancosBean bancos = new BancosBean();
+            try {
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                bancos = catalogos.sp_Insert_Banco_Empresa(keyBusiness,bank, numberCli, plaza, numberAccount, clabe, typeDisp);
+                if (bancos.sMensaje == "SUCCESS") {
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError });
+        }
+
     }
 }

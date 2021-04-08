@@ -932,4 +932,153 @@
     btnCloseViewCd.addEventListener('click', fCloseViewConfig);
     icoCloseViewCd.addEventListener('click', fCloseViewConfig);
 
+    // NUEVA CONFIGURACION
+
+    const btnSaveNewBank = document.getElementById('btn-save-new-bank');
+    const bankSel = document.getElementById('bankSel');
+    const numberCli = document.getElementById('numberCli');
+    const plaza = document.getElementById('plaza');
+    const numberAccount = document.getElementById('numberAccount');
+    const clabe = document.getElementById('clabe');
+    const typeDisp = document.getElementById('typeDisp');
+
+    // Funcion que llenna el listado de los bancos
+    fLoadBanks = () => {
+        try {
+            $.ajax({
+                url: "../SearchDataCat/LoadBanks",
+                type: "POST",
+                data: {},
+                beforeSend: () => {
+
+                }, success: (data) => {
+                    console.log(data);
+                    if (data.Bandera == true && data.MensajeError == "none") {
+                        for (let i = 0; i < data.Bancos.length; i++) {
+                            bankSel.innerHTML += `<option value="${data.Bancos[i].iIdBanco}">${data.Bancos[i].sNombreBanco}</option>`;
+                        }
+                    } else {
+                        alert('No se cargo el listado de bancos');
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    fLoadBanks();
+
+    // Funcion que carga los tipos de dispersion
+    fLoadTypeDispersionNew = async () => {
+        try {
+            await $.ajax({
+                url: "../ConfigDataBank/LoadTypeDispersion",
+                type: "POST",
+                data: {},
+                success: (data) => {
+                    if (data.Bandera === true && data.MensajeError === "none") {
+                        for (let i = 0; i < data.DatosDispersion.length; i++) {
+                            var tDis = data.DatosDispersion[i];
+                            typeDisp.innerHTML += `<option value="${tDis.iId}">${tDis.sValor}</option>`;
+                        }
+                    } else {
+                        alert('Error al cargar los tipos de dispersion');
+                        location.reload();
+                    }
+                }, error: (jqXHR, exception) => {
+                    fcaptureaerrorsajax(jqXHR, exception);
+                }
+            });
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    fLoadTypeDispersionNew();
+
+    // Funcion que realiza el guardado de la configuracion
+    fSaveNewConfigurationBank = () => {
+        try {
+            if (bankSel.value != "none") {
+                if (numberCli.value != "") {
+                    if (plaza.value != "") {
+                        if (numberAccount.value != "") {
+                            if (clabe.value != "") {
+                                if (typeDisp.value != "none") {
+                                    const dataSend = {
+                                        bank: bankSel.value,
+                                        numberCli: numberCli.value,
+                                        plaza: plaza.value, numberAccount: numberAccount.value, clabe: clabe.value,
+                                        typeDisp: typeDisp.value
+                                    };
+                                    $.ajax({
+                                        url: "../SearchDataCat/SaveNewConfigurationBank",
+                                        type: "POST",
+                                        data: dataSend,
+                                        beforeSend: () => {
+
+                                        }, success: (data) => {
+                                            console.log(data);
+                                            if (data.Bandera == true) {
+                                                alert('Registro Correcto!');
+                                                location.reload();
+                                            } else {
+                                                alert('El banco que intenta guardar ya se encuentra registrado, o ocurrio un problema interno');
+                                            }
+                                        }, error: (jqXHR, exception) => {
+                                            fcaptureaerrorsajax(jqXHR, exception);
+                                        }
+                                    });
+                                } else {
+                                    alert('Seleccione un tipo de dispersion');
+                                }
+                            } else {
+                                alert('Ingrese la clabe');
+                            }
+                        } else {
+                            alert('Ingrese el numero de cuenta');
+                        }
+                    } else {
+                        alert('Ingrese el numero de plaza');
+                    }
+                } else {
+                    alert('Ingrese el numero de cliente');
+                }
+            } else {
+                alert('Seleccione un banco');
+            }
+        } catch (e) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    btnSaveNewBank.addEventListener('click', fSaveNewConfigurationBank);
+
 });
