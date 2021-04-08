@@ -1664,20 +1664,37 @@
                             per = Result.Result[i].dTotal;
                             PercepCalNomCe.style.visibility = 'visible';
                             LaTotalPerNoCe.style.visibility = 'visible';
-                            PercepCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
+
+                            var Tpercal = "$ " + new Intl.NumberFormat().format(Result.Result[i].dTotal);
+                            Tpercal = Tpercal.replace(',', '%')
+                            Tpercal = Tpercal.replace('.', ',')
+                            Tpercal = Tpercal.replace('%', '.')
+                            PercepCalNomCe.value = Tpercal;
+                          
 
                         }
                         if (Result.Result[i].iIdRenglon == 1990) {
                             dedu = Result.Result[i].dTotal;
                             LadeduCalNomCe.style.visibility = 'visible';
                             deduCalNomCe.style.visibility = 'visible';
-                            deduCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
+                            var Tdeducal = "$ " + new Intl.NumberFormat().format(Result.Result[i].dTotal);
+                            Tdeducal = Tdeducal.replace(',', '%')
+                            Tdeducal = Tdeducal.replace('.', ',')
+                            Tdeducal = Tdeducal.replace('%', '.')
+
+                            deduCalNomCe.value = Tdeducal;
                             total = per - dedu;
                             total = Math.round(total * 100);
                             total = total / 100;
                             LaTotalNomCe.style.visibility = 'visible';
-                            TotalNomCe.style.visibility='visible'
-                            TotalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(total);
+                            TotalNomCe.style.visibility = 'visible'
+
+                            var Ttotal = "$ " + new Intl.NumberFormat().format(total);
+                            Ttotal = Ttotal.replace(',', '%')
+                            Ttotal = Ttotal.replace('.', ',')
+                            Ttotal = Ttotal.replace('%', '.')
+
+                            TotalNomCe.value = Ttotal;
                         }
                     }
                     var source =
@@ -1847,20 +1864,31 @@
                             per = Result.Result[i].dTotal;
                             PercepCalNomCe.style.visibility = 'visible';
                             LaTotalPerNoCe.style.visibility = 'visible';
-                            PercepCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
-
+                            var Tpercal = "$ " + new Intl.NumberFormat().format(Result.Result[i].dTotal);
+                            Tpercal = Tpercal.replace(',', '%')
+                            Tpercal = Tpercal.replace('.', ',')
+                            Tpercal = Tpercal.replace('%', '.')
+                            PercepCalNomCe.value = Tpercal
                         }
                         if (Result.Result[i].iIdRenglon == 1990) {
                             dedu = Result.Result[i].dTotal;
                             LadeduCalNomCe.style.visibility = 'visible';
                             deduCalNomCe.style.visibility = 'visible';
-                            deduCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
+                            var Tdeducal = "$ " + new Intl.NumberFormat().format(Result.Result[i].dTotal);
+                            Tdeducal = Tdeducal.replace(',', '%')
+                            Tdeducal = Tdeducal.replace('.', ',')
+                            Tdeducal = Tdeducal.replace('%', '.')
+                            deduCalNomCe.value = Tdeducal
                             total = per - dedu;
                             total = Math.round(total * 100);
                             total = total / 100;
                             LaTotalNomCe.style.visibility = 'visible';
-                            TotalNomCe.style.visibility = 'visible'
-                            TotalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(total);
+                            TotalNomCe.style.visibility = 'visible';
+                            var Ttotal = "$ " + new Intl.NumberFormat().format(total);
+                            Ttotal = Ttotal.replace(',', '%')
+                            Ttotal = Ttotal.replace('.', ',')
+                            Ttotal = Ttotal.replace('%', '.')
+                            TotalNomCe.value = Ttotal;
                         }
                     }
                     var source =
