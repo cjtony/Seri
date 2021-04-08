@@ -776,6 +776,14 @@
                                             `;
                                         }
                                         containerBtnsProDepBank.innerHTML += `
+                                            <div class="row animated fadeInDown mt-4">
+                                                <div class="col-md-8 offset-2">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Fecha dispersión:</label>
+                                                        <input type="date" class="form-control-sm form-control" id="dateDisC"/>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row animated fadeInDown delay-1s mt-4">
                                                 <div class="col-md-3 text-center">
                                                     <div class="form-group form-check mt-1 rounded text-primary font-weight-bold" style="">
@@ -1045,7 +1053,8 @@
                 typePeriod: parseInt(typeperiod.value),
                 dateDeposits: datedis.value,
                 mirror: mirrorSend,
-                type: 285
+                type: 285,
+                dateDisC: document.getElementById('dateDisC').value
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsPayroll",
