@@ -1866,7 +1866,7 @@ namespace Payroll.Models.Daos
 
                                         xmlWriter.WriteAttributeString("TotalExento", string.Format("{0:N2}", ExtentoPer).Replace(",",""));
                                         xmlWriter.WriteAttributeString("TotalGravado", string.Format("{0:N2}", Perpecio).Replace(",",""));
-                                        xmlWriter.WriteAttributeString("TotalSueldos", string.Format("{0:N2}", (ExtentoPer + Perpecio)));
+                                        xmlWriter.WriteAttributeString("TotalSueldos", string.Format("{0:N2}", (ExtentoPer + Perpecio)).Replace(",",""));
                                         decimal Isr = 0;
                                         Recibo2 = 0;
                                         if (LisTRecibo.Count > 0)
