@@ -1304,5 +1304,20 @@ namespace Payroll.Controllers
             return fechajobs;
         }
 
+        /// Caratula pdf 
+
+        [HttpPost]
+        public JsonResult ListTpCalculolnPDF( int iTipoPeriodo, int iPeriodo, int idEmpresa, int Anio)
+        {
+            List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
+            FuncionesNomina dao = new FuncionesNomina();
+            Dta = dao.Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN( iTipoPeriodo, iPeriodo, idEmpresa, Anio);  
+            return Json(Dta);
+
+        }
+
+
+
+
     }
 }
