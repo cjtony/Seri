@@ -70,7 +70,9 @@
             confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
         }).then((acepta) => {
             $("html, body").animate({ scrollTop: $(`#${element.id}`).offset().top - 50 }, 1000);
-            
+            setTimeout(() => {
+                element.focus();
+            }, 1000);
         });
     }
 
@@ -1038,33 +1040,47 @@
 
                                         }, success: (data) => {
                                             console.log(data);
-                                            if (data.Bandera == true) {
-                                                alert('Registro Correcto!');
+                                            if (data.Bandera == true && data.Validacion == "SUCCESS") {
+                                                alert('Registro exitoso');
+                                                //fShowTypeAlert("Correcto!", "Registro exitoso", "success", btnSaveNewBank, 0);
+                                                bankSel.value = "none";
+                                                numberCli.value = "";
+                                                plaza.value = "";
+                                                numberAccount.value = "";
+                                                clabe.value = "";
+                                                typeDisp.value = "none";
                                                 location.reload();
+                                            } else if (data.Validacion == "ERRORINSERCION") {
+                                                fShowTypeAlert("Atención!", "Ocurrio un error al guardar la informacion", "error", btnSaveNewBank, 0);
+                                            } else if (data.Validacion == "EXISTE") {
+                                                fShowTypeAlert("Atención!", "El banco ya se encuentra registrado para esta empresa", "info", btnSaveNewBank, 0);
+                                            } else if (data.Validacion == "ERROR") {
+                                                fShowTypeAlert("Atención!", "Error interno en la aplicación", "error", btnSaveNewBank, 0);
                                             } else {
-                                                alert('El banco que intenta guardar ya se encuentra registrado, o ocurrio un problema interno');
+                                                fShowTypeAlert("Atención!", "Error interno en la aplicación", "error", btnSaveNewBank, 0);
+                                                location.reload();
                                             }
                                         }, error: (jqXHR, exception) => {
                                             fcaptureaerrorsajax(jqXHR, exception);
                                         }
                                     });
                                 } else {
-                                    alert('Seleccione un tipo de dispersion');
+                                    fShowTypeAlert("Atención!", "Selecciona un tipo de dispersion", "warning", typeDisp, 0);
                                 }
                             } else {
-                                alert('Ingrese la clabe');
+                                fShowTypeAlert("Atención!", "Ingresa la clabe", "warning", clabe, 0);
                             }
                         } else {
-                            alert('Ingrese el numero de cuenta');
+                            fShowTypeAlert("Atención!", "Ingresa el numero de cuenta", "warning", numberAccount, 0);
                         }
                     } else {
-                        alert('Ingrese el numero de plaza');
+                        fShowTypeAlert("Atención!", "Ingresa la plaza", "warning", plaza, 0);
                     }
                 } else {
-                    alert('Ingrese el numero de cliente');
+                    fShowTypeAlert("Atención!", "Ingresa el numero de cliente", "warning", numberCli, 0);
                 }
             } else {
-                alert('Seleccione un banco');
+                fShowTypeAlert("Atención!", "Selecciona un banco", "warning", bankSel, 0);
             }
         } catch (e) {
             if (error instanceof EvalError) {

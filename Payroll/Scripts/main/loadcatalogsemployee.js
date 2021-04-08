@@ -755,9 +755,9 @@
         this.value = (this.value + '').replace(/[^0-9]/g, '');
     });
 
-    $("#numberst").keyup(function () {
-        this.value = (this.value + '').replace(/[^0-9]/g, '');
-    });
+    //$("#numberst").keyup(function () {
+    //    this.value = (this.value + '').replace(/[^0-9]/g, '');
+    //});
 
     $("#telmov").keyup(function () {
         this.value = (this.value + '').replace(/[^0-9]/g, '');

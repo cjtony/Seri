@@ -4,13 +4,13 @@
 	 * Constantes dispersion
 	 */
 
-    const navDispersion           = document.getElementById('nav-dispersion');
-    const containerDataDeploy     = document.getElementById('container-data-deploy');
-    const tableDataDeposits       = document.getElementById('table-data-deposits');
+    const navDispersion            = document.getElementById('nav-dispersion');
+    const containerDataDeploy      = document.getElementById('container-data-deploy');
+    const tableDataDeposits        = document.getElementById('table-data-deposits');
     const tableDataDepositsSpecial = document.getElementById('table-data-deposits-especial');
-    const alertDataDeposits       = document.getElementById('alert-data-deposits');
+    const alertDataDeposits        = document.getElementById('alert-data-deposits');
     const alertDataDepositsSpecial = document.getElementById('alert-data-deposits-special');
-    const containerBtnsProDepBank = document.getElementById('container-btns-process-deposits-bank');
+    const containerBtnsProDepBank  = document.getElementById('container-btns-process-deposits-bank');
     const containerBtnsProDepBankSpecial = document.getElementById('container-btns-process-deposits-bank-special');
     const btndesplegartab         = document.getElementById('btn-desplegar-tab');
     const btndesplegarespecialtab = document.getElementById('btn-desplegar-especial-tab');
@@ -1195,7 +1195,8 @@
                 typePeriod: parseInt(typeperiod.value),
                 dateDeposits: datedis.value,
                 mirror: mirrorSend,
-                type: 286
+                type: 286,
+                dateDisC: document.getElementById('dateDisC').value
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsInterbank",

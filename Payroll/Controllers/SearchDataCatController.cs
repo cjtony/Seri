@@ -591,7 +591,7 @@ namespace Payroll.Controllers
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError });
+            return Json(new { Bandera = flag, MensajeError = messageError, Validacion = bancos.sMensaje });
         }
 
     }
