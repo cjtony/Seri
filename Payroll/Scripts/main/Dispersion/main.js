@@ -777,10 +777,19 @@
                                         }
                                         containerBtnsProDepBank.innerHTML += `
                                             <div class="row animated fadeInDown mt-4">
-                                                <div class="col-md-8 offset-2">
+                                                <div class="col-md-6 offset-3">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Fecha dispersión:</label>
                                                         <input type="date" class="form-control-sm form-control" id="dateDisC"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 offset-3">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">Tipo pago:</label>
+                                                        <select class="form-control form-control-sm" id="tipPago">
+                                                            <option value="1">PAGO NOMINA</option>
+                                                            <option value="2">HONORARIOS</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1196,7 +1205,8 @@
                 dateDeposits: datedis.value,
                 mirror: mirrorSend,
                 type: 286,
-                dateDisC: document.getElementById('dateDisC').value
+                dateDisC: document.getElementById('dateDisC').value,
+                tipPago: document.getElementById('tipPago').value
             };
             $.ajax({
                 url: "../Dispersion/ProcessDepositsInterbank",
