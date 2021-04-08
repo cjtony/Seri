@@ -29,7 +29,7 @@
         btnFloEjecutar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'hidden';
         btnFloLimpiar.style.visibility = 'hidden';
-        FDelettable();
+       // FDelettable();
     };
     FTanopcion4 = () => {
         btnFloGuardar.style.visibility = 'hidden';
@@ -1496,18 +1496,18 @@
 
                /* Borra tabla de Nom */
 
-    FDelettable = () => {
-        var datainformations = $('#TbCalculosNom').jqxGrid('getdatainformation');
-        var rowscounts = datainformations.rowscount;
-        if (rowscounts > 0) {
-            for (var i = 0; i <= rowscounts; i++) {
+    //FDelettable = () => {
+    //    var datainformations = $('#TbCalculosNom').jqxGrid('getdatainformation');
+    //    var rowscounts = datainformations.rowscount;
+    //    if (rowscounts > 0) {
+    //        for (var i = 0; i <= rowscounts; i++) {
 
-                $("#TbCalculosNom").jqxGrid('deleterow', i);
-            }
-        }
+    //            $("#TbCalculosNom").jqxGrid('deleterow', i);
+    //        }
+    //    }
 
 
-    };
+    //};
 
 ///////////////////////////////////////////////////////////////////
 
@@ -1652,27 +1652,26 @@
             url: "../Nomina/ListTpCalculoln",
             type: "POST",
             data: dataSend,
-            success: (data) => {
-                console.log(data);
-                RosTabCountCalculo2 = data.length;
-                var dato = data[0].sMensaje;
+            success: (Result) => {
+                RosTabCountCalculo2 = Result.Result.length;
+                var dato = Result.Result[0].sMensaje;
                 if (dato == "No hay datos") {
                     fshowtypealert('Vista de Calculo', 'No contiene ningun calculo', 'warning');    
                 }
                 if (dato == "success") {
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].iIdRenglon == 990) {
-                            per = data[i].dTotal;
+                    for (var i = 0; i < Result.Result.length; i++) {
+                        if (Result.Result[i].iIdRenglon == 990) {
+                            per = Result.Result[i].dTotal;
                             PercepCalNomCe.style.visibility = 'visible';
                             LaTotalPerNoCe.style.visibility = 'visible';
-                            PercepCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(data[i].dTotal);
+                            PercepCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
 
                         }
-                        if (data[i].iIdRenglon == 1990) {
-                            dedu = data[i].dTotal;
+                        if (Result.Result[i].iIdRenglon == 1990) {
+                            dedu = Result.Result[i].dTotal;
                             LadeduCalNomCe.style.visibility = 'visible';
                             deduCalNomCe.style.visibility = 'visible';
-                            deduCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(data[i].dTotal);
+                            deduCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
                             total = per - dedu;
                             total = Math.round(total * 100);
                             total = total / 100;
@@ -1683,7 +1682,7 @@
                     }
                     var source =
                     {
-                        localdata: data,
+                        localdata: Result.Result,
                         datatype: "array",
                         datafields:
                             [
@@ -1835,27 +1834,27 @@
             url: "../Nomina/ListTpCalculoln",
             type: "POST",
             data: dataSend4,
-            success: (data) => {
-                console.log(data);
-                RosTabCountCalculo2 = data.length;
-                var dato = data[0].sMensaje;
+            success: (Result) => {
+              
+                RosTabCountCalculo2 = Result.Result.length;
+                var dato = Result.Result[0].sMensaje;
                 if (dato == "No hay datos") {
                     fshowtypealert('Vista de Calculo', 'No contiene ningun calculo', 'warning');
                 }
                 if (dato == "success") {
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].iIdRenglon == 990) {
-                            per = data[i].dTotal;
+                    for (var i = 0; i < Result.Result.length; i++) {
+                        if (Result.Result[i].iIdRenglon == 990) {
+                            per = Result.Result[i].dTotal;
                             PercepCalNomCe.style.visibility = 'visible';
                             LaTotalPerNoCe.style.visibility = 'visible';
-                            PercepCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(data[i].dTotal);
+                            PercepCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
 
                         }
-                        if (data[i].iIdRenglon == 1990) {
-                            dedu = data[i].dTotal;
+                        if (Result.Result[i].iIdRenglon == 1990) {
+                            dedu = Result.Result[i].dTotal;
                             LadeduCalNomCe.style.visibility = 'visible';
                             deduCalNomCe.style.visibility = 'visible';
-                            deduCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(data[i].dTotal);
+                            deduCalNomCe.value = "$ " + new Intl.NumberFormat("en-IN").format(Result.Result[i].dTotal);
                             total = per - dedu;
                             total = Math.round(total * 100);
                             total = total / 100;
@@ -1866,7 +1865,7 @@
                     }
                     var source =
                     {
-                        localdata: data,
+                        localdata: Result.Result,
                         datatype: "array",
                         datafields:
                             [

@@ -188,6 +188,9 @@ namespace Payroll.Models.Beans
         public string sNombreRenglon { get; set; }
         public decimal dTotal { get; set; }
         public string sTotal { get; set; }
+        public decimal dTotalSaldo { get; set; }
+        public decimal dTotalGravado { get; set; }
+        public decimal dTotalExento { get; set; }
         public string sMensaje { get; set; }
     }
     public class TPProcesos

@@ -3419,6 +3419,61 @@ namespace Payroll.Models.Daos
             return list;
         }
 
+        // caratula pdf
+        public List<TpCalculosCarBean> Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN(int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa, int CtrliAnio)
+        {
+            List<TpCalculosCarBean> list = new List<TpCalculosCarBean>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", Idempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipodePerido", CrtliIdTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CrtliPeriodo));
+               
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TpCalculosCarBean ls = new TpCalculosCarBean();
+                        {
+                            ls.sValor = data["Valor"].ToString();
+                            ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
+                            ls.sNombreRenglon = data["Nombre_Renglon"].ToString();
+                            if (data["totalSaldo"].ToString() == "") { ls.dTotalSaldo = 0; }
+                            if (data["totalSaldo"].ToString() != "") { ls.dTotalSaldo = decimal.Parse(data["totalSaldo"].ToString()); }
+                            if (data["totalGravado"].ToString() == "") { ls.dTotalGravado = 0; }
+                            if (data["totalGravado"].ToString() != "") { ls.dTotalGravado = decimal.Parse(data["totalGravado"].ToString()); }
+                            if (data["TotalExen"].ToString() == "") { ls.dTotalExento = 0; }
+                            if (data["TotalExen"].ToString() != "") { ls.dTotalExento = decimal.Parse(data["TotalExen"].ToString()); }
+                            ls.sMensaje = "success";
+                        };
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    TpCalculosCarBean ls = new TpCalculosCarBean();
+                    ls.sMensaje = "No hay datos";
+                    list.Add(ls);
+
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
 
     }
 }
