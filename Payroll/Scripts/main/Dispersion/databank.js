@@ -117,6 +117,7 @@
                         const dataLength = data.DatosBancos.length;
                         let lengthData = 0;
                         for (let i = 0; i < data.DatosBancos.length; i++) {
+                            console.log(data.DatosBancos[i]);
                             tableDataBank.innerHTML += `
                                 <tr>
                                     <td>${data.DatosBancos[i].iIdBanco}</td>

@@ -93,19 +93,15 @@ namespace Payroll.Models.Daos
         public List<LoadDataTableBean> sp_Carga_Bancos_Empresa(int keyBusiness, int canceled)
         {
             List<LoadDataTableBean> lDataTableBean = new List<LoadDataTableBean>();
-            try
-            {
+            try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Carga_Bancos_Empresa", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
                 cmd.Parameters.Add(new SqlParameter("@Cancelado", canceled));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows)
-                {
-                    while (data.Read())
-                    {
-                        lDataTableBean.Add(new LoadDataTableBean
-                        {
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        lDataTableBean.Add(new LoadDataTableBean {
                             iIdBancoEmpresa = Convert.ToInt32(data["idBanco_emp"].ToString()),
                             iEmpresa_id = Convert.ToInt32(data["Empresa_id"].ToString()),
                             iIdBanco = Convert.ToInt32(data["Banco_id"].ToString()),
@@ -122,9 +118,7 @@ namespace Payroll.Models.Daos
                     }
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 Console.WriteLine(exc.Message.ToString());
             }
             finally
