@@ -7,7 +7,71 @@ using System.Data.SqlClient;
 
 namespace Payroll.Models.Daos
 {
-    public class CatalogosDao { }
+    public class CatalogosDao : Conexion { 
+    
+        public List<BancosBean> sp_Lista_Bancos_Disponibles()
+        {
+            List<BancosBean> bancos = new List<BancosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Lista_Bancos_Disponibles", this.conexion) { CommandType = CommandType.StoredProcedure };
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        BancosBean bean = new BancosBean();
+                        bean.iIdBanco   = Convert.ToInt32(dataReader["IdBanco"]);
+                        bean.sNombreBanco = dataReader["Descripcion"].ToString();
+                        bancos.Add(bean);
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bancos;
+        }
+
+        public BancosBean sp_Insert_Banco_Empresa(int keyBusiness, int bank, string numberCli, string plaza, string numberAccount, string clabe, int typeDisp)
+        {
+            BancosBean bancos = new BancosBean();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Insert_Banco_Empresa", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@BancoId", bank));
+                cmd.Parameters.Add(new SqlParameter("@NumCliente", numberCli));
+                cmd.Parameters.Add(new SqlParameter("@Plaza", plaza));
+                cmd.Parameters.Add(new SqlParameter("@NumCtaEmpresa", numberAccount));
+                cmd.Parameters.Add(new SqlParameter("@Clabe", clabe));
+                cmd.Parameters.Add(new SqlParameter("@TipoDispersion", typeDisp));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["EXISTE"].ToString() == "0") {
+                        if (dataReader["Insertado"].ToString() == "1") {
+                            bancos.sMensaje = "SUCCESS";
+                        } else {
+                            bancos.sMensaje = "ERRORINSERCION";
+                        }
+                    } else {
+                        bancos.sMensaje = "EXISTE";
+                    }
+                } else {
+                    bancos.sMensaje = "ERROR";
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return bancos;
+        }
+
+    }
     public class CatalogoGeneralDao : Conexion
     {
 
