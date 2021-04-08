@@ -581,7 +581,7 @@ namespace Payroll.Controllers
                                                         });
                                             }
                                             string amount = payroll.doImporte.ToString();
-                                            string nameBen = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd();
+                                            string nameBen = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd() + " " + payroll.sMaterno.TrimEnd();
                                             header = finallyAccount + "," + amount + "," + hReferenceAlpa + "," + nameBen;
                                             stream.WriteLine(header);
                                         }
@@ -1218,7 +1218,7 @@ namespace Payroll.Controllers
                                                 dataErrors.Add( new DataErrorAccountBank { sBanco = "HSBC", sCuenta = payroll.sCuenta, sNomina = payroll.sNomina });
                                             }
                                             string amount = payroll.doImporte.ToString();
-                                            string nameBen = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd();
+                                            string nameBen = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd() + " " + payroll.sMaterno.TrimEnd();
                                             header = finallyAccount + "," + amount + "," + hReferenceAlpa + "," + nameBen;
                                             stream.WriteLine(header);
                                         }

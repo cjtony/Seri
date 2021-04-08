@@ -1619,36 +1619,37 @@ namespace Payroll.Controllers
                                 vFileName = "NOMINAS_" + "E" + string.Format("{0:00}", keyBusiness.ToString()) + "A" + yearPeriod.ToString() + "P" + string.Format("{0:00}", Convert.ToInt16(numberPeriod)) + "B" + string.Format("{0:000}", bankResult) + "_INTERBANCOSESP.txt";
                             }
                         }
-                        // Creacion de archivos txt para dispersion interbancaria
-                        if (bankResult == 2) {
-                            // BANAMEX
-                        }
+
+
                         if (bankResult == 14) {
-                            // SANTANDER
+                            // SANTANDER - ARCHIVO OK (INTERBANCARIO)
                             // - DETALLE - \\
-                            string numCuentaEmpresaSantanderD = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, fillerIntSantanderD1 = "     ", fillerIntSantanderD2 = "  ", sucursalIntSantanderD1 = "1001", plazaIntSantanderD1 = datoCuentaClienteBancoEmpresaBean.iPlaza.ToString(), campoFijoIntSantanderD1 = "DEPOSITO", fillerIntSantanderD3 = "                                                                                                                               ";
+                            string numCuentaEmpresaSantanderD = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, fillerIntSantanderD1 = "     ", fillerIntSantanderD2 = "  ", sucursalIntSantanderD1 = "1001", plazaIntSantanderD1 = "01001",
+                                campoFijoIntSantanderD1 = "NOMINA", fillerIntSantanderD3 = "                                                                                                                            ";
                             int consecutivoIntSantanderD1 = 0;
-                            using (StreamWriter fileIntSantander = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName)) {
+                            using (StreamWriter fileIntSantander = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName))
+                            {
                                 string espaciosNomEmpIntSantander = "", nombreEmpIntSantander = "", cerosImpIntSantander = "", cerosConIntSantander = "";
                                 int longNomEmpIntSan = 40, longImpIntSan = 15, longConIntSan = 7;
-                                foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean) {
+                                foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean)
+                                {
                                     consecutivoIntSantanderD1 += 1;
                                     string nameEmployee = bank.sNombre + " " + bank.sPaterno + " " + bank.sMaterno;
-                                    if (nameEmployee.Length > 40) {
+                                    if (nameEmployee.Length > 40)
+                                    {
                                         nombreEmpIntSantander = nameEmployee.Substring(0, 39);
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         nombreEmpIntSantander = nameEmployee;
                                     }
-                                    string clave = "";
-                                    if (bank.sBanco.Length > 6) {
-                                        clave = "B" + bank.sBanco.Substring(0, 4);
-                                    }
+                                    string clave = bank.sCodigo;
                                     int longNomEmpIntSantanderResult = longNomEmpIntSan - nombreEmpIntSantander.Length;
                                     int longImpIntSantanderResult = longImpIntSan - bank.dImporte.ToString().Length;
                                     int longConIntSantanderResult = longConIntSan - consecutivoIntSantanderD1.ToString().Length;
                                     for (var b = 0; b < longNomEmpIntSantanderResult; b++) { espaciosNomEmpIntSantander += " "; }
-                                    for (var t = 0; t < longImpIntSantanderResult; t++)    { cerosImpIntSantander += "0"; }
-                                    for (var p = 0; p < longConIntSantanderResult; p++)    { cerosConIntSantander += "0"; }
+                                    for (var t = 0; t < longImpIntSantanderResult; t++) { cerosImpIntSantander += "0"; }
+                                    for (var p = 0; p < longConIntSantanderResult; p++) { cerosConIntSantander += "0"; }
                                     fileIntSantander.Write(numCuentaEmpresaSantanderD + fillerIntSantanderD1 + bank.sCuenta + fillerIntSantanderD2 + clave + nombreEmpIntSantander + espaciosNomEmpIntSantander + sucursalIntSantanderD1 + cerosImpIntSantander + bank.dImporte + plazaIntSantanderD1 + campoFijoIntSantanderD1 + fillerIntSantanderD3 + cerosConIntSantander + consecutivoIntSantanderD1.ToString() + "\n");
                                     espaciosNomEmpIntSantander = "";
                                     cerosImpIntSantander = "";
@@ -1658,29 +1659,47 @@ namespace Payroll.Controllers
                             }
                             // # [ FIN -> CREACION DE DISPERSION DE SANTANDER (INTERBANCARIO) ] * \\
                         }
+
+
                         if (bankResult == 44) {
-                            // SCOTIABANK
+
+                            // SCOTIABANK -- ARCHIVO OK (INTERBANCARIO)
                             string tipoArchivoIntScotiabank = "EE",
                                 tipoRegistroIntScotiabank = "HA",
-                                numeroContratoIntScotiabank = "47848",
+                                numeroContratoIntScotiabank = "",
                                 secuenciaIntScotiabank = "01",
                                 fillerIntScotiabankHA1 = "                                                                                                                                                                                                                                                                                                                                                                       ";
+
+                            if (keyBusiness == 8) {
+                                numeroContratoIntScotiabank = "88178";
+                            } else if (keyBusiness == 10) {
+                                numeroContratoIntScotiabank = "47848";
+                            } else if (keyBusiness == 7) {
+                                numeroContratoIntScotiabank = "48426";
+                            } else if (keyBusiness == 15) {
+                                numeroContratoIntScotiabank = "85301";
+                            } else {
+                                numeroContratoIntScotiabank = "00000";
+                            }
+
                             string headerLayoutAIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroIntScotiabank + numeroContratoIntScotiabank + secuenciaIntScotiabank + fillerIntScotiabankHA1;
                             // - ENCABEZADO BLOQUE - \\
                             string tipoRegistroBIntScotiabank = "HB",
                                 monedaCuentaBIntScotiabank = "00",
-                                usoFuturoIntScotiabank = "0000",
+                                usoFuturoIntScotiabank = "00000",
                                 cuentaCargoIntScotiabank = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta,
                                 referenciaEmpresaIntScotiabank = "0000000001",
                                 codigoStatusIntScotiabank = "000",
                                 fillerIntScotiabankHB1 = "                                                                                                                                                                                                                                                                                                                                                ";
                             string headerLayoutBIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroBIntScotiabank + monedaCuentaBIntScotiabank + usoFuturoIntScotiabank + cuentaCargoIntScotiabank + referenciaEmpresaIntScotiabank + codigoStatusIntScotiabank + fillerIntScotiabankHB1;
                             // - DETALLE - \\
+                            string fechaIntScotiabankD = dateGeneration.ToString("yyyyMMdd");
+                            string conceptoPagoIntScotiabankD = "PAGO NOMINA"; 
                             string tipoRegistroCIntScotiabankD = "DA",
                                 tipoPagoIntScotiabankD = "04",
                                 claveMonedaIntScotiabank = "00",
-                                fechaIntScotiabankD = dateGeneration.ToString("yyyyMMdd"),
-                                servicioIntScotiabankD = "01", fillerIntScotiabankD1 = "                            ",
+                                servicioIntScotiabankD = "01",
+                                fillerIntScotiabankD1 = "                            ",
                                 plazaIntScotiabankD = "00000",
                                 sucursalIntScotiabankD = "00000",
                                 paisIntScotiabankD = "00000",
@@ -1689,13 +1708,11 @@ namespace Payroll.Controllers
                                 digitoIntScotiabankD1 = " ",
                                 bancoEmisorIntScotiabankD1 = "044",
                                 diasVigenciaIntScotiabankD = "001",
-                                conceptoPagoIntScotiabankD = "PAGO NOMINA",
                                 fillerIntScotiabankD3 = "                                       ",
                                 fillerIntScotiabankD4 = "                                                            ",
                                 fillerIntScotiabankD5 = "                      ";
                             int consecutivoIntScotiabankD1 = 0;
                             // - CREACION DE LISTA PARA LLENAR EL DETALLE - \\
-
                             using (StreamWriter fileIntScotiabank = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName)) {
                                 fileIntScotiabank.Write(headerLayoutAIntScotiabank + "\n");
                                 fileIntScotiabank.Write(headerLayoutBIntScotiabank + "\n");
@@ -1728,11 +1745,24 @@ namespace Payroll.Controllers
                                     } else {
                                         sufBank = clvBank.ToString();
                                     }
-                                    string nameEmployee = bank.sNombre + " " + bank.sPaterno + " " + bank.sMaterno;
+                                    string nameEmployee = bank.sPaterno + " " + bank.sMaterno + " " + bank.sNombre;
                                     if (nameEmployee.Length > 40) {
                                         nombreEmpIntScotiabankD = nameEmployee.Substring(0, 39);
                                     } else {
                                         nombreEmpIntScotiabankD = nameEmployee;
+                                    }
+                                    int filler28 = 28;
+                                    string filler28F = "";
+                                    int payrollEmp = bank.sNomina.ToString().Length;
+                                    int longPayroll = 5;
+                                    int accortPayroll = payrollEmp - 5;
+                                    if (accortPayroll != 0) {
+                                        int length28 = filler28 - accortPayroll;
+                                        for (var v = 0; v < length28; v++) {
+                                            filler28F += " ";
+                                        }
+                                    } else {
+                                        filler28F = fillerIntScotiabankD1;
                                     }
                                     consecutivoIntScotiabankD1 += 1;
                                     totalMoviIntScotiabank += 1;
@@ -1749,7 +1779,7 @@ namespace Payroll.Controllers
                                     for (var v = 0; v < longConsecIntScotiabankDResult; v++) { cerosConsecIntScotiabankD1 += "0"; }
                                     for (var r = 0; r < longCtaCheIntScotiabankDResult; r++) { cerosCtaCheIntScotiabankD1 += "0"; }
                                     for (var e = 0; e < longCodStaIntScotiabankDResult; e++) { cerosCodStaIntScotiabankD1 += "0"; }
-                                    fileIntScotiabank.Write(tipoArchivoIntScotiabank + tipoRegistroCIntScotiabankD + tipoPagoIntScotiabankD + claveMonedaIntScotiabank + cerosImpIntScotiabankD + bank.dImporte.ToString() + fechaIntScotiabankD + servicioIntScotiabankD + cerosNumNomIntScotiabankD + bank.sNomina + fillerIntScotiabankD1 + nameEmployee + espaciosNomEmpIntScotiabankD + cerosConsecIntScotiabankD1 + consecutivoIntScotiabankD1.ToString() + plazaIntScotiabankD + sucursalIntScotiabankD + cerosCtaCheIntScotiabankD1 + bank.sCuenta + paisIntScotiabankD + fillerIntScotiabankD2 + tipoCuentaIntScotiabankD1 + digitoIntScotiabankD1 + plazaIntScotiabankD + bancoEmisorIntScotiabankD1 + sufBank + diasVigenciaIntScotiabankD + conceptoPagoIntScotiabankD + fillerIntScotiabankD3 + fillerIntScotiabankD4 + cerosCodStaIntScotiabankD1 + bank.sCuenta + fillerIntScotiabankD5 + "\n");
+                                    fileIntScotiabank.Write(tipoArchivoIntScotiabank + tipoRegistroCIntScotiabankD + tipoPagoIntScotiabankD + claveMonedaIntScotiabank + cerosImpIntScotiabankD + bank.dImporte.ToString() + fechaIntScotiabankD + servicioIntScotiabankD + cerosNumNomIntScotiabankD + bank.sNomina + filler28F + nameEmployee + espaciosNomEmpIntScotiabankD + cerosConsecIntScotiabankD1 + consecutivoIntScotiabankD1.ToString() + plazaIntScotiabankD + sucursalIntScotiabankD + cerosCtaCheIntScotiabankD1 + bank.sCuenta + paisIntScotiabankD + fillerIntScotiabankD2 + tipoCuentaIntScotiabankD1 + digitoIntScotiabankD1 + plazaIntScotiabankD + bancoEmisorIntScotiabankD1 + sufBank + diasVigenciaIntScotiabankD + conceptoPagoIntScotiabankD + fillerIntScotiabankD3 + fillerIntScotiabankD4 + cerosCodStaIntScotiabankD1 + bank.sCuenta + fillerIntScotiabankD5 + "\n");
                                     cerosImpIntScotiabankD = "";
                                     cerosNumNomIntScotiabankD = "";
                                     espaciosNomEmpIntScotiabankD = "";
@@ -1771,20 +1801,70 @@ namespace Payroll.Controllers
                                 fileIntScotiabank.Close();
                             }
                         }
+
                         if (bankResult == 72) {
-                            // BANORTE
                             string tipoOperacion = "04";
                             string cuentaOrigen = "";
                             string cuentaDestino = "";
-
-                            // GRUPO DE EMPRESAS PARA DISPERSION
-                            // INTERBANORTE
-                            // DISPERSION POR GRUP
-                            // ARCHIVO POR BANCO PARA TODAS LAS EMPRESAS
-                            // UNA EMPRESA POR GRUPO 
+                            string apartCeros1 = "00000000000";
+                            string apartCeros2 = "0";
+                            string apartCeros3 = "00";
+                            string referenceDate = DateTime.Now.ToString("ddMMyyyy");
+                            string descriptionPd = "PAGO NOMINA                   ";
+                            string coinOrigin = "1";
+                            string coingDestiny = "1";
+                            string ivaBanorte = "00000000000000";
+                            string emailBusiness = "dgarcia@gruposeri.com                  ";
+                            // Longitudes campos
+                            int longNumberPayroll = 13;
+                            int longNumberADestiny = 10;
+                            int longNumberImport = 14;
+                            int longNumberBRfc = 13;
+                            int longNumberEmail = 70;
+                            int longDetailsTotal = 255;
+                            using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName)) {
+                                foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
+                                    string nameEmployee = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
+                                    if (nameEmployee.Length > 70) {
+                                        nameEmployee.Substring(0, 69);
+                                    }
+                                    string payroll = data.sNomina;
+                                    int longPayroll = longNumberPayroll - payroll.Length;
+                                    string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                                    int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
+                                    string accountDestiny = data.sCuenta;
+                                    string importPaid = "";
+                                    int longImportPaid = longNumberImport - data.dImporte.ToString().Length;
+                                    // Falta inidicar el rfc del grupo de empresa
+                                    //string rfcBusiness = datosEmpresaBeanDispersion.sRfc;
+                                    int longRfcBusiness = longNumberBRfc - rfcBusiness.Length;
+                                    int longEmailBusiness = longNumberEmail - emailBusiness.Length;
+                                    for (var i = 0; i < longPayroll; i++) {
+                                        payroll += " ";
+                                    }
+                                    for (var j = 0; j < longAcountOrigin; j++) {
+                                        accountOrigin += "0";
+                                    }
+                                    for (var b = 0; b < longImportPaid; b++) {
+                                        importPaid += "0";
+                                    }
+                                    for (var p = 0; p < longRfcBusiness; p++) {
+                                        rfcBusiness += " ";
+                                    }
+                                    importPaid += data.dImporte.ToString();
+                                    string fillerFinal = "";
+                                    string cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
+                                    int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
+                                    for (var x = 0; x < longFinalFiller; x++) {
+                                        fillerFinal += " ";
+                                    }
+                                    fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
+                                }
+                                fileIntBanorte.Close();
+                            }
                         }
-                        
-                        
+
+
                         FileStream fs = new FileStream(directoryTxt + @"\\" + nameFolder + @"\\" + fileNamePDF, FileMode.Create);
                         Document doc = new Document(iTextSharp.text.PageSize.LETTER, 20, 40, 20, 40);
                         PdfWriter pw = PdfWriter.GetInstance(doc, fs);
