@@ -651,7 +651,7 @@ namespace Payroll.Controllers
                                                 for (var z = 0; z < longNomEmp; z++) { spaceGenerate3 += " "; }
                                                 for (var x = 0; x < longImport; x++) { numberCeroGene += "0"; }
                                                 resultSumTot += Convert.ToInt32(payroll.dImporte);
-                                                fileTxt.Write(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno + spaceGenerate1 + payroll.sMaterno + spaceGenerate2 + payroll.sNombre + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + payroll.dImporte.ToString() + "\n");
+                                                fileTxt.Write(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno.Replace("Ñ", "N") + spaceGenerate1 + payroll.sMaterno.Replace("Ñ", "N") + spaceGenerate2 + payroll.sNombre.Replace("Ñ", "N") + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + payroll.dImporte.ToString() + "\n");
                                                 consec1Generat = ""; numberNomGener = "";
                                                 spaceGenerate1 = ""; spaceGenerate2 = "";
                                                 spaceGenerate3 = ""; numberCeroGene = "";
@@ -782,12 +782,17 @@ namespace Payroll.Controllers
                                                     }
                                                     finallyAccount = formatAccountSubstring.Substring(7, 10);
                                                     // finallyAccount = cerosAccount + formatAccountSubstring.Substring(7, 10);
-                                                } else if (longAcortAccount == 9) {
-                                                    finallyAccount = "0" + payroll.sCuenta;
-                                                } else if (longAcortAccount == 10) {
-                                                    finallyAccount = payroll.sCuenta;
-                                                } else
+                                                }
+                                                else if (longAcortAccount == 9)
                                                 {
+                                                    finallyAccount = "0" + payroll.sCuenta;
+                                                }
+                                                else if (longAcortAccount == 10)
+                                                {
+                                                    finallyAccount = payroll.sCuenta;
+                                                } else if (longAcortAccount == 11) {
+                                                    finallyAccount = payroll.sCuenta.Remove(0, 1);
+                                                } else {
                                                     dataErrors.Add(
                                                             new DataErrorAccountBank
                                                             {
@@ -800,7 +805,7 @@ namespace Payroll.Controllers
                                                 sumtests += payroll.dImporte;
                                                 int longNumEmp = longNumEmpleado - payroll.sNomina.Length;
                                                 int longNumImp = longNumImporte - payroll.dImporte.ToString().Length;
-                                                int longNumCta = longNumCuenta - payroll.sCuenta.Length;
+                                                int longNumCta = 10 - finallyAccount.Length;
                                                 string cerosAccountDefault = "00000000";
                                                 for (var b = 0; b < longNumEmp; b++) { generaCNumEmpleadoB += "0"; }
                                                 for (var v = 0; v < longNumImp; v++) { generaCNumImporteB += "0"; }
@@ -1282,7 +1287,7 @@ namespace Payroll.Controllers
                                                 for (var z = 0; z < longNomEmp; z++) { spaceGenerate3 += " "; }
                                                 for (var x = 0; x < longImport; x++) { numberCeroGene += "0"; }
                                                 resultSumTot += Convert.ToInt32(payroll.dImporte);
-                                                fileTxt.Write(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno + spaceGenerate1 + payroll.sMaterno + spaceGenerate2 + payroll.sNombre + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + payroll.dImporte.ToString() + "\n");
+                                                fileTxt.Write(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno.Replace("Ñ", "N") + spaceGenerate1 + payroll.sMaterno.Replace("Ñ", "N") + spaceGenerate2 + payroll.sNombre.Replace("Ñ", "N") + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + payroll.dImporte.ToString() + "\n");
                                                 consec1Generat = ""; numberNomGener = "";
                                                 spaceGenerate1 = ""; spaceGenerate2 = "";
                                                 spaceGenerate3 = ""; numberCeroGene = "";
@@ -1412,7 +1417,13 @@ namespace Payroll.Controllers
                                                     finallyAccount = "0" + payroll.sCuenta;
                                                 } else if (longAcortAccount == 10) {
                                                     finallyAccount = payroll.sCuenta;
-                                                } else {
+                                                }
+                                                else if (longAcortAccount == 11)
+                                                {
+                                                    finallyAccount = payroll.sCuenta.Remove(0, 1);
+                                                }
+                                                else
+                                                {
                                                     dataErrors.Add(
                                                             new DataErrorAccountBank
                                                             {
@@ -1425,7 +1436,7 @@ namespace Payroll.Controllers
                                                 sumtests += payroll.dImporte;
                                                 int longNumEmp = longNumEmpleado - payroll.sNomina.Length;
                                                 int longNumImp = longNumImporte - payroll.dImporte.ToString().Length;
-                                                int longNumCta = longNumCuenta - payroll.sCuenta.Length;
+                                                int longNumCta = 10 - finallyAccount.Length;
                                                 string cerosAccountDefault = "00000000";
                                                 for (var b = 0; b < longNumEmp; b++) { generaCNumEmpleadoB += "0"; }
                                                 for (var v = 0; v < longNumImp; v++) { generaCNumImporteB += "0"; }
@@ -1831,7 +1842,7 @@ namespace Payroll.Controllers
                                 int longNomEmpIntSan = 40, longImpIntSan = 15, longConIntSan = 7;
                                 foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean) {
                                     consecutivoIntSantanderD1 += 1;
-                                    string nameEmployee = bank.sNombre + " " + bank.sPaterno + " " + bank.sMaterno;
+                                    string nameEmployee = bank.sNombre.Replace("Ñ","N") + " " + bank.sPaterno.Replace("Ñ", "N") + " " + bank.sMaterno.Replace("Ñ","N");
                                     if (nameEmployee.Length > 40) {
                                         nombreEmpIntSantander = nameEmployee.Substring(0, 39);
                                     } else {
