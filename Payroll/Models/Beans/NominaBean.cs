@@ -244,6 +244,7 @@ namespace Payroll.Models.Beans
         public string sFechaNacimiento { get; set; }
         public string sFechaBajaEmple { get; set; }
         public string sDomiciolioEmple { get; set; }
+        public string sDomiciolioEmpre { get; set; }
         public int iIdEmpleado { get; set; }
         public string sDescripcionDepartamento { get; set; }
         public string sLocalidademple { get; set; }
@@ -267,6 +268,7 @@ namespace Payroll.Models.Beans
         public int iNoEjecutados { get; set; }
         public int GrupoEmpresas { get; set; }
         public int iTipoJordana { get; set; }
+        public string sTipoJornada { get; set; }
         public int iCgTipoEmpleadoId { get; set; }
         public string sClaveEnt { get; set; }
         public string sMensaje { get; set; }
