@@ -112,7 +112,7 @@
 
     //// Muestra fecha de inicio y fin de peridodos
 
-    $('#TipodePerdioRec').change(function () {
+    $('#TipodePerdioRec').change(function ()     {
        // ListPeriodoEmpresa
         IdEmpresa = EmpresaNom.value;
         anio = anoNom.value;
