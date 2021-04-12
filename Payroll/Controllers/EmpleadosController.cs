@@ -830,7 +830,7 @@ namespace Payroll.Controllers
                 Moneda.IndentationLeft = 230;
 
 
-                Palabra = "";
+                Palabra = "   ";
                 Paragraph TBanco = new Paragraph("Banco:", TTexNegCuerpo);
                 TBanco.IndentationLeft = 50;
                 string sbanco;
