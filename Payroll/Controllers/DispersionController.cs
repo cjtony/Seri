@@ -615,8 +615,7 @@ namespace Payroll.Controllers
                                                 totalAmount += payroll.doImporte;
                                                 int longAcortAccount = payroll.sCuenta.Length;
                                                 string finallyAccount = payroll.sCuenta;
-                                                if (longAcortAccount == 18)
-                                                {
+                                                if (longAcortAccount == 18) {
                                                     string accountUser = payroll.sCuenta;
                                                     string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
                                                     string formatAccount = "";
@@ -657,7 +656,7 @@ namespace Payroll.Controllers
                                                 for (var z = 0; z < longNomEmp; z++) { spaceGenerate3 += " "; }
                                                 for (var x = 0; x < longImport; x++) { numberCeroGene += "0"; }
                                                 resultSumTot += Convert.ToInt32(payroll.dImporte);
-                                                fileTxt.Write(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno.Replace("Ñ", "N") + spaceGenerate1 + payroll.sMaterno.Replace("Ñ", "N") + spaceGenerate2 + payroll.sNombre.Replace("Ñ", "N") + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + payroll.dImporte.ToString() + "\n");
+                                                fileTxt.WriteLine(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno.Replace("Ñ", "N") + spaceGenerate1 + payroll.sMaterno.Replace("Ñ", "N") + spaceGenerate2 + payroll.sNombre.Replace("Ñ", "N") + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + payroll.dImporte.ToString());
                                                 consec1Generat = ""; numberNomGener = "";
                                                 spaceGenerate1 = ""; spaceGenerate2 = "";
                                                 spaceGenerate3 = ""; numberCeroGene = "";
@@ -675,7 +674,7 @@ namespace Payroll.Controllers
                                                 cerosTotalRecords += "0";
                                             }
                                             string totLayout = "3" + consec1Generat + (consecutiveInit + 1).ToString() + cerosTotalRecords + totalRecords.ToString() + totGenerate + resultSumTot.ToString();
-                                            fileTxt.Write(totLayout + "\n");
+                                            fileTxt.WriteLine(totLayout);
                                         }
                                         fileTxt.Close();
                                     }
@@ -1875,6 +1874,9 @@ namespace Payroll.Controllers
                             }
                             // # [ FIN -> CREACION DE DISPERSION DE SANTANDER (INTERBANCARIO) ] * \\
                         }
+                        
+                        
+                        
                         if (bankInterbank == 44) {
                             // SCOTIABANK -- ARCHIVO OK (INTERBANCARIO)
                             string tipoArchivoIntScotiabank = "EE", 
@@ -2020,6 +2022,10 @@ namespace Payroll.Controllers
                                 fileIntScotiabank.Close();
                             }
                         }
+                        
+                        
+                        
+                        
                         // BANORTE -> INTERBANCARIO -> OK
                         if (bankInterbank == 72) {
                             
