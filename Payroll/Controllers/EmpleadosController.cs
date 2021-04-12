@@ -821,10 +821,18 @@ namespace Payroll.Controllers
 
                 Paragraph TClaveb = new Paragraph("Clave:", TTexNegCuerpo);
                 TClaveb.IndentationLeft = 200;
-                nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
-                Palabra = nodo.Attributes.GetNamedItem("CuentaBancaria").Value;
+                Palabra = "N/A";
+
+                if (ListEmisor[0].iCgTipoPago != 218) {
+                    TClaveb.IndentationLeft = 200;
+                    nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
+                    Palabra = nodo.Attributes.GetNamedItem("CuentaBancaria").Value;
+                  
+
+                }
                 Paragraph Claveb = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Claveb.IndentationLeft = 223;
+
 
 
                 List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
@@ -861,24 +869,33 @@ namespace Payroll.Controllers
                 Palabra = "   ";
                 Paragraph TBanco = new Paragraph("Banco:", TTexNegCuerpo);
                 TBanco.IndentationLeft = 50;
-                string sbanco;
-                if (Palabra.Length >= 7 && Palabra.Length < 18)
-                {
-                    nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
-                    Palabra = nodo.Attributes.GetNamedItem("Banco").Value;
-                    sbanco = Palabra;
-                }
-                else
-                {
-                    sbanco = Palabra.Substring(0, 3);
-                }
+                string sbanco="";
+                if (ListEmisor[0].iCgTipoPago != 218) {
 
+                     TBanco = new Paragraph("Banco:", TTexNegCuerpo);
+                    TBanco.IndentationLeft = 50;
+
+                    if (Palabra.Length >= 7 && Palabra.Length < 18)
+                    {
+                        nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
+                        Palabra = nodo.Attributes.GetNamedItem("Banco").Value;
+                        sbanco = Palabra;
+                    }
+                    else
+                    {
+                        sbanco = Palabra.Substring(0, 3);
+                    }
+
+
+                }
 
                 if (ListEmisor != null)
                 {
 
                     sbanco = sbanco + " " + ListEmisor[0].sDescripcion;
                 }
+
+
 
                 Paragraph Banco = new Paragraph(-1, sbanco, TexNegCuerpo);
                 Banco.IndentationLeft = 75;

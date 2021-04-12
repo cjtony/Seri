@@ -947,8 +947,6 @@ namespace Payroll.Models.Daos
                         }
 
 
-
-
                         if (data["Cg_TipoEmpleado_id"].ToString() == null)
                         {
                             ls.iCgTipoEmpleadoId = 0;
@@ -967,6 +965,16 @@ namespace Payroll.Models.Daos
                         {
                             ls.sClaveEnt = data["ClaveEnt"].ToString();
                         }
+                        if (data["Cg_tipoPago_id"].ToString() == null)
+                        {
+                            ls.iCgTipoPago = 0;
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.iCgTipoPago =int.Parse(data["Cg_tipoPago_id"].ToString());
+                        }
+
 
                         list.Add(ls);
                     }
