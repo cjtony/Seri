@@ -448,7 +448,9 @@ namespace Payroll.Controllers
         public JsonResult TimbXML(int Anio, int TipoPeriodo, int Perido, int Version, string NomArchivo)
         {
             string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
-            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo;
+            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, idEmpresa, ReciboAsi = 0 ;
+            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
+
             var fileName = NomArchivo;
             string PathPDF = Server.MapPath("Archivos\\PDF\\");
             string PathZip = Server.MapPath("Archivos\\");
@@ -464,6 +466,11 @@ namespace Payroll.Controllers
             foreach (var fi in di.GetFiles())
             {  // nombre y ubicacion del archivo del xml que se va a crear
                 String pathxml = path + fi.Name;
+                string SNombreArchivo = fi.Name;
+                string[] words = SNombreArchivo.Split('_');
+                string sIdEmpresa = words[2].ToString().Replace("E", "");
+                idEmpresa = Convert.ToInt32(sIdEmpresa);
+
                 //nombre y unicacion del PDF 
                 string Nombrearc = PathPDF + fi.Name;
                 Nombrearc = Nombrearc.Replace(".xml", ".pdf");
@@ -486,24 +493,57 @@ namespace Payroll.Controllers
                 XmlNode nodo = xmlDoc.GetElementsByTagName("cfdi:Emisor").Item(0);
                 string Palabra = nodo.Attributes.GetNamedItem("Nombre").Value;
                 Paragraph Empresa = new Paragraph(50, Palabra, TTexNeg);
-                Empresa.IndentationLeft = 90;
+                Empresa.IndentationLeft = 70;
 
                 Paragraph Trfc = new Paragraph("R.F.C.:", TexNeg);
-                Trfc.IndentationLeft = 90;
+                Trfc.IndentationLeft = 70;
                 Palabra = nodo.Attributes.GetNamedItem("Rfc").Value;
                 RfcEmi = Palabra;
                 Paragraph Rfc = new Paragraph(-1, Palabra, TexNom);
-                Rfc.IndentationLeft = 112;
+                Rfc.IndentationLeft = 98;
                 Paragraph Rfcpatron = new Paragraph(-1, Palabra, TexNom);
-                Rfcpatron.IndentationLeft = 132;
+                Rfcpatron.IndentationLeft = 118;
 
                 Paragraph TrfcPatron = new Paragraph("R.F.C. Patron:", TexNeg);
-                TrfcPatron.IndentationLeft = 90;
+                TrfcPatron.IndentationLeft = 70;
+
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Emisor").Item(0);
-                Palabra = nodo.Attributes.GetNamedItem("RegistroPatronal").Value;
-                Paragraph TRegPat = new Paragraph("Reg.Pat:", TexNeg);
-                TRegPat.IndentationLeft = 90;
+
+                Palabra = " ";
+                Paragraph TRegPat = new Paragraph(" ", TexNeg);
+                TRegPat.IndentationLeft = 70;
                 Paragraph RegPat = new Paragraph(-1, Palabra, TexNom);
+                RegPat.IndentationLeft = 100;
+
+
+                if (nodo.InnerText != "")
+                {
+                    Palabra = nodo.Attributes.GetNamedItem("RegistroPatronal").Value;
+                    TRegPat = new Paragraph("Reg.Pat:", TexNeg);
+                    TRegPat.IndentationLeft = 70;
+                    RegPat = new Paragraph(-1, Palabra, TexNom);
+
+                }
+
+                /// direccion Empresa
+
+                ListEmpleadosDao Dao = new ListEmpleadosDao();
+                ListDatEmisor = Dao.Sp_EmpresaDir_Retrieve(RfcEmi);
+
+
+
+
+                Paragraph TrEmpraDir = new Paragraph("Dirección:", TexNeg);
+                TrEmpraDir.IndentationLeft = 70;
+                Palabra = ListDatEmisor[0].sDomiciolioEmple;
+                Paragraph EmpraDir = new Paragraph(-1, Palabra, TexNom);
+                EmpraDir.IndentationLeft = 104;
+
+
+                Palabra = ListDatEmisor[0].sDomiciolioEmpre;
+                Paragraph EmpraDir2 = new Paragraph(Palabra, TexNom);
+                EmpraDir2.IndentationLeft = 70;
+
 
                 Paragraph TfolioFis = new Paragraph(-50, "Folio Fiscal:", TexNeg);
                 TfolioFis.IndentationLeft = 412;
@@ -513,7 +553,7 @@ namespace Payroll.Controllers
                 UUID = Palabra;
                 Paragraph folioFis = new Paragraph(-1, Palabra, TexNom);
                 folioFis.IndentationLeft = 450;
-                RegPat.IndentationLeft = 115;
+
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("NoCertificado").Value;
 
@@ -521,9 +561,9 @@ namespace Payroll.Controllers
                 TNumCertEmi.IndentationLeft = 380;
                 Paragraph NumCertEmi = new Paragraph(-1, Palabra, TexNom);
                 NumCertEmi.IndentationLeft = 450;
-                Paragraph TFechaEmisior = new Paragraph("Fecha y hora de emisión:", TexNeg);
-                TFechaEmisior.IndentationLeft = 377;
-                Palabra = nodo.Attributes.GetNamedItem("Fecha").Value;
+                Paragraph TFechaEmisior = new Paragraph("Lugar de Emisión:", TexNeg);
+                TFechaEmisior.IndentationLeft = 395;
+                Palabra = "México, " + nodo.Attributes.GetNamedItem("Fecha").Value;
                 Paragraph FechaEmisior = new Paragraph(-1, Palabra, TexNom);
                 FechaEmisior.IndentationLeft = 450;
                 Paragraph TFechaCertifi = new Paragraph("Fecha y hora de Certificación:", TexNeg);
@@ -549,10 +589,26 @@ namespace Payroll.Controllers
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("Folio").Value;
                 Paragraph SerieFolio = new Paragraph(-1, Palabra, TexNom);
-                SerieFolio.FirstLineIndent = 450;
+                SerieFolio.FirstLineIndent = 453;
 
-                ////////// Info Personal
-                Paragraph Espacio = new Paragraph(20, " ");
+                Paragraph TtipoNomina = new Paragraph("Tipo de Nómina:", TTexNegCuerpo);
+                TtipoNomina.IndentationLeft = 393;
+                nodo = xmlDoc.GetElementsByTagName("nomina12:Nomina").Item(0);
+                Palabra = nodo.Attributes.GetNamedItem("TipoNomina").Value;
+                if (Palabra == "O")
+                {
+                    Palabra = "O (Ordinaria) ";
+                }
+                if (Palabra == "E")
+                {
+                    Palabra = "E (Ordinaria) ";
+                }
+
+                Paragraph tipoNomina = new Paragraph(-1, Palabra, TexNegCuerpo);
+                tipoNomina.IndentationLeft = 450;
+
+
+                ////////// Info Personal  
                 Paragraph table1 = new Paragraph();
                 table1.IndentationLeft = 50;
                 PdfPTable table = new PdfPTable(1);
@@ -583,6 +639,13 @@ namespace Payroll.Controllers
                 Paragraph Nommbre = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Nommbre.IndentationLeft = 85;
 
+                ReciboAsi = 0;
+                List<EmisorReceptorBean> ListEmisor = new List<EmisorReceptorBean>();
+                ListEmpleadosDao Dao2 = new ListEmpleadosDao();
+                ListEmisor = Dao2.sp_EmisorReceptor_Retrieve_EmisorReceptor(idEmpresa, NumEmpleado);
+
+                if (ListEmisor != null) { if (ListEmisor[0].iCgTipoEmpleadoId == 156) { ReciboAsi = 1; }; };
+
                 Paragraph TCurp = new Paragraph("Curp:", TTexNegCuerpo);
                 TCurp.IndentationLeft = 50;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
@@ -598,21 +661,39 @@ namespace Payroll.Controllers
                 Paragraph rfcEmp = new Paragraph(-1, Palabra, TexNegCuerpo);
                 rfcEmp.IndentationLeft = 78;
 
-                Paragraph TNSS = new Paragraph("NSS:", TTexNegCuerpo);
-                TNSS.IndentationLeft = 50;
-                nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
-                Palabra = nodo.Attributes.GetNamedItem("NumSeguridadSocial").Value;
-                Paragraph NSS = new Paragraph(-1, Palabra, TexNegCuerpo);
-                NSS.IndentationLeft = 73;
+                Paragraph TNSS = new Paragraph("", TTexNegCuerpo);
+                Paragraph NSS = new Paragraph("", TexNegCuerpo);
+                Paragraph TRegimen = new Paragraph("", TTexNegCuerpo);
+                Paragraph Regimen = new Paragraph("", TexNegCuerpo);
 
-                Paragraph TRegimen = new Paragraph("Regimen:", TTexNegCuerpo);
-                TRegimen.IndentationLeft = 50;
-                Palabra = nodo.Attributes.GetNamedItem("TipoRegimen").Value;
-                if (Palabra == "02") { Palabra = Palabra + "-Sueldos"; }
-                Paragraph Regimen = new Paragraph(-1, Palabra, TexNegCuerpo);
-                Regimen.IndentationLeft = 83;
+                if (ReciboAsi != 1)
+                {
 
-                Paragraph Espacio2 = new Paragraph(-80, " ");
+                    TNSS = new Paragraph("NSS:", TTexNegCuerpo);
+                    TNSS.IndentationLeft = 50;
+                    nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
+                    Palabra = nodo.Attributes.GetNamedItem("NumSeguridadSocial").Value;
+                    NSS = new Paragraph(-1, Palabra, TexNegCuerpo);
+                    NSS.IndentationLeft = 73;
+
+                    TRegimen = new Paragraph("Regimen:", TTexNegCuerpo);
+                    TRegimen.IndentationLeft = 50;
+                    Palabra = nodo.Attributes.GetNamedItem("TipoRegimen").Value;
+                    if (Palabra == "02") { Palabra = Palabra + "-Sueldos"; }
+                    Regimen = new Paragraph(-1, Palabra, TexNegCuerpo);
+                    Regimen.IndentationLeft = 83;
+
+
+
+                }
+
+                if (ReciboAsi == 1) {
+                   TipoCDFI = new Paragraph(-1, "Recibo", TexNom);
+
+                }
+                ///// Informe
+
+                
                 Paragraph table3 = new Paragraph();
                 table3.IndentationLeft = 350;
 
@@ -642,35 +723,78 @@ namespace Payroll.Controllers
                 Paragraph Contrato = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Contrato.IndentationLeft = 383;
 
-                Paragraph TSalarioB = new Paragraph("Salario Base:", TTexNegCuerpo);
-                TSalarioB.IndentationLeft = 350;
-                Palabra = nodo.Attributes.GetNamedItem("SalarioBaseCotApor").Value;
-                Paragraph SalarioB = new Paragraph(-1, Palabra, TexNegCuerpo);
-                SalarioB.IndentationLeft = 395;
+                Paragraph TSalarioB = new Paragraph("", TTexNegCuerpo);
+                Paragraph SalarioB = new Paragraph("", TexNegCuerpo);
+                Paragraph TSalarioInt = new Paragraph("", TTexNegCuerpo);
+                Paragraph SalarioInt = new Paragraph("", TexNegCuerpo);
+                Paragraph TAntiguedad = new Paragraph("", TTexNegCuerpo);
+                Paragraph Antiguedad = new Paragraph("", TexNegCuerpo);
+                Paragraph TJornada = new Paragraph("", TTexNegCuerpo);
+                Paragraph Jornada = new Paragraph("", TexNegCuerpo);
+                Paragraph TRiesgopu = new Paragraph("", TTexNegCuerpo);
+                Paragraph Riesgopu = new Paragraph("", TexNegCuerpo);
+                Paragraph TFechaInLab = new Paragraph("", TTexNegCuerpo);
+                Paragraph FechaInLab = new Paragraph("", TexNegCuerpo);
 
-                Paragraph TAntiguedad = new Paragraph("Antigüedad:", TTexNegCuerpo);
-                TAntiguedad.IndentationLeft = 350;
-                Palabra = nodo.Attributes.GetNamedItem("Antigüedad").Value;
-                Paragraph Antiguedad = new Paragraph(-1, Palabra + "(Semanas)", TexNegCuerpo);
-                Antiguedad.IndentationLeft = 390;
+                if (ReciboAsi != 1)
+                {
 
-                Paragraph TJornada = new Paragraph("Jornada:", TTexNegCuerpo);
-                TJornada.IndentationLeft = 350;
-                Palabra = nodo.Attributes.GetNamedItem("TipoJornada").Value;
-                Paragraph Jornada = new Paragraph(-1, Palabra, TexNegCuerpo);
-                Jornada.IndentationLeft = 379;
+                    TSalarioB = new Paragraph("Salario Base:", TTexNegCuerpo);
+                    TSalarioB.IndentationLeft = 350;
+                    Palabra = nodo.Attributes.GetNamedItem("SalarioBaseCotApor").Value;
+                    SalarioB = new Paragraph(-1, Palabra, TexNegCuerpo);
+                    SalarioB.IndentationLeft = 395;
+                    TSalarioInt = new Paragraph("Salario Integrado:", TTexNegCuerpo);
+                    TSalarioInt.IndentationLeft = 345;
+                    Palabra = nodo.Attributes.GetNamedItem("SalarioDiarioIntegrado").Value;
+                    SalarioInt = new Paragraph(-1, Palabra, TexNegCuerpo);
+                    SalarioInt.IndentationLeft = 405;
 
-                Paragraph TRiesgopu = new Paragraph("Riesgo Puesto:", TTexNegCuerpo);
-                TRiesgopu.IndentationLeft = 350;
-                Palabra = nodo.Attributes.GetNamedItem("RiesgoPuesto").Value;
-                Paragraph Riesgopu = new Paragraph(-1, Palabra, TexNegCuerpo);
-                Riesgopu.IndentationLeft = 400;
+                    TAntiguedad = new Paragraph("Antigüedad:", TTexNegCuerpo);
+                    TAntiguedad.IndentationLeft = 350;
+
+                    Palabra = nodo.Attributes.GetNamedItem("Antigüedad").Value;
+                    Antiguedad = new Paragraph(-1, Palabra + "(Semanas)", TexNegCuerpo);
+                    Antiguedad.IndentationLeft = 390;
+
+                    TJornada = new Paragraph("Jornada:", TTexNegCuerpo);
+                    TJornada.IndentationLeft = 350;
+
+                    Palabra = nodo.Attributes.GetNamedItem("TipoJornada").Value;
+                    if (ListEmisor != null)
+                    {
+                        Palabra = Palabra + "-" + ListEmisor[0].sTipoJornada;
+                    }
+
+                    Jornada = new Paragraph(-1, Palabra, TexNegCuerpo);
+                    Jornada.IndentationLeft = 379;
+
+                    TRiesgopu = new Paragraph("Riesgo Puesto:", TTexNegCuerpo);
+                    TRiesgopu.IndentationLeft = 350;
+                    Palabra = nodo.Attributes.GetNamedItem("RiesgoPuesto").Value;
+                    Riesgopu = new Paragraph(-1, Palabra, TexNegCuerpo);
+                    Riesgopu.IndentationLeft = 400;
+
+                    TFechaInLab = new Paragraph("Fecha de Inicio Laboral :", TTexNegCuerpo);
+                    TFechaInLab.IndentationLeft = 315;
+                    Palabra = "";
+
+                    if (ListEmisor != null)
+                    {
+                        Palabra = ListEmisor[0].sFechaIngreso;
+                    }
+
+                    FechaInLab = new Paragraph(-1, Palabra, TexNegCuerpo);
+                    FechaInLab.IndentationLeft = 400;
+
+                }
+
 
 
                 /////////////// tipo de pago 
 
 
-                Paragraph Espacio3 = new Paragraph(20, " ");
+              
                 Paragraph table6 = new Paragraph();
                 table6.IndentationLeft = 50;
                 PdfPTable table7 = new PdfPTable(1);
@@ -698,6 +822,15 @@ namespace Payroll.Controllers
                 Palabra = nodo.Attributes.GetNamedItem("CuentaBancaria").Value;
                 Paragraph Claveb = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Claveb.IndentationLeft = 223;
+
+                Paragraph TMoneda = new Paragraph("Moneda:", TTexNegCuerpo);
+                TMoneda.IndentationLeft = 200;
+                Palabra = "MXP";
+                Paragraph Moneda = new Paragraph(-1, Palabra, TexNegCuerpo);
+                Moneda.IndentationLeft = 230;
+
+
+                Palabra = "";
                 Paragraph TBanco = new Paragraph("Banco:", TTexNegCuerpo);
                 TBanco.IndentationLeft = 50;
                 string sbanco;
@@ -707,13 +840,14 @@ namespace Payroll.Controllers
                     Palabra = nodo.Attributes.GetNamedItem("Banco").Value;
                     sbanco = Palabra;
                 }
-                else {
+                else
+                {
                     sbanco = Palabra.Substring(0, 3);
                 }
-                List<EmisorReceptorBean> ListEmisor = new List<EmisorReceptorBean>();
-                ListEmpleadosDao Dao = new ListEmpleadosDao();
-                ListEmisor = Dao.sp_EmisorReceptor_Retrieve_EmisorReceptor(0, NumEmpleado);
-                if (ListEmisor != null) {
+
+
+                if (ListEmisor != null)
+                {
 
                     sbanco = sbanco + " " + ListEmisor[0].sDescripcion;
                 }
@@ -725,16 +859,31 @@ namespace Payroll.Controllers
                 TPeriodo.IndentationLeft = 200;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("PeriodicidadPago").Value;
+
+                if (Palabra == "02")
+                {
+                    Palabra = "02 Semanal";
+                }
+
+
+
                 Paragraph Periodo = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Periodo.IndentationLeft = 227;
 
 
-                Paragraph TLugarExp = new Paragraph(-10, "Lugar de Expedicion:", TTexNegCuerpo);
+                Paragraph TLugarExp = new Paragraph(-15, "Lugar de Expedicion:", TTexNegCuerpo);
                 TLugarExp.IndentationLeft = 380;
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("LugarExpedicion").Value;
                 Paragraph LugarExp = new Paragraph(-1, " Cp: " + Palabra, TexNegCuerpo);
                 LugarExp.IndentationLeft = 453;
+
+                Paragraph TTipopago = new Paragraph("Tipo de pago:", TTexNegCuerpo);
+                TTipopago.IndentationLeft = 380;
+                nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
+                Palabra = nodo.Attributes.GetNamedItem("FormaPago").Value;
+                Paragraph Tipopago = new Paragraph(-1, Palabra, TexNegCuerpo);
+                Tipopago.IndentationLeft = 425;
 
                 Paragraph TDiasPag = new Paragraph("Dias pagados:", TTexNegCuerpo);
                 TDiasPag.IndentationLeft = 50;
@@ -742,7 +891,7 @@ namespace Payroll.Controllers
                 Palabra = nodo.Attributes.GetNamedItem("NumDiasPagados").Value;
                 Paragraph DiasPag = new Paragraph(-1, Palabra, TexNegCuerpo);
                 DiasPag.IndentationLeft = 98;
-                Paragraph espacio4 = new Paragraph(50, " ", TexNegCuerpo);
+                
 
                 Paragraph table8 = new Paragraph();
                 table8.IndentationLeft = 50;
@@ -790,7 +939,13 @@ namespace Payroll.Controllers
                 table12.Add(table13);
 
 
-
+                Paragraph Espacio = new Paragraph(10, " ");
+                Paragraph Espacio2 = new Paragraph(-80, " ");
+                Paragraph Espacio3 = new Paragraph(10, " ");
+                Paragraph espacio4 = new Paragraph(25, " ", TexNegCuerpo);
+                Paragraph Espacio9 = new Paragraph(5, " ");
+                Paragraph Espacio10 = new Paragraph(-62, " ");
+                Paragraph Espacio11 = new Paragraph(30, " ");
 
                 /// imprime en documento
                 documento.Add(Empresa);
@@ -798,8 +953,13 @@ namespace Payroll.Controllers
                 documento.Add(Rfc);
                 documento.Add(TrfcPatron);
                 documento.Add(Rfcpatron);
+                documento.Add(TrEmpraDir);
+                documento.Add(EmpraDir);
+                documento.Add(EmpraDir2);
                 documento.Add(TRegPat);
                 documento.Add(RegPat);
+
+
                 documento.Add(TfolioFis);
                 documento.Add(folioFis);
                 documento.Add(TNumCertEmi);
@@ -814,6 +974,11 @@ namespace Payroll.Controllers
                 documento.Add(TipoCDFI);
                 documento.Add(TSerieFolio);
                 documento.Add(SerieFolio);
+                documento.Add(TtipoNomina);
+                documento.Add(tipoNomina);
+
+
+
                 documento.Add(Espacio);
                 documento.Add(table1);
                 documento.Add(TNoEmpleado);
@@ -824,25 +989,63 @@ namespace Payroll.Controllers
                 documento.Add(Curp);
                 documento.Add(TrfcEmp);
                 documento.Add(rfcEmp);
-                documento.Add(TNSS);
-                documento.Add(NSS);
-                documento.Add(TRegimen);
-                documento.Add(Regimen);
-                documento.Add(Espacio2);
+
+                if (ReciboAsi != 1)
+                {
+                    documento.Add(TNSS);
+                    documento.Add(NSS);
+
+                    documento.Add(TRegimen);
+                    documento.Add(Regimen);
+                }
+                if (ReciboAsi == 1)
+                {
+                    documento.Add(Espacio9);
+                }
+
+                if (ReciboAsi == 1) {
+                    documento.Add(Espacio10);
+                }
+
+                if (ReciboAsi != 1)
+                {
+                    documento.Add(Espacio2);
+                }
+
+
                 documento.Add(table3);
+
+                //informe
                 documento.Add(TPuesto);
                 documento.Add(Puesto);
                 documento.Add(TContrato);
                 documento.Add(Contrato);
-                documento.Add(TSalarioB);
-                documento.Add(SalarioB);
-                documento.Add(TAntiguedad);
-                documento.Add(Antiguedad);
-                documento.Add(TJornada);
-                documento.Add(Jornada);
-                documento.Add(TRiesgopu);
-                documento.Add(Riesgopu);
-                documento.Add(Espacio3);
+
+                if (ReciboAsi != 1)
+                {
+                    documento.Add(TSalarioB);
+                    documento.Add(SalarioB);
+                    documento.Add(TSalarioInt);
+                    documento.Add(SalarioInt);
+                    documento.Add(TAntiguedad);
+                    documento.Add(Antiguedad);
+                    documento.Add(TJornada);
+                    documento.Add(Jornada);
+                    documento.Add(TRiesgopu);
+                    documento.Add(Riesgopu);
+                    documento.Add(TFechaInLab);
+                    documento.Add(FechaInLab);
+
+                }
+
+                if (ReciboAsi != 1) {
+                    documento.Add(Espacio3);
+                }
+                if (ReciboAsi == 1)
+                {
+                    documento.Add(Espacio11);
+                }
+
                 documento.Add(table6);
                 documento.Add(TFecPago);
                 documento.Add(FecPago);
@@ -854,8 +1057,13 @@ namespace Payroll.Controllers
                 documento.Add(Periodo);
                 documento.Add(TClaveb);
                 documento.Add(Claveb);
+                documento.Add(TMoneda);
+                documento.Add(Moneda);
                 documento.Add(TLugarExp);
                 documento.Add(LugarExp);
+                documento.Add(TTipopago);
+                documento.Add(Tipopago);
+
                 documento.Add(espacio4);
                 documento.Add(table8);
                 documento.Add(Espacio5);
@@ -869,8 +1077,11 @@ namespace Payroll.Controllers
                 decimal per = 0;
                 decimal ded = 0;
                 decimal total;
-                for (int i = 0; i < 4;) { nodo = xmlDoc.GetElementsByTagName("nomina12:Percepcion").Item(a);
-                    if (nodo != null) {
+                for (int i = 0; i < 30;)
+                {
+                    nodo = xmlDoc.GetElementsByTagName("nomina12:Percepcion").Item(a);
+                    if (nodo != null)
+                    {
                         Palabra = nodo.Attributes.GetNamedItem("Concepto").Value;
                         Palabra2 = nodo.Attributes.GetNamedItem("ImporteGravado").Value;
                         valor = decimal.Parse(Palabra2);
@@ -883,12 +1094,38 @@ namespace Payroll.Controllers
                         documento.Add(TPercep);
                         a = a + 1;
                     }
-                    else {
-                        i = 5;
+                    else
+                    {
+                        i = 35;
                     }
                 }
                 a = 0;
-                for (int i = 0; i < 4;)
+                for (int i = 0; i < 30;)
+                {
+                    nodo = xmlDoc.GetElementsByTagName("nomina12:OtroPago").Item(a);
+                    if (nodo != null)
+                    {
+                        Palabra = nodo.Attributes.GetNamedItem("Concepto").Value;
+                        Palabra2 = nodo.Attributes.GetNamedItem("Importe").Value;
+                        valor = decimal.Parse(Palabra2);
+                        per = per + valor;
+                        Paragraph TLeyenda = new Paragraph(Palabra, TexNegCuerpo);
+                        TLeyenda.IndentationLeft = 75;
+                        Paragraph TPercep = new Paragraph(-1, Palabra2, TexNegCuerpo);
+                        TPercep.IndentationLeft = 375;
+                        documento.Add(TLeyenda);
+                        documento.Add(TPercep);
+                        a = a + 1;
+                    }
+                    else
+                    {
+                        i = 35;
+                    }
+                }
+                a = 0;
+
+
+                for (int i = 0; i < 30;)
                 {
                     nodo = xmlDoc.GetElementsByTagName("nomina12:Deduccion").Item(a);
 
@@ -909,7 +1146,7 @@ namespace Payroll.Controllers
                     }
                     else
                     {
-                        i = 5;
+                        i = 35;
                     }
 
                 }
@@ -1025,6 +1262,8 @@ namespace Payroll.Controllers
                 table18.Add(table19);
 
 
+
+
                 documento.Add(Ttotal);
                 documento.Add(Tper);
                 documento.Add(Tdedu);
@@ -1067,7 +1306,7 @@ namespace Payroll.Controllers
 
                 documento.Close();
                 FuncionesNomina Daos = new FuncionesNomina();
-                Daos.sp_Tsellos_InsertUPdate_TSellosSat(1, 0, 0, NumEmpleado, anios, Tipodeperido, Perido, " ", selloemisor, UUID, SelloCF, RfcProv, Nomcer, fechatem);
+                Daos.sp_Tsellos_InsertUPdate_TSellosSat(1, 0, idEmpresa, NumEmpleado, anios, Tipodeperido, Perido, " ", selloemisor, UUID, SelloCF, RfcProv, Nomcer, fechatem);
             };
             string pathxm = path;
             path = path.Replace("\\XmlZip", "");
@@ -1112,10 +1351,10 @@ namespace Payroll.Controllers
 
             }
 
-            List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
+            List<EmisorReceptorBean> ListDatEmisor2 = new List<EmisorReceptorBean>();
             EmisorReceptorBean list = new EmisorReceptorBean();
             list.sMensaje = path;
-            ListDatEmisor.Add(list);
+            ListDatEmisor2.Add(list);
 
             return Json(ListDatEmisor);
         }
@@ -1126,7 +1365,7 @@ namespace Payroll.Controllers
         {
             try
             {
-                string path = Server.MapPath("~/Archivos/certificados/");
+                string path = Server.MapPath("~/Archivos/");
                 if (Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);

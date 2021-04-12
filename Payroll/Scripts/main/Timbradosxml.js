@@ -38,7 +38,9 @@
         if (aniox.value != "" && TipPeriodox != "" && Peridox !="" && versionx !="" ) {        
             var selectFile = $("#fileUpload")[0].files[0];
             var dataString = new FormData();
-            var NomArch = selectFile.name;          
+            var NomArch = selectFile.name;
+            var UbiArch = selectFile.Path;
+            console.log(UbiArch);
             separador = ".",
             limite = 2,
             arreglosubcadena = NomArch.split(separador, limite);
