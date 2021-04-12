@@ -55,7 +55,6 @@
                     async: false,
                     success: function (data) {
                         if (typeof data.Value != "undefined") {
-                            fshowtypealert('Timbrado XML', data.Message, 'warning');
                             const dataSend = { Anio: aniox, TipoPeriodo: TipPeriodox, Perido: Peridox, Version: versionx, NomArchivo: NomArch };
                             console.log("dato:" + dataSend);
                             $.ajax({
@@ -66,6 +65,17 @@
                                     if (data[0].sMensaje !=null) {
                                         var url = '\\Archivos\\Pdfzio.zip';
                                         window.open(url);
+
+                                        if (data[0].iNoEjecutados < 2) {
+                                            fshowtypealert(data[0].iNoEjecutados + ' Archivo generado', data.Message, 'success');
+
+                                        }
+
+                                        if (data[0].iNoEjecutados > 1) {
+                                            fshowtypealert(data[0].iNoEjecutados + ' Archivos generados ', data.Message, 'success');
+
+                                        }
+                                        
                                     }
 
 

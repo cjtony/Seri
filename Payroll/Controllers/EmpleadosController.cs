@@ -448,7 +448,7 @@ namespace Payroll.Controllers
         public JsonResult TimbXML(int Anio, int TipoPeriodo, int Perido, int Version, string NomArchivo)
         {
             string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
-            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, idEmpresa, ReciboAsi = 0 ;
+            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, idEmpresa, ReciboAsi = 0, NoArchivos=0;
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
 
             var fileName = NomArchivo;
@@ -465,11 +465,14 @@ namespace Payroll.Controllers
             DirectoryInfo di = new DirectoryInfo(path);
             foreach (var fi in di.GetFiles())
             {  // nombre y ubicacion del archivo del xml que se va a crear
+               
                 String pathxml = path + fi.Name;
                 string SNombreArchivo = fi.Name;
                 string[] words = SNombreArchivo.Split('_');
                 string sIdEmpresa = words[2].ToString().Replace("E", "");
                 idEmpresa = Convert.ToInt32(sIdEmpresa);
+                
+
 
                 //nombre y unicacion del PDF 
                 string Nombrearc = PathPDF + fi.Name;
@@ -480,7 +483,7 @@ namespace Payroll.Controllers
                 PdfWriter pw = PdfWriter.GetInstance(documento, Fs);
 
                 documento.Open();
-
+                NoArchivos = NoArchivos + 1;
                 BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
                 iTextSharp.text.Font TTexNeg = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.BOLD);
                 iTextSharp.text.Font TexNom = new iTextSharp.text.Font(bf, 7, iTextSharp.text.Font.NORMAL);
@@ -689,7 +692,7 @@ namespace Payroll.Controllers
 
                 if (ReciboAsi == 1) {
                    TipoCDFI = new Paragraph(-1, "Recibo", TexNom);
-
+                   TipoCDFI.IndentationLeft = 450;
                 }
                 ///// Informe
 
@@ -823,6 +826,31 @@ namespace Payroll.Controllers
                 Paragraph Claveb = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Claveb.IndentationLeft = 223;
 
+
+                List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
+                FuncionesNomina dao = new FuncionesNomina();
+                LPe = dao.sp_Cperiodo_Retrieve_Cperiodo(idEmpresa, anios, TipoPeriodo);
+
+
+                Paragraph TPeridoFec = new Paragraph("Perido:", TTexNegCuerpo);
+                TPeridoFec.IndentationLeft = 200;
+
+                for (int i = 0; i < LPe.Count; i++) { 
+                
+                    if(Perido== LPe[i].iPeriodo){
+                        Palabra = Perido +" ("+ LPe[0].sFechaInicio+"-"+ LPe[0].sFechaFinal +")";
+
+                    }
+                }
+                
+                Paragraph PeridoFec = new Paragraph(-1, Palabra, TexNegCuerpo);
+                PeridoFec.IndentationLeft = 223;
+
+
+
+
+
+
                 Paragraph TMoneda = new Paragraph("Moneda:", TTexNegCuerpo);
                 TMoneda.IndentationLeft = 200;
                 Palabra = "MXP";
@@ -871,7 +899,11 @@ namespace Payroll.Controllers
                 Periodo.IndentationLeft = 227;
 
 
-                Paragraph TLugarExp = new Paragraph(-15, "Lugar de Expedicion:", TTexNegCuerpo);
+
+
+
+
+                Paragraph TLugarExp = new Paragraph(-30, "Lugar de Expedicion:", TTexNegCuerpo);
                 TLugarExp.IndentationLeft = 380;
                 nodo = xmlDoc.GetElementsByTagName("cfdi:Comprobante").Item(0);
                 Palabra = nodo.Attributes.GetNamedItem("LugarExpedicion").Value;
@@ -1055,6 +1087,8 @@ namespace Payroll.Controllers
                 documento.Add(DiasPag);
                 documento.Add(TPeriodo);
                 documento.Add(Periodo);
+                documento.Add(TPeridoFec);
+                documento.Add(PeridoFec);
                 documento.Add(TClaveb);
                 documento.Add(Claveb);
                 documento.Add(TMoneda);
@@ -1356,6 +1390,7 @@ namespace Payroll.Controllers
             list.sMensaje = path;
             ListDatEmisor2.Add(list);
 
+            ListDatEmisor[0].iNoEjecutados = NoArchivos;
             return Json(ListDatEmisor);
         }
 
