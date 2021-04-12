@@ -270,6 +270,7 @@ namespace Payroll.Models.Beans
         public int iTipoJordana { get; set; }
         public string sTipoJornada { get; set; }
         public int iCgTipoEmpleadoId { get; set; }
+        public int iCgTipoPago { get; set; }
         public string sClaveEnt { get; set; }
         public string sMensaje { get; set; }
 
