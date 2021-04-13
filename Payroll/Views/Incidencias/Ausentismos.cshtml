@@ -95,34 +95,13 @@
                     </table>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    @*<form class="col-md-12 form-group-sm row my-3 mx-auto p-2 rounded text-center px-auto" id="frmIncapacidades" style="background-color:rgba(0, 161, 255, 0.1)">
-                        <div class="col-md-3">
-                            <label class="text-dark">Fecha Inicio</label>
-                            <input type="date" class="form-control form-control-sm" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="text-dark">Fecha Fin</label>
-                            <input type="date" class="form-control form-control-sm" />
-                        </div>
-                        <div class="col-md-5">
-                            <label class="invisible col-md-12">src only</label>
-                            <div class="btn btn-outline-primary btn-sm font-labels col-md-5 mx-1">
-                                <span class="icon"><i class="fas fa-search"></i></span>
-                                <span class="text"> Buscar </span>
-                            </div>
-                            <div class="btn btn-outline-secondary btn-sm font-labels col-md-5 mx-1">
-                                <span class="icon"><i class="fas fa-search"></i></span>
-                                <span class="text"> Ver todo </span>
-                            </div>
-                        </div>
-                    </form>*@
                     <table class="table table-sm font-labels text-center table-striped" id="tabIncapacidades">
                         <thead>
                             <tr>
                                 <th scope="col">Motivo</th>
                                 <th scope="col">Fecha Inicio</th>
                                 <th scope="col">Dias</th>
-                                @*<th scope="col">Fecha Fin</th>*@
+                                <th scope="col">Saldo dias</th>
                                 <th scope="col">Causa</th>
                                 <th scope="col">Certificado IMSS</th>
                                 <th scope="col">Comentarios IMSS</th>
@@ -133,11 +112,6 @@
                     </table>
                 </div>
             </div>
-
-
-
-
-
         </div>
     </div>
 </div>
@@ -170,11 +144,10 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Ausentismos.js?n=2"></script>
+<script src="~/Scripts/main/Ausentismos.js?n=3"></script>
 <script>
     $(function () {
         // carga select
         LoadSelectRecuperaAusentismo();
-        
     });
 </script>
