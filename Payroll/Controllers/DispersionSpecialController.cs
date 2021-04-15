@@ -239,7 +239,7 @@ namespace Payroll.Controllers
                             string importeTotalBanamexG = "";
                             foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans)
                             {
-                                if (deposits.iIdBanco == bankResult)
+                                if (deposits.iIdBanco != 0)
                                 {
                                     importeTotalBanamexG = deposits.sImporte;
                                     break;
@@ -286,7 +286,7 @@ namespace Payroll.Controllers
                                 int longNomEmpBnxD = 55;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         int longAcortAccount = payroll.sCuenta.Length;
                                         string accountUser = payroll.sCuenta;
@@ -354,7 +354,7 @@ namespace Payroll.Controllers
                             int hQuantityDeposits = 0;
                             foreach (DatosProcesaChequesNominaBean deposits in listDatosProcesaChequesNominaBean)
                             {
-                                if (deposits.iIdBanco == bankResult)
+                                if (deposits.iIdBanco != 0)
                                 {
                                     totalAmountHSBC += deposits.doImporte;
                                     hQuantityDeposits += 1;
@@ -376,7 +376,7 @@ namespace Payroll.Controllers
                             stream.WriteLine(header);
                             foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                             {
-                                if (payroll.iIdBanco == bankResult)
+                                if (payroll.iIdBanco != 0)
                                 {
                                     int longAcortAccount = payroll.sCuenta.Length;
                                     string finallyAccount = payroll.sCuenta;
@@ -442,7 +442,7 @@ namespace Payroll.Controllers
                                 double totalAmount = 0;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         totalRecords += 1;
                                         totalAmount += payroll.doImporte;
@@ -502,7 +502,7 @@ namespace Payroll.Controllers
                                         spaceGenerate3 = ""; numberCeroGene = "";
                                     }
                                 }
-                                if (bankResult == 14)
+                                if (bankResult != 0)
                                 {
                                     int longTotGenerate = longTot - resultSumTot.ToString().Length;
                                     for (var j = 0; j < longTotGenerate; j++) { totGenerate += "0"; }
@@ -537,7 +537,7 @@ namespace Payroll.Controllers
                             long TotalNumAbonos = 0;
                             foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean)
                             {
-                                if (bankResult == bank.iIdBanco)
+                                if (bankResult != 0)
                                 {
                                     TotalNumAbonos += 1;
                                 }
@@ -560,7 +560,7 @@ namespace Payroll.Controllers
                             string importeTotalBanorte = "";
                             foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans)
                             {
-                                if (deposits.iIdBanco == bankResult) { importeTotalBanorte = deposits.sImporte; break; }
+                                if (deposits.iIdBanco != 0) { importeTotalBanorte = deposits.sImporte; break; }
                             }
                             // - ENCABEZADO - \\ 
                             string cerosImporteTotal = "";
@@ -581,7 +581,7 @@ namespace Payroll.Controllers
                             int quantityRegisters = 0;
                             foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean)
                             {
-                                if (bankResult == bank.iIdBanco)
+                                if (bankResult != 0)
                                 {
                                     quantityRegisters += 1;
                                 }
@@ -615,7 +615,7 @@ namespace Payroll.Controllers
                                 int longNumEmpleado = 10, longNumImporte = 15, longNumCuenta = 18;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         int longAcortAccount = payroll.sCuenta.Length;
                                         string finallyAccount = payroll.sCuenta;
@@ -696,7 +696,7 @@ namespace Payroll.Controllers
                             {
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         totalRegistros += 1;
                                         sb1 = new StringBuilder("");
@@ -905,7 +905,7 @@ namespace Payroll.Controllers
                             string importeTotalBanamexG = "";
                             foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans)
                             {
-                                if (deposits.iIdBanco == bankResult)
+                                if (deposits.iIdBanco != 0)
                                 {
                                     importeTotalBanamexG = deposits.sImporte;
                                     break;
@@ -952,7 +952,7 @@ namespace Payroll.Controllers
                                 int longNomEmpBnxD = 55;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         int longAcortAccount = payroll.sCuenta.Length;
                                         string accountUser = payroll.sCuenta;
@@ -1020,7 +1020,7 @@ namespace Payroll.Controllers
                             int hQuantityDeposits = 0;
                             foreach (DatosProcesaChequesNominaBean deposits in listDatosProcesaChequesNominaBean)
                             {
-                                if (deposits.iIdBanco == bankResult)
+                                if (deposits.iIdBanco != 0)
                                 {
                                     totalAmountHSBC += deposits.doImporte;
                                     hQuantityDeposits += 1;
@@ -1042,7 +1042,7 @@ namespace Payroll.Controllers
                             stream.WriteLine(header);
                             foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                             {
-                                if (payroll.iIdBanco == bankResult)
+                                if (payroll.iIdBanco != 0)
                                 {
                                     int longAcortAccount = payroll.sCuenta.Length;
                                     string finallyAccount = payroll.sCuenta;
@@ -1108,7 +1108,7 @@ namespace Payroll.Controllers
                                 double totalAmount = 0;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         totalRecords += 1;
                                         totalAmount += payroll.doImporte;
@@ -1168,7 +1168,7 @@ namespace Payroll.Controllers
                                         spaceGenerate3 = ""; numberCeroGene = "";
                                     }
                                 }
-                                if (bankResult == 14)
+                                if (bankResult != 0)
                                 {
                                     int longTotGenerate = longTot - resultSumTot.ToString().Length;
                                     for (var j = 0; j < longTotGenerate; j++) { totGenerate += "0"; }
@@ -1203,7 +1203,7 @@ namespace Payroll.Controllers
                             long TotalNumAbonos = 0;
                             foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean)
                             {
-                                if (bankResult == bank.iIdBanco)
+                                if (bankResult != 0)
                                 {
                                     TotalNumAbonos += 1;
                                 }
@@ -1226,7 +1226,7 @@ namespace Payroll.Controllers
                             string importeTotalBanorte = "";
                             foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans)
                             {
-                                if (deposits.iIdBanco == bankResult) { importeTotalBanorte = deposits.sImporte; break; }
+                                if (deposits.iIdBanco != 0) { importeTotalBanorte = deposits.sImporte; break; }
                             }
                             // - ENCABEZADO - \\ 
                             string cerosImporteTotal = "";
@@ -1247,7 +1247,7 @@ namespace Payroll.Controllers
                             int quantityRegisters = 0;
                             foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean)
                             {
-                                if (bankResult == bank.iIdBanco)
+                                if (bankResult != 0)
                                 {
                                     quantityRegisters += 1;
                                 }
@@ -1281,7 +1281,7 @@ namespace Payroll.Controllers
                                 int longNumEmpleado = 10, longNumImporte = 15, longNumCuenta = 18;
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         int longAcortAccount = payroll.sCuenta.Length;
                                         string finallyAccount = payroll.sCuenta;
@@ -1362,7 +1362,7 @@ namespace Payroll.Controllers
                             {
                                 foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                                 {
-                                    if (payroll.iIdBanco == bankResult)
+                                    if (payroll.iIdBanco != 0)
                                     {
                                         totalRegistros += 1;
                                         sb1 = new StringBuilder("");
@@ -1688,7 +1688,7 @@ namespace Payroll.Controllers
                                     for (var b = 0; b < longNomEmpIntSantanderResult; b++) { espaciosNomEmpIntSantander += " "; }
                                     for (var t = 0; t < longImpIntSantanderResult; t++) { cerosImpIntSantander += "0"; }
                                     for (var p = 0; p < longConIntSantanderResult; p++) { cerosConIntSantander += "0"; }
-                                    fileIntSantander.Write(numCuentaEmpresaSantanderD + fillerIntSantanderD1 + bank.sCuenta + fillerIntSantanderD2 + clave + nombreEmpIntSantander + espaciosNomEmpIntSantander + sucursalIntSantanderD1 + cerosImpIntSantander + bank.dImporte + plazaIntSantanderD1 + campoFijoIntSantanderD1 + fillerIntSantanderD3 + cerosConIntSantander + consecutivoIntSantanderD1.ToString() + "\n");
+                                    fileIntSantander.Write(bean.sNCuenta + fillerIntSantanderD1 + bank.sCuenta + fillerIntSantanderD2 + clave + nombreEmpIntSantander + espaciosNomEmpIntSantander + sucursalIntSantanderD1 + cerosImpIntSantander + bank.dImporte + plazaIntSantanderD1 + campoFijoIntSantanderD1 + fillerIntSantanderD3 + cerosConIntSantander + consecutivoIntSantanderD1.ToString() + "\n");
                                     espaciosNomEmpIntSantander = "";
                                     cerosImpIntSantander = "";
                                     cerosConIntSantander = "";

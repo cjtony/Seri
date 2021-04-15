@@ -1281,9 +1281,7 @@
         }
     }
 
-    /*
-     * Inicio dispersion especial
-     */
+    /* * Inicio dispersion especial */
 
     const btnShowGroupBusiness = document.getElementById('btn-show-group-business');
     const btnNewGroupBusiness  = document.getElementById('btn-new-group-business');

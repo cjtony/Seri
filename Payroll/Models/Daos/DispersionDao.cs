@@ -909,6 +909,7 @@ namespace Payroll.Models.Daos
                         datosProcesaCheques.iIdEmpresa = Convert.ToInt32(data["Empresa"].ToString());
                         datosProcesaCheques.sNomina    = data["Nomina"].ToString();
                         datosProcesaCheques.sCuenta    = data["Cuenta"].ToString();
+                        datosProcesaCheques.sImporte   = data["Saldo"].ToString();
                         datosProcesaCheques.dImporte   = Convert.ToDecimal(data["Importe"].ToString());
                         datosProcesaCheques.doImporte  = Convert.ToDouble(data["ImporteDo"]);
                         datosProcesaCheques.sNombre    = data["Nombre"].ToString();
