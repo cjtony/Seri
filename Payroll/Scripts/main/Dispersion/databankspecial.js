@@ -80,10 +80,10 @@
     fViewBanks = (paramint, paramstr) => {
         localStorage.setItem("nameGroup", paramstr);
         contentViewBanks.innerHTML = "";
+        contentViewBanksInt.innerHTML = "";
+        contentViewBanksNom.innerHTML = "";
         try { 
             const badges = ["primary", "secondary", "success", "info", "light", "dark", "warning", "danger"];
-            //console.log(typeof badges);
-            //console.log(badges);
             $("#groupBusiness").modal("hide");
             $.ajax({
                 url: "../Dispersion/ViewBanks",
