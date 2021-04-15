@@ -1128,7 +1128,7 @@ namespace Payroll.Models.Daos
         public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido,int masivo)
         {
             int IdCalcHD,iperiodo;
-            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0, Recibo2 = 0, FinR = 0,ISREs = 0;
+            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0,row227=0, Recibo2 = 0, FinR = 0,ISREs = 0;
             string[] Nombre= sNombreComple.Split(' ');
             string NomEmple = "";
             List<string> NomArchXML = new List<string>();
@@ -1240,6 +1240,7 @@ namespace Payroll.Models.Daos
                         string Idempleado = Nombre[0].ToString();
                         NumEmpleado = Convert.ToInt32(Idempleado.ToString());
                         id = int.Parse(Idempleado);
+                    
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                         if (Nombre.Length > 0)
                         {
@@ -1285,6 +1286,9 @@ namespace Payroll.Models.Daos
                         LisTRecibo= Sp_TotalesFiniquito_Retrieve_TFiniquitoLn(IdEmpresa, NumEmpleado, LFechaPerido[0].iPeriodo, anios, 1);
 
                     };
+
+                
+
 
                     if (ListTotales != null && LisTRecibo != null)
                     {
@@ -1638,6 +1642,11 @@ namespace Payroll.Models.Daos
                                                 {
                                                     DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
                                                 }
+                                                if (LisTRecibo[a].iIdRenglon == 227)
+                                                {
+                                                    DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
+                                                }
+
 
                                             }
                                             TotalPercepciones = string.Format("{0:N2}", ListTotales[rowTper].dSaldo - DotrosPagos);
@@ -1849,6 +1858,12 @@ namespace Payroll.Models.Daos
                                                         {
                                                             row113 = a;
                                                         };
+                                                        if (LisTRecibo[a].iIdRenglon == 227)
+                                                        {
+                                                            row227 = a;
+                                                        };
+
+
                                                         if (LisTRecibo[a].iIdRenglon == 27 && masivo == 3)
                                                         {
                                                             row27 = a;
@@ -1864,6 +1879,7 @@ namespace Payroll.Models.Daos
                                                             row29 = a;
                                                             Recibo2 = 1;
                                                         };
+                                                     
 
                                                     }
                                                     
@@ -1920,7 +1936,7 @@ namespace Payroll.Models.Daos
                                                     if (iSatidNum == 2) { idSat = "0" + LisTRecibo[a].sIdSat; };
                                                     
 
-                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 198 && masivo !=3 )
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && masivo !=3 )
                                                     {
 
                                                         xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
@@ -1981,7 +1997,6 @@ namespace Payroll.Models.Daos
                                                     }
 
 
-
                                                     if (LisTRecibo[a].iIdRenglon == 50)
                                                     {
                                                         xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
@@ -2031,7 +2046,7 @@ namespace Payroll.Models.Daos
                                                 }
                                                 if (LisTRecibo[a].sValor == "Deducciones")
                                                 {
-
+                                                  
                                                     string IdRenglon = Convert.ToString(LisTRecibo[a].iIdRenglon);
                                                      
                                                     if (IdRenglon == "1001") { Isr = LisTRecibo[a].dSaldo;
@@ -2071,12 +2086,15 @@ namespace Payroll.Models.Daos
                                         deduciones = deduciones.Replace(",", "");
                                         isr = isr.Replace(",", "");
                                         // Deducciones
+                                        if (isr == "0.00") {
+                                            ISREs = 0;
+                                        }
 
                                         if (totalDeduciones.ToString() != "0.00") {
                                             xmlWriter.WriteStartElement(Prefijo2, "Deducciones", EspacioDeNombreNomina);
                                         }
                                         if (ISREs == 1) {
-                                            xmlWriter.WriteAttributeString("TotalImpuestosRetenidos", isr);
+                                            xmlWriter.WriteAttributeString("TotalImpuestosRetenidos",isr);
                                         }
 
                                         if (totalDeduciones.ToString() != "0.00") {
@@ -2251,6 +2269,17 @@ namespace Payroll.Models.Daos
                                                 xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row17].dSaldo));
                                                 xmlWriter.WriteEndElement();
                                                 row17 = 0;
+                                            };
+
+                                            if (row227 > 0)
+                                            {
+                                                xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
+                                                xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                xmlWriter.WriteAttributeString("Clave", "227");
+                                                xmlWriter.WriteAttributeString("Concepto", Convert.ToString(LisTRecibo[row227].sNombre_Renglon));
+                                                xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row227].dSaldo));
+                                                xmlWriter.WriteEndElement();
+                                                row227 = 0;
                                             };
 
                                             xmlWriter.WriteEndElement();
