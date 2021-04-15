@@ -915,6 +915,15 @@ namespace Payroll.Models.Daos
                         {
                             ls.iCgTipoPago =int.Parse(data["Cg_tipoPago_id"].ToString());
                         }
+                        if (data["Ult_sdi"].ToString() == null)
+                        {
+                            ls.dSalarioInt = 0;
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.dSalarioInt =decimal.Parse(data["Ult_sdi"].ToString());
+                        }
 
 
                         list.Add(ls);
