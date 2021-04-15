@@ -273,6 +273,7 @@ namespace Payroll.Models.Beans
         public int iCgTipoPago { get; set; }
         public string sClaveEnt { get; set; }
         public string sMensaje { get; set; }
+        public decimal dSalarioInt { get; set; }
 
     }
 
