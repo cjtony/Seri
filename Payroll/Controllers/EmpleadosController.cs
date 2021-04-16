@@ -2086,13 +2086,13 @@ namespace Payroll.Controllers
                             }
                             if (Palabra == "1")
                             {
-                                Palabra = "10 Docenal";
+                                Palabra = "10 Decenal";
                             }
-                            if (Palabra == "2")
+                            if (Palabra == "3")
                             {
                                 Palabra = "04 Quincenal";
                             }
-                            if (Palabra == "3")
+                            if (Palabra == "2")
                             {
                                  Palabra = "03 Catorcenal";
                             }
