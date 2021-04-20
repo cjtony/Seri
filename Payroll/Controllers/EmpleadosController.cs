@@ -2086,13 +2086,13 @@ namespace Payroll.Controllers
                             }
                             if (Palabra == "1")
                             {
-                                Palabra = "10 Docenal";
+                                Palabra = "10 Decenal";
                             }
-                            if (Palabra == "2")
+                            if (Palabra == "3")
                             {
                                 Palabra = "04 Quincenal";
                             }
-                            if (Palabra == "3")
+                            if (Palabra == "2")
                             {
                                  Palabra = "03 Catorcenal";
                             }
@@ -2104,7 +2104,6 @@ namespace Payroll.Controllers
                             {
                              Palabra = "06 Bimestral";
                             }
-
 
                             Paragraph Periodo = new Paragraph(-1, Palabra, TexNegCuerpo);
                             Periodo.IndentationLeft = 227;
@@ -2759,10 +2758,10 @@ namespace Payroll.Controllers
                     NoEmple = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 0);
                     Empleados = Dao.sp_EmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 1);
 
-
-                    for (int a = 0; a < NoEmple[0].iNoEmpleados; a++)
+                    int Repetido = 0;
+                    for (int a = 0; a < NoEmple[0].iNoEmpleados;)
                     {
-
+                        Repetido = Repetido + 1;
 
                         int valido = 0;
                         idempleado = Empleados[a].iIdEmpleado;
@@ -2954,10 +2953,42 @@ namespace Payroll.Controllers
                                     Paragraph DiasT = new Paragraph(-1, Palabra, TexNom);
                                     DiasT.IndentationLeft = 75;
 
-                                    Paragraph TPeriodo = new Paragraph(-35, "Periodo de pago: ", TexNeg);
+                                    Paragraph TTipoPe = new Paragraph(-45, "Periodo de pago: ", TexNeg);
+                                    TTipoPe.IndentationLeft = 350;
+
+                                    if (Tipodeperido == 0) {
+                                        Palabra = "Semanal";
+                                    }
+                                    if (Tipodeperido == 1)
+                                    {
+                                        Palabra = "Decenal";
+                                    }
+                                    if (Tipodeperido == 2)
+                                    {
+                                        Palabra = "Catorcenal";
+                                    }
+                                    if (Tipodeperido == 3)
+                                    {
+                                        Palabra = "Quincenal";
+                                    }
+
+                                    if (Tipodeperido == 4)
+                                    {
+                                        Palabra = "Mensual";
+                                    }
+                                    if (Tipodeperido == 5)
+                                    {
+                                        Palabra = "Bimestral";
+                                    }
+
+
+                                    Paragraph TipoPe = new Paragraph(-1, Palabra, TexNom);
+                                    TipoPe.IndentationLeft = 405;
+
+                                    Paragraph TPeriodo = new Paragraph( "Periodo de pago: ", TexNeg);
                                     TPeriodo.IndentationLeft = 350;
 
-                                    Palabra = Convert.ToString(LFechaPerido[0].sFechaInicio + " AL " + LFechaPerido[0].sFechaFinal);
+                                    Palabra = Convert.ToString(LFechaPerido[0].iPeriodo+" "+ LFechaPerido[0].sFechaInicio + " AL " + LFechaPerido[0].sFechaFinal);
                                     Paragraph Periodos = new Paragraph(-1, Palabra, TexNom);
                                     Periodos.IndentationLeft = 405;
 
@@ -2976,8 +3007,8 @@ namespace Payroll.Controllers
 
                                     int SD = Convert.ToInt32(ListDatEmisor[0].dSalarioMensual);
                                     SD = SD / 30;
-
-                                    Palabra = Convert.ToString(SD);
+                                    
+                                    Palabra = string.Format("{0:N2}", SD);
                                     Paragraph Salariod = new Paragraph(-1, Palabra, TexNom);
                                     Salariod.IndentationLeft = 390;
 
@@ -2985,7 +3016,10 @@ namespace Payroll.Controllers
                                     Paragraph TSalariodInt = new Paragraph("Sala. Dirario Int: ", TexNeg);
                                     TSalariodInt.IndentationLeft = 350;
 
-                                    Palabra = Convert.ToString(ListDatEmisor[0].SDINT);
+                                    decimal Sdi = Convert.ToDecimal(ListDatEmisor[0].SDINT);
+                                    string dosDecimal = Sdi.ToString("0.##");
+                                    Palabra = string.Format("{0:N2}", dosDecimal);
+                                   
                                     Paragraph Salariodint = new Paragraph(-1, Palabra, TexNom);
                                     Salariodint.IndentationLeft = 405;
 
@@ -3016,6 +3050,8 @@ namespace Payroll.Controllers
                                     documento.Add(Depto);
                                     documento.Add(TDiast);
                                     documento.Add(DiasT);
+                                    documento.Add(TTipoPe);
+                                    documento.Add(TipoPe);
                                     documento.Add(TPeriodo);
                                     documento.Add(Periodos);
                                     documento.Add(Tpuesto);
@@ -3209,7 +3245,7 @@ namespace Payroll.Controllers
                                     string cantidad = Convert.ToString(per - ded);
                                     cantidad = NumeroALetras(cantidad);
 
-                                    Paragraph TTipogoEmpra = new Paragraph("RECIBI" + Empre + ", LA CANTIDAD DE: " + cantidad, TexNeg);
+                                    Paragraph TTipogoEmpra = new Paragraph("RECIBI" + Empre + ", LA CANTIDAD DE: " + cantidad+ " M/N" , TexNeg);
                                     TTipogoEmpra.IndentationLeft = 40;
 
                                     Palabra = " " /*Convert.ToString()*/;
@@ -3358,6 +3394,7 @@ namespace Payroll.Controllers
                             }
                         }
 
+                        if (Repetido == 2) { a = a + 1; Repetido = 0; }
 
                     }
                 }
@@ -3506,7 +3543,7 @@ namespace Payroll.Controllers
 
             return Json(TablasDat);
         }
-           // envia los las facturas por correo 
+           // envia los las facturas por correo ,
         [HttpPost]
         public JsonResult EnvioEmail(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion) {
 

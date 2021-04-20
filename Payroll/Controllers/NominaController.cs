@@ -80,7 +80,7 @@ namespace Payroll.Controllers
             LE = Dao.sp_CEmpresas_Retrieve_Empresas(Perfil_id);
             if (LE.Count > 0)
             {
-                if (idPerfil == 32)
+                if (idPerfil == 32 || idPerfil == 1)
                 {
                     LE[0].iPerfilPdf = 1;
                 }
