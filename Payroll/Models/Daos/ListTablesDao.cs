@@ -1726,7 +1726,10 @@ namespace Payroll.Models.Daos
                                                 {
                                                     DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
                                                 }
-
+                                                if (LisTRecibo[a].iIdRenglon == 113)
+                                                {
+                                                    DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
+                                                }
 
                                             }
                                             TotalPercepciones = string.Format("{0:N2}", ListTotales[rowTper].dSaldo - DotrosPagos);
@@ -1866,7 +1869,7 @@ namespace Payroll.Models.Daos
                                                 if (LisTRecibo[a].sValor == "Percepciones")
                                                 {
                                                     if (masivo != 3) {
-                                                        if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198)
+                                                        if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && LisTRecibo[a].iIdRenglon != 113)
                                                         {
                                                             ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
                                                             Perpecio = Perpecio + LisTRecibo[a].dGravado;
@@ -2022,7 +2025,7 @@ namespace Payroll.Models.Daos
                                                     if (iSatidNum == 2) { idSat = "0" + LisTRecibo[a].sIdSat; };
                                                     
 
-                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && masivo !=3 )
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 113 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && masivo !=3 )
                                                     {
 
                                                         xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
@@ -2354,6 +2357,17 @@ namespace Payroll.Models.Daos
                                                 xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row17].dSaldo));
                                                 xmlWriter.WriteEndElement();
                                                 row17 = 0;
+                                            };
+
+                                            if (row113 > 0)
+                                            {
+                                                xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
+                                                xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                xmlWriter.WriteAttributeString("Clave", "113");
+                                                xmlWriter.WriteAttributeString("Concepto", Convert.ToString(LisTRecibo[row113].sNombre_Renglon));
+                                                xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row113].dSaldo));
+                                                xmlWriter.WriteEndElement();
+                                                row113 = 0;
                                             };
 
                                             if (row227 > 0)
