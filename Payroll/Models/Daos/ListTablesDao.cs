@@ -2331,9 +2331,7 @@ namespace Payroll.Models.Daos
                                             FinR = 1;
                                         }
 
-                                            
-
-
+     
 
                                         //Emisor = null;
                                         //EmisorRFC = null;
@@ -2786,6 +2784,7 @@ namespace Payroll.Models.Daos
                     {
                         ControlEjecucionBean ls = new ControlEjecucionBean();
                         {
+                            ls.iIdContro = int.Parse(data["IdControl"].ToString()); 
                             ls.sDescripcion = data["Descripcion"].ToString();
                             ls.iIdempresa = int.Parse(data["Empresa_id"].ToString());
                             ls.iTipoPeriodo = int.Parse(data["TipoPerido_id"].ToString());

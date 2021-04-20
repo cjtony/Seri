@@ -191,6 +191,7 @@ namespace Payroll.Models.Beans
         public decimal dTotalSaldo { get; set; }
         public decimal dTotalGravado { get; set; }
         public decimal dTotalExento { get; set; }
+        public string iInformativo { get; set; }
         public string sMensaje { get; set; }
     }
     public class TPProcesos
