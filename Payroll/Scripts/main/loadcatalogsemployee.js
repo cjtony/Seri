@@ -696,7 +696,7 @@
     const infobankch = document.getElementById('infobankch');
 
     fchangetippag = () => {
-        if (tippag.value == idcuentach || tippag.value == idcuentaah) {
+        if (tippag.value == idcuentach || tippag.value == idcuentaah || tippag.value == idcajeroau) {
             fdatabank(false);
             if (tippag.value == idcuentach) {
                 cunuse.setAttribute("maxlength", 11);
@@ -706,14 +706,12 @@
                 cunuse.setAttribute("maxlength", 18);
                 infobankct.classList.remove('d-none');
                 infobankch.classList.add('d-none');
+            } else if (tippag.value == idcajeroau) {
+                document.getElementById('infobankch').innerHTML = "";
             }
-            //clvbank.textContent = '';
-            //cunuse.value = "12313123";
-            //banuse.value = "0";
         } else {
             banuse.value = "0";
             cunuse.value = "";
-            //clvbank.textContent = '';
             infobankch.classList.add('d-none');
             infobankct.classList.add('d-none');
             fdatabank(true);
