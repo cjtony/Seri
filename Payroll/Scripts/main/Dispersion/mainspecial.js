@@ -134,9 +134,9 @@
                         }, success: (data) => {
                             document.getElementById('ismirrorspecial').disabled             = false;
                             document.getElementById('btn-send-dispersion-special').disabled = false;
-                            document.getElementById('option-group').value          = "none";
+                            //document.getElementById('option-group').value          = "none";
                             document.getElementById('option-group').disabled       = false;
-                            document.getElementById('type-dispersion').value       = "none";
+                            //document.getElementById('type-dispersion').value       = "none";
                             document.getElementById('type-dispersion').disabled    = false;
                             document.getElementById('divbtndownzip1').innerHTML    = "";
                             document.getElementById('div-controls1').innerHTML     = "";
@@ -174,77 +174,73 @@
                 isMirrorSend = 1;
             }
             if (optionGroup.value != "none") {
-                if (typeDispersion.value != "none") {
-                    const dataSend = {
-                        group: parseInt(optionGroup.value),
-                        type: String(typeDispersion.value),
-                        yearPeriod: parseInt(yeardisS.value),
-                        numberPeriod: parseInt(periodisS.value),
-                        typePeriod: parseInt(typeperiodS.value),
-                        dateDeposits: datedisS.value,
-                        mirror: isMirrorSend
-                    };
-                    console.log(dataSend);
-                    $.ajax({
-                        url: "../DispersionSpecial/ReporteDs",
-                        type: "POST",
-                        data: dataSend,
-                        beforeSend: () => {
-                            document.getElementById('btn-send-dispersion-special').disabled = true;
-                            document.getElementById('btn-send-report-ds').disabled = true;
-                            document.getElementById('option-group').disabled       = true;
-                            document.getElementById('type-dispersion').disabled    = true;
-                            ismirrorspecial.disabled = true;
-                        }, success: (request) => {
-                            console.log(request);
-                            //document.getElementById('btn-send-dispersion-special').disabled = false;
-                            //document.getElementById('btn-send-report-ds').disabled = false;
-                            //document.getElementById('option-group').disabled       = false;
-                            //document.getElementById('type-dispersion').disabled    = false;
-                            if (request.Bandera == true && request.MensajeError == "none") {
-                                document.getElementById('divbtndownzip1').innerHTML += `
-                                    <div class="card border-left-success shadow h-100 py-2 animated fadeInRight delay-2s">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">${request.Archivo}.zip</div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
+                const dataSend = {
+                    group: parseInt(optionGroup.value),
+                    type: String(typeDispersion.value),
+                    yearPeriod: parseInt(yeardisS.value),
+                    numberPeriod: parseInt(periodisS.value),
+                    typePeriod: parseInt(typeperiodS.value),
+                    dateDeposits: datedisS.value,
+                    mirror: isMirrorSend
+                };
+                console.log(dataSend);
+                $.ajax({
+                    url: "../DispersionSpecial/ReporteDs",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        document.getElementById('btn-send-dispersion-special').disabled = true;
+                        document.getElementById('btn-send-report-ds').disabled = true;
+                        document.getElementById('option-group').disabled       = true;
+                        document.getElementById('type-dispersion').disabled    = true;
+                        ismirrorspecial.disabled = true;
+                    }, success: (request) => {
+                        console.log(request);
+                        //document.getElementById('btn-send-dispersion-special').disabled = false;
+                        //document.getElementById('btn-send-report-ds').disabled = false;
+                        //document.getElementById('option-group').disabled       = false;
+                        //document.getElementById('type-dispersion').disabled    = false;
+                        if (request.Bandera == true && request.MensajeError == "none") {
+                            document.getElementById('divbtndownzip1').innerHTML += `
+                                <div class="card border-left-success shadow h-100 py-2 animated fadeInRight delay-2s">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">${request.Archivo}.zip</div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="progress progress-sm mr-2">
+                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <a title="Descargar archivo ${request.Archivo}.xlsx" id="btn-down-txt" download="${request.Archivo}" href="/Content/DISPERSION/${request.Folder}/${request.Archivo}" ><i class="fas fa-download fa-2x text-gray-300"></i></a>
-                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a title="Descargar archivo ${request.Archivo}.xlsx" id="btn-down-txt" download="${request.Archivo}" href="/Content/DISPERSION/${request.Folder}/${request.Archivo}" ><i class="fas fa-download fa-2x text-gray-300"></i></a>
                                             </div>
                                         </div>
-                                    </div>`;
-                                document.getElementById('div-controls1').innerHTML += `
-                                    <div class="animated fadeInDown delay-1s">
-                                        <h6 class="text-primary font-weight-bold"> <i class="fas fa-check-circle mr-2"></i> Archivo generado!</h6>
-                                        <hr />
-                                        <button id="btn-restart-to-deploy-special" class="btn btn-sm btn-primary" type="button" onclick="fRestartReportFile('${request.Folder}', '${request.Archivo}', 1);"> <i class="fas fa-undo mr-2"></i> Activar botones </button>
                                     </div>
-                                `;
-                            } else if (request.Bandera == false && request.Rows == 0) {
-                                fShowTypeAlert('Atención!', 'No se encontraron registros para generar el reporte', 'info', document.getElementById('btn-send-dispersion-special'), 0);
-                                fRestartReportFile('none','none', 2);
-                            } else {
-                                fShowTypeAlert('Error!', 'Ocurrio un error interno en la aplicacion', 'error', document.getElementById('btn-send-dispersion-special'), 0);
-                            }
-                        }, error: (jqXHR, exception) => {
-                            fcaptureaerrorsajax(jqXHR, exception);
+                                </div>`;
+                            document.getElementById('div-controls1').innerHTML += `
+                                <div class="animated fadeInDown delay-1s">
+                                    <h6 class="text-primary font-weight-bold"> <i class="fas fa-check-circle mr-2"></i> Archivo generado!</h6>
+                                    <hr />
+                                    <button id="btn-restart-to-deploy-special" class="btn btn-sm btn-primary" type="button" onclick="fRestartReportFile('${request.Folder}', '${request.Archivo}', 1);"> <i class="fas fa-undo mr-2"></i> Activar botones </button>
+                                </div>
+                            `;
+                        } else if (request.Bandera == false && request.Rows == 0) {
+                            fShowTypeAlert('Atención!', 'No se encontraron registros para generar el reporte', 'info', document.getElementById('btn-send-dispersion-special'), 0);
+                            fRestartReportFile('none','none', 2);
+                        } else {
+                            fShowTypeAlert('Error!', 'Ocurrio un error interno en la aplicacion', 'error', document.getElementById('btn-send-dispersion-special'), 0);
                         }
-                    });
-                } else {
-                    fShowTypeAlert('Atención!', 'Selecciona un tipo de dispersion', 'warning', typeDispersion, 0);
-                }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
             } else {
                 fShowTypeAlert('Atención!', 'Selecciona un grupo', 'warning', optionGroup, 0);
             }

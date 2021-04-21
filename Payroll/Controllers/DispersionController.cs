@@ -580,9 +580,17 @@ namespace Payroll.Controllers
                                                             sNomina = payroll.sNomina
                                                         });
                                             }
+                                            if (finallyAccount == "6257706053") {
+                                                int jd = 0;
+                                            }
+                                            //var test = payroll.dImporte.ToString().Insert(payroll.dImporte.ToString().Length - 2, ".");
+                                            //string amount = Truncate(Convert.ToDouble(payroll.sImporte), 2).ToString();
                                             string amount = payroll.doImporte.ToString();
-                                            string nameBen = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd() + " " + payroll.sMaterno.TrimEnd();
-                                            header = finallyAccount + "," + amount + "," + hReferenceAlpa + "," + nameBen;
+                                            string nameEmployee = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd() + " " + payroll.sMaterno.TrimEnd();
+                                            if (nameEmployee.Length > 35) {
+                                                nameEmployee = nameEmployee.Substring(0, 35);
+                                            }
+                                            header = finallyAccount + "," + amount + "," + hReferenceAlpa + "," + nameEmployee;
                                             stream.WriteLine(header);
                                         }
                                     }
