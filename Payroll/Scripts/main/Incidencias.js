@@ -28,7 +28,6 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    //console.log(data);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -101,7 +100,7 @@
                 success: (data) => {
                     if (data[0] == '0') {
                         Swal.fire({
-                            icon: 'danger',
+                            icon: 'error',
                             title: 'Error!',
                             text: data[1],
                             timer: 1000
@@ -144,7 +143,6 @@
             success: (data) => {
                 $("#tabIncidenciasBody").html("");
                 createTab();
-                console.log(data);
                 var iconb = "";
                 var colorb = "";
                 if (data[0]["TipoEmpleado"] > 163) {
@@ -159,7 +157,6 @@
                 $("#modalLiveSearchEmpleado").modal("hide");
                 document.getElementById("resultSearchEmpleados").innerHTML = "";
                 document.getElementById("inputSearchEmpleados").value = "";
-                //console.log(data);
 
             }
         });
@@ -280,7 +277,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                //console.log(data[0]["Fecha_Aplicacion"].substring(6, data[0]["Fecha_Aplicacion"].length) + "-" + data[0]["Fecha_Aplicacion"].substring(3, data[0]["Fecha_Aplicacion"].length - 5) + "-" + data[0]["Fecha_Aplicacion"].substring(0, data[0]["Fecha_Aplicacion"].length - 8));
                 $("#edDiashrs").val(data[0]["Dias_hrs"]);
                 if (data[0]["Renglon"] == "71" || data[0]["Renglon"] == 71) {
                     $("#edConcepto").html("<option value='" + data[0]["IdTRegistro_Incidencia"] + "'>" + data[0]["Concepto"] + "</option>");
@@ -459,21 +455,16 @@
             }
 
             if (plaz < pagr) {
-                console.log($("#edPlazos").val());
-                console.log($("#edPagosRestantes").val());
                 $("#edPlazos").removeClass("is-valid");
                 $("#edPagosRestantes").removeClass("is-valid");
                 $("#edPlazos").addClass("is-invalid");
                 $("#edPagosRestantes").addClass("is-invalid");
-
                 $("#validp").html("<div class='alert alert-warning alert-dismissable'>" +
                     "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
                     "<strong>¡Aviso!</strong> Los Plazos no pueden ser menores a los Pagos Restantes." +
                     "</div>");
             } else {
                 $("#validp").html("");
-                console.log($("#edPlazos").val());
-                console.log($("#edPagosRestantes").val());
                 $("#edPlazos").removeClass("is-invalid");
                 $("#edPagosRestantes").removeClass("is-invalid");
                 $("#edPlazos").addClass("is-valid");
@@ -565,13 +556,10 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //$("#resulttipoincidencia").html("");
                 document.getElementById("resulttipoincidencia").innerHTML = "";
                 if (data.length < 0 || data == "") {
-                    //console.log(data);
 
                 } else {
-                    //console.log(data);
                     for (var i = 0; i < data.length; i++) {
                         document.getElementById("resulttipoincidencia").innerHTML += "<div class='list-group-item list-group-item-light list-group-item-action py-0' onclick='selectIncidencia(" + data[i]["Ren_incid_id"] + ",\"" + data[i]["Descripcion"] + "\");'> " + data[i]["Ren_incid_id"] + " : " + data[i]["Descripcion"] + "</div>";
                     }

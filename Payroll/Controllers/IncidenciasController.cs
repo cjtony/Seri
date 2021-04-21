@@ -636,5 +636,13 @@ namespace Payroll.Controllers
             lista = Dao.TRegistro_Incidencias_aplaza_Incidencia(Incidencia_id, Aplazar);
             return Json(lista);
         }
+        [HttpPost]
+        public JsonResult CancelaCargaMasiva(string tabla, string referencia) 
+        {
+            List<string> lista = new List<string>();
+            CargaMasivaDao Dao = new CargaMasivaDao();
+            lista = Dao.sp_Cancela_CargaMasiva(tabla,referencia);
+            return Json(lista);
+        }
     }
 }

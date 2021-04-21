@@ -342,7 +342,7 @@
                         "<td>" + data[i]["Nombre_Ausentismo"] + "</td>" +
                         "<td>" + data[i]["Fecha_Ausentismo"].substring(0, 10) + "</td>" +
                         "<td>" + data[i]["Dias_Ausentismo"] + "</td>" +
-                        //"<td>" + data[i]["FechaFin"] + "</td>" +
+                        "<td>" + data[i]["Saldo_Dias_Ausentismo"] + "</td>" +
                         "<td>" + data[i]["Causa_FaltaInjustificada"] + "</td>" +
                         "<td>" + data[i]["Certificado_imss"] + "</td>" +
                         "<td>" + data[i]["Comentarios_imss"] + "</td>" +

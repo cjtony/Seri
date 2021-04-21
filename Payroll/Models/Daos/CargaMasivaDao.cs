@@ -436,7 +436,9 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlNoCredito", rows[5].ToString().Substring(1, rows[5].ToString().Length - 1)));
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaAprovacionCredito", rows[6].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlDescontar", rows[3].ToString().Substring(0, 3).Trim()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", rows[7].ToString()));
+            if (rows[7].ToString().Length == 0 || rows[7].ToString() == null)
+            {  cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", "0"));  }
+            else  {  cmd.Parameters.Add(new SqlParameter("@ctrlFechaBajaCredito", rows[7].ToString()));  }
             cmd.Parameters.Add(new SqlParameter("@ctrlFechaReinicioCredito", ""));
             cmd.Parameters.Add(new SqlParameter("@ctrlAplicaFiniquito", rows[8].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlCargaMasiva", IsCargaMasiva));
@@ -555,6 +557,29 @@ namespace Payroll.Models.Daos
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    list.Add(data["iFlag"].ToString());
+                    list.Add(data["sRespuesta"].ToString());
+                }
+            }
+            data.Close(); this.conexion.Close(); this.Conectar().Close();
+            return list;
+        }
+        public List<string> sp_Cancela_CargaMasiva(string tabla, string referencia)
+        {
+            List<string> list = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Cancela_CargaMasiva", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlReferencia", referencia));
+            cmd.Parameters.Add(new SqlParameter("@ctrlTabla", tabla));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
             if (data.HasRows)
             {
                 while (data.Read())

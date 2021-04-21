@@ -46,14 +46,13 @@
         <div class="col-md-6 mt-4 rounded">
             <div class="bg-white shadow rounded border-left-primary border-right-primary p-3 font-labels" data-spy="scroll">
                 <div class="h6 mt-1 text-primary font-weight-bold text-center">Cargas del Periodo</div>
-
                 <table class="table table-sm font-labels" id="tabCargasMasivas">
                     <thead class="font-labels">
                         <tr>
                             <th scope="col"> Tabla </th>
                             <th scope="col"> Folio </th>
                             <th scope="col"> Referencia </th>
-                            <th scope="col"> Status </th>
+                            <th scope="col"> Registros </th>
                             <th scope="col"> Acciones </th>
                         </tr>
                     </thead>
@@ -67,23 +66,53 @@
 <!-- Modal cancelar carga -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content border-left-primary border-right-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Cancelar carga</h5>
+                <h5 class="modal-title text-danger font-weight-bold" id="staticBackdropLabel"><i class="far fa-trash-alt"></i> Cancelar carga</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="frmCancelarCarga">
-
-                </form>
+            <div class="modal-body row">
+                <label class="h5 font-weight-bold col-md-12 text-center">Valida que sea la información correcta</label>
+                <div class="col-md-9 form-group">
+                    <label class="font-labels font-weight-bold">Tipo de carga</label>
+                    <input type="text" class="form-control form-control-lg" id="cm_tabla" readonly/>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="font-labels font-weight-bold">Registros</label>
+                    <input type="text" class="form-control form-control-lg" id="cm_registros" readonly/>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="font-labels font-weight-bold">Fecha de carga</label>
+                    <input type="text" class="form-control form-control-lg" id="cm_fecha" readonly/>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="font-labels font-weight-bold">Hora</label>
+                    <input type="text" class="form-control form-control-lg" id="cm_hora" readonly />
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="font-labels font-weight-bold">Usuario</label>
+                    <input type="text" class="form-control form-control-lg" id="cm_usuario" readonly/>
+                </div>
+                <div class="col-md-12 form-group text-center">
+                    <label class="text-danger font-weight-bold">
+                        Las cargas eliminadas no podran recuperarse una vez confirmada la acción
+                    </label>
+                </div>
+                <input type="hidden" id="cm_referencia" value="" />
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+                <div class="btn btn-sm btn-danger btn-icon-split" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text">Cerrar</span>
+                </div>
+                <div class="btn btn-sm btn-primary btn-icon-split" data-dismiss="modal" onclick="cancelarCargaMasiva();">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                    <span class="text">Confirmar</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/cargamasiva.js?n=6"></script>
+<script src="~/Scripts/main/cargamasiva.js?n=3"></script>
