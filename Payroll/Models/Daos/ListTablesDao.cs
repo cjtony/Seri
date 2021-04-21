@@ -2830,7 +2830,7 @@ namespace Payroll.Models.Daos
 
         /// Consulta los pdfconsellos ejecutados y enviados 
 
-        public  List<SelloSatBean> sp_EjectadosAndSend_Retrieve_TSelloSat(string CtrliIdempresa, int CtrliAnio, int CtrliTipoPeriodo, int CtrliPeriodo, int CtrliEjecutado, int CtrlImensaje,int CtrliOpc,int CtrliRecibo)
+        public  List<SelloSatBean> sp_EjectadosAndSend_Retrieve_TSelloSat(int CtrliIdempresa, int CtrliAnio, int CtrliTipoPeriodo, int CtrliPeriodo, int CtrliEjecutado, int CtrlImensaje,int CtrliOpc,int CtrliRecibo)
         {
            List<SelloSatBean> bean = new List<SelloSatBean>();
 
@@ -2846,8 +2846,6 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliTipoPeriodo", CtrliTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliEjecutado", CtrliEjecutado));
-                cmd.Parameters.Add(new SqlParameter("@CtrlImensaje", CtrlImensaje));
-                cmd.Parameters.Add(new SqlParameter("@CtrliOpc", CtrliOpc));
                 cmd.Parameters.Add(new SqlParameter("@CtrliRecibo", CtrliRecibo));
                 
                 SqlDataReader data = cmd.ExecuteReader();
@@ -2860,16 +2858,21 @@ namespace Payroll.Models.Daos
                         {
                             LP.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
                             LP.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
-                            LP.sNomEmpleado = data["Empleado"].ToString();
-                            LP.sNombre = data["NOMBRE"].ToString();
+                            LP.sNomEmpleado = data["Empleado_id"].ToString()+" "+ data["Empleado"].ToString();
+                            LP.sNombre = data["Nombre_Empleado"].ToString();
                             LP.ianio = int.Parse(data["Anio"].ToString());
                             LP.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
                             LP.iPeriodo = int.Parse(data["Periodo"].ToString());
                             LP.bEmailSent = data["Email_Sent"].ToString();
-                            LP.sEmailSent = data["EMAIL_PERSONAL"].ToString();
+                            if (data["Correo_Electronico"].ToString() != "" || data["Correo_Electronico"].ToString() != " ")
+                            {
+
+                                LP.sEmailSent = data["Correo_Electronico"].ToString();
+                            }
+                            else { LP.sEmailSent = ""; }
                             if (data["Recibo_Simple"].ToString()!=null) { LP.sUurReciboSim = data["Recibo_Simple"].ToString(); }
                             else { LP.sUurReciboSim = " "; };
-                            if (data["Recibo_Fiscal"].ToString() != null) { LP.sUrllReciboFis = data["Recibo_Fiscal"].ToString(); }           else{ LP.sUrllReciboFis = " ";};
+                            if (data["Recibo_Fiscal"].ToString() != null) { LP.sUrllReciboFis = data["Recibo_Fiscal"].ToString(); } else{ LP.sUrllReciboFis = " ";};
                             LP.sEmailSendSim = data["Email_Sent_simple"].ToString();
                             LP.sMensaje = "Succes";
           

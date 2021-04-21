@@ -53,6 +53,9 @@
                     contentType: false,
                     processData: false,
                     async: false,
+                    beforeSend: function (data) {
+                        $('#jqxLoader2').jqxLoader('open');
+                    },
                     success: function (data) {
                         if (typeof data.Value != "undefined") {
                             const dataSend = { Anio: aniox, TipoPeriodo: TipPeriodox, Perido: Peridox, Version: versionx, NomArchivo: NomArch };
@@ -62,7 +65,9 @@
                                 type: "POST",
                                 data: dataSend,
                                 success: (data) => {
-                                    if (data[0].sMensaje !=null) {
+                                    $('#jqxLoader2').jqxLoader('close');
+                                    if (data[0].sMensaje != null) {
+                                        $('#jqxLoader2').jqxLoader('close');
                                         var url = '\\Archivos\\Pdfzio.zip';
                                         window.open(url);
 
@@ -72,6 +77,7 @@
                                         }
 
                                         if (data[0].iNoEjecutados > 1) {
+                                            $('#jqxLoader2').jqxLoader('close');
                                             fshowtypealert(data[0].iNoEjecutados + ' Archivos generados ', data.Message, 'success');
 
                                         }
@@ -146,5 +152,9 @@
             //}
         });
     };
+
+    $("#jqxLoader2").jqxLoader({ text: "Generando PDF Timbrados", width: 160, height: 80 });
+
+
 
 });
