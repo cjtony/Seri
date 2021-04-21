@@ -296,5 +296,13 @@ namespace Payroll.Controllers
             empresas = Dao.CGruposEmpresas_Insert_Grupo(NombreGrupo);
             return Json(empresas);
         }
+        [HttpPost]
+        public JsonResult UpdateEmpresa(string edNombre, string edNombrecorto, string edRFC, string edGiro, int edRegimenFiscal, string edRegistroimss, int edPagarvacaciones, int edCodigo_postal, int edEstado_empresa, int edMunicipio_empresa, string edCiudad_empresa, int edColonia_empresa, string edDelegacion_Empresa, string edCalle_Empresa)
+        {
+            List<string> list = new List<string>();
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            list = Dao.sp_CEmpresas_Update_Empresa(int.Parse(Session["IdEmpresa"].ToString()), edNombre, edNombrecorto, edRFC, edGiro, edRegimenFiscal, edRegistroimss, edPagarvacaciones, edCodigo_postal, edEstado_empresa, edMunicipio_empresa, edCiudad_empresa, edColonia_empresa, edDelegacion_Empresa, edCalle_Empresa);
+            return Json(list);
+        }
     }
 }
