@@ -1,8 +1,8 @@
 ﻿$(function () {
     //// Delcaracion de variables
 
-    const DropGrup = document.getElementById('DropGrup');
-    const DropContEje = document.getElementById('DropContEje');
+   
+
     const TextDEesp = document.getElementById('TextDEesp');
     const TextSelecEmpre = document.getElementById('TextSelecEmpre');
     const CheckEmpresa = document.getElementById('CheckEmpresa');
@@ -22,17 +22,7 @@
     var VarCheckEmpresa = document.getElementById('CheckEmpresa');
     var Empresas;
     
-    DropGrup.value = 1;
-    DropContEje.value = 1;
-    $('#DropContEje').change(function () {
-        var descrip;
-        if (DropContEje.value == "1") {
-            LisEmpresa();
-            descrip = DropContEje.options[DropContEje.selectedIndex].text;
-            document.getElementById("TextDEesp").innerHTML += descrip;
-        }
-     
-    });
+    
        /// Llena el DropEmpresa con el listado de empresas correspondientes
     LisEmpresa = () => {
 
@@ -77,7 +67,7 @@
                 labelelement.text("Label: " + item.label);
                 var checkedelement = $("<div></div>");
                 checkedelement.text("Checked: " + item.checked);
-              //  $("#selectionlog").children().remove();
+                $("#selectionlog").children().remove();
 
                 var items = $("#DropEmpresa").jqxDropDownList('getCheckedItems');
                 var checkedItems = "";
@@ -99,7 +89,7 @@
         }
     });
 
-    /// Limpias el campo de Texttarea
+   /// Limpias el campo de Texttarea
     limpTextarea = () => {
         var text = " ";
         var lines = $('#TextSelecEmpre').val().split('\n');
@@ -127,6 +117,7 @@
         }
 
     };
+
     CheckEmpresa.checked = false;
     CheckEmpresa.addEventListener('click', FValorChec);
 
@@ -208,12 +199,10 @@
 
         if (TextBAnioProce.value != "" && TextBAnioProce.value != " " ) {
 
-            if (DroTipoPeriodo.value > 0) {
-
                 if (DropPerido.value > 0) {
 
                     if (Empresas.length > 0) {
-                        FCargamasibaPDF(TextBAnioProce.value, DroTipoPeriodo.value, DropPerido.value, Empresas, TextDEesp.value)
+                        FCargamasibaPDF(TextBAnioProce.value, DroTipoPeriodo.value, DropPerido.value, Empresas)
 
                     }
                     else {
@@ -227,12 +216,8 @@
 
                 }
                 
-            }
-            //&&  && && 
-            else {
-
-                fshowtypealert('Emisión de recibos', "seleccionar un tipo de periodo", 'warning');
-            }
+            
+            
         }
         else {
             
@@ -246,9 +231,10 @@
 
     FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas,descrip) => {
     
-        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value, sDEscripcion: descrip };
-      
-            btnEnviCorre.value= 1
+        const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value };
+
+        console.log(dataSend);
+         btnEnviCorre.value= 1
         
 
         $.ajax({
@@ -264,7 +250,7 @@
 
     };
 
-    /// Muestra en pantalla la ultima ejecucion realizada 
+  //  /// Muestra en pantalla la ultima ejecucion realizada 
 
 
     FtheLastEje = () => {      
@@ -274,30 +260,33 @@
             data: JSON.stringify(),
             success:  (TablasDat)=> {
                 if (TablasDat.TablasDat[0].sMensaje = "succes") {
-                    for (var i = 0; i < DropGrup.length; i++) {
-                        if (DropGrup.options[i].text == "IPSNet") {
-                            // seleccionamos el valor que coincide
-                            DropGrup.selectedIndex = i;
-                        }
-                    }
-                    for (var i = 0; i < DropContEje.length; i++) {
-                        if (DropContEje.options[i].text == TablasDat.TablasDat[0].sDescripcion) {
-                            DropContEje.selectedIndex = i;
-                        }
-                    }                
+                   
+                                 
                     TextBAnioProce.value = TablasDat.TablasDat[0].iAnio;
-                    descrip = TablasDat.TablasDat[0].sDescripcion;
-                    document.getElementById("TextDEesp").innerHTML += descrip;
+                  
                     LisEmpresa();              
                     $("#DropEmpresa").jqxDropDownList('checkItem', TablasDat.TablasDat[0].iIdempresa);
                     DroTipoRecibo.selectedIndex = TablasDat.TablasDat[0].iRecibo;
                     var Tp = "";
+                    if (TablasDat.TablasDat[0].iTipoPeriodo == 0) {
+                        Tp = "Semanal"; 
+                    };
                     if (TablasDat.TablasDat[0].iTipoPeriodo == 1) {
-                        Tp = " Semanal"; 
+                        Tp="Decenal"
+                    };
+                    if (TablasDat.TablasDat[0].iTipoPeriodo == 2) {
+                        Tp = "Catorcenal";
                     };
                     if (TablasDat.TablasDat[0].iTipoPeriodo == 3) {
-                        Tp=" Quincenal"
+                        Tp = " Quincenal"
                     };
+                    if (TablasDat.TablasDat[0].iTipoPeriodo == 4) {
+                        Tp = "Mensual";
+                    };
+                    if (TablasDat.TablasDat[0].iTipoPeriodo == 5) {
+                        Tp = "Bimestral"
+                    };
+
                     $("#DroTipoPeriodo").empty();
                     document.getElementById("DroTipoPeriodo").innerHTML += `<option value='${TablasDat.TablasDat[0].iTipoPeriodo}'>${TablasDat.TablasDat[0].iTipoPeriodo} ${Tp} </option>`;
 

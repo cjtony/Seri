@@ -518,15 +518,11 @@ namespace Payroll.Controllers
                 Paragraph RegPat = new Paragraph(-1, Palabra, TexNom);
                 RegPat.IndentationLeft = 100;
 
+           
 
-                if (nodo.InnerText != "")
-                {
-                    Palabra = nodo.Attributes.GetNamedItem("RegistroPatronal").Value;
-                    TRegPat = new Paragraph("Reg.Pat:", TexNeg);
-                    TRegPat.IndentationLeft = 70;
-                    RegPat = new Paragraph(-1, Palabra, TexNom);
 
-                }
+       
+
 
                 /// direccion Empresa
 
@@ -648,6 +644,23 @@ namespace Payroll.Controllers
                 ListEmisor = Dao2.sp_EmisorReceptor_Retrieve_EmisorReceptor(idEmpresa, NumEmpleado);
 
                 if (ListEmisor != null) { if (ListEmisor[0].iCgTipoEmpleadoId == 156) { ReciboAsi = 1; }; };
+
+                if (ListEmisor[0].iCgTipoEmpleadoId != 156)
+                {
+
+                    nodo = xmlDoc.GetElementsByTagName("nomina12:Emisor").Item(0);
+                    Palabra = nodo.Attributes.GetNamedItem("RegistroPatronal").Value;
+                    TRegPat = new Paragraph("Reg.Pat:", TexNeg);
+                    TRegPat.IndentationLeft = 70;
+                    RegPat = new Paragraph(-1, Palabra, TexNom);
+                    RegPat.IndentationLeft = 100;
+
+
+
+                }
+
+
+
 
                 Paragraph TCurp = new Paragraph("Curp:", TTexNegCuerpo);
                 TCurp.IndentationLeft = 50;
@@ -821,11 +834,17 @@ namespace Payroll.Controllers
 
                 Paragraph TClaveb = new Paragraph("Clave:", TTexNegCuerpo);
                 TClaveb.IndentationLeft = 200;
-                nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
-                Palabra = nodo.Attributes.GetNamedItem("CuentaBancaria").Value;
+                Palabra = "N/A";
+
+                if (ListEmisor[0].iCgTipoPago != 218) {
+                    TClaveb.IndentationLeft = 200;
+                    nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
+                    Palabra = nodo.Attributes.GetNamedItem("CuentaBancaria").Value;
+                  
+
+                }
                 Paragraph Claveb = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Claveb.IndentationLeft = 223;
-
 
                 List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
                 FuncionesNomina dao = new FuncionesNomina();
@@ -838,15 +857,13 @@ namespace Payroll.Controllers
                 for (int i = 0; i < LPe.Count; i++) { 
                 
                     if(Perido== LPe[i].iPeriodo){
-                        Palabra = Perido +" ("+ LPe[0].sFechaInicio+"-"+ LPe[0].sFechaFinal +")";
+                        Palabra = Perido +" ("+ LPe[i].sFechaInicio+"-"+ LPe[i].sFechaFinal +")";
 
                     }
                 }
                 
                 Paragraph PeridoFec = new Paragraph(-1, Palabra, TexNegCuerpo);
                 PeridoFec.IndentationLeft = 223;
-
-
 
 
 
@@ -861,24 +878,33 @@ namespace Payroll.Controllers
                 Palabra = "   ";
                 Paragraph TBanco = new Paragraph("Banco:", TTexNegCuerpo);
                 TBanco.IndentationLeft = 50;
-                string sbanco;
-                if (Palabra.Length >= 7 && Palabra.Length < 18)
-                {
-                    nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
-                    Palabra = nodo.Attributes.GetNamedItem("Banco").Value;
-                    sbanco = Palabra;
-                }
-                else
-                {
-                    sbanco = Palabra.Substring(0, 3);
-                }
+                string sbanco="";
+                if (ListEmisor[0].iCgTipoPago != 218) {
 
+                     TBanco = new Paragraph("Banco:", TTexNegCuerpo);
+                    TBanco.IndentationLeft = 50;
+
+                    if (Palabra.Length >= 7 && Palabra.Length < 18)
+                    {
+                        nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
+                        Palabra = nodo.Attributes.GetNamedItem("Banco").Value;
+                        sbanco = Palabra;
+                    }
+                    else
+                    {
+                        sbanco = Palabra.Substring(0, 3);
+                    }
+
+
+                }
 
                 if (ListEmisor != null)
                 {
 
                     sbanco = sbanco + " " + ListEmisor[0].sDescripcion;
                 }
+
+
 
                 Paragraph Banco = new Paragraph(-1, sbanco, TexNegCuerpo);
                 Banco.IndentationLeft = 75;
@@ -892,6 +918,28 @@ namespace Payroll.Controllers
                 {
                     Palabra = "02 Semanal";
                 }
+
+                if (Palabra == "10")
+                {
+                    Palabra = "10 Docenal";
+                }
+                if (Palabra == "04")
+                {
+                    Palabra = "04 Quincenal";
+                }
+                if (Palabra == "03")
+                {
+                    Palabra = "03 Catorcenal";
+                }
+                if (Palabra == "04")
+                {
+                    Palabra = "05 Mensual";
+                }
+                if (Palabra == "05")
+                {
+                    Palabra = "06 Bimestral";
+                }
+
 
 
 
@@ -1444,17 +1492,18 @@ namespace Payroll.Controllers
 
         /// generar Pdf en emision de Recibos
         [HttpPost]
-        public JsonResult GenPDF(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion)
+        public JsonResult GenPDF(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo )
         {
 
             int Idusuario = Convert.ToInt32(Session["iIdUsuario"]), inactivo = 0, NoEjecuciones = 0;
-
+            string sDEscripcion = " "+Idusuario;
 
             List<EmpresasBean> NoEmple = new List<EmpresasBean>();
             List<EmpleadosBean> Empleados = new List<EmpleadosBean>();
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
             List<EmisorReceptorBean> url = new List<EmisorReceptorBean>();
             List<ControlEjecucionBean> LisIdcontrol = new List<ControlEjecucionBean>();
+            List<EmisorReceptorBean> ListDirec = new List<EmisorReceptorBean>();
             FuncionesNomina Dao = new FuncionesNomina();
             ListEmpleadosDao Dao2 = new ListEmpleadosDao();
 
@@ -1517,11 +1566,11 @@ namespace Payroll.Controllers
                     //nombre y unicacion del PDF
                     Nombrearc = PathPDF;
                     if (iRecibo == 1) {
-                        Nombrearc = Nombrearc + "Recibo_E" + idEmpresa + "_N" + Empleados[a].iNumeroNomina + "_F" + Folio + ".pdf";
+                        Nombrearc = Nombrearc + "Recibo_E" + idEmpresa + "_N" + Empleados[a].iIdEmpleado + "_F" + Folio + ".pdf";
                     }
                     if (iRecibo == 2)
                     {
-                        Nombrearc = Nombrearc + "ReciboFiscal_E" + idEmpresa + "_N" + Empleados[a].iNumeroNomina + "_F" + Folio + ".pdf";
+                        Nombrearc = Nombrearc + "ReciboFiscal_E" + idEmpresa + "_N" + Empleados[a].iIdEmpleado + "_F" + Folio + ".pdf";
                     }
                     int valido = 0;
                     idempleado = Empleados[a].iIdEmpleado;
@@ -1585,37 +1634,68 @@ namespace Payroll.Controllers
                             iTextSharp.text.Font TTexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.BOLD);
                             iTextSharp.text.Font TexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
 
+                            Paragraph Espacio = new Paragraph(10, " ");
+                            Paragraph Espacio2 = new Paragraph(-80, " ");
+                            Paragraph Espacio3 = new Paragraph(10, " ");
+                            Paragraph espacio4 = new Paragraph(25, " ", TexNegCuerpo);
+                            Paragraph Espacio9 = new Paragraph(5, " ");
+                            Paragraph Espacio10 = new Paragraph(-62, " ");
+                            Paragraph Espacio11 = new Paragraph(30, " ");
+
+
                             //////Cabecera  
 
                             string Palabra = ListDatEmisor[0].sNombreEmpresa;
                             Paragraph Empresa = new Paragraph(50, Palabra, TTexNeg);
-                            Empresa.IndentationLeft = 90;
+                            Empresa.IndentationLeft = 70;
 
 
                             Paragraph Trfc = new Paragraph("R.F.C.:", TexNeg);
-                            Trfc.IndentationLeft = 90;
+                            Trfc.IndentationLeft = 70;
                             Palabra = ListDatEmisor[0].sRFC;
                             RfcEmi = Palabra;
                             Paragraph Rfc = new Paragraph(-1, Palabra, TexNom);
-                            Rfc.IndentationLeft = 112;
+                            Rfc.IndentationLeft = 98;
+
                             Paragraph Rfcpatron = new Paragraph(-1, Palabra, TexNom);
-                            Rfcpatron.IndentationLeft = 132;
+                            Rfcpatron.IndentationLeft = 118;
 
 
                             Paragraph TrfcPatron = new Paragraph("R.F.C. Patron:", TexNeg);
-                            TrfcPatron.IndentationLeft = 90;
+                            TrfcPatron.IndentationLeft = 70;
+
                             Palabra = ListDatEmisor[0].sAfiliacionIMSS;
                             Paragraph TRegPat = new Paragraph("Reg.Pat:", TexNeg);
-                            TRegPat.IndentationLeft = 90;
+                            TRegPat.IndentationLeft = 70;
+
                             Paragraph RegPat = new Paragraph(-1, Palabra, TexNom);
-                            RegPat.IndentationLeft = 116;
+                            RegPat.IndentationLeft = 100;
+
+                            ListDirec = Dao2.Sp_EmpresaDir_Retrieve(RfcEmi);
+
+
+                            Paragraph TrEmpraDir = new Paragraph("Dirección:", TexNeg);
+                            TrEmpraDir.IndentationLeft = 70;
+                            Palabra = ListDirec[0].sDomiciolioEmple;
+                            Paragraph EmpraDir = new Paragraph(-1, Palabra, TexNom);
+                            EmpraDir.IndentationLeft = 104;
+
+
+                            Palabra = ListDirec[0].sDomiciolioEmpre;
+                            Paragraph EmpraDir2 = new Paragraph(Palabra, TexNom);
+                            EmpraDir2.IndentationLeft = 70;
+
 
                             /// Emprime Cabecera
+                            
                             documento.Add(Empresa);
                             documento.Add(Trfc);
                             documento.Add(Rfc);
                             documento.Add(TrfcPatron);
                             documento.Add(Rfcpatron);
+                            documento.Add(TrEmpraDir);
+                            documento.Add(EmpraDir);
+                            documento.Add(EmpraDir2);
                             documento.Add(TRegPat);
                             documento.Add(RegPat);
 
@@ -1642,8 +1722,8 @@ namespace Payroll.Controllers
 
                                 Paragraph NumCertEmi = new Paragraph(-1, Palabra, TexNom);
                                 NumCertEmi.IndentationLeft = 450;
-                                Paragraph TFechaEmisior = new Paragraph("Fecha de inicio:", TexNeg);
-                                TFechaEmisior.IndentationLeft = 377;
+                                Paragraph TFechaEmisior = new Paragraph("Lugar de Emisión:", TexNeg);
+                                TFechaEmisior.IndentationLeft = 395;
                                 Palabra = LiTsat[0].Fecha;
                                 Paragraph FechaEmisior = new Paragraph(-1, Palabra, TexNom);
                                 FechaEmisior.IndentationLeft = 450;
@@ -1666,6 +1746,14 @@ namespace Payroll.Controllers
                                 TTipoCDFI.IndentationLeft = 406;
                                 Paragraph TipoCDFI = new Paragraph(-1, "Recibo de Nomina", TexNom);
                                 TipoCDFI.IndentationLeft = 450;
+
+
+                                if (ListDatEmisor[0].iCgTipoEmpleadoId == 156) {
+                                    TipoCDFI = new Paragraph(-1, "Recibo", TexNom);
+                                    TipoCDFI.IndentationLeft = 450;
+
+                                };
+                                
                                 Paragraph TSerieFolio = new Paragraph("Serie y Folio:", TexNeg);
                                 TSerieFolio.IndentationLeft = 409;
 
@@ -1677,6 +1765,21 @@ namespace Payroll.Controllers
                                 Palabra = folio;
                                 Paragraph SerieFolio = new Paragraph(-1, Palabra, TexNom);
                                 SerieFolio.FirstLineIndent = 450;
+
+
+                                Paragraph TtipoNomina = new Paragraph("Tipo de Nómina:", TTexNegCuerpo);
+                                TtipoNomina.IndentationLeft = 393;
+                                Palabra = "0";
+                                if (Palabra == "O")
+                                {
+                                    Palabra = "O (Ordinaria) ";
+                                }
+                                if (Palabra == "E")
+                                {
+                                    Palabra = "E (Ordinaria) ";
+                                }
+                                Paragraph tipoNomina = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                tipoNomina.IndentationLeft = 450;
 
                                 /// imprime cabecera de cello
                                 documento.Add(TfolioFis);
@@ -1693,13 +1796,15 @@ namespace Payroll.Controllers
                                 documento.Add(TipoCDFI);
                                 documento.Add(TSerieFolio);
                                 documento.Add(SerieFolio);
-
+                                documento.Add(TtipoNomina);
+                                documento.Add(tipoNomina);
 
                             }
 
 
                             ////////// Info Personal
-                            Paragraph Espacio = new Paragraph(20, " ");
+
+                         
                             Paragraph table1 = new Paragraph();
                             table1.IndentationLeft = 50;
                             PdfPTable table = new PdfPTable(1);
@@ -1747,22 +1852,31 @@ namespace Payroll.Controllers
                             rfcEmp.IndentationLeft = 78;
 
 
-                            Paragraph TNSS = new Paragraph("NSS:", TTexNegCuerpo);
+                            Paragraph TNSS = new Paragraph("", TTexNegCuerpo);
                             TNSS.IndentationLeft = 50;
-                            Palabra = ListDatEmisor[0].sRegistroImss;
                             Paragraph NSS = new Paragraph(-1, Palabra, TexNegCuerpo);
                             NSS.IndentationLeft = 73;
-
-
-
-                            Paragraph TRegimen = new Paragraph("Regimen:", TTexNegCuerpo);
+                            Paragraph TRegimen = new Paragraph("", TTexNegCuerpo);
                             TRegimen.IndentationLeft = 50;
-                            Palabra = "02";
-                            if (Palabra == "02") { Palabra = Palabra + "-Sueldos"; }
                             Paragraph Regimen = new Paragraph(-1, Palabra, TexNegCuerpo);
                             Regimen.IndentationLeft = 83;
 
-                            Paragraph Espacio2 = new Paragraph(-80, " ");
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
+
+                                TNSS = new Paragraph("NSS:", TTexNegCuerpo);
+                                TNSS.IndentationLeft = 50;
+                                Palabra = ListDatEmisor[0].sRegistroImss;
+                                NSS = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                NSS.IndentationLeft = 73;
+
+                                TRegimen = new Paragraph("Regimen:", TTexNegCuerpo);
+                                TRegimen.IndentationLeft = 50;
+                                Palabra = "02";
+                                if (Palabra == "02") { Palabra = Palabra + "-Sueldos"; }
+                                Regimen = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                Regimen.IndentationLeft = 83;
+                            };
+                       
                             Paragraph table3 = new Paragraph();
                             table3.IndentationLeft = 350;
 
@@ -1796,6 +1910,13 @@ namespace Payroll.Controllers
                             Paragraph TContrato = new Paragraph("Contrato:", TTexNegCuerpo);
                             TContrato.IndentationLeft = 350;
                             Palabra = ListDatEmisor[0].sTipoContrato;
+                            if (Palabra.Length > 25)
+                            {
+                                Palabra = Palabra.Substring(0, 25);
+                            }
+
+                          
+
                             Paragraph Contrato = new Paragraph(-1, Palabra, TexNegCuerpo);
                             Contrato.IndentationLeft = 383;
 
@@ -1803,67 +1924,99 @@ namespace Payroll.Controllers
                             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
                             ListTotales = Dao2.sp_SaldosTotales_Retrieve_TPlantillasCalculos(idEmpresa, Empleados[a].iIdEmpleado, Perido, 0);
 
-                            Paragraph TSalarioB = new Paragraph("Salario Base:", TTexNegCuerpo);
-                            TSalarioB.IndentationLeft = 350;
-
-                            if (ListTotales == null) {
-                                Palabra = "error contcte a sistemas";
-                            };
-                            if (ListTotales != null) {
-                                Palabra = string.Format("{0:N2}", ListTotales[i].dSaldo);
-                            }
-
-                            Paragraph SalarioB = new Paragraph(-1, Palabra, TexNegCuerpo);
-                            SalarioB.IndentationLeft = 395;
-
-
-
-                            var culture = System.Globalization.CultureInfo.CreateSpecificCulture("es-MX");
-                            var styles = System.Globalization.DateTimeStyles.None;
-                            DateTime dt1 = DateTime.Now;
-                            DateTime dt2 = dt1;
-                            DateTime dt3 = dt1;
-
+                            Paragraph TSalarioB = new Paragraph("", TTexNegCuerpo);
+                            Paragraph SalarioB = new Paragraph("", TexNegCuerpo);
+                            Paragraph TSalarioInt = new Paragraph("", TTexNegCuerpo);
+                            Paragraph SalarioInt = new Paragraph("", TexNegCuerpo);
+                            Paragraph TAntiguedad = new Paragraph("", TTexNegCuerpo);
+                            Paragraph Antiguedad = new Paragraph("", TexNegCuerpo);
+                            Paragraph TJornada = new Paragraph("", TTexNegCuerpo);
+                            Paragraph Jornada = new Paragraph("", TexNegCuerpo);
+                            Paragraph TRiesgopu = new Paragraph("", TTexNegCuerpo);
+                            Paragraph Riesgopu = new Paragraph("", TexNegCuerpo);
+                            Paragraph TFechaInLab = new Paragraph("", TTexNegCuerpo);
+                            Paragraph FechaInLab = new Paragraph("", TexNegCuerpo);
                             List<CInicioFechasPeriodoBean> LFechaPerido = new List<CInicioFechasPeriodoBean>();
                             LFechaPerido = Dao2.sp_DatPeridoEmpresa(idEmpresa, TipoPeriodo, Anio, Perido);
 
-                            bool fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaInicio, culture, styles, out dt1);
-                            fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaFinal, culture, styles, out dt2);
-                            fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaPago, culture, styles, out dt3);
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
 
-                            string sFechaInicialPago = String.Format("{0:yyyy-MM-dd}", dt1);
-                            string sFechaFinalPago = String.Format("{0:yyyy-MM-dd}", dt2);
-                            string sFechaPago = String.Format("{0:yyyy-MM-dd}", dt3);
-                            string anoarchivo = String.Format("{0:yyyy}", dt2);
-                            string sFechaInicioRelLaboral = String.Format("{0:yyyy-MM-dd}", dt3);
+                                TSalarioB = new Paragraph("Salario Base:", TTexNegCuerpo);
+                                TSalarioB.IndentationLeft = 350;
 
-                            DateTime f1 = DateTime.Parse(sFechaInicioRelLaboral);
-                            DateTime f2 = DateTime.Parse(sFechaFinalPago);
-                            TimeSpan diferencia = f2.Subtract(f1);
-                            sAntiguedad = "P" + ((int)(diferencia.Days / 7)).ToString() + "W";
+                                if (ListTotales == null)
+                                {
+                                    Palabra = "error contcte a sistemas";
+                                };
+                                if (ListTotales != null)
+                                {
+                                    Palabra = string.Format("{0:N2}", ListTotales[i].dSaldo);
+                                }
 
-                            Paragraph TAntiguedad = new Paragraph("Antigüedad:", TTexNegCuerpo);
-                            TAntiguedad.IndentationLeft = 350;
-                            Palabra = sAntiguedad;
-                            Paragraph Antiguedad = new Paragraph(-1, Palabra + "(Semanas)", TexNegCuerpo);
-                            Antiguedad.IndentationLeft = 390;
+                                SalarioB = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                SalarioB.IndentationLeft = 395;
+                                TSalarioInt = new Paragraph("Salario Integrado:", TTexNegCuerpo);
+                                TSalarioInt.IndentationLeft = 345;
+                                Palabra = Convert.ToString(ListDatEmisor[0].dSalarioInt);
+                                SalarioInt = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                SalarioInt.IndentationLeft = 405;
+
+                                var culture = System.Globalization.CultureInfo.CreateSpecificCulture("es-MX");
+                                var styles = System.Globalization.DateTimeStyles.None;
+                                DateTime dt1 = DateTime.Now;
+                                DateTime dt2 = dt1;
+                                DateTime dt3 = dt1;
+
+                          
+
+                                bool fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaInicio, culture, styles, out dt1);
+                                fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaFinal, culture, styles, out dt2);
+                                fechaValida = DateTime.TryParse(LFechaPerido[0].sFechaPago, culture, styles, out dt3);
+
+                                string sFechaInicialPago = String.Format("{0:yyyy-MM-dd}", dt1);
+                                string sFechaFinalPago = String.Format("{0:yyyy-MM-dd}", dt2);
+                                string sFechaPago = String.Format("{0:yyyy-MM-dd}", dt3);
+                                string anoarchivo = String.Format("{0:yyyy}", dt2);
+                                string sFechaInicioRelLaboral = String.Format("{0:yyyy-MM-dd}", dt3);
+
+                                DateTime f1 = DateTime.Parse(sFechaInicioRelLaboral);
+                                DateTime f2 = DateTime.Parse(sFechaFinalPago);
+                                TimeSpan diferencia = f2.Subtract(f1);
+                                sAntiguedad = "P" + ((int)(diferencia.Days / 7)).ToString() + "W";
+
+                                TAntiguedad = new Paragraph("Antigüedad:", TTexNegCuerpo);
+                                TAntiguedad.IndentationLeft = 350;
+                                Palabra = sAntiguedad;
+                                Antiguedad = new Paragraph(-1, Palabra + "(Semanas)", TexNegCuerpo);
+                                Antiguedad.IndentationLeft = 390;
 
 
-                            Paragraph TJornada = new Paragraph("Jornada:", TTexNegCuerpo);
-                            TJornada.IndentationLeft = 350;
-                            Palabra = "06";
-                            Paragraph Jornada = new Paragraph(-1, Palabra, TexNegCuerpo);
-                            Jornada.IndentationLeft = 379;
+                                TJornada = new Paragraph("Jornada:", TTexNegCuerpo);
+                                TJornada.IndentationLeft = 350;
+                                Palabra = "06";
+                                Jornada = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                Jornada.IndentationLeft = 379;
 
-                            Paragraph TRiesgopu = new Paragraph("Riesgo Puesto:", TTexNegCuerpo);
-                            TRiesgopu.IndentationLeft = 350;
-                            Palabra = "1";
-                            Paragraph Riesgopu = new Paragraph(-1, Palabra, TexNegCuerpo);
-                            Riesgopu.IndentationLeft = 400;
+                                TRiesgopu = new Paragraph("Riesgo Puesto:", TTexNegCuerpo);
+                                TRiesgopu.IndentationLeft = 350;
+                                Palabra = ListDatEmisor[0].sRiesgoTrabajo.ToString();
+                                Riesgopu = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                Riesgopu.IndentationLeft = 400;
+                                TFechaInLab = new Paragraph("Fecha de Inicio Laboral :", TTexNegCuerpo);
+                                TFechaInLab.IndentationLeft = 315;
+                                Palabra = ListDatEmisor[0].sFechaIngreso;
+                                FechaInLab = new Paragraph(-1, Palabra, TexNegCuerpo);
+                                FechaInLab.IndentationLeft = 400;
+
+
+                            }
+
+
+
+
 
                             //    /////////////// tipo de pago 
 
-                            Paragraph Espacio3 = new Paragraph(20, " ");
                             Paragraph table6 = new Paragraph();
                             table6.IndentationLeft = 50;
                             PdfPTable table7 = new PdfPTable(1);
@@ -1882,7 +2035,7 @@ namespace Payroll.Controllers
 
                             Paragraph TFecPago = new Paragraph("Fecha de Pago:", TTexNegCuerpo);
                             TFecPago.IndentationLeft = 50;
-                            Palabra = sFechaPago;
+                            Palabra = LFechaPerido[0].sFechaPago;
                             Paragraph FecPago = new Paragraph(-1, Palabra, TexNegCuerpo);
                             FecPago.IndentationLeft = 100;
 
@@ -1922,17 +2075,68 @@ namespace Payroll.Controllers
 
 
 
-                            Paragraph TPeriodo = new Paragraph(-22, "Periodo:", TTexNegCuerpo);
-                            TPeriodo.IndentationLeft = 200;
-                            Palabra = Convert.ToString(Perido);
+                            Paragraph TPeriodo = new Paragraph(-22, "Periocidad:", TTexNegCuerpo);
+                            TPeriodo.IndentationLeft = 190;
+
+                            Palabra = Convert.ToString(TipoPeriodo);
+
+                            if (Palabra == "0")
+                            {
+                                Palabra = "02 Semanal";
+                            }
+                            if (Palabra == "1")
+                            {
+                                Palabra = "10 Decenal";
+                            }
+                            if (Palabra == "3")
+                            {
+                                Palabra = "04 Quincenal";
+                            }
+                            if (Palabra == "2")
+                            {
+                                 Palabra = "03 Catorcenal";
+                            }
+                            if (Palabra == "4")
+                            {
+                              Palabra = "05 Mensual";
+                            }
+                            if (Palabra == "5")
+                            {
+                             Palabra = "06 Bimestral";
+                            }
+
                             Paragraph Periodo = new Paragraph(-1, Palabra, TexNegCuerpo);
                             Periodo.IndentationLeft = 227;
 
-                            Paragraph TLugarExp = new Paragraph(-10, "Lugar de Expedicion:", TTexNegCuerpo);
+
+                            Paragraph TPeridoFec = new Paragraph("Perido:", TTexNegCuerpo);
+                            TPeridoFec.IndentationLeft = 200;
+                            Palabra= LFechaPerido[0].iPeriodo + "( " + LFechaPerido[0].sFechaInicio + "-" + LFechaPerido[0].sFechaFinal + ")";
+                            Paragraph PeridoFec = new Paragraph(-1, Palabra, TexNegCuerpo);
+                            PeridoFec.IndentationLeft = 223;
+
+                            Paragraph TMoneda = new Paragraph("Moneda:", TTexNegCuerpo);
+                            TMoneda.IndentationLeft = 200;
+                            Palabra = "MXP";
+                            Paragraph Moneda = new Paragraph(-1, Palabra, TexNegCuerpo);
+                            Moneda.IndentationLeft = 230;
+
+
+
+                            Paragraph TLugarExp = new Paragraph(-30, "Lugar de Expedicion:", TTexNegCuerpo);
                             TLugarExp.IndentationLeft = 380;
                             Palabra = "04600";
                             Paragraph LugarExp = new Paragraph(-1, " Cp: " + Palabra, TexNegCuerpo);
                             LugarExp.IndentationLeft = 453;
+
+
+                            Paragraph TTipopago = new Paragraph("Tipo de pago:", TTexNegCuerpo);
+                            TTipopago.IndentationLeft = 380;
+                            Palabra =Convert.ToString(ListDatEmisor[0].iCgTipoPago);
+                            Paragraph Tipopago = new Paragraph(-1, Palabra, TexNegCuerpo);
+                            Tipopago.IndentationLeft = 425;
+
+
 
                             Paragraph TDiasPag = new Paragraph("Dias pagados:", TTexNegCuerpo);
                             TDiasPag.IndentationLeft = 50;
@@ -1968,7 +2172,6 @@ namespace Payroll.Controllers
                             Palabra = sDiasEfectivos;
                             Paragraph DiasPag = new Paragraph(-1, Palabra, TexNegCuerpo);
                             DiasPag.IndentationLeft = 98;
-                            Paragraph espacio4 = new Paragraph(50, " ", TexNegCuerpo);
 
 
                             Paragraph table8 = new Paragraph();
@@ -2018,7 +2221,6 @@ namespace Payroll.Controllers
 
                             /// imprime en documento
 
-
                             documento.Add(Espacio);
                             documento.Add(table1);
                             documento.Add(TNoEmpleado);
@@ -2029,25 +2231,63 @@ namespace Payroll.Controllers
                             documento.Add(Curp);
                             documento.Add(TrfcEmp);
                             documento.Add(rfcEmp);
-                            documento.Add(TNSS);
-                            documento.Add(NSS);
-                            documento.Add(TRegimen);
-                            documento.Add(Regimen);
-                            documento.Add(Espacio2);
+
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
+                            {
+                                documento.Add(TNSS);
+                                documento.Add(NSS);
+
+                                documento.Add(TRegimen);
+                                documento.Add(Regimen);
+                            }
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId == 156)
+                            {
+                                documento.Add(Espacio9);
+                                documento.Add(Espacio10);
+                            }
+
+                         
+
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
+                            {
+                                documento.Add(Espacio2);
+                            }
+
+
                             documento.Add(table3);
+
+                            //informe
                             documento.Add(TPuesto);
                             documento.Add(Puesto);
                             documento.Add(TContrato);
                             documento.Add(Contrato);
-                            documento.Add(TSalarioB);
-                            documento.Add(SalarioB);
-                            documento.Add(TAntiguedad);
-                            documento.Add(Antiguedad);
-                            documento.Add(TJornada);
-                            documento.Add(Jornada);
-                            documento.Add(TRiesgopu);
-                            documento.Add(Riesgopu);
-                            documento.Add(Espacio3);
+
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
+                            {
+                                documento.Add(TSalarioB);
+                                documento.Add(SalarioB);
+                                documento.Add(TSalarioInt);
+                                documento.Add(SalarioInt);
+                                documento.Add(TAntiguedad);
+                                documento.Add(Antiguedad);
+                                documento.Add(TJornada);
+                                documento.Add(Jornada);
+                                documento.Add(TRiesgopu);
+                                documento.Add(Riesgopu);
+                                documento.Add(TFechaInLab);
+                                documento.Add(FechaInLab);
+
+                            }
+
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
+                            {
+                                documento.Add(Espacio3);
+                            }
+                            if (ListDatEmisor[0].iCgTipoEmpleadoId == 156)
+                            {
+                                documento.Add(Espacio11);
+                            }
+
                             documento.Add(table6);
                             documento.Add(TFecPago);
                             documento.Add(FecPago);
@@ -2057,16 +2297,24 @@ namespace Payroll.Controllers
                             documento.Add(DiasPag);
                             documento.Add(TPeriodo);
                             documento.Add(Periodo);
+                            documento.Add(TPeridoFec);
+                            documento.Add(PeridoFec);
                             documento.Add(TClaveb);
                             documento.Add(Claveb);
+                            documento.Add(TMoneda);
+                            documento.Add(Moneda);
                             documento.Add(TLugarExp);
                             documento.Add(LugarExp);
+                            documento.Add(TTipopago);
+                            documento.Add(Tipopago);
+
                             documento.Add(espacio4);
                             documento.Add(table8);
                             documento.Add(Espacio5);
                             documento.Add(table10);
                             documento.Add(Espacio5);
                             documento.Add(table12);
+
 
 
                             //int a = 0;
@@ -2510,10 +2758,10 @@ namespace Payroll.Controllers
                     NoEmple = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 0);
                     Empleados = Dao.sp_EmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 1);
 
-
-                    for (int a = 0; a < NoEmple[0].iNoEmpleados; a++)
+                    int Repetido = 0;
+                    for (int a = 0; a < NoEmple[0].iNoEmpleados;)
                     {
-
+                        Repetido = Repetido + 1;
 
                         int valido = 0;
                         idempleado = Empleados[a].iIdEmpleado;
@@ -2705,10 +2953,42 @@ namespace Payroll.Controllers
                                     Paragraph DiasT = new Paragraph(-1, Palabra, TexNom);
                                     DiasT.IndentationLeft = 75;
 
-                                    Paragraph TPeriodo = new Paragraph(-35, "Periodo de pago: ", TexNeg);
+                                    Paragraph TTipoPe = new Paragraph(-45, "Periodo de pago: ", TexNeg);
+                                    TTipoPe.IndentationLeft = 350;
+
+                                    if (Tipodeperido == 0) {
+                                        Palabra = "Semanal";
+                                    }
+                                    if (Tipodeperido == 1)
+                                    {
+                                        Palabra = "Decenal";
+                                    }
+                                    if (Tipodeperido == 2)
+                                    {
+                                        Palabra = "Catorcenal";
+                                    }
+                                    if (Tipodeperido == 3)
+                                    {
+                                        Palabra = "Quincenal";
+                                    }
+
+                                    if (Tipodeperido == 4)
+                                    {
+                                        Palabra = "Mensual";
+                                    }
+                                    if (Tipodeperido == 5)
+                                    {
+                                        Palabra = "Bimestral";
+                                    }
+
+
+                                    Paragraph TipoPe = new Paragraph(-1, Palabra, TexNom);
+                                    TipoPe.IndentationLeft = 405;
+
+                                    Paragraph TPeriodo = new Paragraph( "Periodo de pago: ", TexNeg);
                                     TPeriodo.IndentationLeft = 350;
 
-                                    Palabra = Convert.ToString(LFechaPerido[0].sFechaInicio + " AL " + LFechaPerido[0].sFechaFinal);
+                                    Palabra = Convert.ToString(LFechaPerido[0].iPeriodo+" "+ LFechaPerido[0].sFechaInicio + " AL " + LFechaPerido[0].sFechaFinal);
                                     Paragraph Periodos = new Paragraph(-1, Palabra, TexNom);
                                     Periodos.IndentationLeft = 405;
 
@@ -2727,8 +3007,8 @@ namespace Payroll.Controllers
 
                                     int SD = Convert.ToInt32(ListDatEmisor[0].dSalarioMensual);
                                     SD = SD / 30;
-
-                                    Palabra = Convert.ToString(SD);
+                                    
+                                    Palabra = string.Format("{0:N2}", SD);
                                     Paragraph Salariod = new Paragraph(-1, Palabra, TexNom);
                                     Salariod.IndentationLeft = 390;
 
@@ -2736,7 +3016,10 @@ namespace Payroll.Controllers
                                     Paragraph TSalariodInt = new Paragraph("Sala. Dirario Int: ", TexNeg);
                                     TSalariodInt.IndentationLeft = 350;
 
-                                    Palabra = Convert.ToString(ListDatEmisor[0].SDINT);
+                                    decimal Sdi = Convert.ToDecimal(ListDatEmisor[0].SDINT);
+                                    string dosDecimal = Sdi.ToString("0.##");
+                                    Palabra = string.Format("{0:N2}", dosDecimal);
+                                   
                                     Paragraph Salariodint = new Paragraph(-1, Palabra, TexNom);
                                     Salariodint.IndentationLeft = 405;
 
@@ -2767,6 +3050,8 @@ namespace Payroll.Controllers
                                     documento.Add(Depto);
                                     documento.Add(TDiast);
                                     documento.Add(DiasT);
+                                    documento.Add(TTipoPe);
+                                    documento.Add(TipoPe);
                                     documento.Add(TPeriodo);
                                     documento.Add(Periodos);
                                     documento.Add(Tpuesto);
@@ -2960,7 +3245,7 @@ namespace Payroll.Controllers
                                     string cantidad = Convert.ToString(per - ded);
                                     cantidad = NumeroALetras(cantidad);
 
-                                    Paragraph TTipogoEmpra = new Paragraph("RECIBI" + Empre + ", LA CANTIDAD DE: " + cantidad, TexNeg);
+                                    Paragraph TTipogoEmpra = new Paragraph("RECIBI" + Empre + ", LA CANTIDAD DE: " + cantidad+ " M/N" , TexNeg);
                                     TTipogoEmpra.IndentationLeft = 40;
 
                                     Palabra = " " /*Convert.ToString()*/;
@@ -3109,6 +3394,7 @@ namespace Payroll.Controllers
                             }
                         }
 
+                        if (Repetido == 2) { a = a + 1; Repetido = 0; }
 
                     }
                 }
@@ -3257,7 +3543,7 @@ namespace Payroll.Controllers
 
             return Json(TablasDat);
         }
-           // envia los las facturas por correo 
+           // envia los las facturas por correo ,
         [HttpPost]
         public JsonResult EnvioEmail(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo, string sDEscripcion) {
 
