@@ -176,7 +176,7 @@ $(function () {
 
         $("#btnCargaMasiva").html("<span class='spinner-grow spinner-grow-sm' role='status' aria-hidden='true'></span> Cargando...");
         document.getElementById("btnCargaMasiva").disabled = true;
-        
+
         setTimeout(function () {
             validateUploadFile();
         }, 500);
@@ -209,7 +209,7 @@ $(function () {
                 if (result.value) {
                     var datos = new FormData();
                     datos.append("fileUpload", selectedF);
-                    
+
                     $.ajax({
                         url: "../Catalogos/LoadFilePeriodos",
                         type: "POST",
@@ -372,7 +372,7 @@ $(function () {
                             "<td class=''>" + data[j]["Fecha_Proceso"] + "</td>" +
                             "<td class=''>" + data[j]["Fecha_Pago"] + "</td>" +
                             "<td class=''>" + data[j]["Dias_Efectivos"] + "</td>" +
-                            "<td class=''></td>" +
+                            "<td class=''><div class='btn badge badge-info' title='Editar fecha de pago' onclick='MostrarEditarFechaPago(" + data[j]["Empresa_id"] + ",\"" + data[j]["id"] + "\");'>Editar <i class='fas fa-edit'></i></div></td>" +
                             "</tr>";
                     } else {
                         document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
@@ -977,9 +977,23 @@ $(function () {
             }
         });
     }
+    // MOSTRAR EDITAR FECHA DE PAGO DEL PERIODO
+    MostrarEditarFechaPago = (Empresa_id, Id) => {
+        $.ajax({
+            url: "../Catalogos/LoadPeriodo",
+            type: "POST",
+            data: JSON.stringify({ Empresa_id: Empresa_id, Id: Id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                $("#edfechapago").attr("value", data[0]["Fecha_Pago"].substring(6) + "-" + data[0]["Fecha_Pago"].substring(3, 5) + "-" + data[0]["Fecha_Pago"].substring(0, 2));
+                $("#modalEditarFechaPago").modal("show");
+                $("#editar_empresa_id").val(Empresa_id);
+                $("#editar_id").val(Id);
+            }
+        });
+    }
 
     $("#btnUpdatefechaperiodo").on("click", function () {
-
         $.ajax({
             url: "../Catalogos/UpdatePeriodo",
             type: "POST",
@@ -998,6 +1012,38 @@ $(function () {
             success: (data) => {
                 $(".collapse").collapse("hide");
                 $("#modalEditarFechaPeriodo").modal("hide");
+            }
+        });
+    });
+
+    $("#btnUpdatefechapago").on("click", function () {
+
+        $.ajax({
+            url: "../Catalogos/UpdateFechaPagoPeriodo",
+            type: "POST",
+            data: JSON.stringify({
+                Empresa_id: $("#editar_empresa_id").val(),
+                editid: $("#editar_id").val(),
+                editfpago: $("#editfpago").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                if (data[0] == '0') {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data[1],
+                        icon: 'error'
+                    });
+                } else if (data[0] == '1') {
+                    $(".collapse").collapse("hide");
+                    $("#modalEditarFechaPago").modal("hide");
+                    Swal.fire({
+                        title: 'Correcto!',
+                        text: data[1],
+                        icon: 'success',
+                        timer: 1500
+                    });
+                }
             }
         });
 
@@ -1779,7 +1825,7 @@ $(function () {
                             subcheck =
                                 "<li class='list-group-item my-0 py-0 d-flex justify-content-start font-labels align-items-center'>" +
                                 "<div class='custom-control custom-checkbox ml-3'>" +
-                                "<input type='checkbox' class='custom-control-input' id='check" + data[i]["iIdItem"] + "' name='subcheck' value='"+data[i]["iIdItem"]+"' parent='" + item + "'>" +
+                                "<input type='checkbox' class='custom-control-input' id='check" + data[i]["iIdItem"] + "' name='subcheck' value='" + data[i]["iIdItem"] + "' parent='" + item + "'>" +
                                 "<label class='custom-control-label' for='check" + data[i]["iIdItem"] + "'>" + data[i]["sNombre"] + "</label>" +
                                 "</div>" +
                                 "</li>";
@@ -1855,7 +1901,7 @@ $(function () {
             data: JSON.stringify({ form }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
+
             }
         });
     }
