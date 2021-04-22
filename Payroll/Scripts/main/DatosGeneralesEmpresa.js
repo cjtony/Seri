@@ -281,7 +281,7 @@ $.ajax({
             document.getElementById("inClase").innerHTML += `<option value='${data[i].IdClase}'>${data[i].Nombre_Clase}</option>`;
         }
     }
-});
+}); 
 $.ajax({
     url: "../Empresas/LoadRegimenesFiscales",
     type: "POST",
@@ -478,7 +478,7 @@ $("#btnEditarEmpresa").on("click", function () {
     $.ajax({
         url: "../Empresas/LoadEmpresa",
         type: "POST",
-        data: JSON.stringify(),
+        data: JSON.stringify({ IdEmpresa: 0 }),
         contentType: "application/json; charset=utf-8",
         success: (empresa) => {
             $.ajax({
