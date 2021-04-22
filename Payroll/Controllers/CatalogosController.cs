@@ -629,5 +629,14 @@ namespace Payroll.Controllers
 
             return Json(list);
         }
+        [HttpPost]
+        public JsonResult UpdateFechaPagoPeriodo(int Empresa_id, int editid, string editfpago)
+        {
+            List<string> Lista;
+            ModCatalogosDao Dao = new ModCatalogosDao();
+
+            Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Fecha_Pago(Empresa_id, editid, editfpago);
+            return Json(Lista);
+        }
     }
 }

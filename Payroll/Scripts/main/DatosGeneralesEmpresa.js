@@ -125,7 +125,6 @@ $(document).ready(function () {
                                     edmunicipio.innerHTML = `<option value='${data[i].iIdMunicipio}' >${data[i].sMunicipio}</option>`;
                                     edstates.innerHTML = `<option value='${data[i].iIdEstado}' >${data[i].sEstado}</option>`;
                                     edcity.innerHTML = `<option value='${data[i].sCiudad}'>${data[i].sCiudad}</option>`;
-
                                 }
                             }
                             setTimeout(() => {
@@ -155,7 +154,6 @@ $(document).ready(function () {
                 hideClass: { popup: 'animated fadeOutUp faster' },
                 confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
             }).then((acepta) => {
-
                 setTimeout(() => { codpost.focus(); }, 800);
             });
         }
