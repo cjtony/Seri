@@ -1123,7 +1123,7 @@ namespace Payroll.Models.Daos
                     list.Add(data["Folio"].ToString());
                     list.Add(data["Referencia"].ToString());
                     list.Add(data["Cancelado"].ToString());
-
+                    list.Add(data["Registros"].ToString());
                     lista.Add(list);
                 }
             }
@@ -1135,6 +1135,46 @@ namespace Payroll.Models.Daos
             this.conexion.Close(); this.Conectar().Close();
 
             return lista;
+        }
+        public List<string> sp_CEmpresas_Update_Empresa(int empresa_id, string edNombre, string edNombrecorto, string edRFC, string edGiro, int edRegimenFiscal, string edRegistroimss, int edCodigo_postal, int edEstado_empresa, string edCiudad_empresa, int edColonia_empresa, string edDelegacion_Empresa, string edCalle_Empresa)
+        {
+            List<string> res = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_CEmpresas_Update_Empresa", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlNombre", edNombre));
+            cmd.Parameters.Add(new SqlParameter("@ctrlNombrecorto", edNombrecorto));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRFC", edRFC));
+            cmd.Parameters.Add(new SqlParameter("@ctrlGiro", edGiro)); 
+            cmd.Parameters.Add(new SqlParameter("@ctrlRegimenFiscal", edRegimenFiscal));
+            cmd.Parameters.Add(new SqlParameter("@ctrlRegistroimss", edRegistroimss));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCodigoPostal", edCodigo_postal));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEstado", edEstado_empresa));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCiudad", edCiudad_empresa));
+            cmd.Parameters.Add(new SqlParameter("@ctrlColonia", edColonia_empresa));
+            cmd.Parameters.Add(new SqlParameter("@ctrlDelegacion", edDelegacion_Empresa));
+            cmd.Parameters.Add(new SqlParameter("@ctrlCalle", edCalle_Empresa));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    res.Add(data["iFlag"].ToString());
+                    res.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                res = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return res;
         }
     }
 }
