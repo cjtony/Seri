@@ -195,6 +195,39 @@
         </div>
     </div>
 </div>
+<!-- Modal Editar Fecha de pago-->
+<div class="modal fade" id="modalEditarFechaPago" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticLabel">Editar <span class="text-danger h5">fecha de pago</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmFechaPagoEdit" method="post" class="row needs-validation justify-content-center">
+                    
+                    <div class="form-group col-md-10">
+                        <label> Fecha de Pago</label>
+                        <input class="form-control" type="date" name="edfechapago" id="edfechapago" value="" required />
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-icon-split btn-sm" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text"> Cerrar</span>
+                </button>
+                <button id="btnUpdatefechapago" type="button" class="btn btn-success btn-sm btn-icon-split">
+                    <span class="icon"><i class="fas fa-save"></i></span>
+                    <span class="text"> Actualizar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=1"></script>
 <script>

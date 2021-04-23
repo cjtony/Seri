@@ -1966,6 +1966,41 @@ namespace Payroll.Models.Daos
             }
             return bean;
         }
+        public List<string> sp_CInicio_Fechas_Periodo_Update_Fecha_Pago(int Empresa_id, int Id, string infpago)
+        {
+            List<string> listBean = new List<string>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_CInicio_Fechas_Periodo_Update_Fecha_Pago", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlId", Id));
+                cmd.Parameters.Add(new SqlParameter("@ctrlFechaPago", infpago));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        listBean.Add(data["iFlag"].ToString());
+                        listBean.Add(data["sMensaje"].ToString());
+                    }
+                }
+                cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            }
+            catch (Exception exc)
+            {
+                string origenerror = "ModCatalogosDao";
+                string mensajeerror = exc.ToString();
+                CapturaErroresBean capturaErrorBean = new CapturaErroresBean();
+                CapturaErrores capturaErrorDao = new CapturaErrores();
+                capturaErrorBean = capturaErrorDao.sp_Errores_Insert_Errores(origenerror, mensajeerror);
+                Console.WriteLine(exc);
+            }
+            return listBean;
+        }
 
     }
 }

@@ -401,13 +401,14 @@ namespace Payroll.Models.Daos
                     lista.Nombre_Ausentismo = data["Descripcion"].ToString();
                     lista.Empleado_id = int.Parse(data["Empleado_id"].ToString());
                     lista.Empresa_id = int.Parse(data["Empresa_id"].ToString());
+                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
                     lista.Fecha_Ausentismo = data["Fecha_Ausentismo"].ToString();
                     lista.Dias_Ausentismo = int.Parse(data["Dias_Ausentismo"].ToString());
                     lista.Saldo_Dias_Ausentismo = int.Parse(data["Saldo_Dias"].ToString());
                     lista.Certificado_imss = data["Certificado_imss"].ToString();
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
-                    lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
+                    
 
                     list.Add(lista);
                 }
@@ -1043,7 +1044,7 @@ namespace Payroll.Models.Daos
                     lista.Certificado_imss = data["Certificado_imss"].ToString();
                     lista.Comentarios_imss = data["Comentarios_imss"].ToString();
                     lista.Causa_FaltaInjustificada = data["Causa_FaltaInjustificada"].ToString();
-                    //lista.RecuperaAusentismo = data["Recupera_Ausentismo"].ToString();
+                    lista.Saldo_Dias_Ausentismo = int.Parse(data["Saldo_Dias"].ToString());
                     //lista.FechaFin = data["Fechaf"].ToString();
                     list.Add(lista);
                 }
