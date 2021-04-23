@@ -2102,6 +2102,9 @@ namespace Payroll.Controllers
                                     string accountOrigin  = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     int longAcountOrigin  = longNumberADestiny - accountOrigin.Length;
                                     string accountDestiny = data.sCuenta;
+                                    if (accountDestiny.Length == 16) {
+                                        accountDestiny = "00" + accountDestiny;
+                                    }
                                     string importPaid     = "";
                                     int longImportPaid    = longNumberImport - data.dImporte.ToString().Length;
                                     string rfcBusiness    = datosEmpresaBeanDispersion.sRfc;
