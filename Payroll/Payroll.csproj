@@ -1017,6 +1017,7 @@
     <Content Include="Scripts\main\centrcost.js" />
     <Content Include="Scripts\main\CompNomina.js" />
     <Content Include="Scripts\main\Creditos.js" />
+    <Content Include="Scripts\main\DatosGeneralesEmpresa.js" />
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
     <Content Include="Scripts\main\EmisionRecibos.js" />
@@ -1185,7 +1186,6 @@
     <Folder Include="Views\Dispersion\" />
     <Folder Include="Views\EditDataGeneral\" />
     <Folder Include="Views\GenerateFiles\" />
-    <Folder Include="Views\Login\" />
     <Folder Include="Views\MainMenu\" />
     <Folder Include="Views\MasiveLoads\" />
     <Folder Include="Views\SaveDataGeneral\" />
