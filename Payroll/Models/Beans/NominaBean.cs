@@ -354,6 +354,7 @@ namespace Payroll.Models.Beans
         public string sUrllReciboFis { get; set; }
         public int iNoEnviados { get; set; }
         public int iNoNoEnviados { get; set; }
+        public int iNoPdfError { get; set; }
         public string sMensaje { get; set; }
     }
     public class ElementoNominaBean
