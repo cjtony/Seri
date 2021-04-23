@@ -424,7 +424,19 @@ namespace Payroll.Controllers
             {
                 string path = Server.MapPath("Archivos\\XmlZip\\");
                 path = path.Replace("\\Empleados", "");
+                path = path +IdEmpresa+"\\";
+                if (!System.IO.Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
                 ListDatEmisor = Dao.GXMLNOM(IdEmpresa, sNombreComple, path, Periodo, anios, Tipodeperido, Masivo);
+                if (System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.Delete(path, recursive: true);
+                }
+
+
             }
             catch (Exception exc)
             {
@@ -3545,13 +3557,15 @@ namespace Payroll.Controllers
         }
            // envia los las facturas por correo ,
         [HttpPost]
-        public JsonResult EnvioEmail(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo) {
+        public JsonResult EnvioEmail(int Anio, int TipoPeriodo, int Perido, String sIdEmpresas, int iRecibo)
+        {
 
             string[] valor = sIdEmpresas.Split(' ');
             int idEmpre = int.Parse(valor[0].ToString());
             string IdEmpresas = valor[0].ToString();
             int NoEmailSend = 0;
             int NoEmailNotSend = 0;
+            int PdfXX = 0;
             List<SelloSatBean> LSelloSat = new List<SelloSatBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             if (valor.Length > 1)
@@ -3570,17 +3584,18 @@ namespace Payroll.Controllers
             };
 
             idEmpre = Convert.ToInt32(sIdEmpresas);
-            LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(idEmpre, Anio, TipoPeriodo, Perido,1,0,0, iRecibo);
+            LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(idEmpre, Anio, TipoPeriodo, Perido, 1, 0, 0, iRecibo);
             if (LSelloSat != null)
             {
                 if (iRecibo == 1)
                 {
                     for (int i = 0; i < LSelloSat.Count; i++)
                     {
-                        if (LSelloSat[i].sUurReciboSim !=null) {
-                           // string EmailEmple = ;
+                        if (LSelloSat[i].sUurReciboSim != null && LSelloSat[i].sEmailSendSim != "True")
+                        {
+                            // string EmailEmple = ;
                             string EmailPer = LSelloSat[i].sEmailSent;
-                            string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre+ " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
+                            string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
                             Correo EmailEnvio = new Correo(EmailPer, "Recibo de Nómina", Mensaje, LSelloSat[i].sUurReciboSim);
                             if (EmailEnvio.Estado)
                             {
@@ -3593,44 +3608,69 @@ namespace Payroll.Controllers
                             {
                                 NoEmailNotSend = NoEmailNotSend + 1;
                                 //Error al enviar correo
-                               // LSelloSat[0].sMensaje = "error";
+                                // LSelloSat[0].sMensaje = "error";
                             }
 
                         };
-                       
+
                     };
                 }
                 if (iRecibo == 2)
                 {
                     for (int i = 0; i < LSelloSat.Count; i++)
                     {
-                        if (LSelloSat[i].sUrllReciboFis !=null) {
-                           // string EmailEmple = LSelloSat[i].sEmailSent;
-                            string EmailPer = LSelloSat[i].sEmailSent;
-                            string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
-                            Correo EmailEnvio = new Correo(EmailPer, "Facturas", Mensaje, LSelloSat[i].sUrllReciboFis);
-                            if (EmailEnvio.Estado)
+                        if (LSelloSat[i].sUrllReciboFis != null && LSelloSat[i].bEmailSent != "True")
+                        {
+                            // string EmailEmple = LSelloSat[i].sEmailSent;
+                            if (LSelloSat[i].sEmailSent != null && LSelloSat[i].sEmailSent != "" && LSelloSat[i].sEmailSent != " ")
                             {
-                                //Correo enviado
-                                Dao.sp_CCejecucionAndSen_update_TsellosSat(LSelloSat[i].iIdEmpresa, LSelloSat[i].iIdEmpleado, Anio, TipoPeriodo, Perido, 1, " ");
-                                NoEmailSend = NoEmailSend + 1;
+                                if (System.IO.File.Exists(LSelloSat[i].sUrllReciboFis))
+                                {
+                                    string EmailPer = LSelloSat[i].sEmailSent;
+                                    string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
+                                    Correo EmailEnvio = new Correo(EmailPer, "Facturas", Mensaje, LSelloSat[i].sUrllReciboFis);
+                                    if (EmailEnvio.Estado)
+                                    {
+                                        //Correo enviado
+                                        Dao.sp_CCejecucionAndSen_update_TsellosSat(LSelloSat[i].iIdEmpresa, LSelloSat[i].iIdEmpleado, Anio, TipoPeriodo, Perido, 1, " ");
+                                        NoEmailSend = NoEmailSend + 1;
+                                    }
+                                    else
+                                    {
+                                        NoEmailNotSend = NoEmailNotSend + 1;
+                                        //Error al enviar correo
+
+                                    }
+
+
+                                }
+
+                                else
+                                {
+
+                                    PdfXX = PdfXX + 1;
+                                }
+
                             }
                             else
                             {
+
                                 NoEmailNotSend = NoEmailNotSend + 1;
                                 //Error al enviar correo
-
                             }
+
                         }
-                       
+
                     };
                 };
-              //  LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(IdEmpresas, Anio, TipoPeriodo, Perido, 1, 0, 0, iRecibo);
+                LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(idEmpre, Anio, TipoPeriodo, Perido, 1, 0, 0, iRecibo);
+
                 LSelloSat[0].iNoEnviados = NoEmailSend;
                 LSelloSat[0].iNoNoEnviados = NoEmailNotSend;
+                LSelloSat[0].iNoPdfError = PdfXX;
             };
-           
-           
+
+
             return Json(LSelloSat);
         }
 

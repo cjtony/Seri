@@ -1150,7 +1150,8 @@ namespace Payroll.Models.Daos
             string s_certificadoKey = ""; string s_certificadoCer = ""; string ArchivoXmlFile; string NomArch; string s_transitorio = "";
             string pathCer;
             pathCer = path.Replace("XmlZip\\", "certificados\\");
-
+            string idEmpresapath = Convert.ToString(IdEmpresa);
+            pathCer = pathCer.Replace(idEmpresapath+"\\","");
 
             int nRfcEmisor = 0;
             int nImporte = 1;
@@ -2421,10 +2422,6 @@ namespace Payroll.Models.Daos
                                 archive.Dispose();
                                 stream.Close();
                                 // descargar zip         
-
-
-
-
 
                             }
 

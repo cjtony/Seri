@@ -343,13 +343,15 @@
                 TextBTotalEmple.value = data[0].iNoEjecutados;
                 fshowtypealert('Emisión de recibos', 'PDF creados exitosa mente', 'succes');
             },
+          
         });
-
+        $('#jqxLoader').jqxLoader('close');
     };
 
 
 
     // envia correos 
+
     FSenEmail = () => {
         console.log('envia correo');
         if (btnEnviCorre.value == 1) {
@@ -367,7 +369,7 @@
                     if (data[0].sMensaje == "Succes") {
                         if (data[0].iNoEnviados < 2) {
                             $('#jqxLoader2').jqxLoader('close');
-                            fshowtypealert('Emision de Recibos', 'Se enviaro un correos electronicos', 'success');
+                            fshowtypealert('Emision de Recibos', 'Se envio un correos electronico', 'success');
                             if (DroTipoRecibo.value == "1") {
 
                                 var source =
@@ -437,7 +439,7 @@
                         }
                         else {
                             $('#jqxLoader2').jqxLoader('close');
-                            fshowtypealert('Emision de Recibos', 'Se enviaron ' + data[0].iNoEnviados + ' correos electronicos', 'success');
+                            fshowtypealert('Emision de Recibos', 'Se enviaron: ' + data[0].iNoEnviados + ' correos electronicos, correos no enviados:' + data[0].iNoNoEnviados + ', PDF No encontrados:' + data[0].iNoPdfError, 'success');
 
                         }
 
@@ -456,7 +458,7 @@
         }
 
     };
-
+  
     //  BtnSenCorreo.addEventListener('click', FSenEmail)
     btnEnviCorre.addEventListener('click', FSenEmail)
 
