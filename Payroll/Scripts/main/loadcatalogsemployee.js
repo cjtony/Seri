@@ -708,6 +708,7 @@
                 infobankch.classList.add('d-none');
             } else if (tippag.value == idcajeroau) {
                 document.getElementById('infobankch').innerHTML = "";
+                cunuse.setAttribute("maxlength", 16);
             }
         } else {
             banuse.value = "0";

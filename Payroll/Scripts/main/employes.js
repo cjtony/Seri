@@ -1597,7 +1597,7 @@
                 }
             }
             if (validatedatanom == 0) {
-                //console.log(datasend);
+                console.log(datasend);
                 $.ajax({
                     url: url,
                     type: "POST",

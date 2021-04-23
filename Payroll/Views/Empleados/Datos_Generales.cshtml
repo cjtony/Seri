@@ -311,7 +311,7 @@
                                                 Correo electronico:
                                             </label>
                                             <div class="col-sm-8">
-                                                <input autocomplete="off" placeholder="Correo electronico" maxlength="40" class="form-control form-control-sm" id="mailus" type="email" />
+                                                <input autocomplete="off" placeholder="Correo electronico" class="form-control form-control-sm" id="mailus" type="email" />
                                                 <div class="invalid-feedback">
                                                     Introduzca una correo valido.
                                                 </div>
@@ -2768,11 +2768,17 @@
                                 <label for="departedit" class="col-sm-4 col-form-label font-labels">
                                     Departamento:
                                 </label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-8"> 
                                     <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-departament-edit" data-toggle="modal" data-target="#searchdepartamentedit">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
                                         <input type="hidden" readonly id="clvposition" />
                                         <input type="hidden" readonly id="depaidedit" placeholder="Departamento" class="form-control form-control-sm" />
-                                        <input type="text" id="departedit" class="form-control form-control-sm" placeholder="Departamento" />
+                                        <input type="hidden" value="0" readonly id="depaideditnew" placeholder="Departamento" class="form-control form-control-sm" />
+                                        <input type="text" readonly id="departedit" class="form-control form-control-sm" placeholder="Departamento" />
                                     </div>
                                 </div>
                             </div>
@@ -2782,7 +2788,13 @@
                                 </label>
                                 <div class="col-sm-8">
                                     <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div style="cursor:pointer;" class="input-group-text btn btn-primary" id="btn-search-puesto-edit" data-toggle="modal" data-target="#searchpuestoedit">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
                                         <input type="hidden" readonly id="puesidedit" placeholder="Puesto" class="form-control form-control-sm" />
+                                        <input type="hidden" readonly id="puesideditnew" value="0" placeholder="Puesto" class="form-control form-control-sm" />
                                         <input type="text" readonly id="pueusuedit" class="form-control form-control-sm" placeholder="Puesto" />
                                     </div>
                                 </div>
@@ -2812,7 +2824,7 @@
                                         </div>
                                         <input type="hidden" readonly id="editlocalityr" placeholder="Localidad" class="form-control form-control-sm" />
                                         <input type="hidden" value="0" readonly id="editlocalityrnew" placeholder="Localidad" class="form-control form-control-sm" />
-                                        <input type="text" id="edilocalityrtxt" class="form-control form-control-sm" placeholder="Localidad" />
+                                        <input type="text" readonly id="edilocalityrtxt" class="form-control form-control-sm" placeholder="Localidad" />
                                     </div>
                                 </div>
                             </div>
@@ -3973,12 +3985,102 @@
     </div>
 </div>
 
+
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchdepartamentedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchdepartament" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchdepartamentLabel"> <i class="fas fa-city col-ico mr-2"></i> Departamentos </h5>
+                <button id="ico-close-search-departamentsaddedit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="form-group row">
+                                <label for="searchdepartmentkeyaddedit" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i> Código departamento:
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchdepartmentkeyaddedit" placeholder="Ingresa el código" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultdepartmentsaddedit">
+                            </div>
+                            <div class="animated fadeIn" id="noresultsdepartamentaddedit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-departamentsaddedit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bg-gradient" data-backdrop="static" id="searchpuestoedit" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="searchpuestoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content border-left-primary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchpuestoLabel"> <i class="fas fa-chalkboard-teacher mr-2 col-ico"></i> Puestos</h5>
+                <button id="ico-close-search-puestosaddedit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-2 col-md-8">
+                            <div class="form-group row">
+                                <label for="searchpuestokeyaddedit" class="col-form-label col-md-5">
+                                    <i class="fas fa-terminal mr-1"></i>
+                                    Nombre puesto
+                                </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control form-control-sm text-uppercase" id="searchpuestokeyaddedit" placeholder="Ingresa el nombre" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-1 col-md-10">
+                            <div class="list-group animated fadeIn modal-dialog-scrollable" id="resultpuestosaddedit">
+                            </div>
+                            <div class="animated fadeIn" id="noresultsjobs2edit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger btn-sm btn-icon-split" id="btn-close-search-puestosaddedit">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="~/Scripts/ferros/errajax.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/main.js?n=6.1"></script>
 <script type="text/javascript" src="~/Scripts/main/animationsmain.js?n=3.6"></script>
-<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=4.0"></script>
+<script type="text/javascript" src="~/Scripts/main/loadcatalogsemployee.js?n=4.1"></script>
 <script type="text/javascript" src="~/Scripts/main/puestos.js?n=2.3"></script>
-<script type="text/javascript" src="~/Scripts/main/positions.js?n=2.9"></script>
+<script type="text/javascript" src="~/Scripts/main/positions.js?n=2.11"></script>
 <script type="text/javascript" src="~/Scripts/main/regionales.js?n=2"></script>
 <script type="text/javascript" src="~/Scripts/main/branchoffices.js?n=2.2"></script>
 <script type="text/javascript" src="~/Scripts/main/departments.js?n=2.3"></script>
@@ -3986,7 +4088,7 @@
 <script type="text/javascript" src="~/Scripts/main/localitys.js?n=2.4"></script>
 <script type="text/javascript" src="~/Scripts/main/centrcost.js?n=2.1"></script>
 <script type="text/javascript" src="~/Scripts/main/savedatageneral.js?n=3.10"></script>
-<script type="text/javascript" src="~/Scripts/main/employes.js?n=10.2"></script>
+<script type="text/javascript" src="~/Scripts/main/employes.js?n=10.3"></script>
 @*<script src="~/Scripts/main/modenight.js?n=2"></script>*@
 <script type="text/javascript">
     $(function () {

@@ -571,7 +571,7 @@ namespace Payroll.Models.Daos
     public class DatosPosicionesDao : Conexion
     {
 
-        public DatosPosicionesBean sp_Save_Edit_Position(int position, int newLocality, int keyBusiness)
+        public DatosPosicionesBean sp_Save_Edit_Position(int position, int newLocality, int newDepartament, int newPost, int keyBusiness)
         {
             DatosPosicionesBean posicionesBean = new DatosPosicionesBean();
             try {
@@ -579,6 +579,8 @@ namespace Payroll.Models.Daos
                 SqlCommand cmd = new SqlCommand("sp_Save_Edit_Position", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdPosicion", position));
                 cmd.Parameters.Add(new SqlParameter("@IdLocalidad", newLocality));
+                cmd.Parameters.Add(new SqlParameter("@IdDepartamento", newDepartament));
+                cmd.Parameters.Add(new SqlParameter("@IdPuesto", newPost));
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
                 if (cmd.ExecuteNonQuery() > 0) {
                     posicionesBean.sMensaje = "SUCCESS";
