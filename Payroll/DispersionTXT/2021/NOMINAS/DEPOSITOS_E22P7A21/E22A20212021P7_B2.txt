@@ -1,4 +1,4 @@
-﻿10001153956331904210001DESARROLLO RODIME SA DE CVCNOMINA 19042021     05                                        C00
+﻿10001153956332204210001DESARROLLO RODIME SA DE CVCNOMINA 22042021     05                                        C00
 21001000000000022137591017009000000000000070127317869
 300010000000000013826550100000000090223820246                              0000800003NOELI BENICIO OROZCO                                   NOMINA                                                          0000       00
 300010000000000006879590100000000090284965441                              0000800041ENRIQUE AMED TOLEDO LAYNES                             NOMINA                                                          0000       00
@@ -30,8 +30,8 @@
 300010000000000005038820100000000070172324531                              0000803044GABRIEL CORONADO GARCIA                                NOMINA                                                          0000       00
 300010000000000003941380100000000090411720844                              0000803140LUIS GUILLERMO OSORIO SEGURA                           NOMINA                                                          0000       00
 300010000000000002946170100000000090451736875                              0000803178RAUL ALMAZAN VILLANUEVA                                NOMINA                                                          0000       00
-300010000000000002946170100000000090157223096                              0000803182ALFREDO ALONSO MOJICA                                  NOMINA                                                          0000       00
 300010000000000002946170100000000090400983487                              0000803212JUAN CARLOS RIVERA MORA                                NOMINA                                                          0000       00
+300010000000000002946170100000000090157223096                              0000803182ALFREDO ALONSO MOJICA                                  NOMINA                                                          0000       00
 300010000000000003038100100000000090451649344                              0000803257GRETA YATZIRY GARCIA BAUTISTA                          NOMINA                                                          0000       00
 300010000000000002946170100000000090399826186                              0000803654LINDA ESBEIDY MASCARENAS ARTEAGA                       NOMINA                                                          0000       00
 300010000000000003671270100000000090418917805                              0000803754PAULINA ELIZABETH BAUTISTA JIMENEZ                     NOMINA                                                          0000       00

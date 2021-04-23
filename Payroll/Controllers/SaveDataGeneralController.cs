@@ -354,7 +354,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveEditPosition(int newLocality, int position)
+        public JsonResult SaveEditPosition(int newLocality, int newDepartament, int newPost, int position)
         {
             Boolean flag         = false;
             String  messageError = "none";
@@ -362,7 +362,7 @@ namespace Payroll.Controllers
             DatosPosicionesDao savePosicionDao  = new DatosPosicionesDao();
             try {
                 int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
-                addPosicionBean = savePosicionDao.sp_Save_Edit_Position(position, newLocality, keyBusiness);
+                addPosicionBean = savePosicionDao.sp_Save_Edit_Position(position, newLocality, newDepartament, newPost, keyBusiness);
                 if (addPosicionBean.sMensaje == "SUCCESS") {
                     flag = true;
                 }

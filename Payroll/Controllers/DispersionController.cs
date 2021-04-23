@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Data;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using SpreadsheetLight;
 
 namespace Payroll.Controllers
 {
@@ -528,6 +529,7 @@ namespace Payroll.Controllers
 
                                 // ARCHIVO CSV PARA HSBC -> NOMINA
                                 if (bankResult == 21) {
+
                                     // FOREACH DATOS TOTALES
                                     double totalAmountHSBC = 0;
                                     int hQuantityDeposits = 0;
@@ -550,10 +552,35 @@ namespace Payroll.Controllers
                                     if (dateDisC != "") {
                                         hDateActually = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
                                     }
-                                    string hSpaceWhite1        = "";
+                                    string hSpaceWhite1        = " ";
                                     string hReferenceAlpa      = "PAGONOM" + numberPeriod + "QFEB";
                                     header = hValuePermanent1 + "," + hNivelAuthorization + "," + hReferenceNumber + "," + hTotalAmount + "," + hQuantityDeposits.ToString() + "," + hDateActually + "," + hSpaceWhite1 + "," + hReferenceAlpa;
                                     stream.WriteLine(header);
+
+                                    // FIN CODIGO NUEVO
+
+                                    string pathFile = string.Format(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + "test.xlsx", nameBank + DateTime.Now.ToString("_yyyyMMdd HHmms"));
+                                    SLDocument sLDocument = new SLDocument();
+                                    System.Data.DataTable dt = new System.Data.DataTable();
+                                    System.Data.DataTable dt2 = new System.Data.DataTable();
+
+                                    dt.Columns.Add(hValuePermanent1, typeof(string));
+                                    dt.Columns.Add(hNivelAuthorization, typeof(string));
+                                    dt.Columns.Add(hReferenceNumber, typeof(int));
+                                    dt.Columns.Add(hTotalAmount, typeof(string));
+                                    dt.Columns.Add(hQuantityDeposits.ToString(), typeof(string));
+                                    dt.Columns.Add(hDateActually, typeof(string));
+                                    dt.Columns.Add(hSpaceWhite1, typeof(string));
+                                    dt.Columns.Add(hReferenceAlpa, typeof(string));
+                                    sLDocument.ImportDataTable(1, 1, dt, true);
+
+                                    dt2.Columns.Add("", typeof(string));
+                                    dt2.Columns.Add("0.00", typeof(decimal));
+                                    dt2.Columns.Add("", typeof(string));
+                                    dt2.Columns.Add("", typeof(string));
+
+                                    // FIN CODIGO NUEVO
+
                                     foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                         if (payroll.iIdBanco == bankResult) {
                                             int longAcortAccount = payroll.sCuenta.Length;
@@ -574,26 +601,27 @@ namespace Payroll.Controllers
                                                 finallyAccount = "0" + payroll.sCuenta;
                                             } else {
                                                 dataErrors.Add(
-                                                        new DataErrorAccountBank {
-                                                            sBanco = "HSBC",
-                                                            sCuenta = payroll.sCuenta,
-                                                            sNomina = payroll.sNomina
-                                                        });
+                                                        new DataErrorAccountBank {sBanco = "HSBC", sCuenta = payroll.sCuenta, sNomina = payroll.sNomina });
                                             }
-                                            if (finallyAccount == "6257706053") {
+                                            if (finallyAccount == "6373333668") {
                                                 int jd = 0;
                                             }
-                                            //var test = payroll.dImporte.ToString().Insert(payroll.dImporte.ToString().Length - 2, ".");
-                                            //string amount = Truncate(Convert.ToDouble(payroll.sImporte), 2).ToString();
+                                            var test = payroll.dImporte.ToString().Insert(payroll.dImporte.ToString().Length - 2, ".");
+                                            string amountt = Truncate(Convert.ToDouble(payroll.sImporte), 2).ToString();
                                             string amount = payroll.doImporte.ToString();
                                             string nameEmployee = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd() + " " + payroll.sMaterno.TrimEnd();
                                             if (nameEmployee.Length > 35) {
                                                 nameEmployee = nameEmployee.Substring(0, 35);
                                             }
-                                            header = finallyAccount + "," + amount + "," + hReferenceAlpa + "," + nameEmployee;
+                                            header = finallyAccount + "," + test.ToString() + "," + hReferenceAlpa + "," + nameEmployee;
+
+                                            dt2.Rows.Add(finallyAccount.ToString(), test.ToString(), hReferenceAlpa, nameEmployee);
+
                                             stream.WriteLine(header);
                                         }
                                     }
+                                    sLDocument.ImportDataTable(2, 1, dt2, false);
+                                    sLDocument.SaveAs(pathFile);
                                     stream.Close();
                                 }
 

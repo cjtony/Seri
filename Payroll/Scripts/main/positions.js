@@ -35,10 +35,10 @@
     //});
 
     const labelsearchposition = document.getElementById('labelsearchposition');
-    const filtrocode   = document.getElementById('filtrocode');
+    const filtrocode = document.getElementById('filtrocode');
     const filtropuesto = document.getElementById('filtropuesto');
 
-    filtrocode.style.cursor   = "pointer";
+    filtrocode.style.cursor = "pointer";
     filtropuesto.style.cursor = "pointer";
     document.getElementById('labelfiltrocode').style.cursor = "pointer";
     document.getElementById('labelfiltropost').style.cursor = "pointer";
@@ -63,7 +63,7 @@
             $.ajax({
                 url: "../Reportes/GenerateReportCatalogs",
                 type: "POST",
-                data: {key : "POSICIONES"},
+                data: { key: "POSICIONES" },
                 beforeSend: () => {
                     $("#searchpositions").modal("hide");
                     document.getElementById('contenDownloadReport').innerHTML = `
@@ -319,8 +319,8 @@
     }
 
     searchpositionkeybtn.style.transition = "1s";
-    searchpositionkeybtn.style.cursor     = "pointer";
-    searchpositionkeybtn.addEventListener('mouseover', () =>  { searchpositionkeybtn.classList.add('shadow'); });
+    searchpositionkeybtn.style.cursor = "pointer";
+    searchpositionkeybtn.addEventListener('mouseover', () => { searchpositionkeybtn.classList.add('shadow'); });
     searchpositionkeybtn.addEventListener('mouseleave', () => { searchpositionkeybtn.classList.remove('shadow'); });
 
     localStorage.removeItem('modalbtnpositions');
@@ -698,13 +698,14 @@
                     type: "POST",
                     data: { clvposition: paramid },
                     success: (data) => {
+                        console.log(data);
                         $("#editposition").modal('show');
                         clvposition.value = data.iIdPosicion;
                         codtxtinf.textContent = data.sPosicionCodigo;
                         edicodposic.value = data.sPosicionCodigo;
-                        //depaidedit.value  = data.iDepartamento_id;
+                        depaidedit.value  = data.iDepartamento_id;
                         departedit.value = data.sNombreDepartamento;
-                        //puesidedit.value  = data.iPuesto_id;
+                        puesidedit.value  = data.iPuesto_id;
                         pueusuedit.value = data.sNombrePuesto;
                         editatcla.innerHTML = `<option value="${data.iIdRegistroPat}">${data.sRegistroPat}</option>`;
                         editlocalityr.value = data.iIdLocalidad;
@@ -859,13 +860,63 @@
     //});
 
     // new code
+
+    const btnSearchEditPuesto = document.getElementById('btn-search-puesto-edit');
+    const searchpuestokeyaddedit = document.getElementById('searchpuestokeyaddedit');
+    const btnCloseSearchPuestoEdit = document.getElementById('btn-close-search-puestosaddedit');
+    const icoCloseSearchPuestoEdit = document.getElementById('ico-close-search-puestosaddedit');
+    const resultpuestosaddedit = document.getElementById('resultpuestosaddedit');
+    const noresultsjobs2edit = document.getElementById('noresultsjobs2edit');
+
+    const btnSearchEditDepartament = document.getElementById('btn-search-departament-edit');
+    const searchdepartmentkeyaddedit = document.getElementById('searchdepartmentkeyaddedit');
+    const icoCloseSearchDepartamentsEdit = document.getElementById('ico-close-search-departamentsaddedit');
+    const btnCloseSearchDepartamentsEdit = document.getElementById('btn-close-search-departamentsaddedit');
+    const resultdepartmentsaddedit = document.getElementById('resultdepartmentsaddedit');
+    const noresultsdepartamentaddedit = document.getElementById('noresultsdepartamentaddedit');
+
     const btnSearchEditLocality = document.getElementById('btn-search-localidad-edit');
     const searchlocalityaddedit = document.getElementById('searchlocalityaddedit');
     const icoCloseSearchLocalitysEdit = document.getElementById('ico-close-search-localitys-edit');
     const btnCloseSearchLocalitysEdit = document.getElementById('btn-close-search-localitys-edit');
     const noresultslocalityedit = document.getElementById('noresultslocalityedit');
     const resultlocalityaddedit = document.getElementById('resultlocalityaddedit');
+
     const btnsaveeditposition = document.getElementById('btnsaveeditposition');
+
+    btnSearchEditPuesto.addEventListener('click', () => {
+        $("#editposition").modal("hide");
+        setTimeout(() => {
+            searchpuestokeyaddedit.focus();
+        }, 500);
+    });
+
+    fCloseSearchPuestoEdit = () => {
+        $("#searchpuestoedit").modal("hide");
+        setTimeout(() => {
+            $("#editposition").modal("show");
+        }, 500);
+    };
+
+    icoCloseSearchPuestoEdit.addEventListener('click', fCloseSearchPuestoEdit);
+    btnCloseSearchPuestoEdit.addEventListener('click', fCloseSearchPuestoEdit);
+
+    btnSearchEditDepartament.addEventListener('click', () => {
+        $("#editposition").modal("hide");
+        setTimeout(() => {
+            searchdepartmentkeyaddedit.focus();
+        }, 500);
+    });
+
+    fCloseSearchDepartamentsEdit = () => {
+        $("#searchdepartamentedit").modal("hide");
+        setTimeout(() => {
+            $("#editposition").modal("show");
+        }, 500);
+    }
+
+    icoCloseSearchDepartamentsEdit.addEventListener('click', fCloseSearchDepartamentsEdit);
+    btnCloseSearchDepartamentsEdit.addEventListener('click', fCloseSearchDepartamentsEdit);
 
     btnSearchEditLocality.addEventListener('click', () => {
         $("#editposition").modal("hide");
@@ -904,7 +955,7 @@
                         } else {
                             document.getElementById('noresultslocalityedit').innerHTML = `
                                 <div class="alert alert-danger text-center" role="alert">
-                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron localidades con el termino <b>${searchlocalityadd.value}</b>
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron localidades con el termino <b>${searchlocalityaddedit.value}</b>
                                 </div>
                             `;
                         }
@@ -938,7 +989,7 @@
             $("#editposition").modal('show');
             document.getElementById('editlocalityrnew').value = paramid;
             edilocalityrtxt.value = paramstr;
-            document.getElementById('editatcla').innerHTML = `<option value="${paramregpat}">${paramstrregpat}</option>`; 
+            document.getElementById('editatcla').innerHTML = `<option value="${paramregpat}">${paramstrregpat}</option>`;
         } catch (error) {
             if (error instanceof TypeError) {
                 console.log('TypeError ', error);
@@ -952,13 +1003,155 @@
         }
     }
 
+    /* FUNCION QUE CARGA LOS DEPARTAMENTOS AL MOMENTO DE CREAR UNA NUEVA POSICION */
+    fsearchdepartamentsaddedit = () => {
+        try {
+            resultdepartmentsaddedit.innerHTML = '';
+            document.getElementById('noresultsdepartamentaddedit').innerHTML = '';
+            if (searchdepartmentkeyaddedit.value != "") {
+                $.ajax({
+                    url: "../SearchDataCat/SearchDepartaments",
+                    type: "POST",
+                    data: { wordsearch: searchdepartmentkeyaddedit.value, type: 'EMPR' },
+                    success: (data) => {
+                        resultdepartmentsaddedit.innerHTML = '';
+                        if (data.length > 0) {
+                            let number = 0;
+                            for (let i = 0; i < data.length; i++) {
+                                number += 1;
+                                resultdepartmentsaddedit.innerHTML += `<button onclick="fselectoptionnewpositionedit(${data[i].iIdDepartamento},'${data[i].sDeptoCodigo}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number}. - ${data[i].sDeptoCodigo} - ${data[i].sDescripcionDepartamento} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
+                            }
+                        } else {
+                            document.getElementById('noresultsdepartamentaddedit').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron departamentos con el termino <b>${searchdepartmentkeyaddedit.value}</b>
+                                </div>
+                            `;
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                resultdepartmentsaddedit.innerHTML = '';
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    fselectoptionnewpositionedit = (paramid, paramstr) => {
+        try {
+            searchdepartmentkeyaddedit.value = "";
+            resultdepartmentsaddedit.innerHTML = '';
+            document.getElementById('noresultsdepartamentaddedit').innerHTML = '';
+            $("#searchdepartamentedit").modal('hide');
+            $("#editposition").modal('show');
+            document.getElementById('depaideditnew').value = paramid;
+            departedit.value = paramstr;
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    searchdepartmentkeyaddedit.addEventListener('keyup', fsearchdepartamentsaddedit);
+
+    /* FUNCION QUE REALIZA LA BUSQUEDA EN TIEMPO REAL DE PUESTOS AL MOMENTO DE REGISTRAR UNA NUEVA POSICION */
+    fsearchkeyuppuestoaddedit = () => {
+        try {
+            resultpuestosaddedit.innerHTML = '';
+            document.getElementById('noresultsjobs2edit').innerHTML = '';
+            if (searchpuestokeyaddedit.value != "") {
+                $.ajax({
+                    url: "../SearchDataCat/SearchPuesto",
+                    type: "POST",
+                    data: { wordsearch: searchpuestokeyaddedit.value },
+                    success: (data) => {
+                        resultpuestosaddedit.innerHTML = '';
+                        if (data.length > 0) {
+                            let number = 0;
+                            for (let i = 0; i < data.length; i++) {
+                                number += 1;
+                                resultpuestosaddedit.innerHTML += `<button onclick="fselectpuestoposedit(${data[i].iIdPuesto},'${data[i].sNombrePuesto}')" class="animated fadeIn list-group-item d-flex justify-content-between mb-1 align-items-center shadow rounded cg-back">${number} - ${data[i].sCodigoPuesto} - ${data[i].sNombrePuesto} <i class="fas fa-check-circle ml-2 col-ico fa-lg"></i> </button>`;
+                            }
+                        } else {
+                            document.getElementById('noresultsjobs2edit').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <i class="fas fa-times-circle mr-2"></i> No se encontraron puestos con el termino <b>${searchpuestokeyaddedit.value}</b>
+                                </div>
+                            `;
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                resultpuestosaddedit.innerHTML = '';
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    fselectpuestoposedit = (paramid, paramstr) => {
+        try {
+            searchpuestokeyaddedit.value = '';
+            resultpuestosaddedit.innerHTML = '';
+            $("#searchpuestoedit").modal('hide');
+            $("#editposition").modal('show');
+            document.getElementById('puesideditnew').value = paramid;
+            pueusuedit.value = paramstr;
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log('TypeError ', error);
+            } else if (error instanceof RangeError) {
+                console.log('RangeError ', error);
+            } else if (error instanceof EvalError) {
+                console.log('EvalError ', error);
+            } else {
+                console.log('Error ', error);
+            }
+        }
+    }
+
+    searchpuestokeyaddedit.addEventListener('keyup', fsearchkeyuppuestoaddedit);
+
     // Funcion que guarda la edicion de la posicion
     fSaveEditPosition = () => {
         try {
             const newLocality = document.getElementById('editlocalityrnew');
-            if (newLocality.value != "0") {
-                if (parseInt(newLocality.value) != parseInt(editlocalityr.value)) {
-                    const dataSend = { newLocality: parseInt(newLocality.value), position: parseInt(clvposition.value) };
+            const newDepartament = document.getElementById('depaideditnew');
+            const newPost = document.getElementById('puesideditnew');
+            if (newLocality.value != "0" || newDepartament.value != "0" || newPost.value != "0") {
+                if (parseInt(newLocality.value) != parseInt(editlocalityr.value) || parseInt(newDepartament.value) != parseInt(depaidedit.value) || parseInt(newPost.value) != parseInt(puesidedit.value)) {
+                    let valueLocality = (parseInt(newLocality.value) == 0) ? parseInt(editlocalityr.value) : parseInt(newLocality.value);
+                    let valueDepartament = (parseInt(newDepartament.value) == 0) ? parseInt(depaidedit.value) : parseInt(newDepartament.value);
+                    let valuePost = (parseInt(newPost.value) == 0) ? parseInt(puesidedit.value) : parseInt(newPost.value);
+                    const dataSend = { newLocality: valueLocality, newDepartament: valueDepartament, newPost: valuePost, position: parseInt(clvposition.value) };
                     //console.log(dataSend);
                     $.ajax({
                         url: "../SaveDataGeneral/SaveEditPosition",
@@ -975,7 +1168,9 @@
                                     confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                                 }).then((acepta) => {
                                     btnsaveeditposition.disabled = false;
-                                    editlocalityr.value = newLocality.value;
+                                    editlocalityr.value = valueLocality;
+                                    depaidedit.value = valueDepartament;
+                                    puesidedit.value = valuePost;
                                 });
                             } else {
                                 Swal.fire({
