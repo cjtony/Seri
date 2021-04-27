@@ -5,21 +5,21 @@
 
     const TextDEesp = document.getElementById('TextDEesp');
     const TextSelecEmpre = document.getElementById('TextSelecEmpre');
-    const CheckEmpresa = document.getElementById('CheckEmpresa');
+  //  const CheckEmpresa = document.getElementById('CheckEmpresa');
     const TextBTotalEmple = document.getElementById('TextBTotalEmple');
     const DroTipoPeriodo = document.getElementById('DroTipoPeriodo');
     const DropPerido = document.getElementById('DropPerido');
     const btnGeneraPDF = document.getElementById('btn-GeneraPDF');
     const TextBAnioProce = document.getElementById('TextBAnioProce');
     const DroTipoRecibo = document.getElementById('DroTipoRecibo');
-    const TextBRuta = document.getElementById('TextBRuta');
+   // const TextBRuta = document.getElementById('TextBRuta');
     const btnVerEje = document.getElementById('btnVerEje');
     const btnEnviCorre = document.getElementById('btnEnviCorre');
     //const BtnSenCorreo = document.getElementById('BtnSenCorreo');
     //const TextCopiaa = document.getElementById('TextCopiaa');
-    const TextBTotalEjecutados = document.getElementById('TextBTotalEjecutados');
+   // const TextBTotalEjecutados = document.getElementById('TextBTotalEjecutados');
 
-    var VarCheckEmpresa = document.getElementById('CheckEmpresa');
+   // var VarCheckEmpresa = document.getElementById('CheckEmpresa');
     var Empresas;
     
     
@@ -104,22 +104,22 @@
 
     };
 
-    FValorChec = () => {
+    //FValorChec = () => {
        
-        if (VarCheckEmpresa.checked == true) {
+    //    if (VarCheckEmpresa.checked == true) {
             
-             $("#DropEmpresa").jqxDropDownList('checkAll');
-        }
-        if (VarCheckEmpresa.checked == false) {
+    //         $("#DropEmpresa").jqxDropDownList('checkAll');
+    //    }
+    //    if (VarCheckEmpresa.checked == false) {
       
-            $("#DropEmpresa").jqxDropDownList('uncheckAll');
+    //        $("#DropEmpresa").jqxDropDownList('uncheckAll');
 
-        }
+    //    }
 
-    };
+    //};
 
-    CheckEmpresa.checked = false;
-    CheckEmpresa.addEventListener('click', FValorChec);
+    //CheckEmpresa.checked = false;
+    //CheckEmpresa.addEventListener('click', FValorChec);
 
      // suma el numero de empleados de las Empresas selecionadas
     FNoEmpeleados = (Empresas) => {
@@ -133,6 +133,23 @@
             },
         });
     };
+
+
+    // Suma el numero de recibos realizados 
+
+    FNoRecibos = (Empresas) => {
+        const dataSend = { IdEmpresas: Empresas, iAnio: TextBAnioProce.value, iTipoPerido: DroTipoPeriodo.value, iPeriodo: DropPerido.value, iRecibo: DroTipoRecibo.value };
+        $.ajax({
+            url: "../Nomina/NoRecibosEmrpesas",
+            type: "POST",
+            data: dataSend,
+            success: function (data) {
+                console.log(data);
+                TextBTotalEmple.value = data[0];
+            },
+        });
+    };
+
 
     // Verifica que todas las empresas contengan el mismo tipo de periodo y lo llena el drop
     FTipodePeriodo = (sdEMpresa, op,tp) => {
@@ -211,6 +228,7 @@
             type: "POST",
             data: dataSend,
             success: function (data) {
+                FNoRecibos(IdEmpresas);
                 btnEnviCorre.value = 1;
                 if (recibo == "1") {
                     var source =
@@ -339,7 +357,7 @@
             },
             success: function (data) { 
                 $('#jqxLoader').jqxLoader('close');
-                TextBRuta.value = data[0].sUrl;
+              //  TextBRuta.value = data[0].sUrl;
                 TextBTotalEmple.value = data[0].iNoEjecutados;
                 fshowtypealert('Emisión de recibos', 'PDF creados exitosa mente', 'succes');
             },
@@ -524,7 +542,7 @@
                     $("#DropPerido").empty();
                     document.getElementById("DropPerido").innerHTML += `<option value='${TablasDat.TablasDat[0].iPeriodo}'>${TablasDat.TablasDat[0].iPeriodo}  </option>`;
 
-                    TextBTotalEjecutados.value = TablasDat.TablasDat[0].iNoEje;
+                   // TextBTotalEjecutados.value = TablasDat.TablasDat[0].iNoEje;
                     
                 }
                 else {

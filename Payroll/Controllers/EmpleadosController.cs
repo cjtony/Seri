@@ -460,7 +460,7 @@ namespace Payroll.Controllers
         public JsonResult TimbXML(int Anio, int TipoPeriodo, int Perido, int Version, string NomArchivo)
         {
             string CadeSat, UUID, RfcEmi, RfcRep, SelloCF, RfcProv, Nomcer, fechatem, selloemisor;
-            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, idEmpresa, ReciboAsi = 0, NoArchivos=0;
+            int NumEmpleado, anios = Anio, Tipodeperido = TipoPeriodo, idEmpresa, ReciboAsi = 0, NoArchivos=0, Dow=0;
             List<EmisorReceptorBean> ListDatEmisor = new List<EmisorReceptorBean>();
 
             var fileName = NomArchivo;
@@ -471,14 +471,25 @@ namespace Payroll.Controllers
             PathZip = PathZip + NomArchivo;
             string path = Server.MapPath("Archivos\\XmlZip\\");
             path = path.Replace("\\Empleados", "");
+            string DowPath = path;
+           
 
-            ZipFile.ExtractToDirectory(PathZip, path);
 
-            DirectoryInfo di = new DirectoryInfo(path);
+            if (System.IO.Directory.Exists(DowPath))
+            {
+                Dow = Dow + 1;
+                DowPath = DowPath + "\\" + Dow + "\\";
+                Directory.CreateDirectory(DowPath);
+            }
+
+
+           ZipFile.ExtractToDirectory(PathZip, DowPath);
+
+            DirectoryInfo di = new DirectoryInfo(DowPath);
             foreach (var fi in di.GetFiles())
             {  // nombre y ubicacion del archivo del xml que se va a crear
                
-                String pathxml = path + fi.Name;
+                String pathxml = DowPath + fi.Name;
                 string SNombreArchivo = fi.Name;
                 string[] words = SNombreArchivo.Split('_');
                 string sIdEmpresa = words[2].ToString().Replace("E", "");
@@ -817,12 +828,8 @@ namespace Payroll.Controllers
 
                 }
 
-
-
                 /////////////// tipo de pago 
 
-
-              
                 Paragraph table6 = new Paragraph();
                 table6.IndentationLeft = 50;
                 PdfPTable table7 = new PdfPTable(1);
@@ -957,10 +964,6 @@ namespace Payroll.Controllers
 
                 Paragraph Periodo = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Periodo.IndentationLeft = 227;
-
-
-
-
 
 
                 Paragraph TLugarExp = new Paragraph(-30, "Lugar de Expedicion:", TTexNegCuerpo);
@@ -1411,7 +1414,7 @@ namespace Payroll.Controllers
             }
             ZipFile.CreateFromDirectory(PathPDF, path);
             string sourceDirPdf = PathPDF;
-            string SourceDirXml = pathxm;
+            string SourceDirXml = DowPath;
             try
             {
 
@@ -1438,6 +1441,13 @@ namespace Payroll.Controllers
                     System.IO.File.Delete(f);
 
                 }
+
+
+                if (System.IO.Directory.Exists(DowPath))
+                {
+                    System.IO.Directory.Delete(DowPath, recursive: true);
+                }
+
             }
             catch (DirectoryNotFoundException dirNotFound)
             {
@@ -1525,9 +1535,8 @@ namespace Payroll.Controllers
             Folio = Anio * 100000 + TipoPeriodo * 10000 + Perido * 10;
             var fileName = "";
             string PathPDF = "";
-            string PathCarp = Server.MapPath("Archivos\\Recibos\\");
+            string PathCarp = "C:\\Recibos\\";
             PathPDF = PathPDF.Replace("\\Empleados", "");
-            PathCarp = PathCarp.Replace("\\Empleados", "");
             string pathCarp2 ="";
             string path = Server.MapPath("Archivos\\XmlZip\\");
             PathPDF = PathPDF.Replace("\\Empleados", "");
@@ -1584,6 +1593,12 @@ namespace Payroll.Controllers
                     {
                         Nombrearc = Nombrearc + "ReciboFiscal_E" + idEmpresa + "_N" + Empleados[a].iIdEmpleado + "_F" + Folio + ".pdf";
                     }
+                    if (System.IO.File.Exists(Nombrearc))
+                    {
+                        System.IO.File.Delete(Nombrearc);
+                    }
+
+
                     int valido = 0;
                     idempleado = Empleados[a].iIdEmpleado;
                     ListDatEmisor = Dao2.sp_EmisorReceptor_Retrieve_EmisorReceptor(idEmpresa, Empleados[a].iIdEmpleado);
@@ -3591,12 +3606,12 @@ namespace Payroll.Controllers
                 {
                     for (int i = 0; i < LSelloSat.Count; i++)
                     {
-                        if (LSelloSat[i].sUurReciboSim != null && LSelloSat[i].sEmailSendSim != "True")
+                        if (LSelloSat[i].sUurReciboSim != null && LSelloSat[i].sEmailSendSim != "True" && LSelloSat[i].sEmailEmpresa != "")
                         {
-                            // string EmailEmple = ;
+                          
                             string EmailPer = LSelloSat[i].sEmailSent;
                             string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
-                            Correo EmailEnvio = new Correo(EmailPer, "Recibo de Nómina", Mensaje, LSelloSat[i].sUurReciboSim);
+                            Correo EmailEnvio = new Correo(EmailPer, "Recibo de Nómina", Mensaje, LSelloSat[i].sUurReciboSim,LSelloSat[i].sEmailEmpresa,LSelloSat[i].sPassword);
                             if (EmailEnvio.Estado)
                             {
                                 //Correo enviado
@@ -3622,13 +3637,14 @@ namespace Payroll.Controllers
                         if (LSelloSat[i].sUrllReciboFis != null && LSelloSat[i].bEmailSent != "True")
                         {
                             // string EmailEmple = LSelloSat[i].sEmailSent;
-                            if (LSelloSat[i].sEmailSent != null && LSelloSat[i].sEmailSent != "" && LSelloSat[i].sEmailSent != " ")
+                            if (LSelloSat[i].sEmailSent != null && LSelloSat[i].sEmailSent != "" && LSelloSat[i].sEmailSent != " " && LSelloSat[i].sEmailEmpresa !="")
                             {
                                 if (System.IO.File.Exists(LSelloSat[i].sUrllReciboFis))
                                 {
-                                    string EmailPer = LSelloSat[i].sEmailSent;
+                                    string EmailPer =  LSelloSat[i].sEmailSent;
+                                    string EmailEmpresa = LSelloSat[i].sEmailEmpresa;
                                     string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
-                                    Correo EmailEnvio = new Correo(EmailPer, "Facturas", Mensaje, LSelloSat[i].sUrllReciboFis);
+                                    Correo EmailEnvio = new Correo(EmailPer, "Recibos Nómina", Mensaje, LSelloSat[i].sUrllReciboFis,LSelloSat[i].sEmailEmpresa,LSelloSat[i].sPassword);
                                     if (EmailEnvio.Estado)
                                     {
                                         //Correo enviado
