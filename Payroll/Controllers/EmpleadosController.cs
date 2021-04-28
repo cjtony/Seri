@@ -1169,7 +1169,7 @@ namespace Payroll.Controllers
                 documento.Add(table12);
 
                 int a = 0;
-                string Palabra2;
+                string Palabra2,palabra3;
                 decimal valor;
                 decimal per = 0;
                 decimal ded = 0;
@@ -1181,11 +1181,13 @@ namespace Payroll.Controllers
                     {
                         Palabra = nodo.Attributes.GetNamedItem("Concepto").Value;
                         Palabra2 = nodo.Attributes.GetNamedItem("ImporteGravado").Value;
-                        valor = decimal.Parse(Palabra2);
+                        palabra3 = nodo.Attributes.GetNamedItem("ImporteExento").Value;
+                        valor = decimal.Parse(Palabra2) + decimal.Parse(palabra3); 
+
                         per = per + valor;
                         Paragraph TLeyenda = new Paragraph(Palabra, TexNegCuerpo);
                         TLeyenda.IndentationLeft = 75;
-                        Paragraph TPercep = new Paragraph(-1, Palabra2, TexNegCuerpo);
+                        Paragraph TPercep = new Paragraph(-1,Convert.ToString(valor), TexNegCuerpo);
                         TPercep.IndentationLeft = 375;
                         documento.Add(TLeyenda);
                         documento.Add(TPercep);
