@@ -2082,7 +2082,12 @@ namespace Payroll.Controllers
                             string coinOrigin    = "1";
                             string coingDestiny  = "1";
                             string ivaBanorte    = "00000000000000";
-                            string emailBusiness = "dgarcia@gruposeri.com                  ";
+                            string emailBusiness = "";
+                            if (keyBusiness == 2074) {
+                                emailBusiness = "asesoresimpasrh@gmail.com              ";
+                            } else {
+                                emailBusiness = "dgarcia@gruposeri.com                  ";
+                            }
                             // Longitudes campos
                             int longNumberPayroll  = 13;
                             int longNumberADestiny = 10;
@@ -2124,13 +2129,22 @@ namespace Payroll.Controllers
                                     }
                                     importPaid += data.dImporte.ToString();
                                     string fillerFinal = "";
-                                    string cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
+                                    string cadenaFinal = "";
+                                    if (keyBusiness == 2074) {
+                                        cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
+                                    } else {
+                                        cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
+                                    }
                                     int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
                                     for (var x = 0; x < longFinalFiller; x++)
                                     {
                                         fillerFinal += " ";
                                     }
-                                    fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
+                                    if (keyBusiness == 2074) {
+                                        fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
+                                    } else {
+                                        fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
+                                    }
                                 }
                                 fileIntBanorte.Close();
                             }
