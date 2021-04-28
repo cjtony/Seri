@@ -3778,6 +3778,52 @@ namespace Payroll.Models.Daos
             return list;
         }
 
+        // NoRecibos x Empresa
+
+        ///Numero Empleado de Empresas
+        public List<int> sp_NoRecibos_Retrieve_TSellosSat(int CtrliEmpresaid, int Ctrlanio, int CtrliTipoEperiodo ,int CtrliPeriodo, int CtrliRecio )
+        {
+            List<int> list = new List<int>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_NoRecibos_Retrieve_TSellosSat", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliEmpresaid", CtrliEmpresaid));
+                cmd.Parameters.Add(new SqlParameter("@Ctrlanio", Ctrlanio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoEperiodo", CtrliTipoEperiodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliRecio", CtrliRecio));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+
+                        int ls;
+                        ls = int.Parse(data["NoEmple"].ToString());
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+
+
 
     }
 }

@@ -2982,7 +2982,6 @@ namespace Payroll.Models.Daos
                             LP.bEmailSent = data["Email_Sent"].ToString();
                             if (data["Correo_Electronico"].ToString() != "" || data["Correo_Electronico"].ToString() != " ")
                             {
-
                                 LP.sEmailSent = data["Correo_Electronico"].ToString();
                             }
                             else { LP.sEmailSent = ""; }
@@ -2990,6 +2989,8 @@ namespace Payroll.Models.Daos
                             else { LP.sUurReciboSim = " "; };
                             if (data["Recibo_Fiscal"].ToString() != null) { LP.sUrllReciboFis = data["Recibo_Fiscal"].ToString(); } else{ LP.sUrllReciboFis = " ";};
                             LP.sEmailSendSim = data["Email_Sent_simple"].ToString();
+                            LP.sEmailEmpresa = data["EmailEmpresa"].ToString();
+                            LP.sPassword = data["Password"].ToString();
                             LP.sMensaje = "Succes";
           
                         };

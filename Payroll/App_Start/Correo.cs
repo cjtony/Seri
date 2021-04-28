@@ -11,7 +11,7 @@ public class Correo
 {
 	 Boolean estado = true;
     string merror; 
-	public Correo(string destinatario,string asunto, string mensaje,string path)
+	public Correo(string destinatario,string asunto, string mensaje,string path,string EmailEmp,string PasswordEmpre)
 	{
         //
         // TODO: Add constructor logic here
@@ -40,7 +40,7 @@ public class Correo
         MailMessage correo = new MailMessage();
         SmtpClient Protocolo = new SmtpClient();
         correo.To.Add(destinatario);
-        correo.From = new MailAddress("abimaelh@raciti.com.mx", "Raciti", System.Text.Encoding.UTF8);
+        correo.From = new MailAddress(EmailEmp, "", System.Text.Encoding.UTF8);
         correo.Subject = asunto;
         correo.SubjectEncoding = System.Text.Encoding.UTF8;
         correo.Body = mensaje;
@@ -50,11 +50,11 @@ public class Correo
         correo.Priority = MailPriority.Normal;
 
 
-        Protocolo.Port = 25;
-        Protocolo.Host = "smtp.Office365.com";
-        Protocolo.Credentials = new System.Net.NetworkCredential("abimaelh@raciti.com.mx", "Abjoe182!");
+        Protocolo.Port = 587;
+        Protocolo.Host = "smtp.office365.com";
+        Protocolo.Credentials = new System.Net.NetworkCredential(EmailEmp, PasswordEmpre);
         Protocolo.EnableSsl = true;
-        Protocolo.UseDefaultCredentials = false;
+        //Protocolo.UseDefaultCredentials = false;
         
         try
         {

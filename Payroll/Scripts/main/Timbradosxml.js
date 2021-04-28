@@ -26,8 +26,6 @@
 
     // declaracion de boton de timbrado
     btnTiembrar = document.getElementById('btnTiembrar');
-
-    
     $('#btnTiembrar').on('click', function () {
 
         var aniox = anoxml.value;
@@ -152,9 +150,6 @@
             //}
         });
     };
-
     $("#jqxLoader2").jqxLoader({ text: "Generando PDF Timbrados", width: 160, height: 80 });
-
-
 
 });

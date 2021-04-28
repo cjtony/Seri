@@ -1317,6 +1317,45 @@ namespace Payroll.Controllers
         }
 
 
+        // Numero de  recibos x Empresa
+
+        // No de Empleado de Empresas
+        [HttpPost]
+        public JsonResult NoRecibosEmrpesas(String IdEmpresas, int iAnio, int iTipoPerido, int iPeriodo, int iRecibo)
+        {
+            List<int> LE = new List<int>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            if (IdEmpresas != "")
+            {
+
+                int idEmpresa = 0, Noempresa = 0, rows = 0;
+                string[] valores = IdEmpresas.Split(' ');
+                rows = valores.Length - 1;
+                for (int i = 0; i < rows; i++)
+                {
+                    idEmpresa = Convert.ToInt32(valores[i]);
+                    LE = Dao.sp_NoRecibos_Retrieve_TSellosSat(idEmpresa, iAnio, iTipoPerido, iPeriodo, iRecibo);
+                    if (LE.Count > 0)
+                    {
+                        Noempresa = Noempresa + LE[0];
+                    }
+
+                }
+
+
+                LE[0] = Noempresa;
+
+            }
+            else
+            {
+                int ls = 0;  
+                LE.Add(ls);
+            }
+
+
+            return Json(LE);
+        }
+
 
 
     }
