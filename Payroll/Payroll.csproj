@@ -519,9 +519,9 @@
     <Content Include="Content\REPORTES\NOMINA\HCalculo_E4_A2020_P3_A.xlsx" />
     <Content Include="Content\REPORTES\NOMINA\HCalculo_E8_A2020_NP19_TP3_A.xlsx" />
     <Content Include="Content\REPORTES\NOMINA\HCBajas_E18_A2020_NP15_TP3_A.xlsx" />
-    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" /> 
-    <Content Include="Content\bootstrap\js\bootstrap.min.js.map" /> 
-    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Masiva_Periodos.xlsx" /> 
+    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Masiva_Periodos.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
@@ -1033,6 +1033,7 @@
     <Content Include="Scripts\main\centrcost.js" />
     <Content Include="Scripts\main\CompNomina.js" />
     <Content Include="Scripts\main\Creditos.js" />
+    <Content Include="Scripts\main\DatosGeneralesEmpresa.js" />
     <Content Include="Scripts\main\departments.js" />
     <Content Include="Scripts\main\Dispersion\databank.js" />
     <Content Include="Scripts\main\EmisionRecibos.js" />
@@ -1185,9 +1186,9 @@
     <Content Include="Views\Kiosko\SolicitudVacaciones.cshtml" />
     <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
     <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
-    <Content Include="Views\Incidencias\PIncidencias.cshtml" /> 
-    <Content Include="Views\Empleados\XML.cshtml" /> 
-    <Content Include="Views\Login\PasswordChange.cshtml" /> 
+    <Content Include="Views\Incidencias\PIncidencias.cshtml" />
+    <Content Include="Views\Empleados\XML.cshtml" />
+    <Content Include="Views\Login\PasswordChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1199,9 +1200,8 @@
     <Folder Include="Views\ConfigDataBank\" />
     <Folder Include="Views\DispersionSpecial\" />
     <Folder Include="Views\Dispersion\" />
-    <Folder Include="Views\EditDataGeneral\" /> 
+    <Folder Include="Views\EditDataGeneral\" />
     <Folder Include="Views\GenerateFiles\" />
-    <Folder Include="Views\Login\" /> 
     <Folder Include="Views\MainMenu\" />
     <Folder Include="Views\MasiveLoads\" />
     <Folder Include="Views\SaveDataGeneral\" />
