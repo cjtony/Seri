@@ -713,7 +713,7 @@ namespace Payroll.Controllers
                                         int tipojornad = Convert.ToInt32(dr[35].ToString().Trim());
                                         int tipocontra = Convert.ToInt32(dr[36].ToString().Trim());
                                         int tcontratac = Convert.ToInt32(dr[37].ToString().Trim());
-                                        string feching = dr[38].ToString().Trim();
+                                        string feching = dr[38].ToString().Trim().Replace("-","/");
                                         string fechant = dr[39].ToString().Trim();
                                         string fechvco = dr[40].ToString().Trim();
                                         int tipopagoem = Convert.ToInt32(dr[41].ToString().Trim());

@@ -2095,25 +2095,25 @@ namespace Payroll.Controllers
                             int longNumberBRfc     = 13;
                             int longNumberEmail    = 70;
                             int longDetailsTotal   = 255;
-                            using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM))
+                            using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM, false, new ASCIIEncoding()))
                             {
                                 foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
-                                    string nameEmployee   = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
+                                    string nameEmployee = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
                                     if (nameEmployee.Length > 70) {
                                         nameEmployee.Substring(0, 69);
                                     }
-                                    string payroll        = data.sNomina;
-                                    int longPayroll       = longNumberPayroll - payroll.Length;
-                                    string accountOrigin  = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
-                                    int longAcountOrigin  = longNumberADestiny - accountOrigin.Length;
+                                    string payroll = data.sNomina;
+                                    int longPayroll = longNumberPayroll - payroll.Length;
+                                    string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                                    int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
                                     string accountDestiny = data.sCuenta;
                                     if (accountDestiny.Length == 16) {
                                         accountDestiny = "00" + accountDestiny;
                                     }
-                                    string importPaid     = "";
-                                    int longImportPaid    = longNumberImport - data.dImporte.ToString().Length;
-                                    string rfcBusiness    = datosEmpresaBeanDispersion.sRfc;
-                                    int longRfcBusiness   = longNumberBRfc - rfcBusiness.Length;
+                                    string importPaid = "";
+                                    int longImportPaid = longNumberImport - data.dImporte.ToString().Length;
+                                    string rfcBusiness = datosEmpresaBeanDispersion.sRfc;
+                                    int longRfcBusiness = longNumberBRfc - rfcBusiness.Length;
                                     int longEmailBusiness = longNumberEmail - emailBusiness.Length;
                                     for (var i = 0; i < longPayroll; i++) {
                                         payroll += " ";
@@ -2130,10 +2130,11 @@ namespace Payroll.Controllers
                                     importPaid += data.dImporte.ToString();
                                     string fillerFinal = "";
                                     string cadenaFinal = "";
-                                    if (keyBusiness == 2074) {
-                                        cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
+                                    // QUINCENALES CRISTINA 168 , 159
+                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067) {
+                                        cadenaFinal = tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
                                     } else {
-                                        cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
+                                        cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
                                     }
                                     int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
                                     for (var x = 0; x < longFinalFiller; x++)
@@ -2141,9 +2142,9 @@ namespace Payroll.Controllers
                                         fillerFinal += " ";
                                     }
                                     if (keyBusiness == 2074) {
-                                        fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
+                                        fileIntBanorte.Write(tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
                                     } else {
-                                        fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros2 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
+                                        fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
                                     }
                                 }
                                 fileIntBanorte.Close();
