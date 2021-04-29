@@ -2081,15 +2081,24 @@ namespace Payroll.Controllers
                             Claveb.IndentationLeft = 223;
                             Paragraph TBanco = new Paragraph("Banco:", TTexNegCuerpo);
                             TBanco.IndentationLeft = 50;
+                            sbanco = sBanco;
+                            if (Palabra != "") {
+                                if (Palabra.Length >= 7 && Palabra.Length < 18)
+                                {
+                                    sbanco = sBanco;
+                                }
+                                else
+                                {
+                                    sbanco = Palabra.Substring(1, 3);
+                                }
 
-                            if (Palabra.Length >= 7 && Palabra.Length < 18)
-                            {
-                                sbanco = sBanco;
                             }
-                            else
-                            {
-                                sbanco = Palabra.Substring(0, 3);
+                            if (Palabra == "") {
+                                Palabra = "NA";
+                                sbanco = "NA";
                             }
+                         
+
                             List<EmisorReceptorBean> ListEmisor = new List<EmisorReceptorBean>();
                             //ListEmpleadosDao Dao = new ListEmpleadosDao();
                             ListEmisor = Dao2.sp_EmisorReceptor_Retrieve_EmisorReceptor(idEmpresa, ListDatEmisor[0].iIdEmpleado);
@@ -2753,7 +2762,7 @@ namespace Payroll.Controllers
             PathZip = PathZip.Replace("\\Empleados", "");
             PathPDF = PathPDF.Replace("\\Empleados", "");
             string Nombrearc = "RecibosNom";
-            int idEmpresa = 0, rows = 0;
+            int idEmpresa = 0, rows = 0, sinSello=0;
             Nombrearc = Nombrearc + "_E" + IdEmpresa + "_P" + LFechaPerido[0].iPeriodo + ".pdf";
             rows = 1;
             int idempleado = 0;
@@ -2777,7 +2786,7 @@ namespace Payroll.Controllers
 
                 // crecion del archivo PDF
                 FileStream Fs = new FileStream(Nombrearc, FileMode.Create);
-                Document documento = new Document(iTextSharp.text.PageSize.LETTER, 2, 5, 5, 2);
+                Document documento = new Document(iTextSharp.text.PageSize.LETTER, 2, 2, 5, 2);
                 PdfWriter pw = PdfWriter.GetInstance(documento, Fs);
                 documento.Open();
 
@@ -2853,9 +2862,10 @@ namespace Payroll.Controllers
                                     //////Cabecera  
 
 
+
                                     string Palabra = ListDatEmisor[0].sNombreEmpresa;
                                     Empre = Palabra;
-                                    Paragraph Empresa = new Paragraph(25, Palabra, TTexNeg);
+                                    Paragraph Empresa = new Paragraph(10, Palabra, TTexNeg);
                                     Empresa.IndentationLeft = 40;
 
 
@@ -2878,8 +2888,15 @@ namespace Payroll.Controllers
                                     RegPat.IndentationLeft = 68;
 
 
+                                    Paragraph espacioRe2 = new Paragraph(20, " ", TexNom);
 
+                                    Paragraph espacioRe = new Paragraph(18, " ", TexNom);
                                     /// Emprime Cabecera
+                                    if (Repetido == 2) {
+
+                                        documento.Add(espacioRe2);
+                                    };
+                                    documento.Add(espacioRe);
                                     documento.Add(Empresa);
                                     documento.Add(Trfc);
                                     documento.Add(Rfc);
@@ -3274,7 +3291,7 @@ namespace Payroll.Controllers
                                     string cantidad = Convert.ToString(per - ded);
                                     cantidad = NumeroALetras(cantidad);
 
-                                    Paragraph TTipogoEmpra = new Paragraph("RECIBI" + Empre + ", LA CANTIDAD DE: " + cantidad+ " M/N" , TexNeg);
+                                    Paragraph TTipogoEmpra = new Paragraph("RECIBI " + Empre + ", LA CANTIDAD DE: " + cantidad+ " M/N" , TexNeg);
                                     TTipogoEmpra.IndentationLeft = 40;
 
                                     Palabra = " " /*Convert.ToString()*/;
@@ -3345,9 +3362,7 @@ namespace Payroll.Controllers
                                             documento.Add(espacio);
                                             documento.Add(espacio);
                                             documento.Add(espacio);
-                                            documento.Add(espacio);
-                                            documento.Add(espacio);
-                                            documento.Add(espacio);
+                                         
                                             string selloemi = LiTsat[0].sSelloSat;
                                             string QrSat = "https://verificacfdi.facturaelectronica.sat.gob.mx/Defaul.aspx?id=" + LiTsat[0].sUUID + "&re=" + ListDatEmisor[0].sRFC + "&rr=" + ListDatEmisor[0].sRFCEmpleado + "&tt=" + (per - ded) + "&fe=" + selloemi.Substring(selloemi.Length - 8, 8);
                                             QRCodeEncoder encoder = new QRCodeEncoder();
@@ -3373,8 +3388,11 @@ namespace Payroll.Controllers
 
 
                                         };
-                                        if (LiTsat[0].sUUID == "")
+                                        if (LiTsat[0].sUUID == ""   || LiTsat[0].sUUID ==" " || LiTsat[0].sUUID == null)
                                         {
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
+                                            documento.Add(espacio);
                                             documento.Add(espacio);
                                             documento.Add(espacio);
                                             documento.Add(espacio);
@@ -3387,8 +3405,12 @@ namespace Payroll.Controllers
 
 
                                     }
+                                    Paragraph espacioSin = new Paragraph(32, " ", TexNom);
                                     if (LiTsat == null)
                                     {
+                                        sinSello = 1;
+                                        documento.Add(espacioSin);
+                                       
 
                                     }
 
@@ -3409,7 +3431,16 @@ namespace Payroll.Controllers
                                     documento.Add(espacio);
                                     documento.Add(espacio);
 
+                                    if (sinSello == 1) {
+                                     //documento.Add(espacioSin);
+                                    }
                                     documento.Add(TFirmaEmple);
+                                    Paragraph espacioSinR2 = new Paragraph(10, " ", TexNom);
+                                    if (sinSello == 1 && Repetido ==2)
+                                    {
+                                        documento.Add(espacioSinR2);
+                                    }
+
                                     documento.Add(espacio);
                                     documento.Add(espacio);
                                     documento.Add(espacio);

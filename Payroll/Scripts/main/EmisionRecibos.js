@@ -1,25 +1,30 @@
 ﻿$(function () {
     //// Delcaracion de variables
 
-   
-
-    const TextDEesp = document.getElementById('TextDEesp');
     const TextSelecEmpre = document.getElementById('TextSelecEmpre');
-  //  const CheckEmpresa = document.getElementById('CheckEmpresa');
+    const TextBAnioProce = document.getElementById('TextBAnioProce');
     const TextBTotalEmple = document.getElementById('TextBTotalEmple');
     const DroTipoPeriodo = document.getElementById('DroTipoPeriodo');
     const DropPerido = document.getElementById('DropPerido');
     const btnGeneraPDF = document.getElementById('btn-GeneraPDF');
-    const TextBAnioProce = document.getElementById('TextBAnioProce');
     const DroTipoRecibo = document.getElementById('DroTipoRecibo');
-   // const TextBRuta = document.getElementById('TextBRuta');
     const btnVerEje = document.getElementById('btnVerEje');
     const btnEnviCorre = document.getElementById('btnEnviCorre');
-    //const BtnSenCorreo = document.getElementById('BtnSenCorreo');
-    //const TextCopiaa = document.getElementById('TextCopiaa');
-   // const TextBTotalEjecutados = document.getElementById('TextBTotalEjecutados');
 
+   //const TextDEesp = document.getElementById('TextDEesp');
+   //const BtnSenCorreo = document.getElementById('BtnSenCorreo');
+   //const TextCopiaa = document.getElementById('TextCopiaa');
+   // const TextBTotalEjecutados = document.getElementById('TextBTotalEjecutados');
+   // const TextBRuta = document.getElementById('TextBRuta');
+   //  const CheckEmpresa = document.getElementById('CheckEmpresa');
    // var VarCheckEmpresa = document.getElementById('CheckEmpresa');
+
+
+
+    $("#jqxLoader").jqxLoader({ text: "Generando PDF", width: 160, height: 80 });
+    $("#jqxLoader2").jqxLoader({ text: "Enviando Correos", width: 160, height: 80 });
+
+
     var Empresas;
     
     
@@ -103,6 +108,23 @@
         $('#TextSelecEmpre').text(lines.join('\n'))
 
     };
+
+
+
+
+
+    /* FUNCION QUE MUESTRA ALERTAS */
+    fshowtypealert = (title, text, icon) => {
+        Swal.fire({
+            title: title, text: text, icon: icon,
+            showClass: { popup: 'animated fadeInDown faster' },
+            hideClass: { popup: 'animated fadeOutUp faster' },
+            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+        }).then((acepta) => {
+
+        });
+    };
+
 
     //FValorChec = () => {
        
@@ -213,7 +235,6 @@
 
     $('#DropPerido').change(function () {
 
-        console.log('entro al periodo');
         var IdEmpresas = Empresas;
         var Tipoperiodo = DroTipoPeriodo.value;
         var periodo = DropPerido.value;
@@ -221,8 +242,7 @@
         var recibo = DroTipoRecibo.value;
 
         const dataSend = { Anio: Anio, TipoPeriodo: Tipoperiodo, Perido: periodo, sIdEmpresas: IdEmpresas, iRecibo: recibo };
-        console.log(dataSend);
-
+      
         $.ajax({
             url: "../Empleados/TheLastSend",
             type: "POST",
@@ -310,7 +330,7 @@
 
     /// Genera los pdf 
     FGeneraPDF = () => {
-
+      console.log('generaPDF')
         if (TextBAnioProce.value != "" && TextBAnioProce.value != " " ) {
 
                 if (DropPerido.value > 0) {
@@ -344,7 +364,7 @@
     btnGeneraPDF.addEventListener('click',FGeneraPDF);
 
     FCargamasibaPDF = (anio, tipoPer, Per, sEmpresas,descrip) => {
-    
+        console.log('generapdf');
         const dataSend = { Anio: anio, TipoPeriodo: tipoPer, Perido: Per, sIdEmpresas: sEmpresas, iRecibo: DroTipoRecibo.value };
 
        
@@ -353,6 +373,7 @@
             type: "POST",
             data: dataSend,
             beforeSend: function (data) {
+                console.log('tiempo');
                 $('#jqxLoader').jqxLoader('open');
             },
             success: function (data) { 
@@ -363,7 +384,6 @@
             },
           
         });
-        $('#jqxLoader').jqxLoader('close');
     };
 
 
@@ -487,21 +507,9 @@
 
 
 
-    $("#jqxLoader").jqxLoader({ text: "Generando PDF", width: 160, height: 80 });
-    $("#jqxLoader2").jqxLoader({ text: "Enviando Correos", width: 160, height: 80 });
 
 
-    /* FUNCION QUE MUESTRA ALERTAS */
-    fshowtypealert = (title, text, icon) => {
-        Swal.fire({
-            title: title, text: text, icon: icon,
-            showClass: { popup: 'animated fadeInDown faster' },
-            hideClass: { popup: 'animated fadeOutUp faster' },
-            confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
-        }).then((acepta) => {
 
-        });
-    };
     FtheLastEje = () => {      
         $.ajax({
             url: "../Empleados/TheLastEjecution",
