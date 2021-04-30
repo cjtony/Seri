@@ -2879,16 +2879,17 @@ namespace Payroll.Controllers
                                     RfcEmi = Palabra;
                                     Paragraph Rfc = new Paragraph(-1, Palabra, TexNom);
                                     Rfc.IndentationLeft = 64;
+
+                                    Palabra = ListDatEmisor[0].sAfiliacionIMSS;
                                     Paragraph Rfcpatron = new Paragraph(-1, Palabra, TexNom);
                                     Rfcpatron.IndentationLeft = 86;
-
-
-                                    Paragraph TrfcPatron = new Paragraph("R.F.C. Patron:", TexNeg);
+                                    Paragraph TrfcPatron = new Paragraph("Reg.Pat:", TexNeg);
                                     TrfcPatron.IndentationLeft = 40;
-                                    Palabra = ListDatEmisor[0].sAfiliacionIMSS;
-                                    Paragraph TRegPat = new Paragraph("Reg.Pat:", TexNeg);
+
+                                   
+                                    Paragraph TRegPat = new Paragraph(" ", TexNeg);
                                     TRegPat.IndentationLeft = 40;
-                                    Paragraph RegPat = new Paragraph(-1, Palabra, TexNom);
+                                    Paragraph RegPat = new Paragraph(-1," ", TexNom);
                                     RegPat.IndentationLeft = 68;
 
 
@@ -2928,6 +2929,9 @@ namespace Payroll.Controllers
                                     Paragraph TCp = new Paragraph("CP:", TexNeg);
                                     TCp.IndentationLeft = 350;
                                     Palabra = Convert.ToString(ListDatEmisor[0].iCP);
+                                    if (Palabra.Length < 5) {
+                                        Palabra = "0" + Palabra;
+                                    }
                                     Paragraph cp = new Paragraph(-1, Palabra, TexNom);
                                     cp.IndentationLeft = 370;
 
@@ -2940,18 +2944,18 @@ namespace Payroll.Controllers
 
                                     Paragraph TNoNomina = new Paragraph("No Empleado:", TexNeg);
                                     TNoNomina.IndentationLeft = 40;
-                                    Palabra = Convert.ToString(ListDatEmisor[0].iIdEmpleado +" "+ListDatEmisor[0].sNombreComp );
+                                    Palabra = Convert.ToString(ListDatEmisor[0].sNombreComp);
                                     Paragraph NoNomina = new Paragraph(-1, Palabra, TexNom);
                                     NoNomina.IndentationLeft = 88;
 
 
 
-                                    Paragraph TRFCEmpleado = new Paragraph("RFC: ", TexNeg);
+                                    Paragraph TRFCEmpleado = new Paragraph("RFC:   ", TexNeg);
                                     TRFCEmpleado.IndentationLeft = 40;
 
                                     Palabra = Convert.ToString(ListDatEmisor[0].sRFCEmpleado);
                                     Paragraph RFCempleado = new Paragraph(-1, Palabra, TexNom);
-                                    RFCempleado.IndentationLeft = 55;
+                                    RFCempleado.IndentationLeft = 60;
 
 
                                     Paragraph TISSM = new Paragraph("AFIL. IMSS: ", TexNeg);
@@ -3052,7 +3056,7 @@ namespace Payroll.Controllers
 
 
 
-                                    Paragraph TSalariod = new Paragraph("Sala. Dirario: ", TexNeg);
+                                    Paragraph TSalariod = new Paragraph("Sala. Dirario:   ", TexNeg);
                                     TSalariod.IndentationLeft = 350;
 
                                     int SD = Convert.ToInt32(ListDatEmisor[0].dSalarioMensual);
@@ -3060,7 +3064,7 @@ namespace Payroll.Controllers
                                     
                                     Palabra = string.Format("{0:N2}", SD);
                                     Paragraph Salariod = new Paragraph(-1, Palabra, TexNom);
-                                    Salariod.IndentationLeft = 390;
+                                    Salariod.IndentationLeft = 395;
 
 
                                     Paragraph TSalariodInt = new Paragraph("Sala. Dirario Int: ", TexNeg);
@@ -3068,7 +3072,8 @@ namespace Payroll.Controllers
 
                                     decimal Sdi = Convert.ToDecimal(ListDatEmisor[0].SDINT);
                                     string dosDecimal = Sdi.ToString("0.##");
-                                    Palabra = string.Format("{0:N2}", dosDecimal);
+                                    Sdi = Convert.ToDecimal(dosDecimal);
+                                    Palabra = string.Format("{0:N2}", Sdi);
                                    
                                     Paragraph Salariodint = new Paragraph(-1, Palabra, TexNom);
                                     Salariodint.IndentationLeft = 405;
@@ -3201,6 +3206,7 @@ namespace Payroll.Controllers
                                             {
                                                 string lengRenglon = "";
                                                 string ImporGra = string.Format("{0:N2}", LisTRecibo[x].dSaldo);
+                                                string imporSald = ImporGra;
                                                 ImporGra = ImporGra.Replace(",", "");
                                                 string IdRenglon = Convert.ToString(LisTRecibo[x].iIdRenglon);
                                                 string concepto = LisTRecibo[x].sNombre_Renglon;
@@ -3227,7 +3233,7 @@ namespace Payroll.Controllers
                                                 string Perp = concepto + "    " + ImporGra;
 
                                                 Cell7.AddElement(new Chunk(Palabra, TexNeg));
-                                                Cell8.AddElement(new Chunk(Palabra2, TexNeg));
+                                                Cell8.AddElement(new Chunk(imporSald, TexNeg));
 
 
                                             }
@@ -3236,6 +3242,7 @@ namespace Payroll.Controllers
 
                                                 string lengRenglon = "";
                                                 string ImporGra = string.Format("{0:N2}", LisTRecibo[x].dSaldo);
+                                                string IporSal = ImporGra;
                                                 ImporGra = ImporGra.Replace(",", "");
                                                 string IdRenglon = Convert.ToString(LisTRecibo[x].iIdRenglon);
                                                 string concepto = LisTRecibo[x].sNombre_Renglon;
@@ -3246,10 +3253,10 @@ namespace Payroll.Controllers
                                                 ded = ded + valor;
                                                 Paragraph TLeyenda = new Paragraph(Palabra, TexNegCuerpo);
                                                 TLeyenda.IndentationLeft = 300;
-                                                Paragraph TDedu = new Paragraph(-1, Palabra2, TexNegCuerpo);
+                                                Paragraph TDedu = new Paragraph(-1, string.Format("{0:N2}", LisTRecibo[x].dSaldo), TexNegCuerpo);
                                                 TDedu.IndentationLeft = 450;
                                                 Cell9.AddElement(new Chunk(Palabra, TexNeg));
-                                                Cell10.AddElement(new Chunk(Palabra2, TexNeg));
+                                                Cell10.AddElement(new Chunk(IporSal, TexNeg));
 
                                             }
                                         }
@@ -3277,14 +3284,14 @@ namespace Payroll.Controllers
                                     Paragraph TTOtalPer = new Paragraph(" Total Percepciones: ", TexNeg);
                                     TTOtalPer.IndentationLeft = 100;
 
-                                    Palabra = Convert.ToString(per);
+                                    Palabra = string.Format("{0:N2}", per);
                                     Paragraph Totaper = new Paragraph(-1, Palabra, TexNom);
                                     Totaper.IndentationLeft = 170;
 
                                     Paragraph TTotaldeduc = new Paragraph(-1, " Total deduccion: ", TexNeg);
                                     TTotaldeduc.IndentationLeft = 350;
 
-                                    Palabra = Convert.ToString(ded);
+                                    Palabra = string.Format("{0:N2}", ded);
                                     Paragraph Totadeduc = new Paragraph(-1, Palabra, TexNom);
                                     Totadeduc.IndentationLeft = 420;
 
@@ -3292,7 +3299,7 @@ namespace Payroll.Controllers
                                     Paragraph TTipopago = new Paragraph("99:Otros   PAGO EN UNA SOLA EXHIBICIÓN ", TexNeg);
                                     TTipopago.IndentationLeft = 40;
 
-                                    string cantidad = Convert.ToString(per - ded);
+                                    string cantidad =string.Format("{0:N2}", per - ded);
                                     cantidad = NumeroALetras(cantidad);
 
                                     Paragraph TTipogoEmpra = new Paragraph("RECIBI " + Empre + ", LA CANTIDAD DE: " + cantidad+ " M/N" , TexNeg);
@@ -3302,8 +3309,10 @@ namespace Payroll.Controllers
                                     Paragraph CantidaLetr = new Paragraph(-1, Palabra, TexNom);
                                     CantidaLetr.IndentationLeft = 220;
 
-                                    Paragraph TTotoal = new Paragraph(-8, "Total a Pagar: " + Convert.ToString(per - ded), TexNeg);
+                                    Paragraph TTotoal = new Paragraph(-8, "Total a Pagar: ", TexNeg);
                                     TTotoal.IndentationLeft = 350;
+                                    Paragraph TTotoal2 = new Paragraph(-1, string.Format("{0:N2}", per - ded), TexNom);
+                                    TTotoal2.IndentationLeft = 400;
 
                                     documento.Add(TTOtalPer);
                                     documento.Add(Totaper);
@@ -3314,6 +3323,7 @@ namespace Payroll.Controllers
                                     documento.Add(TTipogoEmpra);
                                     documento.Add(CantidaLetr);
                                     documento.Add(TTotoal);
+                                    documento.Add(TTotoal2);
 
                                     PdfPTable tableQR = new PdfPTable(1);
                                     tableQR.HorizontalAlignment = 0;
@@ -3421,8 +3431,8 @@ namespace Payroll.Controllers
                                     Paragraph espaciotablaSe = new Paragraph(-55, " ", TexNeg);
                                     Paragraph TFirmaEmple = new Paragraph(-25, "Firma Empleado", TexNeg);
                                     TFirmaEmple.IndentationLeft = 400;
-                                    Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0f, 50f, BaseColor.BLACK, Element.ALIGN_LEFT, 0.2f)));
-                                    p.IndentationLeft = 400;
+                                    Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0f, 70f, BaseColor.BLACK, Element.ALIGN_LEFT, 0.2f)));
+                                    p.IndentationLeft = 390;
                                     p.IndentationRight = 100;
                                     documento.Add(p);
                                     tableQR.AddCell(Cellqr);
