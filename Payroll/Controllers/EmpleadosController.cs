@@ -477,8 +477,10 @@ namespace Payroll.Controllers
 
             if (System.IO.Directory.Exists(DowPath))
             {
-                Dow = Dow + 1;
-                DowPath = DowPath + "\\" + Dow + "\\";
+                string time = DateTime.Now.Date.ToString();
+                time = time.Replace("/", "");
+                time = time.Replace(":", "");
+                DowPath = DowPath  + time + "\\";
                 Directory.CreateDirectory(DowPath);
             }
 
@@ -1610,18 +1612,22 @@ namespace Payroll.Controllers
                     // con QR
                     List<SelloSatBean> LiTsat = new List<SelloSatBean>();
                     LiTsat = Dao2.sp_DatosSat_Retrieve_TSellosSat(idEmpresa, anios, Tipodeperido, Perido, Empleados[a].iIdEmpleado);
+                    List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
+                    LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, 0);
+
                     if (ListDatEmisor != null) {
-                        if (iRecibo == 1 && ListDatEmisor[0].sRFC.Length > 3)
+                        if (iRecibo == 1 && ListDatEmisor[0].sRFC.Length > 3 && LisTRecibo != null)
                         {
                             Dao2.sp_CCejecucionAndSen_update_TsellosSat(idEmpresa, idempleado, anios, Tipodeperido, Perido, 2, Nombrearc);
 
                             NoEjecuciones = NoEjecuciones + 1;
                             valido = 1;
                         };
-                        if (iRecibo == 2 && LiTsat != null && ListDatEmisor[0].sRFC.Length > 3)
+                        if (iRecibo == 2 && LiTsat != null && ListDatEmisor[0].sRFC.Length > 3 && LisTRecibo != null)
                         {
                             if (LiTsat[0].sUUID.Length > 3)
                             {
+                             
                                 NoEjecuciones = NoEjecuciones + 1;
                                 Dao2.sp_CCejecucionAndSen_update_TsellosSat(idEmpresa, idempleado, anios, Tipodeperido, Perido, 0, Nombrearc);
                                 valido = 1;
@@ -1638,9 +1644,7 @@ namespace Payroll.Controllers
                         string s_certificadoKey = pathCert + LisCer[0].sfilekey;
                         string s_certificadoCer = pathCert + LisCer[0].sfilecer;
                         string s_transitorio = LisCer[0].stransitorio;
-                        List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
-                        LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, 0);
-
+                        
                         if (System.IO.File.Exists(s_certificadoKey) && LisTRecibo !=null)
                         {
 
@@ -2936,7 +2940,7 @@ namespace Payroll.Controllers
 
                                     Paragraph TNoNomina = new Paragraph("No Empleado:", TexNeg);
                                     TNoNomina.IndentationLeft = 40;
-                                    Palabra = Convert.ToString(ListDatEmisor[0].iIdEmpleado);
+                                    Palabra = Convert.ToString(ListDatEmisor[0].iIdEmpleado +" "+ListDatEmisor[0].sNombreComp );
                                     Paragraph NoNomina = new Paragraph(-1, Palabra, TexNom);
                                     NoNomina.IndentationLeft = 88;
 

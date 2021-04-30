@@ -84,7 +84,7 @@ namespace Payroll.Controllers
                     LE[0].iPerfilPdf = 1;
                 }
                 else {
-                    LE[0].iPerfilPdf = 0;
+                    LE[0].iPerfilPdf = 1;
                 }
                 LE[0].iIdEmpresaSess = idempresa;
                 for (int i = 0; i < LE.Count; i++)
