@@ -2027,14 +2027,15 @@ namespace Payroll.Models.Daos
                                                             Decimal resultadod = 0;
 
                                                             resulado = dias / 3;
-                                                            resultadod = dias / 3;
+                                                            resultadod = 0;
                                                             if (resulado == resultadod)
                                                             {
+                                                                resulado = resulado + 1;
                                                                 xmlWriter.WriteAttributeString("Dias", Convert.ToString(resulado));
                                                             }
-                                                            if (resulado < resultadod)
+                                                            if (dias / 3 != resultadod)
                                                             {
-                                                                resulado = resulado + 1;
+                                                                
                                                                 xmlWriter.WriteAttributeString("Dias", Convert.ToString(resulado));
                                                             }
 
