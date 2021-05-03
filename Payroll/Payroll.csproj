@@ -206,6 +206,7 @@
     <Compile Include="Controllers\MassiveUpsAndDownsController.cs" />
     <Compile Include="Controllers\NominaController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
+    <Compile Include="Controllers\RHController.cs" />
     <Compile Include="Controllers\SaveDataGeneralController.cs" />
     <Compile Include="Controllers\SearchDataCatController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1187,8 +1188,9 @@
     <Content Include="Views\Nomina\CompensacionesFijas.cshtml" />
     <Content Include="Views\KioskoM\AutorizacionVacaciones.cshtml" />
     <Content Include="Views\Incidencias\PIncidencias.cshtml" />
-    <Content Include="Views\Empleados\XML.cshtml" />
-    <Content Include="Views\Login\PasswordChange.cshtml" />
+    <Content Include="Views\Empleados\XML.cshtml" /> 
+    <Content Include="Views\Login\PasswordChange.cshtml" /> 
+    <Content Include="Views\RH\Biometrico.cshtml" /> 
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
