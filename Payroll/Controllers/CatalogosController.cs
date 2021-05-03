@@ -464,7 +464,6 @@ namespace Payroll.Controllers
             return Json(LTEle);
         }
 
-
         // llena  listado calculo
         [HttpPost]
         public JsonResult ListCalcu()

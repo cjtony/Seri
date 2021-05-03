@@ -29,7 +29,6 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    //console.log(data);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -63,19 +62,13 @@
         if (form.checkValidity() === false) {
             evt.preventDefault();
             form.classList.add("was-validated");
-            //console.log(data);
         } else {
             evt.preventDefault();
-            //
-            
-                console.log('Por dias');
                 ndias = dias.value;
                 fechafin = "0";
                 fechaini = document.getElementById("inFechaAusentismo").value;
                 tipo = 0;
             
-            
-            //console.log(data);
             if (certif.value.length != 0) { cer_imss = certif.value } else { cer_imss = "0" }
             if (coment.value.length != 0) { com_imss = coment.value } else { com_imss = "0" }
             if (causa.value.length != 0) { cau_falta = causa.value } else { cau_falta = "0" }
@@ -140,12 +133,10 @@
     });
     //Evento de cambio de motivo accidente
     $("#inMotivoAusentismo").on("change", function () {
-        //console.log("cambio de motivo");
         var causa = document.getElementById("inCausaAusentismo");
         var certif = document.getElementById("inCertificadoAusentismo");
         var coment = document.getElementById("inComentariosAusentismo");
         var motivo = $("#inMotivoAusentismo").val();
-        //console.log(motivo);
         switch (motivo) {
             case "6":
                 coment.disabled = false;
@@ -179,7 +170,6 @@
     });
 
     $("#btnUpdate").on("click", function () {
-        //console.log("btn-editar");
         var data = $("#frmAusentismos").serialize();
         var cer_imss, com_imss, cau_falta;
         var ndias = 0;
@@ -191,8 +181,6 @@
             form.classList.add("was-validated");
             
         } else {
-
-                console.log('Soy valido check 1');
                 ndias = dias.value;
                 fechafin = "0";
                 Fechaini = fechaa.value;
@@ -268,9 +256,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 $("#tabodyIncapacidades").html("");
-
                 var iconb = "";
                 var colorb = "";
                 if (data[0]["TipoEmpleado"] > 163) {
@@ -304,7 +290,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (data) => {
-                //console.log(data);
                 document.getElementById("tabody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     document.getElementById("tabody").innerHTML += "" +
@@ -356,7 +341,6 @@
 
     //
     eliminarAusentismo = (Ausentismo_id) => {
-        //console.log("boton eliminar: " + Ausentismo_id);
         $.ajax({
             url: "../Incidencias/DeleteAusentismo",
             type: "POST",
@@ -364,7 +348,6 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
                 if (data[0] == '0') {
                     Swal.fire({
                         icon: 'warning',
@@ -387,15 +370,11 @@
     }
     //Editar ausentismo
     editarAusentismo = (Ausentismo_id) => {
-        //var motivo = document.getElementById("inMotivoAusentismo");
-        //var recup = document.getElementById("inRecuperacionAusentismo");
         var fechaa = document.getElementById("inFechaAusentismo");
         var dias = document.getElementById("inDiasAusentismo");
         var causa = document.getElementById("inCausaAusentismo");
         var certif = document.getElementById("inCertificadoAusentismo");
         var coment = document.getElementById("inComentariosAusentismo");
-
-        //console.log("boton editar: " + Ausentismo_id);
         $.ajax({
             url: "../Incidencias/LoadAusentismo",
             type: "POST",
@@ -408,7 +387,6 @@
                 dias.value = data[0].Dias_Ausentismo;
                 saldodias.disabled = false;
                 saldodias.value = data[0].Saldo_Dias_Ausentismo;
-                
                 causa.value = data[0].Causa_FaltaInjustificada;
                 $('#inIncidenciaProgramada_id').val(data[0].IncidenciaProgramada_id);
                 
@@ -420,15 +398,12 @@
                     certif.value = data[0].Certificado_imss;
                     coment.value = data[0].Comentarios_imss;
                 }
-
                 $("#inMotivoAusentismo option[value='" + data[0].Tipo_Ausentismo_id + "']").attr("selected", true);
-
                 $("#btnUpdate").attr("btnUpdate", Ausentismo_id);
                 //btnSave.disabled = true;
                 $("#btnRegistroAusentismo").addClass("invisible");
                 $("#btnUpdate").removeClass("invisible");
                 $("#btnClear").removeClass("invisible");
-
             }
         });
     }

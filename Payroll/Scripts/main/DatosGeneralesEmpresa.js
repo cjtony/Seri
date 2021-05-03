@@ -9,6 +9,8 @@ _rfc_pattern_pf = "^(([A-ZÑ&]{4})([0-9]{2})([0][13578]|[1][02])(([0][1-9]|[12][
     "(([A-ZÑ&]{4})([02468][048]|[13579][26])[0][2]([0][1-9]|[12][\\d])([A-Z0-9]{3}))|" +
     "(([A-ZÑ&]{4})([0-9]{2})[0][2]([0][1-9]|[1][0-9]|[2][0-8])([A-Z0-9]{3}))$";
 //
+
+var id_empresa = document.getElementById('in_empresa_id');
 var codpost = document.getElementById('inCodigo_postal');
 var city = document.getElementById('inCiudad_empresa');
 var colony = document.getElementById('inColonia_empresa');
@@ -51,9 +53,7 @@ $(document).ready(function () {
                     url: "../Empleados/LoadInformationHome2",
                     type: "POST",
                     data: { codepost: codpost.value },
-
                     success: (data) => {
-                        //console.log(data);
                         if (data.length > 0) {
                             city.disabled = false;
                             municipio.disabled = false;
@@ -66,7 +66,6 @@ $(document).ready(function () {
                                     municipio.innerHTML = `<option value='${data[i].iIdMunicipio}' >${data[i].sMunicipio}</option>`;
                                     states.innerHTML = `<option value='${data[i].iIdEstado}' >${data[i].sEstado}</option>`;
                                     city.innerHTML = `<option value='${data[i].sCiudad}'>${data[i].sCiudad}</option>`;
-
                                 }
                             }
                             setTimeout(() => {
@@ -96,7 +95,6 @@ $(document).ready(function () {
                 hideClass: { popup: 'animated fadeOutUp faster' },
                 confirmButtonText: "Aceptar", allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
             }).then((acepta) => {
-
                 setTimeout(() => { codpost.focus(); }, 800);
             });
         }
@@ -110,9 +108,7 @@ $(document).ready(function () {
                     url: "../Empleados/LoadInformationHome2",
                     type: "POST",
                     data: { codepost: edcodpost.value },
-
                     success: (data) => {
-                        //console.log(data);
                         if (data.length > 0) {
                             edcity.disabled = false;
                             edmunicipio.disabled = false;
@@ -159,8 +155,6 @@ $(document).ready(function () {
         }
     }
 });
-//document.getElementById("btnClear").classList.add("invisible");
-//document.getElementById("btnUpdate").classList.add("invisible");
 $("#inCodigo_postal").on("keyup", function (evt) {
     var i = $(this).val();
     if (i.length == 5) {
@@ -235,7 +229,6 @@ $.ajax({
     type: "POST",
     contentType: "application/json; charset=utf-8",
     success: (data) => {
-        //console.log(data);
         var select = document.getElementById("inGrupo_empresa");
         select.innerHTML = "";
         for (var i = 0; i < data.length; i++) {
@@ -249,8 +242,6 @@ loadDatosEmpresa = () => {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: (data) => {
-            //console.log("datos empresa");
-            //console.log(data);
             document.getElementById("l-01").innerHTML = data[0];
             document.getElementById("l-02").innerHTML = data[1];
             document.getElementById("l-03").innerHTML = data[2];
@@ -276,7 +267,6 @@ $.ajax({
     data: JSON.stringify(),
     contentType: "application/json; charset=utf-8",
     success: (data) => {
-        //console.log(data);
         for (i = 0; i < data.length; i++) {
             document.getElementById("inClase").innerHTML += `<option value='${data[i].IdClase}'>${data[i].Nombre_Clase}</option>`;
         }
@@ -288,7 +278,6 @@ $.ajax({
     data: JSON.stringify(),
     contentType: "application/json; charset=utf-8",
     success: (data) => {
-        //console.log(data);
         for (i = 0; i < data.length; i++) {
             document.getElementById("inRFiscal_empresa").innerHTML += `<option value='${data[i].IdRegimenFiscal}'>${data[i].Descripcion}</option>`;
         }
@@ -300,7 +289,6 @@ $.ajax({
     type: "POST",
     contentType: "application/json; charset=utf-8",
     success: (data) => {
-        //console.log(data);
         if (data.length != 0) {
             var select = document.getElementById("inclonar");
             select.innerHTML = "<option value='0'>No clonar</option>";
@@ -313,7 +301,6 @@ $.ajax({
 });
 // INSERTA EMPRESA
 $("#form_inEmpresa").submit(function (evt) {
-
     var emp = document.getElementById("form_inEmpresa");
     if (emp.checkValidity() === false) {
         evt.preventDefault();
@@ -325,8 +312,8 @@ $("#form_inEmpresa").submit(function (evt) {
     } else {
         evt.preventDefault();
         evt.stopPropagation();
-
         var nomEmp = document.getElementById("inNombre_empresa");
+        var IdEmp = document.getElementById("in_empresa_id");
         var nomEmpc = document.getElementById("inNomCorto_empresa");
         var rfcemp = document.getElementById("inRfc_empresa");
         var giroEmp = document.getElementById("inGiro_empresa");
@@ -342,12 +329,9 @@ $("#form_inEmpresa").submit(function (evt) {
         var afImss = document.getElementById("inAfiliacionIMSS");
         var riesgot = document.getElementById("inRiesgoTrabajo");
         var claserp = document.getElementById("inClase");
-        //var bancoin = document.getElementById("inRBanco_interbancarios");
         var regimss = document.getElementById("inRegistro_imss");
         var clonar = document.getElementById("inclonar");
         var grupoe = document.getElementById("inGrupo_empresa");
-        //var banco_nom = document.getElementById("inBanco_nomina");
-
         //Variables para primer fecha periodo
         var finicio = document.getElementById("finicio");
         var ffinal = document.getElementById("ffinal");
@@ -356,7 +340,6 @@ $("#form_inEmpresa").submit(function (evt) {
         var diaspagados = document.getElementById("diaspagados");
         var periodo = document.getElementById("noperiodo");
         var tipoPeriodo;
-
         /*/
         Valida que tipo de periodo es la empresa
         /*/
@@ -373,7 +356,8 @@ $("#form_inEmpresa").submit(function (evt) {
         //-------------------------------------------------------
 
         var datos = {
-            inNombre_empresa: nomEmp.value
+            id: IdEmp
+            , inNombre_empresa: nomEmp.value
             , inNomCorto_empresa: nomEmpc.value
             , inRfc_empresa: rfcemp.value
             , inGiro_empresa: giroEmp.value
@@ -389,7 +373,6 @@ $("#form_inEmpresa").submit(function (evt) {
             , inNombre_Afiliacion: noafiEmp.value
             , inRiesgoTrabajo: riesgot.value
             , inClase: claserp.value
-
             , infinicio: finicio.value
             , inffinal: ffinal.value
             , infpago: fpago.value
@@ -401,21 +384,18 @@ $("#form_inEmpresa").submit(function (evt) {
             , ingrupoe: grupoe.value
             , innoperiodo: periodo.value
         };
-        //console.log(datos);
         $.ajax({
             url: "../Empresas/Insert_Empresa_FirstStep",
             type: "POST",
             data: JSON.stringify(datos),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
                 if (data[0] == "True") {
                     Swal.fire({
                         icon: 'success',
                         title: 'Correcto!',
                         text: 'Empresa agregada con exito!'
                     }, false).then(() => {
-
                         setTimeout(function () {
                             emp.reset();
                             $("#bodySubmenus").load("/Empresas/Registros_Patronales");
@@ -436,25 +416,18 @@ $("#form_inEmpresa").submit(function (evt) {
                         }, 5500);
                     });
                 }
-
             }
         });
     }
 });
 $(".collapse").on("show", function () {
-    //document.getElementById("btnadd").innerHTML = "Ocultar agregar empresa";
-    //console.log("show");
     $("#inNombre_empresa").focus();
-    //document.getElementById("inNombre_empresa").focus();
 });
 $("#btnadd").on("click", function () {
     document.getElementById("btnadd").innerHTML = "Ocultar agregar empresa <i class='text-danger fas fa-minus-circle'></i>";
-    //console.log("show");
-
 });
 $('#collapseAddEmpresa').on('hidden.bs.collapse', function () {
     document.getElementById("btnadd").innerHTML = "Agregar empresa <i class='text-success fas fa-plus-circle'></i>";
-    //console.log("was hide");
 });
 
 $("#btnEditarEmpresa").on("click", function () {
@@ -478,7 +451,7 @@ $("#btnEditarEmpresa").on("click", function () {
     $.ajax({
         url: "../Empresas/LoadEmpresa",
         type: "POST",
-        data: JSON.stringify(),
+        data: JSON.stringify({ IdEmpresa: 0 }),
         contentType: "application/json; charset=utf-8",
         success: (empresa) => {
             $.ajax({
@@ -521,8 +494,6 @@ $("#btnEditarEmpresa").on("click", function () {
 $("#btnActualizarDatosEmpresa").click(function () {
     var emp = document.getElementById("frmEditarDatosEmpresa");
     if (emp.checkValidity() === false) {
-        //evt.preventDefault();
-        //evt.stopPropagation();
         emp.classList.add("was-validated");
         setTimeout(function () {
             $("#frmEditarDatosEmpresa").removeClass("was-validated");
@@ -540,7 +511,6 @@ $("#btnActualizarDatosEmpresa").click(function () {
         var colEmp = document.getElementById("edColonia_empresa");
         var delEmp = document.getElementById("edDelegacion_Empresa");
         var callEmp = document.getElementById("edCalle_Empresa");
-
         $.ajax({
             url: "../Empresas/UpdateEmpresa",
             type: "POST",
@@ -560,7 +530,6 @@ $("#btnActualizarDatosEmpresa").click(function () {
             }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                //console.log(data);
                 if (data[0] == "0") {
                     loadDatosEmpresa();
                     Swal.fire({
@@ -577,11 +546,50 @@ $("#btnActualizarDatosEmpresa").click(function () {
                         text: '' + data[1]
                     });
                 }
-
             }
         });
+    }
+});
 
-
+$("#in_empresa_id").keyup(function () {
+    if ($("#in_empresa_id").val().length > 0) {
+        var counter = 0;
+        var id = $("#in_empresa_id").val();
+        $.ajax({
+            url: "../Empresas/ValidaEmpresaExiste",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                if (data == null || data.length == 0 || data == "") {
+                    $("#in_empresa_id").removeClass("is-valid");
+                    $("#in_empresa_id").removeClass("is-invalid");
+                    $("#in_empresa_id_label").html("");
+                    $("#in_empresa_id_label").attr("class", "");
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i]["IdEmpresa"] == id) {
+                            counter++;
+                        }
+                    }
+                    if (counter == 0) {
+                        $("#in_empresa_id").removeClass("is-invalid");
+                        $("#in_empresa_id").addClass("is-valid");
+                        $("#in_empresa_id_label").html("");
+                        $("#in_empresa_id_label").attr("class", "");
+                    } else {
+                        $("#in_empresa_id").addClass("is-invalid");
+                        $("#in_empresa_id").removeClass("is-valid");
+                        $("#in_empresa_id_label").html("Este no es un ID valido");
+                        $("#in_empresa_id_label").attr("class", "text-danger font-labels");
+                    }
+                }
+            }
+        });
+    } else {
+        $("#in_empresa_id").removeClass("is-valid");
+        $("#in_empresa_id").removeClass("is-invalid");
+        $("#in_empresa_id_label").html("");
+        $("#in_empresa_id_label").attr("class", "");
     }
 });
 
