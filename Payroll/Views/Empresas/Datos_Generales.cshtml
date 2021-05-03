@@ -1,6 +1,6 @@
 ﻿<div class="container bg-white pb-3 rounded font-labels">
     <div class="d-flex justify-content-between">
-        <div class="h4 px-5 py-3 font-button " style="font-size:14px;">Datos generales de la empresa</div>
+        <div class="h5 px-5 py-3 h5 text-dark font-weight-bold">Datos generales de la empresa</div>
 
         <div class="collapsed" data-toggle="collapse" data-target="#collapseAddEmpresa" aria-expanded="false" aria-controls="collapseAddEmpresa">
             <div class="d-flex justify-content-end ">
@@ -51,63 +51,55 @@
         <div class=" col-md-12">
 
             <div id="collapseAddEmpresa" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                <div class="col-md-12">
+                <div class="col-md-12 h5 text-dark font-weight-bold">
                     Agregar datos de la nueva empresa
                 </div>
                 <div class="dropdown-divider mb-3"></div>
                 <form id="form_inEmpresa" class="needs-validation font-labels" novalidate>
                     <div class="form-row">
                         <div class="form-group col-md-6">
+                            <label for="in_empresa_id" class="col-form-label font-labels">Id Empresa</label>
+                            <input class="form-control font-labels input-number" type="text" name="in_empresa_id" id="in_empresa_id" placeholder="Escribe la ID de la empresa" required>
+                            <div class="" id="in_empresa_id_label">
+                                
+                            </div> 
+                        </div>
+                        <div class="form-group col-md-6">
                             <label for="inNombre_empresa" class=" col-form-label font-labels">Nombre Empresa</label>
                             <input class="form-control font-labels" type="text" name="inNombre_empresa" id="inNombre_empresa" placeholder="Escribe la razón social de la empresa" required>
-                            <div class="invalid-feedback">
-                                Ingrese la razon social de la empresa
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inNomCorto_empresa" class="col-form-label font-labels">Nombre Corto</label>
                             <input type="text" class="form-control font-labels" name="inNomCorto_empresa" id="inNomCorto_empresa" placeholder="Escribe el nombre corto de la empresa" required>
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inRfc_empresa">RFC de la empresa</label>
                             <input type="text" class="form-control font-labels" name="inRfc_empresa" id="inRfc_empresa" placeholder="Escribe en RFC de la empresa" maxlength="12" required>
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inGiro_empresa">Giro de la empresa</label>
                             <input type="text" class="form-control font-labels" name="inGiro_empresa" id="inGiro_empresa" placeholder="Escribe en giro de la empresa" required>
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inGiro_empresa">Regimen Fiscal</label>
                             <select type="text" class="form-control font-labels" name="inRFiscal_empresa" id="inRFiscal_empresa" required>
                             </select>
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inGiro_empresa">Registro IMSS</label>
                             <input type="text" class="form-control font-labels" name="inRegistro_imss" id="inRegistro_imss" placeholder="Registro IMMS" required>
-
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inGrupo_empresa">Grupo Empresas</label>
                             <select id="inGrupo_empresa" class="custom-select custom-select-sm">
                             </select>
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6 bg-info rounded">
 
@@ -115,19 +107,7 @@
                             <select class="custom-select custom-select-sm" id="inclonar">
                                 <option value="0">Sin Empresas que clonar</option>
                             </select>
-
                         </div>
-                        @*<div class="form-group col-md-6">
-                            <label for="inPagar_vacaciones">Pagar Vacaciones</label>
-                            <select id="inPagar_vacaciones" class="custom-select custom-select-sm">
-                                <option value="1">En el aniversario</option>
-                                <option value="2">Ultimo mes del año</option>
-                                <option value="3">Según dias tomados</option>
-                            </select>
-                            <div class="valid-feedback">
-
-                            </div>
-                        </div>*@
                         <div class="form-group col-md-12 row px-5">
                             <div class="form-group col-md-6 alert alert-light ">
                                 <label class="col-md-12 text-dark">Seleccionar tipo de periodo de pago</label>
@@ -173,14 +153,12 @@
                                         <label class="bg-secondary text-white rounded col-md-12">No. Periodo </label>
                                         <input type="text" name="noperiodo" id="noperiodo" class="form-control col-md-12 input-number text-center" value="1">
                                     </div>
-
                                 </div>
                                 <div class="">
                                     <div class="alert small text-justify" role="alert">
                                         *Se agregara un periodo por default para poder ingresar al sistema
                                     </div>
                                 </div>
-
                             </div>
                             <div class="form-group col-md-6 alert alert-light">
                                 <label class="col-md-12 text-dark">Politicas de Vacaciones</label>
@@ -197,7 +175,6 @@
                                         *Se agregaran las politicas de vacaciones con forme a la ley, pero se podran modificar en el modulo de Catálogos
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="h5 px-5 py-3 text-dark font-labels col-md-12"><span class="fas fa-circle"></span> Direccion de la empresa</div>
@@ -205,8 +182,7 @@
                         <div class="form-group col-md-2">
                             <label for="inCodigo_postal">Codigo Postal</label>
                             <input type="text" maxlength="5" size="5" class="form-control input-number font-labels" min="0" name="inCodigo_postal" id="inCodigo_postal" required>
-                            <div class="invalid-feedback">
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-2">
                             <label for="">Validar CP</label>
@@ -218,49 +194,37 @@
                             <label for="inEstado_empresa">Estado</label>
                             <select class="form-control custom-select font-labels" name="inEstado_empresa" id="inEstado_empresa" required>
                             </select>
-                            <div class="invalid-feedback">
-
-                            </div>
+                            
                         </div>
 
                         <div class="form-group col-md-3">
                             <label for="inDelegacion_empresa">Municipio</label>
                             <select class="form-control custom-select font-labels" name="inMunicipio_empresa" id="inMunicipio_empresa">
                             </select>
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inCiudad_empresa">Cuidad</label>
                             <select class="form-control custom-select font-labels" name="inCiudad_empresa" id="inCiudad_empresa" required>
                             </select>
-                            <div class="invalid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inColonia_empresa">Colonia</label>
                             <select class="form-control  custom-select font-labels" name="inColonia_empresa" id="inColonia_empresa" required>
                                 <option value="">Selecciona</option>
                             </select>
-                            <div class="valid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inCalle_Empresa">Delegacion</label>
                             <input class="form-control font-labels" type="text" name="inDelegacion_Empresa" id="inDelegacion_Empresa" value="" placeholder="Ingrese la delegación" autocomplete="off" required />
-                            <div class="invalid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inCalle_Empresa">Calle</label>
                             <input class="form-control font-labels" type="text" name="inCalle_Empresa" id="inCalle_Empresa" placeholder="Ingrese la calle" autocomplete="off" required />
-                            <div class="invalid-feedback">
-
-                            </div>
+                            
                         </div>
                         <div class="form-group col-md-12">
                             <div class="h5 px-5 pt-3 text-dark font-labels"><span class="fas fa-circle"></span> Asignar Registro Patronal</div>
@@ -271,27 +235,21 @@
                             <div class="form-group">
                                 <label for="inAfiliacionIMSS">Afiliacion IMSS</label>
                                 <input type="text" class="form-control" id="inAfiliacionIMSS" maxlength="12" placeholder="Ingresa en Numero de afiliación al IMSS" required>
-                                <div class="invalid-feedback">
-
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="form-gruop col-md-6">
                             <div class="form-group">
                                 <label for="inNombreAfiliacionIMSS">Nombre Afiliacion</label>
                                 <input type="text" class="form-control" id="inNombreAfiliacionIMSS" placeholder="Ingresa en Nombre de la afiliación al IMSS" required>
-                                <div class="invalid-feedback">
-
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="form-gruop col-md-6">
                             <div class="form-group">
                                 <label for="inRiesgoTrabajo">Riesgo de trabajo</label>
                                 <input type="text" class="form-control" id="inRiesgoTrabajo" placeholder="Ingresa el riesgo de trabajo" required>
-                                <div class="invalid-feedback">
-
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="form-gruop col-md-6">
@@ -300,21 +258,14 @@
                                 <select class="form-control custom-select font-labels" id="inClase" required>
                                     <option value="">Selecciona</option>
                                 </select>
-                                <div class="invalid-feedback">
-
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="form-group col-md-12 row m-0">
                             <div class="form-group col-md-4">
                                 <input class="btn btn-primary form-control font-button" type="submit" name="btn_saveEmpresa" id="btn_saveEmpresa" value="Guardar Empresa" />
                             </div>
-                            @*<div class="form-group col-md-4">
-                                    <button type="reset" id="btnClear" class="btn btn-warning btn-sm form-control"><i class="far fa-trash-alt"></i> Limpiar</button>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <div id="btnUpdate" class="btn btn-success btn-sm form-control"><i class="fas fa-edit"></i> Actualizar</div>
-                                </div>*@
+                            
                         </div>
                     </div>
                 </form>

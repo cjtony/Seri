@@ -214,7 +214,7 @@ namespace Payroll.Models.Daos
 
             return empresa;
         }
-        public List<string> sp_Insert_FirstStep_Empresas(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
+        public List<string> sp_Insert_FirstStep_Empresas(int Id, string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, string inDelegacion, int inColonia_empresa, string inCalle_Empresa, string inAfiliacionesIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int usuario_id, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
         {
             List<string> res = new List<string>();
             this.Conectar();
@@ -222,6 +222,7 @@ namespace Payroll.Models.Daos
             {
                 CommandType = CommandType.StoredProcedure
             };
+            cmd.Parameters.Add(new SqlParameter("@ctrliId", Id));
             cmd.Parameters.Add(new SqlParameter("@ctrlsNombreEmpresa", inNomCorto_empresa));
             cmd.Parameters.Add(new SqlParameter("@ctrlsRazonSocial", inNombre_empresa));
             cmd.Parameters.Add(new SqlParameter("@ctrliCodigoPostal", inCodigo_postal));
