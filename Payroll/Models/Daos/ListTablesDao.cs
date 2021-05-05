@@ -1787,7 +1787,7 @@ namespace Payroll.Models.Daos
                                                 if (LisTRecibo[a].sValor == "Percepciones")
                                                 {
                                                     if (masivo != 3) {
-                                                        if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && LisTRecibo[a].iIdRenglon != 113)
+                                                        if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 51 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && LisTRecibo[a].iIdRenglon != 113)
                                                         {
                                                             ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
                                                             Perpecio = Perpecio + LisTRecibo[a].dGravado;
@@ -1798,6 +1798,13 @@ namespace Payroll.Models.Daos
                                                             ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
                                                             Perpecio = Perpecio + LisTRecibo[a].dGravado;
                                                         }
+                                                        if (LisTRecibo[a].iIdRenglon == 51)
+                                                        {
+
+                                                            ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
+                                                            Perpecio = Perpecio + LisTRecibo[a].dGravado;
+                                                        }
+
                                                     }
 
                                                     if (masivo == 3 && Recibo2 <1 ) {
@@ -1940,7 +1947,7 @@ namespace Payroll.Models.Daos
                                                     if (iSatidNum == 2) { idSat = "0" + LisTRecibo[a].sIdSat; };
                                                     
 
-                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 113 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && masivo !=3 )
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 51 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 113 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && masivo !=3 )
                                                     {
 
                                                         xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
@@ -2036,6 +2043,50 @@ namespace Payroll.Models.Daos
                                                             if (dias / 3 != resultadod)
                                                             {
                                                                 
+                                                                xmlWriter.WriteAttributeString("Dias", Convert.ToString(resulado));
+                                                            }
+
+                                                        }
+                                                        xmlWriter.WriteAttributeString("TipoHoras", "01");
+
+                                                        xmlWriter.WriteEndElement();
+                                                        xmlWriter.WriteEndElement();
+                                                    }
+                                                    if (LisTRecibo[a].iIdRenglon == 51)
+                                                    {
+                                                        xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
+                                                        xmlWriter.WriteAttributeString("ImporteExento", ImporExt.ToString());
+                                                        xmlWriter.WriteAttributeString("TipoPercepcion", idSat);
+                                                        xmlWriter.WriteAttributeString("Clave", IdRenglon);
+                                                        xmlWriter.WriteAttributeString("Concepto", concepto.ToString());
+
+                                                        xmlWriter.WriteAttributeString("ImporteGravado", ImporGra.ToString());
+
+                                                        xmlWriter.WriteStartElement(Prefijo2, "HorasExtra", EspacioDeNombreNomina);
+                                                        xmlWriter.WriteAttributeString("ImportePagado", IporPagado.ToString());
+                                                        int iHoras = Convert.ToInt32(LisTRecibo[a].dHoras);
+                                                        xmlWriter.WriteAttributeString("HorasExtra", Convert.ToString(iHoras));
+
+                                                        if (iHoras > 9)
+                                                        {
+                                                            xmlWriter.WriteAttributeString("Dias", "9");
+                                                        }
+                                                        if (iHoras > 0 && iHoras < 10)
+                                                        {
+                                                            int dias = iHoras;
+                                                            int resulado = 0;
+                                                            Decimal resultadod = 0;
+
+                                                            resulado = dias / 4;
+                                                            resultadod = 0;
+                                                            if (resulado == resultadod)
+                                                            {
+                                                                resulado = resulado + 1;
+                                                                xmlWriter.WriteAttributeString("Dias", Convert.ToString(resulado));
+                                                            }
+                                                            if (dias / 4 != resultadod)
+                                                            {
+
                                                                 xmlWriter.WriteAttributeString("Dias", Convert.ToString(resulado));
                                                             }
 
