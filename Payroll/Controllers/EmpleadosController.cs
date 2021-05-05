@@ -3463,12 +3463,19 @@ namespace Payroll.Controllers
                                     documento.Add(espacio);
                                     documento.Add(espacio);
 
+                                    Paragraph espaciofin = new Paragraph(10," ", TexNom);
+
+                                    if (Repetido == 2) {
+                                        if (LisTRecibo.Count > 7) {
+                                            documento.Add(espaciofin);
+                                        }
+                                    }
                                 };
 
                             }
                         }
 
-                        if (Repetido == 2) { a = a + 1; Repetido = 0; }
+                        if (Repetido == 2) { a = a + 1; Repetido = 0;}
 
                     }
                 }
