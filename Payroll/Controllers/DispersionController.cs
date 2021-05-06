@@ -2130,8 +2130,8 @@ namespace Payroll.Controllers
                                     importPaid += data.dImporte.ToString();
                                     string fillerFinal = "";
                                     string cadenaFinal = "";
-                                    // QUINCENALES CRISTINA 168 , 159
-                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067) {
+                                    // QUINCENALES CRISTINA 158 , 159
+                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
                                         cadenaFinal = tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
                                     } else {
                                         cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
@@ -2141,7 +2141,7 @@ namespace Payroll.Controllers
                                     {
                                         fillerFinal += " ";
                                     }
-                                    if (keyBusiness == 2074) {
+                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
                                         fileIntBanorte.Write(tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
                                     } else {
                                         fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
