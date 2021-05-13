@@ -3739,7 +3739,7 @@ namespace Payroll.Controllers
                         if (LSelloSat[i].sUrllReciboFis != null && LSelloSat[i].bEmailSent != "Enviado")
                         {
                             // string EmailEmple = LSelloSat[i].sEmailSent;
-                            if (LSelloSat[i].sEmailSent != null && LSelloSat[i].sEmailSent != "" && LSelloSat[i].sEmailSent != " " && LSelloSat[i].sEmailEmpresa !="")
+                            if (  LSelloSat[i].sEmailEmpresa !="")
                             {
                                 if (System.IO.File.Exists(LSelloSat[i].sUrllReciboFis))
                                 {

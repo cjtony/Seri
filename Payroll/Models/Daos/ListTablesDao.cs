@@ -1427,7 +1427,7 @@ namespace Payroll.Models.Daos
                                 List<XMLBean> LisCer = new List<XMLBean>();
                                 LisCer = sp_FileCer_Retrieve_CCertificados(EmisorRFC);
 
-
+                                if (LisCer != null) { 
                                 if (LisCer.Count > 0)
                                 {
                                     s_certificadoKey = pathCer + LisCer[0].sfilekey;
@@ -2451,8 +2451,11 @@ namespace Payroll.Models.Daos
                                 {
                                     ListDatEmisor[0].sMensaje = "NorCert";
                                 }
-
-
+                                }
+                                if (LisCer is null)
+                                {
+                                    ListDatEmisor[0].sMensaje = "NorCert";
+                                }
 
 
                                 //Borra archivo temporal

@@ -416,6 +416,11 @@ $(function () {
                                 fshowtypealert('Error', 'Contacte a sistemas', 'error');
                             }
                         }
+                        if (data  == null) {
+                            $('#jqxLoader2').jqxLoader('close');
+                            fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                        }
+
                     }
                 });
 
