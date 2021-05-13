@@ -96,8 +96,12 @@ namespace Payroll.Controllers
                 // Comprobar este StoredProcedure -> Adaptarlo al grupo que se selecciona
                 datosEmpresaBeanDispersion = dataDispersionBusiness.sp_Datos_Empresa_Dispersion_Grupos(group);
                 nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy-MM-dd");
-                flagProsecutors = ProcessDepositsProsecutors(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group);
-                flagMirror = ProcessDepositsMirror(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group);
+                if (mirror == 1) {
+                    flagMirror = ProcessDepositsMirror(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group);
+                } else {
+                    flagProsecutors = ProcessDepositsProsecutors(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group);
+                    flagMirror = ProcessDepositsMirror(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group);
+                }
                 if (flagProsecutors == true || flagMirror == true) {
                     flag = true;
                 }
@@ -683,7 +687,6 @@ namespace Payroll.Controllers
 
                         if (bankResult == 12)
                         {
-
                             // Inicio Codigo Nuevo
                             string pathSaveFile = Server.MapPath("~/Content/");
                             string routeTXTBancomer = pathSaveFile + "DISPERSION" + @"\\" + "BANCOMER" + @"\\" + "BANCOMER.txt";
@@ -788,7 +791,7 @@ namespace Payroll.Controllers
                             clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                             clBeneficiario.BorderWidth = 0;
                             clBeneficiario.Bottom = 80;
-                            clImporte = new PdfPCell(new Phrase("$" + Convert.ToDecimal(payroll.doImporte).ToString("#, ##"), _standardFont));
+                            clImporte = new PdfPCell(new Phrase("$" + Convert.ToDecimal(payroll.doImporte).ToString("#,##0.00"), _standardFont));
                             clImporte.BorderWidth = 0;
                             clImporte.Bottom = 80;
                             clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
@@ -1455,7 +1458,7 @@ namespace Payroll.Controllers
                                 clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                                 clBeneficiario.BorderWidth = 0;
                                 clBeneficiario.Bottom = 80;
-                                clImporte = new PdfPCell(new Phrase("$" + payroll.dImporte, _standardFont));
+                                clImporte = new PdfPCell(new Phrase("$" + Convert.ToDecimal(payroll.doImporte).ToString("#,##0.00"), _standardFont));
                                 clImporte.BorderWidth = 0;
                                 clImporte.Bottom = 80;
                                 clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
@@ -1530,8 +1533,12 @@ namespace Payroll.Controllers
                 if (!System.IO.Directory.Exists(directoryTxt + @"\\" + nameFolder)) {
                     System.IO.Directory.CreateDirectory(directoryTxt + @"\\" + nameFolder);
                 }
-                flagProsecutors = processDepositsInterbank(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group, 0);
-                flagMirror = processDepositsInterbank(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group, 1);
+                if (mirror == 1) {
+                    flagMirror = processDepositsInterbank(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group, 1);
+                } else {
+                    flagProsecutors = processDepositsInterbank(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group, 0);
+                    flagMirror = processDepositsInterbank(keyBusiness, invoiceId, typeReceipt, dateDeposits, yearPeriod, typePeriod, numberPeriod, datosEmpresaBeanDispersion.sNombreEmpresa, datosEmpresaBeanDispersion.sRfc, group, 1);
+                }
                 if (flagProsecutors == true || flagMirror == true) {
                     flag = true;
                 }
@@ -1623,9 +1630,9 @@ namespace Payroll.Controllers
                     nameBankResult = bean.sNombreBanco;
                     listDatosDepositosBancariosBeans = dispersionSpecialDao.sp_Procesa_Cheques_Total_Nomina_Special(bean.iConfiguracion, typePeriod, numberPeriod, yearPeriod, bean.iGrupoId, mirror, bankResult);
                     if (mirror == 0) {
-                        listDatosProcesaChequesNominaBean = dispersionSpecialDao.sp_Procesa_Cheques_Nomina_Special(bean.iGrupoId, bean.iConfiguracion, bean.iIdBanco, 0, yearPeriod, typePeriod, numberPeriod);
+                        listDatosProcesaChequesNominaBean = dispersionSpecialDao.sp_Procesa_Cheques_Interbancario_Special(bean.iGrupoId, bean.iConfiguracion, bean.iIdBanco, 0, yearPeriod, typePeriod, numberPeriod);
                     } else {
-                        listDatosProcesaChequesNominaBean = dispersionSpecialDao.sp_Procesa_Cheques_Nomina_Special(bean.iGrupoId, bean.iConfiguracion, bean.iIdBanco, 1, yearPeriod, typePeriod, numberPeriod);
+                        listDatosProcesaChequesNominaBean = dispersionSpecialDao.sp_Procesa_Cheques_Interbancario_Special(bean.iGrupoId, bean.iConfiguracion, bean.iIdBanco, 1, yearPeriod, typePeriod, numberPeriod);
                     }
                     if (listDatosProcesaChequesNominaBean.Count > 0) {
                         DateTime dateGeneration     = DateTime.Now;
@@ -2004,8 +2011,10 @@ namespace Payroll.Controllers
                         tblPrueba.AddCell(clBeneficiario);
                         tblPrueba.AddCell(clImporte);
                         tblPrueba.AddCell(clNomina);
+                        double sumTotal = 0;
                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
                         {
+                            sumTotal += payroll.doImporte;
                             // Llenamos la tabla con información
                             clCtaCheques = new PdfPCell(new Phrase(payroll.sCuenta, _standardFont));
                             clCtaCheques.BorderWidth = 0;
@@ -2013,7 +2022,7 @@ namespace Payroll.Controllers
                             clBeneficiario = new PdfPCell(new Phrase(payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno, _standardFont));
                             clBeneficiario.BorderWidth = 0;
                             clBeneficiario.Bottom = 80;
-                            clImporte = new PdfPCell(new Phrase("$" + payroll.dImporte, _standardFont));
+                            clImporte = new PdfPCell(new Phrase("$" + Convert.ToDecimal(payroll.doImporte).ToString("#,##0.00"), _standardFont));
                             clImporte.BorderWidth = 0;
                             clImporte.Bottom = 80;
                             clNomina = new PdfPCell(new Phrase(payroll.sNomina, _standardFont));
@@ -2026,6 +2035,20 @@ namespace Payroll.Controllers
                             tblPrueba.AddCell(clNomina);
                         }
                         doc.Add(tblPrueba);
+                        doc.Add(Chunk.NEWLINE);
+                        iTextSharp.text.Font _standardFont2 = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        // Creamos una tabla que contendrá los datos
+                        PdfPTable tblTotal = new PdfPTable(2);
+                        tblTotal.WidthPercentage = 100;
+                        PdfPCell clTotal = new PdfPCell(new Phrase("Total: ", _standardFont2));
+                        clTotal.BorderWidth = 0;
+                        clTotal.Bottom = 80;
+                        PdfPCell clImporteTotal = new PdfPCell(new Phrase("$" + sumTotal.ToString("#,##0.00"), _standardFont2));
+                        clImporteTotal.BorderWidth = 0;
+                        clImporteTotal.Bottom = 80;
+                        tblTotal.AddCell(clTotal);
+                        tblTotal.AddCell(clImporteTotal);
+                        doc.Add(tblTotal);
                         doc.Close();
                         pw.Close();
                         flag = true;
