@@ -229,7 +229,9 @@
     <Compile Include="Models\Beans\ReporteNominaBean.cs" />
     <Compile Include="Models\Beans\UsuariosBean.cs" />
     <Compile Include="Models\Beans\VariablesBean.cs" />
+    <Compile Include="Models\Beans\BiometricoBean.cs" />
     <Compile Include="Models\Daos\BajasEmpleadosDaoD.cs" />
+    <Compile Include="Models\Daos\BiometricoDao.cs" />
     <Compile Include="Models\Daos\CargaMasivaDao.cs" />
     <Compile Include="Models\Daos\CatalogosDao.cs" />
     <Compile Include="Models\Daos\ConfigDataBankDao.cs" />

@@ -1206,7 +1206,7 @@ namespace Payroll.Models.Daos
         {
 
             int IdCalcHD,iperiodo;
-            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0,row227=0, Recibo2 = 0, FinR = 0,ISREs = 0;
+            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0,row227=0,row467=0, Recibo2 = 0, FinR = 0,ISREs = 0;
             string[] Nombre= sNombreComple.Split(' ');
            string NomEmple = "";
             List<string> NomArchXML = new List<string>();
@@ -1731,6 +1731,10 @@ namespace Payroll.Models.Daos
                                                 {
                                                     DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
                                                 }
+                                                if (LisTRecibo[a].iIdRenglon == 467)
+                                                {
+                                                    DotrosPagos = DotrosPagos + LisTRecibo[a].dSaldo;
+                                                }
 
                                             }
                                             TotalPercepciones = string.Format("{0:N2}", ListTotales[rowTper].dSaldo - DotrosPagos);
@@ -1870,7 +1874,7 @@ namespace Payroll.Models.Daos
                                                 if (LisTRecibo[a].sValor == "Percepciones")
                                                 {
                                                     if (masivo != 3) {
-                                                        if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 51 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && LisTRecibo[a].iIdRenglon != 113)
+                                                        if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 51 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && LisTRecibo[a].iIdRenglon != 467 && LisTRecibo[a].iIdRenglon != 113)
                                                         {
                                                             ExtentoPer = ExtentoPer + LisTRecibo[a].dExcento;
                                                             Perpecio = Perpecio + LisTRecibo[a].dGravado;
@@ -1959,6 +1963,10 @@ namespace Payroll.Models.Daos
                                                         {
                                                             row227 = a;
                                                         };
+                                                        if (LisTRecibo[a].iIdRenglon == 467)
+                                                        {
+                                                            row467 = a;
+                                                        };
 
 
                                                         if (LisTRecibo[a].iIdRenglon == 27 && masivo == 3)
@@ -2033,7 +2041,7 @@ namespace Payroll.Models.Daos
                                                     if (iSatidNum == 2) { idSat = "0" + LisTRecibo[a].sIdSat; };
                                                     
 
-                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 51 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 113 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && masivo !=3 )
+                                                    if (LisTRecibo[a].iIdRenglon != 50 && LisTRecibo[a].iIdRenglon != 51 && LisTRecibo[a].iIdRenglon != 17 && LisTRecibo[a].iIdRenglon != 113 && LisTRecibo[a].iIdRenglon != 227 && LisTRecibo[a].iIdRenglon != 198 && LisTRecibo[a].iIdRenglon != 467 && masivo !=3 )
                                                     {
 
                                                         xmlWriter.WriteStartElement(Prefijo2, "Percepcion", EspacioDeNombreNomina);
@@ -2432,6 +2440,17 @@ namespace Payroll.Models.Daos
                                                 xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row227].dSaldo));
                                                 xmlWriter.WriteEndElement();
                                                 row227 = 0;
+                                            };
+
+                                            if (row467 > 0)
+                                            {
+                                                xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
+                                                xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                xmlWriter.WriteAttributeString("Clave", "467");
+                                                xmlWriter.WriteAttributeString("Concepto", Convert.ToString(LisTRecibo[row467].sNombre_Renglon));
+                                                xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row467].dSaldo));
+                                                xmlWriter.WriteEndElement();
+                                                row467 = 0;
                                             };
 
                                             xmlWriter.WriteEndElement();
@@ -3031,16 +3050,34 @@ namespace Payroll.Models.Daos
                             LP.ianio = int.Parse(data["Anio"].ToString());
                             LP.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
                             LP.iPeriodo = int.Parse(data["Periodo"].ToString());
-                            LP.bEmailSent = data["Email_Sent"].ToString();
+                            LP.bEmailSent = "";
+                            if (data["Email_Sent"].ToString() == "True") {
+                                LP.bEmailSent = "Enviado";
+                            }
+                            if (data["Email_Sent"].ToString() == "False")
+                            {
+                                LP.bEmailSent = "No enviado";
+                            }
+
+
                             if (data["Correo_Electronico"].ToString() != "" || data["Correo_Electronico"].ToString() != " ")
                             {
-                                LP.sEmailSent = data["Correo_Electronico"].ToString();
+                                LP.sEmailPErsona = data["Correo_Electronico"].ToString();
                             }
                             else { LP.sEmailSent = ""; }
                             if (data["Recibo_Simple"].ToString()!=null) { LP.sUurReciboSim = data["Recibo_Simple"].ToString(); }
                             else { LP.sUurReciboSim = " "; };
                             if (data["Recibo_Fiscal"].ToString() != null) { LP.sUrllReciboFis = data["Recibo_Fiscal"].ToString(); } else{ LP.sUrllReciboFis = " ";};
-                            LP.sEmailSendSim = data["Email_Sent_simple"].ToString();
+
+                            LP.sEmailSendSim = "";
+                            if (data["Email_Sent_simple"].ToString() == "True") {
+                                LP.sEmailSendSim = "Enviado";
+                            }
+                            if (data["Email_Sent_simple"].ToString() == "False")
+                            {
+                                LP.sEmailSendSim = "No enviado";
+                            }
+
                             LP.sEmailEmpresa = data["EmailEmpresa"].ToString();
                             LP.sPassword = data["Password"].ToString();
                             LP.sMensaje = "Succes";

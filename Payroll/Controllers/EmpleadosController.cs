@@ -1641,18 +1641,36 @@ namespace Payroll.Controllers
                         LisCer = Dao2.sp_FileCer_Retrieve_CCertificados(ListDatEmisor[0].sRFC);
                         string pathCert = Server.MapPath("Archivos\\certificados\\");
                         pathCert = pathCert.Replace("\\Empleados", "");
-                        string s_certificadoKey = pathCert + LisCer[0].sfilekey;
-                        string s_certificadoCer = pathCert + LisCer[0].sfilecer;
-                        string s_transitorio = LisCer[0].stransitorio;
-                        
-                        if (System.IO.File.Exists(s_certificadoKey) && LisTRecibo !=null)
-                        {
 
-                            System.Security.Cryptography.X509Certificates.X509Certificate CerSAT;
-                            CerSAT = System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromCertFile(s_certificadoCer);
-                            byte[] bcert = CerSAT.GetSerialNumber();
-                            string CerNo = LibreriasFacturas.StrReverse((string)Encoding.UTF8.GetString(bcert));
-                            byte[] CERT_SIS = CerSAT.GetRawCertData();
+                        string s_certificadoKey = "";
+                        string s_certificadoCer = "";
+                        string s_transitorio = "";
+
+                        if (iRecibo != 1) {
+                            s_certificadoKey = pathCert + LisCer[0].sfilekey;
+                            s_certificadoCer = pathCert + LisCer[0].sfilecer;
+                            s_transitorio = LisCer[0].stransitorio;
+
+
+                        }
+
+                        
+                        if ((System.IO.File.Exists(s_certificadoKey) && LisTRecibo !=null) || iRecibo ==1 )
+                        {
+                            byte[] bcert = null;
+                            string CerNo = null;
+                            byte[] CERT_SIS = null;
+                            if (iRecibo != 1) {
+                                System.Security.Cryptography.X509Certificates.X509Certificate CerSAT;
+                                CerSAT = System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromCertFile(s_certificadoCer);
+                                bcert = CerSAT.GetSerialNumber();
+                                CerNo = LibreriasFacturas.StrReverse((string)Encoding.UTF8.GetString(bcert));
+                                CERT_SIS = CerSAT.GetRawCertData();
+
+
+                            }
+                         
+
 
                             // crecion del archivo PDF
                             FileStream Fs = new FileStream(Nombrearc, FileMode.Create);
@@ -2596,6 +2614,9 @@ namespace Payroll.Controllers
 
 
                         }
+                    
+                    
+                    
                     }
 
 
@@ -3434,6 +3455,15 @@ namespace Payroll.Controllers
                                     Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0f, 70f, BaseColor.BLACK, Element.ALIGN_LEFT, 0.2f)));
                                     p.IndentationLeft = 390;
                                     p.IndentationRight = 100;
+
+                                    Paragraph espaciofin2 = new Paragraph(-25, " ", TexNom);
+                                    if (LiTsat[0].sUUID == "" || LiTsat[0].sUUID == " ")
+                                    {
+                                        documento.Add(espaciofin2);
+
+                                    }
+
+
                                     documento.Add(p);
                                     tableQR.AddCell(Cellqr);
                                     tablqr.Add(tableQR);
@@ -3446,14 +3476,18 @@ namespace Payroll.Controllers
                                     documento.Add(espacio);
 
                                     if (sinSello == 1) {
-                                     //documento.Add(espacioSin);
+                                     documento.Add(espacioSin);
                                     }
-                                    documento.Add(TFirmaEmple);
+                                 
+
                                     Paragraph espacioSinR2 = new Paragraph(10, " ", TexNom);
-                                    if (sinSello == 1 && Repetido ==2)
+                                    if (sinSello == 1 && Repetido == 2)
                                     {
                                         documento.Add(espacioSinR2);
                                     }
+
+                                    documento.Add(TFirmaEmple);
+                                  
 
                                     documento.Add(espacio);
                                     documento.Add(espacio);
@@ -3464,11 +3498,15 @@ namespace Payroll.Controllers
                                     documento.Add(espacio);
 
                                     Paragraph espaciofin = new Paragraph(10," ", TexNom);
-
+                                   
                                     if (Repetido == 2) {
-                                        if (LisTRecibo.Count > 7) {
-                                            documento.Add(espaciofin);
+                                        if (sinSello != 1) { 
+                                        documento.Add(espaciofin);
                                         }
+
+                                    
+
+
                                     }
                                 };
 
@@ -3477,7 +3515,9 @@ namespace Payroll.Controllers
 
                         if (Repetido == 2) { a = a + 1; Repetido = 0;}
 
+                       
                     }
+                   
                 }
 
                 documento.Close();
@@ -3660,10 +3700,10 @@ namespace Payroll.Controllers
                 {
                     for (int i = 0; i < LSelloSat.Count; i++)
                     {
-                        if (LSelloSat[i].sUurReciboSim != null && LSelloSat[i].sEmailSendSim != "True" && LSelloSat[i].sEmailEmpresa != "")
+                        if (LSelloSat[i].sUurReciboSim != null && LSelloSat[i].sEmailSendSim != "Enviado" && LSelloSat[i].sEmailEmpresa != "" && LSelloSat[i].sEmailPErsona !="" && LSelloSat[i].sEmailPErsona!=" ")
                         {
                           
-                            string EmailPer = LSelloSat[i].sEmailSent;
+                            string EmailPer = LSelloSat[i].sEmailPErsona;
                             string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
                             Correo EmailEnvio = new Correo(EmailPer, "Recibo de Nómina", Mensaje, LSelloSat[i].sUurReciboSim,LSelloSat[i].sEmailEmpresa,LSelloSat[i].sPassword);
                             if (EmailEnvio.Estado)
@@ -3680,22 +3720,30 @@ namespace Payroll.Controllers
                                 // LSelloSat[0].sMensaje = "error";
                             }
 
-                        };
+                        }
+                         else
+                        {
+                            if (LSelloSat[i].sEmailSendSim != "Enviado") {
+                                NoEmailNotSend = NoEmailNotSend + 1;
+                                //Error al enviar correo
+                                // LSelloSat[0].sMensaje = "error";
+                            }
 
+                        }
                     };
                 }
                 if (iRecibo == 2)
                 {
                     for (int i = 0; i < LSelloSat.Count; i++)
                     {
-                        if (LSelloSat[i].sUrllReciboFis != null && LSelloSat[i].bEmailSent != "True")
+                        if (LSelloSat[i].sUrllReciboFis != null && LSelloSat[i].bEmailSent != "Enviado")
                         {
                             // string EmailEmple = LSelloSat[i].sEmailSent;
                             if (LSelloSat[i].sEmailSent != null && LSelloSat[i].sEmailSent != "" && LSelloSat[i].sEmailSent != " " && LSelloSat[i].sEmailEmpresa !="")
                             {
                                 if (System.IO.File.Exists(LSelloSat[i].sUrllReciboFis))
                                 {
-                                    string EmailPer =  LSelloSat[i].sEmailSent;
+                                    string EmailPer =  LSelloSat[i].sEmailPErsona;
                                     string EmailEmpresa = LSelloSat[i].sEmailEmpresa;
                                     string Mensaje = "<b>Estimado:  </b>" + LSelloSat[i].sNombre + " <br><br> Esperando que tenga un buen día, se le hace llegar a través de este correo de forma anexa su <b>recibo de nómina</b>, correspondiente al Periodo:" + LSelloSat[i].iPeriodo + " del año:" + LSelloSat[i].ianio + ".<br><br> Sin más por el momento, quedamos a sus órdenes para cualquier aclaración.<br><br><b> Atentamente.</b> <br><br> Capital Humano. ";
                                     Correo EmailEnvio = new Correo(EmailPer, "Recibos Nómina", Mensaje, LSelloSat[i].sUrllReciboFis,LSelloSat[i].sEmailEmpresa,LSelloSat[i].sPassword);
@@ -3724,9 +3772,19 @@ namespace Payroll.Controllers
                             }
                             else
                             {
-
+                               
                                 NoEmailNotSend = NoEmailNotSend + 1;
                                 //Error al enviar correo
+                            }
+                        }
+
+                        else
+                        {
+                            if (LSelloSat[i].bEmailSent != "Enviado") {
+                                NoEmailNotSend = NoEmailNotSend + 1;
+                                //Error al enviar correo
+
+
                             }
 
                         }
