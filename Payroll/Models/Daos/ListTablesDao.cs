@@ -1259,6 +1259,11 @@ namespace Payroll.Models.Daos
                         Nombre = ListEmple[i].sNombreEmpleado.Split(' '); //.sNombreCompleto.Split(' ');
                         NumEmpleado = ListEmple[i].iIdEmpleado;   //ListEmple[i].iIdEmpleado;
                         id = ListEmple[i].iIdEmpleado;
+                        if (id == 14848) {
+
+                            string s = "entro";
+                        }
+
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                         if (Nombre.Length > 0)
                         {

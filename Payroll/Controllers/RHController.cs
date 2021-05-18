@@ -34,15 +34,11 @@ namespace Payroll.Controllers
         //  Tabla de HorarioHD
         public JsonResult RetrieveHorarios()
         {
-            int UsuarioId = int.Parse(Session["iIdUsuario"].ToString());
-            List<TPProcesos> LTbProc = new List<TPProcesos>();
-           
-            FuncionesNomina dao = new FuncionesNomina();
-            //LTbProc = dao.sp_TPProcesosJobs_Retrieve_TPProcesosJobs2(op1, op2, op3, CrtliIdJobs, CtrliIdTarea, Nameuse);
+            int EmpresaID = int.Parse(Session["IdEmpresa"].ToString());
+            List<EmpreHorarioBean> LTbProc = new List<EmpreHorarioBean>();
+            FuncionBiometricoDao dao = new FuncionBiometricoDao();
+            LTbProc = dao.sp_HorarioEmpresa_Retrieve_CHorarioHD(EmpresaID);
             return Json(LTbProc);
         }
-
-
-
     }
 }

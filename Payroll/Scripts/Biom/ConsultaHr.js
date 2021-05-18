@@ -88,6 +88,7 @@
             data: JSON.stringify(),
             success: (data) => {
                 if (data[0].sMensaje == "success") {
+                    console.log('Entro aqui');
                     var source =
                     {
                         localdata: data,
@@ -95,7 +96,7 @@
                         datafields:
                             [
                                 { name: 'iIdHorario', type: 'int' },
-                                { name: 'iEmpresaId', type: 'int' },
+                                { name: 'sNombreEmpresa', type: 'string' },
                                 { name: 'iTurno', type: 'int' },
                                 { name: 'sDescrip', type: 'string' },
                                 { name: 'sHrEnt', type: 'string' },
@@ -108,43 +109,26 @@
                                 { name: 'iCancelado', type: 'int' },
                                 { name: 'iUsuario', type: 'int' },
                                 { name: 'iTipoTurno', type: 'int' },
-                                { name: 'iTipoPausa', type: 'int' },
                                 { name: 'iTipoPausa', type: 'int' }
 
                             ]
                     };
                     var dataAdapter = new $.jqx.dataAdapter(source);
-                    $("#dTabHrSem").jqxGrid(
+                    $("#dTabHrDia").jqxGrid(
                         {
-                            width: 950,
+                            
+                            width: 652,
                             source: dataAdapter,
                             columnsresize: true,
                             columns: [
-
-                                { text: 'Id Horario', datafield: 'iIdHorario', width: 100 },
-                                { text: 'Empresa', datafield: 'iEmpresaId', width: 200 },
-                                { text: 'Descripcion', datafield: 'sDescrip', whidt: 100 },
-                                { text: 'No. Turno', datafield: 'iTurno', whidth: 190 },
-                                { text: 'Tipo de chequeo', sHrEnt: 'iTipCheckNorm', whidt: 100 },
-                                { text: 'Hora Entrada ', datafield: 'sHrEnt', width: 100 },
-                                { text: 'Hora Salida', datafield: 'sHrSal', width: 200 },
-                                { text: 'Tipo chequeo Pauda', datafield: 'sUsuario', whidth: 190 },
-                                { text: 'Fecha inicio', datafield: 'sFechaIni', whidt: 100 },
-                                { text: 'Fecha Final', datafield: 'sFechaFinal', whidt: 100 },
-                                { text: 'Estatus', datafield: 'sEstatusFinal', whidt: 80 },
-                                { text: 'Id Horario', datafield: 'iIdTarea', width: 100 },
-                                { text: 'Definicion', datafield: 'sNombreDefinicion', width: 200 },
-                                { text: 'Usuario', datafield: 'sUsuario', whidth: 190 },
-                                { text: 'Fecha inicio', datafield: 'sFechaIni', whidt: 100 },
-                                { text: 'Fecha Final', datafield: 'sFechaFinal', whidt: 100 },
-                                { text: 'Estatus', datafield: 'sEstatusFinal', whidt: 80 },
-                                { text: 'No Tarea', datafield: 'iIdTarea', width: 100 },
-                                { text: 'Definicion', datafield: 'sNombreDefinicion', width: 200 },
-                                { text: 'Usuario', datafield: 'sUsuario', whidth: 190 },
-                                { text: 'Fecha inicio', datafield: 'sFechaIni', whidt: 100 },
-                                { text: 'Fecha Final', datafield: 'sFechaFinal', whidt: 100 },
-                                { text: 'Estatus', datafield: 'sEstatusFinal', whidt: 80 },
-                            ]
+                                { text: 'Empresa', datafield: 'sNombreEmpresa', width: 110 },
+                                { text: 'Descripcion', datafield: 'sDescrip', width: 70 },
+                                { text: 'No. Turno', datafield: 'iTurno', width: 60 },
+                                { text: 'Hora Entrada ', datafield: 'sHrEnt', width: 80 },
+                                { text: 'Hora Salida', datafield: 'sHrSal', width: 80 },
+                                { text: 'Hora de Salida Pausa', datafield: 'sHrSalCom', whidt: 145 },
+                                { text: 'Hora de Entrada pausa', datafield: 'sHrEntCom', whidt: 145 },
+                               ]
                         });
                 }
                 else {
@@ -153,7 +137,7 @@
             }
         });
     }
-
+    DTBHorarios();
    
 
 

@@ -77,7 +77,8 @@ namespace Payroll.Models.Daos
                         EmpreHorarioBean ls = new EmpreHorarioBean();
                         {
                             ls.iIdHorario = int.Parse(data["IdHorario"].ToString());
-                            ls.iEmpresaId = int.Parse(data["Turno"].ToString());
+                            ls.iEmpresaId = int.Parse(data["Empresa_id"].ToString());
+                            ls.sNombreEmpresa = data["EmpresaNom"].ToString();
                             ls.sDescrip = data["Descripcion"].ToString();
                             ls.iTurno = int.Parse(data["Turno"].ToString());
                             ls.sHrEnt = data["HoraEntrada"].ToString();

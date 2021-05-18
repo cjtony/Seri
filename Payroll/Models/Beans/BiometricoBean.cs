@@ -18,6 +18,7 @@ namespace Payroll.Models.Beans
     {
         public int iIdHorario { get; set; }
         public int iEmpresaId { get; set; }
+        public string sNombreEmpresa { get; set; }
         public int iTurno { get; set; }
         public string sHrEnt { get; set; }
         public string sHrSal { get; set; }
@@ -31,7 +32,6 @@ namespace Payroll.Models.Beans
         public int iCancelado { get; set; }
         public int iTipoTurno { get; set; }
         public int iTipoPausa { get; set; }
-
         public string sMensaje { get; set; }
 
     }
