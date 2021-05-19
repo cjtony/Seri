@@ -52,8 +52,6 @@
                 , iTipoPausacheck: DropChekComida.value, iDiasDes: DropDiasDesc.value, iCancelado: 0, iTipoTurno: DropChekTur.value, iTipoPausa: DropChekPau.value
             }
 
-            console.log(DataInser);
-
             $.ajax({
                 url: "../RH/InsertHrsEmpresa",
                 type: "POST",
@@ -61,6 +59,7 @@
                 success: (data) => {
                     if (data[0].sMensaje == "success") {
 
+                        fshowtypealert('Horario', 'Guardado correctamente', 'success');
                     }
 
                     if (data[0].sMensaje == "error") {
@@ -78,58 +77,67 @@
             fshowtypealert('Horario', 'ingresar todos los campos', 'warning');
         }
 
-
-
-        
-
     };
 
     btninserHr.addEventListener('click', FInsertHorario);
 
-    //DgridTBProcesos = () => {
-    //    $.ajax({
-    //        url: "../Nomina/ListTBProcesosJobs2  ",
-    //        type: "POST",
-    //        data: JSON.stringify(),
-    //        success: (data) => {
-    //            console.log('info de Base');
-    //            console.log(data);
-    //            var source =
-    //            {
-    //                localdata: data,
-    //                datatype: "array",
-    //                datafields:
-    //                    [
-    //                        { name: 'iIdTarea', type: 'string' },
-    //                        { name: 'sNombreDefinicion', type: 'string' },
-    //                        { name: 'sUsuario', type: 'string' },
-    //                        { name: 'sFechaIni', type: 'string' },
-    //                        { name: 'sFechaFinal', type: 'string' },
-    //                        { name: 'sEstatusFinal', type: 'string' }
-    //                    ]
-    //            };
+    DTBHorarios = () => {
+        $.ajax({
+            url: "../RH/RetrieveHorarios",
+            type: "POST",
+            data: JSON.stringify(),
+            success: (data) => {
+                if (data[0].sMensaje == "success") {
+                    console.log('Entro aqui');
+                    var source =
+                    {
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdHorario', type: 'int' },
+                                { name: 'sNombreEmpresa', type: 'string' },
+                                { name: 'iTurno', type: 'int' },
+                                { name: 'sDescrip', type: 'string' },
+                                { name: 'sHrEnt', type: 'string' },
+                                { name: 'sHrSal', type: 'string' },
+                                { name: 'sHrEntCom', type: 'string' },
+                                { name: 'sHrSalCom', type: 'string' },
+                                { name: 'iTipCheckNorm', type: 'int' },
+                                { name: 'iTipCheckPausa', type: 'int' },
+                                { name: 'iDiasDesc', type: 'int' },
+                                { name: 'iCancelado', type: 'int' },
+                                { name: 'iUsuario', type: 'int' },
+                                { name: 'iTipoTurno', type: 'int' },
+                                { name: 'iTipoPausa', type: 'int' }
 
-    //            var dataAdapter = new $.jqx.dataAdapter(source);
-
-    //            $("#TbProcesos").jqxGrid(
-    //                {
-    //                    width: 950,
-    //                    source: dataAdapter,
-    //                    columnsresize: true,
-    //                    columns: [
-
-    //                        { text: 'No Tarea', datafield: 'iIdTarea', width: 100 },
-    //                        { text: 'Definicion', datafield: 'sNombreDefinicion', width: 200 },
-    //                        { text: 'Usuario', datafield: 'sUsuario', whidth: 190 },
-    //                        { text: 'Fecha inicio', datafield: 'sFechaIni', whidt: 100 },
-    //                        { text: 'Fecha Final', datafield: 'sFechaFinal', whidt: 100 },
-    //                        { text: 'Estatus', datafield: 'sEstatusFinal', whidt: 80 },
-    //                    ]
-    //                });
-    //        }
-    //    });
-    //}
-
+                            ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#dTabHrDia").jqxGrid(
+                        {
+                            
+                            width: 652,
+                            source: dataAdapter,
+                            columnsresize: true,
+                            columns: [
+                                { text: 'Empresa', datafield: 'sNombreEmpresa', width: 110 },
+                                { text: 'Descripcion', datafield: 'sDescrip', width: 70 },
+                                { text: 'No. Turno', datafield: 'iTurno', width: 60 },
+                                { text: 'Hora Entrada ', datafield: 'sHrEnt', width: 80 },
+                                { text: 'Hora Salida', datafield: 'sHrSal', width: 80 },
+                                { text: 'Hora de Salida Pausa', datafield: 'sHrSalCom', whidt: 145 },
+                                { text: 'Hora de Entrada pausa', datafield: 'sHrEntCom', whidt: 145 },
+                               ]
+                        });
+                }
+                else {
+                    fshowtypealert('Error', 'Contacte a sistemas ', 'error');
+                }
+            }
+        });
+    }
+    DTBHorarios();
    
 
 

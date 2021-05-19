@@ -235,7 +235,8 @@
 
     
     $('#DropPerido').change(function () {
-
+     
+        $("#TbEjeSend").jqxGrid('clear')
         FTablaEnvio();
 
     });
@@ -494,15 +495,9 @@
     //  BtnSenCorreo.addEventListener('click', FSenEmail)
     btnEnviCorre.addEventListener('click', FSenEmail)
 
+  
 
-
-
-  //  /// Muestra en pantalla la ultima ejecucion realizada 
-
-
-
-
-
+   /// Muestra en pantalla la ultima ejecucion realizada 
 
     FtheLastEje = () => {      
         $.ajax({

@@ -1339,6 +1339,11 @@ namespace Payroll.Models.Daos
                         Nombre = ListEmple[i].sNombreEmpleado.Split(' '); //.sNombreCompleto.Split(' ');
                         NumEmpleado = ListEmple[i].iIdEmpleado;   //ListEmple[i].iIdEmpleado;
                         id = ListEmple[i].iIdEmpleado;
+                        if (id == 14848) {
+
+                            string s = "entro";
+                        }
+
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                         if (Nombre.Length > 0)
                         {
@@ -1507,7 +1512,7 @@ namespace Payroll.Models.Daos
                                 List<XMLBean> LisCer = new List<XMLBean>();
                                 LisCer = sp_FileCer_Retrieve_CCertificados(EmisorRFC);
 
-
+                                if (LisCer != null) { 
                                 if (LisCer.Count > 0)
                                 {
                                     s_certificadoKey = pathCer + LisCer[0].sfilekey;
@@ -2535,8 +2540,11 @@ namespace Payroll.Models.Daos
                                 {
                                     ListDatEmisor[0].sMensaje = "NorCert";
                                 }
-
-
+                                }
+                                if (LisCer is null)
+                                {
+                                    ListDatEmisor[0].sMensaje = "NorCert";
+                                }
 
 
                                 //Borra archivo temporal

@@ -2821,6 +2821,9 @@ namespace Payroll.Controllers
                     NoEmple = Dao.sp_NoEmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 0);
                     Empleados = Dao.sp_EmpleadosEmpresa_Retrieve_TempleadoNomina(idEmpresa, 1);
 
+                   
+
+
                     int Repetido = 0;
                     for (int a = 0; a < NoEmple[0].iNoEmpleados;)
                     {
@@ -2832,6 +2835,7 @@ namespace Payroll.Controllers
                         LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, Empleados[a].iIdEmpleado, LFechaPerido[0].iPeriodo, Tipoperido, Anio, 0);
                         LiTsat = Dao2.sp_DatosSat_Retrieve_TSellosSat(idEmpresa, anios, Tipodeperido, LFechaPerido[0].iPeriodo, Empleados[a].iIdEmpleado);
 
+                    
                         if (LisTRecibo != null)
                         {
 
@@ -2877,12 +2881,19 @@ namespace Payroll.Controllers
 
 
                                     BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+                                    BaseFont arial= BaseFont.CreateFont(@"c:\windows\fonts\arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                                    
                                     iTextSharp.text.Font TTexNeg = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.BOLD);
                                     iTextSharp.text.Font TexNom = new iTextSharp.text.Font(bf, 7, iTextSharp.text.Font.NORMAL);
+                                    iTextSharp.text.Font TexNomSig = new iTextSharp.text.Font(arial, 7, iTextSharp.text.Font.NORMAL);
+
+
                                     iTextSharp.text.Font Texchica = new iTextSharp.text.Font(bf, 4, iTextSharp.text.Font.NORMAL);
                                     iTextSharp.text.Font TexNeg = new iTextSharp.text.Font(bf, 7, iTextSharp.text.Font.BOLD);
                                     iTextSharp.text.Font TTexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.BOLD);
                                     iTextSharp.text.Font TexNegCuerpo = new iTextSharp.text.Font(bf, 8, iTextSharp.text.Font.NORMAL);
+
+                            
 
                                     //////Cabecera  
 
@@ -2965,8 +2976,8 @@ namespace Payroll.Controllers
 
                                     Paragraph TNoNomina = new Paragraph("No Empleado:", TexNeg);
                                     TNoNomina.IndentationLeft = 40;
-                                    Palabra = Convert.ToString(ListDatEmisor[0].sNombreComp);
-                                    Paragraph NoNomina = new Paragraph(-1, Palabra, TexNom);
+                                    Palabra = ListDatEmisor[0].sNombreComp;
+                                    Paragraph NoNomina = new Paragraph(-1, Palabra, TexNomSig);
                                     NoNomina.IndentationLeft = 88;
 
 
@@ -3739,7 +3750,7 @@ namespace Payroll.Controllers
                         if (LSelloSat[i].sUrllReciboFis != null && LSelloSat[i].bEmailSent != "Enviado")
                         {
                             // string EmailEmple = LSelloSat[i].sEmailSent;
-                            if (LSelloSat[i].sEmailSent != null && LSelloSat[i].sEmailSent != "" && LSelloSat[i].sEmailSent != " " && LSelloSat[i].sEmailEmpresa !="")
+                            if (  LSelloSat[i].sEmailEmpresa !=""&& LSelloSat[i].sEmailPErsona!="")
                             {
                                 if (System.IO.File.Exists(LSelloSat[i].sUrllReciboFis))
                                 {
