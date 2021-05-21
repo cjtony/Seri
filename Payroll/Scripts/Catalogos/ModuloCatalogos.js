@@ -779,8 +779,6 @@ $(function () {
                         $("#modalNewPolitica").modal("hide");
                         form.reset();
                     }
-
-
                 }
             });
         }
