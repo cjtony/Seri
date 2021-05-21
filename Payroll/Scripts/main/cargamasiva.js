@@ -136,6 +136,7 @@
         $("#staticBackdrop").modal("show");
     }
     cancelarCargaMasiva = () => {
+        console.log($("#cm_tabla").val(), $("#cm_referencia").val());
         $.ajax({
             url: "../Incidencias/CancelaCargaMasiva",
             type: "POST",
@@ -146,6 +147,8 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
+                console.log(data);
+                document.getElementById("tabCargasMasivasDetalle").innerHTML = "";
                 if (data[0] == '0' ) {
                     Swal.fire({
                         icon: 'error',
@@ -158,17 +161,18 @@
                     tabCargaMasiva.destroy();
                     tabCargaMasiva = null;
                     loadCargasMasivas();
+                    //setTimeout(function () {
+                    //    $("#tabCargasMasivas").fadeIn();
+                    //}, 2000);
                     Swal.fire({
                         icon: 'success',
                         title: 'Aviso!',
                         text: data[1],
-                        timer: 1500
+                        timer: 2500
                     });
-                    setTimeout(function () {
-                        $("#tabCargasMasivas").fadeIn();
-                    }, 2000);
+                    
                 }
             }
         });
     }
-});
+}); 

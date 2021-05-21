@@ -800,4 +800,14 @@ namespace Payroll.Models.Beans
         public string sMensaje { get; set; }
 
     }
+    public class AutorizaVacaciones { 
+        public int Empresa_id { get; set; }
+        public int Usuario_id { get; set; }
+        public int Empleado_id { get; set; }
+        public string Nombre { get; set; }
+        public string Departamento { get; set; }
+        public string Puesto { get; set; }
+        public string Cancelado { get; set; }
+
+    }
 }

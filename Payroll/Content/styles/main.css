@@ -333,3 +333,87 @@ span > .paginate_button {
         background-color: #FF5733;
         border-color: #8e99f3;
     }*/
+
+
+/* BOTON DE EMPRESAS */
+/*.btn-empresas {
+    color: #fff !important;
+    background-color: #7f0808 !important;
+    border-color: #3b0202 !important;
+}
+
+    .btn-empresas:focus {
+        color: #fff !important;
+        background-color: #7f0808 !important;
+        border-color: #3b0202 !important;
+    }
+
+    .btn-empresas:hover {
+        color: #fff !important;
+        background-color: #A71F1F !important;
+        border-color: #6c1212 !important;
+    }
+    */
+.btn-empresas {
+    color: #fff !important;
+    background-color: #21618c !important;
+    border-color: #154360 !important;
+}
+
+    .btn-empresas:focus {
+        color: #fff !important;
+        background-color: #7f0808 !important;
+        border-color: #3b0202 !important;
+    }
+
+    .btn-empresas:hover {
+        color: #fff !important;
+        background-color: #154360 !important;
+        border-color: #34495e !important;
+    }
+/* BOTON DE EMPRESAS */
+.btn-red {
+    color: #FFFFFF;
+    background-color: #cc0000;
+    border-color: #000000;
+}
+
+    .btn-red:hover,
+    .btn-red:focus,
+    .btn-red:active,
+    .btn-red.active,
+    .open .dropdown-toggle.btn-red {
+        color: #FFFFFF;
+        background-color: #7D0505;
+        border-color: #000000;
+    }
+
+    .btn-red:active,
+    .btn-red.active,
+    .open .dropdown-toggle.btn-red {
+        background-image: none;
+    }
+
+    .btn-red.disabled,
+    .btn-red[disabled],
+    fieldset[disabled] .btn-red,
+    .btn-red.disabled:hover,
+    .btn-red[disabled]:hover,
+    fieldset[disabled] .btn-red:hover,
+    .btn-red.disabled:focus,
+    .btn-red[disabled]:focus,
+    fieldset[disabled] .btn-red:focus,
+    .btn-red.disabled:active,
+    .btn-red[disabled]:active,
+    fieldset[disabled] .btn-red:active,
+    .btn-red.disabled.active,
+    .btn-red[disabled].active,
+    fieldset[disabled] .btn-red.active {
+        background-color: #D10B0B;
+        border-color: #000000;
+    }
+
+    .btn-red .badge {
+        color: #D10B0B;
+        background-color: #FFFFFF;
+    }

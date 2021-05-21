@@ -1153,7 +1153,6 @@ namespace Payroll.Models.Daos
 
             return list;
         }
-
         public List<IncidenciasBean> sp_TRegistro_Incidencias_retrieve_incidencia(int Empresa_id, int Empleado_id, int Incidencia_id)
         {
             List<IncidenciasBean> list = new List<IncidenciasBean>();
@@ -1298,6 +1297,187 @@ namespace Payroll.Models.Daos
             this.conexion.Close(); this.Conectar().Close();
 
             return lista;
+        }
+        public List<AutorizaVacaciones> sp_TAutorizaVacaciones_retrieve_Empleados(int Empresa_id, int Usuario_id)
+        {
+            List<AutorizaVacaciones> lista = new List<AutorizaVacaciones>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TAutorizaVacaciones_retrieve_Empleados", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    AutorizaVacaciones list = new AutorizaVacaciones();
+                    list.Empresa_id = int.Parse(data["Empresa_id"].ToString());
+                    list.Usuario_id = int.Parse(data["Usuario_id"].ToString());
+                    list.Empleado_id = int.Parse(data["Empleado_id"].ToString());
+                    list.Nombre = data["Nombre"].ToString();
+                    list.Departamento = data["Departamento"].ToString();
+                    list.Puesto = data["Puesto"].ToString();
+                    list.Cancelado = data["Cancelado"].ToString();
+                    lista.Add(list);
+
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return lista;
+        }
+        public List<string> sp_TAutorizaVacaciones_insert_Empleado (int Empresa_id, int Empleado_id, int Nivel_empleado)
+        {
+            List<string> lista = new List<string>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TAutorizaVacaciones_insert_Empleado", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@Empresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@Empleado_id", Empleado_id));
+            cmd.Parameters.Add(new SqlParameter("@Nivel_empleado", Nivel_empleado));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    lista.Add(data["iFlag"].ToString());
+                    lista.Add(data["sRespuesta"].ToString());
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return lista;
+        }
+        public List<List<string>> sp_TPeriodosVacaciones_retrieve_solicitudes_pendientes(int Usuario_id)
+        {
+            List<List<string>> solicitudes = new List<List<string>>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPeriodosVacaciones_retrieve_solicitudes_pendientes", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    List<string> lista = new List<string>();
+                    lista.Add(data["Empleado_id"].ToString());
+                    lista.Add(data["Nombre"].ToString());
+                    lista.Add(data["Fecha_Inicio"].ToString());
+                    lista.Add(data["Fecha_Fin"].ToString());
+                    lista.Add(data["Dias"].ToString());
+                    lista.Add(data["Empresa_id"].ToString());
+                    lista.Add(data["NombreEmpresa"].ToString());
+                    lista.Add(data["DescripcionPuesto"].ToString());
+                    lista.Add(data["DescripcionDepartamento"].ToString());
+                    lista.Add(data["IdPer_vac_Dist"].ToString());
+                    solicitudes.Add(lista);
+                }
+            }
+            else
+            {
+                solicitudes = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return solicitudes;
+        }
+        public List<List<string>> sp_TPeriodosVacaciones_retrieve_solicitudes_aprobadas(int Usuario_id)
+        {
+            List<List<string>> solicitudes = new List<List<string>>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPeriodosVacaciones_retrieve_solicitudes_aprobadas", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    List<string> lista = new List<string>();
+                    lista.Add(data["Empleado_id"].ToString());
+                    lista.Add(data["Nombre"].ToString());
+                    lista.Add(data["Fecha_Inicio"].ToString());
+                    lista.Add(data["Fecha_Fin"].ToString());
+                    lista.Add(data["Dias"].ToString());
+                    lista.Add(data["Empresa_id"].ToString());
+                    lista.Add(data["NombreEmpresa"].ToString());
+                    lista.Add(data["DescripcionPuesto"].ToString());
+                    lista.Add(data["DescripcionDepartamento"].ToString());
+                    lista.Add(data["IdPer_vac_Dist"].ToString());
+                    solicitudes.Add(lista);
+                }
+            }
+            else
+            {
+                solicitudes = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return solicitudes;
+        }
+        public List<List<string>> sp_TPeriodosVacaciones_retrieve_solicitudes_rechazadas(int Usuario_id)
+        {
+            List<List<string>> solicitudes = new List<List<string>>();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_TPeriodosVacaciones_retrieve_solicitudes_rechazadas", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", Usuario_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    List<string> lista = new List<string>();
+                    lista.Add(data["Empleado_id"].ToString());
+                    lista.Add(data["Nombre"].ToString());
+                    lista.Add(data["Fecha_Inicio"].ToString());
+                    lista.Add(data["Fecha_Fin"].ToString());
+                    lista.Add(data["Dias"].ToString());
+                    lista.Add(data["Empresa_id"].ToString());
+                    lista.Add(data["NombreEmpresa"].ToString());
+                    lista.Add(data["DescripcionPuesto"].ToString());
+                    lista.Add(data["DescripcionDepartamento"].ToString());
+                    lista.Add(data["IdPer_vac_Dist"].ToString());
+                    solicitudes.Add(lista);
+                }
+            }
+            else
+            {
+                solicitudes = null;
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return solicitudes;
         }
     }
 }

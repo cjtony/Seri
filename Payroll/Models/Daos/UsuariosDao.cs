@@ -1,6 +1,7 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -54,5 +55,33 @@ namespace Payroll.Models.Daos
             }
             return usuBean;
         }
+        public List<string> sp_CUsuarios_chagePassword(int iduser, string username, string password)
+        {
+            List<string> list = new List<string>();
+            string encryptPassword = "";
+            encryptPassword = Encriptamiento.SHA512(password);
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_CUsuarios_chagePassword", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario_id", iduser));
+            cmd.Parameters.Add(new SqlParameter("@ctrlUsuario", username));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPassword", encryptPassword));
+            SqlDataReader data = cmd.ExecuteReader();
+            if (data.Read())
+            {
+                list.Add(data["iFlag"].ToString());
+                list.Add(data["sRespuesta"].ToString());
+            }
+            else
+            {
+                list.Add("1");
+                list.Add("Error de conexion con el servidor, revisa tu conexión a internet");
+            }
+            cmd.Dispose(); data.Close(); conexion.Close();
+            return list;
+        }
+
     }
 }

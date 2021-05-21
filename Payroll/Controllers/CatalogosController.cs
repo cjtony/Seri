@@ -1,5 +1,6 @@
 ﻿using Payroll.Models.Beans;
 using Payroll.Models.Daos;
+using Payroll.Models.Utilerias;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +13,7 @@ namespace Payroll.Controllers
     public class CatalogosController : Controller
     {
         // GET: PETICIONES
-        public PartialViewResult VistaCatalogos()
+        public PartialViewResult Encriptamiento()
         {
             return PartialView();
         }
@@ -575,7 +576,7 @@ namespace Payroll.Controllers
             List<string> ResutLog = new List<string>();
             int i;
             string errorh = "Error en la linea: ";
-            
+
             for (i = 0; i < table.Rows.Count; i++)
             {
 
@@ -598,14 +599,14 @@ namespace Payroll.Controllers
                 if (isValidDate4 == 0) { ResutLog.Add(errorh + (i + 1) + ", El formato de fecha para Fecha Proceso es incorrecto a dd/mm/aaaa"); }
 
                 var resultExistePeriodos = Dao.Valida_PeriodoExistente(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Anio"].ToString(), table.Rows[i]["TipoPeriodo"].ToString(), table.Rows[i]["Periodo"].ToString());
-                if (resultExistePeriodos > 0 && resultExistePeriodos < 100) { ResutLog.Add(errorh + (i + 1) + ", La empresa " + table.Rows[i]["Empresa_id"].ToString() +" tipo periodo "+ table.Rows[i]["TipoPeriodo"].ToString() + " en el año " + table.Rows[i]["Anio"].ToString() + " ya cuenta con un periodo " + table.Rows[i]["Periodo"].ToString()); }
+                if (resultExistePeriodos > 0 && resultExistePeriodos < 100) { ResutLog.Add(errorh + (i + 1) + ", La empresa " + table.Rows[i]["Empresa_id"].ToString() + " tipo periodo " + table.Rows[i]["TipoPeriodo"].ToString() + " en el año " + table.Rows[i]["Anio"].ToString() + " ya cuenta con un periodo " + table.Rows[i]["Periodo"].ToString()); }
                 else if (resultExistePeriodos == 100) { ResutLog.Add(errorh + (i + 1) + ", El año " + table.Rows[i]["Anio"].ToString() + " se encuentra fuera del rango valido para insertar periodos."); }
 
 
             }
 
             if (ResutLog.Count == 0)
-            {   
+            {
                 for (int k = 0; k < table.Rows.Count; k++)
                 {
                     Dao.InsertaCargaMasivaPeriodos(table.Rows[k]);
@@ -637,5 +638,26 @@ namespace Payroll.Controllers
             Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Fecha_Pago(Empresa_id, editid, editfpago);
             return Json(Lista);
         }
+        ////////////////////////////////////////////////////////
+        ////////////// PRUEBAS DE ENCRIPTAMIENTO  //////////////
+        ////////////////////////////////////////////////////////
+        [HttpPost]
+        public JsonResult Encrypt(string txt) {
+            string txt_encrypted;
+            Encriptamiento crypter = new Encriptamiento();
+            txt_encrypted = crypter.AES256Encrypt(txt);
+            return Json(txt_encrypted);
+        }
+        ////////////////////////////////////////////////////////
+        [HttpPost]
+        public JsonResult Decrypt(string txt)
+        { 
+            string txt_decrypted;
+            Encriptamiento crypter = new Encriptamiento();
+            txt_decrypted = crypter.AES256Decrypt(txt);
+            return Json(txt_decrypted);
+        }
+        ////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////
     }
 }
