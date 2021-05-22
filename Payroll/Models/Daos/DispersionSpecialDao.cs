@@ -73,6 +73,38 @@ namespace Payroll.Models.Daos
             return empresasBeans;
         }
 
+        public List<DatosDepositosBancariosBean> sp_Procesa_Cheques_Total_Interbancario_Special(int keyConfig, int typePeriod, int numberPeriod, int year, int group, int mirror, int bank)
+        {
+            List<DatosDepositosBancariosBean> datosDepositos = new List<DatosDepositosBancariosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Total_Interbancario_Special", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Configuracion_id", keyConfig));
+                cmd.Parameters.Add(new SqlParameter("@Tipo_Periodo_id", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@Grupo_id", group));
+                cmd.Parameters.Add(new SqlParameter("@Espejo", mirror));
+                cmd.Parameters.Add(new SqlParameter("@Banco_id", bank));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows) {
+                    while (dataReader.Read()) {
+                        DatosDepositosBancariosBean datos = new DatosDepositosBancariosBean();
+                        datos.iIdBanco = Convert.ToInt32(dataReader["Banco"]);
+                        datos.iCantidad = Convert.ToInt32(dataReader["Cantidad"]);
+                        datos.sImporte = dataReader["Importe"].ToString();
+                        datosDepositos.Add(datos);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datosDepositos;
+        }
         public List<DatosDepositosBancariosBean> sp_Procesa_Cheques_Total_Nomina_Special(int keyConfig, int typePeriod, int numberPeriod, int year, int group, int mirror, int bank)
         {
             List<DatosDepositosBancariosBean> datosDepositos = new List<DatosDepositosBancariosBean>();

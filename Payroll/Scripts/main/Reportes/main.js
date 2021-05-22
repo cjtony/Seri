@@ -392,7 +392,7 @@
                             </div>
                         </div>
                     `;
-                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP") {
+                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP" || typeReportselect.value == "BAJACREDITOS") {
                     contentParameters.innerHTML += `
                         <div class="row mt-3 animated fadeInDown"> 
                             <div class="col-md-4 offset-2">
@@ -610,6 +610,16 @@
                     await fGenerateReportAccumulatedCrusaders(optionBusiness, keyBusinessOpt);
                 } else if (typeReport == "RECINOMI") {
                     await fGenerateReportReceiptPayroll(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "ESTRUCTURA") {
+                    await fGenerateReportEstructure(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "PAGOEFECTIVO") {
+                    await fGenerateReportEmployeesTypePaidCash(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "VACACIONES") {
+                    await fGenerateReportHolidaysEmployees(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "PENSIONESALIM") {
+                    await fGenerateReportPensionsFood(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "BAJACREDITOS") {
+                    await fGenerateReportLowCreditInfonavit(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -908,6 +918,260 @@
                 location.reload();
             } 
         }catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de bajas de creditos infonavit
+    fGenerateReportLowCreditInfonavit = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) { 
+                const paramDateS = document.getElementById('paramDateS');
+                const paramDateE   = document.getElementById('paramDateE'); 
+                if (paramDateS.value != "") {
+                    if (paramDateE.value != "") {
+                        const dataSend = {
+                            dateStart: parseInt(paramDateS.value), dateEnd: parseInt(paramDateE.value),
+                            option: String(option), keyOption: parseInt(keyOption)
+                        };
+                        console.log(dataSend);
+                        $.ajax({
+                            url: "../Reportes/GenerateReportLowCreditInfonavit",
+                            type: "POST",
+                            data: dataSend,
+                            beforeSend: () => {
+                                fDisabledButtonsRep();
+                            }, success: (data) => {
+                                console.log(data);
+                                setTimeout(() => {
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    fEnabledButtonsRep();
+                                }, 2000);
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+                    } else {
+                        fShowTypeAlert('Atención', 'Ingrese el periodo final', 'warning', paramDateE, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Ingrese el periodo de inicio', 'warning', paramDateS, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de pensiones alimenticias
+    fGenerateReportPensionsFood = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const dataSend = { option: String(option), keyOption: parseInt(keyOption) };
+                $.ajax({
+                    url: "../Reportes/GenerateReportPensionsFood",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        fDisabledButtonsRep();
+                    }, success: (data) => {
+                        console.log(data);
+                        setTimeout(() => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, 2000);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de vacaciones
+    fGenerateReportHolidaysEmployees = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const dataSend = { option: String(option), keyOption: parseInt(keyOption) };
+                $.ajax({
+                    url: "../Reportes/GenerateReportHolidaysEmployees",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        fDisabledButtonsRep();
+                    }, success: (data) => {
+                        console.log(data);
+                        setTimeout(() => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, 2000);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de empleados con tipo de pago 1
+    fGenerateReportEmployeesTypePaidCash = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const dataSend = { option: String(option), keyOption: parseInt(keyOption) };
+                $.ajax({
+                    url: "../Reportes/GenerateReportEmployeesTypePaidCash",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        fDisabledButtonsRep();
+                    }, success: (data) => {
+                        console.log(data);
+                        setTimeout(() => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, 2000);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de estructura
+    fGenerateReportEstructure = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDate = document.getElementById('paramDate');
+                if (paramDate.value != "") {
+                    const dataSend = { option: String(option), keyOption: parseInt(keyOption), date: paramDate.value };
+                    $.ajax({
+                        url: "../Reportes/GenerateReportEstructure",
+                        type: "POST",
+                        data: dataSend,
+                        beforeSend: () => {
+                            fDisabledButtonsRep();
+                        }, success: (data) => {
+                            console.log(data);
+                            setTimeout(() => {
+                                if (data.Bandera === true && data.MensajeError === "none") {
+                                    if (data.Rows > 0) {
+                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                    } else {
+                                        fShowContentNoDataReport(contentGenerateRep);
+                                    }
+                                } else {
+                                    alert('Algo fallo al realizar el reporte');
+                                    location.reload();
+                                }
+                                fEnabledButtonsRep();
+                            }, 2000);
+                        }, error: (jqXHR, exception) => {
+                            fcaptureaerrorsajax(jqXHR, exception);
+                        }
+                    });
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo fecha hasta personal activo', 'warning', paramDate, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
             if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
             } else if (error instanceof TypeError) {
