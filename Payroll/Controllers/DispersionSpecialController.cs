@@ -1628,7 +1628,7 @@ namespace Payroll.Controllers
                 foreach (BancosBean bean in bancosBeans) {
                     bankResult    = bean.iIdBanco;
                     nameBankResult = bean.sNombreBanco;
-                    listDatosDepositosBancariosBeans = dispersionSpecialDao.sp_Procesa_Cheques_Total_Nomina_Special(bean.iConfiguracion, typePeriod, numberPeriod, yearPeriod, bean.iGrupoId, mirror, bankResult);
+                    listDatosDepositosBancariosBeans = dispersionSpecialDao.sp_Procesa_Cheques_Total_Interbancario_Special(bean.iConfiguracion, typePeriod, numberPeriod, yearPeriod, bean.iGrupoId, mirror, bankResult);
                     if (mirror == 0) {
                         listDatosProcesaChequesNominaBean = dispersionSpecialDao.sp_Procesa_Cheques_Interbancario_Special(bean.iGrupoId, bean.iConfiguracion, bean.iIdBanco, 0, yearPeriod, typePeriod, numberPeriod);
                     } else {
