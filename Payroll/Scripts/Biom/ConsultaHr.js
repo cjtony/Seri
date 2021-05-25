@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-     /// declaracion de varioables
+    /// declaracion de varioables
 
     const DropEmpresa = document.getElementById('DropEmpresa');
     const TxtTurno = document.getElementById('TxtTurno');
@@ -14,16 +14,33 @@
     const DropChekTur = document.getElementById('DropChekTur');
     const DropChekPau = document.getElementById('DropChekPau');
     const DropDiasDesc = document.getElementById('DropDiasDesc');
-   
+
+    // pantalla Act
+
+    const DropEmpAct = document.getElementById('DropEmpAct');
+    const TxtTurnoAct = document.getElementById('TxtTurnoAct');
+    const DescripcionhrAct = document.getElementById('DescripcionhrAct');
+    const DropCheckEmpleAct = document.getElementById('DropCheckEmpleAct');
+    const TxtHrEntAct = document.getElementById('TxtHrEntAct');
+    const TxtHrSalAct = document.getElementById('TxtHrSalAct');
+    const DropChekComAct = document.getElementById('DropChekComAct');
+    const TxtHrEntPauAct = document.getElementById('TxtHrEntPauAct');
+    const TxtHrSalPauAct = document.getElementById('TxtHrSalPauAct');
+    const DropChekTurAct = document.getElementById('DropChekTurAct');
+    const DropChekPauAct = document.getElementById('DropChekPauAct');
+    const DropDiasDescAct = document.getElementById('DropDiasDescAct');
+
+
     const btninserHr = document.getElementById('btninserHr');
-
-
+    const btnActHr = document.getElementById('btnActHr');
 
 
     FListadoEmpresa = () => {
         $("#DropEmpresa").empty();
         $('#DropEmpresa').append('<option value="0" selected="selected">Selecciona</option>');
-       $.ajax({
+        $("#DropEmpAct").empty();
+        $('#DropEmpAct').append('<option value="0" selected="selected">Selecciona</option>');     
+        $.ajax({
             url: "../Nomina/LisEmpresas",
             type: "POST",
             data: JSON.stringify(),
@@ -31,16 +48,13 @@
             success: (data) => {
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("DropEmpresa").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+                    document.getElementById("DropEmpAct").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
                 }
             }
         });
-
     };
     FListadoEmpresa();
 
-
-
-  
     FInsertHorario = () => {
        
       
@@ -82,13 +96,16 @@
     btninserHr.addEventListener('click', FInsertHorario);
 
     DTBHorarios = () => {
+
+        $("#dTabHrDia").jqxGrid('clear')
         $.ajax({
             url: "../RH/RetrieveHorarios",
             type: "POST",
             data: JSON.stringify(),
             success: (data) => {
+                console.log(data);
                 if (data[0].sMensaje == "success") {
-                    console.log('Entro aqui');
+                   
                     var source =
                     {
                         localdata: data,
@@ -117,17 +134,60 @@
                     $("#dTabHrDia").jqxGrid(
                         {
                             
-                            width: 652,
+                            width: 750,
                             source: dataAdapter,
                             columnsresize: true,
                             columns: [
-                                { text: 'Empresa', datafield: 'sNombreEmpresa', width: 110 },
+                                { text: 'Empresa', datafield: 'sNombreEmpresa', width: 100 },
                                 { text: 'Descripcion', datafield: 'sDescrip', width: 70 },
                                 { text: 'No. Turno', datafield: 'iTurno', width: 60 },
                                 { text: 'Hora Entrada ', datafield: 'sHrEnt', width: 80 },
                                 { text: 'Hora Salida', datafield: 'sHrSal', width: 80 },
-                                { text: 'Hora de Salida Pausa', datafield: 'sHrSalCom', whidt: 145 },
-                                { text: 'Hora de Entrada pausa', datafield: 'sHrEntCom', whidt: 145 },
+                                { text: 'Hora de Salida Pausa', datafield: 'sHrSalCom', width: 130 },
+                                { text: 'Hora de Entrada pausa', datafield: 'sHrEntCom', width: 135 },
+                                { text: 'Edit', datafield: 'Edit', columntype: 'button', width: 50, cellsrenderer: function () {
+                                        return "Edit"; 
+                                    }, buttonclick: function (row) {
+                                        // open the popup window when the user clicks a button.
+                                        editrow = row;
+                                        var offset = $("#dTabHrDia").offset();
+                                        var dataRecord = $("#dTabHrDia").jqxGrid('getrowdata', editrow);
+                                        $("#btnFloActu").click();
+
+                                        for (var i = 0; i < DropEmpAct.length; i++) {
+                                            if (DropEmpAct.options[i].text == dataRecord.sNombreEmpresa) {
+                                                // seleccionamos el valor que coincide
+                                                DropEmpAct.selectedIndex = i;
+                                            }
+
+                                        }
+                                        TxtTurnoAct.value = dataRecord.iTurno;
+                                        DescripcionhrAct.value = dataRecord.sDescrip;
+                                        DropCheckEmpleAct.selectedIndex = dataRecord.iTipCheckNorm;
+                                        TxtHrEntAct.value = dataRecord.sHrEnt;
+                                        TxtHrSalAct.value = dataRecord.sHrSal;                
+                                        DropChekComAct.selectedIndex = dataRecord.iTipCheckPausa;
+                                        TxtHrSalPauAct.value = dataRecord.sHrSalCom;
+                                        TxtHrEntPauAct.value = dataRecord.sHrEntCom;
+                                        DropChekTurAct.selectedIndex = dataRecord.iTipoTurno;
+                                        DropChekPauAct.selectedIndex = dataRecord.iTipoPausa;
+                                        DropDiasDescAct.selectedIndex = dataRecord.iDiasDesc;
+                 
+                                    }
+                                },
+                                {
+                                    text: 'Eliminar', datafield: 'Delet', columntype: 'button', width: 50, cellsrenderer: function () {
+                                        return "Delet";
+                                    }, buttonclick: function (row) {
+                                        // open the popup window when the user clicks a button.
+                                        deletrow = row;
+                                        var offset = $("#dTabHrDia").offset();
+                                        var dataRecord2 = $("#dTabHrDia").jqxGrid('getrowdata', deletrow);              
+                                        console.log('Eliminar registro'+dataRecord2.iIdHorario);
+                                        FDelet();
+
+                                    }
+                                },
                                ]
                         });
                 }
@@ -138,7 +198,188 @@
         });
     }
     DTBHorarios();
-   
+
+
+    FActualiza = () => {
+        var dataRecord = $("#dTabHrDia").jqxGrid('getrowdata', editrow);
+        var idHr = dataRecord.iIdHorario
+       
+        if (TxtTurnoAct.value != dataRecord.iTurno || DescripcionhrAct.value != dataRecord.sDescrip
+            || DropCheckEmpleAct.selectedIndex != dataRecord.iTipCheckNorm
+            || TxtHrEntAct.value != dataRecord.sHrEnt
+            || TxtHrSalAct.value != dataRecord.sHrSal
+            || DropChekComAct.selectedIndex != dataRecord.iTipCheckPausa
+            || TxtHrSalPauAct.value != dataRecord.sHrSalCom
+            || TxtHrEntPauAct.value != dataRecord.sHrEntCom
+            || DropChekTurAct.selectedIndex != dataRecord.iTipoTurno
+            || DropChekPauAct.selectedIndex != dataRecord.iTipoPausa
+            || DropDiasDescAct.selectedIndex != dataRecord.iDiasDesc) {
+
+            const DataInser = {
+                HrId: dataRecord.iIdHorario, turno: TxtTurnoAct.value, sDescripcion: DescripcionhrAct.value, sHoraEntrada: TxtHrEntAct.value, shoraSalida: TxtHrSalAct.value, sHrEntradaPa: TxtHrSalPauAct.value, sHrSalidaPa: TxtHrEntPauAct.value, iTipoTurnocheck: DropCheckEmpleAct.selectedIndex
+                , iTipoPausacheck: DropChekComAct.selectedIndex, iDiasDes: DropDiasDescAct.selectedIndex, iTipoTurno: DropChekTurAct.selectedIndex, iTipoPausa: DropChekPauAct.selectedIndex
+            }
+
+
+            $.ajax({
+                url: "../RH/UpdateHorario",
+                type: "POST",
+                data: DataInser,
+                success: function (data) {
+                    if (data.sMensaje == "success") {
+                        DTBHorarios();
+                        fshowtypealert('Horario', 'Actualización correcta', 'success');
+                    }
+
+                    if (data.sMensaje == "error") {
+
+                        fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                    }
+                },
+            });
+        }
+        else {
+
+            fshowtypealert('Horario', 'Ningun dato es distinto', 'warning');
+        }
+
+
+    };
+
+    btnActHr.addEventListener('click', FActualiza);
+
+    FDelet = () => {
+        var dataRecord = $("#dTabHrDia").jqxGrid('getrowdata', deletrow);
+        const Delet = {  HrId: dataRecord.iIdHorario}
+        $.ajax({
+            url: "../RH/DeletHorario",
+                type: "POST",
+                 data: Delet,
+                success: function (data) {
+                    if (data.sMensaje == "success") {
+                        DTBHorarios();
+                        fshowtypealert('Horario', 'Eliminado correcta', 'success');
+                    }
+                    if (data.sMensaje == "error") {
+
+                        fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                    }
+                },
+        });
+    }
+
+
+
+    /////////////////// Horario Semanal //////////////////
+
+
+
+
+    DTBHrSem = () => {
+
+        $("#dTabHrSem").jqxGrid('clear')
+        $.ajax({
+            url: "../RH/RetrieveHrSemanl",
+            type: "POST",
+            data: JSON.stringify(),
+            success: (data) => {
+                if (data[0].sMensaje == "success") {
+                    var source =
+                    {
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdHrSM', type: 'int' },
+                                { name: 'iEmpId', type: 'int' },
+                                { name: 'iNoHr', type: 'int' },
+                                { name: 'sdescrip', type: 'string' },
+                                { name: 'iLu', type: 'int' },
+                                { name: 'iMa', type: 'int' },
+                                { name: 'iMe', type: 'int' },
+                                { name: 'iJu', type: 'int' },
+                                { name: 'iVi', type: 'int' },
+                                { name: 'iSa', type: 'int' },
+                                { name: 'iDo', type: 'int' },
+                                { name: 'iUsuId', type: 'int' },
+                                { name: 'iCancel', type: 'int' }
+
+                            ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#dTabHrSem").jqxGrid(
+                        {
+
+                            width:670,
+                            source: dataAdapter,
+                            columnsresize: true,
+                            columns: [
+                                { text: 'No. Horario', datafield: 'iIdHrSM', width: 70 },
+                                { text: 'No. Emp', datafield: 'iEmpId', width: 60 },
+                                { text: 'Descripcion', datafield: 'sdescrip', width: 80 },
+                                { text: 'Lunes', datafield: 'iLu', width: 50 },
+                                { text: 'Martes', datafield: 'iMa', width: 50 },
+                                { text: 'Miercoles', datafield: 'iMe', width: 50 },
+                                { text: 'Jueves', datafield: 'iJu', width: 50 },
+                                { text: 'viernes', datafield: 'iVi', width: 50 },
+                                { text: 'Sabado', datafield: 'iSa', width: 50 },
+                                { text: 'Domingo', datafield: 'iDo', width: 60 },
+                                {
+                                    text: 'Edit', datafield: 'Edit', columntype: 'button', width: 50, cellsrenderer: function () {
+                                        return "Edit";
+                                    }, buttonclick: function (row) {
+                                        // open the popup window when the user clicks a button.
+                                        editrow = row;
+                                        var offset = $("#dTabHrSem").offset();
+                                        var dataRecord = $("#dTabHrSem").jqxGrid('getrowdata', editrow);
+                                        //$("#btnFloActu").click();
+
+                                        for (var i = 0; i < DropEmpAct.length; i++) {
+                                            if (DropEmpAct.options[i].text == dataRecord.sNombreEmpresa) {
+                                                // seleccionamos el valor que coincide
+                                                DropEmpAct.selectedIndex = i;
+                                            }
+
+                                        }
+                                        TxtTurnoAct.value = dataRecord.iTurno;
+                                        DescripcionhrAct.value = dataRecord.sDescrip;
+                                        DropCheckEmpleAct.selectedIndex = dataRecord.iTipCheckNorm;
+                                        TxtHrEntAct.value = dataRecord.sHrEnt;
+                                        TxtHrSalAct.value = dataRecord.sHrSal;
+                                        DropChekComAct.selectedIndex = dataRecord.iTipCheckPausa;
+                                        TxtHrSalPauAct.value = dataRecord.sHrSalCom;
+                                        TxtHrEntPauAct.value = dataRecord.sHrEntCom;
+                                        DropChekTurAct.selectedIndex = dataRecord.iTipoTurno;
+                                        DropChekPauAct.selectedIndex = dataRecord.iTipoPausa;
+                                        DropDiasDescAct.selectedIndex = dataRecord.iDiasDesc;
+
+                                    }
+                                },
+                                {
+                                    text: 'Eliminar', datafield: 'Delet', columntype: 'button', width: 50, cellsrenderer: function () {
+                                        return "Delet";
+                                    }, buttonclick: function (row) {
+                                        // open the popup window when the user clicks a button.
+                                        deletrow = row;
+                                        var offset = $("#dTabHrSem").offset();
+                                        var dataRecord2 = $("#dTabHrSem").jqxGrid('getrowdata', deletrow);
+                                      
+                                     
+                                    }
+                                },
+                            ]
+                        });
+                }
+                else {
+                    fshowtypealert('Error', 'Contacte a sistemas ', 'error');
+                }
+            }
+        });
+    }
+    DTBHrSem();
+
+
+
 
 
     /* FUNCION QUE MUESTRA ALERTAS */

@@ -1926,8 +1926,11 @@ namespace Payroll.Models.Daos
                                                         {
                                                             if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
                                                             {
-
+                                                                
                                                                 concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
+                                                                if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa== 2077 || IdEmpresa==2078) {
+                                                                        concepto = "Honorarios Asimilados";
+                                                                    }
 
                                                                 if (masivo == 3)
                                                                 {
@@ -1942,7 +1945,6 @@ namespace Payroll.Models.Daos
                                                                 concepto = "Asimilados a salarios {" + sDiasEfectivos + " Dias}";
                                                                 lengRenglon = "001";
                                                             }
-
 
                                                         }
                                                     }

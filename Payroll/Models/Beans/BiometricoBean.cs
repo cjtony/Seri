@@ -36,4 +36,23 @@ namespace Payroll.Models.Beans
 
     }
 
+    public class EmprHrSemanalBea {
+        public int  iIdHrSM { get;set;}
+        public int iEmpId { get; set; }
+        public string sEmp { get; set; }
+        public int iNoHr { get; set; }
+        public string sdescrip { get; set; }
+        public int iLu { get; set; }
+        public int iMa { get; set; }
+        public int iMe { get; set; }
+        public int iJu { get; set; }
+        public int iVi { get; set; }
+        public int iSa { get; set; }
+        public int iDo { get; set; }
+        public int iUsuId { get; set; }
+        public int iCancel { get; set; }
+        public string sMensaje { get; set; }
+
+    }
+
 }
