@@ -26,7 +26,7 @@
     const parameterDate     = `<input type="date" class="form-control form-control-sm" id="paramDate" value="${fechact}"/>`;
     const parameterYears    = `<input type="number" class="form-control form-control-sm" id="paramYearS"/>`;
     const parameterYearE    = `<input type="number" class="form-control form-control-sm" id="paramYearE"/>`;
-    const parameterNReng    = `<input type="number" class="form-control form-control-sm" id="paramNReng"/>`;
+    const parameterNReng    = `<input type="text" class="form-control form-control-sm" id="paramNReng"/>`;
     const parameterTEmpl    = `<input type="text" class="form-control form-control-sm" id="paramTEmpl"/>`;
     const parameterDateS    = '<input type="date" class="form-control form-control-sm" id="paramDateS"/>';
     const parameterDateE    = '<input type="date" class="form-control form-control-sm" id="paramDateE"/>';
@@ -367,32 +367,32 @@
                         <div class="row mt-3 animated fadeInDown">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="col-form-label font-labels">Año inicio</label> ${parameterYears}
+                                    <label class="col-form-label font-labels">Periodo inicio</label> ${parameterYears}
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="col-form-label font-labels">Año final</label> ${parameterYearE}
+                                    <label class="col-form-label font-labels">Periodo final</label> ${parameterYearE}
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="col-form-label font-labels">Tipo periodo</label> ${parameterTPer}
-                                </div>
-                            </div>
-                            <div class="col-md-4 offset-2">
                                 <div class="form-group">
                                     <label class="col-form-label font-labels">Numero renglones</label> ${parameterNReng}
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 offset-4">
                                 <div class="form-group">
-                                    <label class="col-form-label font-labels">Tipo de empleados</label> ${parameterTEmpl}
+                                    <label class="col-form-label font-labels">Tipo periodo</label> ${parameterTPer}
                                 </div>
                             </div>
                         </div>
                     `;
-                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP" || typeReportselect.value == "BAJACREDITOS") {
+                    //<div class="col-md-4">
+                    //    <div class="form-group">
+                    //        <label class="col-form-label font-labels">Tipo de empleados</label> ${parameterTEmpl}
+                    //    </div>
+                    //</div>
+                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP" || typeReportselect.value == "BAJACREDITOS" || typeReportselect.value == "AUMENFEC") {
                     contentParameters.innerHTML += `
                         <div class="row mt-3 animated fadeInDown"> 
                             <div class="col-md-4 offset-2">
@@ -620,6 +620,10 @@
                     await fGenerateReportPensionsFood(optionBusiness, keyBusinessOpt);
                 } else if (typeReport == "BAJACREDITOS") {
                     await fGenerateReportLowCreditInfonavit(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "AUMENFEC") {
+                    await fGenerateReportPayRiseDates(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "RECIRENG") {
+                    await fGenerateReportDetailOfPayrollLinesYearActually(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -918,6 +922,143 @@
                 location.reload();
             } 
         }catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera del reporte de detalle de renglones de nomina por empresa año actual
+    fGenerateReportDetailOfPayrollLinesYearActually = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramYearS = document.getElementById('paramYearS');
+                const paramYearE = document.getElementById('paramYearE');
+                const paramNReng = document.getElementById('paramNReng');
+                const paramTper  = document.getElementById('paramTper');
+                if (paramYearS.value != "") {
+                    if (paramYearE.value != "") {
+                        if (paramNReng.value != "" && paramNReng.value != ",") {
+                            if (paramTper.value != "") {
+                                let nLines = paramNReng.value;
+                                let endCharacter = paramNReng.value.charAt(paramNReng.value.length - 1);
+                                if (endCharacter == ",") {
+                                    nLines = paramNReng.value.substring(0, paramNReng.value.length - 1);
+                                }
+                                const dataSend = {
+                                    periodStart: paramYearS.value, periodEnd: paramYearE.value, lines: String(nLines).trim(),
+                                    typePeriod: parseInt(paramTper.value), option: String(option), keyOption: parseInt(keyOption)
+                                };
+                                console.log(dataSend);
+                                $.ajax({
+                                    url: "../Reportes/GenerateReportDetailOfPayrollLinesYearActually",
+                                    type: "POST",
+                                    data: dataSend,
+                                    beforeSend: () => {
+                                        fDisabledButtonsRep();
+                                    }, success: (data) => {
+                                        console.log(data);
+                                        setTimeout(() => {
+                                            if (data.Bandera === true && data.MensajeError === "none") {
+                                                if (data.Rows > 0) {
+                                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                                } else {
+                                                    fShowContentNoDataReport(contentGenerateRep);
+                                                }
+                                            } else {
+                                                alert('Algo fallo al realizar el reporte');
+                                                location.reload();
+                                            }
+                                            fEnabledButtonsRep();
+                                        }, 2000);
+                                    }, error: (jqXHR, exception) => {
+                                        fcaptureaerrorsajax(jqXHR, exception);
+                                    }
+                                });
+                            } else {
+                                fShowTypeAlert('Atención', 'Ingrese el tipo de periodo', 'warning', paramTper, 2);
+                            }
+                        } else {
+                            fShowTypeAlert('Atención', 'Ingrese los renglones', 'warning', paramNReng, 2);
+                        }
+                    } else {
+                        fShowTypeAlert('Atención', 'Ingrese el periodo final', 'warning', paramYearE, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Ingrese el periodo de inicio', 'warning', paramYearS, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de aumento de sueldos por rango de fechas
+    fGenerateReportPayRiseDates = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDateS = document.getElementById('paramDateS');
+                const paramDateE = document.getElementById('paramDateE');
+                if (paramDateS.value != "") {
+                    if (paramDateE.value != "") {
+                        const dataSend = {
+                            dateStart: paramDateS.value, dateEnd: paramDateE.value,
+                            option: String(option), keyOption: parseInt(keyOption)
+                        };
+                        console.log(dataSend);
+                        $.ajax({
+                            url: "../Reportes/GenerateReportPayRiseDates",
+                            type: "POST",
+                            data: dataSend,
+                            beforeSend: () => {
+                                fDisabledButtonsRep();
+                            }, success: (data) => {
+                                console.log(data);
+                                setTimeout(() => {
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    fEnabledButtonsRep();
+                                }, 2000);
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+                    } else {
+                        fShowTypeAlert('Atención', 'Ingrese el periodo final', 'warning', paramDateE, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Ingrese el periodo de inicio', 'warning', paramDateS, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
             if (error instanceof RangeError) {
                 console.error('RangeError: ', error.message);
             } else if (error instanceof TypeError) {

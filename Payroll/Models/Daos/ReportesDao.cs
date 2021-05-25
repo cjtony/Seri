@@ -1245,5 +1245,54 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
+        public DataTable sp_Datos_Reporte_Aumentos_Sueldos(string dateStart, string dateEnd, string option, int keyOption)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Aumentos_Sueldos", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@FechaInicio", dateStart));
+                cmd.Parameters.Add(new SqlParameter("@FechaFinal", dateEnd));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", option));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOption));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
+        public DataTable sp_Datos_Reporte_Detalle_Renglones_Nomina(string periodStart, string periodEnd, string lines, int typePeriod, string option, int keyOption)
+        {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Detalle_Renglones_Nomina", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@PeriodoInicio", periodStart));
+                cmd.Parameters.Add(new SqlParameter("@PeriodoFinal", periodEnd));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
+                cmd.Parameters.Add(new SqlParameter("@Renglones", lines));
+                cmd.Parameters.Add(new SqlParameter("@Anio", DateTime.Now.Year));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", option));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOption));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
     }
 }
