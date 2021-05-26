@@ -859,8 +859,12 @@
                         tipper.value       = data.Datos.iTipoPeriodo;
                         tipemp.value       = data.Datos.iTipoEmpleado_id;
                         nivemp.value       = data.Datos.iNivelEmpleado_id;
-                        tipjor.value       = data.Datos.iTipoJornada_id;
-                        clasif.value       = data.Datos.iClasif;
+                        tipjor.value = data.Datos.iTipoJornada_id;
+                        if (data.Datos.iClasif == '' || data.Datos.iClasif == '0') {
+                            clasif.value = 368;
+                        } else {
+                            clasif.value = data.Datos.iClasif;
+                        }
                         tipcon.value       = data.Datos.iTipoContrato_id;
                         tipcontra.value    = data.Datos.iTipoContratacion_id;
                         tiposueldo.value   = data.Datos.iTipoSueldo_id;
@@ -1597,7 +1601,7 @@
                 }
             }
             if (validatedatanom == 0) {
-                //console.log(datasend);
+                console.log(datasend);
                 $.ajax({
                     url: url,
                     type: "POST",

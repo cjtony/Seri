@@ -31,6 +31,8 @@
         try {
             const optionGroup    = document.getElementById('option-group');
             const typeDispersion = document.getElementById('type-dispersion');
+            const checkedMirror  = document.getElementById('ismirrorspecial').checked;
+            let   sendValueMirror = (checkedMirror) ? 1 : 0;
             if (optionGroup.value != "none") {
                 if (typeDispersion.value != "none") {
                     const dataSend = {
@@ -40,7 +42,7 @@
                         numberPeriod: parseInt(periodisS.value),
                         typePeriod: parseInt(typeperiodS.value),
                         dateDeposits: datedisS.value,
-                        mirror: 0
+                        mirror: parseInt(sendValueMirror)
                     };
                     console.log(dataSend);
                     $.ajax({

@@ -604,7 +604,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNom.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
-                                    if (detallesRenglon.dSaldo < 1)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, m + 2 + 31].Value = "";
                                     }
@@ -625,7 +625,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNomDeduc.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeduc[m], 0);
-                                    if (detallesRenglon.dSaldo < 1)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = "";
                                     }
@@ -648,7 +648,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNomEspejo.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo < 1)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, cant2 + m + 3 + 31].Value = "";
                                     }
@@ -665,7 +665,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNomDeducEspejo.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeducEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo < 1)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, cant3 + m + 3 + 31].Value = "";
                                     }
@@ -745,7 +745,7 @@ namespace Payroll.Controllers
 
                                 for (m = 0; m < RenglonesNom.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
-                                    if (detallesRenglon.dSaldo < 1) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, m + 2 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, m + 2 + 30].Style.Numberformat.Format = "0.00";
@@ -762,7 +762,7 @@ namespace Payroll.Controllers
 
                                 for (m = 0; m < RenglonesNomDeduc.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeduc[m], 0);
-                                    if (detallesRenglon.dSaldo < 1) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, cant1 + m + 2 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, cant1 + m + 2 + 30].Style.Numberformat.Format = "0.00";
@@ -779,7 +779,7 @@ namespace Payroll.Controllers
                                 Total_Percepciones_Espejo = 0;
                                 for (m = 0; m < RenglonesNomEspejo.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo < 1) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, cant2 + m + 3 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, cant2 + m + 3 + 30].Style.Numberformat.Format = "0.00";
@@ -792,7 +792,7 @@ namespace Payroll.Controllers
 
                                 for (m = 0; m < RenglonesNomDeducEspejo.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeducEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo < 1) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, cant3 + m + 3 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, cant3 + m + 3 + 30].Style.Numberformat.Format = "0.00";
@@ -1513,6 +1513,342 @@ namespace Payroll.Controllers
                     if (report != "") {
                         dataTable = reportDao.sp_Reporte_Catalogos_General(report);
                     }
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportEstructure(string option, int keyOption, string date)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "ESTRUCTURA";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "ESTRUCTURAE_" + keyOption.ToString() + "F_" + date.ToString().Replace("-","") + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Estructura(date, option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportEmployeesTypePaidCash(string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "ESTRUCTURA";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "REPORTEEMPLEADOSPAGO1E" + keyOption.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Empleados_Pago_Efectivo(option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportHolidaysEmployees(string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "VACACIONES";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "REPORTEVACACIONESE" + keyOption.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Vacaciones(option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportPensionsFood(string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "PENSIONES";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "PENSIONESALIMENTICASE" + keyOption.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Pensiones_Alimenticias(option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportLowCreditInfonavit(string dateStart, string dateEnd, string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "BAJASCREDITOSINFONAVIT";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "BAJAINFO_F" + dateStart.ToString().Replace("-","") + "_F" + dateEnd.ToString().Replace("-", "") + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Bajas_Credito_Infonavit(dateStart, dateEnd, option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportPayRiseDates(string dateStart, string dateEnd, string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "AUMENTOSSUELDO";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "AUMENFEC_E" + keyOption.ToString() + "_F" + dateStart.ToString().Replace("-", "") + "_F" + dateEnd.ToString().Replace("-", "") + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Aumentos_Sueldos(dateStart, dateEnd, option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportDetailOfPayrollLinesYearActually(string periodStart, string periodEnd, string lines, int typePeriod, string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "DETALLERENGLONES";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "RECIRENGA_" + DateTime.Now.Year.ToString() + "_P_" + periodStart.ToString().Replace("-", "") + "_P_  " + periodEnd.ToString().Replace("-", "") + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Detalle_Renglones_Nomina(periodStart, periodEnd, lines, typePeriod, option, keyOption);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
                         columnsDataTable = dataTable.Columns.Count + 1;

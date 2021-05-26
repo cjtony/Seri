@@ -480,8 +480,8 @@
                 </div>
                 <div class="col-md-3 text-center">
                     <div class="form-group form-check mt-1 rounded text-primary font-weight-bold mt-4" style="">
-                        <input type="checkbox" class="form-check-input" id="ismirrorspecial">
-                        <label class="form-check-label" for="ismirrorspecial">Espejo</label>
+                        <input type="checkbox" class="form-check-input" id="ismirrorspecial" checked>
+                        <label class="form-check-label" for="ismirrorspecial">Solo Espejo</label>
                     </div>
                 </div>
                 <div class="col-md-3 text-center">
@@ -560,7 +560,7 @@
                                             <div class="alert alert-info alert-dismissible fade show" role="alert">
                                               <strong> 
                                                 <i class="fas fa-info-circle mr-1"></i> Correcto!
-                                              </strong> La información bancaria ha sido desplegada.
+                                              </strong> La información bancaria ha sido desplegada (ESPEJO) .
                                               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                               </button>
@@ -582,7 +582,7 @@
                                             let nomBanco = "";
                                             for (let j = 0; j < data.DatosBancos.length; j++) {
                                                 if (data.DatosBancos[j].iIdBanco === data.DatosDepositos[i].iIdBanco) {
-                                                    nomBanco = "[" + data.DatosBancos[j].sSufijo + "] " + data.DatosBancos[j].sNombreBanco;
+                                                    nomBanco = data.DatosBancos[j].sNombreBanco;
                                                 }
                                             }
                                             document.getElementById("table-body-data-especial").innerHTML += `

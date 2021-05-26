@@ -7,6 +7,13 @@ namespace Payroll.Controllers
     {
 
         [HttpPost]
+        public JsonResult test()
+        {
+
+            return Json(new { });
+        }
+
+        [HttpPost]
         public JsonResult ClearValues()
         {
             Boolean flag = true;
