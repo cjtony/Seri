@@ -110,5 +110,102 @@ namespace Payroll.Models.Daos
             return list;
         }
 
+        // Actualiza CHorariosHD 
+        public EmpreHorarioBean sp_updateChora_Update_CHorarioHd(int CtrliIdHora, int CtrliTurno, string CtrlsDescrip, string CtrlsHrEntra, string CtrlsHrSalida, string CtrlsHrEntraPa, string CtrlsHrSalidaPA, int CtrliTipTurno, int CtrliTipPausa, int CtrlsDiasDesc, int CtrliTipoTruno, int CtrliTipoPausa, int Cancel,int UserID)
+        {
+            EmpreHorarioBean bean = new EmpreHorarioBean();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_updateChora_Update_CHorarioHd", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliHrId", CtrliIdHora));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTurno", CtrliTurno));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsDescripcion", CtrlsDescrip));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsHrEntra", CtrlsHrEntra));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsHrSal", CtrlsHrSalida));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsHrEntPau", CtrlsHrEntraPa));
+                cmd.Parameters.Add(new SqlParameter("@CtrlsHrSalPau", CtrlsHrSalidaPA));
+                cmd.Parameters.Add(new SqlParameter("@CtrliCheckNor", CtrliTipTurno));
+                cmd.Parameters.Add(new SqlParameter("@CtrliCheckHrPAu", CtrliTipPausa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliDiasDesc", CtrlsDiasDesc));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipTurno", CtrliTipoTruno));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipPausa", CtrliTipoPausa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliCacnel", Cancel));
+                cmd.Parameters.Add(new SqlParameter("@CtrliUsuario", UserID));
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    bean.sMensaje = "success";
+                }
+                else
+                {
+                    bean.sMensaje = "error";
+                }
+                cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
+        // consulta los horarios semanal de empresas
+        public List<EmprHrSemanalBea> sp_HrSemanal_Retrieve_ChorarioLn(int EmpresaId)
+        {
+            List<EmprHrSemanalBea> list = new List<EmprHrSemanalBea>();
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_HrSemanal_Retrieve_ChorarioLn", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliEmpId", EmpresaId));
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        EmprHrSemanalBea ls = new EmprHrSemanalBea();
+                        {
+                            ls.iIdHrSM = int.Parse(data["IdHr_Semanal"].ToString());
+                            ls.iEmpId = int.Parse(data["Empresa_id"].ToString());
+                            //ls.sEmp = data[""].ToString();
+                            ls.iNoHr = int.Parse(data["NoHorario"].ToString());
+                            ls.sdescrip = data["Descrip"].ToString();
+                            ls.iLu =int.Parse(data["Lunes"].ToString());
+                            ls.iMa =int.Parse(data["Martes"].ToString());
+                            ls.iMe =int.Parse(data["Miercoles"].ToString());
+                            ls.iJu =int.Parse(data["Jueves"].ToString());
+                            ls.iVi = int.Parse(data["Viernes"].ToString());
+                            ls.iSa = int.Parse(data["Sabado"].ToString());
+                            ls.iDo = int.Parse(data["Domingo"].ToString());
+                            ls.iUsuId = int.Parse(data["Usuario_Id"].ToString());
+                            ls.iCancel = int.Parse(data["Cancelado"].ToString());
+                            ls.sMensaje = "success";
+                        }
+                        list.Add(ls);
+                    }
+                }
+                else
+                {
+                    list = null;
+                }
+                data.Close(); cmd.Dispose(); conexion.Close(); cmd.Parameters.Clear();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+            return list;
+        }
+
+
+
     }
 }

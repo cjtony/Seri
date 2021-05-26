@@ -40,5 +40,38 @@ namespace Payroll.Controllers
             LTbProc = dao.sp_HorarioEmpresa_Retrieve_CHorarioHD(EmpresaID);
             return Json(LTbProc);
         }
+
+        //Update los horarios de la empresa
+        [HttpPost]
+        public JsonResult UpdateHorario(int HrId, int turno, string sDescripcion, string sHoraEntrada, string shoraSalida, string sHrEntradaPa, string sHrSalidaPa, int iTipoTurnocheck, int iTipoPausacheck, int iDiasDes, int iTipoTurno, int iTipoPausa)
+        {
+            EmpreHorarioBean bean = new EmpreHorarioBean();
+            FuncionBiometricoDao dao = new FuncionBiometricoDao();
+            int iIdusuario = int.Parse(Session["iIdUsuario"].ToString());
+            bean = dao.sp_updateChora_Update_CHorarioHd(HrId, turno, sDescripcion, sHoraEntrada, shoraSalida, sHrEntradaPa, sHrSalidaPa, iTipoTurnocheck, iTipoPausacheck, iDiasDes, iTipoTurno, iTipoPausa,0, iIdusuario);
+            return Json(bean);
+        }
+
+        //Eliminar Datos de tabla chorarios
+        [HttpPost]
+        public JsonResult DeletHorario(int HrId)
+        {
+            EmpreHorarioBean bean = new EmpreHorarioBean();
+            FuncionBiometricoDao dao = new FuncionBiometricoDao();
+            int iIdusuario = int.Parse(Session["iIdUsuario"].ToString()); 
+            String text = "";
+            bean = dao.sp_updateChora_Update_CHorarioHd(HrId,0, text, text, text, text, text, 0, 0, 0, 0, 0, 1, iIdusuario);
+            return Json(bean);
+        }
+
+        //  Tabla de HorarioLn
+        public JsonResult RetrieveHrSemanl()
+        {
+            int EmpresaID = int.Parse(Session["IdEmpresa"].ToString());
+            List<EmprHrSemanalBea> LTbProc = new List<EmprHrSemanalBea>();
+            FuncionBiometricoDao dao = new FuncionBiometricoDao();
+            LTbProc = dao.sp_HrSemanal_Retrieve_ChorarioLn(EmpresaID);
+            return Json(LTbProc);
+        }
     }
 }

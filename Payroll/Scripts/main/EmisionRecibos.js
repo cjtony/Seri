@@ -623,12 +623,6 @@
     //muestra las facturas con sellos elaboradas 
     btnVerEje.addEventListener('click', '');
 
- 
-
-
-
-
-
 
 });
 
