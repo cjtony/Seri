@@ -310,20 +310,20 @@
                     $("#dTabHrSem").jqxGrid(
                         {
 
-                            width:670,
+                            width:730,
                             source: dataAdapter,
                             columnsresize: true,
                             columns: [
                                 { text: 'No. Horario', datafield: 'iIdHrSM', width: 70 },
                                 { text: 'No. Emp', datafield: 'iEmpId', width: 60 },
-                                { text: 'Descripcion', datafield: 'sdescrip', width: 80 },
-                                { text: 'Lunes', datafield: 'iLu', width: 50 },
+                                { text: 'Descripcion', datafield: 'sdescrip', width: 120 },
+                                { text: 'Lunes', datafield: 'iLu', width: 40 },
                                 { text: 'Martes', datafield: 'iMa', width: 50 },
-                                { text: 'Miercoles', datafield: 'iMe', width: 50 },
+                                { text: 'Miercoles', datafield: 'iMe', width: 60 },
                                 { text: 'Jueves', datafield: 'iJu', width: 50 },
                                 { text: 'viernes', datafield: 'iVi', width: 50 },
                                 { text: 'Sabado', datafield: 'iSa', width: 50 },
-                                { text: 'Domingo', datafield: 'iDo', width: 60 },
+                                { text: 'Domingo', datafield: 'iDo', width: 70 },
                                 {
                                     text: 'Edit', datafield: 'Edit', columntype: 'button', width: 50, cellsrenderer: function () {
                                         return "Edit";
@@ -356,7 +356,7 @@
                                     }
                                 },
                                 {
-                                    text: 'Eliminar', datafield: 'Delet', columntype: 'button', width: 50, cellsrenderer: function () {
+                                    text: 'Eliminar', datafield: 'Delet', columntype: 'button', width: 60, cellsrenderer: function () {
                                         return "Delet";
                                     }, buttonclick: function (row) {
                                         // open the popup window when the user clicks a button.

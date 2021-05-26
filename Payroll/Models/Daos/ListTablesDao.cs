@@ -915,6 +915,18 @@ namespace Payroll.Models.Daos
                         {
                             ls.iCgTipoPago =int.Parse(data["Cg_tipoPago_id"].ToString());
                         }
+
+                        if (data["Cg_pago_por"].ToString() == null)
+                        {
+                            ls.iPagopor = 0;
+                            ls.sMensaje = "error";
+                        }
+                        else
+                        {
+                            ls.iPagopor = int.Parse(data["Cg_pago_por"].ToString());
+                        }
+
+
                         if (data["Ult_sdi"].ToString() == null)
                         {
                             ls.dSalarioInt = 0;
@@ -1259,10 +1271,7 @@ namespace Payroll.Models.Daos
                         Nombre = ListEmple[i].sNombreEmpleado.Split(' '); //.sNombreCompleto.Split(' ');
                         NumEmpleado = ListEmple[i].iIdEmpleado;   //ListEmple[i].iIdEmpleado;
                         id = ListEmple[i].iIdEmpleado;
-                        if (id == 14848) {
-
-                            string s = "entro";
-                        }
+                      
 
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                         if (Nombre.Length > 0)
@@ -1510,8 +1519,6 @@ namespace Payroll.Models.Daos
                                             NomArch = NomArch + ListTotales[0].iIdTipoPeriodo + "00" + LFechaPerido[0].iPeriodo + tipoNom + "_N" + id;
                                         }
 
-
-
                                         ArchivoXmlFile = ArchivoXmlFile + NomArch;
 
                                         NomArchXML.Add(ArchivoXmlFile);
@@ -1577,8 +1584,16 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteStartElement(Prefijo, "Complemento", EspacioDeNombre);
                                         xmlWriter.WriteStartElement(Prefijo2, "Nomina", EspacioDeNombreNomina);
                                         xmlWriter.WriteAttributeString("Version", "1.2");
-                                        xmlWriter.WriteAttributeString("TipoNomina", "O");
-                                        xmlWriter.WriteAttributeString("FechaPago", sFechaPago);
+                                            if (ListDatEmisor[0].iPagopor == 364) {
+                                                xmlWriter.WriteAttributeString("TipoNomina", "E");
+                                            }
+                                            if (ListDatEmisor[0].iPagopor != 364)
+                                            {
+                                                xmlWriter.WriteAttributeString("TipoNomina", "O");
+                                            }
+
+
+                                            xmlWriter.WriteAttributeString("FechaPago", sFechaPago);
                                         xmlWriter.WriteAttributeString("FechaInicialPago", sFechaInicialPago);
                                         xmlWriter.WriteAttributeString("FechaFinalPago", sFechaFinalPago);
 
@@ -1682,10 +1697,16 @@ namespace Payroll.Models.Daos
 
                                         }
 
-                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
-                                            xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
-                                        }
+                                        //if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
+                                        //    xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
+                                        //}
+                                          
 
+                                        if (ListDatEmisor[0].iPagopor != 364)
+                                        {
+                                                xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
+                                        }
+                                         
                                         xmlWriter.WriteAttributeString("xmlns", Prefijo2, null, EspacioDeNombreNomina);
 
                                         xmlWriter.WriteStartElement(Prefijo2, "Emisor", EspacioDeNombreNomina);
@@ -1694,10 +1715,9 @@ namespace Payroll.Models.Daos
                                         {
                                             xmlWriter.WriteAttributeString("RfcPatronOrigen", EmisorRFC);
                                         }
-                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
+                                        if (ListDatEmisor[0].iPagopor != 364)
                                         {
                                             xmlWriter.WriteAttributeString("RegistroPatronal", sRegistroPatronal);
-
                                         }
 
                                         xmlWriter.WriteEndElement();
@@ -1760,7 +1780,7 @@ namespace Payroll.Models.Daos
                                             xmlWriter.WriteAttributeString("CuentaBancaria", sCuentaBancaria);
                                         }
 
-                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
+                                        if (ListDatEmisor[0].iPagopor != 364)
                                         {
                                             xmlWriter.WriteAttributeString("SalarioBaseCotApor", SuedoAgravado.Replace(",",""));
                                             xmlWriter.WriteAttributeString("SalarioDiarioIntegrado", SueldoDiario.Replace(",",""));
@@ -1774,7 +1794,7 @@ namespace Payroll.Models.Daos
                                             xmlWriter.WriteAttributeString("TipoContrato", sTipoContrato);
 
                                         }
-                                        if (ListDatEmisor[0].iCgTipoEmpleadoId == 156) {
+                                        if (ListDatEmisor[0].iPagopor == 364) {
                                             xmlWriter.WriteAttributeString("TipoRegimen", "09");
                                             // xmlWriter.WriteAttributeString("TipoContrato", sTipoContrato);
                                             xmlWriter.WriteAttributeString("TipoContrato", "99");
@@ -1924,13 +1944,11 @@ namespace Payroll.Models.Daos
                                                     if (Recibo2 != 1) {
                                                         if (IdRenglon == "1")
                                                         {
-                                                            if (ListDatEmisor[0].iCgTipoEmpleadoId != 156)
+                                                            if (ListDatEmisor[0].iPagopor != 364)
                                                             {
                                                                 
                                                                 concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
-                                                                if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa== 2077 || IdEmpresa==2078) {
-                                                                        concepto = "Honorarios Asimilados";
-                                                                    }
+                                                               
 
                                                                 if (masivo == 3)
                                                                 {
@@ -1940,10 +1958,16 @@ namespace Payroll.Models.Daos
                                                                 lengRenglon = "001";
                                                             }
 
-                                                            if (ListDatEmisor[0].iCgTipoEmpleadoId == 156)
+                                                            if (ListDatEmisor[0].iPagopor == 364)
                                                             {
+
                                                                 concepto = "Asimilados a salarios {" + sDiasEfectivos + " Dias}";
-                                                                lengRenglon = "001";
+                                                                if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078)
+                                                                {
+                                                                 concepto = "Honorarios Asimilados";
+                                                                }
+
+                                                               lengRenglon = "001";
                                                             }
 
                                                         }
@@ -2074,9 +2098,7 @@ namespace Payroll.Models.Daos
                                                         xmlWriter.WriteAttributeString("TipoPercepcion", idSat);
                                                         xmlWriter.WriteAttributeString("Clave", IdRenglon);
                                                         xmlWriter.WriteAttributeString("Concepto", concepto.ToString());
-
                                                         xmlWriter.WriteAttributeString("ImporteGravado", ImporGra.ToString());
-
                                                         xmlWriter.WriteStartElement(Prefijo2, "HorasExtra", EspacioDeNombreNomina);
                                                         xmlWriter.WriteAttributeString("ImportePagado", IporPagado.ToString());
                                                         int iHoras = Convert.ToInt32(LisTRecibo[a].dHoras);
@@ -2292,8 +2314,6 @@ namespace Payroll.Models.Daos
                                                                     xmlWriter.WriteAttributeString("Concepto", concepto.ToString());
                                                                     xmlWriter.WriteEndElement();
                                                                 }
-
-
                                                             }
 
                                                         }
@@ -2309,7 +2329,7 @@ namespace Payroll.Models.Daos
                                      
 
 
-                                        if (ListDatEmisor[0].iCgTipoEmpleadoId != 156) {
+                                        if (ListDatEmisor[0].iPagopor != 364) {
                                             xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
                                             xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
                                             xmlWriter.WriteAttributeString("TipoOtroPago", "002");
