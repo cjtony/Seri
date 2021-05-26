@@ -604,7 +604,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNom.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
-                                    if (detallesRenglon.dSaldo > 0)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, m + 2 + 31].Value = "";
                                     }
@@ -625,7 +625,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNomDeduc.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeduc[m], 0);
-                                    if (detallesRenglon.dSaldo > 0)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = "";
                                     }
@@ -648,7 +648,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNomEspejo.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo > 0)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, cant2 + m + 3 + 31].Value = "";
                                     }
@@ -665,7 +665,7 @@ namespace Payroll.Controllers
                                 for (m = 0; m < RenglonesNomDeducEspejo.Count(); m++)
                                 {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeducEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo > 0)
+                                    if (detallesRenglon.dSaldo <= 0)
                                     {
                                         worksheet.Cells[p + 1, cant3 + m + 3 + 31].Value = "";
                                     }
@@ -745,7 +745,7 @@ namespace Payroll.Controllers
 
                                 for (m = 0; m < RenglonesNom.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
-                                    if (detallesRenglon.dSaldo > 0) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, m + 2 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, m + 2 + 30].Style.Numberformat.Format = "0.00";
@@ -762,7 +762,7 @@ namespace Payroll.Controllers
 
                                 for (m = 0; m < RenglonesNomDeduc.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeduc[m], 0);
-                                    if (detallesRenglon.dSaldo > 0) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, cant1 + m + 2 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, cant1 + m + 2 + 30].Style.Numberformat.Format = "0.00";
@@ -779,7 +779,7 @@ namespace Payroll.Controllers
                                 Total_Percepciones_Espejo = 0;
                                 for (m = 0; m < RenglonesNomEspejo.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo > 0) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, cant2 + m + 3 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, cant2 + m + 3 + 30].Style.Numberformat.Format = "0.00";
@@ -792,7 +792,7 @@ namespace Payroll.Controllers
 
                                 for (m = 0; m < RenglonesNomDeducEspejo.Count(); m++) {
                                     detallesRenglon = reportDao.sp_Detalle_Renglones_BAJAS(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNomDeducEspejo[m], 1);
-                                    if (detallesRenglon.dSaldo > 0) {
+                                    if (detallesRenglon.dSaldo < 0) {
                                         worksheet.Cells[p + 1, cant3 + m + 3 + 30].Value = "";
                                     } else {
                                         worksheet.Cells[p + 1, cant3 + m + 3 + 30].Style.Numberformat.Format = "0.00";
