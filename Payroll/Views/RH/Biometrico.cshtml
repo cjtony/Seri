@@ -411,12 +411,188 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Pantalla insert horario Semanal -->
+                <div class="modal fade" data-backdrop="static" id="ActuHrEmpre" tabindex="-1" role="dialog" aria-labelledby="InsetHrEmpre" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable " role="document">
+                        <div class="modal-content border-left-primary border-right-primary">
+                            <div class="modal-header ">
+                                <h5 class="modal-title" id="TLHrEmpre"> <i class="fab fa-algolia mr-2"></i> Horario </h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="LaDropEmpre" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fas fa-building mr-2 col-ico"></i>
+                                                    Empresa:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select placeholder="Empresa" tp-select="DropEmpresa" class="form-control form-control-sm" id="DropEmpAct">
+                                                        <option value="0">Selecciona</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LTurno" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="far fa-calendar-minus mr-2 col-ico"></i>
+                                                    Turno:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input placeholder="turno" tvvisible="false" type="text" id="TxtTurnoAct" class="form-control form-control-sm text-capitalize" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-4 col-form-label font-labels">
+                                                    Descripción:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <textarea placeholder="Descripción" maxlength="500" type="text" id="DescripcionhrAct" class="form-control form-control-sm text-capitalize" rows="2" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LaDropCheckHrEmple" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fa fa-calendar-minus-o mr-2 col-ico"></i>
+                                                    Tipo de chequeo:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select placeholder="Tipo de chequeo" tp-select="DropCheqEmpre" class="form-control form-control-sm" id="DropCheckEmpleAct">
+                                                        <option value="0">Selecciona</option>
+                                                        <option value="1">No checa</option>
+                                                        <option value="2">Checa entrada y salida</option>
+                                                        <option value="3">Checa unicamente entrada</option>
+                                                        <option value="4">Checa unicamente salida</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LaHrEnt" class="col-sm-4 col-form-label font-labels">
+                                                    <i class=" fa fa-clock-o mr-2 col-ico"></i>
+                                                    Hora Entrada:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input placeholder="Hr Entrada" type="time" id="TxtHrEntAct" class="form-control form-control-sm text-capitalize" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LHrSal" class="col-sm-4 col-form-label font-labels">
+                                                    <i class=" fa fa-clock-o mr-2 col-ico"></i>
+                                                    Hora Salida:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input placeholder="Hr Entrada" type="time" id="TxtHrSalAct" class="form-control form-control-sm text-capitalize" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <div class="form-group row">
+                                                <label for="LaDropChekCom" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fa fa-calendar-minus-o mr-2 col-ico"></i>
+                                                    Tipo de chequeo:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select placeholder="Chequeo Comida" tp-select="Chequeo de comida" class="form-control form-control-sm" id="DropChekComAct">
+                                                        <option value="0">Selecciona</option>
+                                                        <option value="1">No checa</option>
+                                                        <option value="2">Checa entrada y salida</option>
+                                                        <option value="3">Checa unicamente entrada</option>
+                                                        <option value="4">Checa unicamente salida</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LaHrEnt" class="col-sm-4 col-form-label font-labels">
+                                                    <i class=" fa fa-clock-o mr-2 col-ico"></i>
+                                                    Hora salida a comer :
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input placeholder="Hr Entrada" type="time" id="TxtHrSalPauAct" class="form-control form-control-sm text-capitalize" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LHrSal" class="col-sm-4 col-form-label font-labels">
+                                                    <i class=" fa fa-clock-o mr-2 col-ico"></i>
+                                                    Hora regreso de comer:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input placeholder="Hr Entrada" type="time" id="TxtHrEntPauAct" class="form-control form-control-sm text-capitalize" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LaDropChekTurno" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fa fa-calendar-minus-o mr-2 col-ico"></i>
+                                                    Tipo de Turno:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select placeholder="Tipo de turno" tp-select="DropChekTur" class="form-control form-control-sm" id="DropChekTurAct">
+                                                        <option value="0">Selecciona</option>
+                                                        <option value="1">Diurno</option>
+                                                        <option value="2">Vespertino</option>
+                                                        <option value="3">Nocturno</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LaDropChekTurno" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fa fa-calendar-minus-o mr-2 col-ico"></i>
+                                                    Tipo de pausa:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select placeholder="Tipo de pausa" tp-select="DropChekPauAct" class="form-control form-control-sm" id="DropChekPauAct">
+                                                        <option value="0">Selecciona</option>
+                                                        <option value="1">Incluida en el horario </option>
+                                                        <option value="2">Excluida en el horario</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="LaDropChekDiasDesc" class="col-sm-4 col-form-label font-labels">
+                                                    <i class="fa fa-calendar-minus-o mr-2 col-ico"></i>
+                                                    Dis de descanso:
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select placeholder="Dias de descanso" tp-select="DropDiasDescAct" class="form-control form-control-sm" id="DropDiasDescAct">
+                                                        <option value="0">Selecciona</option>
+                                                        <option value="1">Lunes</option>
+                                                        <option value="2">Martes</option>
+                                                        <option value="3">Miércoles</option>
+                                                        <option value="4">Jueves</option>
+                                                        <option value="5">Vierenes</option>
+                                                        <option value="6">Sábado</option>
+                                                        <option value="7">Domingo</option>
+                                                        <option value="8">Sábado y Domingo</option>
+                                                        <option value="9">Domingo y Lunes</option>
+                                                        <option value="10">Lunes y Martes</option>
+                                                        <option value="11">Martes y Miércoles</option>
+                                                        <option value="12">Miércoles y Jueves</option>
+                                                        <option value="13">Jueves y Viernes</option>
+                                                        <option value="14">Viernes y Sábado</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button data-toggle="modal" data-target="#ActualizarDefinicion" type="button" class="btn btn-outline-success btn-sm" id="btnActHr" style="visibility:visible"> <i class="fas fa-plus mr-2"></i> Actualizar</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" id="btnCierraDefinicion"> <i class="fas fa-times mr-2"></i> Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
             </div>
         </div>
     </div>
 </body>
 
-<script src="~/Scripts/Biom/ConsultaHr.js?n=2"></script>
+<script src="~/Scripts/Biom/ConsultaHr.js?n=3"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxdata.js"></script>
 <script type="text/javascript" src="~/Scripts/jqxGrid/jqwidgets/jqxbuttons.js"></script>
