@@ -1767,6 +1767,7 @@ namespace Payroll.Models.Daos
                             LP.sFechaInicio = data["Fecha_Inicio"].ToString();
                             LP.sFechaFinal = data["Fecha_Final"].ToString();
                             LP.sNominaCerrada = data["Nomina_Cerrada"].ToString();
+                            LP.sPeEspecial = data["Especial"].ToString();
                             LP.sMensaje = "success";
                         };
 

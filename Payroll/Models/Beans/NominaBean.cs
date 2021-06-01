@@ -108,6 +108,8 @@ namespace Payroll.Models.Beans
         public string sFechaProceso { get; set; }
         public string sFechaPago { get; set; }
         public int iDiasEfectivos { get; set; }
+
+        public string sPeEspecial { get; set; }
         public string sMensaje { get; set; }
 
     }
@@ -275,6 +277,7 @@ namespace Payroll.Models.Beans
         public string sClaveEnt { get; set; }
         public string sMensaje { get; set; }
         public decimal dSalarioInt { get; set; }
+        public int iPagopor { get; set; }
 
     }
 

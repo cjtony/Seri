@@ -70,7 +70,7 @@
     const TbAñoNoCe = document.getElementById('TbAñoNoCe');
     const TipoPeriodoNoCe = document.getElementById('TipoPeriodoNoCe');
     const PeridoEjeNomCe = document.getElementById('PeridoEjeNomCe');
-    const PercepCalNomCe = document.getElementById('PercepCalNomCe');
+    const PercepCalNomCe = document.getElementById('Percep CalNomCe');
     const deduCalNomCe = document.getElementById('deduCalNomCe');
     const TotalNomCe = document.getElementById('TotalNomCe');
     const LaTotalPerNoCe = document.getElementById('LaTotalPerNoCe');
@@ -81,7 +81,7 @@
     const EmpresaNom = document.getElementById('EmpresaNom');
     const BntBusRecibo = document.getElementById('btnFloBuscar');
     const ChekEnFirme = document.getElementById('ChekEnFirme');
-
+    const CheckPeridoEspc = document.getAnimations('CheckPeridoEspc');
 
 
     const Empleadoseje = document.getElementById('Empleadoseje');
@@ -104,7 +104,7 @@
     var valorCheckRec = document.getElementById('CheckRecibo2');
     var valorCheckXempleado = document.getElementById('CheckXempleado');
     var ValorChekEnFirme = document.getElementById('ChekEnFirme');
-    
+    var valorCheckPeridoEspc = document.getElementById('CheckPeridoEspc');
 
 
 
@@ -1005,7 +1005,82 @@
     ChNCerrada.addEventListener('click', FValorChec);
 
     ChekEnFirme.addEventListener('click', FValorChec);
-    /*  Procesos de Ejecucion */
+
+    /*periodo especial*/
+
+
+    $('#CheckPeridoEspc').change(function () {
+
+        IdDropList;
+        AnioDropList;
+        dataSend3 = { iIdDefinicionHd: IdDropList, iperiodo: 0, NomCerr: 0, Anio: AnioDropList };
+        console.log(dataSend3);
+
+        if (valorCheckPeridoEspc.checked == true) {
+            console.log('periodo especial activado');
+            $.ajax({
+                url: "../Nomina/PeridoEsp",
+                type: "POST",
+                data: dataSend3,
+                success: function (data) {
+                    if (data[0].sMensaje == "success") {
+                        $("#PeridoEje").empty();
+                        for (i = 0; i < data.length; i++) {
+                            if (data[i].sPeEspecial == "True") {
+                               document.getElementById("PeridoEje").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
+
+
+                            }
+
+                        }
+
+
+
+                        
+
+                    }
+                    if (data[0].sMensaje == "error") {
+
+                        fshowtypealert('Ejecucion', 'Periodo no existe favor de crearlo ', 'warning')
+                    }
+
+                },
+            });
+
+          
+        }
+        if (valorCheckPeridoEspc.checked == false) {
+
+            $.ajax({
+                url: "../Nomina/PeridoEsp",
+                type: "POST",
+                data: dataSend3,
+                success: function (data) {
+                    if (data[0].sMensaje == "success") {
+                        $("#PeridoEje").empty();
+                        document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;                 
+                    }
+                    if (data[0].sMensaje == "error") {
+
+                        fshowtypealert('Ejecucion', 'Periodo no existe favor de crearlo ', 'warning')
+                    }
+
+                },
+            });
+
+
+            console.log('periodo especial desactivado');
+           
+        }
+
+       
+       
+    });
+
+
+
+
+     /*  Procesos de Ejecucion */
 
     Fejecucion = () => {
         
