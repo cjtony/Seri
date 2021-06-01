@@ -1356,6 +1356,19 @@ namespace Payroll.Controllers
             return Json(LE);
         }
 
+        /// Periodo especial
+
+        [HttpPost] 
+       
+        public JsonResult PeridoEsp(int iIdDefinicionHd, int iperiodo, int NomCerr, int Anio)
+        {
+           
+            List<CInicioFechasPeriodoBean> LPe = new List<CInicioFechasPeriodoBean>();
+            FuncionesNomina Dao = new FuncionesNomina();
+            LPe = Dao.sp_PeridosEmpresa_Retrieve_CinicioFechasPeriodo(iIdDefinicionHd, iperiodo, NomCerr, Anio);      
+            return Json(LPe);
+
+        }
 
 
     }

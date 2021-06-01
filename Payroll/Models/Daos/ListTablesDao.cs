@@ -1673,7 +1673,7 @@ namespace Payroll.Models.Daos
                                             }
 
 
-                                            xmlWriter.WriteAttributeString("FechaPago", sFechaPago);
+                                        xmlWriter.WriteAttributeString("FechaPago", sFechaPago);
                                         xmlWriter.WriteAttributeString("FechaInicialPago", sFechaInicialPago);
                                         xmlWriter.WriteAttributeString("FechaFinalPago", sFechaFinalPago);
 
@@ -1811,32 +1811,41 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteAttributeString("NumEmpleado", sNumEmpleado);
                                         xmlWriter.WriteAttributeString("Departamento", sDepartamento);
                                         xmlWriter.WriteAttributeString("Puesto", sPuesto);
-                                        if (Tipodeperido == 0)
-                                        {
-                                            xmlWriter.WriteAttributeString("PeriodicidadPago", "02");
-                                        }
-                                        if (Tipodeperido == 1)
-                                        {
-                                            xmlWriter.WriteAttributeString("PeriodicidadPago", "10");
-                                        }
-                                        if (Tipodeperido == 2)
-                                        {
-                                            xmlWriter.WriteAttributeString("PeriodicidadPago", "03");
-                                        }
-                                        if (Tipodeperido == 3)
-                                        {
-                                            xmlWriter.WriteAttributeString("PeriodicidadPago", "04");
-                                        }
-                                        if (Tipodeperido == 4)
-                                        {
-                                            xmlWriter.WriteAttributeString("PeriodicidadPago", "05");
-                                        }
-                                        if (Tipodeperido == 5)
-                                        {
-                                            xmlWriter.WriteAttributeString("PeriodicidadPago", "06");
-                                        }
+                                            if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078)
+                                            {
+                                                xmlWriter.WriteAttributeString("PeriodicidadPago", "99");
+                                            }
+                                            else {
+                                                if (Tipodeperido == 0)
+                                                {
+                                                    xmlWriter.WriteAttributeString("PeriodicidadPago", "02");
+                                                }
+                                                if (Tipodeperido == 1)
+                                                {
+                                                    xmlWriter.WriteAttributeString("PeriodicidadPago", "10");
+                                                }
+                                                if (Tipodeperido == 2)
+                                                {
+                                                    xmlWriter.WriteAttributeString("PeriodicidadPago", "03");
+                                                }
+                                                if (Tipodeperido == 3)
+                                                {
+                                                    xmlWriter.WriteAttributeString("PeriodicidadPago", "04");
+                                                }
+                                                if (Tipodeperido == 4)
+                                                {
+                                                    xmlWriter.WriteAttributeString("PeriodicidadPago", "05");
+                                                }
+                                                if (Tipodeperido == 5)
+                                                {
+                                                    xmlWriter.WriteAttributeString("PeriodicidadPago", "06");
+                                                }
 
-                                        if (sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18)
+                                            }
+
+
+
+                                            if (sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18)
                                         {
                                             if (sBanco.Length > 0)
                                             {

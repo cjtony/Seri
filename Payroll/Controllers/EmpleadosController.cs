@@ -668,9 +668,9 @@ namespace Payroll.Controllers
                 ListEmpleadosDao Dao2 = new ListEmpleadosDao();
                 ListEmisor = Dao2.sp_EmisorReceptor_Retrieve_EmisorReceptor(idEmpresa, NumEmpleado);
 
-                if (ListEmisor != null) { if (ListEmisor[0].iCgTipoEmpleadoId == 156) { ReciboAsi = 1; }; };
+                if (ListEmisor != null) { if (ListEmisor[0].iPagopor == 364) { ReciboAsi = 1; }; };
 
-                if (ListEmisor[0].iCgTipoEmpleadoId != 156)
+                if (ListEmisor[0].iPagopor != 364)
                 {
 
                     nodo = xmlDoc.GetElementsByTagName("nomina12:Emisor").Item(0);
