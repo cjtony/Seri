@@ -127,12 +127,12 @@ namespace Payroll.Controllers
             return Json(Lista);
         }
         [HttpPost]
-        public JsonResult SaveNewPeriodo(int inEmpresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago, int intipoperiodoid)
+        public JsonResult SaveNewPeriodo(int inEmpresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago, int intipoperiodoid, int inespecial)
         {
             List<string> Lista;
             ModCatalogosDao Dao = new ModCatalogosDao();
 
-            Lista = Dao.sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(inEmpresa_id, inano, inperiodo, infinicio, inffinal, infproceso, infpago, indiaspago, intipoperiodoid);
+            Lista = Dao.sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(inEmpresa_id, inano, inperiodo, infinicio, inffinal, infproceso, infpago, indiaspago, intipoperiodoid, inespecial);
             return Json(Lista);
         }
         [HttpPost]
@@ -312,12 +312,11 @@ namespace Payroll.Controllers
             return Json(Lista);
         }
         [HttpPost]
-        public JsonResult UpdatePeriodo(int Empresa_id, int editid, int editano, int editperiodo, string editfinicio, string editffinal, string editfproceso, string editfpago, int editdiaspago)
+        public JsonResult UpdatePeriodo(int Empresa_id, int editid, int editano, int editperiodo, string editfinicio, string editffinal, string editfproceso, string editfpago, int editdiaspago, int edespecial)
         {
             List<string> Lista;
             ModCatalogosDao Dao = new ModCatalogosDao();
-
-            Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Periodo(Empresa_id, editid, editano, editperiodo, editfinicio, editffinal, editfproceso, editfpago, editdiaspago);
+            Lista = Dao.sp_CInicio_Fechas_Periodo_Update_Periodo(Empresa_id, editid, editano, editperiodo, editfinicio, editffinal, editfproceso, editfpago, editdiaspago, edespecial);
             return Json(Lista);
         }
 

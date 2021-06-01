@@ -358,11 +358,17 @@ $(function () {
                     "<th>Fecha Proceso</th>" +
                     "<th>Fecha Pago</th>" +
                     "<th>Días Efectivos</th>" +
+                    "<th>P Especial</th>" +
                     "<th>Acciones</th>" +
                     "</tr>" +
                     "</thead>" +
                     "<tbody id='tab" + pilltab + "' class=''></tbody>" + "</table>";
                 for (var j = 0; j < data.length; j++) {
+                    var PeriodoEspecial = "";
+                    if (data[j]["Especial"] == "True") {
+                        PeriodoEspecial = "<div class='badge badge-danger'><i class='fas fa-check'></i></div>"
+                    }
+
                     if (data[j]["Nomina_Cerrada"] == "True") {
                         document.getElementById("tab" + pilltab).innerHTML += "<tr>" +
                             "<td class=''>" + data[j]["Periodo"] + "</td>" +
@@ -372,6 +378,7 @@ $(function () {
                             "<td class=''>" + data[j]["Fecha_Proceso"] + "</td>" +
                             "<td class=''>" + data[j]["Fecha_Pago"] + "</td>" +
                             "<td class=''>" + data[j]["Dias_Efectivos"] + "</td>" +
+                            "<td class='text-danger'>" + PeriodoEspecial + "</td>" +
                             "<td class=''><div class='btn badge badge-info' title='Editar fecha de pago' onclick='MostrarEditarFechaPago(" + data[j]["Empresa_id"] + ",\"" + data[j]["id"] + "\");'>Editar <i class='fas fa-edit'></i></div></td>" +
                             "</tr>";
                     } else {
@@ -383,6 +390,7 @@ $(function () {
                             "<td class=''>" + data[j]["Fecha_Proceso"] + "</td>" +
                             "<td class=''>" + data[j]["Fecha_Pago"] + "</td>" +
                             "<td class=''>" + data[j]["Dias_Efectivos"] + "</td>" +
+                            "<td class='text-danger'>" + PeriodoEspecial + "</td>" +
                             "<td class=''><div class='btn badge badge-info' onclick='MostrarEditarPeriodo(" + data[j]["Empresa_id"] + ",\"" + data[j]["id"] + "\");'>Editar <i class='fas fa-edit'></i></div></td>" +
                             "</tr>";
                     }
@@ -467,10 +475,8 @@ $(function () {
 
                 $("#modalMostrarPoliticas").modal("show");
             }
-
         });
     }
-
     editarFechasPeriodos = (Empresa_id) => {
 
         $.ajax({
@@ -665,6 +671,7 @@ $(function () {
     // Reinicia el formulario de agregado de fechas periodo
     $('#modalAgregarFechaPeriodo').on('hidden.bs.modal', function (e) {
         document.getElementById("frmNewFechasPeriodos").reset();
+        $("#frmNewFechasPeriodos").removeClass("was-validated");
     });
 
     // Guardar Fecha - Periodo
@@ -682,6 +689,16 @@ $(function () {
             var indiaspago = document.getElementById("indiaspago");
             var inEmpresa_id = document.getElementById("inEmpresa_id");
             var intipoperiodoid = document.getElementById("intipoperiodoid");
+
+            var inespecial = 0;
+
+
+            if ($("#inespecial").prop('checked') == true) {
+                inespecial = 1;
+            } else {
+                inespecial = 0;
+            }
+
             $.ajax({
                 url: "../Catalogos/SaveNewPeriodo",
                 type: "POST",
@@ -694,7 +711,8 @@ $(function () {
                     infproceso: infproceso.value,
                     infpago: infpago.value,
                     indiaspago: indiaspago.value,
-                    intipoperiodoid: intipoperiodoid.value
+                    intipoperiodoid: intipoperiodoid.value,
+                    inespecial: inespecial
                 }),
                 contentType: "application/json; charset=utf-8",
                 beforeSend: () => {
@@ -719,8 +737,7 @@ $(function () {
                             timer: 3000
                         });
                     }
-
-
+                    
                 }
             });
         }
@@ -972,6 +989,14 @@ $(function () {
                 $("#modalEditarFechaPeriodo").modal("show");
                 $("#editar_empresa_id").val(Empresa_id);
                 $("#editar_id").val(Id);
+
+                if (data[0]["Especial"] == "True") {
+                    document.getElementById("edespecial").checked = true;
+                } else {
+                    document.getElementById("edespecial").checked = false;
+                }
+
+                
             }
         });
     }
@@ -992,6 +1017,12 @@ $(function () {
     }
 
     $("#btnUpdatefechaperiodo").on("click", function () {
+        var inespecial = 0;
+        if ($("#edespecial").prop('checked') == true) {
+            edespecial = 1;
+        } else {
+            edespecial = 0;
+        }
         $.ajax({
             url: "../Catalogos/UpdatePeriodo",
             type: "POST",
@@ -1004,7 +1035,8 @@ $(function () {
                 editffinal: $("#editffinal").val(),
                 editfproceso: $("#editfproceso").val(),
                 editfpago: $("#editfpago").val(),
-                editdiaspago: $("#editdiaspago").val()
+                editdiaspago: $("#editdiaspago").val(),
+                edespecial: edespecial
             }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
