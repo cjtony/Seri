@@ -690,6 +690,8 @@ namespace Payroll.Models.Beans
         public string Fecha_Pago { get; set; }
         public string Dias_Efectivos { get; set; }
         public string Nomina_Cerrada { get; set; }
+        public string Especial { get; set; }
+
     }
     public class TabPoliticasVacacionesBean
     {
@@ -805,6 +807,16 @@ namespace Payroll.Models.Beans
         public int iIdValor { get; set; }
         public string SNombreReporte { get; set; }
         public string sMensaje { get; set; }
+
+    }
+    public class AutorizaVacaciones { 
+        public int Empresa_id { get; set; }
+        public int Usuario_id { get; set; }
+        public int Empleado_id { get; set; }
+        public string Nombre { get; set; }
+        public string Departamento { get; set; }
+        public string Puesto { get; set; }
+        public string Cancelado { get; set; }
 
     }
 }

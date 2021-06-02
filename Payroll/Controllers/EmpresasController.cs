@@ -24,6 +24,17 @@ namespace Payroll.Controllers
         {
             @Session["IdEmpresa"] = IdEmpresa;
             @Session["sEmpresa"] = NombreEmpresa;
+            ModCatalogosDao Dao1 = new ModCatalogosDao();
+            List<List<string>> GruposEmp = Dao1.sp_CGruposEmpresas_Retrieve_Grupos();
+            for (int i = 0; i < GruposEmp.Count; i++)
+            {
+                if (IdEmpresa == int.Parse(GruposEmp[i][0].ToString()))
+                {
+                    Session["GrupoEmp_id"] = int.Parse(GruposEmp[i][0].ToString());
+                    Session["GrupoEmp_name"] = GruposEmp[i][1].ToString();
+                }
+
+            }
             List<string> Periodo = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             Periodo = Dao.sp_CInicio_Fechas_Periodo_Verify_id(IdEmpresa);
@@ -41,7 +52,7 @@ namespace Payroll.Controllers
             {
                 return Json(Periodo);
             }
-            
+
         }
         [HttpPost]
         public void DefinePeriodoActual(int IdPeriodo, string Fecha_inicio, string Fecha_fin)
@@ -78,10 +89,10 @@ namespace Payroll.Controllers
             foreach (var item in empresas)
             {
                 btnsEmpresas += "" +
-                    "<div class='col-12 col-md-4 col-lg-3 col-sm-6'>" +
+                    "<div class='col-md-4'>" +
                         "<div class='input-group mb-3'>" +
                             "<div class='input-group-prepend'>" +
-                                "<div class='input-group-text text-dark bg-white'><i class='fas fa-city'></i></div>" +
+                                "<div class='input-group-text text-dark bg-white'><i class='fas fa-building'></i></div>" +
                             "</div>" +
                             "<div class='form-control btn btn-menu btnsEmpresas' onclick='btnsEmpresas(\"" + item.IdEmpresa + "\",\"" + item.NombreEmpresa + "\")'>" +
                                 "<small class='badge p-0 m-0 text-wrap'>" + item.NombreEmpresa + "&nbsp;&nbsp;&nbsp; <small class='badge badge-pill badge-light text-center aling-middle'> " + item.IdEmpresa + " </small></small>" +
@@ -125,11 +136,11 @@ namespace Payroll.Controllers
             return Json(empresas);
         }
         [HttpPost]
-        public JsonResult Insert_Empresa_FirstStep(string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, int inColonia_empresa, string inDelegacion_Empresa, string inCalle_Empresa, string inAfiliacionIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
+        public JsonResult Insert_Empresa_FirstStep(int id, string inNombre_empresa, string inNomCorto_empresa, string inRfc_empresa, string inGiro_empresa, int inRegimenFiscal_Empresa, int inCodigo_postal, int inEstado_empresa, int inMunicipio_empresa, string inCiudad_empresa, int inColonia_empresa, string inDelegacion_Empresa, string inCalle_Empresa, string inAfiliacionIMSS, string inNombre_Afiliacion, string inRiesgoTrabajo, int inClase, string infinicio, string inffinal, string infpago, string infproceso, int indiaspagados, int intipoperiodo, string inregimss, int inclonar, int ingrupoe, int innoperiodo)
         {
             List<string> empresas = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            empresas = Dao.sp_Insert_FirstStep_Empresas(inNombre_empresa, inNomCorto_empresa, inRfc_empresa, inGiro_empresa, inRegimenFiscal_Empresa, inCodigo_postal, inEstado_empresa, inMunicipio_empresa, inCiudad_empresa, inDelegacion_Empresa, inColonia_empresa, inCalle_Empresa, inAfiliacionIMSS, inNombre_Afiliacion, inRiesgoTrabajo, int.Parse(Session["iIdUsuario"].ToString()), inClase, infinicio, inffinal, infpago, infproceso, indiaspagados, intipoperiodo, inregimss, inclonar, ingrupoe, innoperiodo);
+            empresas = Dao.sp_Insert_FirstStep_Empresas(id, inNombre_empresa, inNomCorto_empresa, inRfc_empresa, inGiro_empresa, inRegimenFiscal_Empresa, inCodigo_postal, inEstado_empresa, inMunicipio_empresa, inCiudad_empresa, inDelegacion_Empresa, inColonia_empresa, inCalle_Empresa, inAfiliacionIMSS, inNombre_Afiliacion, inRiesgoTrabajo, int.Parse(Session["iIdUsuario"].ToString()), inClase, infinicio, inffinal, infpago, infproceso, indiaspagados, intipoperiodo, inregimss, inclonar, ingrupoe, innoperiodo);
             return Json(empresas);
         }
         public PartialViewResult Registros_Patronales()
@@ -250,11 +261,11 @@ namespace Payroll.Controllers
             return Json(RP);
         }
         [HttpPost]
-        public JsonResult UpdateGrupo(string Empresa_id,string Grupo_id)
+        public JsonResult UpdateGrupo(string Empresa_id, string Grupo_id)
         {
             List<string> Bean;
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            Bean = Dao.sp_CEmpresas_Update_GrupoEmpresas(Empresa_id,Grupo_id);
+            Bean = Dao.sp_CEmpresas_Update_GrupoEmpresas(Empresa_id, Grupo_id);
             return Json(Bean);
         }
         public PartialViewResult Bancos()
@@ -265,11 +276,11 @@ namespace Payroll.Controllers
         {
             List<string> Bean;
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
-            Bean = Dao.sp_Registro_Patronal_Update_Registros_Patronales(Id, Afiliacion_IMSS,NombreAfiliacion, Empresa_id, Riesgo_Trabajo, ClasesRegPat, Cancelado);
+            Bean = Dao.sp_Registro_Patronal_Update_Registros_Patronales(Id, Afiliacion_IMSS, NombreAfiliacion, Empresa_id, Riesgo_Trabajo, ClasesRegPat, Cancelado);
             return Json(Bean);
         }
         [HttpPost]
-        public JsonResult LoadSucursalesSearch(string txt )
+        public JsonResult LoadSucursalesSearch(string txt)
         {
             List<SucursalesBean> RP = new List<SucursalesBean>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
@@ -289,7 +300,7 @@ namespace Payroll.Controllers
         public JsonResult LoadEmpresa2(int idEmpresa)
         {
             List<string> empresas = new List<string>();
-            PruebaEmpresaDao Dao = new PruebaEmpresaDao();          
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             empresas = Dao.sp_CEmpresas_Retrieve_Empresa(idEmpresa);
             return Json(empresas);
         }
@@ -307,6 +318,27 @@ namespace Payroll.Controllers
             List<string> list = new List<string>();
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             list = Dao.sp_CEmpresas_Update_Empresa(int.Parse(Session["IdEmpresa"].ToString()), edNombre, edNombrecorto, edRFC, edGiro, edRegimenFiscal, edRegistroimss, edCodigo_postal, edEstado_empresa, edCiudad_empresa, edColonia_empresa, edDelegacion_Empresa, edCalle_Empresa);
+            return Json(list);
+        }
+        [HttpPost]
+        public JsonResult ValidaEmpresaExiste()
+        {
+            List<PruebaEmpresaBean> empresas;
+            PruebaEmpresaDao Dao = new PruebaEmpresaDao();
+            empresas = Dao.sp_Retrieve_PruevaEmpresas(1);
+            return Json(empresas);
+        }
+        [HttpPost]
+        public JsonResult GrupoEmpInfo(int Empresa_id)
+        {
+            ModCatalogosDao Dao1 = new ModCatalogosDao();
+            List<string> list = new List<string>();
+            List<List<string>> GruposEmp = Dao1.sp_CGruposEmpresas_Retrieve_GrupoEmpresaSelected(Empresa_id);
+            Session["GrupoEmp_id"] = int.Parse(GruposEmp[0][0].ToString());
+            Session["GrupoEmp_name"] = GruposEmp[0][1].ToString();
+            list.Add(GruposEmp[0][0].ToString());
+            list.Add(GruposEmp[0][1].ToString());
+
             return Json(list);
         }
     }

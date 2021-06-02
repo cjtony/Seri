@@ -1,5 +1,5 @@
 ﻿//document.addEventListener('DOMContentLoaded', () => {
-$(function () { 
+$(function () {
 
     // *-* DECLARACION DE VARIABLES FORMULARIO *-* \\
 
@@ -59,8 +59,7 @@ $(function () {
                     if (data.Bandera != true) {
                         alert('Accion invalida');
                     }
-                    else 
-                    { 
+                    else {
                     }
                     btnlogin.disabled = false;
                 }, error: (jqXHR, exception) => {
@@ -94,14 +93,13 @@ $(function () {
             }).then((acepta) => {
                 console.log(success);
                 if (success === "yes") {
-                    //if (p_default == "True") {
-                    //    console.log("cambia contraseña");
-                    //    //location.href = "../../Login/PasswordChange";
-                    //} else {
-                    //    console.log("entra al menu");
-                    location.href = "../../ControlPayroll/Home";
-                    //}
-                    
+                    if (p_default == "True") {
+                        console.log("cambia contraseña");
+                        location.href = "../../Login/PasswordChange";
+                    } else {
+                        console.log("entra al menu");
+                        location.href = "../../ControlPayroll/Home";
+                    }
                 } else {
                     setTimeout(() => {
                         element.value = "";
@@ -181,7 +179,7 @@ $(function () {
                 fshowalerts("warning", "Atención!", "Ingrese su contraseña...", password, 0, "n", "");
             }
         } else {
-            fshowalerts("warning","Atención!","Ingrese su nombre de usuario...", username, 0, "n", "");
+            fshowalerts("warning", "Atención!", "Ingrese su nombre de usuario...", username, 0, "n", "");
         }
         e.preventDefault();
     }

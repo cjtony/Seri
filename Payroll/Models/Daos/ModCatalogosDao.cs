@@ -81,7 +81,7 @@ namespace Payroll.Models.Daos
                         Bean.Fecha_Pago = data["Fecha_Pago"].ToString();
                         Bean.Dias_Efectivos = data["Dias_Efectivos"].ToString();
                         Bean.Nomina_Cerrada = data["Nomina_Cerrada"].ToString();
-
+                        Bean.Especial = data["Especial"].ToString();
                         listBean.Add(Bean);
                     }
                 }
@@ -103,7 +103,7 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
-        public List<string> sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(int Empresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago, int intipoperiodoid)
+        public List<string> sp_CInicio_Fechas_Periodo_Insert_Fecha_Periodo(int Empresa_id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago, int intipoperiodoid, int inespecial)
         {
             List<string> listBean = new List<string>();
             try
@@ -122,6 +122,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Pago", infpago));
                 cmd.Parameters.Add(new SqlParameter("@ctrlDias_Pagados", indiaspago));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo_id", intipoperiodoid));
+                cmd.Parameters.Add(new SqlParameter("@ctrlEspecial", inespecial));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {
@@ -673,7 +674,7 @@ namespace Payroll.Models.Daos
         }
         public List<DataPuestosBean> sp_Tpuestos_Search_Puesto(int Empresa_id, string Search)
         {
-            
+
             List<DataPuestosBean> list = new List<DataPuestosBean>();
             this.Conectar();
             SqlCommand cmd = new SqlCommand("sp_Tpuestos_Search_Puesto", this.conexion)
@@ -802,7 +803,7 @@ namespace Payroll.Models.Daos
         }
         public List<List<string>> sp_CGruposEmpresas_Retrieve_Grupos()
         {
-            List<List<string>> lista = new List<List<string>> ();
+            List<List<string>> lista = new List<List<string>>();
             try
             {
                 this.Conectar();
@@ -902,7 +903,7 @@ namespace Payroll.Models.Daos
         }
         public List<List<string>> sp_CGruposEmpresas_Retrieve_EmpresasGrupo(int Grupo_id)
         {
-            List<List<string>> lista = new List<List<string>> ();
+            List<List<string>> lista = new List<List<string>>();
             try
             {
                 this.Conectar();
@@ -942,7 +943,7 @@ namespace Payroll.Models.Daos
         }
         public List<string> sp_CPoliticasVacaciones_Update_Politica(int Empresa_id, string Effdt, int Anio, int Dias, int Diasa, int Prima, int Anion)
         {
-            List<string> lista = new List<string> ();
+            List<string> lista = new List<string>();
             try
             {
                 this.Conectar();
@@ -964,7 +965,7 @@ namespace Payroll.Models.Daos
                     {
                         lista.Add(data["iFlag"].ToString());
                         lista.Add(data["sMensaje"].ToString());
-                        
+
                     }
                 }
                 cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
@@ -1014,7 +1015,7 @@ namespace Payroll.Models.Daos
                         Bean.Fecha_Pago = data["Fecha_Pago"].ToString();
                         Bean.Dias_Efectivos = data["Dias_Efectivos"].ToString();
                         Bean.Nomina_Cerrada = data["Nomina_Cerrada"].ToString();
-
+                        Bean.Especial = data["Especial"].ToString();
                         listBean.Add(Bean);
                     }
                 }
@@ -1036,7 +1037,7 @@ namespace Payroll.Models.Daos
             }
             return listBean;
         }
-        public List<string> sp_CInicio_Fechas_Periodo_Update_Periodo(int Empresa_id,int Id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago)
+        public List<string> sp_CInicio_Fechas_Periodo_Update_Periodo(int Empresa_id, int Id, int inano, int inperiodo, string infinicio, string inffinal, string infproceso, string infpago, int indiaspago, int edespecial)
         {
             List<string> listBean = new List<string>();
             try
@@ -1055,6 +1056,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaProceso", infproceso));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaPago", infpago));
                 cmd.Parameters.Add(new SqlParameter("@ctrlDias", indiaspago));
+                cmd.Parameters.Add(new SqlParameter("@ctrlEspecial", edespecial));
                 SqlDataReader data = cmd.ExecuteReader();
                 if (data.HasRows)
                 {
@@ -1276,7 +1278,7 @@ namespace Payroll.Models.Daos
                 {
                     while (data.Read())
                     {
-                        DataUsersBean list = new DataUsersBean(); 
+                        DataUsersBean list = new DataUsersBean();
                         list.IdUsuario = data["IdUsuario"].ToString();
                         list.Usuario = data["Usuario"].ToString();
                         list.Perfil_id = data["Perfil_id"].ToString();
@@ -1350,7 +1352,7 @@ namespace Payroll.Models.Daos
             return listBean;
         }
         // FUNCION PARA RETORNAR EL DETALLE DE LOS CENTROS DE COSTO
-        public List<DataCentrosCosto> sp_TCentrosCostos_Retrieve_CentrosCostoxEmpresa( int Empresa_id)
+        public List<DataCentrosCosto> sp_TCentrosCostos_Retrieve_CentrosCostoxEmpresa(int Empresa_id)
         {
             List<DataCentrosCosto> listBean = new List<DataCentrosCosto>();
             try
@@ -1819,7 +1821,7 @@ namespace Payroll.Models.Daos
         }
 
         // Lista Reporte
-        public List<SeccionReporte>sp_SeccionReporte_Retrieve_Cgeneral()
+        public List<SeccionReporte> sp_SeccionReporte_Retrieve_Cgeneral()
         {
             List<SeccionReporte> list = new List<SeccionReporte>();
             try
@@ -1860,11 +1862,11 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public CRenglonesBean ps_Renglon_Insert_CRenglones(int CtrliIdEmpresa,int CtrliIdRenglon,
-            string CtrlsNomRenglon, int CtrliElemtoNom,int CtrliIdReporte,int CtrliAcumulado,
-            int CtrliCancelado,int CtrliTipoRenglon,int CtrliEspejo,
+        public CRenglonesBean ps_Renglon_Insert_CRenglones(int CtrliIdEmpresa, int CtrliIdRenglon,
+            string CtrlsNomRenglon, int CtrliElemtoNom, int CtrliIdReporte, int CtrliAcumulado,
+            int CtrliCancelado, int CtrliTipoRenglon, int CtrliEspejo,
             int CtrliLisCalculo, string CtrlsCuntCont, string CtrlsDesCuen,
-            string CtrlsCarAbo,int CtrliIdSAT,int CtrliPenAlim)
+            string CtrlsCarAbo, int CtrliIdSAT, int CtrliPenAlim)
         {
 
 
@@ -2000,6 +2002,34 @@ namespace Payroll.Models.Daos
                 Console.WriteLine(exc);
             }
             return listBean;
+        }
+        public List<List<string>> sp_CGruposEmpresas_Retrieve_GrupoEmpresaSelected(int Empresa_id)
+        {
+            List<List<string>> lista = new List<List<string>>();
+
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_CGruposEmpresas_Retrieve_GrupoEmpresaSelected", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            SqlDataReader data = cmd.ExecuteReader();
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    List<string> list = new List<string>();
+                    list.Add(data["IdGrupoEmpresa"].ToString());
+                    list.Add(data["NombreGrupo"].ToString());
+                    lista.Add(list);
+                }
+            }
+            else
+            {
+                lista = null;
+            }
+            cmd.Dispose(); cmd.Parameters.Clear(); data.Close(); conexion.Close();
+            return lista;
         }
 
     }
