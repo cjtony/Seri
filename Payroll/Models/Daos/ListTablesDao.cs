@@ -1584,15 +1584,18 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteStartElement(Prefijo, "Complemento", EspacioDeNombre);
                                         xmlWriter.WriteStartElement(Prefijo2, "Nomina", EspacioDeNombreNomina);
                                         xmlWriter.WriteAttributeString("Version", "1.2");
-                                            if (ListDatEmisor[0].iPagopor == 364) {
-                                                xmlWriter.WriteAttributeString("TipoNomina", "E");
+                                            string TipoNom = "";
+                                            if (ListDatEmisor[0].iPagopor == 364 && (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078 || IdEmpresa == 2080 || IdEmpresa == 2081)) {
+                                                TipoNom = "E";
                                             }
-                                            if (ListDatEmisor[0].iPagopor != 364)
+                                            else 
                                             {
-                                                xmlWriter.WriteAttributeString("TipoNomina", "O");
+                                                TipoNom = "O";
+                                               // xmlWriter.WriteAttributeString("TipoNomina", "O");
+
                                             }
 
-
+                                        xmlWriter.WriteAttributeString("TipoNomina", TipoNom);
                                         xmlWriter.WriteAttributeString("FechaPago", sFechaPago);
                                         xmlWriter.WriteAttributeString("FechaInicialPago", sFechaInicialPago);
                                         xmlWriter.WriteAttributeString("FechaFinalPago", sFechaFinalPago);
