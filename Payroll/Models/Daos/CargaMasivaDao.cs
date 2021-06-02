@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Payroll.Models.Daos
 {
@@ -554,6 +553,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Pago", rows[7].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlDias_Pagados", rows[8].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo_id", rows[2].ToString()));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEspecial", 0));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 

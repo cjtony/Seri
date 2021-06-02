@@ -8,7 +8,7 @@
 <div id="bodySubmenus" class="pt-4"></div>
 <div class="modal fade" id="modalBtns" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content bg-light">
             <div class="modal-header">
                 <h4 class="modal-title">Selecciona la empresa</h4>
 
@@ -17,14 +17,11 @@
                 </button>
             </div>
             <div class="modal-body row">
-                <div class="col-12 mb-3">
-                    <input type="text" name="inputSearchEmpleados" id="inputSearchEmpleados" placeholder="Escriba el nombre de la empresa" class="form-control invisible" />
-                    <div id="resultSearchEmpleados" name="resultSearchEmpleados" class="list-group invisible"></div>
-                </div>
+                
                 <div class="col-md-12" id="mbody"></div>
             </div>
             <div class="modal-footer">
-                <samll class=" text-muted font-italic">*Es necesario elegir una empresa para iniciar</samll>
+                <samll class=" text-muted font-italic text-dark">*Es necesario elegir una empresa para iniciar</samll>
             </div>
         </div>
     </div>
@@ -46,18 +43,21 @@
                 }
             });
         }
+
         change = () => {
             $("#bodySubmenus").empty();
         }
-        btnsEmpresas = (id, nombre) => {
 
+        btnsEmpresas = (id, nombre) => {
+            
             $.ajax({
                 url: "../Empresas/DefineEmpresa",
                 type: "POST",
                 data: JSON.stringify({ IdEmpresa: id, NombreEmpresa: nombre }),
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data);
+                    loadgroupinfo(id);
+                    
                     if (data[0] != "0") {
                         $.ajax({
                             url: "../Empresas/DefinePeriodoActual",
@@ -87,11 +87,8 @@
                             html: '<h1 class="text-danger font-weight-bold col-md-12">Aviso!</h1><p class="font-weight-bold">La empresa no tiene periodos abiertos<br><small class="text-justify text-muted">*Para poder trabajar de manera normal en todos los modulos genere mas periodos e ingrese nuevamente al sistema</small><small class="text-justify text-muted"></small></p>'
                         });
                     }
-
-
                 }
             });
-
         }
 
         $("#modalBtns").modal({
@@ -99,6 +96,7 @@
             backdrop: "static",
             focus: true
         });
+
         $("#btn-cambiar-empresas").on("click", function () {
             loadBtnsEmpresas();
             $("#modalBtns").modal({
@@ -107,7 +105,6 @@
                 focus: true
             });
         });
-        
 
         MostrarBtnsEmpresa = (idE) => {
             var txtIdEmpresa = { "IdEmpresa": idE };
@@ -132,6 +129,7 @@
                 }
             });
         }
+
         loadBtnsEmpresas = () => {
 
             $.ajax({
@@ -147,7 +145,20 @@
         }
 
         loadBtnsEmpresas();
+
         $("#modalBtns").modal('show');
+
+        loadgroupinfo = (Empresa_id) => {
+            $.ajax({
+                url: "../Empresas/GrupoEmpInfo",
+                type: "POST",
+                data: JSON.stringify({ Empresa_id: Empresa_id }),
+                contentType: "application/json; charset=utf-8",
+                success: (data) => {
+                    document.getElementById("btnGrupoEmpName").innerHTML = data[0] +"&nbsp;&nbsp;" + data[1];
+                }
+            });
+        }
     });
 </script>
 <script src="~/Scripts/main/startMenu.js"></script>

@@ -690,6 +690,8 @@ namespace Payroll.Models.Beans
         public string Fecha_Pago { get; set; }
         public string Dias_Efectivos { get; set; }
         public string Nomina_Cerrada { get; set; }
+        public string Especial { get; set; }
+
     }
     public class TabPoliticasVacacionesBean
     {

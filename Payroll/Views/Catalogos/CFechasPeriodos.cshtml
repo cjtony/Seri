@@ -82,11 +82,42 @@
                         <label>Dias Pago</label>
                         <input class="form-control form-control-sm" type="text" name="editdiaspago" id="editdiaspago" value="" required />
                     </div>
+                    <div class="form-group col-md-4 text-center">
+                        <label class="invisible">sr only</label>
+                        <div class="border border-info rounded py-1">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="edespecial">
+                                <label class="custom-control-label text-info" for="edespecial">Periodo Especial</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 text-center small">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>IMPORTANTE!</strong> Si seleccionas un periodo como especial, este debera ser a partir de 60 en adelante según los periodos especiales ya existentes.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnUpdatefechaperiodo" type="button" class="btn btn-success"><i class="fas fa-save"></i> Actualizar</button>
+                <button type="button" class="btn btn-secondary btn-sm btn-icon-split" data-dismiss="modal">
+                    <span class="icon">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">
+                        Cerrar
+                    </span>
+                </button>
+                <button id="btnUpdatefechaperiodo" type="button" class="btn btn-success btn-sm btn-icon-split">
+                    <span class="icon">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text">
+                        Actualizar
+                    </span>
+                </button>
             </div>
         </div>
     </div>
@@ -139,12 +170,41 @@
                         <label>Dias Pago</label>
                         <input class="form-control form-control-sm" type="text" name="indiaspago" id="indiaspago" value="15" required />
                     </div>
+                    <div class="form-group col-md-4 text-center">
+                        <div class="border border-info rounded py-1">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="inespecial">
+                                <label class="custom-control-label text-info" for="inespecial">Periodo Especial</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 text-center small">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>IMPORTANTE!</strong> Si seleccionas un periodo como especial, este debera ser a partir de 60 en adelante según los periodos especiales ya existentes.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
                 </form>
-
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnsavefechaperiodo" type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-secondary btn-icon-split btn-sm" data-dismiss="modal">
+                    <span class="icon">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">
+                        Cerrar
+                    </span>
+                </button>
+                <button id="btnsavefechaperiodo" type="button" class="btn btn-primary btn-icon-split btn-sm">
+                    <span class="icon">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text">
+                        Guardar
+                    </span>
+                </button>
             </div>
         </div>
     </div>
@@ -229,7 +289,7 @@
     </div>
 </div>
 
-<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=1"></script>
+<script src="~/Scripts/Catalogos/ModuloCatalogos.js?n=0.2"></script>
 <script>
     $(function () {
         LoadTabFechasPeriodos();
