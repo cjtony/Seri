@@ -1,4 +1,4 @@
-Error en la linea: 12, El empleado 904309 no existe
-Error en la linea: 47, El empleado 904275 no existe
-Error en la linea: 122, El empleado 904121 no existe
-Error en la linea: 190, El empleado 904510 no existe
+Error en la linea: 1, La empresa no existe
+Error en la linea: 1, El empleado 906638 no existe o esta dado de baja
+Error en la linea: 1, El Renglon 61 no existe
+Error en la linea: 1,No existen Periodos Especiales disponibles, crea un periodo e intenta nuevamente

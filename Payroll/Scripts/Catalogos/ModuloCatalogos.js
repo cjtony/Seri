@@ -156,6 +156,8 @@ $(function () {
     $('#modalCargaMasiva').on('hidden.bs.modal', function () {
         $(".custom-file-input").val("").next('.custom-file-label').removeClass('selected').html("Seleccionar Archivo");
         document.getElementById("modalCargaMasiva").reset();
+        $("#btnCargaMasiva").html("<i class='fas fa-check-circle mr-2'></i> Cargar archivo");
+        document.getElementById("btnCargaMasiva").disabled = false;
         //console.log("Close modal");
     });
     // Cambio en el input file
@@ -673,7 +675,7 @@ $(function () {
         document.getElementById("frmNewFechasPeriodos").reset();
         $("#frmNewFechasPeriodos").removeClass("was-validated");
     });
-
+     
     // Guardar Fecha - Periodo
     $("#btnsavefechaperiodo").on("click", function () {
         var form = document.getElementById("frmNewFechasPeriodos");
@@ -737,7 +739,6 @@ $(function () {
                             timer: 3000
                         });
                     }
-                    
                 }
             });
         }
