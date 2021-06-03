@@ -1081,6 +1081,7 @@
     <Content Include="Scripts\main\RecibosNomina.js" />
     <Content Include="Scripts\main\regionales.js" />
     <Content Include="Scripts\main\Reportes\catalogs.js" />
+    <Content Include="Scripts\main\Reportes\especiales.js" />
     <Content Include="Scripts\main\Reportes\main.js" />
     <Content Include="Scripts\main\savedatageneral.js" />
     <Content Include="Scripts\main\startMenu.js" />
