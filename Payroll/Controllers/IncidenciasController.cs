@@ -36,7 +36,10 @@ namespace Payroll.Controllers
         {
             return PartialView();
         }
-
+        public PartialViewResult CargaMasiva()
+        {
+            return PartialView();
+        }
         //Retorno de datos
         [HttpPost]
         public JsonResult ResumenVacaciones(int IdEmpleado = 4)
@@ -118,7 +121,6 @@ namespace Payroll.Controllers
             int id1 = int.Parse(Session["Empleado_id"].ToString());
             int id2 = int.Parse(Session["IdEmpresa"].ToString());
             lista = Dao.sp_TCreditos_Retrieve_Creditos(id1, id2);
-            //var data = new { data = lista };
             return Json(lista);
         }
         [HttpPost]
@@ -278,10 +280,6 @@ namespace Payroll.Controllers
             res = Dao.sp_TPensiones_Alimenticias_Delete_Pension(int.Parse(Session["IdEmpresa"].ToString()), int.Parse(Session["Empleado_id"].ToString()), Pension_id, IncidenciaP_id);
             return Json(res);
         }
-        public PartialViewResult CargaMasiva()
-        {
-            return PartialView();
-        }
         [HttpPost]
         public JsonResult LoadIncapacidadesTab()
         {
@@ -302,16 +300,6 @@ namespace Payroll.Controllers
             lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Empleado_id, FechaI, FechaF);
             return Json(lista);
         }
-        //[HttpPost]
-        //public JsonResult LoadDiasRestantesPeriodo(string FechaI, string FechaF)
-        //{
-        //    List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();
-        //    pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
-        //    int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
-        //    int Periodo = int.Parse(Session["Periodo_id"].ToString());
-        //    lista = Dao.sp_TAusentismos_Search_Incapacidades(Empresa_id, Periodo);
-        //    return Json(lista);
-        //}
         [HttpPost]
         public JsonResult LoadCreditoEmpleado(int Credito_id)
         {
@@ -338,11 +326,6 @@ namespace Payroll.Controllers
             PruebaEmpresaDao Dao = new PruebaEmpresaDao();
             lista = Dao.sp_TperiodosVacaciones_Retrieve_PeriodosVacaciones2(int.Parse(Session["Empleado_id"].ToString()), int.Parse(Session["IdEmpresa"].ToString()));
             return Json(lista);
-        }
-        [HttpPost]
-        public ActionResult PIncidencias()
-        {
-            return PartialView();
         }
         [HttpPost]
         public JsonResult LoadIncidencia(int Incidencia_id)
@@ -411,15 +394,27 @@ namespace Payroll.Controllers
                         var resultvRenglon = Dao.Valida_Renglon(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Renglon_id"].ToString());
                         if (resultvRenglon == 0) { ResutLog.Add(errorh + (i + 1) + ", El Renglon " + table.Rows[i]["Renglon_id"].ToString() + " no existe"); }
 
-
-
+                        if (int.Parse(table.Rows[i]["Periodo_especial"].ToString()) == 1) // CAMBIO DEL PERIODO NORMAL POR EL PERIODO ESPECIAL MENOR DISPONIBLE
+                        {
+                            var resultvRenglonEspecial = Dao.Valida_Periodo_Especial_Existe(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo_especial"].ToString());
+                            if (resultvRenglonEspecial.iFlag == 0) { ResutLog.Add(errorh + (i + 1) + "," + resultvRenglonEspecial.sRespuesta ); }
+                        }
                     }
 
                     if (ResutLog.Count == 0)
                     {
                         for (int k = 0; k < table.Rows.Count; k++)
                         {
-                            Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo, Referencia);
+                            if (int.Parse(table.Rows[k]["Periodo_especial"].ToString()) == 0)
+                            {
+                                Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, Periodo, Referencia);
+                            }
+                            else if (int.Parse(table.Rows[k]["Periodo_especial"].ToString()) == 1) // CAMBIO DEL PERIODO NORMAL POR EL PERIODO ESPECIAL DISPONIBLE
+                            {
+                                var periodoEspecial = Dao.Valida_Periodo_Especial_Existe(table.Rows[k]["Empresa_id"].ToString(), table.Rows[k]["Periodo_especial"].ToString());
+
+                                Dao.InsertaCargaMasivaIncidencias(table.Rows[k], IsCargaMasiva, periodoEspecial.iFlag, Referencia);
+                            }
                         }
                         list.Add("1");
                         list.Add("Carga de Incidencias correcta, se cargaron " + i + " registos.");
@@ -642,6 +637,14 @@ namespace Payroll.Controllers
             List<string> lista = new List<string>();
             CargaMasivaDao Dao = new CargaMasivaDao();
             lista = Dao.sp_Cancela_CargaMasiva(tabla,referencia);
+            return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult LoadPension(int Pension_id) 
+        {
+            List<PensionesAlimentariasBean> lista = new List<PensionesAlimentariasBean>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            lista = Dao.sp_TPensiones_Alimenticias_retrieve_pension(Pension_id);
             return Json(lista);
         }
     }

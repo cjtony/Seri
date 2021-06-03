@@ -1,4 +1,5 @@
 ﻿using ExcelDataReader;
+using Payroll.Models.Beans;
 using Payroll.Models.Utilerias;
 using System;
 using System.Collections.Generic;
@@ -331,6 +332,32 @@ namespace Payroll.Models.Daos
 
             return value;
         }
+        public ReturnBean Valida_Periodo_Especial_Existe(string Empresa_id, string Periodo_especial)
+        {
+            ReturnBean Bean = new ReturnBean();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("Valida_Periodo_Especial_Existe", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlEmpresa_id", Empresa_id));
+            cmd.Parameters.Add(new SqlParameter("@ctrlPeriodo_especial", Periodo_especial));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    Bean.iFlag = int.Parse(data["iFlag"].ToString());
+                    Bean.sRespuesta = data["sRespuesta"].ToString();
+                }
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return Bean;
+        }
         public List<string> InsertaCargaMasivaIncidencias(DataRow rows, int IsCargaMasiva, int Periodo, string Referencia)
         {
             List<string> list = new List<string>();
@@ -553,7 +580,7 @@ namespace Payroll.Models.Daos
             cmd.Parameters.Add(new SqlParameter("@ctrlFecha_Pago", rows[7].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlDias_Pagados", rows[8].ToString()));
             cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo_id", rows[2].ToString()));
-            cmd.Parameters.Add(new SqlParameter("@ctrlEspecial", 0));
+            cmd.Parameters.Add(new SqlParameter("@ctrlEspecial", "0"));
             SqlDataReader data = cmd.ExecuteReader();
             cmd.Dispose();
 

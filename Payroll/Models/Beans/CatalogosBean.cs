@@ -60,7 +60,6 @@ namespace Payroll.Models.Beans
         public string sFechaAlta { get; set; }
         public string sMensaje { get; set; }
     }
-
     public class BankInt
     {
         public string sNombre { get; set; }
@@ -70,7 +69,6 @@ namespace Payroll.Models.Beans
         public int iIdConfiguracion { get; set; }
         public int iGrupoId { get; set; }
     }
-
     public class BancosBean
     {
         public int iIdBanco { get; set; }
@@ -232,7 +230,6 @@ namespace Payroll.Models.Beans
         public string sFechaAlta { get; set; }
         public string sMensaje { get; set; }
     }
-
     public class InfoPositionInsert
     {
         public int iPosicion { get; set; }
@@ -356,7 +353,6 @@ namespace Payroll.Models.Beans
         public string sFechaRegistroPosicion { get; set; }
         public string sMensaje { get; set; }
     }
-
     public class DatosMovimientosBean
     {
         public int iEmpleado_id { get; set; }
@@ -370,7 +366,6 @@ namespace Payroll.Models.Beans
         public int iUsuario_id          { get; set; }
         public string sMensaje { get; set; }
     }
-
     public class TipoPeriodosBean
     {
         public int iId { get; set; }
@@ -697,14 +692,6 @@ namespace Payroll.Models.Beans
         public string Prima_Vacacional_Porcen { get; set; }
         public string Dias_Aguinaldo { get; set; }
     }
-    //public class CatalogoPuestosBean
-    //{
-    //    public int id { get; set; }
-    //    public string Catalogo { get; set; }
-    //    public string Descripcion { get; set; }
-    //    public string Cancelado { get; set; }
-    //    public string Codigo { get; set; }
-    //}
     public class EmpleadosxEmpresaBean
     {
         public string Empresa_id { get; set; }
@@ -776,7 +763,6 @@ namespace Payroll.Models.Beans
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
     }
-
     public class TipoRenglonBean { 
          
         public int iIdRenglon { get; set; }
@@ -785,7 +771,6 @@ namespace Payroll.Models.Beans
 
 
     }
-
     public class ListaCalculoBean
     {
 
@@ -795,7 +780,6 @@ namespace Payroll.Models.Beans
 
 
     }
-
     public class SeccionReporte { 
         public int iIdValor { get; set; }
         public string SNombreReporte { get; set; }
@@ -811,5 +795,9 @@ namespace Payroll.Models.Beans
         public string Puesto { get; set; }
         public string Cancelado { get; set; }
 
+    }
+    public class ReturnBean {
+        public int iFlag { get; set; }
+        public string sRespuesta { get; set; }
     }
 }
