@@ -25,6 +25,9 @@
                     <a class="nav-item nav-link font-navs" id="nav-catalogos-tab" data-toggle="tab" href="#nav-catalogos" role="tab" aria-controls="nav-catalogos" aria-selected="true">
                         <i class="fas fa-book mr-2"></i> Catalogos
                     </a>
+                    @*<a class="nav-item nav-link font-navs" id="nav-especiales-tab" data-toggle="tab" href="#nav-especiales" role="tab" aria-controls="nav-catalogos" aria-selected="true">
+                        <i class="fas fa-book mr-2"></i> Especiales
+                    </a>*@
                 </div>
             </nav>
             <div class="tab-content bg-white" id="nav-tabContent">
@@ -136,6 +139,7 @@
                                                     <option value="PENSIONESALIM">CATALOGO DE PENSIONES ALIMENTICIAS</option>
                                                     <option value="BAJACREDITOS">BAJA DE CREDITO INFONAVIT</option>
                                                     <option value="AUMENFEC">AUMENTOS DE SUELDO POR RANGO DE FECHAS</option>
+                                                    <option value="ACUMSICOSS">ACUMULADOSSIC</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -191,6 +195,43 @@
                         </div>
                     </div>
                 </div>
+                @*<div class="tab-pane fade show p-3" id="nav-especiales" role="tabpanel" aria-labelledby="nav-especiales-tab">
+                    <div class="tab-content" id="nav-tabContent3">
+                        <div class="tab-pane fade show active p-3" id="nav-especiales-1" role="tabpanel" aria-labelledby="nav-especiales-tab">
+                            <div class="row mt-2">
+                                <div id="div-most-alert-data-reporte-especiales" class="col-md-6 offset-3"></div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="text-left">
+                                        <h6 class="col-ico font-navs">
+                                            <b> <i class="fas fa-clipboard-check fa-sm mr-ico-05"></i> Selecciona una opción </b>
+                                        </h6>
+                                        <hr />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 offset-2 mt-5">
+                                    <div class="form-group">
+                                        <label class="col-form-label col-ico font-labels" for="typeReportselectEspeciales"> <i class="fas fa-book mr-2 col-ico"></i> Catalogo</label>
+                                        <select class="form-control form-control-sm" id="typeReportselectEspeciales">
+                                            <option value="none">Selecciona</option>
+                                            <option value="ACUMULADOS">ACUMULADOS</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group text-center mt-4">
+                                        <button class="btn btn-sm btn-primary" id="btnGenerateReportEspeciales">
+                                            <i class="fas fa-play mr-2"></i> Generar reporte
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <img width="250" class="img-fluid" src="~/Content/img/undraw_Documents_re_isxv.svg" alt="Reports" id="img-reports-Especiales" />
+                                    <h6 class="text-center mt-3 text-primary font-weight-bold" id="title-grEspeciales"></h6>
+                                </div>
+                                <div class="col-md-6 mt-3 offset-3 mt-4" id="contentGenerateRepEspeciales">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
             </div>
         </div>
     </div>
@@ -275,5 +316,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="~/Scripts/main/Reportes/main.js?n=7.7"></script>
-<script type="text/javascript" src="~/Scripts/main/Reportes/catalogs.js?n=0.2"></script>
+<script type="text/javascript" src="~/Scripts/main/Reportes/main.js?n=8.1" defer></script>
+<script type="text/javascript" src="~/Scripts/main/Reportes/catalogs.js?n=0.2" defer></script>
+@*<script type="text/javascript" src="~/Scripts/main/Reportes/especiales.js?n=0.1" defer></script>*@
