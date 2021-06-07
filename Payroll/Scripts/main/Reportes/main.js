@@ -392,7 +392,7 @@
                     //        <label class="col-form-label font-labels">Tipo de empleados</label> ${parameterTEmpl}
                     //    </div>
                     //</div>
-                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP" || typeReportselect.value == "BAJACREDITOS" || typeReportselect.value == "AUMENFEC") {
+                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP" || typeReportselect.value == "BAJACREDITOS" || typeReportselect.value == "AUMENFEC" || typeReportselect.value == "FALTASSIC" || typeReportselect.value == "INCAPACIDADESSIC") {
                     contentParameters.innerHTML += `
                         <div class="row mt-3 animated fadeInDown"> 
                             <div class="col-md-4 offset-2">
@@ -651,9 +651,16 @@
                     await fGenerateReportDetailOfPayrollLinesYearActually(optionBusiness, keyBusinessOpt);
                 } else if (typeReport == "ACUMSICOSS") {
                     await fGenerateReportAcum(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "FALTASSIC") {
+                    await fGenerateReportFaltasSic(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "INCAPACIDADESSIC") {
+                    await fGenerateReportIncapacidadesSic(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "ADEUDOS") {
+                    await fGenerateReportAdeudos(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
+                console.log(typeReport.value);
             } else {
                 alert('Accion invalida');
                 location.reload();
@@ -961,6 +968,117 @@
         }
     }
 
+    // Funcion que genera el reporte de faltas (SICOSS)
+    fGenerateReportFaltasSic = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDateS = document.getElementById('paramDateS');
+                const paramDateE = document.getElementById('paramDateE');
+                if (paramDateS.value != "") {
+                    if (paramDateE.value != "") {
+                        $.ajax({
+                            url: "../Reportes/GenerateReportFaltasSic",
+                            type: "POST",
+                            data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateS: paramDateS.value, dateE: paramDateE.value },
+                            beforeSend: () => {
+                                fDisabledButtonsRep();
+                            }, success: (data) => {
+                                setTimeout(() => {
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    fEnabledButtonsRep();
+                                }, 2000);
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+                    } else {
+                        fShowTypeAlert('Atención', 'Complete el campo Fecha final', 'warning', paramDateE, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo Fecha inicio', 'warning', paramDateS, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de incapacidades (SICOSS)
+    fGenerateReportIncapacidadesSic = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const paramDateS = document.getElementById('paramDateS');
+                const paramDateE = document.getElementById('paramDateE');
+                if (paramDateS.value != "") {
+                    if (paramDateE.value != "") {
+                        $.ajax({
+                            url: "../Reportes/GenerateReportIncapacidadesSic",
+                            type: "POST",
+                            data: { typeOption: option, keyOptionSel: parseInt(keyOption), dateS: paramDateS.value, dateE: paramDateE.value },
+                            beforeSend: () => {
+                                fDisabledButtonsRep();
+                            }, success: (data) => {
+                                setTimeout(() => {
+                                    if (data.Bandera === true && data.MensajeError === "none") {
+                                        if (data.Rows > 0) {
+                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                        } else {
+                                            fShowContentNoDataReport(contentGenerateRep);
+                                        }
+                                    } else {
+                                        alert('Algo fallo al realizar el reporte');
+                                        location.reload();
+                                    }
+                                    fEnabledButtonsRep();
+                                }, 2000);
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+                    } else {
+                        fShowTypeAlert('Atención', 'Complete el campo Fecha final', 'warning', paramDateE, 2);
+                    }
+                } else {
+                    fShowTypeAlert('Atención', 'Complete el campo Fecha inicio', 'warning', paramDateS, 2);
+                }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de acumulados (SICOSS)
     fGenerateReportAcum = (option, keyOption) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
@@ -1238,6 +1356,53 @@
                 } else {
                     fShowTypeAlert('Atención', 'Ingrese el periodo de inicio', 'warning', paramDateS, 2);
                 }
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de adeudos
+    fGenerateReportAdeudos = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const dataSend = { option: String(option), keyOption: parseInt(keyOption) };
+                $.ajax({
+                    url: "../Reportes/GenerateReportAdeudos",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        fDisabledButtonsRep();
+                    }, success: (data) => {
+                        console.log(data);
+                        setTimeout(() => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, 2000);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
             } else {
                 alert('Accion invalida');
                 location.reload();
