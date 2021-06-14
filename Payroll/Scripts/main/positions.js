@@ -393,7 +393,7 @@
     /* EJECUCION DE FUNCION QUE BUSCA LA POSICION SIGUIENTE */
     btnsearchnumposition.addEventListener('click', fsearchpositionsig);
     /* FUNCION QUE HACE LA BUSQUEDA EN TIEMPO REAL */
-    fsearchkeyuppositions = () => {
+    fsearchkeyuppositions = () => { 
         resultpositions.innerHTML = '';
         document.getElementById('noresultpositions').innerHTML = '';
         try {

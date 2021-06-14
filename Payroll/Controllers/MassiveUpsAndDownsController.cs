@@ -26,6 +26,53 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public ActionResult UploadFileMasiveUpSalary(HttpPostedFileBase fileUpload, string typeFile)
+        {
+            Boolean flag = false;
+            Boolean flagLog = false;
+            String messageError = "none";
+            string pathUploadFile = "";
+            string nameBinderLogs = "LogFilesUploadSalary";
+            string pathLogUploadFile = Server.MapPath("~/Content/" + nameBinderLogs);
+            string nameLogUploadFile = "";
+            string nameFileLogUploadFile = "";
+            int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
+            try {
+                if (typeFile == "SALARIO") {
+                    pathUploadFile = "FilesUpsSalary";
+                    nameLogUploadFile = "LOG_FILE_UP_Salary";
+                    Session["nameFileSalary" + keyUser.ToString()] = fileUpload.FileName;
+                } else {
+                    flag = false;
+                }
+                string pathComplete = Server.MapPath("~/Content/" + pathUploadFile + "/");
+                if (!Directory.Exists(pathComplete)) {
+                    Directory.CreateDirectory(pathComplete);
+                }
+                if (System.IO.File.Exists(pathComplete + @"\\" + fileUpload.FileName)) {
+                    System.IO.File.Delete(pathComplete + @"\\" + fileUpload.FileName);
+                }
+                fileUpload.SaveAs(pathComplete + Path.GetFileName(fileUpload.FileName));
+                flag = true;
+            } catch (Exception exc) {
+                if (!Directory.Exists(pathLogUploadFile)) {
+                    Directory.CreateDirectory(pathLogUploadFile);
+                }
+                nameFileLogUploadFile = nameLogUploadFile + Path.GetFileNameWithoutExtension(fileUpload.FileName).ToString() + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
+                using (StreamWriter fileLog = new StreamWriter(pathLogUploadFile + @"\\" + nameFileLogUploadFile, false, Encoding.UTF8)) {
+                    fileLog.Write("* -- FECHA: " + DateTime.Now.ToString() + " -- *\n");
+                    fileLog.Write("* -- ARCHIVO: " + fileUpload.FileName + " -- *\n");
+                    fileLog.Write("* -- DETALLE DEL ERROR -- */n");
+                    fileLog.Write(exc.Message.ToString());
+                    fileLog.Close();
+                }
+                flag = false;
+                flagLog = true;
+            }
+            return Json(new { Bandera = flag, Log = flagLog, NombreLog = nameFileLogUploadFile, FolderLog = nameBinderLogs, MensajeError = messageError, ArchivoCarga = fileUpload.FileName, Llave = keyUser }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public ActionResult UploadFileMasiveUpEmployees(HttpPostedFileBase fileUpload, string typeFile)
         {
             Boolean flag = false;
@@ -112,6 +159,194 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult InsertDataFileMasiveUpsSalary(string nameFile, int keyFile) 
+        {
+            Boolean flag = false;
+            Boolean flagVE = false;
+            Boolean flagSpreadSheet = false;
+            Boolean flagCodeCorrect = false;
+            Boolean flagSearch = false;
+            Boolean flagInsert = false;
+            Boolean flagSqlExc = false;
+            String messageError = "none";
+            String showMessageErVal = "";
+            String nameFileSession = Session["nameFileSalary" + keyFile.ToString()].ToString();
+            String pathUploadFile = "FilesUpsSalary";
+            String pathLogsErVFile = "Logs_Validations";
+            String nameFileLogMessage = "LOG_" + Path.GetFileNameWithoutExtension(nameFile) + DateTime.Now.ToString("dd-MM-yyy") + ".txt";
+            String pathCompleteSearch = Server.MapPath("~/Content/" + pathUploadFile + "/");
+            StringBuilder validationErMe = new StringBuilder("Errores de validacion: ");
+            StringBuilder errMessage = new StringBuilder();
+            int cantReg = 0;
+            int rowReco = 0;
+            int rowActu = 1;
+            int rowInsert = 0;
+            int rowErrVal = 0;
+            int rowErrorInsert = 0;
+            List<CatalogoGeneralBean> listTypeMovements = new List<CatalogoGeneralBean>();
+            ListasAltasBajasMasivasDao listUpsAndDowns = new ListasAltasBajasMasivasDao();
+            List<ErrorDataLoadBean> errorDataLoadBeans = new List<ErrorDataLoadBean>();
+            List<ErroresLayoutBean> ValidacionesLayouts = new List<ErroresLayoutBean>();
+            List<ExceptionsBean> exceptionsBeans = new List<ExceptionsBean>();
+
+            StringBuilder msjValidacionInsert = new StringBuilder();
+            try  {
+                if (nameFileSession.Replace(" ","") == nameFile.Replace(" ", "")) {
+                    flag = true;
+                }
+                if (flag) {
+                    if (System.IO.File.Exists(pathCompleteSearch + nameFile)) {
+                        flagSearch = true;
+                    }
+                }
+                if (flagSearch) {
+                    listTypeMovements = listUpsAndDowns.UpsAndDownsCatalogs(41, "Movimientos", 1);
+                    using (var stream = System.IO.File.Open(pathCompleteSearch + nameFile, FileMode.Open, FileAccess.Read)) {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream)) {
+                            var result = reader.AsDataSet();
+                            DataTable table = result.Tables[0];
+                            DataRow row = table.Rows[0];
+                            if (table.TableName == "IPSNet Salario") {
+                                flagSpreadSheet = true;
+                            }
+                            if (row[1].ToString() == "DATA" && row[2].ToString() == "MassiveSalary") {
+                                flagCodeCorrect = true;
+                            }
+                            cantReg = Convert.ToInt32(row[0].ToString());
+                            if (flagSpreadSheet && flagCodeCorrect) {
+                                foreach (DataRow dr in table.Rows) {
+                                    if (dr[1].ToString().Trim() != "DATA") {
+                                        rowReco += 1;
+                                        if ((cantReg + 1) == rowReco) {
+                                            break;
+                                        }
+                                        flagVE = false;
+                                        rowActu += 1;
+                                        /* VALIDACIONES */
+                                        // EMPRESAS
+                                        if (dr[3].ToString().Trim() == "" && Convert.ToInt32(dr[3].ToString().Trim()) == 0) {
+                                            validationErMe.Append("[*] El campo EMPRESA " + dr[3].ToString().Trim() + " debe de contener un valor numerico y valido. ");
+                                            flagVE = true;
+                                        }
+                                        // NUMERO NOMINA
+                                        if (dr[4].ToString().Trim() == "" && Convert.ToInt32(dr[4].ToString().Trim()) == 0) {
+                                            validationErMe.Append("[*] El campo NOMINA " + dr[4].ToString().Trim() + " debe de contener un valor numerico y valido. ");
+                                            flagVE = true;
+                                        }
+                                        string tipoMov = dr[5].ToString().Trim();
+                                        // TIPOS MOVIMIENTOS
+                                        if (!listTypeMovements.Any(x => x.iId.ToString() == tipoMov)) {
+                                            validationErMe.Append("[*] El valor ingresado " + dr[5].ToString() + " en la columna TIPO DE MOVIMIENTO no es valido. ");
+                                            flagVE = true;
+                                        }
+                                        // SUELDO
+                                        if (dr[6].ToString().Trim() == "") {
+                                            validationErMe.Append("[*] El valor ingresado " + dr[6].ToString() + " en la columna NUEVO SALDO no es valido. ");
+                                            flagVE = true;
+                                        }
+                                        // FECHA MOVIMIENTO
+                                        if (dr[7].ToString().Trim() == "" && Convert.ToDateTime(dr[7].ToString().Trim()).ToString("dd/MM/yyyy").Length == 10) {
+                                            validationErMe.Append("[*] El valor ingresado " + dr[7].ToString() + " en la columna FECHA MOVIMIENTO no es valido. ");
+                                            flagVE = true;
+                                        }
+
+                                        // Si hay errores integramos los datos a la lista
+                                        if (flagVE) {
+                                            errorDataLoadBeans.Add(new ErrorDataLoadBean {
+                                                iFilaError = rowActu,
+                                                sEmpresa = dr[3].ToString().Trim(),
+                                                sErrores = validationErMe.ToString().Trim()
+                                            });
+                                            validationErMe.Clear();
+                                            validationErMe.Append("Errores de validacion: ");
+                                            rowErrVal += 1;
+                                            continue;
+                                        }
+                                        LoadTypePeriodPayrollBean periodBean = new LoadTypePeriodPayrollBean();
+                                        LoadTypePeriodPayrollDaoD periodDaoD = new LoadTypePeriodPayrollDaoD();
+                                        int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                                        periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(keyBusiness,
+                                                        Convert.ToInt32(DateTime.Now.Year.ToString().Trim())); 
+                                        flag = (periodBean.sMensaje == "success") ? true : false;
+                                        // VALORES EN VARIABLES
+                                        int empresa = Convert.ToInt32(dr[3].ToString().Trim());
+                                        int nomina = Convert.ToInt32(dr[4].ToString().Trim());
+                                        int movimiento = Convert.ToInt32(dr[5].ToString().Trim());
+                                        double sueldo = Convert.ToDouble(dr[6].ToString().Trim());
+                                        string fechaMovimiento = Convert.ToDateTime(dr[7].ToString().Trim()).ToString("dd/MM/yyyy");
+                                        int usuarioId = Convert.ToInt32(Session["iIdUsuario"].ToString().Trim());
+                                        LayoutsDao layouts = new LayoutsDao();
+                                        LayoutSalarioMasivoBean layoutSalario = new LayoutSalarioMasivoBean();
+                                        layoutSalario = layouts.sp_Actualiza_Salario_Carga_Masiva(empresa, nomina, movimiento, sueldo, fechaMovimiento, usuarioId, periodBean.iTipoPeriodo, periodBean.iPeriodo, periodBean.iAnio);
+                                        if (layoutSalario.sMensaje == "SUCCESS") {
+                                            flagInsert = true;
+                                            rowInsert += 1;
+                                            ValidacionesLayouts.Add(new ErroresLayoutBean { sNomina = nomina.ToString(), sEmpresa = empresa.ToString(), iFila = rowActu, sErroresInsercion = "none", sErroresValidacion = "none" });
+                                        } else {
+                                            if (layoutSalario.iBandera1 == 0) {
+                                                msjValidacionInsert.Append(" [*] No se encontro información coincidente con la nomina : " + nomina.ToString() + " de la empresa : " + empresa.ToString() + ".");
+                                            }
+                                            if (layoutSalario.iBandera2 == 0) {
+                                                msjValidacionInsert.Append(" [*] Ocurrio un problema al insertar los datos de Nomina.");
+                                            }
+                                            if (layoutSalario.iBandera3 == 0) {
+                                                msjValidacionInsert.Append(" [*] Ocurrio un problema al insertar los datos de Movimiento.");
+                                            }
+                                            ValidacionesLayouts.Add(new ErroresLayoutBean { sNomina = nomina.ToString(), sEmpresa = empresa.ToString(), iFila = rowActu, sErroresInsercion = msjValidacionInsert.ToString(), sErroresValidacion = "none" });
+                                            rowErrorInsert += 1;
+                                        }
+                                        msjValidacionInsert.Clear();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!Directory.Exists(pathCompleteSearch + pathLogsErVFile)) {
+                        Directory.CreateDirectory(pathCompleteSearch + pathLogsErVFile);
+                    }
+                }
+            } catch (SqlException sqlExc) {
+                errMessage.Clear();
+                for (int i = 0; i < sqlExc.Errors.Count; i++) {
+                    errMessage.Append("Index #" + i + "\n" + "Mensaje: " + sqlExc.Errors[i].Message + "\n"
+                        + "Numero de linea: " + sqlExc.Errors[i].LineNumber + "\n" + "Origen: " + sqlExc.Errors[i].Source + "\n" + "Procedimiento: " + sqlExc.Errors[i].Procedure + "\n");
+                }
+                exceptionsBeans.Add(new ExceptionsBean { sTipo = sqlExc.GetType().ToString(), sMensaje = errMessage.ToString(), iFilaExc = rowActu, sExcepcion = "SQL" });
+                flagSqlExc = true;
+            }  catch (Exception exc) {
+                messageError = exc.Message.ToString();
+                exceptionsBeans.Add(new ExceptionsBean { sTipo = exc.GetType().ToString(), sMensaje = messageError, iFilaExc = rowActu, sExcepcion = "General" });
+                flag = false;
+            }
+            using (StreamWriter fileLog = new StreamWriter(pathCompleteSearch + pathLogsErVFile + @"\\" + nameFileLogMessage, false, Encoding.UTF8)) {
+                if (ValidacionesLayouts.Count > 0) {
+                    fileLog.Write("* -- Datos insertados -- *\n");
+                    foreach (ErroresLayoutBean data in ValidacionesLayouts) {
+                        fileLog.Write("[*] Fila = " + data.iFila.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nomina = " + data.sNomina + " [*] MensajeError = " + data.sErroresValidacion + " \n");
+                    }
+                    fileLog.Write("\n");
+                }
+                if (errorDataLoadBeans.Count > 0) {
+                    fileLog.Write("* -- Errores de validaciones -- *\n");
+                    foreach (ErrorDataLoadBean data in errorDataLoadBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaError.ToString() + ", [*] Empresa = " + data.sEmpresa + ",  [*] Mensaje = " + data.sErrores + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                if (exceptionsBeans.Count > 0) {
+                    fileLog.Write("* -- Excepciones -- *");
+                    foreach (ExceptionsBean data in exceptionsBeans) {
+                        fileLog.Write("[*] Fila = " + data.iFilaExc.ToString() + ", [*] Excepcion = " + data.sExcepcion + ", [*] Tipo = " + data.sTipo + ", [*] Mensaje = " + data.sMensaje + "\n");
+                    }
+                    fileLog.Write("\n");
+                }
+                fileLog.Close();
+            }
+            Session.Remove(nameFileSession);
+            return Json(new {Recorridos = rowReco });
+        }
+
+        [HttpPost]
         public JsonResult InsertDataFileMasiveUps(string nameFile, int keyFile)
         {
             Boolean flag = false;
@@ -169,21 +404,16 @@ namespace Payroll.Controllers
             listTypePolitics.Add(new CatalogoGeneralBean { iId = 2 });
             ListasAltasBajasMasivasDao listUpsAndDowns = new ListasAltasBajasMasivasDao();
 
-            try
-            {
-                if (nameFileSession == nameFile)
-                {
+            try {
+                if (nameFileSession == nameFile) {
                     flag = true;
                 }
-                if (flag)
-                {
-                    if (System.IO.File.Exists(pathCompleteSearch + nameFile))
-                    {
+                if (flag) {
+                    if (System.IO.File.Exists(pathCompleteSearch + nameFile)) {
                         flagSearch = true;
                     }
                 }
-                if (flagSearch)
-                {
+                if (flagSearch) {
                     // Listas de datos aceptables en la carga masiva
                     listNationalities = listUpsAndDowns.UpsAndDownsCatalogs(1, "Nacionalidades", 0);
                     listGenereEmploye = listUpsAndDowns.UpsAndDownsCatalogs(7, "Genero", 1);
@@ -751,31 +981,23 @@ namespace Payroll.Controllers
                         Directory.CreateDirectory(pathCompleteSearch + pathLogsErVFile);
                     }
                 }
-            }
-            catch (SqlException sqlExc)
-            {
+            } catch (SqlException sqlExc) {
                 errMessage.Clear();
-                for (int i = 0; i < sqlExc.Errors.Count; i++)
-                {
+                for (int i = 0; i < sqlExc.Errors.Count; i++) {
                     errMessage.Append("Index #" + i + "\n" + "Mensaje: " + sqlExc.Errors[i].Message + "\n"
                         + "Numero de linea: " + sqlExc.Errors[i].LineNumber + "\n" + "Origen: " + sqlExc.Errors[i].Source + "\n" + "Procedimiento: " + sqlExc.Errors[i].Procedure + "\n");
                 }
                 exceptionsBeans.Add(new ExceptionsBean { sTipo = sqlExc.GetType().ToString(), sMensaje = errMessage.ToString(), iFilaExc = rowActu, sExcepcion = "SQL" });
                 flagSqlExc = true;
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 messageError = exc.Message.ToString();
                 exceptionsBeans.Add(new ExceptionsBean { sTipo = exc.GetType().ToString(), sMensaje = messageError, iFilaExc = rowActu, sExcepcion = "General" });
                 flag = false;
             }
-            using (StreamWriter fileLog = new StreamWriter(pathCompleteSearch + pathLogsErVFile + @"\\" + nameFileLogMessage, false, Encoding.UTF8))
-            {
-                if (correctDataInsertBeans.Count > 0)
-                {
+            using (StreamWriter fileLog = new StreamWriter(pathCompleteSearch + pathLogsErVFile + @"\\" + nameFileLogMessage, false, Encoding.UTF8)) {
+                if (correctDataInsertBeans.Count > 0) {
                     fileLog.Write("* -- Datos insertados -- *\n");
-                    foreach (CorrectDataInsertBean data in correctDataInsertBeans)
-                    {
+                    foreach (CorrectDataInsertBean data in correctDataInsertBeans) {
                         fileLog.Write("[*] Fila = " + data.iFilaInsert.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nombre = " + data.sNombre + "\n");
                     }
                     fileLog.Write("\n");
