@@ -8,6 +8,7 @@
     const navVisNominatab = document.getElementById('nav-VisNomina-tab');
     const navNomPeritab = document.getElementById('nav-NomPeri-tab');
 
+
     Ftabopcion1 = () => {
 
         //btnFloGuardar.style.visibility = 'visible';
@@ -70,7 +71,7 @@
     const TbAñoNoCe = document.getElementById('TbAñoNoCe');
     const TipoPeriodoNoCe = document.getElementById('TipoPeriodoNoCe');
     const PeridoEjeNomCe = document.getElementById('PeridoEjeNomCe');
-    const PercepCalNomCe = document.getElementById('Percep CalNomCe');
+    const PercepCalNomCe = document.getElementById('PercepCalNomCe');
     const deduCalNomCe = document.getElementById('deduCalNomCe');
     const TotalNomCe = document.getElementById('TotalNomCe');
     const LaTotalPerNoCe = document.getElementById('LaTotalPerNoCe');
@@ -78,7 +79,7 @@
     const LaTotalNomCe = document.getElementById('LaTotalNomCe');
     const LaEmpresaNoCe = document.getElementById('LaEmpresaNoCe');
     const EmpresaNoCe = document.getElementById('EmpresaNoCe');
-    const EmpresaNom = document.getElementById('EmpresaNom');
+    const EmpresaNom = document.getElementById('EmpresaNom');  
     const BntBusRecibo = document.getElementById('btnFloBuscar');
     const ChekEnFirme = document.getElementById('ChekEnFirme');
     const CheckPeridoEspc = document.getAnimations('CheckPeridoEspc');
@@ -1011,13 +1012,14 @@
 
     $('#CheckPeridoEspc').change(function () {
 
+        $('#TbCalculos').jqxGrid('clear');
         IdDropList;
         AnioDropList;
         dataSend3 = { iIdDefinicionHd: IdDropList, iperiodo: 0, NomCerr: 0, Anio: AnioDropList };
         console.log(dataSend3);
 
         if (valorCheckPeridoEspc.checked == true) {
-            console.log('periodo especial activado');
+            EmpresaCal.selectedIndex = 0;
             $.ajax({
                 url: "../Nomina/PeridoEsp",
                 type: "POST",
@@ -1027,13 +1029,15 @@
                         $("#PeridoEje").empty();
                         for (i = 0; i < data.length; i++) {
                             if (data[i].sPeEspecial == "True") {
-                               document.getElementById("PeridoEje").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
-
-
+                                document.getElementById("PeridoEje").innerHTML += `<option value='${data[i].iId}'>${data[i].iPeriodo} Fecha del: ${data[i].sFechaInicio} al ${data[i].sFechaFinal}</option>`;
+                                console.log('periodo especial')
+                                console.log(data[i].iPeriodo)
+                                PeriodoCal.value = data[i].iPeriodo;
+                             
                             }
 
                         }
-
+                        
 
 
                         
@@ -1050,7 +1054,7 @@
           
         }
         if (valorCheckPeridoEspc.checked == false) {
-
+            EmpresaCal.selectedIndex = 0;
             $.ajax({
                 url: "../Nomina/PeridoEsp",
                 type: "POST",
@@ -1059,6 +1063,7 @@
                     if (data[0].sMensaje == "success") {
                         $("#PeridoEje").empty();
                         document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;                 
+                        PeriodoCal.value = data[0].iPeriodo;
                     }
                     if (data[0].sMensaje == "error") {
 

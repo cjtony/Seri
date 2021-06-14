@@ -1308,10 +1308,49 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult ListTpCalculolnPDF( int iTipoPeriodo, int iPeriodo, int idEmpresa, int Anio)
         {
+            decimal Reng481=0;
             List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
+            List<TpCalculosCarBean> Dta2 = new List<TpCalculosCarBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            Dta = dao.Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN( iTipoPeriodo, iPeriodo, idEmpresa, Anio);  
-            return Json(Dta);
+            Dta = dao.Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN( iTipoPeriodo, iPeriodo, idEmpresa, Anio);
+            if (Dta[0].sMensaje == "success") {
+
+                for (int i = 0; i < Dta.Count; i++) {
+                    TpCalculosCarBean ls = new TpCalculosCarBean();
+                    {
+                        ls.sValor =  Dta[i].sValor.ToString();
+                        ls.iIdRenglon = Dta[i].iIdRenglon;
+                        ls.sNombreRenglon = Dta[i].sNombreRenglon.ToString();
+                        ls.dTotalSaldo = Dta[i].dTotalSaldo;
+                        if (Dta[i].iIdRenglon == 481 && (Dta[i].iGrupEmpresa == 15 || Dta[i].iGrupEmpresa == 12|| Dta[i].iGrupEmpresa == 9)) {
+                            ls.dTotalSaldo = 0;
+                            Reng481 = Dta[i].dTotalSaldo;
+                        };
+                        if (Dta[i].iIdRenglon == 990) {
+
+                            ls.dTotalSaldo = Dta[i].dTotalSaldo - Reng481;
+                        }
+
+                        if (Dta[i].iIdRenglon == 9999)
+                        {
+
+                            ls.dTotalSaldo = Dta[i].dTotalSaldo - Reng481;
+                        }
+
+                        ls.dTotalGravado = Dta[i].dTotalGravado;
+                        ls.dTotalExento = Dta[i].dTotalExento;
+                        ls.iInformativo = Dta[i].iInformativo;
+                        ls.iGrupEmpresa = Dta[i].iGrupEmpresa;
+                        ls.sMensaje = Dta[i].sMensaje;
+                    };
+                    Dta2.Add(ls);
+
+
+                }
+
+            } 
+            
+            return Json(Dta2);
 
         }
 

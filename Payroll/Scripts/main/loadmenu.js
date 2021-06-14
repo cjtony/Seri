@@ -13,7 +13,6 @@
                 async: false,
                 cache: false,
                 success: (data) => {
-                    console.log(data);
                 }, error: (jqXHR, exception) => {
                     fcaptureaerrorsajax(jqXHR, exception);
                 }

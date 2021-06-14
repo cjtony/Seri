@@ -3455,6 +3455,7 @@ namespace Payroll.Models.Daos
                             if (data["TotalExen"].ToString() == "") { ls.dTotalExento = 0; }
                             if (data["TotalExen"].ToString() != "") { ls.dTotalExento = decimal.Parse(data["TotalExen"].ToString()); }
                             ls.iInformativo = data["Informativo"].ToString();
+                            ls.iGrupEmpresa = int.Parse(data["GrupoEmpresa_Id"].ToString());
                             ls.sMensaje = "success";
                         };
                         list.Add(ls);

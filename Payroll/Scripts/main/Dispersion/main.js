@@ -222,8 +222,6 @@
                     type: "POST",
                     data: { searchEmployee: searchemployekeynom.value, filter: filtered },
                     success: (data) => {
-                        console.log('Busqueda de empleado');
-                        console.log(data);
                         const quantity = data.length;
                         if (quantity > 0) {
                             let number = 0;
