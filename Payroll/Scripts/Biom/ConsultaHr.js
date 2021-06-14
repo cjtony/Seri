@@ -15,6 +15,8 @@
     const DropChekPau = document.getElementById('DropChekPau');
     const DropDiasDesc = document.getElementById('DropDiasDesc');
 
+   
+
     // pantalla Act
 
     const DropEmpAct = document.getElementById('DropEmpAct');
@@ -28,11 +30,15 @@
     const TxtHrSalPauAct = document.getElementById('TxtHrSalPauAct');
     const DropChekTurAct = document.getElementById('DropChekTurAct');
     const DropChekPauAct = document.getElementById('DropChekPauAct');
-    const DropDiasDescAct = document.getElementById('DropDiasDescAct');
+    const DropDiasDescAct = document.getElementById('DropDiasDescAct');   
+    const DropEmpresaSe = document.getElementById('DropEmpresaSe');
 
 
     const btninserHr = document.getElementById('btninserHr');
     const btnActHr = document.getElementById('btnActHr');
+
+    const btnFloAgre2 = document.getElementById('btnFloAgre2');
+    const DropCheckLn = document.getElementById('DropCheckLn');
 
 
     FListadoEmpresa = () => {
@@ -40,6 +46,9 @@
         $('#DropEmpresa').append('<option value="0" selected="selected">Selecciona</option>');
         $("#DropEmpAct").empty();
         $('#DropEmpAct').append('<option value="0" selected="selected">Selecciona</option>');     
+        $("#DropEmpresaSe").empty();
+        $('#DropEmpresaSe').append('<option value="0" selected="selected">Selecciona</option>');     
+     
         $.ajax({
             url: "../Nomina/LisEmpresas",
             type: "POST",
@@ -49,6 +58,8 @@
                 for (i = 0; i < data.length; i++) {
                     document.getElementById("DropEmpresa").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
                     document.getElementById("DropEmpAct").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+                    document.getElementById("DropEmpresaSe").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+
                 }
             }
         });
@@ -103,9 +114,7 @@
             type: "POST",
             data: JSON.stringify(),
             success: (data) => {
-                console.log(data);
                 if (data[0].sMensaje == "success") {
-                   
                     var source =
                     {
                         localdata: data,
@@ -147,7 +156,7 @@
                                 { text: 'Hora de Entrada pausa', datafield: 'sHrEntCom', width: 135 },
                                 { text: 'Edit', datafield: 'Edit', columntype: 'button', width: 50, cellsrenderer: function () {
                                         return "Edit"; 
-                                    }, buttonclick: function (row) {
+                                 }, buttonclick: function (row) {
                                         // open the popup window when the user clicks a button.
                                         editrow = row;
                                         var offset = $("#dTabHrDia").offset();
@@ -268,15 +277,11 @@
         });
     }
 
-
-
     /////////////////// Horario Semanal //////////////////
 
-
-
-
     DTBHrSem = () => {
-
+        var idEmpresa = '<%= Session["IdEmpresa"] %>'
+        console.log('Numero de empresa'+idEmpresa);
         $("#dTabHrSem").jqxGrid('clear')
         $.ajax({
             url: "../RH/RetrieveHrSemanl",
@@ -341,17 +346,8 @@
                                             }
 
                                         }
-                                        TxtTurnoAct.value = dataRecord.iTurno;
-                                        DescripcionhrAct.value = dataRecord.sDescrip;
-                                        DropCheckEmpleAct.selectedIndex = dataRecord.iTipCheckNorm;
-                                        TxtHrEntAct.value = dataRecord.sHrEnt;
-                                        TxtHrSalAct.value = dataRecord.sHrSal;
-                                        DropChekComAct.selectedIndex = dataRecord.iTipCheckPausa;
-                                        TxtHrSalPauAct.value = dataRecord.sHrSalCom;
-                                        TxtHrEntPauAct.value = dataRecord.sHrEntCom;
-                                        DropChekTurAct.selectedIndex = dataRecord.iTipoTurno;
-                                        DropChekPauAct.selectedIndex = dataRecord.iTipoPausa;
-                                        DropDiasDescAct.selectedIndex = dataRecord.iDiasDesc;
+                                        TxtEmpreSem.value = dataRecord.iEmpId;
+                                        
 
                                     }
                                 },
@@ -380,7 +376,38 @@
 
 
 
+    // inserta nuevo horario semanal
 
+    FInserHrSem = () => {
+        console.log('consulta los horarios');
+        $.ajax({
+            url: "../RH/RetrieveHorarios",
+            type: "POST",
+            data: JSON.stringify(),
+            success: (data) => {
+                console.log(data);
+                if (data[0].sMensaje == "success") {
+                    $("#DropCheckLn").empty();
+                    $('#DropCheckLn').append('<option value="0" selected="selected">Selecciona</option>');
+
+                    for (i = 0; i < data.length; i++) {
+                        document.getElementById("DropCheckLn").innerHTML += `<option value='${data[i].iIdHorario}'>${data[i].iTurno +" " +data[i].sHrEnt +" - "+ data[i].sHrSal}</option>`;
+                        //document.getElementById("DropEmpAct").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+                        //document.getElementById("DropEmpresaSe").innerHTML += `<option value='${data[i].iIdEmpresa}'>${data[i].sNombreEmpresa}</option>`;
+
+                    }
+                }
+                if (data[0].sMensaje != "success") {
+                    fshowtypealert('Horario Semanal', 'No hay ningun horario por dia', 'warnning');
+
+                }
+               
+            }
+        });
+
+    };
+
+    btnFloAgre2.addEventListener('click',FInserHrSem)
 
     /* FUNCION QUE MUESTRA ALERTAS */
     fshowtypealert = (title, text, icon) => {
@@ -410,8 +437,6 @@
             //}
         });
     };
-
-
 
 
 });
