@@ -218,6 +218,7 @@
     <Compile Include="Models\Beans\ConfigDataBankBean.cs" />
     <Compile Include="Models\Beans\DispersionBean.cs" />
     <Compile Include="Models\Beans\GruposEmpresasBean.cs" />
+    <Compile Include="Models\Beans\LayoutsBean.cs" />
     <Compile Include="Models\Beans\MainMenuBean.cs" />
     <Compile Include="Models\Beans\MenuBean.cs" />
     <Compile Include="Models\Beans\NominaBean.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Models\Daos\DispersionDao.cs" />
     <Compile Include="Models\Daos\DispersionSpecialDao.cs" />
     <Compile Include="Models\Daos\EditDataGeneralDao.cs" />
+    <Compile Include="Models\Daos\LayoutsDao.cs" />
     <Compile Include="Models\Daos\ListTablesDao.cs" />
     <Compile Include="Models\Daos\MainMenuDao.cs" />
     <Compile Include="Models\Daos\MenuDao.cs" />
@@ -1032,6 +1034,7 @@
     <Content Include="Scripts\main\branchoffices.js" />
     <Content Include="Scripts\main\CargasMasivas\main.js" />
     <Content Include="Scripts\main\cargamasiva.js" />
+    <Content Include="Scripts\main\CargasMasivas\salarios.js" />
     <Content Include="Scripts\main\catalogos.js" />
     <Content Include="Scripts\main\centrcost.js" />
     <Content Include="Scripts\main\CompNomina.js" />

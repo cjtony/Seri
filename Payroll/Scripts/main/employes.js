@@ -1108,13 +1108,16 @@
                 //fvalidatebuttonsaction();
                 Swal.fire({
                     title: 'Cargando información',
-                    html: 'Terminando en <b></b> milisegundos.',
+                    //html: 'Terminando en <b></b> milisegundos.',
+                    html: "",
                     timer: 5000, timerProgressBar: true,
                     allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                     onBeforeOpen: () => {
                         Swal.showLoading();
                         timerInterval = setInterval(() => {
-                            Swal.getContent().querySelector('b').textContent = Swal.getTimerLeft();
+                            //Swal.getContent().querySelector('b').textContent = Swal.getTimerLeft();
+                            //Swal.getContent().querySelector('b').textContent = "Cargando...";
+
                         }, 100)
                     },
                     onClose: () => { clearInterval(timerInterval); }

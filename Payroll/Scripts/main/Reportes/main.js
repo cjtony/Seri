@@ -140,7 +140,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                            `;
+                            `; 
                                 dataLength += 1;
                             } else if (type == "select") {
                                 selectGroupBusiness.innerHTML += `<option value="${data.Datos[i].iIdGrupoEmpresa}">${data.Datos[i].sNombreGrupo}</option>`;
@@ -657,6 +657,10 @@
                     await fGenerateReportIncapacidadesSic(optionBusiness, keyBusinessOpt);
                 } else if (typeReport == "ADEUDOS") {
                     await fGenerateReportAdeudos(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "CATINFO") {
+                    await fGenerateReportCreditsInfonavitAssets(optionBusiness, keyBusinessOpt);
+                } else if (typeReport == "CATINFO1") {
+                    await fGenerateReportCreditsInfonavitHistory(optionBusiness, keyBusinessOpt);
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
@@ -695,7 +699,7 @@
             if (document.getElementById('groupRadioBusiness').checked) {
                 document.getElementById('contentAlertReports').innerHTML += `
                     <div class="alert alert-info alert-dismissible fade show text-center mt-4 shadow-lg" role="alert">
-                      <strong>Hola este proceso puede demorar un aproximado de 5 minutos, puede ir por un café mientras termino...!</strong> 
+                      <strong>Este proceso puede demorar un aproximado de 5 minutos, por favor espere...</strong> 
                     </div>
                 `;
             }
@@ -1380,6 +1384,99 @@
                 const dataSend = { option: String(option), keyOption: parseInt(keyOption) };
                 $.ajax({
                     url: "../Reportes/GenerateReportAdeudos",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        fDisabledButtonsRep();
+                    }, success: (data) => {
+                        console.log(data);
+                        setTimeout(() => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, 2000);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que genera el reporte de creditos infonavit activos
+    fGenerateReportCreditsInfonavitAssets = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const dataSend = { option: String(option), keyOption: parseInt(keyOption) };
+                $.ajax({
+                    url: "../Reportes/GenerateReportCreditsInfonavitAssets",
+                    type: "POST",
+                    data: dataSend,
+                    beforeSend: () => {
+                        fDisabledButtonsRep();
+                    }, success: (data) => {
+                        console.log(data);
+                        setTimeout(() => {
+                            if (data.Bandera === true && data.MensajeError === "none") {
+                                if (data.Rows > 0) {
+                                    fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                                } else {
+                                    fShowContentNoDataReport(contentGenerateRep);
+                                }
+                            } else {
+                                alert('Algo fallo al realizar el reporte');
+                                location.reload();
+                            }
+                            fEnabledButtonsRep();
+                        }, 2000);
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Accion invalida');
+                location.reload();
+            }
+        } catch (error) {
+            if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    fGenerateReportCreditsInfonavitHistory = (option, keyOption) => {
+        try {
+            if (option != "" && parseInt(keyOption) > 0) {
+                const dataSend = { option: String(option), keyOption: parseInt(keyOption) };
+                $.ajax({
+                    url: "../Reportes/GenerateReportCreditsInfonavitHistory",
                     type: "POST",
                     data: dataSend,
                     beforeSend: () => {

@@ -1,0 +1,3 @@
+﻿* -- Datos insertados -- *
+[*] Fila = 2, [*] Empresa = 4, [*] Nomina = 11102 [*] MensajeError = none 
+

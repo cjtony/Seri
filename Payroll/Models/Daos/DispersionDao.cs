@@ -249,7 +249,32 @@ namespace Payroll.Models.Daos
 
     public class DataDispersionBusiness : Conexion
     {
-
+        public double sp_Comprueba_Existencia_Renglon_Vales(int IdEmpresa, int IdEmpleado, int Periodo, int TipoPeriodoId, int Anio)
+        {
+            double result = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Comprueba_Existencia_Renglon_Vales", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", IdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", Periodo));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", TipoPeriodoId));
+                cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        result = Convert.ToDouble(dataReader["Total"].ToString());
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return result;
+        }
         public List<GroupBusinessDispersionBean> sp_Load_Group_Business_Dispersion ()
         {
             List<GroupBusinessDispersionBean> groupBusinesses = new List<GroupBusinessDispersionBean>();
