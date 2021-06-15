@@ -468,6 +468,10 @@ namespace Payroll.Controllers
                                         }
                                     }
                                     importeTotalBanamexG = sumaImporte.ToString().Replace(".", "");
+
+                                    importeTotalBanamexG = sumaImporte.ToString("#,##0.00");
+                                    //string test4 = importeTotalBanorte.Replace(",", "").Replace(".", "");
+                                    importeTotalBanamexG = importeTotalBanamexG.Replace(",", "").Replace(".", "");
                                     // FIN CODIGO NUEVO RESTA RENGLON 1481
                                     //foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans) {
                                     //    if (deposits.iIdBanco == bankResult) {
@@ -840,7 +844,10 @@ namespace Payroll.Controllers
                                             }
                                         }
                                     }
-                                    importeTotalBanorte = sumaImporte.ToString().Replace(".", "");
+                                    importeTotalBanorte = sumaImporte.ToString("#,##0.00");
+                                    //string test4 = importeTotalBanorte.Replace(",", "").Replace(".", "");
+                                    importeTotalBanorte = importeTotalBanorte.Replace(",", "").Replace(".", "");
+                                    //importeTotalBanorte = sumaImporte.ToString("0.##");
                                     // FIN CODIGO NUEVO RESTA RENGLON 1481
                                     //foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans) {
                                     //    if (deposits.iIdBanco == bankResult) { importeTotalBanorte = deposits.sImporte; break; }
