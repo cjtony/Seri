@@ -170,7 +170,7 @@ namespace Payroll.Controllers
             Boolean flagSqlExc = false;
             String messageError = "none";
             String showMessageErVal = "";
-            String nameFileSession = Session["nameFileSalary" + keyFile.ToString()].ToString();
+            String nameFileSessionSalary = Session["nameFileSalary" + keyFile.ToString()].ToString();
             String pathUploadFile = "FilesUpsSalary";
             String pathLogsErVFile = "Logs_Validations";
             String nameFileLogMessage = "LOG_" + Path.GetFileNameWithoutExtension(nameFile) + DateTime.Now.ToString("dd-MM-yyy") + ".txt";
@@ -191,7 +191,7 @@ namespace Payroll.Controllers
 
             StringBuilder msjValidacionInsert = new StringBuilder();
             try  {
-                if (nameFileSession.Replace(" ","") == nameFile.Replace(" ", "")) {
+                if (nameFileSessionSalary.Replace(" ","") == nameFile.Replace(" ", "")) {
                     flag = true;
                 }
                 if (flag) {
@@ -281,7 +281,13 @@ namespace Payroll.Controllers
                                         if (layoutSalario.sMensaje == "SUCCESS") {
                                             flagInsert = true;
                                             rowInsert += 1;
-                                            ValidacionesLayouts.Add(new ErroresLayoutBean { sNomina = nomina.ToString(), sEmpresa = empresa.ToString(), iFila = rowActu, sErroresInsercion = "none", sErroresValidacion = "none" });
+                                            string mensajeInAC = "";
+                                            if (layoutSalario.iBanderaFecha == 1) {
+                                                mensajeInAC = "Actualizado sobre la fecha efectiva indicada";
+                                            } else {
+                                                mensajeInAC = "Inserción nueva sobre la fecha efectiva indicada";
+                                            }
+                                            ValidacionesLayouts.Add(new ErroresLayoutBean { sNomina = nomina.ToString(), sEmpresa = empresa.ToString(), iFila = rowActu, sErroresInsercion = "none", sErroresValidacion = "none", sTipoInsercion = mensajeInAC , sMensaje = "SUCCESS"});
                                         } else {
                                             if (layoutSalario.iBandera1 == 0) {
                                                 msjValidacionInsert.Append(" [*] No se encontro información coincidente con la nomina : " + nomina.ToString() + " de la empresa : " + empresa.ToString() + ".");
@@ -292,7 +298,7 @@ namespace Payroll.Controllers
                                             if (layoutSalario.iBandera3 == 0) {
                                                 msjValidacionInsert.Append(" [*] Ocurrio un problema al insertar los datos de Movimiento.");
                                             }
-                                            ValidacionesLayouts.Add(new ErroresLayoutBean { sNomina = nomina.ToString(), sEmpresa = empresa.ToString(), iFila = rowActu, sErroresInsercion = msjValidacionInsert.ToString(), sErroresValidacion = "none" });
+                                            ValidacionesLayouts.Add(new ErroresLayoutBean { sNomina = nomina.ToString(), sEmpresa = empresa.ToString(), iFila = rowActu, sErroresInsercion = msjValidacionInsert.ToString(), sErroresValidacion = layoutSalario.sMensaje, sMensaje = "ERROR" });
                                             rowErrorInsert += 1;
                                         }
                                         msjValidacionInsert.Clear();
@@ -320,14 +326,22 @@ namespace Payroll.Controllers
             }
             using (StreamWriter fileLog = new StreamWriter(pathCompleteSearch + pathLogsErVFile + @"\\" + nameFileLogMessage, false, Encoding.UTF8)) {
                 if (ValidacionesLayouts.Count > 0) {
-                    fileLog.Write("* -- Datos insertados -- *\n");
+                    fileLog.Write("* -- Datos a insertar -- *\n");
                     foreach (ErroresLayoutBean data in ValidacionesLayouts) {
-                        fileLog.Write("[*] Fila = " + data.iFila.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nomina = " + data.sNomina + " [*] MensajeError = " + data.sErroresValidacion + " \n");
+                        if (data.sMensaje == "SUCCESS") {
+                            fileLog.Write("[*] Fila = " + data.iFila.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nomina = " + data.sNomina + ", [*] MensajeError = " + data.sErroresValidacion + ", ValidacionInsercion = " + data.sTipoInsercion + "\n");
+                        }
                     }
                     fileLog.Write("\n");
                 }
                 if (errorDataLoadBeans.Count > 0) {
                     fileLog.Write("* -- Errores de validaciones -- *\n");
+                    foreach (ErroresLayoutBean data in ValidacionesLayouts) {
+                        if (data.sMensaje == "ERROR") {
+                            fileLog.Write("[*] Fila = " + data.iFila.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nomina = " + data.sNomina + ", [*] MensajeError = " + data.sErroresValidacion + "\n");
+                            rowErrVal += 1;
+                        }
+                    }
                     foreach (ErrorDataLoadBean data in errorDataLoadBeans) {
                         fileLog.Write("[*] Fila = " + data.iFilaError.ToString() + ", [*] Empresa = " + data.sEmpresa + ",  [*] Mensaje = " + data.sErrores + "\n");
                     }
@@ -342,8 +356,8 @@ namespace Payroll.Controllers
                 }
                 fileLog.Close();
             }
-            Session.Remove(nameFileSession);
-            return Json(new {Recorridos = rowReco });
+            Session.Remove(nameFileSessionSalary);
+            return Json(new { Bandera = flag, BanderaInsercion = flagInsert, BanderaBusqueda = flagSearch, BanderaH = flagSpreadSheet, BanderaC = flagCodeCorrect, BanderaVE = flagVE, MensajeError = messageError, Sesion = nameFileSessionSalary, Errores = showMessageErVal, FolderLog = pathLogsErVFile, ArchivoLog = nameFileLogMessage, FilasOk = rowInsert, FilasEr = rowErrVal, FilasIn = cantReg });
         }
 
         [HttpPost]

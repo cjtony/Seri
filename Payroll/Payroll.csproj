@@ -524,6 +524,7 @@
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout Carga Incidencias.xlsx" />
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Content\Download\EjemploLayoutSueldos.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />

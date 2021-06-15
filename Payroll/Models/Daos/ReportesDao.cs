@@ -773,6 +773,7 @@ namespace Payroll.Models.Daos
                         dato.iUltimaPos = (data["UltimaPos"].ToString() != "") ? Convert.ToInt32(data["UltimaPos"].ToString()) : 0;
                         dato.dUltSdi = (data["Ult_sdi"].ToString() != "") ? Convert.ToDecimal(data["Ult_sdi"].ToString()) : 0;
                         dato.sRegistroPatronal = data["Registro_Patronal"].ToString();
+                        dato.iGrupoEmpresaId = (data["GrupoEmpresa"].ToString() != "") ? Convert.ToInt32(data["GrupoEmpresa"].ToString()) : 0;
                         datosGenerales.Add(dato);
                     }
                 }

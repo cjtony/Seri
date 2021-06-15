@@ -233,7 +233,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <a href="/Content/FilesUps/${data.FolderLog}/${data.ArchivoLog}" download="${data.ArchivoLog}"><i class="fas fa-download fa-2x text-gray-300"></i></a>
+                                                    <a href="/Content/FilesUpsSalary/${data.FolderLog}/${data.ArchivoLog}" download="${data.ArchivoLog}"><i class="fas fa-download fa-2x text-gray-300"></i></a>
                                                 </div>
                                             </div>
                                             <div class="row mt-3">
@@ -297,20 +297,20 @@
         setTimeout(() => {
             document.getElementById('div-content-download-log-file-salary').innerHTML = "";
             document.getElementById('div-content-download-log-file-salary').classList.remove("animated", "fadeOut", "delay-1s");
-            divContentLoadInfo1.classList.remove('fadeInDown');
-            divContentLoadInfo2.classList.remove('fadeInDown');
-            divContentLoadInfo1.classList.add('fadeOut');
-            divContentLoadInfo2.classList.add('fadeOut');
+            divContentLoadInfo1Salary.classList.remove('fadeInDown');
+            divContentLoadInfo2Salary.classList.remove('fadeInDown');
+            divContentLoadInfo1Salary.classList.add('fadeOut');
+            divContentLoadInfo2Salary.classList.add('fadeOut');
             setTimeout(() => {
-                divContentLoadInfo1.innerHTML = "";
-                divContentLoadInfo2.innerHTML = "";
-                divContentLoadInfo1.classList.remove('fadeOut');
-                divContentLoadInfo2.classList.remove('fadeOut');
-                fileUploadMasiveUp.value = "";
+                divContentLoadInfo1Salary.innerHTML = "";
+                divContentLoadInfo2Salary.innerHTML = "";
+                divContentLoadInfo1Salary.classList.remove('fadeOut');
+                divContentLoadInfo2Salary.classList.remove('fadeOut');
+                fileUploadMasiveUpSalary.value = "";
                 document.getElementById('name-file-up-salary').innerHTML = "";
                 $("html, body").animate({ scrollTop: $('#body-init').offset().top - 50 }, 1000);
-                fileUploadMasiveUp.disabled = false;
-                btnSaveFileMasiveUp.disabled = false;
+                fileUploadMasiveUpSalary.disabled = false;
+                btnSaveFileMasiveUpSalary.disabled = false;
             }, 1000);
         }, 1000);
     }

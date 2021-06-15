@@ -1,0 +1,3 @@
+﻿* -- Datos a insertar -- *
+[*] Fila = 2, [*] Empresa = 4, [*] Nomina = 11102, [*] MensajeError = none, ValidacionInsercion = Inserción nueva sobre la fecha efectiva indicada
+
