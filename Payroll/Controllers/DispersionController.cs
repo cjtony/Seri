@@ -686,6 +686,7 @@ namespace Payroll.Controllers
                                 // ARCHIVO TXT PARA SANTANDER -> NOMINA
 
                                 if (bankResult == 14) {
+                                    double resultadoSuma = 0;
                                     // - ENCABEZADO - \\ ARCHIVO OK
                                     int initConsecutiveNbOneN    = 1;
                                     string  typeRegisterN        = "1";
@@ -744,8 +745,10 @@ namespace Payroll.Controllers
                                                 if (renglon1481 > 0) {
                                                     restaImporte = payroll.doImporte - renglon1481;
                                                     importeFinal = restaImporte.ToString().Replace(".", "");
+                                                    resultadoSuma += restaImporte;
                                                 } else {
                                                     importeFinal = payroll.dImporte.ToString();
+                                                    resultadoSuma += payroll.doImporte;
                                                 }
                                                 // FIN CODIGO NUEVO
                                                 totalAmount += payroll.doImporte;
@@ -763,7 +766,7 @@ namespace Payroll.Controllers
                                                 for (var z = 0; z < longNomEmp; z++) { spaceGenerate3 += " "; }
                                                 for (var x = 0; x < longImport; x++) { numberCeroGene += "0"; }
                                                 //resultSumTot += Convert.ToInt32(payroll.dImporte);
-                                                resultSumTot += Convert.ToInt32(importeFinal);
+                                                //resultSumTot += Convert.ToInt32(importeFinal);
                                                 fileTxt.WriteLine(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno.Replace("Ñ", "N") + spaceGenerate1 + payroll.sMaterno.Replace("Ñ", "N") + spaceGenerate2 + payroll.sNombre.Replace("Ñ", "N") + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + importeFinal.ToString());
                                                 //payroll.dImporte.ToString()
                                                 consec1Generat = ""; numberNomGener = "";
@@ -782,7 +785,7 @@ namespace Payroll.Controllers
                                             for (var x = 0; x < resultLTR; x++) {
                                                 cerosTotalRecords += "0";
                                             }
-                                            string totLayout = "3" + consec1Generat + (consecutiveInit + 1).ToString() + cerosTotalRecords + totalRecords.ToString() + totGenerate + resultSumTot.ToString();
+                                            string totLayout = "3" + consec1Generat + (consecutiveInit + 1).ToString() + cerosTotalRecords + totalRecords.ToString() + totGenerate + resultadoSuma.ToString().Replace(".","");
                                             fileTxt.WriteLine(totLayout);
                                         }
                                         fileTxt.Close();
@@ -2072,6 +2075,7 @@ namespace Payroll.Controllers
                         
                         
                         if (bankInterbank == 44) {
+                            double resultadoSuma = 0;
                             // SCOTIABANK -- ARCHIVO OK (INTERBANCARIO)
                             string tipoArchivoIntScotiabank = "EE", 
                                 tipoRegistroIntScotiabank   = "HA", 
@@ -2189,8 +2193,10 @@ namespace Payroll.Controllers
                                     if (renglon1481 > 0) {
                                         restaImporte = bank.doImporte - renglon1481;
                                         importeFinal = restaImporte.ToString().Replace(".", "");
+                                        resultadoSuma += restaImporte;
                                     } else {
                                         importeFinal = bank.dImporte.ToString();
+                                        resultadoSuma += bank.doImporte;
                                     }
                                     // FIN CODIGO NUEVO
                                     //importeTotalIntScotiabank += Convert.ToInt32(bank.dImporte);
@@ -2219,13 +2225,13 @@ namespace Payroll.Controllers
                                 }
                                 // - TRAILER BLOQUE - \\
                                 int longTotMovIntScotiabankResult = longTotMovIntScotiabank - totalMoviIntScotiabank.ToString().Length;
-                                int longImpTotIntScotiabankResult = longImpTotIntScotiabank - importeTotalIntScotiabank.ToString().Length;
+                                int longImpTotIntScotiabankResult = longImpTotIntScotiabank - resultadoSuma.ToString().Length;
                                 string tipoRegistroDIntScotiabank = "TB", tipoRegistroEIntScotiabank = "TA", cantidadMovIntScotiabank = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", fillerIntScotiabankTB = "                                                                                                                           ";
                                 for (var d = 0; d < longTotMovIntScotiabankResult; d++) { cerosTotMovIntScotiabank += "0"; }
                                 for (var w = 0; w < longImpTotIntScotiabankResult; w++) { cerosImpTotIntScotiabank += "0"; }
-                                string trailerBloqueIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroDIntScotiabank + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank + importeTotalIntScotiabank.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
+                                string trailerBloqueIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroDIntScotiabank + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank + resultadoSuma.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
                                 fileIntScotiabank.Write(trailerBloqueIntScotiabank + "\n");
-                                string trailerArchivoIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroEIntScotiabank + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank + importeTotalIntScotiabank.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
+                                string trailerArchivoIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroEIntScotiabank + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank + resultadoSuma.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
                                 fileIntScotiabank.Write(trailerArchivoIntScotiabank + "\n");
                                 // - TRAILER ARCHIVO - \\
                                 fileIntScotiabank.Close();
