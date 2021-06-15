@@ -375,7 +375,12 @@ namespace Payroll.Controllers
 
                             if (LCRecibo[i].sValor == "Percepciones")
                             {
+                                
                                 ls.dPercepciones = LCRecibo[i].dSaldo.ToString("#.##");
+                                if ( LCRecibo[i].iIdRenglon == 481 && (LCRecibo[i].iGrupEmpresa == 15|| LCRecibo[i].iGrupEmpresa == 12|| LCRecibo[i].iGrupEmpresa == 9) ) {
+                                    ls.dPercepciones = "0.00";
+                                };
+                                
                                 ls.dDeducciones = "0";
                             }
                             if (LCRecibo[i].sValor == "Deducciones")
@@ -1495,9 +1500,35 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult TotalesRecibo(int iIdEmpresa, int iIdEmpleado, int iPeriodo, int iespejo)
         {
+            decimal Ren481 = 0;
             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             ListTotales = Dao.sp_SaldosTotales_Retrieve_TPlantillasCalculos(iIdEmpresa, iIdEmpleado, iPeriodo, iespejo);
+
+            if (ListTotales != null) {
+                for (int i = 0; i < ListTotales.Count; i++) {
+
+                    if (ListTotales[i].iIdRenglon == 481) {
+
+                        Ren481 = ListTotales[i].dSaldo;
+                    
+                    }
+
+                    if (ListTotales[i].iIdRenglon == 990) {
+
+                        ListTotales[i].dSaldo = ListTotales[i].dSaldo - Ren481;
+                    }
+                    if (ListTotales[i].iIdRenglon == 9999) {
+                        ListTotales[i].dSaldo = ListTotales[i].dSaldo - Ren481;
+                    }
+
+
+
+                }
+
+                            
+            }
+            
             return Json(ListTotales);
         }
 

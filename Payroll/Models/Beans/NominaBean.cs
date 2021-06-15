@@ -307,6 +307,7 @@ namespace Payroll.Models.Beans
         public int sIdSat { get; set; }
         public int iIdInsidencia { get; set; }
         public decimal dHoras { get; set; }
+        public int iGrupEmpresa { get; set; }
        public string sMensaje { get; set; }
 
     }

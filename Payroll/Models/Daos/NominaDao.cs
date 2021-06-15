@@ -1848,6 +1848,8 @@ namespace Payroll.Models.Daos
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
                             ls.sValor = data["Valor"].ToString();
                             ls.sIdSat = int.Parse(data["codigo"].ToString());
+                            ls.iGrupEmpresa = int.Parse(data["GrupoEmpresa_Id"].ToString());
+
                         }
 
                         list.Add(ls);
