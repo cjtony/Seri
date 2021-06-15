@@ -1118,6 +1118,7 @@ namespace Payroll.Models.Daos
                             ls.dGravado = decimal.Parse(data["Gravado"].ToString());
                             ls.dExcento = decimal.Parse(data["Excento"].ToString());
                             ls.sEspejo = data["es_espejo"].ToString();
+                            ls.iGrupEmpresa = int.Parse(data["GrupoEmpresa_Id"].ToString());
                         }
 
                         list.Add(ls);

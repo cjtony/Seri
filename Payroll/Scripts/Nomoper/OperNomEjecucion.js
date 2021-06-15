@@ -2370,7 +2370,6 @@
 
 
     FAbrirNomina = () => {
-        console.log('abrir nomina');
         const dataSendopen = { iIdDefinicionHd: 0, IdEmpresa: DropEmpresaPeri.value, iPerido: DropPeridoPer.value, iNominaCerrada: 0, Anio: TxtAnioPer.value, IdTipoPeriodo: DropTipodePerdioPer.value };
 
         $.ajax({
