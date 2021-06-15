@@ -230,6 +230,98 @@ namespace Payroll.Models.Daos
     public class ReportesDao : Conexion
     {
 
+        public ListRenglonesGruposRestas sp_Genera_Resta_Importes_Reporte_Dispersion(int IdEmpresa, int IdEmpleado, int Periodo, int TipoPeriodo, int Anio)
+        {
+            ListRenglonesGruposRestas r = new ListRenglonesGruposRestas();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Genera_Resta_Importes_Reporte_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", IdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", Periodo));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", TipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
+                SqlDataReader data = cmd.ExecuteReader(); 
+                if (data.Read()) {
+                    if (data["Bandera"].ToString() == "1") {
+                        r.dTotal = Convert.ToDouble(data["Total"].ToString());
+                    } else {
+                        r.dTotal = Convert.ToDouble(data["Total"].ToString());
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            }catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return r;
+        }
+
+        public List<ListRenglonesGruposRestas> sp_Reporte_Dispersion_Empresas_Resta (int keyBusiness, int yearPeriod, int typePeriod, int numberPeriod)
+        {
+            List<ListRenglonesGruposRestas> list = new List<ListRenglonesGruposRestas>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Reporte_Dispersion_Empresas_Resta", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", typePeriod));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        ListRenglonesGruposRestas r = new ListRenglonesGruposRestas();
+                        r.iAnio = Convert.ToInt32(data["Anio"].ToString());
+                        r.iPeriodo = Convert.ToInt32(data["Periodo"].ToString());
+                        r.sEspejo = data["Espejo"].ToString();
+                        r.iEmpresa = Convert.ToInt32(data["Empresa"].ToString());
+                        r.sNombreEmpresa = data["NombreEmpresa"].ToString();
+                        r.iNomina = Convert.ToInt32(data["Nomina"].ToString());
+                        r.sPaterno = data["ApellidoPaterno"].ToString();
+                        r.sMaterno = data["ApellidoMaterno"].ToString();
+                        r.sNombre = data["NombreEmpleado"].ToString();
+                        r.sTipoPago = data["TipodePago"].ToString();
+                        r.iBanco = Convert.ToInt32(data["IdBanco"].ToString());
+                        r.sNombreBanco = data["NombreBanco"].ToString();
+                        r.sCuenta = data["Cuenta"].ToString();
+                        list.Add(r);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return list;
+        }
+
+        public int sp_Comprueba_Empresa_Existencia_Grupo(int IdEmpresa)
+        {
+            int resultado = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Comprueba_Empresa_Existencia_Grupo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        resultado = 1;
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return resultado;
+        }
+
         // Tipos de periodos disponibles
         public List<TipoPeriodoBean> sp_Available_Type_Periods_Business(int year, int key, int type, int period)
         {
