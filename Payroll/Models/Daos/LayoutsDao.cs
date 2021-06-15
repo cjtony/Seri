@@ -33,11 +33,16 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader.Read()) {
-                    if (dataReader["Coincidencia"].ToString() == "1" && dataReader["Nomina"].ToString() == "1" && 
+                    if (dataReader["Existe"].ToString() == "1") {
+                        if (dataReader["Coincidencia"].ToString() == "1" && dataReader["Nomina"].ToString() == "1" &&
                         dataReader["Historial"].ToString() == "1") {
-                        bean.sMensaje = "SUCCESS";
+                            bean.sMensaje = "SUCCESS";
+                            bean.iBanderaFecha = Convert.ToInt32(dataReader["Fecha"].ToString());
+                        } else {
+                            bean.sMensaje = (dataReader["Mensaje"].ToString() == "NONE") ? "ERROR" : dataReader["Mensaje"].ToString();
+                        }
                     } else {
-                        bean.sMensaje = (dataReader["Mensaje"].ToString() == "NONE") ? "ERROR" : dataReader["Mensaje"].ToString();
+                        bean.sMensaje = "El empleado no existe para la empresa indicada";
                     }
                     if (dataReader["Coincidencia"].ToString() == "1") {
                         bean.iBandera1 = 1;

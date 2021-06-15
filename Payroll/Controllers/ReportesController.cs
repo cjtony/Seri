@@ -599,19 +599,37 @@ namespace Payroll.Controllers
                                 worksheet.Cells[p + 1, 30].Value = dato.dUltSdi;
                                 worksheet.Cells[p + 1, 31].Value = dato.sRegistroPatronal;
                                 Total_Percepciones_Fiscal = 0;
+                                double renglon481 = 0;
+                                decimal importe = 0;
 
-                                for (m = 0; m < RenglonesNom.Count(); m++)
-                                {
-                                    detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
-                                    if (detallesRenglon.dSaldo <= 0)
-                                    {
-                                        worksheet.Cells[p + 1, m + 2 + 31].Value = "";
+                                if (dato.iGrupoEmpresaId == 9 || dato.iGrupoEmpresaId == 12 || dato.iGrupoEmpresaId == 15) {
+                                    for (m = 0; m < RenglonesNom.Count(); m++) {
+                                        detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
+                                        if (detallesRenglon.dSaldo <= 0) {
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = "";
+                                        } else {
+                                            if (RenglonesNom[m] == 481) {
+                                                renglon481 = Convert.ToDouble(detallesRenglon.dSaldo);
+                                            }
+                                            importe = detallesRenglon.dSaldo;
+                                            if (RenglonesNom[m] == 990) {
+                                                importe = detallesRenglon.dSaldo - Convert.ToDecimal(renglon481);
+                                            }
+                                            worksheet.Cells[p + 1, m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                            Total_Percepciones_Fiscal += Convert.ToDecimal(importe);
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = Convert.ToDecimal(importe);
+                                        }
                                     }
-                                    else
-                                    {
-                                        worksheet.Cells[p + 1, m + 2 + 31].Style.Numberformat.Format = "0.00";
-                                        Total_Percepciones_Fiscal += Convert.ToDecimal(detallesRenglon.dSaldo);
-                                        worksheet.Cells[p + 1, m + 2 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                } else {
+                                    for (m = 0; m < RenglonesNom.Count(); m++) {
+                                        detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
+                                        if (detallesRenglon.dSaldo <= 0) {
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = "";
+                                        } else {
+                                            worksheet.Cells[p + 1, m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                            Total_Percepciones_Fiscal += Convert.ToDecimal(detallesRenglon.dSaldo);
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                        }
                                     }
                                 }
 
@@ -639,9 +657,16 @@ namespace Payroll.Controllers
 
                                 ////// Monto neto a pagar (FISCAL)
                                 renglonNoEspejo = reportDao.sp_Liquidos_Espejo_No_Espejo(business, typePeriod, numberPeriod, yearPeriod, 0, payroll);
-                                worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
-                                worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
-                                worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = renglonNoEspejo.dSaldo;
+                                if (dato.iGrupoEmpresaId == 9 || dato.iGrupoEmpresaId == 12 || dato.iGrupoEmpresaId == 15) {
+                                    decimal total = renglonNoEspejo.dSaldo - Convert.ToDecimal(renglon481);
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = total;
+                                } else {
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = renglonNoEspejo.dSaldo;
+                                }
 
                                 Total_Percepciones_Espejo = 0;
                                 for (m = 0; m < RenglonesNomEspejo.Count(); m++)
