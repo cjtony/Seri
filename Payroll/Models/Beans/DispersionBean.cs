@@ -1,7 +1,25 @@
 ﻿namespace Payroll.Models.Beans
 {
     public class DispersionBean { }
-
+    public class ListRenglonesGruposRestas
+    {
+        public int iAnio { get; set; }
+        public int iPeriodo { get; set; }
+        public string sEspejo { get; set; }
+        public string sNombreEmpresa { get; set; }
+        public string sPaterno { get; set; }
+        public string sMaterno { get; set; }
+        public string sNombre { get; set; }
+        public string sTipoPago { get; set; }
+        public int iBanco { get; set; }
+        public string sNombreBanco { get; set; }
+        public string sCuenta { get; set; }
+        public double dRenglon481 { get; set; }
+        public double dRenglon9999 { get; set; }
+        public int iNomina { get; set; }
+        public int iEmpresa { get; set; }
+        public double dTotal { get; set; }
+    }
     public class DataErrorAccountBank
     {
         public string sBanco { get; set; }
@@ -72,6 +90,7 @@
         public int iIdRenglon { get; set; }
         public int iDepositos { get; set; }
         public string sImporte { get; set; }
+        public double dImporteSF { get; set; }
     }
 
     public class BankDetailsBean

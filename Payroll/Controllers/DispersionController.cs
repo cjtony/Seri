@@ -180,20 +180,43 @@ namespace Payroll.Controllers
             Boolean flag2 = false;
             String messageError = "none";
             List<DataDepositsBankingBean> daDepBankingBean = new List<DataDepositsBankingBean>();
+            List<DataDepositsBankingBean> depositosFinal   = new List<DataDepositsBankingBean>();
             DataDispersionBusiness daDiBusinessDaoD        = new DataDispersionBusiness();
             List<BankDetailsBean> bankDetailsBean          = new List<BankDetailsBean>();
+            ReportesDao reportDao = new ReportesDao();
+            double resultResta = 0;
+            int banderaEmpresa = 0;
             try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
-                daDepBankingBean = daDiBusinessDaoD.sp_Obtiene_Depositos_Bancarios(keyBusiness, yearDispersion, typePeriodDisp, periodDispersion, type);
-                if (daDepBankingBean.Count > 0) {
-                    flag1 = true;
-                    bankDetailsBean = daDiBusinessDaoD.sp_Datos_Banco(daDepBankingBean);
-                    flag2 = (bankDetailsBean.Count > 0) ? true : false;
+                banderaEmpresa = reportDao.sp_Comprueba_Empresa_Existencia_Grupo(keyBusiness);
+                if (banderaEmpresa == 1) {
+                    daDepBankingBean = daDiBusinessDaoD.sp_Obtiene_Depositos_Bancarios(keyBusiness, yearDispersion, typePeriodDisp, periodDispersion, type);
+                    if (daDepBankingBean.Count > 0) {
+                        flag1 = true;
+                        bankDetailsBean = daDiBusinessDaoD.sp_Datos_Banco(daDepBankingBean);
+                        flag2 = (bankDetailsBean.Count > 0) ? true : false;
+                        foreach (DataDepositsBankingBean data in daDepBankingBean) {
+                            resultResta = daDiBusinessDaoD.sp_Datos_Totales_Resta_Importe_Bancos_Dispersion(keyBusiness, periodDispersion, typePeriodDisp, data.iIdBanco);
+                            double resultado = data.dImporteSF - resultResta;
+                            depositosFinal.Add(new DataDepositsBankingBean { iIdBanco = data.iIdBanco, iDepositos = data.iDepositos, iIdEmpresa = data.iIdEmpresa, iIdRenglon = data.iIdRenglon, sBanco = data.sBanco, sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((resultado)))});
+                        }
+                    }
+                } else {
+                    daDepBankingBean = daDiBusinessDaoD.sp_Obtiene_Depositos_Bancarios(keyBusiness, yearDispersion, typePeriodDisp, periodDispersion, type);
+                    if (daDepBankingBean.Count > 0) {
+                        flag1 = true;
+                        bankDetailsBean = daDiBusinessDaoD.sp_Datos_Banco(daDepBankingBean);
+                        flag2 = (bankDetailsBean.Count > 0) ? true : false;
+                    }
                 }
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             }
-            return Json(new { BanderaDispersion = flag1, BanderaBancos = flag2, MensajeError = messageError, DatosDepositos = daDepBankingBean, DatosBancos = bankDetailsBean });
+            if (banderaEmpresa == 1) {
+                return Json(new { BanderaDispersion = flag1, BanderaBancos = flag2, MensajeError = messageError, DatosDepositos = depositosFinal, DatosBancos = bankDetailsBean });
+            } else {
+                return Json(new { BanderaDispersion = flag1, BanderaBancos = flag2, MensajeError = messageError, DatosDepositos = daDepBankingBean, DatosBancos = bankDetailsBean });
+            }
         }
 
         [HttpPost]
@@ -2739,32 +2762,98 @@ namespace Payroll.Controllers
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable = 1, columnsDataTable = 0;
+            int banderaEmpresa = 0;
+            List<ListRenglonesGruposRestas> datos = new List<ListRenglonesGruposRestas>();
+            ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
             try {
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                // Comprobamos el grupo de la empresa en sesion
+                banderaEmpresa = reportDao.sp_Comprueba_Empresa_Existencia_Grupo(keyBusiness);
                 Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
-                if (createFolders) {
-                    DataTable dataTable = new DataTable();
-                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
-                    int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
-                    dataTable = dispersion.sp_Reporte_Dispersion(keyBusiness, yearPeriod, typePeriod, numberPeriod);
-                    columnsDataTable = dataTable.Columns.Count + 1;
-                    rowsDataTable = dataTable.Rows.Count;
-                    if (rowsDataTable > 0) {
+                if (banderaEmpresa == 1) {
+                    if (createFolders) {
                         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                         using (ExcelPackage excel = new ExcelPackage()) {
                             excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
                             var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
-                            for (var i = 1; i < columnsDataTable; i++) {
-                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                                worksheet.Cells[1, i].Style.Font.Bold = true;
-                                worksheet.Cells[1, i].Style.WrapText = true;
-                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            int ii = 0;
+                            int i = 0;
+                            worksheet.Cells[1, 1].Value  = "Anio";
+                            worksheet.Cells[1, 2].Value  = "Periodo";
+                            worksheet.Cells[1, 3].Value  = "Espejo";
+                            worksheet.Cells[1, 4].Value  = "Empresa";
+                            worksheet.Cells[1, 5].Value  = "Nombre Empresa";
+                            worksheet.Cells[1, 6].Value  = "Nomina";
+                            worksheet.Cells[1, 7].Value  = "Apellido Paterno";
+                            worksheet.Cells[1, 8].Value  = "Apellido Materno";
+                            worksheet.Cells[1, 9].Value  = "Nombre Empleado";
+                            worksheet.Cells[1, 10].Value = "Tipo de Pago";
+                            worksheet.Cells[1, 11].Value = "IdBanco";
+                            worksheet.Cells[1, 12].Value = "Nombre Banco";
+                            worksheet.Cells[1, 13].Value = "Cuenta";
+                            worksheet.Cells[1, 14].Value = "Importe";
+                            for (i = 1; i < 15; i++) { 
+                                worksheet.Cells[1, i].Style.Fill.SetBackground(System.Drawing.Color.LightSkyBlue);
                             }
-                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            ii = 14; 
+                            datos = reportDao.sp_Reporte_Dispersion_Empresas_Resta(keyBusiness, yearPeriod, typePeriod, numberPeriod);
+                            int p = 1;
+                            foreach (ListRenglonesGruposRestas dato in datos) { 
+                                worksheet.Cells[p + 1, 1].Value = dato.iAnio;
+                                worksheet.Cells[p + 1, 2].Value = dato.iPeriodo;
+                                worksheet.Cells[p + 1, 3].Value = dato.sEspejo;
+                                worksheet.Cells[p + 1, 4].Value = dato.iEmpresa;
+                                worksheet.Cells[p + 1, 5].Value = dato.sNombreEmpresa;
+                                worksheet.Cells[p + 1, 6].Value = dato.iNomina;
+                                worksheet.Cells[p + 1, 7].Value = dato.sPaterno;
+                                worksheet.Cells[p + 1, 8].Value = dato.sMaterno;
+                                worksheet.Cells[p + 1, 9].Value = dato.sNombre;
+                                worksheet.Cells[p + 1, 10].Value = dato.sTipoPago;
+                                worksheet.Cells[p + 1, 11].Value = dato.iBanco;
+                                worksheet.Cells[p + 1, 12].Value = dato.sNombreBanco;
+                                worksheet.Cells[p + 1, 13].Value = dato.sCuenta; 
+                                importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, dato.iNomina, numberPeriod, typePeriod, yearPeriod); 
+                                if (importe.dTotal != 0) {
+                                    worksheet.Cells[p + 1, 14].Style.Numberformat.Format = "0.00";
+                                    worksheet.Cells[p + 1, 14].Value = importe.dTotal;
+                                } else {
+                                    worksheet.Cells[p + 1, 14].Style.Numberformat.Format = "0.00";
+                                    worksheet.Cells[p + 1, 14].Value = 0.00;
+                                }
+                                p += 1;
+                            }
                             FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
-                            excel.SaveAs(excelFile);
+                            excel.SaveAs(excelFile); 
+                            string final = DateTime.Now.ToString("hh:mm:ss");
+                            DateTime termino = Convert.ToDateTime(final); 
                             flag = true;
-                            excel.Dispose();
+                        }
+                    }
+                } else {
+                    if (createFolders) {
+                        DataTable dataTable = new DataTable();
+                        dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                        dataTable = dispersion.sp_Reporte_Dispersion(keyBusiness, yearPeriod, typePeriod, numberPeriod);
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                            using (ExcelPackage excel = new ExcelPackage()) {
+                                excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                                var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                                for (var i = 1; i < columnsDataTable; i++) {
+                                    worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                    worksheet.Cells[1, i].Style.Font.Bold = true;
+                                    worksheet.Cells[1, i].Style.WrapText = true;
+                                    worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                    worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                                }
+                                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                                FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                                excel.SaveAs(excelFile);
+                                flag = true;
+                                excel.Dispose();
+                            }
                         }
                     }
                 }

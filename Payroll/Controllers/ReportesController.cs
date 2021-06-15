@@ -708,7 +708,12 @@ namespace Payroll.Controllers
 
                                 worksheet.Cells[p + 1, cant3 + m + 4 + 31].Style.Numberformat.Format = "0.00";
                                 worksheet.Cells[p + 1, cant3 + m + 4 + 31].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
-                                worksheet.Cells[p + 1, cant3 + m + 4 + 31].Value = renglonNoEspejo.dSaldo + renglonSiEspejo.dSaldo;
+                                if (dato.iGrupoEmpresaId == 9 || dato.iGrupoEmpresaId == 12 || dato.iGrupoEmpresaId == 15) {
+                                    decimal resultadoF = renglonNoEspejo.dSaldo - Convert.ToDecimal(renglon481);
+                                    worksheet.Cells[p + 1, cant3 + m + 4 + 31].Value = resultadoF + renglonSiEspejo.dSaldo;
+                                } else {
+                                    worksheet.Cells[p + 1, cant3 + m + 4 + 31].Value = renglonNoEspejo.dSaldo + renglonSiEspejo.dSaldo;
+                                }
 
                                 p += 1;
                             }

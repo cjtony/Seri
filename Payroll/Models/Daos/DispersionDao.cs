@@ -249,6 +249,31 @@ namespace Payroll.Models.Daos
 
     public class DataDispersionBusiness : Conexion
     {
+
+        public double sp_Datos_Totales_Resta_Importe_Bancos_Dispersion(int IdEmpresa, int Periodo, int TipoPeriodo, int BancoId)
+        {
+            double result = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Totales_Resta_Importe_Bancos_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", Periodo));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", TipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@BancoId", BancoId));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) { 
+                    result = Convert.ToDouble(dataReader["TotalVales"].ToString()); 
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return result;
+        }
+
         public double sp_Comprueba_Existencia_Renglon_Vales(int IdEmpresa, int IdEmpleado, int Periodo, int TipoPeriodoId, int Anio)
         {
             double result = 0;
@@ -725,7 +750,8 @@ namespace Payroll.Models.Daos
                             iIdBanco = Convert.ToInt32(data["banco"].ToString()),
                             iIdRenglon = Convert.ToInt32(data["Renglon_id"].ToString()),
                             iDepositos = Convert.ToInt32(data["depositos"].ToString()),
-                            sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["importe"])))
+                            sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["importe"]))),
+                            dImporteSF = Convert.ToDouble(data["importe"])
                         });
                     }
                 }
