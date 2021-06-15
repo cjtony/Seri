@@ -779,7 +779,8 @@ namespace Payroll.Controllers
                                             }
                                         }
                                         if (bankResult == 14) {
-                                            int longTotGenerate = longTot - resultSumTot.ToString().Length;
+                                            string importetotal = resultadoSuma.ToString("#,##0.00").Replace(",","").Replace(".","");
+                                            int longTotGenerate = longTot - importetotal.ToString().Length;
                                             for (var j = 0; j < longTotGenerate; j++) { totGenerate += "0"; }
                                             int long1TotGenert = longc - (consecutiveInit + 1).ToString().Length;
                                             for (var h = 0; h < long1TotGenert; h++) { consec1Generat += "0"; }
@@ -789,7 +790,7 @@ namespace Payroll.Controllers
                                             for (var x = 0; x < resultLTR; x++) {
                                                 cerosTotalRecords += "0";
                                             }
-                                            string totLayout = "3" + consec1Generat + (consecutiveInit + 1).ToString() + cerosTotalRecords + totalRecords.ToString() + totGenerate + resultadoSuma.ToString().Replace(".","");
+                                            string totLayout = "3" + consec1Generat + (consecutiveInit + 1).ToString() + cerosTotalRecords + totalRecords.ToString() + totGenerate + importetotal.ToString();
                                             fileTxt.WriteLine(totLayout);
                                         }
                                         fileTxt.Close();
