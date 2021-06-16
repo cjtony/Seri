@@ -85,6 +85,7 @@
     const CheckPeridoEspc = document.getAnimations('CheckPeridoEspc');
 
 
+
     const Empleadoseje = document.getElementById('Empleadoseje');
     const dropEmpledos = document.getElementById('DropLitEmple');
     //const LaEmplea = document.getElementById('LaEmpleado');
@@ -106,7 +107,7 @@
     var valorCheckXempleado = document.getElementById('CheckXempleado');
     var ValorChekEnFirme = document.getElementById('ChekEnFirme');
     var valorCheckPeridoEspc = document.getElementById('CheckPeridoEspc');
-
+    var valorCheckRCart2 = document.getElementById('CheckRCart2');
 
 
     var DatoEjeCerrada;

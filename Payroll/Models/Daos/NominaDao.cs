@@ -3726,7 +3726,7 @@ namespace Payroll.Models.Daos
         }
 
         // caratula pdf
-        public List<TpCalculosCarBean> Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN(int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa, int CtrliAnio)
+        public List<TpCalculosCarBean> Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN(int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa, int CtrliAnio,int Carat2)
         {
             List<TpCalculosCarBean> list = new List<TpCalculosCarBean>();
             try
@@ -3740,7 +3740,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
                 cmd.Parameters.Add(new SqlParameter("@CtrliTipodePerido", CrtliIdTipoPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CrtliPeriodo));
-               
+                cmd.Parameters.Add(new SqlParameter("@CtrliEspejo", Carat2));
 
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
