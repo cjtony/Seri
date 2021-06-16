@@ -144,7 +144,7 @@ namespace Payroll.Models.Daos
 
     public class EditEmpleadoDao : Conexion
     {
-        public EmpleadosBean sp_Empleados_Update_Empleado(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, int nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, string fecmat, string tipsan, int clvemp)
+        public EmpleadosBean sp_Empleados_Update_Empleado(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, int nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, string fecmat, string tipsan, int clvemp, int keyBusiness)
         {
             EmpleadosBean empleadoBean = new EmpleadosBean();
             try
@@ -175,6 +175,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaMatrimonio", fecmat));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoSangre", tipsan));
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", clvemp));
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyBusiness));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     empleadoBean.sMensaje = "success";

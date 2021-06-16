@@ -53,6 +53,21 @@ namespace Payroll.Models.Daos
 
     public class PayrollRetainedEmployeesDaoD : Conexion
     {
+        public List<int> sp_Periodos_Retenidos_A_Empleados(int IdEmpresa, int Anio)
+        {
+            List<int> periodos = new List<int>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Periodos_Retenidos_A_Empleados", this.conexion) { CommandType = CommandType.StoredProcedure };
+                //cmd.Parameters.Add(new SqlParameter(""))
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return periodos;
+        }
 
         public List<PayrollRetainedEmployeesBean> sp_Retrieve_NominasRetenidas(int keyBusiness)
         {
@@ -1139,6 +1154,7 @@ namespace Payroll.Models.Daos
                         datosProcesaCheques.sMaterno = data["Materno"].ToString();
                         datosProcesaCheques.sRfc = data["RFC"].ToString();
                         datosProcesaCheques.iTipoPago = Convert.ToInt32(data["TipoPago"].ToString());
+                        datosProcesaCheques.sImporte = data["Saldo"].ToString();
                         datosProcesaChequesNominaBeans.Add(datosProcesaCheques);
                     }
                 }
@@ -1155,8 +1171,7 @@ namespace Payroll.Models.Daos
         public List<DatosProcesaChequesNominaBean> sp_Procesa_Cheques_Interbancarios_Espejo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
         {
             List<DatosProcesaChequesNominaBean> datosProcesaChequesNominaBeans = new List<DatosProcesaChequesNominaBean>();
-            try
-            {
+            try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Interbancarios_Espejo", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
@@ -1164,10 +1179,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows)
-                {
-                    while (data.Read())
-                    {
+                if (data.HasRows) {
+                    while (data.Read()) {
                         DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
                         datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
                         datosProcesaCheques.sBanco = data["Banco"].ToString();
@@ -1184,13 +1197,9 @@ namespace Payroll.Models.Daos
                     }
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 Console.WriteLine(exc.Message.ToString());
-            }
-            finally
-            {
+            } finally {
                 this.conexion.Close();
                 this.Conectar().Close();
             }
