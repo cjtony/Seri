@@ -73,7 +73,8 @@ namespace Payroll.Controllers
                 convertFMatr = Convert.ToDateTime(fecmat).ToString("dd/MM/yyyy");
             }
             try {
-                employeeBean = editEmployeeDao.sp_Empleados_Update_Empleado(name, apepat, apemat, sex, estciv, convertFNaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, convertFMatr, tipsan, clvemp);
+                int keyBusiness = Convert.ToInt32(Session["IdEmpresa"]);
+                employeeBean = editEmployeeDao.sp_Empleados_Update_Empleado(name, apepat, apemat, sex, estciv, convertFNaci, lnaci, title, nacion, state, codpost, city, colony, street, numberst, telfij, telmov, email, convertFMatr, tipsan, clvemp, keyBusiness);
                 if (employeeBean.sMensaje != "success") {
                     messageError = employeeBean.sMensaje;
                 }
@@ -140,7 +141,7 @@ namespace Payroll.Controllers
             DatosPosicionesDao datoPosicionDao      = new DatosPosicionesDao();
             LoadTypePeriodPayrollBean periodBean    = new LoadTypePeriodPayrollBean();
             LoadTypePeriodPayrollDaoD periodDaoD    = new LoadTypePeriodPayrollDaoD();
-            int empresa        = int.Parse(Session["IdEmpresa"].ToString());
+            int empresa        = int.Parse(Session["IdEmpresaIdEmpresa"].ToString());
             int usuario        = Convert.ToInt32(Session["iIdUsuario"].ToString());
             double diferenciaE = (diferencia < 1) ? 0.00 : diferencia;
             double transporteE = (transporte < 1) ? 0.00 : transporte;
