@@ -1306,13 +1306,14 @@ namespace Payroll.Controllers
         /// Caratula pdf 
 
         [HttpPost]
-        public JsonResult ListTpCalculolnPDF( int iTipoPeriodo, int iPeriodo, int idEmpresa, int Anio)
+        public JsonResult ListTpCalculolnPDF( int iTipoPeriodo, int iPeriodo, int idEmpresa, int Anio, int carat)
         {
+            
             decimal Reng481=0;
             List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
             List<TpCalculosCarBean> Dta2 = new List<TpCalculosCarBean>();
             FuncionesNomina dao = new FuncionesNomina();
-            Dta = dao.Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN( iTipoPeriodo, iPeriodo, idEmpresa, Anio);
+            Dta = dao.Sp_CaratulaPdfXEmp_Retrieve_TPlantillaCalculos_LN( iTipoPeriodo, iPeriodo, idEmpresa, Anio, carat);
             if (Dta[0].sMensaje == "success") {
 
                 for (int i = 0; i < Dta.Count; i++) {
