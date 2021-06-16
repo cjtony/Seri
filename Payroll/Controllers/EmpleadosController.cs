@@ -3043,30 +3043,51 @@ namespace Payroll.Controllers
 
                                     // dias Efectivos 
                                     decimal iTdias = LFechaPerido[0].iDiasEfectivos;
+                     
                                     int TDias = 0;
                                     string Dias = LisTRecibo[0].sNombre_Renglon;
                                     sDiasEfectivos = Convert.ToString(iTdias);
-
+                                    string Dtota = Convert.ToString(LFechaPerido[0].iDiasEfectivos);
                                     if (Dias.Length > 7)
                                     {
-                                        if (LisTRecibo[0].iIdRenglon == 0)
+
+                                        if (LisTRecibo[0].iIdRenglon == 1)
                                         {
+                                            
                                             string[] dias = Dias.Split(':');
+                                            Palabra = dias[0].ToString();
                                             Dias = dias[1].ToString();
                                             Dias = Dias.Replace("}", "");
+                                           
                                         }
                                         else
                                         {
                                             Dias = "0";
                                         }
                                         decimal DiasNo = Convert.ToDecimal(Dias);
-                                        iTdias = iTdias - DiasNo;
+                                        
+             
+                                        if (Palabra.Length > 22 && Palabra.Length < 26 )
+                                        {
+                                            iTdias = DiasNo;
+                                        }
+
+                                        if (Palabra.Length > 25)
+                                        {
+                                            iTdias = iTdias - DiasNo;
+                                        }
+
+                                        if (iTdias == 0) {
+                                            iTdias = LFechaPerido[0].iDiasEfectivos;
+                                        }
+
+
                                         TDias = Convert.ToInt16(iTdias);
                                         sDiasEfectivos = Convert.ToString(TDias);
 
                                     }
 
-                                    Palabra = Convert.ToString(sDiasEfectivos);
+                                    Palabra = Convert.ToString(Dtota);
                                     Paragraph DiasT = new Paragraph(-1, Palabra, TexNom);
                                     DiasT.IndentationLeft = 75;
 
@@ -3119,13 +3140,14 @@ namespace Payroll.Controllers
 
 
 
-                                    Paragraph TSalariod = new Paragraph("Sala. Dirario:   ", TexNeg);
+                                    Paragraph TSalariod = new Paragraph("Sala. Diario:   ", TexNeg);
                                     TSalariod.IndentationLeft = 350;
 
-                                    int SD = Convert.ToInt32(ListDatEmisor[0].dSalarioMensual);
-                                    SD = SD / 30;
+                                    decimal SD = Convert.ToDecimal(ListDatEmisor[0].dSalarioMensual);
+                                    decimal SD2=0;
+                                    SD2 = SD / 30;
                                     
-                                    Palabra = string.Format("{0:N2}", SD);
+                                    Palabra = string.Format("{0:N2}", SD2);
                                     Paragraph Salariod = new Paragraph(-1, Palabra, TexNom);
                                     Salariod.IndentationLeft = 395;
 
