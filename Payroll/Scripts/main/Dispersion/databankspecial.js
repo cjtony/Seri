@@ -334,7 +334,7 @@
                                 <div class="col-md-4">
                                     <div clasS="form-group mt-5">
                                         <div class="form-check text-center">
-                                            <button disabled title="Deshabilitado" class="btn btn-sm btn-block btn-primary shadow" onclick="fConfigBanksSelected(${paramint}, 1, 'NOMINA')"> <i class="fas fa-cogs mr-2"></i> Configuración </button>
+                                            <button title="Deshabilitado" class="btn btn-sm btn-block btn-primary shadow" ${disabledConfig} onclick="fConfigBanksSelected(${paramint}, 1, 'NOMINA')"> <i class="fas fa-cogs mr-2"></i> Configuración </button>
                                         </div>
                                     </div>
                                 </div>
