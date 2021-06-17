@@ -59,7 +59,16 @@ namespace Payroll.Models.Daos
             try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Periodos_Retenidos_A_Empleados", this.conexion) { CommandType = CommandType.StoredProcedure };
-                //cmd.Parameters.Add(new SqlParameter(""))
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        int periodo = Convert.ToInt32(data["Periodo"]);
+                        periodos.Add(periodo);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
             } catch (Exception exc) {
                 Console.WriteLine(exc.Message.ToString());
             } finally {
@@ -90,6 +99,7 @@ namespace Payroll.Models.Daos
                                                 data["Apellido_Paterno_Empleado"].ToString() + " " +
                                                 data["Apellido_Materno_Empleado"].ToString();
                         payRetained.sDescripcion = data["Descripcion"].ToString();
+                        payRetained.iPeriodo = Convert.ToInt32(data["Periodo"]);
                         listPayRetained.Add(payRetained);
                     }
                 }

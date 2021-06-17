@@ -83,6 +83,45 @@
         });
     }
 
+    // Funcion que muestra los periodos donde hay nominas retenidas en la empresa
+    //fLoadPeriodsRetainetPayroll = () => {
+    //    try {
+    //        $.ajax({
+    //            url: "../Dispersion/LoadPeriodsRetainedPayroll",
+    //            type: "POST",
+    //            data: { Anio: 0 },
+    //            success: (data) => {
+    //                console.log('Periodos');
+    //                console.log(data);
+    //                for (let i = 0; i < data.Periodos.length; i++) {
+    //                    if (data.Periodos[i] != data.InfoPeriodo.iPeriodo) {
+    //                        document.getElementById('periodosRetenidos').innerHTML += `<option value="${data.Periodos[i]}">${data.Periodos[i]}</option>`;
+    //                    }
+    //                }
+    //                document.getElementById('periodosRetenidos').innerHTML += `<option value="${data.InfoPeriodo.iPeriodo}">${data.InfoPeriodo.iPeriodo}</option>`;
+    //                document.getElementById('anioRetenido').value = data.InfoPeriodo.iAnio;
+    //                setTimeout(() => {
+    //                    document.getElementById('periodosRetenidos').value = data.InfoPeriodo.iPeriodo;
+    //                }, 1000);
+    //            }, error: (jqXHR, exception) => {
+    //                fcaptureaerrorsajax(jqXHR, exception);
+    //            }
+    //        });
+    //    } catch (error) {
+    //        if (error instanceof EvalError) {
+    //            console.log('EvalError ', error);
+    //        } else if (error instanceof RangeError) {
+    //            console.log('RangeError ', error);
+    //        } else if (error instanceof TypeError) {
+    //            console.log('TypeError ', error);
+    //        } else {
+    //            console.log('Error ', error);
+    //        }
+    //    }
+    //}
+
+    //fLoadPeriodsRetainetPayroll();
+
 	// Funcion que se encarga de mostrar el periodo actual \\
     fLoadInfoPeriodPayroll = () => {
         try {
@@ -137,6 +176,7 @@
         columns: [
             { "data": "sNombreEmpleado" },
             { "data": "sDescripcion" },
+            { "data": "iPeriodo" },
             { "defaultContent": "<button title='Restaurar nomina retenida' class='btn text-center btn-outline-primary shadow rounded ml-2'><i class='fas fa-undo'></i></button>" }
         ],
         language: spanish
