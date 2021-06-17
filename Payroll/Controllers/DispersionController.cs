@@ -2298,46 +2298,51 @@ namespace Payroll.Controllers
                                 fileIntScotiabank.Close();
                             }
                         }
-                        
-                        
-                        
-                        
+
+
                         // BANORTE -> INTERBANCARIO -> OK
-                        if (bankInterbank == 72) {
-                            
+                        if (bankInterbank == 72)
+                        {
+
                             string tipoOperacion = "04";
-                            string cuentaOrigen  = "";
+                            string cuentaOrigen = "";
                             string cuentaDestino = "";
-                            string apartCeros1   = "00000000000";
-                            string apartCeros2   = "0";
-                            string apartCeros3   = "00";
+                            string apartCeros1 = "00000000000";
+                            string apartCeros2 = "0";
+                            string apartCeros3 = "00";
                             string referenceDate = DateTime.Now.ToString("ddMMyyyy");
-                            if (dateDisC != "") {
+                            if (dateDisC != "")
+                            {
                                 referenceDate = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
                             }
                             string descriptionPd = "PAGO NOMINA                   ";
-                            if (tipPago == 2) {
+                            if (tipPago == 2)
+                            {
                                 descriptionPd = "HONORARIOS                    ";
                             }
-                            string coinOrigin    = "1";
-                            string coingDestiny  = "1";
-                            string ivaBanorte    = "00000000000000";
+                            string coinOrigin = "1";
+                            string coingDestiny = "1";
+                            string ivaBanorte = "00000000000000";
                             string emailBusiness = "";
-                            if (keyBusiness == 2074) {
+                            if (keyBusiness == 2074)
+                            {
                                 emailBusiness = "asesoresimpasrh@gmail.com              ";
-                            } else {
+                            }
+                            else
+                            {
                                 emailBusiness = "dgarcia@gruposeri.com                  ";
                             }
                             // Longitudes campos
-                            int longNumberPayroll  = 13;
+                            int longNumberPayroll = 13;
                             int longNumberADestiny = 10;
-                            int longNumberImport   = 14;
-                            int longNumberBRfc     = 13;
-                            int longNumberEmail    = 70;
-                            int longDetailsTotal   = 255;
+                            int longNumberImport = 14;
+                            int longNumberBRfc = 13;
+                            int longNumberEmail = 70;
+                            int longDetailsTotal = 255;
                             using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM, false, new ASCIIEncoding()))
                             {
-                                foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
+                                foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean)
+                                {
                                     string nameEmployee = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
                                     if (nameEmployee.Length > 70) {
                                         nameEmployee.Substring(0, 69);
@@ -2347,47 +2352,41 @@ namespace Payroll.Controllers
                                     string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
                                     string accountDestiny = data.sCuenta;
-                                    if (accountDestiny.Length == 16) {
+                                    if (accountDestiny.Length == 16)
+                                    {
                                         accountDestiny = "00" + accountDestiny;
                                     }
                                     string importPaid = "";
-                                    // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                    double restaImporte = 0;
-                                    string importeFinal = "";
-                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
-                                            Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                    if (renglon1481 > 0) {
-                                        restaImporte = data.doImporte - renglon1481;
-                                        importeFinal = restaImporte.ToString().Replace(".", "");
-                                    } else {
-                                        importeFinal = data.dImporte.ToString();
-                                    }
-                                    // FIN CODIGO NUEVO
-                                    //int longImportPaid = longNumberImport - data.dImporte.ToString().Length;
-                                    int longImportPaid = longNumberImport - importeFinal.ToString().Length;
+                                    int longImportPaid = longNumberImport - data.dImporte.ToString().Length;
                                     string rfcBusiness = datosEmpresaBeanDispersion.sRfc;
                                     int longRfcBusiness = longNumberBRfc - rfcBusiness.Length;
                                     int longEmailBusiness = longNumberEmail - emailBusiness.Length;
-                                    for (var i = 0; i < longPayroll; i++) {
+                                    for (var i = 0; i < longPayroll; i++)
+                                    {
                                         payroll += " ";
                                     }
-                                    for (var j = 0; j < longAcountOrigin; j++) {
+                                    for (var j = 0; j < longAcountOrigin; j++)
+                                    {
                                         accountOrigin += "0";
                                     }
-                                    for (var k = 0; k < longImportPaid; k++) {
+                                    for (var k = 0; k < longImportPaid; k++)
+                                    {
                                         importPaid += "0";
                                     }
-                                    for (var p = 0; p < longRfcBusiness; p++) {
+                                    for (var p = 0; p < longRfcBusiness; p++)
+                                    {
                                         rfcBusiness += " ";
                                     }
-                                    //importPaid += data.dImporte.ToString();
-                                    importPaid += importeFinal.ToString();
+                                    importPaid += data.dImporte.ToString();
                                     string fillerFinal = "";
                                     string cadenaFinal = "";
                                     // QUINCENALES CRISTINA 158 , 159
-                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
+                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159)
+                                    {
                                         cadenaFinal = tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
                                     }
                                     int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
@@ -2395,16 +2394,122 @@ namespace Payroll.Controllers
                                     {
                                         fillerFinal += " ";
                                     }
-                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
+                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159)
+                                    {
                                         fileIntBanorte.Write(tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
                                     }
                                 }
                                 fileIntBanorte.Close();
                             }
                         }
-                       
+
+                        // BANORTE -> INTERBANCARIO -> OK
+                        //if (bankInterbank == 72) {
+
+                        //    string tipoOperacion = "04";
+                        //    string cuentaOrigen  = "";
+                        //    string cuentaDestino = "";
+                        //    string apartCeros1   = "00000000000";
+                        //    string apartCeros2   = "0";
+                        //    string apartCeros3   = "00";
+                        //    string referenceDate = DateTime.Now.ToString("ddMMyyyy");
+                        //    if (dateDisC != "") {
+                        //        referenceDate = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
+                        //    }
+                        //    string descriptionPd = "PAGO NOMINA                   ";
+                        //    if (tipPago == 2) {
+                        //        descriptionPd = "HONORARIOS                    ";
+                        //    }
+                        //    string coinOrigin    = "1";
+                        //    string coingDestiny  = "1";
+                        //    string ivaBanorte    = "00000000000000";
+                        //    string emailBusiness = "";
+                        //    if (keyBusiness == 2074) {
+                        //        emailBusiness = "asesoresimpasrh@gmail.com              ";
+                        //    } else {
+                        //        emailBusiness = "dgarcia@gruposeri.com                  ";
+                        //    }
+                        //    // Longitudes campos
+                        //    int longNumberPayroll  = 13;
+                        //    int longNumberADestiny = 10;
+                        //    int longNumberImport   = 14;
+                        //    int longNumberBRfc     = 13;
+                        //    int longNumberEmail    = 70;
+                        //    int longDetailsTotal   = 255;
+                        //    using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM, false, new ASCIIEncoding()))
+                        //    {
+                        //        foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
+                        //            string nameEmployee = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
+                        //            if (nameEmployee.Length > 70) {
+                        //                nameEmployee.Substring(0, 69);
+                        //            }
+                        //            string payroll = data.sNomina;
+                        //            int longPayroll = longNumberPayroll - payroll.Length;
+                        //            string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                        //            int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
+                        //            string accountDestiny = data.sCuenta;
+                        //            if (accountDestiny.Length == 16) {
+                        //                accountDestiny = "00" + accountDestiny;
+                        //            }
+                        //            string importPaid = "";
+                        //            // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
+                        //            double restaImporte = 0;
+                        //            string importeFinal = "";
+                        //            renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                        //                    Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
+                        //            if (renglon1481 > 0) {
+                        //                restaImporte = data.doImporte - renglon1481;
+                        //                importeFinal = restaImporte.ToString().Replace(".", "");
+                        //            } else {
+                        //                importeFinal = data.dImporte.ToString();
+                        //            }
+                        //            // FIN CODIGO NUEVO
+                        //            //int longImportPaid = longNumberImport - data.dImporte.ToString().Length;
+                        //            int longImportPaid = longNumberImport - importeFinal.ToString().Length;
+                        //            string rfcBusiness = datosEmpresaBeanDispersion.sRfc;
+                        //            int longRfcBusiness = longNumberBRfc - rfcBusiness.Length;
+                        //            int longEmailBusiness = longNumberEmail - emailBusiness.Length;
+                        //            for (var i = 0; i < longPayroll; i++) {
+                        //                payroll += " ";
+                        //            }
+                        //            for (var j = 0; j < longAcountOrigin; j++) {
+                        //                accountOrigin += "0";
+                        //            }
+                        //            for (var k = 0; k < longImportPaid; k++) {
+                        //                importPaid += "0";
+                        //            }
+                        //            for (var p = 0; p < longRfcBusiness; p++) {
+                        //                rfcBusiness += " ";
+                        //            }
+                        //            //importPaid += data.dImporte.ToString();
+                        //            importPaid += importeFinal.ToString();
+                        //            string fillerFinal = "";
+                        //            string cadenaFinal = "";
+                        //            // QUINCENALES CRISTINA 158 , 159
+                        //            if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
+                        //                cadenaFinal = tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
+                        //            } else {
+                        //                cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
+                        //            }
+                        //            int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
+                        //            for (var x = 0; x < longFinalFiller; x++)
+                        //            {
+                        //                fillerFinal += " ";
+                        //            }
+                        //            if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
+                        //                fileIntBanorte.Write(tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
+                        //            } else {
+                        //                fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
+                        //            }
+                        //        }
+                        //        fileIntBanorte.Close();
+                        //    }
+                        //}
+
                         flag = true;
                     } 
                 }
