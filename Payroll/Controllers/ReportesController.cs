@@ -207,7 +207,7 @@ namespace Payroll.Controllers
         {
             Stopwatch stopwatch  = new Stopwatch();
             Stopwatch stopwatch1 = new Stopwatch();
-            string tiempo = "";
+            string tiempo       = "";
             Boolean flag        = false;
             Boolean ValidDataN  = false;
             Boolean checkDataN  = false;
@@ -314,38 +314,18 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 r += 1;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             RenglonesNom = new int[0];
                         }
 
                         a = ii;
-                        //ii += 1;
-                        //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                        //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES FISCAL";
 
                         listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 1000, 2000, typeOption);
-                        if (listRenglones1.Count > 0)
-                        {
-                            //if (listRenglones1.Any(x => x.iIdRenglon == 1041)) {
-                            //    RenglonesNomDeduc = new int[listRenglones1.Count - 1];
-                            //} else {
-                            //    RenglonesNomDeduc = new int[listRenglones1.Count];
-                            //}
+                        if (listRenglones1.Count > 0) {
+                            
                             RenglonesNomDeduc = new int[listRenglones1.Count];
                             int j = 0;
-                            foreach (RenglonesHCBean renglon in listRenglones1)
-                            {
-                                // Omitimos el renglon 1041 y agregamos los que no coincidan
-                                //if (renglon.iIdRenglon != 1041) {
-                                //    ii += 1;
-                                //    Renglon              = Convert.ToInt32(renglon.iIdRenglon);
-                                //    RenglonesNomDeduc[j] = Renglon;
-                                //    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                                //    worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                                //    j += 1;
-                                //}
+                            foreach (RenglonesHCBean renglon in listRenglones1) {
                                 ii += 1;
                                 Renglon = Convert.ToInt32(renglon.iIdRenglon);
                                 RenglonesNomDeduc[j] = Renglon;
@@ -353,15 +333,10 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 j += 1;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             RenglonesNomDeduc = new int[0];
                         }
 
-                        //ii += 1;
-                        //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                        //worksheet.Cells[1, ii + 1].Value = "TOTAL DEDUCCIONES FISCAL";
                         ii += 1;
                         worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
                         worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR FISCAL";
@@ -385,10 +360,6 @@ namespace Payroll.Controllers
                         {
                             RenglonesNomEspejo = new int[0];
                         }
-
-                        //ii += 1;
-                        //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                        //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES GASTOS";
 
                         listRenglonesEsp1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 1000, 2000, typeOption);
                         if (listRenglonesEsp1.Count > 0)
@@ -418,41 +389,6 @@ namespace Payroll.Controllers
                         worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
                         worksheet.Cells[1, ii + 1].Value = "TOTAL GENERAL";
 
-                        // * INICIO CODIGO NUEVO * \\
-
-                        //listRenglonesC1 = reportDao.sp_Renglones_HC_Consecutivo(keyOptionSel, numberPeriod, typePeriod, yearPeriod, 0);
-                        //if (listRenglonesC1.Count > 0) {
-                        //    renglonesC1 = new int[listRenglonesC1.Count];
-                        //    int r = 0;
-                        //    foreach (RenglonesHCBean renglon in listRenglonesC1) {
-                        //        ii += 1;
-                        //        Renglon = Convert.ToInt32(renglon.iIdRenglon);
-                        //        renglonesC1[r] = Renglon;
-                        //        worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                        //        worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                        //        r += 1;
-                        //    }
-                        //} else {
-                        //    renglonesC1 = new int[0];
-                        //}
-
-                        //listRenglonesC2 = reportDao.sp_Renglones_HC_Consecutivo(keyOptionSel, numberPeriod, typePeriod, yearPeriod, 1);
-                        //if (listRenglonesC2.Count > 0) {
-                        //    renglonesC2 = new int[listRenglonesC2.Count];
-                        //    int j = 0;
-                        //    foreach (RenglonesHCBean renglon in listRenglonesC2) {
-                        //        ii += 1;
-                        //        Renglon = Convert.ToInt32(renglon.iIdRenglon);
-                        //        renglonesC1[j] = Renglon;
-                        //        worksheet.Cells[1 , ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                        //        worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                        //        j += 1;
-                        //    }
-                        //} else {
-                        //    renglonesC2 = new int[0];
-                        //}
-
-                        // * FIN CODIGO NUEVO * \\
 
                     } else {
 
@@ -536,13 +472,6 @@ namespace Payroll.Controllers
 
                     }
 
-
-                    //ii += 1;
-                    //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
-                    //worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR GASTO";
-                    //ii += 1;
-                    //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightCyan);
-                    //worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR TOTAL";
                     stopwatch1.Start();
                     string inicio = DateTime.Now.ToString("hh:mm:ss");
                     DateTime comienzo = Convert.ToDateTime(inicio);
@@ -1480,7 +1409,7 @@ namespace Payroll.Controllers
             string nameFolder = "REPORTES";
             string nameFolderRe = "RECIBOSNOMINA";
             string nameFileValid = nameFolderRe;
-            string nameFileRepr = "RECINOMI_A" + year.ToString() + "_T" + periodStart.ToString() + "_P" + periodEnd.ToString() + "_ " + option + ".xlsx";
+            string nameFileRepr = "RECINOMIA" + year.ToString() + "T" + periodStart.ToString() + "P" + periodEnd.ToString() + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable = 1, columnsDataTable = 0;

@@ -43,18 +43,22 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoadPeriodsRetainedPayroll()
+        public JsonResult LoadPeriodsRetainedPayroll(int Anio)
         {
             Boolean flag = false;
             String messageError = "none";
-            DispersionDao dispersion = new DispersionDao();
+            PayrollRetainedEmployeesDaoD retenidas = new PayrollRetainedEmployeesDaoD();
+            LoadTypePeriodPayrollBean periodBean   = new LoadTypePeriodPayrollBean();
+            LoadTypePeriodPayrollDaoD periodDaoD   = new LoadTypePeriodPayrollDaoD();
             List<int> periodos = new List<int>();
             try {
-
+                int IdEmpresa = Convert.ToInt32(Session["IdEmpresa"]);
+                periodos = retenidas.sp_Periodos_Retenidos_A_Empleados(IdEmpresa, DateTime.Now.Year);
+                periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(IdEmpresa, Convert.ToInt32(DateTime.Now.Year));
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
             } 
-            return Json(new { Bandera = flag, MensajeError = messageError });
+            return Json(new { Bandera = flag, MensajeError = messageError, Periodos = periodos, InfoPeriodo = periodBean });
         }
 
         // Muestra los datos de los empleados con nomina retenida
@@ -763,16 +767,18 @@ namespace Payroll.Controllers
                                                 decimal importeFinal = 0;
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                string importeG = "";
                                                 if (renglon1481 > 0) {
                                                     restaImporte = Convert.ToDecimal(payroll.sImporte) - Convert.ToDecimal(renglon1481);
                                                     importeFinal = restaImporte;
                                                     resultadoSuma += Convert.ToDouble(restaImporte);
+                                                    // ERROR AL MOMENTO DE AÑADIRLO añade ceros inecesarios
+                                                    importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
                                                 } else {
                                                     importeFinal = payroll.dImporte;
                                                     resultadoSuma += payroll.doImporte;
+                                                    importeG = importeFinal.ToString();
                                                 }
-
-                                                string importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
                                                 // FIN CODIGO NUEVO
                                                 totalAmount += payroll.doImporte;
                                                 int longConsec = longc - consecutiveInit.ToString().Length;
@@ -1017,15 +1023,17 @@ namespace Payroll.Controllers
                                                 // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
                                                 decimal restaImporte = 0;
                                                 decimal importeFinal = 0;
+                                                string importeG = "";
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 if (renglon1481 > 0) {
                                                     restaImporte = Convert.ToDecimal(payroll.sImporte) - Convert.ToDecimal(renglon1481);
-                                                    importeFinal =restaImporte;
+                                                    importeFinal = restaImporte;
+                                                    importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
                                                 } else {
                                                     importeFinal = payroll.dImporte;
+                                                    importeG = importeFinal.ToString();
                                                 }
-                                                string importeG= Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",","").Replace(".","");
 
                                                 // FIN CODIGO NUEVO
                                                 totalRegistros += 1;
@@ -2075,18 +2083,19 @@ namespace Payroll.Controllers
                                     // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
                                     decimal restaImporte = 0;
                                     decimal importeFinal = 0;
+                                    string importeG = "";
                                     renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0)
                                     {
                                         restaImporte = Convert.ToDecimal(bank.sImporte) - Convert.ToDecimal(renglon1481);
                                         importeFinal = restaImporte;
-                                    }
-                                    else
-                                    {
+                                        importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
+                                    } else {
                                         importeFinal = bank.dImporte;
+                                        importeG = importeFinal.ToString();
                                     }
-                                    string importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
+                                     
 
                                     // FIN CODIGO NUEVO
 

@@ -664,7 +664,7 @@
                 } else {
                     alert('Estamos trabajando en ello...');
                 }
-                console.log(typeReport.value);
+                //console.log(typeReport.value);
             } else {
                 alert('Accion invalida');
                 location.reload();
