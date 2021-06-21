@@ -525,7 +525,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa, int Anio)
+        public JsonResult ListTpCalculoln(int iIdCalculosHd, int iTipoPeriodo, int iPeriodo, int idEmpresa, int Anio,int cart)
         {
             List<TpCalculosCarBean> Dta = new List<TpCalculosCarBean>();
             List<TPProcesos> LProce = new List<TPProcesos>();
@@ -536,7 +536,7 @@ namespace Payroll.Controllers
             dao.sp_EstatusTpProcesosJobs_Update_EstatusTpProcesosJobs();
             dao.sp_ProcesoJobs_update_TPProcesosJobs();
 
-            Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa, Anio);
+            Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa, Anio,cart);
 
             LProce = Statusproc(iIdCalculosHd, iTipoPeriodo, iPeriodo, idEmpresa, Anio);
             LisEmpreCal = dao.sp_Empresa_Retrieve_TpCalculosLN(iIdCalculosHd, iTipoPeriodo, 0);
@@ -544,7 +544,7 @@ namespace Payroll.Controllers
             if (Dta[0].sMensaje == "No hay datos") {
 
                 for (int i = 0; i < LisEmpreCal.Count; i++) {
-                    Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(0, iTipoPeriodo, iPeriodo, LisEmpreCal[i].iIdEmpresa, Anio);
+                    Dta = dao.sp_Caratula_Retrieve_TPlantilla_Calculos(0, iTipoPeriodo, iPeriodo, LisEmpreCal[i].iIdEmpresa, Anio, cart);
                     if (Dta[0].sMensaje == "success") {
                         i = Dta.Count + 5;
 

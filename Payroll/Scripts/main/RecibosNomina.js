@@ -29,6 +29,8 @@
     const LaFiniquito = document.getElementById('LaFiniquito');
     const dropPeriodoEmple = document.getElementById('dropPeriodoEmple');
     const LaPeriodoEmple = document.getElementById('LaPeriodoEmple');
+    const BtnRsimple = document.getElementById('BtnRsimple');
+    const BtnRFiscal = document.getElementById('BtnRFiscal');
 
     var ValorChek = document.getElementById('CheckRecibo2');
     var valorChekFint = document.getElementById('CheckFiniquito');
@@ -108,7 +110,6 @@
 
     });
 
- 
 
     //// Muestra fecha de inicio y fin de peridodos
 
@@ -204,13 +205,11 @@
        
     });
 
-
      /// validacion de año
 
      $("#iAnoDe").keyup(function () {
          this.value = (this.value + '').replace(/[^0-9]/g, '');
      });
-
 
     FDelettable = () => {
         if (rowscounts > 0) {
@@ -400,8 +399,6 @@
         FPeriodosEmpleado(IdEmpresa, anoNom.value, TipodePerdioRec.value, NoEmpleado, periodoEmple );
     };
 
-
-
     /// llemna grid de los calculos de nomina 
     FGridRecibos = (dataSend2) => {
         if (CheckFiniquito.checked == true) {
@@ -561,7 +558,56 @@
     };
 
      btnFloBuscar.addEventListener('click', FBuscar);
+
+    /// descarga recibo simple
+
+    FRSimple = () => {
+        console.log('Recibo simple');
+
+        IdEmpresa = EmpresaNom.value;
+        var nom = $('#jqxInput').jqxInput('val');
+        NombreEmpleado = nom.label;
+        separador = " ",
+        limite = 2,
+        arregloIdEmpleado = NombreEmpleado.split(separador, limite);
+
+        IdEmpresa = EmpresaNom.value;
+        anio = anoNom.value;
+        Tipoperiodo = TipodePerdioRec.value;
+        datosPeriodo = dropPeriodoEmple.options[dropPeriodoEmple.selectedIndex].text;
+        const dataSend = { IdEmpresas: IdEmpresa, EmpleId: arregloIdEmpleado[0], Perido: datosPeriodo, Anio: anio, Tipoperiodo: Tipoperiodo, iRecibo:1};
+        console.log(dataSend);
+        $.ajax({
+            url: "../Empleados/FileRecibos",
+            type: "POST",
+            data: dataSend,
+            success: function (data) { 
+                console.log(data);
+                
+                if (data[0].sMensaje == "Succes") {
+                    var url = data[0].sURreciboFiscal;
+                    console.log(url);
+                   // jQuery('<form target="_blank" action="' + url + '" method="get"></form>').appendTo('body').submit().remove();
+                    window.open('../../../'+url);
+
+                }
+                else {
+                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                }
+
+            }
+        });
+
+
+
+
+    };
+    BtnRsimple.addEventListener('click', FRSimple);
+
+
+
     /// Genera archivo XML
+
     FGenerarXML = () => {
         IdEmpresa = EmpresaNom.value;
         var nom = $('#jqxInput').jqxInput('val');
@@ -662,8 +708,6 @@
 
 
     });
-
-
 
     /// selecciona tipo de recibo normal o finiquito 
 
@@ -809,6 +853,8 @@
         };
     };
     btnDowlan.addEventListener('click', FOpenFile);
+
+
 
 
     /* FUNCION QUE MUESTRA ALERTAS */

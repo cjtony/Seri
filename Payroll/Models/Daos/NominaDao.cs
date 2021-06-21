@@ -1355,7 +1355,7 @@ namespace Payroll.Models.Daos
             return list;
         }
 
-        public List<TpCalculosCarBean> sp_Caratula_Retrieve_TPlantilla_Calculos(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa,int CtrliAnio)
+        public List<TpCalculosCarBean> sp_Caratula_Retrieve_TPlantilla_Calculos(int CtrliIdCalculoshd, int CrtliIdTipoPeriodo, int CrtliPeriodo, int Idempresa,int CtrliAnio,int carat)
         {
             List<TpCalculosCarBean> list = new List<TpCalculosCarBean>();
             try
@@ -1370,7 +1370,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CrtliPeriodo));
                 cmd.Parameters.Add(new SqlParameter("@CtrliIdEmpresa", Idempresa));
                 cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
-                
+                //cmd.Parameters.Add(new SqlParameter("@CtrliIdCart", carat));
+
                 SqlDataReader data = cmd.ExecuteReader();
                 cmd.Dispose();
                 if (data.HasRows)

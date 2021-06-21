@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-      /// declaracion de varibles de tab
+    /// declaracion de varibles de tab
 
     const navEjecuciontab = document.getElementById('nav-Ejecucion-tab');
     const navVisCalculotab = document.getElementById('nav-VisCalculo-tab');
@@ -30,7 +30,7 @@
         btnFloEjecutar.style.visibility = 'hidden';
         btnFloBuscar.style.visibility = 'hidden';
         btnFloLimpiar.style.visibility = 'hidden';
-       // FDelettable();
+        // FDelettable();
     };
     FTanopcion4 = () => {
         btnFloGuardar.style.visibility = 'hidden';
@@ -63,7 +63,7 @@
     const DeduCal = document.getElementById('DeduCal');
     const Latotal = document.getElementById('Latotal');
     const totalCal = document.getElementById('totalCal');
-   
+
     const btnPdfCal = document.getElementById('btnPdfCal');
 
     const btnPdfCal2 = document.getElementById('btnPdfCal2');
@@ -79,7 +79,7 @@
     const LaTotalNomCe = document.getElementById('LaTotalNomCe');
     const LaEmpresaNoCe = document.getElementById('LaEmpresaNoCe');
     const EmpresaNoCe = document.getElementById('EmpresaNoCe');
-    const EmpresaNom = document.getElementById('EmpresaNom');  
+    const EmpresaNom = document.getElementById('EmpresaNom');
     const BntBusRecibo = document.getElementById('btnFloBuscar');
     const ChekEnFirme = document.getElementById('ChekEnFirme');
     const CheckPeridoEspc = document.getAnimations('CheckPeridoEspc');
@@ -99,6 +99,7 @@
     const CheckXempleado = document.getElementById('CheckXempleado');
     const LaCheckXEmpleado = document.getElementById('LaCheckXEmpleado');
     const btnFloLimpiar = document.getElementById('btnFloLimpiar');
+    const Checkr2carat2 = document.getElementById('Checkr2carat2');
 
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
@@ -107,7 +108,10 @@
     var valorCheckXempleado = document.getElementById('CheckXempleado');
     var ValorChekEnFirme = document.getElementById('ChekEnFirme');
     var valorCheckPeridoEspc = document.getElementById('CheckPeridoEspc');
-    var valorCheckRCart2 = document.getElementById('CheckRCart2');
+    var ValorCheckr2carat2 = document.getElementById('Checkr2carat2');
+
+
+
 
 
     var DatoEjeCerrada;
@@ -135,7 +139,7 @@
 
 
 
-                              /// Tab Ejecucion 
+    /// Tab Ejecucion 
 
     const LanombreDef = document.getElementById('LanombreDef');
     const jqxdropdown = document.getElementById('jqxdropdownbutton');
@@ -167,7 +171,7 @@
 
     //// llenad el grid de Definicion 
 
-   FLlenaGrid = () => {
+    FLlenaGrid = () => {
         //seconds = 15;
         //clearInterval(interval);
         //$("#timerNotification").jqxNotification("closeLast");
@@ -220,7 +224,7 @@
             },
         });
     };
-   FLlenaGrid();
+    FLlenaGrid();
 
     // seleccion de linea de grip y la guarda en el droplist y carga los datos de tipo de perio y llena el drop de periodo
 
@@ -249,23 +253,23 @@
             data: dataSend3,
             success: (Result) => {
                 if (Result.Result[0].iIdCalculosHd == 1) {
-           
+
                     btnFloEjecutar.style.visibility = 'visible';
                     btnFloGuardar.style.visibility = 'hidden';
-                     /// tipo de periodo de la definicion
+                    /// tipo de periodo de la definicion
 
                     Tipoperiodocal = Result.LTP[0].iId + " " + Result.LTP[0].sValor;
                     TxbTipoPeriodo.value = Result.LTP[0].iId + " " + Result.LTP[0].sValor;
                     TipoPeridoCal.value = Result.LTP[0].iId + " " + Result.LTP[0].sValor;
-                     /// ingresa el periodo
+                    /// ingresa el periodo
                     if (Result.LPe[0].sMensaje == "success") {
-                      $("#PeridoEje").empty();
-                      document.getElementById("PeridoEje").innerHTML += `<option value='${Result.LPe[0].iId}'>${Result.LPe[0].iPeriodo} Fecha del: ${Result.LPe[0].sFechaInicio} al ${Result.LPe[0].sFechaFinal}</option>`;
-                      periodo = Result.LPe[0].iPeriodo;
-                      PeriodoCal.value = Result.LPe[0].iPeriodo;
+                        $("#PeridoEje").empty();
+                        document.getElementById("PeridoEje").innerHTML += `<option value='${Result.LPe[0].iId}'>${Result.LPe[0].iPeriodo} Fecha del: ${Result.LPe[0].sFechaInicio} al ${Result.LPe[0].sFechaFinal}</option>`;
+                        periodo = Result.LPe[0].iPeriodo;
+                        PeriodoCal.value = Result.LPe[0].iPeriodo;
                         /// si tiene calculos la definicion del periodo actual  los muestra  
-                       var empresa = 0;
-                       FllenaCalculos(periodo, empresa, Tipoperiodocal);
+                        var empresa = 0;
+                        FllenaCalculos(periodo, empresa, Tipoperiodocal);
                     }
                     if (Result.LPe[0].sMensaje == "error") {
 
@@ -273,7 +277,7 @@
                     }
                 }
                 if (Result.Result[0].iIdCalculosHd == 0) {
-                   
+
                     btnFloGuardar.style.visibility = 'visible';
                     btnFloEjecutar.style.visibility = 'hidden';
                 }
@@ -299,11 +303,11 @@
         if (valorCeckxempresa.checked == true) {
             $("#CheckXEmpresa").click();
         }
-        if (ValorChekEnFirme.checked  == true) {
+        if (ValorChekEnFirme.checked == true) {
             //$("#ChekEnFirme").click();
             ValorChekEnFirme.checked = false;
         }
-      
+
 
     };
     btnFloLimpiar.addEventListener('click', FLimpiaCamp);
@@ -311,6 +315,18 @@
 
     /// llena tabla de calculo
     FllenaCalculos = (periodo, empresa, Tperiodo) => {
+
+        var dat = 0;
+        if (ValorCheckr2carat2.checked == false) {
+
+            dat = 0;
+        }
+
+        if (ValorCheckr2carat2.checked == true) {
+
+            dat = 1;
+        }
+
 
         $('#jqxLoader').jqxLoader('close');
         btnFloEjecutar.style.visibility = 'visible';
@@ -323,8 +339,8 @@
         if (Tperiodo != "0") {
             var tipoPeriodo = Tperiodo
             separador = " ",
-                limite = 2,
-                arreglosubcadena = tipoPeriodo.split(separador, limite);
+            limite = 2,
+            arreglosubcadena = tipoPeriodo.split(separador, limite);
         }
         if (Tperiodo == "0") {
             var tipoPeriodo = TxbTipoPeriodo.value;
@@ -333,7 +349,7 @@
                 arreglosubcadena = tipoPeriodo.split(separador, limite);
         }
         IdDropList;
-        const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena[0], iPeriodo: periodo, idEmpresa: empresaid, Anio: TbAño.value };
+        const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena[0], iPeriodo: periodo, idEmpresa: empresaid, Anio: TbAño.value, cart: dat };
         const dataSend2 = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena[0], iPeriodo: periodo, idEmpresa: empresaid, anio: TbAño.value };
         var per;
         var dedu;
@@ -355,12 +371,12 @@
                         $("#nav-VisCalculo-tab").addClass("disabled");
                         $("#nav-VisNomina-tab").addClass("disabled");
                     }
-                   
+
 
                 }
                 if (dato == "success") {
-                     if (dato == "success") {
-                         if (Result.LProce[0].sEstatusJobs == "En Cola") {
+                    if (dato == "success") {
+                        if (Result.LProce[0].sEstatusJobs == "En Cola") {
 
                             $('#jqxLoader').jqxLoader('open');
                             btnFloEjecutar.style.visibility = 'hidden';
@@ -368,7 +384,7 @@
                             $("#nav-VisCalculo-tab").addClass("disabled");
                             $("#nav-VisNomina-tab").addClass("disabled");
                         }
-                         if (Result.LProce[0].sEstatusJobs == "En Proceso") {
+                        if (Result.LProce[0].sEstatusJobs == "En Proceso") {
                             $('#jqxLoader').jqxLoader('open');
                             btnFloEjecutar.style.visibility = 'hidden';
                             btnFloActualiza.style.visibility = 'visible';
@@ -552,7 +568,7 @@
                             ]
                         });
 
-                    };    
+                    };
                     if (empresaid == 0) {
                         TipodePeridoDroplip = TxbTipoPeriodo.value;
                         separador = " ",
@@ -561,7 +577,7 @@
                         $("#EmpresaCal").empty();
                         $('#EmpresaCal').append('<option value="0" selected="selected">Selecciona</option>');
                         $("#EmpresaNom").empty();
-                        
+
                         if (Result.LisEmpreCal.length > 0)
                             for (i = 0; i < Result.LisEmpreCal.length; i++) {
                                 document.getElementById("EmpresaCal").innerHTML += `<option value='${Result.LisEmpreCal[i].iIdEmpresa}'>${Result.LisEmpreCal[i].iIdEmpresa}  ${Result.LisEmpreCal[i].sNombreEmpresa} </option>`;
@@ -575,7 +591,7 @@
                         if (periodo != "Selecciona") {
                             separador = " ",
                                 limite = 2
-                                arreglosubcadena2 = periodo.split(separador, limite);
+                            arreglosubcadena2 = periodo.split(separador, limite);
                             const dataSend5 = { iIdEmpresa: Result.LisEmpreCal[0].iIdEmpresa, TipoPeriodo: arreglosubcadena[0], periodo: arreglosubcadena2[0], Anio: TbAño.value };
                             $.ajax({
                                 url: "../Empleados/DataListEmpleado",
@@ -640,6 +656,9 @@
 
 
     };
+
+
+
 
     /// llena el drop de empresa en la pantalla ejecucion
 
@@ -749,8 +768,8 @@
         TipodePeridoDroplip = TxbTipoPeriodo.value;
         periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
         separador = " ",
-        limite = 2,
-        arreglosubcadena2 = periodo.split(separador, limite);
+            limite = 2,
+            arreglosubcadena2 = periodo.split(separador, limite);
         FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
     };
 
@@ -946,12 +965,12 @@
                                     AnioDropList;
                                     TipodePeridoDroplip = TxbTipoPeriodo.value;
                                     separador = " ",
-                                    limite = 2,
-                                    arreglosubcadena3 = TipodePeridoDroplip.split(separador, limite);
+                                        limite = 2,
+                                        arreglosubcadena3 = TipodePeridoDroplip.split(separador, limite);
                                     periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
                                     separador = " ",
-                                    limite = 2,
-                                    arreglosubcadena = periodo.split(separador, limite);
+                                        limite = 2,
+                                        arreglosubcadena = periodo.split(separador, limite);
                                     const dataSend3 = { iIdDefinicionHd: IdDropList, iPerido: arreglosubcadena[0], iNominaCerrada: 1, Anio: TbAño.value, IdTipoPeriodo: 0, IdEmpresa: 0 };
                                     var dataSend2 = { IdDefinicionHD: IdDropList, anio: AnioDropList, iTipoPeriodo: arreglosubcadena3[0], iperiodo: arreglosubcadena2[0], iIdempresa: 0, iCalEmpleado: checkCalculoEmplado };
 
@@ -970,9 +989,9 @@
                                                     data: dataSend2,
                                                     success: (data) => {
                                                         FllenaCalculos(arreglosubcadena2[0], 0, TipodePeridoDroplip);
-                                                      
+
                                                     }
-                                                });                   
+                                                });
                                             }
                                             else {
                                                 fshowtypealert('Error', 'Contacte a sistemas', 'error');
@@ -1002,7 +1021,7 @@
                 }
             });
         };
-        
+
     };
     ChNCerrada.addEventListener('click', FValorChec);
 
@@ -1034,14 +1053,14 @@
                                 console.log('periodo especial')
                                 console.log(data[i].iPeriodo)
                                 PeriodoCal.value = data[i].iPeriodo;
-                             
+
                             }
 
                         }
-                        
 
 
-                        
+
+
 
                     }
                     if (data[0].sMensaje == "error") {
@@ -1052,7 +1071,7 @@
                 },
             });
 
-          
+
         }
         if (valorCheckPeridoEspc.checked == false) {
             EmpresaCal.selectedIndex = 0;
@@ -1063,7 +1082,7 @@
                 success: function (data) {
                     if (data[0].sMensaje == "success") {
                         $("#PeridoEje").empty();
-                        document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;                 
+                        document.getElementById("PeridoEje").innerHTML += `<option value='${data[0].iId}'>${data[0].iPeriodo} Fecha del: ${data[0].sFechaInicio} al ${data[0].sFechaFinal}</option>`;
                         PeriodoCal.value = data[0].iPeriodo;
                     }
                     if (data[0].sMensaje == "error") {
@@ -1076,14 +1095,33 @@
 
 
             console.log('periodo especial desactivado');
-           
+
         }
 
-       
-       
+
+
     });
 
+    $('#Checkr2carat2').change(function () {
 
+        var idempresa = EmpresaCal.value;
+        var perido = PeriodoCal.value;
+        Tipoperiodocal = 0;
+
+        if (ValorCheckr2carat2.checked == true) {
+            console.log('caratula2');
+            FllenaCalculos(periodo, idempresa, Tipoperiodocal);
+
+        }
+        if (ValorCheckr2carat2.checked == false) {
+            console.log('caratula1');
+           
+            FllenaCalculos(periodo, idempresa, Tipoperiodocal);
+
+        
+
+        }
+    });
 
 
      /*  Procesos de Ejecucion */
@@ -1657,7 +1695,9 @@
        FLlenaGrid2();
       $("#jqxdropdownbutton2").jqxDropDownButton({
         width: 600, height: 30
-    });
+      });
+
+
 
                     /*Selesccion de definicion de periodos cerrados  */
      $("#TpDefinicion2").on('rowselect', function (event) {
