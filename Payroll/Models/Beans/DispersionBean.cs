@@ -19,6 +19,9 @@
         public int iNomina { get; set; }
         public int iEmpresa { get; set; }
         public double dTotal { get; set; }
+        public decimal decimalTotal { get; set; }
+        public double  doubleTotalDispersion { get; set; }
+        public decimal decimalTotalDispersion { get; set; }
     }
     public class DataErrorAccountBank
     {

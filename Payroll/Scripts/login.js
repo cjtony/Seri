@@ -139,7 +139,7 @@ $(function () {
                         } else if (request.sMensaje === "passerror") {
                             fshowalerts("warning", "Atención!", "La contraseña ingresada es incorrecta", password, 1, "n");
                         } else if (request.sMensaje === "success") {
-                            fshowalerts("success", "Correcto!", "Iniciando sesion, preciona Aceptar...", "", 1, "yes");
+                            fshowalerts("success", "Correcto!", "Iniciando sesion, presiona Aceptar...", "", 1, "yes");
                         }
                     }, error: (jqXHR, exception) => {
                         let msg = '';

@@ -245,6 +245,8 @@ namespace Payroll.Models.Daos
                 if (data.Read()) {
                     if (data["Bandera"].ToString() == "1") {
                         r.dTotal = Convert.ToDouble(data["Total"].ToString());
+                        r.decimalTotalDispersion = Convert.ToDecimal(data["TOTALDIS"].ToString());
+                        r.doubleTotalDispersion  = Convert.ToDouble(data["TOTALDIS"].ToString());
                     } else {
                         r.dTotal = Convert.ToDouble(data["Total"].ToString());
                     }

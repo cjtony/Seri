@@ -444,7 +444,7 @@ namespace Payroll.Controllers
                                     vFileName = "E" + string.Format("{0:000}", keyBusiness.ToString()) + "A" + yearPeriod + yearPeriod.ToString() + "P" + string.Format("{0:000}", numberPeriod.ToString()) + "_B" + bankResult.ToString();
                                 }
 
-                                // BANAMEX -> NOMINA
+                                // ARCHIVO TXT DISPERSION BANAMEX -> NOMINA -> OK -> LISTO
                                 if (bankResult == 2) {
                                     DateTime dateC = dateGeneration;
                                     if (dateDisC != "") {
@@ -472,32 +472,22 @@ namespace Payroll.Controllers
                                     // FOREACH DATOS TOTALES
                                     string importeTotalBanamexG = "";
                                     // INICIO CODIGO NUEVO RESTA RENGLON 1481 
-                                    double sumaImporte = 0;
+                                    decimal sumaImporte = 0;
+                                    ReportesDao reportDao = new ReportesDao();
+                                    ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
                                     foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                        if (bankResult == payroll.iIdBanco) {
-                                            double restaImporte = 0;
                                             renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                     Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             if (renglon1481 > 0) {
-                                                restaImporte = payroll.doImporte - renglon1481;
-                                                sumaImporte += restaImporte;
+                                                importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                sumaImporte += importe.decimalTotal;
                                             } else {
-                                                sumaImporte += payroll.doImporte;
+                                                sumaImporte += payroll.dImporte;
                                             }
                                         }
                                     }
                                     importeTotalBanamexG = sumaImporte.ToString().Replace(".", "");
-
-                                    importeTotalBanamexG = sumaImporte.ToString("#,##0.00");
-                                    //string test4 = importeTotalBanorte.Replace(",", "").Replace(".", "");
-                                    importeTotalBanamexG = importeTotalBanamexG.Replace(",", "").Replace(".", "");
-                                    // FIN CODIGO NUEVO RESTA RENGLON 1481
-                                    //foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans) {
-                                    //    if (deposits.iIdBanco == bankResult) {
-                                    //        importeTotalBanamexG = deposits.sImporte;
-                                    //        break;
-                                    //    }
-                                    //}
                                     // - GLOBAL - \\
                                     string tipoRegistroBanamexG = "2";
                                     string cargoBanamexG        = "1";
@@ -556,8 +546,8 @@ namespace Payroll.Controllers
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 if (renglon1481 > 0) {
-                                                    restaImporte = payroll.doImporte - renglon1481;
-                                                    importeFinal = restaImporte.ToString().Replace(".", "");
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    importeFinal = importe.decimalTotalDispersion.ToString();
                                                 } else {
                                                     importeFinal = payroll.dImporte.ToString();
                                                 }
@@ -706,10 +696,10 @@ namespace Payroll.Controllers
                                     stream.Close();
                                 }
 
-                                // ARCHIVO TXT PARA SANTANDER -> NOMINA
+                                // ARCHIVO TXT DISPERSION SANTANDER -> NOMINA -> OK -> LISTO
 
                                 if (bankResult == 14) {
-                                    double resultadoSuma = 0;
+                                    decimal resultadoSuma = 0;
                                     // - ENCABEZADO - \\ ARCHIVO OK
                                     int initConsecutiveNbOneN    = 1;
                                     string  typeRegisterN        = "1";
@@ -736,13 +726,11 @@ namespace Payroll.Controllers
                                                     string accountUser = payroll.sCuenta;
                                                     string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
                                                     string formatAccount = "";
-                                                    if (longAcortAccount == 18)
-                                                    {
+                                                    if (longAcortAccount == 18) {
                                                         formatAccount = formatAccountSubstring.Substring(0, 6);
                                                     }
                                                     string cerosAccount = "";
-                                                    for (var t = 0; t < formatAccount.Length + 1; t++)
-                                                    {
+                                                    for (var t = 0; t < formatAccount.Length + 1; t++) {
                                                         cerosAccount += "0";
                                                     }
                                                     finallyAccount = formatAccountSubstring.Substring(6, 11);
@@ -752,12 +740,7 @@ namespace Payroll.Controllers
 
                                                 } else {
                                                     dataErrors.Add(
-                                                            new DataErrorAccountBank
-                                                            {
-                                                                sBanco = "Santander",
-                                                                sCuenta = payroll.sCuenta,
-                                                                sNomina = payroll.sNomina
-                                                            });
+                                                            new DataErrorAccountBank{ sBanco = "Santander", sCuenta = payroll.sCuenta, sNomina = payroll.sNomina });
                                                 }
                                                 consecutiveInit += 1;
 
@@ -768,17 +751,19 @@ namespace Payroll.Controllers
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 string importeG = "";
+                                                ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
+                                                ReportesDao reportDao = new ReportesDao();
                                                 if (renglon1481 > 0) {
-                                                    restaImporte = Convert.ToDecimal(payroll.sImporte) - Convert.ToDecimal(renglon1481);
-                                                    importeFinal = restaImporte;
-                                                    resultadoSuma += Convert.ToDouble(restaImporte);
-                                                    // ERROR AL MOMENTO DE AÑADIRLO añade ceros inecesarios
-                                                    importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    resultadoSuma += importe.decimalTotal;
+                                                    importeFinal   = importe.decimalTotalDispersion;
+                                                    importeG       = importeFinal.ToString();
                                                 } else {
-                                                    importeFinal = payroll.dImporte;
-                                                    resultadoSuma += payroll.doImporte;
-                                                    importeG = importeFinal.ToString();
+                                                    resultadoSuma += payroll.dImporte;
+                                                    importeFinal  = payroll.dImporte;
+                                                    importeG      = importeFinal.ToString();
                                                 }
+                                                decimal montotest = 782.40M;
                                                 // FIN CODIGO NUEVO
                                                 totalAmount += payroll.doImporte;
                                                 int longConsec = longc - consecutiveInit.ToString().Length;
@@ -804,7 +789,7 @@ namespace Payroll.Controllers
                                             }
                                         }
                                         if (bankResult == 14) {
-                                            string importetotal = resultadoSuma.ToString("#,##0.00").Replace(",","").Replace(".","");
+                                            string importetotal = resultadoSuma.ToString().Replace(",","").Replace(".","");
                                             int longTotGenerate = longTot - importetotal.ToString().Length;
                                             for (var j = 0; j < longTotGenerate; j++) { totGenerate += "0"; }
                                             int long1TotGenert = longc - (consecutiveInit + 1).ToString().Length;
@@ -822,7 +807,7 @@ namespace Payroll.Controllers
                                     }
                                 }
 
-                                // ARCHIVO DISPERSION BANORTE -> NOMINA -> OK
+                                // ARCHIVO TXT DISPERSION BANORTE -> NOMINA -> OK -> LISTO
 
                                 if (bankResult == 72) {
 
@@ -855,30 +840,22 @@ namespace Payroll.Controllers
                                     // FIN CODIGO NUEVO
                                     string importeTotalBanorte = "";
                                     // INICIO CODIGO NUEVO RESTA RENGLON 1481 
-                                    double sumaImporte = 0;
-                                    foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean)
-                                    {
+                                    decimal sumaImporte = 0;
+                                    ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
+                                    ReportesDao reportDao = new ReportesDao();
+                                    foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                         if (bankResult == payroll.iIdBanco) {
-                                            double restaImporte = 0;
                                             renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                     Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             if (renglon1481 > 0) {
-                                                restaImporte = payroll.doImporte - renglon1481; 
-                                                sumaImporte += restaImporte;
+                                                importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                sumaImporte += importe.decimalTotal;
                                             } else { 
-                                                sumaImporte += payroll.doImporte;
+                                                sumaImporte += payroll.dImporte;
                                             }
                                         }
                                     }
-                                    importeTotalBanorte = sumaImporte.ToString("#,##0.00");
-                                    //string test4 = importeTotalBanorte.Replace(",", "").Replace(".", "");
-                                    importeTotalBanorte = importeTotalBanorte.Replace(",", "").Replace(".", "");
-                                    //importeTotalBanorte = sumaImporte.ToString("0.##");
-                                    // FIN CODIGO NUEVO RESTA RENGLON 1481
-                                    //foreach (DatosDepositosBancariosBean deposits in listDatosDepositosBancariosBeans) {
-                                    //    if (deposits.iIdBanco == bankResult) { importeTotalBanorte = deposits.sImporte; break; }
-                                    //}
-                                    // - ENCABEZADO - \\ 
+                                    importeTotalBanorte = sumaImporte.ToString().Replace(",", "").Replace(".", ""); 
                                     string cerosImporteTotal      = "";
                                     string tipoRegistroBanorteE   = "H";
                                     string claveServicioBanorte   = "NE";
@@ -976,8 +953,8 @@ namespace Payroll.Controllers
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 if (renglon1481 > 0) {
-                                                    restaImporte = payroll.doImporte - renglon1481;
-                                                    importeFinal = restaImporte.ToString().Replace(".", "");
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    importeFinal = importe.decimalTotalDispersion.ToString();
                                                 } else {
                                                     importeFinal = payroll.dImporte.ToString();
                                                 }
@@ -1005,7 +982,7 @@ namespace Payroll.Controllers
                                     }
                                 }
 
-                                // ARCHIVO DISPERSION BANCOMER -> NOMINA
+                                // ARCHIVO TXT DISPERSION BANCOMER -> NOMINA OK -> LISTO
 
                                 if (bankResult == 12) {
 
@@ -1017,6 +994,8 @@ namespace Payroll.Controllers
                                     //System.IO.File.Copy(routeTXTBancomer, pathCompleteTXT, true);
                                     int totalRegistros = 0;
                                     string V = "";
+                                    ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
+                                    ReportesDao reportDao = new ReportesDao();
                                     using (StreamWriter fileBancomer = new StreamWriter(pathCompleteTXT, false, new ASCIIEncoding())) {
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             if (payroll.iIdBanco == bankResult) {
@@ -1027,9 +1006,8 @@ namespace Payroll.Controllers
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 if (renglon1481 > 0) {
-                                                    restaImporte = Convert.ToDecimal(payroll.sImporte) - Convert.ToDecimal(renglon1481);
-                                                    importeFinal = restaImporte;
-                                                    importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    importeFinal = importe.decimalTotalDispersion;
                                                 } else {
                                                     importeFinal = payroll.dImporte;
                                                     importeG = importeFinal.ToString();
@@ -1048,7 +1026,7 @@ namespace Payroll.Controllers
                                                     V = V.Substring(7, 10);         // FCH
                                                 sb1.Append(V);
                                                 sb1.Append(" ".PadLeft(10, ' '));
-                                                sb1.Append(string.Format("{0:000000000000000}", Convert.ToDecimal(importeG)));
+                                                sb1.Append(string.Format("{0:000000000000000}", importeFinal));
                                                 V = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno.Trim();
                                                 if (V.Length < 38)
                                                     V = V.PadRight(38, ' ');
@@ -1091,7 +1069,8 @@ namespace Payroll.Controllers
                                 pr.Alignment = Element.ALIGN_CENTER;
                                 doc.Add(pr);
                                 doc.Add(Chunk.NEWLINE);
-                                
+                                ListRenglonesGruposRestas importePDF = new ListRenglonesGruposRestas();
+                                ReportesDao reportDaoPDF = new ReportesDao();
                                 PdfPTable tblPrueba = new PdfPTable(4);
                                 tblPrueba.WidthPercentage = 100;
                                 PdfPCell clCtaCheques = new PdfPCell(new Phrase("Cta. Cheques", _standardFont));
@@ -1125,8 +1104,8 @@ namespace Payroll.Controllers
                                         renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         if (renglon1481 > 0) {
-                                            restaImporte = payroll.doImporte - renglon1481;
-                                            importeFinal = restaImporte;
+                                            importePDF = reportDaoPDF.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importeFinal = importePDF.dTotal;
                                         } else {
                                             importeFinal = payroll.doImporte;
                                         }
@@ -2081,49 +2060,35 @@ namespace Payroll.Controllers
                                     }
 
                                     // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                    decimal restaImporte = 0;
-                                    decimal importeFinal = 0;
-                                    string importeG = "";
+                                    double importeT = 0;
+                                    ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
+                                    ReportesDao reportDao = new ReportesDao();
+                                    double restaImporte = 0;
+                                    string importeFinal = "";
                                     renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0)
                                     {
-                                        restaImporte = Convert.ToDecimal(bank.sImporte) - Convert.ToDecimal(renglon1481);
-                                        importeFinal = restaImporte;
-                                        importeG = Convert.ToDouble(importeFinal).ToString("#,##0.00").Replace(",", "").Replace(".", "");
-                                    } else {
-                                        importeFinal = bank.dImporte;
-                                        importeG = importeFinal.ToString();
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importeFinal = importe.decimalTotalDispersion.ToString();
                                     }
-                                     
-
+                                    else
+                                    {
+                                        importeFinal = bank.dImporte.ToString();
+                                    }
                                     // FIN CODIGO NUEVO
 
-                                    // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                    //double restaImporte = 0;
-                                    //string importeFinal = "";
-                                    //renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
-                                    //        Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                    //if (renglon1481 > 0)
-                                    //{
-                                    //    restaImporte = bank.doImporte - renglon1481;
-                                    //    importeFinal = restaImporte.ToString().Replace(".", "");
-                                    //}
-                                    //else
-                                    //{
-                                    //    importeFinal = bank.dImporte.ToString();
-                                    //}
-                                    //// FIN CODIGO NUEVO
+                                     
                                     string clave = bank.sCodigo;
                                     int longNomEmpIntSantanderResult = longNomEmpIntSan - nombreEmpIntSantander.Length;
                                     //int longImpIntSantanderResult = longImpIntSan - bank.dImporte.ToString().Length;
-                                    int longImpIntSantanderResult = longImpIntSan - importeG.ToString().Length;
+                                    int longImpIntSantanderResult = longImpIntSan - importeFinal.ToString().Length;
                                     int longConIntSantanderResult = longConIntSan - consecutivoIntSantanderD1.ToString().Length;
                                     for (var b = 0; b < longNomEmpIntSantanderResult; b++) { espaciosNomEmpIntSantander += " "; }
                                     for (var t = 0; t < longImpIntSantanderResult; t++) { cerosImpIntSantander += "0"; }
                                     for (var p = 0; p < longConIntSantanderResult; p++) { cerosConIntSantander += "0"; }
                                     // bank.dImporte
-                                    fileIntSantander.Write(numCuentaEmpresaSantanderD + fillerIntSantanderD1 + bank.sCuenta + fillerIntSantanderD2 + clave + nombreEmpIntSantander + espaciosNomEmpIntSantander + sucursalIntSantanderD1 + cerosImpIntSantander + importeG + plazaIntSantanderD1 + campoFijoIntSantanderD1 + fillerIntSantanderD3 + cerosConIntSantander + consecutivoIntSantanderD1.ToString() + "\n");
+                                    fileIntSantander.Write(numCuentaEmpresaSantanderD + fillerIntSantanderD1 + bank.sCuenta + fillerIntSantanderD2 + clave + nombreEmpIntSantander + espaciosNomEmpIntSantander + sucursalIntSantanderD1 + cerosImpIntSantander + importeFinal + plazaIntSantanderD1 + campoFijoIntSantanderD1 + fillerIntSantanderD3 + cerosConIntSantander + consecutivoIntSantanderD1.ToString() + "\n");
                                     espaciosNomEmpIntSantander = "";
                                     cerosImpIntSantander = "";
                                     cerosConIntSantander = "";
@@ -2246,18 +2211,20 @@ namespace Payroll.Controllers
                                     }
                                     consecutivoIntScotiabankD1 += 1;
                                     totalMoviIntScotiabank += 1;
+
                                     // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
+                                    double importeT = 0;
+                                    ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
+                                    ReportesDao reportDao = new ReportesDao();
                                     double restaImporte = 0;
                                     string importeFinal = "";
                                     renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0) {
-                                        restaImporte = bank.doImporte - renglon1481;
-                                        importeFinal = restaImporte.ToString().Replace(".", "");
-                                        resultadoSuma += restaImporte;
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importeFinal = importe.decimalTotalDispersion.ToString();
                                     } else {
                                         importeFinal = bank.dImporte.ToString();
-                                        resultadoSuma += bank.doImporte;
                                     }
                                     // FIN CODIGO NUEVO
                                     //importeTotalIntScotiabank += Convert.ToInt32(bank.dImporte);
@@ -2300,36 +2267,38 @@ namespace Payroll.Controllers
                         }
 
 
-                        // BANORTE -> INTERBANCARIO -> OK
+                        // BANORTE -> INTERBANCARIO -> OK -> LISTO
                         if (bankInterbank == 72)
                         {
+                            // LONGITUDES \\
+                            int longitudOperacion     = 2;
+                            int longitudClaveId       = 12;
+                            int longitudCuentaOrigen  = 20;
+                            int longitudCuentaDestino = 20;
 
                             string tipoOperacion = "04";
                             string cuentaOrigen = "";
                             string cuentaDestino = "";
                             string apartCeros1 = "00000000000";
+                            string fillerCuentaOrigen = "";
+                            string fillerCuentaDestino = "";
                             string apartCeros2 = "0";
                             string apartCeros3 = "00";
                             string referenceDate = DateTime.Now.ToString("ddMMyyyy");
-                            if (dateDisC != "")
-                            {
+                            if (dateDisC != "") {
                                 referenceDate = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
                             }
                             string descriptionPd = "PAGO NOMINA                   ";
-                            if (tipPago == 2)
-                            {
+                            if (tipPago == 2) {
                                 descriptionPd = "HONORARIOS                    ";
                             }
                             string coinOrigin = "1";
                             string coingDestiny = "1";
                             string ivaBanorte = "00000000000000";
                             string emailBusiness = "";
-                            if (keyBusiness == 2074)
-                            {
+                            if (keyBusiness == 2074) {
                                 emailBusiness = "asesoresimpasrh@gmail.com              ";
-                            }
-                            else
-                            {
+                            } else {
                                 emailBusiness = "dgarcia@gruposeri.com                  ";
                             }
                             // Longitudes campos
@@ -2343,43 +2312,58 @@ namespace Payroll.Controllers
                             {
                                 foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean)
                                 {
+                                    fillerCuentaOrigen = "";
                                     string nameEmployee = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
                                     if (nameEmployee.Length > 70) {
                                         nameEmployee.Substring(0, 69);
                                     }
+                                    // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
+                                    double importeT = 0;
+                                    ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
+                                    ReportesDao reportDao = new ReportesDao();
+                                    double restaImporte = 0;
+                                    string importeFinal = "";
+                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                            Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                    if (renglon1481 > 0) {
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importeFinal = importe.decimalTotalDispersion.ToString();
+                                    } else {
+                                        importeFinal = data.dImporte.ToString();
+                                    } 
+                                    // FIN CODIGO NUEVO
                                     string payroll = data.sNomina;
                                     int longPayroll = longNumberPayroll - payroll.Length;
                                     string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
                                     string accountDestiny = data.sCuenta;
-                                    if (accountDestiny.Length == 16)
-                                    {
+                                    int resultadoFillerCuentaOrigen = longitudCuentaOrigen - accountOrigin.Length;
+                                    for (var y = 0; y < resultadoFillerCuentaOrigen; y++) {
+                                        fillerCuentaOrigen += "0";
+                                    }
+                                    if (accountDestiny.Length == 16) {
                                         accountDestiny = "00" + accountDestiny;
                                     }
                                     string importPaid = "";
-                                    int longImportPaid = longNumberImport - data.dImporte.ToString().Length;
+                                    int longImportPaid = longNumberImport - importeFinal.ToString().Length;
                                     string rfcBusiness = datosEmpresaBeanDispersion.sRfc;
                                     int longRfcBusiness = longNumberBRfc - rfcBusiness.Length;
                                     int longEmailBusiness = longNumberEmail - emailBusiness.Length;
-                                    for (var i = 0; i < longPayroll; i++)
-                                    {
+                                    for (var i = 0; i < longPayroll; i++) {
                                         payroll += " ";
                                     }
-                                    for (var j = 0; j < longAcountOrigin; j++)
-                                    {
-                                        accountOrigin += "0";
-                                    }
-                                    for (var k = 0; k < longImportPaid; k++)
-                                    {
+                                    //for (var j = 0; j < longAcountOrigin; j++) {
+                                    //    accountOrigin += "0";
+                                    //}
+                                    for (var k = 0; k < longImportPaid; k++) {
                                         importPaid += "0";
                                     }
-                                    for (var p = 0; p < longRfcBusiness; p++)
-                                    {
+                                    for (var p = 0; p < longRfcBusiness; p++) {
                                         rfcBusiness += " ";
                                     }
-                                    importPaid += data.dImporte.ToString();
+                                    importPaid += importeFinal.ToString();
                                     string fillerFinal = "";
-                                    string cadenaFinal = "";
+                                    string cadenaFinal = "";                                    
                                     // QUINCENALES CRISTINA 158 , 159
                                     if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159)
                                     {
@@ -2387,7 +2371,7 @@ namespace Payroll.Controllers
                                     }
                                     else
                                     {
-                                        cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
+                                        cadenaFinal = tipoOperacion + payroll + fillerCuentaOrigen + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
                                     }
                                     int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
                                     for (var x = 0; x < longFinalFiller; x++)
@@ -2400,7 +2384,7 @@ namespace Payroll.Controllers
                                     }
                                     else
                                     {
-                                        fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
+                                        fileIntBanorte.Write(tipoOperacion + payroll + fillerCuentaOrigen + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
                                     }
                                 }
                                 fileIntBanorte.Close();
