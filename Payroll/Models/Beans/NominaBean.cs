@@ -459,4 +459,18 @@ namespace Payroll.Models.Beans
         public string sMensaje { get; set; }
 
     }
+
+    public class TsellosBean {
+        public int iEmpresaId { get; set; }
+        public int iEmpleadoId { get; set; }
+        public int iAnio { get; set; }
+        public int iPeriodo { get; set; }
+        public int iTipoPeriodo { get; set; }
+        public int iRecibo { get; set; }
+        public string sURreciboSimple { get; set; }
+        public string sURreciboFiscal { get; set; }
+        public string sMensaje { get; set; }
+
+
+    }
 }

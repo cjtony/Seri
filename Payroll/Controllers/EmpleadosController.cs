@@ -3056,8 +3056,16 @@ namespace Payroll.Controllers
                                             
                                             string[] dias = Dias.Split(':');
                                             Palabra = dias[0].ToString();
-                                            Dias = dias[1].ToString();
-                                            Dias = Dias.Replace("}", "");
+                                            int numero = dias.Length;
+                                            if (dias.Length > 1)
+                                            {
+                                                Dias = dias[1].ToString();
+                                                Dias = Dias.Replace("}", "");
+                                            }
+                                            else {
+                                                Dias = "0";
+                                            }
+                                            
                                            
                                         }
                                         else
@@ -3905,6 +3913,16 @@ namespace Payroll.Controllers
             LSelloSat = Dao.sp_EjectadosAndSend_Retrieve_TSelloSat(iIdEmpre, Anio, Tipoperiodo, Perido, 1, 0, 0, iRecibo);
 
             return Json(LSelloSat);
+        }
+
+        // consulta archivo recibo en la tabla TsellosSat;
+        [HttpPost]
+        public JsonResult FileRecibos(int Anio, int Tipoperiodo, int Perido, int iRecibo, int IdEmpresas,int EmpleId)
+        {
+            List<TsellosBean> Archi = new List<TsellosBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            Archi = Dao.sp_Recibos_Retrieve_TsellosSat(IdEmpresas, EmpleId, Anio, Tipoperiodo, Perido,iRecibo);
+            return Json(Archi);
         }
 
 

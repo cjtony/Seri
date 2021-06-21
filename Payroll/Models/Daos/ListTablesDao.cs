@@ -1614,7 +1614,7 @@ namespace Payroll.Models.Daos
                                             {
                                                 if (LisTRecibo[0].iIdRenglon == 1)
                                                 {
-                                                    if (LisTRecibo[0].sNombre_Renglon.Length > 28)
+                                                    if (LisTRecibo[0].sNombre_Renglon.Length > 25)
                                                     {
                                                         string[] dias = Dias.Split(':');
                                                         Dias = dias[1].ToString();
@@ -3190,6 +3190,80 @@ namespace Payroll.Models.Daos
             }
             return list;
         }
+
+        // sp de Archivo TRecibosSat
+        public List<TsellosBean> sp_Recibos_Retrieve_TsellosSat(int CtrliIdempresa, int EmpleadoID, int CtrliAnio, int CtrliTipoPeriodo, int CtrliPeriodo,int CtrliRecibo)
+        {
+            List<TsellosBean> bean = new List<TsellosBean>();
+
+            try
+            {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Recibos_Retrieve_TsellosSat", this.conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add(new SqlParameter("@CtrliEmpresa", CtrliIdempresa));
+                cmd.Parameters.Add(new SqlParameter("@CtrliEmple", EmpleadoID));
+                cmd.Parameters.Add(new SqlParameter("@CtrliAnio", CtrliAnio));
+                cmd.Parameters.Add(new SqlParameter("@CtrliTipoPerio", CtrliTipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliPeriodo", CtrliPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@CtrliRecibo", CtrliRecibo));
+
+                SqlDataReader data = cmd.ExecuteReader();
+                cmd.Dispose();
+                if (data.HasRows)
+                {
+                    while (data.Read())
+                    {
+                        TsellosBean LP = new TsellosBean();
+                        {
+
+
+                            LP.sMensaje = "Succes";
+                            if (data["Recibo_Simple"].ToString() == ""|| data["Recibo_Simple"].ToString() == " " || data["Recibo_Simple"].ToString() == null)   
+                            {
+                                LP.sMensaje = "NoDat";
+                            }
+                            if (data["Recibo_Simple"].ToString() != "" || data["Recibo_Simple"].ToString() != " " || data["Recibo_Simple"].ToString() != null)
+                            {
+                                LP.sURreciboSimple = data["Recibo_Simple"].ToString();
+                            }
+                            if (data["Recibo_Fiscal"].ToString() == "" || data["Recibo_Fiscal"].ToString() == " " || data["Recibo_Fiscal"].ToString() == null)
+                            {
+                                LP.sMensaje = "NoDat";
+                            }
+                            if (data["Recibo_Fiscal"].ToString() != "" || data["Recibo_Fiscal"].ToString() != " " || data["Recibo_Fiscal"].ToString() != null)
+                            {
+                                LP.sURreciboFiscal = data["Recibo_Fiscal"].ToString();
+                            }
+
+
+                        };
+
+                        bean.Add(LP);
+                    }
+                }
+                else
+                {
+                    TsellosBean LP = new TsellosBean();
+                    {
+
+                        LP.sMensaje = "NoDat";
+
+                    };
+
+                    bean.Add(LP);
+                };
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
+
+            return bean;
+        }
+
 
 
     }
