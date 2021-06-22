@@ -13,7 +13,7 @@ namespace Payroll.Models.Daos
     public class LayoutsDao : Conexion
     {
 
-        public LayoutSalarioMasivoBean sp_Actualiza_Salario_Carga_Masiva(int IdEmpresa, int IdEmpleado, int TipoMovimiento, double Salario, string FechaMovimiento, int UsuarioId, int PeriodoId, int Periodo, int Anio)
+        public LayoutSalarioMasivoBean sp_Actualiza_Salario_Carga_Masiva(int IdEmpresa, int IdEmpleado, int TipoMovimiento, string Salario, string FechaMovimiento, int UsuarioId, int PeriodoId, int Periodo, int Anio)
         {
             LayoutSalarioMasivoBean bean = new LayoutSalarioMasivoBean();
             bean.iBandera1 = 0;

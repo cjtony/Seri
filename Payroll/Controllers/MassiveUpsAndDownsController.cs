@@ -272,7 +272,7 @@ namespace Payroll.Controllers
                                         int empresa = Convert.ToInt32(dr[3].ToString().Trim());
                                         int nomina = Convert.ToInt32(dr[4].ToString().Trim());
                                         int movimiento = Convert.ToInt32(dr[5].ToString().Trim());
-                                        double sueldo = Convert.ToDouble(dr[6].ToString().Trim());
+                                        string sueldo =  dr[6].ToString().Trim().Replace(",","");
                                         string fechaMovimiento = Convert.ToDateTime(dr[7].ToString().Trim()).ToString("dd/MM/yyyy");
                                         int usuarioId = Convert.ToInt32(Session["iIdUsuario"].ToString().Trim());
                                         LayoutsDao layouts = new LayoutsDao();
