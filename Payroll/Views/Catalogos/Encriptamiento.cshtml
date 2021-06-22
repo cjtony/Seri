@@ -1,0 +1,29 @@
+﻿<div class="col-md-10 border-right-primary border-left-primary row justify-content-around ml-auto mr-auto rounded pb-2 bg-white">
+    <div class="col-md-12 h2 text-center pt-3 pb-2">Pruebas de encriptamiento</div>
+
+    <div class="col-md-6 bg-gradient-light text-dark rounded p-2 mb-4">
+        <form id="frm_encrypt">
+            <div class="h5 pt-1">TEXTO SIN ENCRIPTAR</div>
+            <textarea class="form-control" rows="4" id="txt_to_encrypt" required></textarea>
+        </form>
+        
+    </div>
+    <div class="btn btn-danger btn-sm mt-auto mb-auto" id="btn_encrypt" onclick="encrypt();">Encrypt</div>
+    <div class="col-md-5 bg-gradient-secondary text-white rounded p-2 mb-4">
+        <div class="h5 pt-1">TEXTO ENCRIPTADO</div>
+        <textarea class="form-control" rows="4" id="txt_encrypted"></textarea>
+    </div>
+    <div class="col-md-5 bg-gradient-secondary text-white rounded p-2 mb-4">
+        <form id="frm_dencrypt">
+            <div class="h5 pt-1">TEXTO ENCRIPTADO</div>
+            <textarea class="form-control" rows="4" id="txt_to_decrypt" required></textarea>
+        </form>
+        
+    </div>
+    <div class="btn btn-danger btn-sm mt-auto mb-auto" id="btn_dencrypt" onclick="decrypt();">Decrypt</div>
+    <div class="col-md-6 bg-gradient-light text-dark rounded p-2 mb-4">
+        <div class="h5 pt-1">TEXTO SIN ENCRIPTAR</div>
+        <textarea class="form-control" rows="4" id="txt_decrypted"></textarea>
+    </div>
+</div>
+<script src="~/Scripts/Catalogos/Encrytpter.js?n=0.5"></script>

@@ -64,11 +64,11 @@
             form.classList.add("was-validated");
         } else {
             evt.preventDefault();
-                ndias = dias.value;
-                fechafin = "0";
-                fechaini = document.getElementById("inFechaAusentismo").value;
-                tipo = 0;
-            
+            ndias = dias.value;
+            fechafin = "0";
+            fechaini = document.getElementById("inFechaAusentismo").value;
+            tipo = 0;
+
             if (certif.value.length != 0) { cer_imss = certif.value } else { cer_imss = "0" }
             if (coment.value.length != 0) { com_imss = coment.value } else { com_imss = "0" }
             if (causa.value.length != 0) { cau_falta = causa.value } else { cau_falta = "0" }
@@ -179,14 +179,14 @@
         if (form.checkValidity() === false) {
 
             form.classList.add("was-validated");
-            
+
         } else {
-                ndias = dias.value;
-                fechafin = "0";
-                Fechaini = fechaa.value;
-                tipo = 0;
-                sdias = saldodias.value;
-            
+            ndias = dias.value;
+            fechafin = "0";
+            Fechaini = fechaa.value;
+            tipo = 0;
+            sdias = saldodias.value;
+
             if (certif.value.length != 0) { cer_imss = certif.value } else { cer_imss = "0" }
             if (coment.value.length != 0) { com_imss = coment.value } else { com_imss = "0" }
             if (causa.value.length != 0) { cau_falta = causa.value } else { cau_falta = "0" }
@@ -234,7 +234,7 @@
                         $("#btnClear").addClass("invisible");
                         $("#btnUpdate").addClass("invisible");
                         saldodias.disabled = true;
-                        
+
                     }
 
                 }
@@ -301,7 +301,7 @@
                         "<td>" + data[i]["RecuperaAusentismo"] + "</td>" +
                         "<td>" + data[i]["Causa_FaltaInjustificada"] + "</td>" +
                         "<td>" + data[i]["Certificado_imss"] + "</td>" +
-                        
+
                         "<td>" +
                         "<a class='badge btn badge-info btn-editar-ausentismo text-white mx-1' title='Editar Ausentismo' onclick='editarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-pencil-alt'></i></div>" +
                         "<a class='badge btn badge-danger btn-sm btn-eliminar-ausentismo text-white mx-1' title='Eliminar Ausentismo' onclick='eliminarAusentismo( " + data[i]["IdAusentismo"] + " );'><i class='fas fa-minus'></i></div>" +
@@ -382,14 +382,14 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                
+
                 fechaa.value = data[0].Fecha_Ausentismo.substring(6, 10) + "-" + data[0].Fecha_Ausentismo.substring(3, 5) + "-" + data[0].Fecha_Ausentismo.substring(0, 2);
                 dias.value = data[0].Dias_Ausentismo;
                 saldodias.disabled = false;
                 saldodias.value = data[0].Saldo_Dias_Ausentismo;
                 causa.value = data[0].Causa_FaltaInjustificada;
                 $('#inIncidenciaProgramada_id').val(data[0].IncidenciaProgramada_id);
-                
+
                 $("#inRecuperacionAusentismo option[value='" + data[0].RecuperaAusentismo + "']").attr("selected", true);
 
                 if (data[0].Certificado_imss.length != 0) {
@@ -462,4 +462,61 @@
             }
         });
     }
+
+    $("#inCertificadoAusentismo").keyup(function () {
+        var certificado = $("#inCertificadoAusentismo").val();
+        _certificado_patern = "^([A-Z]{2})([0-9]{6})$";
+        if ($("#inCertificadoAusentismo").val().length === 8) {
+            if (certificado.match(_certificado_patern)) {
+                $.ajax({
+                    url: "../Incidencias/ValidaCertificado",
+                    type: "POST",
+                    data: JSON.stringify({
+                        Certificado: $("#inCertificadoAusentismo").val()
+                    }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: (data) => {
+                        if (data["iFlag"] == "0" || data["iFlag"] == 0) {
+                            $("#inCertificadoAusentismo").removeClass("is-invalid");
+                            $("#inCertificadoAusentismo").addClass("is-valid");
+                            $("#vcertificado").html(data["sRespuesta"]);
+                            $("#vcertificado").removeClass("invalid-feedback");
+                            $("#vcertificado").addClass("valid-feedback");
+                        } else {
+                            $("#inCertificadoAusentismo").removeClass("is-valid");
+                            $("#inCertificadoAusentismo").addClass("is-invalid");
+                            $("#vcertificado").html(data["sRespuesta"]);
+                            $("#vcertificado").removeClass("valid-feedback");
+                            $("#vcertificado").addClass("invalid-feedback");
+                        }
+                    }
+                });
+            } else {
+                $("#inCertificadoAusentismo").removeClass("is-valid");
+                $("#inCertificadoAusentismo").addClass("is-invalid");
+                $("#vcertificado").html("Formato de Certificado INCORRECTO!");
+                $("#vcertificado").removeClass("valid-feedback");
+                $("#vcertificado").addClass("invalid-feedback");
+            }
+        } else if ($("#inCertificadoAusentismo").val().length > 8) {
+            $("#inCertificadoAusentismo").removeClass("is-valid");
+            $("#inCertificadoAusentismo").addClass("is-invalid");
+            $("#vcertificado").html("Tamaño maximo del certificado = 8");
+            $("#vcertificado").removeClass("valid-feedback");
+            $("#vcertificado").addClass("invalid-feedback");
+        } else if ($("#inCertificadoAusentismo").val().length == 0) {
+            $("#inCertificadoAusentismo").removeClass("is-valid");
+            $("#inCertificadoAusentismo").removeClass("is-invalid");
+            $("#vcertificado").html("");
+            $("#vcertificado").removeClass("invalid-feedback");
+            $("#vcertificado").removeClass("valid-feedback");
+        } else {
+            $("#inCertificadoAusentismo").removeClass("is-valid");
+            $("#inCertificadoAusentismo").addClass("is-invalid");
+            $("#vcertificado").html("Tamaño minimo del certificado = 8");
+            $("#vcertificado").removeClass("valid-feedback");
+            $("#vcertificado").addClass("invalid-feedback");
+        }
+    });
 });

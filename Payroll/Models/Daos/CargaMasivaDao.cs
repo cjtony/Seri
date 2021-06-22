@@ -331,6 +331,30 @@ namespace Payroll.Models.Daos
 
             return value;
         }
+        public ReturnBean ValidaCertificado(string Certificado) {
+            ReturnBean Bean = new ReturnBean();
+            this.Conectar();
+            SqlCommand cmd = new SqlCommand("sp_Valida_CM_CertificadoIMSS", this.conexion)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add(new SqlParameter("@ctrlCertificado", Certificado));
+            SqlDataReader data = cmd.ExecuteReader();
+            cmd.Dispose();
+
+            if (data.HasRows)
+            {
+                while (data.Read())
+                {
+                    Bean.iFlag = int.Parse(data["iFlag"].ToString());
+                    Bean.sRespuesta = data["sRespuesta"].ToString();
+                }
+            }
+            data.Close();
+            this.conexion.Close(); this.Conectar().Close();
+
+            return Bean;
+        }
         public ReturnBean Valida_Periodo_Especial_Existe(string Empresa_id, string Periodo_especial)
         {
             ReturnBean Bean = new ReturnBean();

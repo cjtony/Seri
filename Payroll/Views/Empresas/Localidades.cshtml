@@ -25,26 +25,26 @@
         </div>
         <div class="col-md-12 form-group rounded border-left-primary border-right-primary">
             <form id="frmLocalidades" name="frmLocalidades" class=" bg-light p-4 rounded">
-                <div id="lbltitlelocalidades" class="font-weight-bold pt-1 col-md-12 text-center">Nuevo</div>
+                <div id="lbltitlelocalidades" class="font-weight-bold h5 col-md-12 text-center">Nuevo</div>
                 <div class="dropdown-divider pb-2"></div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="inDescLocalidad">Descripcion</label>
-                        <input class="form-control" type="text" name="inDescLocalidad" id="inDescLocalidad" required>
+                        <label for="inDescLocalidad">Descripción</label>
+                        <input class="form-control form-control-sm" type="text" name="inDescLocalidad" id="inDescLocalidad" required>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
                         <label for="inTazaIvaLocalidad">Tasa IVA</label>
-                        <input class="form-control" type="text" name="inTazaIvaLocalidad" id="inTazaIvaLocalidad" maxlength="5" onkeypress="return filterFloat(event,this);" value="0.16" required>
+                        <input class="form-control form-control-sm" type="text" name="inTazaIvaLocalidad" id="inTazaIvaLocalidad" maxlength="5" onkeypress="return filterFloat(event,this);" value="0.16" required>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inAfiliacionImssLocalidad">Afiliacion IMSS</label>
-                        <select class="custom-select font-labels" name="inAfImssLocalidad" id="inAfImssLocalidad" required>
+                    <div class="form-group col-md-3">
+                        <label for="inAfiliacionImssLocalidad">Afiliación IMSS</label>
+                        <select class="custom-select custom-select-sm font-labels" name="inAfImssLocalidad" id="inAfImssLocalidad" required>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label class="col-md-12" for="inZonaImpLocalidad">Sucursal</label>
                         <div class="input-group md-3">
-                            <select class="form-control font-labels custom-select" name="inZoInLocalidad" id="inZoInLocalidad" required></select>
+                            <select class="font-labels custom-select custom-select-sm" name="inZoInLocalidad" id="inZoInLocalidad" required></select>
                             <div class="input-group-append">
                                 <div class="btn btn-secondary btn-sm btn-icon-split" id="btnbuscarsucursal">
                                     <span class="icon"><i class="fas fa-search"></i></span>
@@ -56,7 +56,7 @@
                     <div class="form-group col-md-6">
                         <label class="col-md-12" for="inRegionalLocalidad">Regional</label>
                         <div class="input-group  md-3">
-                            <select class="custom-select font-labels" name="inRegLocalidad" id="inRegLocalidad" required></select>
+                            <select class="custom-select font-labels custom-select-sm" name="inRegLocalidad" id="inRegLocalidad" required></select>
                             <div class="input-group-append">
                                 <div class="btn btn-secondary btn-sm btn-icon-split" id="btnagregarnewregional">
                                     <span class="icon"><i class="fas fa-plus"></i></span>
@@ -67,11 +67,11 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inZonaEcoLocalidad">Zona Economica</label>
-                        <select class="custom-select font-labels" name="inZoEcLocalidad" id="inZoEcLocalidad" required></select>
+                        <select class="custom-select font-labels custom-select-sm" name="inZoEcLocalidad" id="inZoEcLocalidad" required></select>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inEstadoLocalidad">Estado</label>
-                        <select class="form-control font-labels custom-select" name="inEstLocalidad" id="inEstLocalidad" required></select>
+                        <select class="font-labels custom-select custom-select-sm" name="inEstLocalidad" id="inEstLocalidad" required></select>
                     </div>
                     <div class="form-group col-md-6">
                         <label class="invisible col-md-12">sr-only</label>

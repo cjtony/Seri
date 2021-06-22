@@ -397,7 +397,7 @@ namespace Payroll.Controllers
                         if (int.Parse(table.Rows[i]["Periodo_especial"].ToString()) == 1) // CAMBIO DEL PERIODO NORMAL POR EL PERIODO ESPECIAL MENOR DISPONIBLE
                         {
                             var resultvRenglonEspecial = Dao.Valida_Periodo_Especial_Existe(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Periodo_especial"].ToString());
-                            if (resultvRenglonEspecial.iFlag == 0) { ResutLog.Add(errorh + (i + 1) + "," + resultvRenglonEspecial.sRespuesta ); }
+                            if (resultvRenglonEspecial.iFlag == 0) { ResutLog.Add(errorh + (i + 1) + "," + resultvRenglonEspecial.sRespuesta); }
                         }
                     }
 
@@ -444,6 +444,9 @@ namespace Payroll.Controllers
 
                         var resultvEmpleado = Dao.Valida_Empleado(table.Rows[i]["Empresa_id"].ToString(), table.Rows[i]["Empleado_id"].ToString());
                         if (resultvEmpleado == 0) { ResutLog.Add(errorh + (i + 1) + ", El empleado " + table.Rows[i]["Empleado_id"].ToString() + " no existe"); }
+                        
+                        var resultvCertificado = Dao.ValidaCertificado(table.Rows[i]["Certificado IMSS"].ToString());
+                        if (resultvCertificado.iFlag == 1) { ResutLog.Add(errorh + (i + 1) + ", El folio del certificado " + table.Rows[i]["Certificado IMSS"].ToString() + " ya existe"); }
 
                     }
                     if (ResutLog.Count == 0)
@@ -632,20 +635,26 @@ namespace Payroll.Controllers
             return Json(lista);
         }
         [HttpPost]
-        public JsonResult CancelaCargaMasiva(string tabla, string referencia) 
+        public JsonResult CancelaCargaMasiva(string tabla, string referencia)
         {
             List<string> lista = new List<string>();
             CargaMasivaDao Dao = new CargaMasivaDao();
-            lista = Dao.sp_Cancela_CargaMasiva(tabla,referencia);
+            lista = Dao.sp_Cancela_CargaMasiva(tabla, referencia);
             return Json(lista);
         }
         [HttpPost]
-        public JsonResult LoadPension(int Pension_id) 
+        public JsonResult LoadPension(int Pension_id)
         {
             List<PensionesAlimentariasBean> lista = new List<PensionesAlimentariasBean>();
             pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
             lista = Dao.sp_TPensiones_Alimenticias_retrieve_pension(Pension_id);
             return Json(lista);
+        }
+        [HttpPost]
+        public JsonResult ValidaCertificado(string Certificado) {
+            CargaMasivaDao Dao = new CargaMasivaDao();
+            ReturnBean bean = Dao.ValidaCertificado(Certificado);
+            return Json(bean);
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Payroll.Controllers
             Session["Profile"] = usuBean.iPerfil;
             return Json(usuBean);
         }
+        
         public ActionResult Logout()
         {
             Console.WriteLine("---------numero de variables----------");
@@ -47,6 +48,12 @@ namespace Payroll.Controllers
             Session.Abandon();
             return Redirect("../Home/Index");
         }
-
+        [HttpPost]
+        public JsonResult changePassword(string username, string password)
+        {
+            UsuariosDao Dao = new UsuariosDao();
+            List<string> list = Dao.sp_CUsuarios_chagePassword(int.Parse(Session["iIdUsuario"].ToString()), username, password);
+            return Json(list);
+        }
     }
 }
