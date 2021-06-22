@@ -429,8 +429,9 @@ namespace Payroll.Controllers
                                 if (dateDisC != "") {
                                     dateGenerationFormat = Convert.ToDateTime(dateDisC.ToString()).ToString("MMddyyyy");
                                 }
+                                Random random = new Random();
                                 //-----------
-                                string nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2);
+                                string nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2) + "CD" + random.Next(1, 100000).ToString() + "U" + Session["iIdUsuario"].ToString();
                                 //-----------
                                 fileNamePDF  = "CHQ_NOMINAS_E" + keyBusiness.ToString() + "A" + string.Format("{0:00}", (yearPeriod % 100)) + "P" + string.Format("{0:00}", numberPeriod) + "_B" + bankResult.ToString() + ".PDF";
                                 string directoryTxt = Server.MapPath("/DispersionTXT/" + DateTime.Now.Year.ToString()).ToString() + "/NOMINAS/";
@@ -461,7 +462,11 @@ namespace Payroll.Controllers
                                     } else {
                                         nombreEmpresaBanamex = nameBusiness;
                                     }
-                                    string valorFijoBanamex1 = "CNOMINA";
+                                    int recorrido = 36 - nombreEmpresaBanamex.Length;
+                                    for (var c = 0; c < recorrido; c++) {
+                                        nombreEmpresaBanamex += " ";
+                                    }
+                                    string valorFijoBanamex1 = "NOMINA";
                                     string fillerBanamexE1 = " ";
                                     string fechaBanamexE1 = dateC.ToString("ddMMyyyy") + "     ";
                                     string valorFijoBanamex2 = "05";
@@ -494,7 +499,7 @@ namespace Payroll.Controllers
                                     string monedaBanamexG       = "001"; 
                                     string tipoCuentaBanamexG   = "01";
                                     // PENDIENTE SUCURSAL
-                                    string sucursalBanamexG     = "7009";
+                                    string sucursalBanamexG     = datoCuentaClienteBancoEmpresaBean.iPlaza.ToString();
                                     string valorFijoBanamexG1   = "0000000000000"; 
                                     string numeroCuentaBanamex  = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     string generaCImporteTBG    = "";

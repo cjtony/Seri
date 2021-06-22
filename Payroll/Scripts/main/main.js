@@ -164,6 +164,7 @@
     const transporte = document.getElementById('transporte');
     const retroactivo = document.getElementById('retroactivo');
     const conFondo = document.getElementById('con_fondo');
+    const conPrestaciones = document.getElementById('con_prestaciones');
     const categoriaEmp = document.getElementById('categoria_emp');
     const pagoPorEmple = document.getElementById('pago_por');
     const btnsaveeditdatanomina = document.getElementById('btn-save-edit-data-nomina');
@@ -174,6 +175,7 @@
     fclearfieldsvar3 = () => {
         retroactivo.checked = 0;
         conFondo.checked = 0;
+        conPrestaciones.checked = 0;
         for (let i = 0; i < vardatanomina.length; i++) {
             if (vardatanomina[i].getAttribute('tp-select') != null) {
                 if (vardatanomina[i].id == 'tipper') {
