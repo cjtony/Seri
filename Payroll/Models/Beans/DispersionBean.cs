@@ -127,6 +127,7 @@
 
     public class DatosProcesaChequesNominaBean
     {
+        public int iCodigoTXT { get; set; }
         public string sCodigo { get; set; }
         public int iIdBanco { get; set; }
         public string sBanco { get; set; }
