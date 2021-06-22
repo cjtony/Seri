@@ -13,5 +13,9 @@ namespace Payroll.Controllers
         {
             return PartialView();
         }
+        public PartialViewResult Autorizadores()
+        {
+            return PartialView();
+        }
     }
 }

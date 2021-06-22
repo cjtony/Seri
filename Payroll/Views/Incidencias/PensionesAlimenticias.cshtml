@@ -1,81 +1,81 @@
 ﻿<div class="container bg-white pb-3 rounded font-labels">
     <div class="border-bottom border-secondary pt-4 pb-2 font-weight-bold d-flex justify-content-between"><div>Registrar pension alimentaria : </div><strong class="font-button" id="EmpDes"></strong><div class="btn btn-info btn-sm font-labels" id="btn-cambiar-empleado" title="Cambia de usuario" data-toggle="modal" data-target="#modalLiveSearchEmpleado"><i class="fas fa-users"></i></div></div>
     <div class="row">
-        <div class="col-md-6  rounded">
-            <form action="#" method="post" class="bg-light px-3 py-3 rounded" id="frmPensionesAlimenticias">
+        <div class="col-md-12 rounded">
+            <form action="#" method="post" class="bg-light px-3 pt-3 rounded" id="frmPensionesAlimenticias">
                 <div class="form-group row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inCFija">Cuota fija</label>
-                        <input type="text" name="inCFija" id="inCFija" class="form-control" placeholder="#" maxlength="7" />
+                        <input type="text" name="inCFija" id="inCFija" class="form-control form-control-sm" placeholder="#" maxlength="7" />
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inPorcentaje">O porcentaje</label>
-                        <input type="number" name="inPorcentaje" id="inPorcentaje" min="1" max="99" maxlenght="3" class="form-control input-number" placeholder="%" maxlength="2" />
+                        <input type="number" name="inPorcentaje" id="inPorcentaje" min="1" max="99" maxlenght="3" class="form-control form-control-sm input-number" placeholder="%" maxlength="2" />
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-4">
                         <label for="inAplicaEn">Aplica en </label>
-                        <select class="form-control font-labels custom-select" id="inAplicaEn" name="inAplicaEn" required>
+                        <select class="font-labels custom-select custom-select-sm" id="inAplicaEn" name="inAplicaEn" required>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inNOficio">No. Oficio</label>
-                        <input type="text" name="inNOficio" id="inNOficio" class="form-control" placeholder="No de Oficio" required />
+                        <input type="text" name="inNOficio" id="inNOficio" class="form-control form-control-sm" placeholder="No de Oficio" required />
                     </div>
-                    <div class="form-group imss col-md-6">
+                    <div class="form-group imss col-md-4">
                         <label for="inTCalculo">Tipo de calculo </label>
-                        <select class="form-control font-labels custom-select" name="inTCalculo" id="inTCalculo" required>
+                        <select class="font-labels custom-select custom-select-sm" name="inTCalculo" id="inTCalculo" required>
                             <option value="">Selecciona</option>
                             <option value="1">Percepciones sujetas a impuestos</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inFOficio">Fecha de oficio</label>
-                        <input type="date" name="inFOficio" id="inFOficio" value="" class="form-control" placeholder="Escriba la causa del Ausentismo" required />
+                        <input type="date" name="inFOficio" id="inFOficio" value="" class="form-control form-control-sm" placeholder="Escriba la causa del Ausentismo" required />
                     </div>
-                    <div class="form-group imss col-md-6">
+                    <div class="form-group imss col-md-4">
                         <label for="inFBaja">Fecha de baja</label>
-                        <input type="date" name="inFBaja" id="inFBaja" class="form-control" placeholder="Escriba un comentario" required />
+                        <input type="date" name="inFBaja" id="inFBaja" class="form-control form-control-sm" placeholder="Escriba un comentario" required />
                     </div>
-                    <div class="form-group imss col-md-6">
+                    <div class="form-group imss col-md-4">
                         <label for="inCCheques">Cuenta de cheques</label>
-                        <input type="text" name="inCCheques" id="inCCheques" class="form-control" placeholder="Escriba un comentario" />
+                        <input type="text" name="inCCheques" id="inCCheques" class="form-control form-control-sm" placeholder="Escriba un comentario" />
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inBeneficiaria">Beneficiaria</label>
                         <div class="input-group">
-                            <input type="text" name="inBeneficiaria" id="inBeneficiaria" class="form-control font-labels" placeholder="Escriba el nombre del beneficiario" />
+                            <input type="text" name="inBeneficiaria" id="inBeneficiaria" class="form-control form-control-sm font-labels" placeholder="Escriba el nombre del beneficiario" />
                         </div>
                     </div>
-                    <div class="form-group imss col-md-6">
+                    <div class="form-group imss col-md-4">
                         <label for="inBanco">Banco</label>
-                        <select class="form-control font-labels custom-select" name="inBanco" id="inBanco">
+                        <select class="form-control font-labels custom-select custom-select-sm" name="inBanco" id="inBanco">
                             <option value="0">No aplica</option>
                             <option value="1">Percepciones sujetas a inpuestos</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inSucursal">Sucursal</label>
                         <div class="input-group">
-                            <input type="text" name="inSucursal" id="inSucursal" class="form-control font-labels" />
+                            <input type="text" name="inSucursal" id="inSucursal" class="form-control form-control-sm font-labels" />
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="inTVales">Tarjeta vales de despensa</label>
                         <div class="input-group">
-                            <input type="text" name="inTVales" id="inTVales" class="form-control font-labels" />
+                            <input type="text" name="inTVales" id="inTVales" class="form-control form-control-sm font-labels" />
                         </div>
                     </div>
-                    <div class="form-group col-md-12 text-right">
-                        <button type="button" class="btn btn-primary btn-icon-split font-labels btn-sm " id="btn-save-pension">
-                            <span class="icon"><i class="far fa-edit"></i></span>
+                    <div class="form-group mx-3 pt-2 text-right">
+                        <button type="button" class="btn btn-primary btn-icon-split font-labels btn-sm mx-1" id="btn-save-pension">
+                            <span class="icon"><i class="fas fa-edit"></i></span>
                             <span class="text"> Registrar </span>
                         </button>
-                        <button type="reset" class="btn btn-warning btn-icon-split invisible font-labels btn-sm">
+                        <button type="reset" class="btn btn-warning btn-icon-split font-labels btn-sm mx-1">
                             <span class="icon"><i class="fas fa-paint-brush"></i></span>
                             <span class="text"> Limpiar </span>
                         </button>
-                        <button type="button" class="btn btn-success btn-icon-split invisible font-labels btn-sm">
+                        <button type="button" class="btn btn-success btn-icon-split font-labels btn-sm mx-1">
                             <span class="icon"><i class="fas fa-exchange-alt"></i></span>
                             <span class="text"> Actualizar </span>
                         </button>
@@ -83,14 +83,13 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-6">
-            <table class="table table-sm font-labels text-center" id="tabPensionesA">
-                <thead>
+        <div class="col-md-12 pt-2">
+            <table class="table table-sm table-striped font-labels pb-2 text-center rounded border-right-primary border-bottom-primary" id="tabPensionesA">
+                <thead class="">
                     <tr>
                         <th scope="col">Beneficiaria</th>
                         <th scope="col">Oficio</th>
                         <th scope="col">Fecha Oficio</th>
-                        @*<th scope="col">Fecha Fin</th>*@
                         <th scope="col">Cuota o %</th>
                         <th scope="col">Acciones</th>
                     </tr>
@@ -100,10 +99,6 @@
             </table>
         </div>
     </div>
-
-
-
-
 </div>
 @* MODAL DE LIVE SEARCH EMPLEADO *@
 <!-- Modal -->
@@ -128,8 +123,34 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/PensionesAlimenticias.js?n=2"></script>
+@* MODAL EDITAR PENSION *@
+<!-- Modal -->
+@*<div class="modal fade" id="modalEditarPension" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-labels" id="staticBackdropLabel">Busca el empleado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="search-box col-md-12">
+                        <label for="inputSearchEmpleados" class="font-labels">Escribe el nombre del empleado que buscas</label>
+                        <input type="text" name="inputSearchEmpleados" id="inputSearchEmpleados" placeholder="Escriba el nombre del empleado" class=" form-control" autocomplete="off" />
+                        <div id="resultSearchEmpleados" name="resultSearchEmpleados" class="list-group"></div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-3 pb-3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<script src="~/Scripts/main/PensionesAlimenticias.js"></script>

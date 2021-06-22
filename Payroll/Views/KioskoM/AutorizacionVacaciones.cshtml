@@ -1,74 +1,33 @@
-﻿
-
-<div class="container-fluid mb-5">
-    <div class="row">
-        <div class="col-md-10 offset-1">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active font-navs" id="nav-reporte-tab" data-toggle="tab" href="#nav-reporte" role="tab" aria-controls="nav-reporte" aria-selected="true">
-                        <i class="fas fa-book mr-2"></i> Aprobación
-                    </a>
+﻿<div class="col-md-10 mx-auto">
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <div class="row bg-white shadow rounded p-3 border-left-primary border-right-primary">
+                <div class="col-md-12">
+                    <h4 class="offset-1"><i class="fas fa-archive text-dark"></i> Solicitudes</h4>
                 </div>
-            </nav>
-            <div class="tab-content bg-white" id="nav-tabContent">
-                <div class="tab-pane fade show active p-3" id="nav-reporte" role="tabpanel" aria-labelledby="nav-reporte-tab">
-                    <div class="tab-content" id="nav-tabContent1">
-                        <div class="tab-pane fade show active p-3" id="nav-reporte" role="tabpanel" aria-labelledby="nav-reporte-tab">
-                            <div class="row mt-2">
-                                <div id="div-most-alert-data-reporte" class="col-md-6 offset-3"></div>
-                                <div class="col-md-12 mb-4">
-                                    <div class="text-left">
-                                        <h6 class="col-ico font-navs">
-                                            <b> <i class="fas fa-inbox fa-sm mr-ico-05"></i> Bandeja de entrada </b>
-                                        </h6>
-                                        <hr />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="row shadow rounded p-3 border-left-primary border-right-primary"> 
-                                        <div class="col-md-3">
-                                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"> <i class="fas fa-list-alt mr-2"></i>Sin Aprobar</a>
-                                                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false"> <i class="fas fa-check-circle mr-2"></i> Aprobadas</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <div class="tab-content" id="v-pills-tabContent ">
-                                                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-
-                                                    <div class="list-group">
-                                                        <a href="#" class="list-group-item list-group-item-action shadow">
-                                                            <div class="d-flex w-100 justify-content-between">
-                                                                <h5 class="mb-1">List group item heading</h5>
-                                                                <small>3 days ago</small>
-                                                            </div>
-                                                            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                                                            <small>Donec id elit non mi porta.</small>
-                                                        </a>
-                                                        <a href="#" class="list-group-item list-group-item-action">
-                                                            <div class="d-flex w-100 justify-content-between">
-                                                                <h5 class="mb-1">List group item heading</h5>
-                                                                <small class="text-muted">3 days ago</small>
-                                                            </div>
-                                                            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                                                            <small class="text-muted">Donec id elit non mi porta.</small>
-                                                        </a>
-                                                        <a href="#" class="list-group-item list-group-item-action">
-                                                            <div class="d-flex w-100 justify-content-between">
-                                                                <h5 class="mb-1">List group item heading</h5>
-                                                                <small class="text-muted">3 days ago</small>
-                                                            </div>
-                                                            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                                                            <small class="text-muted">Donec id elit non mi porta.</small>
-                                                        </a>
-                                                    </div>
-
-                                                </div>
-                                                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="dropdown-divider border col-md-12"></div>
+                <div class="col-md-3">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link active" id="v-pills-sinAprobar-tab" data-toggle="pill" href="#v-pills-sinAprobar" role="tab" aria-controls="v-pills-sinAprobar" aria-selected="true"> <i class="fas fa-list-alt mr-2"></i>Sin Aprobar</a>
+                        <a class="nav-link" id="v-pills-aprobadas-tab" data-toggle="pill" href="#v-pills-aprobadas" role="tab" aria-controls="v-pills-aprobadas" aria-selected="false"> <i class="fas fa-check-circle mr-2"></i> Aprobadas</a>
+                        <a class="nav-link" id="v-pills-noAprobadas-tab" data-toggle="pill" href="#v-pills-noAprobadas" role="tab" aria-controls="v-pills-noAprobadas" aria-selected="false"> <i class="fas fa-times-circle mr-2"></i> Rechazadas</a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content bg-white" id="v-pills-tabContent ">
+                        <div class="tab-pane animated fadeInRight show active" id="v-pills-sinAprobar" role="tabpanel" aria-labelledby="v-pills-sinAprobar-tab">
+                            <div class="list-group" id="solicitudesSinAprobar">
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane animated fadeInRight" id="v-pills-aprobadas" role="tabpanel" aria-labelledby="v-pills-aprobadas-tab">
+                            <div class="list-group" id="solicitudesAprobadas">
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane animated fadeInRight" id="v-pills-noAprobadas" role="tabpanel" aria-labelledby="v-pills-noAprobadas-tab">
+                            <div class="list-group" id="solicitudesRechazadas">
+                                
                             </div>
                         </div>
                     </div>
@@ -77,6 +36,41 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="~/Scripts/main/AutorizacionVacaciones/main.js?v=0.1"></script>
-<script type="text/javascript" src="~/Scripts/popper.js" ></script>
+<div class="modal fade" id="modal-respuesta" tabindex="-1" aria-labelledby="titulo-modal-respuesta" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="modalRespuesta">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold text-white" id="titulo-modal-respuesta"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center bg-white">
+                <div class="form-group form-group-sm col-md-12">
+                    <label class="">Comentarios</label>
+                    <textarea class="form-control form-control-sm" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer bg-white">
+                <button type="button" class="btn btn-secondary btn-sm btn-icon-split" data-dismiss="modal">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                    <span class="text">Cancelar</span>
+                </button>
+                <div class="btn btn-primary btn-sm btn-icon-split" id="btnGuardarSolicitud" onclick="">
+                    <span class="icon"><i class="fas fa-save"></i></span>
+                    <span class="text">Guardar</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/main/AutorizacionVacaciones/main.js?n=1.5"></script>
+<script type="text/javascript" src="~/Scripts/popper.js"></script>
+<script>
+    $(function () {
+        loadSolicitudesSinAprobar();
+        loadSolicitudesAprobadas();
+        loadSolicitudesRechazadas();
+        MandarCorreo();
+    });
+</script>

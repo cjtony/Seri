@@ -167,15 +167,16 @@
                         + "<td>" + data[i]["Fecha_Oficio"] + "</td>"
                         //+ "<td>" + data[i]["Fecha_baja"] + "</td>"
                         + "<td>$ " + data[i]["Cuota_Fija"] + " - % " + data[i]["Porcentaje"] + "</td>"
-                        + "<td><div class='btn badge badge-danger btn-editar-pensiones ' onclick='eliminarPension( " + data[i]["IdPension"] + "," + data[i]["IncidenciaProgramada_id"] + ");'><i class='fas fa-minus'></i></div></td>"
+                        + "<td>"
+                        + "<div class='btn badge badge-success mx-1' onclick='btnEditarPension( " + data[i]["IdPension"] + ");'><i class='fas fa-edit'></i></div>"
+                        + "<div class='btn badge badge-danger mx-1' onclick='eliminarPension( " + data[i]["IdPension"] + "," + data[i]["IncidenciaProgramada_id"] + ");'><i class='fas fa-minus'></i></div>"
+                        + "</td>"
                         + "</tr>";
-                    
                 }
-                
-
             }
         });
     }
+
     LoadSelectBancos = (Banco_id) => {
         $.ajax({
             url: "../Empleados/LoadBanks",
@@ -194,6 +195,7 @@
             }
         });
     }
+
     LoadSelectBancos(0);
     // ELIMINAR (DESACTIVA) PENSION ALIMENTARIA
     eliminarPension = (Pension_id, IncidenciaP_id) => {
@@ -276,4 +278,17 @@
             $("#inCFija").attr("disabled", true);
         }
     });
+
+    btnEditarPension = (Pension_id) => {
+        $.ajax({
+            url: "../Incidencias/LoadPension",
+            type: "POST",
+            data: JSON.stringify({ Pension_id: Pension_id }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log(data);
+            }
+        });
+    }
+
 });

@@ -23,16 +23,13 @@
             changeMonth: true,
             numberOfMonths: 1,
             beforeShowDay: $.datepicker.noWeekends,
-
             changeYear: true
-
         })
             .on("change", function () {
                 from.datepicker("option", "maxDate", getDate(this));
                 $("#btnCalcVacaciones").removeAttr("disabled");
                 calcularDias();
             });
-
     getDate = (element) => {
         var date;
         try {
@@ -44,11 +41,7 @@
     }
 });
 $(function () {
-    //
-    //
     $("#vacacionesCollapse").collapse("show");
-    //
-    //
     $("#inputSearchEmpleados").on("keyup", function () {
         $("#inputSearchEmpleados").empty();
         var txt = $("#inputSearchEmpleados").val();
@@ -62,7 +55,6 @@ $(function () {
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: (data) => {
-                    console.log(data[0]["iFlag"]);
                     $("#resultSearchEmpleados").empty();
                     if (data[0]["iFlag"] == 0) {
                         for (var i = 0; i < data.length; i++) {
@@ -93,20 +85,6 @@ $(function () {
         var dias = document.getElementById("diasV");
         var ln_id = document.getElementById("btn_id_periodo_ln");
         $("#diasV").disabled = true;
-        //var datos = ;
-        //console.log("periodo");
-        //console.log(datos);
-        //$.ajax({
-        //    url: "../Incidencias/SavePeriodosVac",
-        //    data: datos,
-        //    type: "POST",
-        //    dataType: "json",
-        //    contentType: "application/json; charset=utf-8",
-        //    success: function() {
-        //        console.log("periodo guardado");
-        //    }
-        //});
-
         $.ajax({
             url: "../Incidencias/SavePeriodosVac",
             type: "POST",
@@ -120,11 +98,7 @@ $(function () {
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-
-
                 if (data[0] == "1") {
-                    //console.log("periodo guardado");
-                    console.log(data);
                     document.getElementById("frmAddPeriodo").reset();
                     $("#to").addClass("disabled");
                     $("#from").datepicker({
@@ -132,7 +106,6 @@ $(function () {
                     });
                     $("#diasV").addClass("disabled");
                     $("#btnCalcVacaciones").addClass("disabled");
-
                     CargarTabPeriodos(ln_id.value);
                     Swal.fire({
                         title: "Correcto!",
@@ -146,19 +119,12 @@ $(function () {
                         text: data[1],
                         icon: "warning",
                         cancelButton: true
-
                     });
                     $("#from").focus();
                 }
-
-
             }
         });
-
-
-        //console.log("llega");
     });
-
     $(".btn-change-status").on("click", function () {
         Swal.fire({
             title: 'Are you sure?',
@@ -178,8 +144,7 @@ $(function () {
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: (data) => {
-                        console.log("periodo guardado");
-                        console.log(data);
+
                     }
                 });
                 Swal.fire(
@@ -190,7 +155,6 @@ $(function () {
             }
         });
     });
-
     var tab2, tab1;
     MostrarDatosEmpleado = (idE) => {
         var txtIdEmpleado = { "IdEmpleado": idE };
@@ -201,25 +165,19 @@ $(function () {
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
-
                 $("#resultSearchEmpleados").empty();
                 for (var i = 0; i < data.length; i++) {
                     $("#nomEmp").empty(); $("#nomEmp").append(data[i]["Nombre_Empleado"] + " " + data[i]["Apellido_Paterno_Empleado"] + " " + data[i]["Apellido_Materno_Empleado"]);
                     $("#puesto_emp").empty(); $("#puesto_emp").append(data[i]["DescripcionPuesto"]);
                     $("#area_emp").empty(); $("#area_emp").append(data[i]["DescripcionDepartamento"]);
                     $("#tipo_emp").empty();
-
                     if (parseInt(data[i]["TipoEmpleado"]) < 164) {
                         $("#tipo_emp").append("<span class='badge badge-pill badge-success'>" + data[i]["DescTipoEmpleado"] + "</span>");
                     } else if (parseInt(data[i]["TipoEmpleado"]) > 163) {
                         $("#tipo_emp").append("<span class='badge badge-pill badge-danger'>" + data[i]["DescTipoEmpleado"] + "</span>");
                     }
-
-
                     $("#antig_emp").empty(); $("#antig_emp").append(data[i]["FechaIngreso"].substring(0, 10));
                     $("#vacacionesCollapse").collapse("show");
-
                 }
                 document.getElementById("tab1").innerHTML = "<tr><td colspan='4'><div class='d-flex justify-content-center'><div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div ></div></td></tr>";
                 CargarTabResumen();
@@ -242,9 +200,7 @@ $(function () {
                 var id = data[0]["Id_Per_Vac_Ln"];
                 document.getElementById("tab1").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
-
                     document.getElementById("tab1").innerHTML += "<tr><td>" + data[i]["Periodo"] + " <input type='hidden' id='btn_id_periodo_ln' value=' " + data[i]["Id_Per_Vac_Ln"] + " '> </td><td>" + data[i]["DiasPrima"] + "</td><td>" + data[i]["DiasDisfrutados"] + "</td><td>" + data[i]["DiasRestantes"] + "</td></tr>";
-
                 }
                 CargarTabPeriodos(id);
             }
@@ -258,19 +214,18 @@ $(function () {
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
                 document.getElementById("tabBody").innerHTML = "";
                 for (var i = 0; i < data.length; i++) {
                     var aprobado = "";
                     var agendado = "";
                     if (data[i]["Aprobado"] == "True") {
                         aprobado = "<div class='fas fa-check'></div>";
-                    } else if (data[i]["Aprobado"] == "False"){
+                    } else if (data[i]["Aprobado"] == "False") {
                         aprobado = "";
                     }
                     if (data[i]["Agendadas"] == "True") {
                         agendado = "<div class='fas fa-check'></div>";
-                    } else if (data[i]["Agendadas"] == "False"){
+                    } else if (data[i]["Agendadas"] == "False") {
                         agendado = "";
                     }
                     document.getElementById("tabBody").innerHTML += "<tr>" +
@@ -279,29 +234,24 @@ $(function () {
                         " <td>" + data[i]["Fecha_Fin"] + "</td>" +
                         " <td>" + agendado + "</td>" +
                         " <td>" + aprobado + "</td>" +//"<td><div class='fas fa-exchange-alt btn btn-success btn-sm btn-change-status' onclick='setDisfrutadas(" + data[i]["IdPer_vac_Dist"] + ")'></div></td>" +
-                            "</tr > ";
-
+                        "</tr > ";
                 }
             }
         });
     }
-
     calcularDias = () => {
         var fechaInicial = document.getElementById("from").value;
         var fechaFinal = document.getElementById("to").value;
         inicial = fechaInicial.split("/");
         final = fechaFinal.split("/");
-        console.log(inicial[1] + '/' + (inicial[0] - 1) + '/' + inicial[2] + " fecha inicial variable ");
         // obtenemos las fechas en milisegundos
         var inicio = new Date(inicial[2], (inicial[0] - 1), inicial[1]);
         var fin = new Date(final[2], (final[0] - 1), final[1]);
-        //alert(inicial[2] + '-' + inicial[0] + '-' + inicial[1] + ' - a - ' + final[2] + '-' + final[0] + '-' + final[1]);
         var timeDiff = Math.abs(fin.getTime() - inicio.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); //Días entre las dos fechas
         var cuentaFinde = 0; //Número de Sábados y Domingos
         var array = new Array(diffDays);
         for (var i = 0; i < diffDays + 1; i++) {
-            console.log(inicio);
             //0 => Domingo - 6 => Sábado
             if (inicio.getDay() == 0 || inicio.getDay() == 6) {
                 cuentaFinde++;
@@ -311,10 +261,8 @@ $(function () {
         var txtdias = document.getElementById("diasV");
         txtdias.value = (diffDays + 1) - cuentaFinde;
     }
-
     setDisfrutadas = (IdPer_vac_Dist) => {
         var ln_id = document.getElementById("btn_id_periodo_ln");
-        console.log(IdPer_vac_Dist);
         Swal.fire({
             title: '',
             text: "Deseas cambiar el periodo a disfrutado",
@@ -326,8 +274,6 @@ $(function () {
             confirmButtonText: 'Aceptar'
         }).then((result) => {
             if (result.value) {
-
-                console.log(IdPer_vac_Dist);
                 $.ajax({
                     url: "../Incidencias/setDisfrutadas",
                     type: "POST",
@@ -344,10 +290,8 @@ $(function () {
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: (res) => {
-                                console.log("regresa periodos");
                                 document.getElementById("tabBody").innerHTML = "";
                                 for (var i = 0; i < res.length; i++) {
-
                                     if (res[i]["Agendadas"] == "True") {
                                         document.getElementById("tabBody").innerHTML += "<tr>" +
                                             "<td>" + res[i]["Dias"] + " <input type = 'hidden' class='btn_IdPer_vac_Dist' value = ' " + res[i]["IdPer_vac_Dist"] + " ' > </td>" +
@@ -366,7 +310,6 @@ $(function () {
                                             "</tr>";
                                     }
                                 }
-                                console.log(res);
                                 Swal.fire(
                                     'Hecho!',
                                     'El periodo fue puesto como disfrutado',
@@ -376,7 +319,6 @@ $(function () {
                         });
                     }
                 });
-
             }
         });
     }

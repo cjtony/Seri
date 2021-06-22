@@ -50,7 +50,7 @@ namespace Payroll.Models.Daos
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.Add(new SqlParameter("@ctrlPerfil_id", Perfil_id));
-            SqlDataReader data = cmd.ExecuteReader();
+            SqlDataReader data = cmd.ExecuteReader();   
             cmd.Dispose();
 
             if (data.HasRows)
