@@ -209,7 +209,7 @@ namespace Payroll.Controllers
                             System.IO.Directory.CreateDirectory(directoryTxt + @"\\" + nameFolder);
                         }
                         if (bankResult == 72) {
-                            vFileName = "NOMINAS_NI" + string.Format("{0:00000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.sNumeroCliente)) + "01";
+                            vFileName = "NOMINAS_NI" + string.Format("{0:00000}", Convert.ToInt32(bean.sNCliente)) + "01";
                         } else {
                             vFileName = "E" + string.Format("{0:000}", keyBusiness.ToString()) + "A" + yearPeriod + yearPeriod.ToString() + "P" + string.Format("{0:000}", numberPeriod.ToString()) + "_B" + bankResult.ToString();
                         }
@@ -224,7 +224,7 @@ namespace Payroll.Controllers
                             //}
                             // ENCABEZADO  --> ARCHIVO OK
                             string tipoRegistroBanamexE = "1";
-                            string numeroClienteBanamexE = "000" + datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
+                            string numeroClienteBanamexE = "000" + bean.sNCliente;
                             string fechaBanamexE = dateC.ToString("ddMM") + dateC.ToString("yyyy").Substring(2, 2);
                             string valorFijoBanamex0 = "0001";
                             string nombreEmpresaBanamex = "";
@@ -236,7 +236,8 @@ namespace Payroll.Controllers
                             {
                                 nombreEmpresaBanamex = nameBusiness;
                             }
-                            string valorFijoBanamex1 = "CNOMINA";
+                            //string valorFijoBanamex1 = "CNOMINA";
+                            string valorFijoBanamex1 = "DEPOSIT";
                             string fillerBanamexE1 = " ";
                             string fechaBanamexE1 = dateC.ToString("ddMMyyyy") + "     ";
                             string valorFijoBanamex2 = "05";
@@ -277,7 +278,7 @@ namespace Payroll.Controllers
                             // PENDIENTE SUCURSAL
                             string sucursalBanamexG = "7009";
                             string valorFijoBanamexG1 = "0000000000000";
-                            string numeroCuentaBanamex = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                            string numeroCuentaBanamex = bean.sNCuenta;
                             string generaCImporteTBG = "";
                             int longImporteTotalBG = 18;
                             int longITBG = longImporteTotalBG - importeTotalBanamexG.Length;
@@ -289,8 +290,10 @@ namespace Payroll.Controllers
                             string metodoPagoBanamexD = "001";
                             string tipoCuentaBanamexD = "01";
                             string fillerBanamexD1 = "                              ";
-                            string valorFijoBanamexD1 = "NOMINA";
-                            string fillerBanamexD2 = "                                                          ";
+                            //string valorFijoBanamexD1 = "NOMINA";
+                            //string fillerBanamexD2 = "                                                          ";
+                            string valorFijoBanamexD1 = "DEPOSITO";
+                            string fillerBanamexD2 = "                                                        ";
                             string valorFijoBanamexD2 = "0000";
                             string fillerBanamexD3 = "       ";
                             string valorFijoBanamexD3 = "00";
@@ -330,11 +333,11 @@ namespace Payroll.Controllers
                                         // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
                                         double restaImporte = 0;
                                         string importeFinal = "";
-                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         if (renglon1481 > 0)
                                         {
-                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             importeFinal = importe.decimalTotalDispersion.ToString();
                                         }
                                         else
@@ -411,7 +414,7 @@ namespace Payroll.Controllers
                             // HEADER
                             string hValuePermanent1 = "MXPRLF";
                             string hNivelAuthorization = "F";
-                            string hReferenceNumber = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                            string hReferenceNumber = bean.sNCuenta;
                             string hTotalAmount = Truncate(totalAmountHSBC, 2).ToString();
                             string hDateActually = DateTime.Now.ToString("ddMMyyyy");
                             string hSpaceWhite1 = "";
@@ -473,7 +476,7 @@ namespace Payroll.Controllers
                             string typeRegisterN = "1";
                             string consecutiveNumberOneN = "0000";
                             string senseA = "E";
-                            string numCtaBusiness = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                            string numCtaBusiness = bean.sNCuenta;
                             string fillerLayout = "     ";
                             string headerLayout = typeRegisterN + consecutiveNumberOneN + initConsecutiveNbOneN.ToString() + senseA + dateGenerationFormat + numCtaBusiness + fillerLayout + dateGenerationFormat;
                             // - DETALLE - \\                                                                          
@@ -528,14 +531,14 @@ namespace Payroll.Controllers
                                         double renglon1481 = 0;
                                         decimal restaImporte = 0;
                                         decimal importeFinal = 0;
-                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         string importeG = "";
                                         ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
                                         ReportesDao reportDao = new ReportesDao();
                                         if (renglon1481 > 0)
                                         {
-                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             resultadoSuma += importe.decimalTotal;
                                             importeFinal = importe.decimalTotalDispersion;
                                             importeG = importeFinal.ToString();
@@ -616,7 +619,7 @@ namespace Payroll.Controllers
                             sb1 = new StringBuilder("");
                             sb1.Append("H");
                             sb1.Append("NE");
-                            sb1.Append(string.Format("{0:00000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.sNumeroCliente)));
+                            sb1.Append(string.Format("{0:00000}", Convert.ToInt32(bean.sNCliente)));
                             sb1.Append(dateGeneration.ToString("yyyyMMdd"));
                             sb1.Append("01");
                             sb1.Append(string.Format("{0:000000}", TotalNumAbonos));
@@ -636,11 +639,11 @@ namespace Payroll.Controllers
                             {
                                 if (bankResult == payroll.iIdBanco)
                                 {
-                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                             Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0)
                                     {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         sumaImporte += importe.decimalTotal;
                                     }
                                     else
@@ -653,7 +656,7 @@ namespace Payroll.Controllers
                             string cerosImporteTotal = "";
                             string tipoRegistroBanorteE = "H";
                             string claveServicioBanorte = "NE";
-                            string promotorBanorte = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
+                            string promotorBanorte = bean.sNCliente;
                             string consecutivoBanorte = "01";
                             string importeTotalAYBBanorte = "0000000000000000000000000000000000000000000000000";
                             string fillerBanorte = "                                                                             ";
@@ -754,11 +757,11 @@ namespace Payroll.Controllers
                                         // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
                                         double restaImporte = 0;
                                         string importeFinal = "";
-                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         if (renglon1481 > 0)
                                         {
-                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             importeFinal = importe.decimalTotalDispersion.ToString();
                                         }
                                         else
@@ -999,7 +1002,7 @@ namespace Payroll.Controllers
                         }
                         // -------------------------
                         if (bankResult == 72)  {
-                            vFileName = "NOMINAS_NI" + string.Format("{0:00000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.sNumeroCliente)) + "01_ESP";
+                            vFileName = "NOMINAS_NI" + string.Format("{0:00000}", Convert.ToInt32(bean.sNCliente)) + "01_ESP";
                         } else {
                             vFileName = "E" + string.Format("{0:000}", keyBusiness.ToString()) + "A" + yearPeriod + yearPeriod.ToString() + "P" + string.Format("{0:000}", numberPeriod.ToString()) + "_BE_" + bankResult.ToString();
                         }
@@ -1014,7 +1017,7 @@ namespace Payroll.Controllers
                             //}
                             // ENCABEZADO  --> ARCHIVO OK
                             string tipoRegistroBanamexE = "1";
-                            string numeroClienteBanamexE = "000" + datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
+                            string numeroClienteBanamexE = "000" + bean.sNCliente;
                             string fechaBanamexE = dateC.ToString("ddMM") + dateC.ToString("yyyy").Substring(2, 2);
                             string valorFijoBanamex0 = "0001";
                             string nombreEmpresaBanamex = "";
@@ -1026,7 +1029,9 @@ namespace Payroll.Controllers
                             {
                                 nombreEmpresaBanamex = nameBusiness;
                             }
-                            string valorFijoBanamex1 = "CNOMINA";
+                            //string valorFijoBanamex1 = "CNOMINA";
+                            string valorFijoBanamex1 = "DEPOSIT";
+
                             string fillerBanamexE1 = " ";
                             string fechaBanamexE1 = dateC.ToString("ddMMyyyy") + "     ";
                             string valorFijoBanamex2 = "05";
@@ -1067,7 +1072,7 @@ namespace Payroll.Controllers
                             // PENDIENTE SUCURSAL
                             string sucursalBanamexG = "7009";
                             string valorFijoBanamexG1 = "0000000000000";
-                            string numeroCuentaBanamex = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                            string numeroCuentaBanamex = bean.sNCuenta;
                             string generaCImporteTBG = "";
                             int longImporteTotalBG = 18;
                             int longITBG = longImporteTotalBG - importeTotalBanamexG.Length;
@@ -1079,8 +1084,10 @@ namespace Payroll.Controllers
                             string metodoPagoBanamexD = "001";
                             string tipoCuentaBanamexD = "01";
                             string fillerBanamexD1 = "                              ";
-                            string valorFijoBanamexD1 = "NOMINA";
-                            string fillerBanamexD2 = "                                                          ";
+                            //string valorFijoBanamexD1 = "NOMINA";
+                            //string fillerBanamexD2 = "                                                          ";
+                            string valorFijoBanamexD1 = "DEPOSITO";
+                            string fillerBanamexD2 = "                                                        ";
                             string valorFijoBanamexD2 = "0000";
                             string fillerBanamexD3 = "       ";
                             string valorFijoBanamexD3 = "00";
@@ -1120,11 +1127,11 @@ namespace Payroll.Controllers
                                         // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
                                         double restaImporte = 0;
                                         string importeFinal = "";
-                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         if (renglon1481 > 0)
                                         {
-                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             importeFinal = importe.decimalTotalDispersion.ToString();
                                         }
                                         else
@@ -1201,7 +1208,7 @@ namespace Payroll.Controllers
                             // HEADER
                             string hValuePermanent1 = "MXPRLF";
                             string hNivelAuthorization = "F";
-                            string hReferenceNumber = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                            string hReferenceNumber = bean.sNCuenta;
                             string hTotalAmount = Truncate(totalAmountHSBC, 2).ToString();
                             string hDateActually = DateTime.Now.ToString("ddMMyyyy");
                             //if (dateDisC != "")
@@ -1302,7 +1309,7 @@ namespace Payroll.Controllers
                             string typeRegisterN = "1";
                             string consecutiveNumberOneN = "0000";
                             string senseA = "E";
-                            string numCtaBusiness = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                            string numCtaBusiness = bean.sNCuenta;
                             string fillerLayout = "     ";
                             string headerLayout = typeRegisterN + consecutiveNumberOneN + initConsecutiveNbOneN.ToString() + senseA + dateGenerationFormat + numCtaBusiness + fillerLayout + dateGenerationFormat;
                             // - DETALLE - \\                                                                          
@@ -1357,14 +1364,14 @@ namespace Payroll.Controllers
                                         decimal restaImporte = 0;
                                         decimal importeFinal = 0;
                                         double renglon1481 = 0;
-                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         string importeG = "";
                                         ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
                                         ReportesDao reportDao = new ReportesDao();
                                         if (renglon1481 > 0)
                                         {
-                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             resultadoSuma += importe.decimalTotal;
                                             importeFinal = importe.decimalTotalDispersion;
                                             importeG = importeFinal.ToString();
@@ -1445,7 +1452,7 @@ namespace Payroll.Controllers
                             sb1 = new StringBuilder("");
                             sb1.Append("H");
                             sb1.Append("NE");
-                            sb1.Append(string.Format("{0:00000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.sNumeroCliente)));
+                            sb1.Append(string.Format("{0:00000}", Convert.ToInt32(bean.sNCliente)));
                             sb1.Append(dateGeneration.ToString("yyyyMMdd"));
                             sb1.Append("01");
                             sb1.Append(string.Format("{0:000000}", TotalNumAbonos));
@@ -1465,11 +1472,11 @@ namespace Payroll.Controllers
                             {
                                 if (bankResult == payroll.iIdBanco)
                                 {
-                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                             Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0)
                                     {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         sumaImporte += importe.decimalTotal;
                                     }
                                     else
@@ -1482,7 +1489,7 @@ namespace Payroll.Controllers
                             string cerosImporteTotal = "";
                             string tipoRegistroBanorteE = "H";
                             string claveServicioBanorte = "NE";
-                            string promotorBanorte = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
+                            string promotorBanorte = bean.sNCliente;
                             string consecutivoBanorte = "01";
                             string importeTotalAYBBanorte = "0000000000000000000000000000000000000000000000000";
                             string fillerBanorte = "                                                                             ";
@@ -1583,11 +1590,11 @@ namespace Payroll.Controllers
                                         // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
                                         double restaImporte = 0;
                                         string importeFinal = "";
-                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         if (renglon1481 > 0)
                                         {
-                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             importeFinal = importe.decimalTotalDispersion.ToString();
                                         }
                                         else
@@ -1643,11 +1650,11 @@ namespace Payroll.Controllers
                                         decimal importeFinal = 0;
                                         string importeG = "";
                                         double renglon1481 = 0;
-                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                        renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(payroll.iIdEmpresa,
                                                 Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         if (renglon1481 > 0)
                                         {
-                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(payroll.iIdEmpresa, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             importeFinal = importe.decimalTotalDispersion;
                                         }
                                         else
@@ -1935,14 +1942,14 @@ namespace Payroll.Controllers
                         if (mirror == 0) {
                             fileNamePDF = "CHQ_NOMINAS_E" + keyBusiness.ToString() + "A" + string.Format("{0:00}", (yearPeriod % 100)) + "P" + string.Format("{0:00}", numberPeriod) + "_B" + bankResult.ToString() + "_INTERBANCOS.PDF";
                             if (bankResult == 72) {
-                                vFileName = "NOMINAS_" + "PAG" + string.Format("{0:000000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.iPlaza)) + "01.txt";
+                                vFileName = "NOMINAS_" + "PAG" + string.Format("{0:000000}", Convert.ToInt32(bean.sNPlaza)) + "01.txt";
                             } else {
                                 vFileName = "NOMINAS_" + "E" + string.Format("{0:00}", keyBusiness.ToString()) + "A" + yearPeriod.ToString() + "P" + string.Format("{0:00}", Convert.ToInt16(numberPeriod)) + "B" + string.Format("{0:000}", bankResult) + "_INTERBANCOS.txt";
                             }
                         } else {
                             fileNamePDF = "CHQ_NOMINAS_E" + keyBusiness.ToString() + "A" + string.Format("{0:00}", (yearPeriod % 100)) + "P" + string.Format("{0:00}", numberPeriod) + "_B" + bankResult.ToString() + "_INTERBANCOSESP.PDF";
                             if (bankResult == 72) {
-                                vFileName = "NOMINAS_" + "PAG" + string.Format("{0:000000}", Convert.ToInt32(datoCuentaClienteBancoEmpresaBean.iPlaza)) + "01_ESP.txt";
+                                vFileName = "NOMINAS_" + "PAG" + string.Format("{0:000000}", Convert.ToInt32(bean.sNPlaza)) + "01_ESP.txt";
                             } else {
                                 vFileName = "NOMINAS_" + "E" + string.Format("{0:00}", keyBusiness.ToString()) + "A" + yearPeriod.ToString() + "P" + string.Format("{0:00}", Convert.ToInt16(numberPeriod)) + "B" + string.Format("{0:000}", bankResult) + "_INTERBANCOSESP.txt";
                             }
@@ -1951,14 +1958,16 @@ namespace Payroll.Controllers
 
                         if (bankResult == 14)
                         {
-                            string campoFijoIntSantanderD1 = "NOMINA";
-                            string fillerIntSantanderD3 = "                                                                                                                            ";
+                            //string campoFijoIntSantanderD1 = "NOMINA";
+                            //string fillerIntSantanderD3 = "                                                                                                                            ";
+                            string campoFijoIntSantanderD1 = "DEPOSITO";
+                            string fillerIntSantanderD3 = "                                                                                                                          ";
                             //if (tipPago == 2)
                             //{
                             //    campoFijoIntSantanderD1 = "HON";
                             //    fillerIntSantanderD3 = "                                                                                                                               ";
                             //}
-                            string numCuentaEmpresaSantanderD = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, fillerIntSantanderD1 = "     ", fillerIntSantanderD2 = "  ", sucursalIntSantanderD1 = "1001", plazaIntSantanderD1 = "01001";
+                            string numCuentaEmpresaSantanderD = bean.sNCuenta, fillerIntSantanderD1 = "     ", fillerIntSantanderD2 = "  ", sucursalIntSantanderD1 = "1001", plazaIntSantanderD1 = "01001";
                             int consecutivoIntSantanderD1 = 0;
                             using (StreamWriter fileIntSantander = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName))
                             {
@@ -1984,11 +1993,11 @@ namespace Payroll.Controllers
                                     double restaImporte = 0;
                                     double renglon1481 = 0;
                                     string importeFinal = "";
-                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(bank.iIdEmpresa,
                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0)
                                     {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(bank.iIdEmpresa, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         importeFinal = importe.decimalTotalDispersion.ToString();
                                     }
                                     else
@@ -2053,7 +2062,7 @@ namespace Payroll.Controllers
                             string tipoRegistroBIntScotiabank = "HB",
                                 monedaCuentaBIntScotiabank = "00",
                                 usoFuturoIntScotiabank = "00000",
-                                cuentaCargoIntScotiabank = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta,
+                                cuentaCargoIntScotiabank = bean.sNCuenta,
                                 referenciaEmpresaIntScotiabank = "0000000001",
                                 codigoStatusIntScotiabank = "000",
                                 fillerIntScotiabankHB1 = "                                                                                                                                                                                                                                                                                                                                                ";
@@ -2064,7 +2073,8 @@ namespace Payroll.Controllers
                             //{
                             //    fechaIntScotiabankD = Convert.ToDateTime(dateDisC.ToString()).ToString("yyyyMMdd");
                             //}
-                            string conceptoPagoIntScotiabankD = "PAGO NOMINA";
+                            //string conceptoPagoIntScotiabankD = "PAGO NOMINA";
+                            string conceptoPagoIntScotiabankD = "DEPOSITO   ";
                             //if (tipPago == 2)
                             //{
                             //    conceptoPagoIntScotiabankD = "HONORARIOS ";
@@ -2162,11 +2172,11 @@ namespace Payroll.Controllers
                                     double restaImporte = 0;
                                     string importeFinal = "";
                                     double renglon1481 = 0;
-                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(bank.iIdEmpresa,
                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0)
                                     {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(bank.iIdEmpresa, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         importeFinal = importe.decimalTotalDispersion.ToString();
                                     }
                                     else
@@ -2236,7 +2246,8 @@ namespace Payroll.Controllers
                             //{
                             //    referenceDate = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
                             //}
-                            string descriptionPd = "PAGO NOMINA                   ";
+                            //string descriptionPd = "PAGO NOMINA                   ";
+                            string descriptionPd = "DEPOSITO                      ";
                             //if (tipPago == 2)
                             //{
                             //    descriptionPd = "HONORARIOS                    ";
@@ -2277,11 +2288,11 @@ namespace Payroll.Controllers
                                     double restaImporte = 0;
                                     string importeFinal = "";
                                     double renglon1481 = 0;
-                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
+                                    renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(data.iIdEmpresa,
                                             Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0)
                                     {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(data.iIdEmpresa, Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         importeFinal = importe.decimalTotalDispersion.ToString();
                                     }
                                     else
@@ -2291,7 +2302,7 @@ namespace Payroll.Controllers
                                     // FIN CODIGO NUEVO
                                     string payroll = data.sNomina;
                                     int longPayroll = longNumberPayroll - payroll.Length;
-                                    string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                                    string accountOrigin = bean.sNCuenta;
                                     int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
                                     string accountDestiny = data.sCuenta;
                                     int resultadoFillerCuentaOrigen = longitudCuentaOrigen - accountOrigin.Length;
