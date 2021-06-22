@@ -469,6 +469,7 @@ namespace Payroll.Models.Beans
         public int iRecibo { get; set; }
         public string sURreciboSimple { get; set; }
         public string sURreciboFiscal { get; set; }
+        public string sURTemp { get; set; }
         public string sMensaje { get; set; }
 
 
