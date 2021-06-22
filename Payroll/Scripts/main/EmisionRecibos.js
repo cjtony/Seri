@@ -255,7 +255,6 @@
             limite = 2,
             arreglosubcadena = periodo.split(separador, limite);
 
-
         const dataSend = { Anio: Anio, TipoPeriodo: Tipoperiodo, Perido: arreglosubcadena[0], sIdEmpresas: IdEmpresas, iRecibo: recibo };
         console.log(dataSend);
         $.ajax({
@@ -263,8 +262,7 @@
             type: "POST",
             data: dataSend,
             success: function (data) {
-                FNoRecibos(IdEmpresas);
-                btnEnviCorre.value = 1;
+                console.log(data);
                 if (recibo == "1") {
                     var source =
                     {
@@ -329,9 +327,43 @@
                             ]
                         });
                 }
-
-
-            },
+                if (recibo == "3") {
+                    var source =
+                    {
+                        localdata: data,
+                        datatype: "array",
+                        datafields:
+                            [
+                                { name: 'iIdEmpresa', type: 'int' },
+                                { name: 'sNomEmpleado', type: 'string' },
+                                { name: 'ianio', type: 'int' },
+                                { name: 'iTipoPeriodo', type: 'int' },
+                                { name: 'iPeriodo', type: 'int' },
+                                { name: 'sEmailPErsona', type: 'string' },
+                                { name: 'sEmailSendRecibo2', type: 'string' },
+                            ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#TbEjeSend").jqxGrid(
+                        {
+                            width: 930,
+                            source: dataAdapter,
+                            columns: [
+                                { text: 'Empresa No', datafield: 'iIdEmpresa', width: 50 },
+                                { text: 'Nombre de Empleado', datafield: 'sNomEmpleado', width: 300 },
+                                { text: 'Año ', datafield: 'ianio', width: 100 },
+                                { text: 'Tipo de Periodo', datafield: 'iTipoPeriodo', width: 100 },
+                                { text: 'Periodo', datafield: 'iPeriodo', width: 80 },
+                                { text: 'Email', datafield: 'sEmailPErsona', width: 200 },
+                                { text: 'Email enviado', datafield: 'sEmailSendRecibo2', width: 100 },
+                            ]
+                        });
+                }
+               
+                btnEnviCorre.value = 1;
+            }, error: (jqXHR, exception) => {
+                console.log(jqXHR, exception);
+            }
         });
 
 

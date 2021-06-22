@@ -357,6 +357,9 @@ namespace Payroll.Models.Beans
         public string sEmailSendSim { get; set; }
         public string sUurReciboSim { get; set; }
         public string sUrllReciboFis { get; set; }
+        public string sUrllRecibo2 { get; set; }
+
+        public string sEmailSendRecibo2 { get; set; }
         public int iNoEnviados { get; set; }
         public int iNoNoEnviados { get; set; }
         public int iNoPdfError { get; set; }
