@@ -856,8 +856,14 @@
                         fecefecnom.value   = data.Datos.sFechaEfectiva;
                         salmen.value       = data.Datos.dSalarioMensual;
                         salmenact.value    = data.Datos.dSalarioMensual;
-                        tipper.value       = data.Datos.iTipoPeriodo;
-                        tipemp.value       = data.Datos.iTipoEmpleado_id;
+                        tipper.value = data.Datos.iTipoPeriodo;
+                        console.log('datos de prestaciones')
+                        console.log(data.Datos.iPrestaciones);
+                        if (data.Datos.iTipoEmpleado_id == '' || data.Datos.iTipoEmpleado_id == '0') {
+                            tipemp.value = '0';
+                        } else {
+                            tipemp.value = data.Datos.iTipoEmpleado_id;
+                        }
                         nivemp.value       = data.Datos.iNivelEmpleado_id;
                         tipjor.value = data.Datos.iTipoJornada_id;
                         if (data.Datos.iClasif == '' || data.Datos.iClasif == '0') {
