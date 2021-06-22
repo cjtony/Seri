@@ -2106,7 +2106,7 @@ namespace Payroll.Controllers
                         
                         
                         if (bankInterbank == 44) {
-                            double resultadoSuma = 0;
+                            decimal resultadoSuma = 0;
                             // SCOTIABANK -- ARCHIVO OK (INTERBANCARIO)
                             string tipoArchivoIntScotiabank = "EE", 
                                 tipoRegistroIntScotiabank   = "HA", 
@@ -2126,11 +2126,13 @@ namespace Payroll.Controllers
                                 numeroContratoIntScotiabank = "00000";
                             }
 
+                            numeroContratoIntScotiabank = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
+
                             string headerLayoutAIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroIntScotiabank + numeroContratoIntScotiabank + secuenciaIntScotiabank + fillerIntScotiabankHA1;
                             // - ENCABEZADO BLOQUE - \\
                             string tipoRegistroBIntScotiabank = "HB", 
                                 monedaCuentaBIntScotiabank = "00", 
-                                usoFuturoIntScotiabank = "00000", 
+                                usoFuturoIntScotiabank = "0000", 
                                 cuentaCargoIntScotiabank = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, 
                                 referenciaEmpresaIntScotiabank = "0000000001", 
                                 codigoStatusIntScotiabank = "000", 
@@ -2228,8 +2230,10 @@ namespace Payroll.Controllers
                                     if (renglon1481 > 0) {
                                         importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         importeFinal = importe.decimalTotalDispersion.ToString();
+                                        resultadoSuma += importe.decimalTotalDispersion;
                                     } else {
                                         importeFinal = bank.dImporte.ToString();
+                                        resultadoSuma += bank.dImporte;
                                     }
                                     // FIN CODIGO NUEVO
                                     //importeTotalIntScotiabank += Convert.ToInt32(bank.dImporte);
