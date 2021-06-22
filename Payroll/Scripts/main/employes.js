@@ -1513,7 +1513,7 @@
                 diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE, ultSdi: ultSdi.value, clasif: 0
             };
         } else {
-            url = "../EditDataGeneral/EditDataNomina";
+            url = "../EditDataGeneral/EditDataNominaORG";
             datasend = {
                 fechefectact: fechefectact.value , fecefecnom: fecefecnom.value, salmen: salmen.value, tipper: tipper.value, tipemp: tipemp.value,
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,

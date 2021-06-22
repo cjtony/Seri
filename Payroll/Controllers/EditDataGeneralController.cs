@@ -128,10 +128,53 @@ namespace Payroll.Controllers
             return Json(new { Bandera = flag, MensajeError = messageError, Test = test });
         }
 
-        // Edicion de los datos de la nomina del empleado
-
         [HttpPost]
-        public JsonResult EditDataNomina(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, string motMoviSal, string fechMoviSal, Boolean flagSal, double salmenact, int clvemp, int categoriaEm, int pagoPorEmpl, int fondo, int clasif)
+        public JsonResult DatosNominaEdicion(string efechefectact, string efecefecnom, double esalmen, int etipper, int etipemp, int enivemp, int etipjor, int etipcon, int etipcontra, string efecing, string efecant, string evencon, int etippag, int ebanuse, string ecunuse, int eclvnom, int eposition, int etiposueldo, int epolitica, double ediferencia, double etransporte, int eretroactivo, string emotMoviSal, string efechMoviSal, Boolean eflagSal, double esalmenact, int eclvemp, int ecategoriaEm, int epagoPorEmpl, int efondo, int eclasif)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            DatosNominaBean nominaBean = new DatosNominaBean();
+            EditEmpleadoDao editEmpleadoDao = new EditEmpleadoDao();
+            DatosMovimientosBean datosMovimientos = new DatosMovimientosBean();
+            DatosPosicionesDao datoPosicionDao = new DatosPosicionesDao();
+            LoadTypePeriodPayrollBean periodBean = new LoadTypePeriodPayrollBean();
+            LoadTypePeriodPayrollDaoD periodDaoD = new LoadTypePeriodPayrollDaoD();
+            int empresa = int.Parse(Session["IdEmpresaIdEmpresa"].ToString());
+            int usuario = Convert.ToInt32(Session["iIdUsuario"].ToString());
+            double diferenciaE = (ediferencia < 1) ? 0.00 : ediferencia;
+            double transporteE = (etransporte < 1) ? 0.00 : etransporte;
+            string convertFEffdtAct = "";
+            //if (efechefectact != "")
+            //{
+            //    convertFEffdtAct = Convert.ToDateTime(efechefectact).ToString("dd/MM/yyyy");
+            //}
+            //string convertFEffdt = "";
+            //if (efecefecnom != "")
+            //{
+            //    convertFEffdt = Convert.ToDateTime(efecefecnom).ToString("dd/MM/yyyy");
+            //}
+            //string convertFIngrs = "";
+            //if (efecing != "")
+            //{
+            //    convertFIngrs = Convert.ToDateTime(efecing).ToString("dd/MM/yyyy");
+            //}
+            //string convertFAntiq = "";
+            //if (efecant != "")
+            //{
+            //    convertFAntiq = Convert.ToDateTime(efecant).ToString("dd/MM/yyyy");
+            //}
+            //string convertFVencC = "";
+            //if (evencon != "")
+            //{
+            //    convertFVencC = Convert.ToDateTime(evencon).ToString("dd/MM/yyyy");
+            //}
+            return Json(new { Mensaje = efechefectact, efecefecnom = efecefecnom });
+        }
+
+        // Edicion de los datos de la nomina del empleado
+        //string efechefectact, string efecefecnom, double esalmen, int etipper, int etipemp, int enivemp, int etipjor, int etipcon, int etipcontra, string efecing, string efecant, string evencon, int etippag, int ebanuse, string ecunuse, int eclvnom, int eposition, int etiposueldo, int epolitica, double ediferencia, double etransporte, int eretroactivo, string emotMoviSal, string efechMoviSal, Boolean eflagSal, double esalmenact, int eclvemp, int ecategoriaEm, int epagoPorEmpl, int efondo, int eclasif
+        [HttpPost]
+        public JsonResult EditDataNominaORG(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, string motMoviSal, string fechMoviSal, Boolean flagSal, double salmenact, int clvemp, int categoriaEm, int pagoPorEmpl, int fondo, int clasif)
         {
             Boolean flag         = false;
             String  messageError = "none";
@@ -141,47 +184,59 @@ namespace Payroll.Controllers
             DatosPosicionesDao datoPosicionDao      = new DatosPosicionesDao();
             LoadTypePeriodPayrollBean periodBean    = new LoadTypePeriodPayrollBean();
             LoadTypePeriodPayrollDaoD periodDaoD    = new LoadTypePeriodPayrollDaoD();
-            int empresa        = int.Parse(Session["IdEmpresaIdEmpresa"].ToString());
+            int empresa        = int.Parse(Session["IdEmpresa"].ToString());
             int usuario        = Convert.ToInt32(Session["iIdUsuario"].ToString());
             double diferenciaE = (diferencia < 1) ? 0.00 : diferencia;
             double transporteE = (transporte < 1) ? 0.00 : transporte;
             string convertFEffdtAct = "";
-            if (fechefectact != "") {
-                convertFEffdtAct = Convert.ToDateTime(fechefectact).ToString("dd/MM/yyyy");
-            }
-            string convertFEffdt = "";
-            if (fecefecnom != "") {
-                convertFEffdt = Convert.ToDateTime(fecefecnom).ToString("dd/MM/yyyy");
-            }
-            string convertFIngrs = "";
-            if (fecing != "") {
-                convertFIngrs = Convert.ToDateTime(fecing).ToString("dd/MM/yyyy");
-            }
-            string convertFAntiq = "";
-            if (fecant != "") {
-                convertFAntiq = Convert.ToDateTime(fecant).ToString("dd/MM/yyyy");
-            }
-            string convertFVencC = "";
-            if (vencon != "") {
-                convertFVencC = Convert.ToDateTime(vencon).ToString("dd/MM/yyyy");
-            }
-            try {
-                if (flagSal) {
-                    periodBean       = periodDaoD.sp_Load_Info_Periodo_Empr(empresa, Convert.ToInt32(DateTime.Now.Year.ToString()));
+            
+            try
+            {
+                if (fechefectact != "" && fechefectact != "none")
+                {
+                    convertFEffdtAct = Convert.ToDateTime(fechefectact).ToString("dd/MM/yyyy");
+                }
+                string convertFEffdt = "";
+                if (fecefecnom != "" && fecefecnom != "none")
+                {
+                    convertFEffdt = Convert.ToDateTime(fecefecnom).ToString("dd/MM/yyyy");
+                }
+                string convertFIngrs = "";
+                if (fecing != "" && fecing != "none")
+                {
+                    convertFIngrs = Convert.ToDateTime(fecing).ToString("dd/MM/yyyy");
+                }
+                string convertFAntiq = "";
+                if (fecant != "" && fecant != "none")
+                {
+                    convertFAntiq = Convert.ToDateTime(fecant).ToString("dd/MM/yyyy");
+                }
+                string convertFVencC = "";
+                if (vencon != "" && vencon != "none")
+                {
+                    convertFVencC = Convert.ToDateTime(vencon).ToString("dd/MM/yyyy");
+                }
+                if (flagSal)
+                {
+                    periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(empresa, Convert.ToInt32(DateTime.Now.Year.ToString()));
                     datosMovimientos = datoPosicionDao.sp_Save_Data_History_Movements_Employee(clvemp, empresa, "SUELDO", motMoviSal, salmen.ToString(), salmenact.ToString(), fechMoviSal, usuario, periodBean.iTipoPeriodo, periodBean.iPeriodo, periodBean.iAnio);
                 }
-                nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp, tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position, tiposueldo, politica, diferenciaE, transporte, empresa, retroactivo, categoriaEm, pagoPorEmpl, fondo, clasif);
-                if (nominaBean.sMensaje != "success") {
+                nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp,tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position, tiposueldo, politica, diferenciaE, transporte, empresa, retroactivo, categoriaEm, pagoPorEmpl, fondo, clasif);
+                if (nominaBean.sMensaje != "success")
+                {
                     messageError = nominaBean.sMensaje;
                 }
-                if (nominaBean.sMensaje == "success") {
+                if (nominaBean.sMensaje == "success")
+                {
                     flag = true;
                 }
-            } catch (Exception exc) {
-                flag         = false;
+            }
+            catch (Exception exc)
+            {
+                flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError, Slario = salmen });
+            return Json(new { Bandera = flag, MensajeError = messageError  });
         }
 
         // Edicion de los datos de estructura del empleado
