@@ -135,10 +135,6 @@
 
 
 
-
-
-
-
     /// Tab Ejecucion 
 
     const LanombreDef = document.getElementById('LanombreDef');

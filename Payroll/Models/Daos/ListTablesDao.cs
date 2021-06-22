@@ -1219,7 +1219,7 @@ namespace Payroll.Models.Daos
         {
 
             int IdCalcHD,iperiodo;
-            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0,row227=0,row467=0, Recibo2 = 0, FinR = 0,ISREs = 0;
+            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0,row227=0,row467=0, row1007=0, Recibo2 = 0, FinR = 0,ISREs = 0;
             string[] Nombre= sNombreComple.Split(' ');
            string NomEmple = "";
             List<string> NomArchXML = new List<string>();
@@ -1737,6 +1737,8 @@ namespace Payroll.Models.Daos
                                         {
                                             for (int a = 0; a < LisTRecibo.Count; a++)
                                             {
+                                                
+
                                                 if (LisTRecibo[a].iIdRenglon == 198)
                                                 {
 
@@ -2005,8 +2007,6 @@ namespace Payroll.Models.Daos
                                                         {
                                                             row467 = a;
                                                         };
-
-
                                                         if (LisTRecibo[a].iIdRenglon == 27 && masivo == 3)
                                                         {
                                                             row27 = a;
@@ -2239,25 +2239,32 @@ namespace Payroll.Models.Daos
                                                 if (LisTRecibo[a].sValor == "Deducciones")
                                                 {
                                                   
-                                                    string IdRenglon = Convert.ToString(LisTRecibo[a].iIdRenglon);
+                                                       string IdRenglon = Convert.ToString(LisTRecibo[a].iIdRenglon);
                                                      
-                                                    if (IdRenglon == "1001") { Isr = LisTRecibo[a].dSaldo;
-                                                        ISREs = 1;
-                                                    }
+                                                       if (IdRenglon == "1001") { Isr = LisTRecibo[a].dSaldo;
+                                                         ISREs = 1;
+                                                       }
 
-                                                    if (masivo ==1 &&  FinR ==0) {
-                                                       if (IdRenglon == "1011") {
+                                                        if (IdRenglon == "1007")
+                                                        {
+                                                            Isr = Isr + LisTRecibo[a].dSaldo;
+                                                            ISREs = 1;
+                                                        }
+
+                                                        if (masivo ==1 &&  FinR ==0) {
+                                                             if (IdRenglon == "1011") {
                                                             Isr = LisTRecibo[a].dSaldo;
                                                             ISREs = 1;
                                                         }
                                                     
-                                                    }
+                                                        }
+                                                       
 
-                                                    if (masivo == 3 && FinR == 1)
-                                                    {
+                                                        if (masivo == 3 && FinR == 1)
+                                                        {
                                                         if (IdRenglon == "1105")
                                                         {
-                                                            Isr = LisTRecibo[a].dSaldo;
+                                                            Isr = Isr+ LisTRecibo[a].dSaldo;
                                                             ISREs = 1;
                                                         }
 
@@ -2278,9 +2285,7 @@ namespace Payroll.Models.Daos
                                         deduciones = deduciones.Replace(",", "");
                                         isr = isr.Replace(",", "");
                                         // Deducciones
-                                        if (isr == "0.00") {
-                                            ISREs = 0;
-                                        }
+                                      
 
                                         if (totalDeduciones.ToString() != "0.00") {
                                             xmlWriter.WriteStartElement(Prefijo2, "Deducciones", EspacioDeNombreNomina);
@@ -2288,8 +2293,12 @@ namespace Payroll.Models.Daos
                                         if (ISREs == 1) {
                                             xmlWriter.WriteAttributeString("TotalImpuestosRetenidos",isr);
                                         }
+                                      
 
-                                        if (totalDeduciones.ToString() != "0.00") {
+
+
+
+                                            if (totalDeduciones.ToString() != "0.00") {
                                             xmlWriter.WriteAttributeString("TotalOtrasDeducciones", deduciones);
                                             if (LisTRecibo.Count > 0)
                                             {

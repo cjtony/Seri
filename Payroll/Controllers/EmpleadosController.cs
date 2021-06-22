@@ -1602,6 +1602,11 @@ namespace Payroll.Controllers
                 {
                     pathCarp2 = PathCarp + "Fiscal\\Empresa" + idEmpresa +"\\";
                 }
+                if (iRecibo == 3)
+                {
+                    pathCarp2 = PathCarp + "Recibo2\\Empresa" + idEmpresa + "\\";
+                }
+
 
                 if (System.IO.File.Exists(pathCarp2))
                 {
@@ -1628,6 +1633,12 @@ namespace Payroll.Controllers
                     {
                         Nombrearc = Nombrearc + "ReciboFiscal_E" + idEmpresa + "_N" + Empleados[a].iIdEmpleado + "_F" + Folio + ".pdf";
                     }
+
+                    if (iRecibo == 3)
+                    {
+                        Nombrearc = Nombrearc + "Recibo2_E" + idEmpresa + "_N" + Empleados[a].iIdEmpleado + "_F" + Folio + ".pdf";
+                    }
+
                     if (System.IO.File.Exists(Nombrearc))
                     {
                         System.IO.File.Delete(Nombrearc);
@@ -1644,7 +1655,10 @@ namespace Payroll.Controllers
                     List<SelloSatBean> LiTsat = new List<SelloSatBean>();
                     LiTsat = Dao2.sp_DatosSat_Retrieve_TSellosSat(idEmpresa, anios, Tipodeperido, Perido, Empleados[a].iIdEmpleado);
                     List<ReciboNominaBean> LisTRecibo = new List<ReciboNominaBean>();
-                    LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, 0);
+                    int tipoRecibo = 0;
+                    if (iRecibo == 3) { tipoRecibo = 1;  };
+
+                    LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, tipoRecibo);
 
                     if (ListDatEmisor != null) {
                         if (iRecibo == 1 && ListDatEmisor[0].sRFC.Length > 3 && LisTRecibo != null)
@@ -1665,24 +1679,34 @@ namespace Payroll.Controllers
                             };
 
                         };
+                        if (iRecibo == 3 && ListDatEmisor[0].sRFC.Length > 3 && LisTRecibo != null)
+                        {
+                            Dao2.sp_CCejecucionAndSen_update_TsellosSat(idEmpresa, idempleado, anios, Tipodeperido, Perido, 4, Nombrearc);
+
+                            NoEjecuciones = NoEjecuciones + 1;
+                            valido = 1;
+                        };
+
+
                     };
                     if (valido == 1) {
-                       
-                        ListDatEmisor[0].sUrl = PathPDF;
-                        LisCer = Dao2.sp_FileCer_Retrieve_CCertificados(ListDatEmisor[0].sRFC);
-                        string pathCert = Server.MapPath("Archivos\\certificados\\");
-                        pathCert = pathCert.Replace("\\Empleados", "");
+                        string pathCert;
 
                         string s_certificadoKey = "";
                         string s_certificadoCer = "";
                         string s_transitorio = "";
+                        if (iRecibo !=3) {
+                            ListDatEmisor[0].sUrl = PathPDF;
+                            LisCer = Dao2.sp_FileCer_Retrieve_CCertificados(ListDatEmisor[0].sRFC);                          
+                        }
 
-                        if (iRecibo != 1) {
+                        pathCert = Server.MapPath("Archivos\\certificados\\");
+                        pathCert = pathCert.Replace("\\Empleados", "");
+
+                        if (iRecibo != 1 && iRecibo !=3) {
                             s_certificadoKey = pathCert + LisCer[0].sfilekey;
                             s_certificadoCer = pathCert + LisCer[0].sfilecer;
                             s_transitorio = LisCer[0].stransitorio;
-
-
                         }
 
                         
@@ -1691,14 +1715,12 @@ namespace Payroll.Controllers
                             byte[] bcert = null;
                             string CerNo = null;
                             byte[] CERT_SIS = null;
-                            if (iRecibo != 1) {
+                            if (iRecibo != 1 && iRecibo != 3) {
                                 System.Security.Cryptography.X509Certificates.X509Certificate CerSAT;
                                 CerSAT = System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromCertFile(s_certificadoCer);
                                 bcert = CerSAT.GetSerialNumber();
                                 CerNo = LibreriasFacturas.StrReverse((string)Encoding.UTF8.GetString(bcert));
                                 CERT_SIS = CerSAT.GetRawCertData();
-
-
                             }
                          
 
@@ -3922,10 +3944,71 @@ namespace Payroll.Controllers
             List<TsellosBean> Archi = new List<TsellosBean>();
             ListEmpleadosDao Dao = new ListEmpleadosDao();
             Archi = Dao.sp_Recibos_Retrieve_TsellosSat(IdEmpresas, EmpleId, Anio, Tipoperiodo, Perido,iRecibo);
+            string path = Server.MapPath("Archivos\\Temporal\\");
+            path = path.Replace("\\Empleados", "");
+            string Nombarch = "";
+            if (iRecibo == 1) {
+                Nombarch = EmpleId + "Recibosimple.pdf";
+            }
+            if (iRecibo == 2)
+            {
+                Nombarch = EmpleId + "ReciboFiscal.pdf";
+            }
+            string pathDire = path + "\\" +Nombarch;
+            if (!System.IO.Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            if (iRecibo == 1){
+
+                string Pathini = Archi[0].sURreciboSimple;
+                if (System.IO.File.Exists(Pathini)) {
+                    System.IO.File.Copy(Pathini, pathDire, true);
+                    Archi[0].sURTemp = pathDire;
+                    Archi[0].sURreciboSimple = Nombarch;
+                }
+
+
+            }
+
+            if (iRecibo == 2) {
+
+                string Pathini = Archi[0].sURreciboFiscal;
+                if (System.IO.File.Exists(Pathini))
+                {
+                    System.IO.File.Copy(Pathini, pathDire, true);
+                    Archi[0].sURTemp = pathDire;
+                    Archi[0].sURreciboFiscal = Nombarch;
+                }
+
+
+
+            }
+
+
+
+
+
             return Json(Archi);
         }
 
 
+        // borrar archivo temporal ;
+        [HttpPost]
+        public JsonResult PathArcDelete(string Path)
+        {
+           
+            List<TsellosBean> Archi = new List<TsellosBean>();
+            ListEmpleadosDao Dao = new ListEmpleadosDao();
+            if (System.IO.File.Exists(Path))
+            {
+                System.IO.File.Delete(Path);
+              
+            }
+
+            return Json(Archi);
+        }
 
     }
 }
