@@ -3104,13 +3104,14 @@ namespace Payroll.Models.Daos
                         {
                             LP.iIdEmpresa = int.Parse(data["Empresa_id"].ToString());
                             LP.iIdEmpleado = int.Parse(data["Empleado_id"].ToString());
-                            LP.sNomEmpleado = data["Empleado_id"].ToString()+" "+ data["Empleado"].ToString();
+                            LP.sNomEmpleado = data["Empleado_id"].ToString() + " " + data["Empleado"].ToString();
                             LP.sNombre = data["Nombre_Empleado"].ToString();
                             LP.ianio = int.Parse(data["Anio"].ToString());
                             LP.iTipoPeriodo = int.Parse(data["Tipo_Periodo_id"].ToString());
                             LP.iPeriodo = int.Parse(data["Periodo"].ToString());
                             LP.bEmailSent = "";
-                            if (data["Email_Sent"].ToString() == "True") {
+                            if (data["Email_Sent"].ToString() == "True")
+                            {
                                 LP.bEmailSent = "Enviado";
                             }
                             if (data["Email_Sent"].ToString() == "False")
@@ -3124,19 +3125,28 @@ namespace Payroll.Models.Daos
                                 LP.sEmailPErsona = data["Correo_Electronico"].ToString();
                             }
                             else { LP.sEmailSent = ""; }
-                            if (data["Recibo_Simple"].ToString()!=null) { LP.sUurReciboSim = data["Recibo_Simple"].ToString(); }
+                            if (data["Recibo_Simple"].ToString() != null) { LP.sUurReciboSim = data["Recibo_Simple"].ToString(); }
                             else { LP.sUurReciboSim = " "; };
-                            if (data["Recibo_Fiscal"].ToString() != null) { LP.sUrllReciboFis = data["Recibo_Fiscal"].ToString(); } else{ LP.sUrllReciboFis = " ";};
+                            if (data["Recibo_Fiscal"].ToString() != null) { LP.sUrllReciboFis = data["Recibo_Fiscal"].ToString(); } else { LP.sUrllReciboFis = " "; };
+                            if (data["Recibo2"].ToString() != null) { LP.sUrllRecibo2 = data["Recibo2"].ToString(); } else { LP.sUrllRecibo2 = " "; };
 
                             LP.sEmailSendSim = "";
-                            if (data["Email_Sent_simple"].ToString() == "True") {
+                            if (data["Email_Sent_simple"].ToString() == "True")
+                            {
                                 LP.sEmailSendSim = "Enviado";
                             }
                             if (data["Email_Sent_simple"].ToString() == "False")
                             {
                                 LP.sEmailSendSim = "No enviado";
                             }
-
+                            if (data["Email_sent_Recibo2"].ToString() == "False")
+                            {
+                                LP.sEmailSendRecibo2 = "No enviado";
+                            }
+                            if (data["Email_sent_Recibo2"].ToString() == "True")
+                            {
+                                LP.sEmailSendRecibo2 = "Enviado";
+                            }
                             LP.sEmailEmpresa = data["EmailEmpresa"].ToString();
                             LP.sPassword = data["Password"].ToString();
                             LP.sMensaje = "Succes";

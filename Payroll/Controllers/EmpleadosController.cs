@@ -1710,7 +1710,7 @@ namespace Payroll.Controllers
                         }
 
                         
-                        if ((System.IO.File.Exists(s_certificadoKey) && LisTRecibo !=null) || iRecibo ==1 )
+                        if ((System.IO.File.Exists(s_certificadoKey) && LisTRecibo !=null) || iRecibo ==1 || iRecibo==3)
                         {
                             byte[] bcert = null;
                             string CerNo = null;
@@ -2026,7 +2026,7 @@ namespace Payroll.Controllers
 
 
                             List<ReciboNominaBean> ListTotales = new List<ReciboNominaBean>();
-                            ListTotales = Dao2.sp_SaldosTotales_Retrieve_TPlantillasCalculos(idEmpresa, Empleados[a].iIdEmpleado, Perido, 0);
+                            ListTotales = Dao2.sp_SaldosTotales_Retrieve_TPlantillasCalculos(idEmpresa, Empleados[a].iIdEmpleado, Perido, tipoRecibo);
 
                             Paragraph TSalarioB = new Paragraph("", TTexNegCuerpo);
                             Paragraph SalarioB = new Paragraph("", TexNegCuerpo);
@@ -2257,7 +2257,7 @@ namespace Payroll.Controllers
                             // dias Efectivos 
 
                            
-                            LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, 0);
+                            LisTRecibo = Dao.sp_TpCalculoEmpleado_Retrieve_TpCalculoEmpleado(idEmpresa, ListDatEmisor[0].iIdEmpleado, Perido, TipoPeriodo, Anio, tipoRecibo);
                             decimal iTdias = LFechaPerido[0].iDiasEfectivos;
                             int TDias = 0;
                             string Dias = LisTRecibo[0].sNombre_Renglon;
