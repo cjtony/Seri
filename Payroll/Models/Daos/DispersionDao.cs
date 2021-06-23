@@ -275,6 +275,31 @@ namespace Payroll.Models.Daos
     public class DataDispersionBusiness : Conexion
     {
 
+        public decimal sp_Totales_Dispersion_Especial (int Anio, int Periodo, int TipoPeriodoId, int GrupoId, int ConfiguracionId)
+        {
+            decimal resultado = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Totales_Dispersion_Especial", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", Periodo));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", TipoPeriodoId));
+                cmd.Parameters.Add(new SqlParameter("@GrupoId", GrupoId));
+                cmd.Parameters.Add(new SqlParameter("@ConfiguracionId", ConfiguracionId));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    resultado = Convert.ToDecimal(dataReader["TOTAL"].ToString());
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return resultado;
+        }
+
         public double sp_Datos_Totales_Resta_Importe_Bancos_Dispersion(int IdEmpresa, int Periodo, int TipoPeriodo, int BancoId)
         {
             double result = 0;

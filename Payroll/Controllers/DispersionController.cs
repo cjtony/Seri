@@ -431,7 +431,8 @@ namespace Payroll.Controllers
                                 }
                                 Random random = new Random();
                                 //-----------
-                                string nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2) + "CD" + random.Next(1, 100000).ToString() + "U" + Session["iIdUsuario"].ToString();
+                                string nameFolder = "DEPOSITOS_" + "E" + keyBusiness.ToString() + "P" + numberPeriod.ToString() + "A" + dateGeneration.ToString("yyyy").Substring(2, 2);
+                                    //+ "CD" + random.Next(1, 100000).ToString() + "U" + Session["iIdUsuario"].ToString();
                                 //-----------
                                 fileNamePDF  = "CHQ_NOMINAS_E" + keyBusiness.ToString() + "A" + string.Format("{0:00}", (yearPeriod % 100)) + "P" + string.Format("{0:00}", numberPeriod) + "_B" + bankResult.ToString() + ".PDF";
                                 string directoryTxt = Server.MapPath("/DispersionTXT/" + DateTime.Now.Year.ToString()).ToString() + "/NOMINAS/";
@@ -2790,16 +2791,24 @@ namespace Payroll.Controllers
             String  messageError = "none";
             List<BancosBean> bancosBean = new List<BancosBean>();
             DataDispersionBusiness dataDispersion = new DataDispersionBusiness();
-            try {
-                bancosBean = dataDispersion.sp_View_Banks_Available_Dispersion(keyGroup, type, option, configuration);
+            LoadTypePeriodBean loadTypePerBean = new LoadTypePeriodBean();
+            LoadTypePeriodDaoD loadTypePerDaoD = new LoadTypePeriodDaoD();
+            Decimal total = 0;
+            string resultadoTotal = "";
+            try {  
+                    int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                    loadTypePerBean = loadTypePerDaoD.sp_Load_Type_Period_Empresa(keyBusiness, DateTime.Now.Year, 3);
+                    bancosBean = dataDispersion.sp_View_Banks_Available_Dispersion(keyGroup, type, option, configuration);
                 if (bancosBean.Count > 0) {
+                    total = dataDispersion.sp_Totales_Dispersion_Especial(DateTime.Now.Year, loadTypePerBean.iPeriodo, 3, keyGroup, configuration);
+                    resultadoTotal = "$ " + Convert.ToDecimal(total).ToString("#,##0.00");
                     flag = true;
                 }
             } catch (Exception exc) {
                 flag = false;
                 messageError = exc.Message.ToString();
             }
-            return Json(new { Bandera = flag, MensajeError = messageError, Datos = bancosBean });
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = bancosBean, Total = resultadoTotal });
         }
 
         [HttpPost]

@@ -4,6 +4,7 @@
     localStorage.removeItem("nameGroup");
     localStorage.removeItem("disabledBtnSCD");
     localStorage.removeItem("typeSend");
+    localStorage.removeItem("keyGroup");
 
     /*
      * CONSTANTES
@@ -78,6 +79,7 @@
 
     // Muestra todos los bancos disponibles
     fViewBanks = (paramint, paramstr) => {
+        localStorage.setItem("keyGroup", paramint)
         localStorage.setItem("nameGroup", paramstr);
         contentViewBanks.innerHTML = "";
         contentViewBanksInt.innerHTML = "";
@@ -846,8 +848,9 @@
         contentDCBank.innerHTML = "";
         try {
             if (paramint > 0) {
+                const keyGroup = localStorage.getItem("keyGroup");
                 const badges = ["primary", "secondary", "success", "info", "light", "dark", "warning", "danger"];
-                const dataSend = { keyGroup: parseInt(0), type: String(paramstr), option: String('ONE'), configuration: parseInt(paramint) };
+                const dataSend = { keyGroup: parseInt(keyGroup), type: String(paramstr), option: String('ONE'), configuration: parseInt(paramint) };
                 console.log(dataSend);
                 $.ajax({
                     url: "../Dispersion/ShowBanksConfigDetails",
@@ -866,9 +869,14 @@
                                 if (randomNumeric == 8) {
                                     randomNumeric = randomNumeric - 1;
                                 }
-                                htmlResult += `<span class="badge badge-${badges[randomNumeric]} mr-2 p-3 mt-2">${request.Datos[i].sNombreBanco} <i title="Remover" style="cursor:pointer;" class="fas fa-times-circle ml-2 fa-lg" onclick="fRemoveBankDetail(${paramint}, ${request.Datos[i].iConfiguracion}, ${request.Datos[i].iGrupoId})"></i> </span>`;
+                                htmlResult += `<span class="badge badge-${badges[randomNumeric]} mr-2 p-3 mt-2">${request.Datos[i].iIdBanco} -  ${request.Datos[i].sNombreBanco} <i title="Remover" style="cursor:pointer;" class="fas fa-times-circle ml-2 fa-lg" onclick="fRemoveBankDetail(${paramint}, ${request.Datos[i].iConfiguracion}, ${request.Datos[i].iGrupoId})"></i> </span>`;
                             }
                             htmlResult += "</div>";
+                            htmlResult += `
+                                <div class="col-md-8 offset-2">
+                                    <hr/>
+                                    <h5 class="text-center text-success font-weight-bold">Cantidad a pagar: ${request.Total}</h5>
+                                </div>`;
                             setTimeout(() => {
                                 document.getElementById("btn-save-cd").disabled = true;
                             }, 3000);

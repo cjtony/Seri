@@ -514,6 +514,7 @@
                     transporte.value = getDataTabNom[i].data.transporte;
                     retroactivo.checked = getDataTabNom[i].data.retroactivo;
                     conFondo.checked = getDataTabNom[i].data.confondo;
+                    conPrestaciones.checked = getDataTabNom[i].data.conprestaciones;
                     if (getDataTabNom[i].data.banuse != 999) {
                         banuse.disabled = false;
                         cunuse.disabled = false;

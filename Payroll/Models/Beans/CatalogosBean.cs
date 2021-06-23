@@ -286,6 +286,7 @@ namespace Payroll.Models.Beans
     }
     public class DatosNominaBean
     {
+        public string sPrestaciones { get; set; }
         public int iPrestaciones { get; set; }
         public int iIdNomina { get; set; }
         public int iEmpleado_id { get; set; }
