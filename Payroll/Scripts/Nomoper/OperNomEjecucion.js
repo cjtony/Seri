@@ -789,19 +789,23 @@
                     confirmButtonText: 'Aceptar!'
                 }).then((result) => {
                     if (result.value) {
-                        console.log('proceso de cerrar nomina');
+                        
+
                         periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
                         separador = " ",
-                            limite = 2,
-                            arreglosubcadena2 = periodo.split(separador, limite);
+                        limite = 2,
+                        arreglosubcadena2 = periodo.split(separador, limite);
                         periodo = PeridoEje.options[PeridoEje.selectedIndex].text;
+                        
                         var tipPer = TxbTipoPeriodo.value
                         separador = " ",
-                            limite = 2,
-                            arreglosubcadena3 = tipPer.split(separador, limite);
+                        limite = 2,
+                        arreglosubcadena3 = tipPer.split(separador, limite);
+                        console.log('proceso de cerrar nomina aaa');
+                        var Vcara = 0;
 
-                        const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], idEmpresa: 0, Anio: TbAño.value };
-
+                        const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], idEmpresa: 0, Anio: TbAño.value, cart: Vcara };
+                        console.log(dataSend);
                         var rows;
                         $.ajax({
                             url: "../Nomina/ListTpCalculoln",
@@ -938,7 +942,7 @@
                         limite = 2,
                         arreglosubcadena3 = tipPer.split(separador, limite);
 
-                    const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], idEmpresa: 0, Anio: TbAño.value };
+                    const dataSend = { iIdCalculosHd: IdDropList, iTipoPeriodo: arreglosubcadena3[0], iPeriodo: arreglosubcadena2[0], idEmpresa: 0, Anio: TbAño.value, cart:0 };
 
                     var rows;
                     $.ajax({
