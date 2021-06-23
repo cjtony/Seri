@@ -2874,14 +2874,14 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveConfigDataBank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig)
+        public JsonResult SaveConfigDataBank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig, string rfc)
         {
             Boolean flag         = false;
             String  messageError = "none";
             DataDispersionBusiness dataDispersion          = new DataDispersionBusiness();
             DatosCuentaClienteBancoEmpresaBean datosCuenta = new DatosCuentaClienteBancoEmpresaBean();
             try {
-                datosCuenta = dataDispersion.sp_Save_Config_Data_Account_Bank(nClient, nAccount, nClabe, nSquare, keyConfig);
+                datosCuenta = dataDispersion.sp_Save_Config_Data_Account_Bank(nClient, nAccount, nClabe, nSquare, keyConfig, rfc);
                 if (datosCuenta.sMensaje == "SUCCESS") {
                     flag = true;
                 } else {
