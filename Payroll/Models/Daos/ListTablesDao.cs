@@ -1272,8 +1272,11 @@ namespace Payroll.Models.Daos
                         Nombre = ListEmple[i].sNombreEmpleado.Split(' '); //.sNombreCompleto.Split(' ');
                         NumEmpleado = ListEmple[i].iIdEmpleado;   //ListEmple[i].iIdEmpleado;
                         id = ListEmple[i].iIdEmpleado;
-                      
 
+                        if (NumEmpleado == 410) {
+
+                            String Serompe = "";
+                        }
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                         if (Nombre.Length > 0)
                         {
@@ -2205,14 +2208,12 @@ namespace Payroll.Models.Daos
                                             xmlWriter.WriteStartElement(Prefijo2, "Deducciones", EspacioDeNombreNomina);
                                         }
                                         if (ISREs == 1) {
-                                            xmlWriter.WriteAttributeString("TotalImpuestosRetenidos",isr);
+                                                string d = Convert.ToString(isr);
+                                            xmlWriter.WriteAttributeString("TotalImpuestosRetenidos",d);
                                         }
                                       
 
-
-
-
-                                            if (totalDeduciones.ToString() != "0.00") {
+                                        if (totalDeduciones.ToString() != "0.00") {
                                             xmlWriter.WriteAttributeString("TotalOtrasDeducciones", deduciones);
                                             if (LisTRecibo.Count > 0)
                                             {
