@@ -174,7 +174,7 @@ namespace Payroll.Controllers
         // Edicion de los datos de la nomina del empleado
         //string efechefectact, string efecefecnom, double esalmen, int etipper, int etipemp, int enivemp, int etipjor, int etipcon, int etipcontra, string efecing, string efecant, string evencon, int etippag, int ebanuse, string ecunuse, int eclvnom, int eposition, int etiposueldo, int epolitica, double ediferencia, double etransporte, int eretroactivo, string emotMoviSal, string efechMoviSal, Boolean eflagSal, double esalmenact, int eclvemp, int ecategoriaEm, int epagoPorEmpl, int efondo, int eclasif
         [HttpPost]
-        public JsonResult EditDataNominaORG(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, string motMoviSal, string fechMoviSal, Boolean flagSal, double salmenact, int clvemp, int categoriaEm, int pagoPorEmpl, int fondo, int clasif)
+        public JsonResult EditDataNominaORG(string fechefectact, string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, string motMoviSal, string fechMoviSal, Boolean flagSal, double salmenact, int clvemp, int categoriaEm, int pagoPorEmpl, int fondo, int clasif, int conPrestaciones)
         {
             Boolean flag         = false;
             String  messageError = "none";
@@ -221,7 +221,7 @@ namespace Payroll.Controllers
                     periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(empresa, Convert.ToInt32(DateTime.Now.Year.ToString()));
                     datosMovimientos = datoPosicionDao.sp_Save_Data_History_Movements_Employee(clvemp, empresa, "SUELDO", motMoviSal, salmen.ToString(), salmenact.ToString(), fechMoviSal, usuario, periodBean.iTipoPeriodo, periodBean.iPeriodo, periodBean.iAnio);
                 }
-                nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp,tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position, tiposueldo, politica, diferenciaE, transporte, empresa, retroactivo, categoriaEm, pagoPorEmpl, fondo, clasif);
+                nominaBean = editEmpleadoDao.sp_Nomina_Update_DatoNomina(convertFEffdt, salmen, tipper, tipemp, nivemp,tipjor, tipcon, tipcontra, convertFIngrs, convertFAntiq, convertFVencC, tippag, banuse, cunuse, clvnom, position, tiposueldo, politica, diferenciaE, transporte, empresa, retroactivo, categoriaEm, pagoPorEmpl, fondo, clasif, conPrestaciones);
                 if (nominaBean.sMensaje != "success")
                 {
                     messageError = nominaBean.sMensaje;

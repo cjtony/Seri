@@ -236,8 +236,13 @@ namespace Payroll.Controllers
                             {
                                 nombreEmpresaBanamex = nameBusiness;
                             }
+                            int recorrido = 36 - nombreEmpresaBanamex.Length;
+                            for (var c = 0; c < recorrido; c++)
+                            {
+                                nombreEmpresaBanamex += " ";
+                            }
                             //string valorFijoBanamex1 = "CNOMINA";
-                            string valorFijoBanamex1 = "DEPOSIT";
+                            string valorFijoBanamex1 = "DEPOSI";
                             string fillerBanamexE1 = " ";
                             string fechaBanamexE1 = dateC.ToString("ddMMyyyy") + "     ";
                             string valorFijoBanamex2 = "05";

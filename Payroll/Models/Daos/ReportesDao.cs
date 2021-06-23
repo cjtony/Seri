@@ -1549,6 +1549,26 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
+        public DataTable sp_Datos_Reporte_Incapacidades_TCR(string option, int keyOption) {
+            DataTable dataTable = new DataTable();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Reporte_Incapacidades_TCR", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyOption));
+                cmd.Parameters.Add(new SqlParameter("@Opcion", option));
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dataTable);
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return dataTable;
+        }
+
         public DataTable sp_Datos_Reporte_Pensiones_Alimenticias(string option, int keyOption)
         {
             DataTable dataTable = new DataTable();

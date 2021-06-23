@@ -528,7 +528,8 @@
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
     const retroactivo = document.getElementById('retroactivo');
-    const conFondo    = document.getElementById('con_fondo');
+    const conFondo = document.getElementById('con_fondo');
+    const conPrestaciones = document.getElementById('con_prestaciones');
     const categoriaEm = document.getElementById('categoria_emp');
     const pagoPorEmpl = document.getElementById('pago_por');
     const tippag = document.getElementById('tippag');
@@ -659,8 +660,12 @@
             retroactivoSave = 1;
         }
         let conFondoSave = 0;
+        let conPrestacionesSave = 0;
         if (conFondo.checked) {
             conFondoSave = 1;
+        }
+        if (conPrestaciones.checked) {
+            conPrestacionesSave = 1;
         }
         const dataLocSto = {
             key: 'nom', data: {
@@ -676,6 +681,7 @@
                 transporte: transporte.value,
                 retroactivo: retroactivoSave,
                 confondo: conFondoSave,
+                conprestaciones: conPrestacionesSave,
                 categoria: categoriaEm.value,
                 pagopor: pagoPorEmpl.value,
                 fecing: fecing.value,
@@ -859,6 +865,11 @@
                         tipper.value = data.Datos.iTipoPeriodo;
                         console.log('datos de prestaciones')
                         //console.log(data.Datos.iPrestaciones);
+                        if (data.Datos.sPrestaciones == "True") {
+                            conPrestaciones.checked = 1;
+                        } else {
+                            conPrestaciones.checked = 0;
+                        }
                         if (data.Datos.iTipoEmpleado_id == '' || data.Datos.iTipoEmpleado_id == '0') {
                             tipemp.value = '0';
                         } else {
@@ -1501,6 +1512,7 @@
         const flagSal          = (salmen.value != salmenact.value) ? true : false;
         const retroactivoSendE = (retroactivo.checked) ? 1 : 0;
         const conFondoSendE = (conFondo.checked) ? 1 : 0;
+        const conPrestacionesSendE = (conPrestaciones.checked) ? 1 : 0;
         const motMoviSal       = document.getElementById('motmovisal');
         const fechMoviSal      = document.getElementById('fechmovisal');
         if (tippag.value == "218" || tippag.value == "220") {
@@ -1526,7 +1538,7 @@
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
                 transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "0", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value,
-                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE, clasif: clasif.value
+                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE, clasif: clasif.value, conPrestaciones: conPrestacionesSendE
             };
         }
         console.log(url);
