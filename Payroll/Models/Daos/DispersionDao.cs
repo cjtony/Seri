@@ -705,6 +705,7 @@ namespace Payroll.Models.Daos
                         datosCuenta.sNumeroCuenta  = dataReader["NCuenta"].ToString();
                         datosCuenta.sClabe         = dataReader["NClabe"].ToString();
                         datosCuenta.iPlaza         = (dataReader["Plaza"].ToString() != "") ? Convert.ToInt32(dataReader["Plaza"]) : 0;
+                        datosCuenta.sRFC           = dataReader["RFC"].ToString();
                         datosCuenta.sMensaje       = "SUCCESS";
                     } else {
                         datosCuenta.sMensaje = "NOTFOUND";
@@ -721,7 +722,7 @@ namespace Payroll.Models.Daos
             }
             return datosCuenta;
         }
-        public DatosCuentaClienteBancoEmpresaBean sp_Save_Config_Data_Account_Bank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig)
+        public DatosCuentaClienteBancoEmpresaBean sp_Save_Config_Data_Account_Bank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig, string rfc)
         {
             DatosCuentaClienteBancoEmpresaBean datosCuenta = new DatosCuentaClienteBancoEmpresaBean();
             try {
@@ -732,6 +733,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Clabe", nClabe));
                 cmd.Parameters.Add(new SqlParameter("@Plaza", nSquare));
                 cmd.Parameters.Add(new SqlParameter("@IdConfiguracion", keyConfig));
+                cmd.Parameters.Add(new SqlParameter("@RFC", rfc));
                 if (cmd.ExecuteNonQuery() > 0) {
                     datosCuenta.sMensaje = "SUCCESS";
                 } else {

@@ -669,6 +669,12 @@
                                         <label class="col-form-label" for="plaza">Plaza:</label>
                                         <input class="form-control form-control-sm" type="number" id="nPlaza" value="${data.iPlaza}" />
                                     </div>
+                                 </div>
+                                 <div class="col-md-4 offset-2 animated fadeIn">
+                                    <div class="form-group rounded">
+                                        <label class="col-form-label" for="plaza">RFC:</label>
+                                        <input class="form-control form-control-sm" type="text" id="rfc" value="${data.sRFC}" />
+                                    </div>
                                 </div>
                                 <div class="col-md-6 offset-3 mt-3 animated fadeInDown">
                                     <div class="form-group rounded">
@@ -711,6 +717,7 @@
                 const nCuenta  = document.getElementById('nCuenta');
                 const nClabe   = document.getElementById('nClabe');
                 const nPlaza = document.getElementById('nPlaza');
+                const rfc = document.getElementById('rfc');
                 if (nCliente.value != "") {
                     if (nCuenta.value != "") {
                         if (nClabe.value != "") {
@@ -720,7 +727,8 @@
                                     nAccount:  String(nCuenta.value),
                                     nClabe:    String(nClabe.value),
                                     nSquare:   parseInt(nPlaza.value),
-                                    keyConfig: parseInt(paramconfig)
+                                    keyConfig: parseInt(paramconfig),
+                                    rfc: String(rfc.value)
                                 };
                                 $.ajax({
                                     url: "../Dispersion/SaveConfigDataBank",

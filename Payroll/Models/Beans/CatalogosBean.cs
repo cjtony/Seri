@@ -88,6 +88,7 @@ namespace Payroll.Models.Beans
         public string sNCuenta { get; set; }
         public string sNClabe { get; set; }
         public string sNPlaza { get; set; }
+        public string sRfc { get; set; }
     }
     public class PuestosBean
     {

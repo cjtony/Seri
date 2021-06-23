@@ -35,6 +35,7 @@ namespace Payroll.Models.Daos
                         bancos.sNCuenta        = dataReader["NCuenta"].ToString();
                         bancos.sNClabe         = dataReader["NClabe"].ToString();
                         bancos.sNPlaza         = dataReader["Plaza"].ToString();
+                        bancos.sRfc = dataReader["RFC"].ToString();
                         bancosBeans.Add(bancos);
                     }
                 }
@@ -167,6 +168,7 @@ namespace Payroll.Models.Daos
                         datos.sMaterno = dataReader["Materno"].ToString();
                         datos.sRfc = dataReader["RFC"].ToString();
                         datos.iTipoPago = Convert.ToInt32(dataReader["TipoPago"]);
+                        datos.sCodigo = dataReader["Codigo"].ToString();
                         datosProcesaCheques.Add(datos);
                     }
                 }

@@ -154,6 +154,7 @@
         public int iTipo { get; set; }
         public int iCodigo { get; set; }
         public string sMensaje { get; set; }
+        public string sRFC { get; set; }
     }
 
     public class DatosDispersionArchivosBanamex {
