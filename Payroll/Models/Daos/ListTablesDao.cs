@@ -1141,7 +1141,7 @@ namespace Payroll.Models.Daos
         public List<EmisorReceptorBean> GXMLNOM(int IdEmpresa, string sNombreComple, string path, int Periodo, int anios, int Tipodeperido,int masivo)
         {
             int IdCalcHD,iperiodo;
-            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0,row227=0,row467=0, row1007=0, Recibo2 = 0, FinR = 0,ISREs = 0;
+            int NumEmpleado = 0, NoXmlx = 1, id = 0, row198 = 0, row195 = 0, rowTper = 0, row17 = 0, row113 = 0, row27 = 0, row28 = 0, row29 = 0, row227 = 0, row467 = 0, row1007 = 0, row198Exit = 0, Recibo2 = 0, FinR = 0, ISREs = 0;
             string[] Nombre= sNombreComple.Split(' ');
            string NomEmple = "";
             List<string> NomArchXML = new List<string>();
@@ -1273,10 +1273,7 @@ namespace Payroll.Models.Daos
                         NumEmpleado = ListEmple[i].iIdEmpleado;   //ListEmple[i].iIdEmpleado;
                         id = ListEmple[i].iIdEmpleado;
 
-                        if (NumEmpleado == 410) {
-
-                            String Serompe = "";
-                        }
+          
                         ListDatEmisor = sp_EmisorReceptor_Retrieve_EmisorReceptor(IdEmpresa, id);
                         if (Nombre.Length > 0)
                         {
@@ -1313,8 +1310,6 @@ namespace Payroll.Models.Daos
                     {
                         if (ListDatEmisor.Count > 0)
                         {
-
-
                             Emisor = ListDatEmisor[0].sNombreEmpresa;
                             EmisorRFC = ListDatEmisor[0].sRFC;
                             ReceptorCurp = ListDatEmisor[0].sCURP;
@@ -1329,8 +1324,6 @@ namespace Payroll.Models.Daos
                             DateTime dt2 = dt1;
                             DateTime dt3 = dt1;
                             string folio = "";
-
-
                             iperiodo = LFechaPerido[0].iPeriodo;
                             if (LFechaPerido[0].sMensaje == null)
                             {
@@ -1595,8 +1588,6 @@ namespace Payroll.Models.Daos
                                             else 
                                             {
                                                 TipoNom = "O";
-                                               // xmlWriter.WriteAttributeString("TipoNomina", "O");
-
                                             }
 
                                         xmlWriter.WriteAttributeString("TipoNomina", TipoNom);
@@ -1644,9 +1635,7 @@ namespace Payroll.Models.Daos
                                                 }
 
                                                 TDias = Convert.ToInt16(iTdias);
-
                                                 sDiasEfectivos = Convert.ToString(TDias);
-
                                             }
 
 
@@ -1687,7 +1676,6 @@ namespace Payroll.Models.Daos
 
                                             }
                                             TotalPercepciones = string.Format("{0:N2}", ListTotales[rowTper].dSaldo - DotrosPagos);
-
                                             TotalPercepciones = TotalPercepciones.Replace(",", "");
                                             Otrospagos = string.Format("{0:N2}", DotrosPagos);
 
@@ -1774,7 +1762,7 @@ namespace Payroll.Models.Daos
 
 
 
-                                            if (sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18)
+                                        if (sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18)
                                         {
                                             if (sBanco.Length > 0)
                                             {
@@ -1901,6 +1889,7 @@ namespace Payroll.Models.Daos
                                                             if (LisTRecibo[a].dSaldo > 0)
                                                             {
                                                                 row198 = a;
+                                                                row198Exit = 1;
                                                             };
 
                                                         };
@@ -2208,9 +2197,12 @@ namespace Payroll.Models.Daos
                                             xmlWriter.WriteStartElement(Prefijo2, "Deducciones", EspacioDeNombreNomina);
                                         }
                                         if (ISREs == 1) {
-                                                string d = Convert.ToString(isr);
-                                            xmlWriter.WriteAttributeString("TotalImpuestosRetenidos",d);
-                                        }
+                                            string d = Convert.ToString(isr);
+                                                if (d != "0.00") {
+                                                    xmlWriter.WriteAttributeString("TotalImpuestosRetenidos", d);
+
+                                                }
+                                            }
                                       
 
                                         if (totalDeduciones.ToString() != "0.00") {
@@ -2355,10 +2347,23 @@ namespace Payroll.Models.Daos
                                         if (ListDatEmisor[0].iPagopor != 364) {
                                             xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
                                             xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
-                                            xmlWriter.WriteAttributeString("TipoOtroPago", "002");
-                                            xmlWriter.WriteAttributeString("Clave", "198");
+                                                if (row198 > 0 && row198Exit == 1 ) {
+                                                    xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                }
+                                                if (row198 == 0 && row198Exit == 0)
+                                                {
+                                                    xmlWriter.WriteAttributeString("TipoOtroPago", "002");
+                                                }
+
+                                                if (row198 == 0 && row198Exit == 1)
+                                                {
+                                                    xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                }
+
+
+                                                xmlWriter.WriteAttributeString("Clave", "198");
                                             xmlWriter.WriteAttributeString("Concepto", "Subsidio al Empleado");
-                                            if (row198 == 0)
+                                                if (row198 == 0 && row198Exit == 0)
                                             {
                                                 xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", 0));
                                                 xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
@@ -2366,7 +2371,18 @@ namespace Payroll.Models.Daos
                                                 xmlWriter.WriteEndElement();
                                                 xmlWriter.WriteEndElement();
                                             };
-                                            if (row198 > 0)
+
+                                                if (row198 == 0 && row198Exit == 1)
+                                                {
+                                                    xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo));
+                                                    xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
+                                                    xmlWriter.WriteAttributeString("SubsidioCausado", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo + LisTRecibo[row198].dExcento));
+                                                    xmlWriter.WriteEndElement();
+                                                    xmlWriter.WriteEndElement();
+                                                };
+                                                
+
+                                             if (row198 > 0 && row198Exit == 1)
                                             {
                                                 xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo));
                                                 xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
@@ -2374,6 +2390,7 @@ namespace Payroll.Models.Daos
                                                 xmlWriter.WriteEndElement();
                                                 xmlWriter.WriteEndElement();
                                             };
+                                                row198Exit = 0;
                                             if (row17 > 0)
                                             {
                                                 xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);

@@ -100,7 +100,7 @@
     const LaCheckXEmpleado = document.getElementById('LaCheckXEmpleado');
     const btnFloLimpiar = document.getElementById('btnFloLimpiar');
     const Checkr2carat2 = document.getElementById('Checkr2carat2');
-
+    const LaCheckcaratula2 = document.getElementById('Checkr2carat');
 
     //const btnFloCerrarNom = document.getElementById('btnFloCerrarNom');
     var ValorChek = document.getElementById('ChNCerrada');
@@ -109,7 +109,7 @@
     var ValorChekEnFirme = document.getElementById('ChekEnFirme');
     var valorCheckPeridoEspc = document.getElementById('CheckPeridoEspc');
     var ValorCheckr2carat2 = document.getElementById('Checkr2carat2');
-
+    var ValorLaCheckcaratula2 = document.getElementById('Checkr2carat');
 
 
 
@@ -1764,8 +1764,17 @@
         separador = " ",
         limite = 2,
         arreglosubcadena2 = tipoPeriodo.split(separador, limite);
-        const dataSend = { iIdCalculosHd: IdDropList2, iTipoPeriodo: arreglosubcadena2[0], iPeriodo: arreglosubcadena[0], idEmpresa: empresaid, Anio: TbAñoNoCe.value };
-        console.log(dataSend);
+        var carat = 0;
+        if (ValorLaCheckcaratula2.checked == true) {
+            carat=1 
+        }
+        if (ValorLaCheckcaratula2.checked == false) {
+            carat = 0
+        }
+
+
+        const dataSend = { iIdCalculosHd: IdDropList2, iTipoPeriodo: arreglosubcadena2[0], iPeriodo: arreglosubcadena[0], idEmpresa: empresaid, Anio: TbAñoNoCe.value, cart: carat };
+       
         var per;
         var dedu;
         var total;
@@ -1963,7 +1972,16 @@
         limite = 2,
         arreglosubcadena2 = tipoPeriodo.split(separador, limite);
         arreglosubcadena3 = empresaid.split(separador, limite)
-        const dataSend4 = { iIdCalculosHd: IdDropList2, iTipoPeriodo: arreglosubcadena2[0], iPeriodo: arreglosubcadena[0], idEmpresa: arreglosubcadena3[0], Anio: TbAñoNoCe.value};
+        var carat = 0;
+        if (ValorLaCheckcaratula2.checked == true) {
+            carat = 1;
+        }
+        if (ValorLaCheckcaratula2.checked == false) {
+            carat = 0;
+        }
+
+
+        const dataSend4 = { iIdCalculosHd: IdDropList2, iTipoPeriodo: arreglosubcadena2[0], iPeriodo: arreglosubcadena[0], idEmpresa: arreglosubcadena3[0], Anio: TbAñoNoCe.value, cart: carat };
         console.log(dataSend4);
         var per;
         var dedu;
