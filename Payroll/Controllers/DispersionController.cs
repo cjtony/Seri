@@ -110,9 +110,12 @@ namespace Payroll.Controllers
             String messageError = "none";
             LoadTypePeriodBean loadTypePerBean = new LoadTypePeriodBean();
             LoadTypePeriodDaoD loadTypePerDaoD = new LoadTypePeriodDaoD();
+            LoadTypePeriodPayrollBean periodBean = new LoadTypePeriodPayrollBean();
+            LoadTypePeriodPayrollDaoD periodDaoD = new LoadTypePeriodPayrollDaoD();
             try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
-                loadTypePerBean = loadTypePerDaoD.sp_Load_Type_Period_Empresa(keyBusiness, year, typePeriod);
+                periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(keyBusiness, Convert.ToInt32(DateTime.Now.Year));
+                loadTypePerBean = loadTypePerDaoD.sp_Load_Type_Period_Empresa(keyBusiness, year, periodBean.iTipoPeriodo);
                 flag = (loadTypePerBean.sMensaje == "success") ? true : false;
             } catch (Exception exc) {
                 messageError = exc.Message.ToString();
@@ -487,7 +490,7 @@ namespace Payroll.Controllers
                                                     Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             if (renglon1481 > 0) {
                                                 importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                                sumaImporte += importe.decimalTotal;
+                                                sumaImporte += importe.decimalTotalDispersion;
                                             } else {
                                                 sumaImporte += payroll.dImporte;
                                             }
@@ -761,7 +764,7 @@ namespace Payroll.Controllers
                                                 ReportesDao reportDao = new ReportesDao();
                                                 if (renglon1481 > 0) {
                                                     importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                                    resultadoSuma += importe.decimalTotal;
+                                                    resultadoSuma += importe.decimalTotalDispersion;
                                                     importeFinal   = importe.decimalTotalDispersion;
                                                     importeG       = importeFinal.ToString();
                                                 } else {
@@ -855,7 +858,7 @@ namespace Payroll.Controllers
                                                     Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             if (renglon1481 > 0) {
                                                 importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                                sumaImporte += importe.decimalTotal;
+                                                sumaImporte += importe.decimalTotalDispersion;
                                             } else { 
                                                 sumaImporte += payroll.dImporte;
                                             }

@@ -736,17 +736,16 @@
                     break;
                 }
             }
+            const dataSend = {
+                yearDispersion: parseInt(yeardis.value), typePeriodDisp: parseInt(typeperiod.value),
+                periodDispersion: parseInt(periodis.value), dateDispersion: datedis.value, type: "test"
+            };
+            console.log(dataSend);
             if (validate === 0) {
                 $.ajax({
                     url: "../Dispersion/ToDeployDispersion",
                     type: "POST",
-                    data: {
-                        yearDispersion: parseInt(yeardis.value),
-                        typePeriodDisp: parseInt(typeperiod.value),
-                        periodDispersion: parseInt(periodis.value),
-                        dateDispersion: datedis.value,
-                        type: "test"
-                    },
+                    data: dataSend,
                     beforeSend: () => {
                         btndesplegartab.innerHTML = `
                             <span class="spinner-grow spinner-grow-sm mr-1" role="status" aria-hidden="true"></span>
