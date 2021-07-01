@@ -402,7 +402,7 @@ namespace Payroll.Models.Daos
             return periodoActual;
         }
 
-        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation, int daysPendings, int yearAct, int keyPeriodAct, string dateStartPayment, string dateEndPayment, int typeOper, int propSet, int daysYearsAftr)
+        public BajasEmpleadosBean sp_CNomina_Finiquito(int keyBusiness, int keyEmployee, string dateAntiquityEmp, int idTypeDown, int idReasonsDown, string dateDownEmp, string dateReceipt, int typeDate, int typeCompensation, int daysPendings, int yearAct, int keyPeriodAct, string dateStartPayment, string dateEndPayment, int typeOper, int propSet, int daysYearsAftr, int keyUser)
         {
             BajasEmpleadosBean downEmployee = new BajasEmpleadosBean();
             try
@@ -426,6 +426,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@tipo_operacion", typeOper));
                 cmd.Parameters.Add(new SqlParameter("@status", propSet));
                 cmd.Parameters.Add(new SqlParameter("@dias_anteriores", daysYearsAftr));
+                cmd.Parameters.Add(new SqlParameter("@usuario_id", keyUser));
                 bool proc = Convert.ToBoolean(cmd.ExecuteNonQuery());
                 if (proc) {
                     downEmployee.sMensaje = "SUCCESS";

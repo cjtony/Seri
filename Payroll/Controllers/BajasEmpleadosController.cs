@@ -86,6 +86,7 @@ namespace Payroll.Controllers
             int propSetSend = (propSet == 1) ? 4 : 0;
             try {
                 int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                int keyUser     = int.Parse(Session["iIdUsuario"].ToString());
                 int keyPeriodAct = 0;
                 periodActBean = downEmployeeDaoD.sp_Load_Info_Periodo_Empr(keyBusiness, yearAct);
                 if (periodActBean.sMensaje == "success") {

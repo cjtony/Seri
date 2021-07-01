@@ -1012,7 +1012,7 @@ namespace Payroll.Controllers
                 if (correctDataInsertBeans.Count > 0) {
                     fileLog.Write("* -- Datos insertados -- *\n");
                     foreach (CorrectDataInsertBean data in correctDataInsertBeans) {
-                        fileLog.Write("[*] Fila = " + data.iFilaInsert.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nombre = " + data.sNombre + "\n");
+                        fileLog.Write("[*] Fila = " + data.iFilaInsert.ToString() + ", [*] Empresa = " + data.sEmpresa + ", [*] Nombre = " + data.sNombre + ", [*] Nomina = " + data.sNomina + "\n");
                     }
                     fileLog.Write("\n");
                 }

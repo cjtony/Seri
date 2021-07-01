@@ -2365,7 +2365,7 @@ namespace Payroll.Controllers
             string pathSaveFile = Server.MapPath("~/Content/");
             string nameFolder = "REPORTES";
             string nameFolderRe = "BAJAS_EMPLEADOS";
-            string nameFileRepr = "FALTASFI" + dateS.Replace("-", "") + "_FF" + dateE.Replace("-", "") + ".xlsx";
+            string nameFileRepr = "FALTAS" + dateS.Replace("-", "") + dateE.Replace("-", "") + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable = 1, columnsDataTable = 0;
