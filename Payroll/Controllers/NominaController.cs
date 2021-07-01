@@ -101,7 +101,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public JsonResult LisTipPeriodo(int IdEmpresa)
         {
-            List<CTipoPeriodoBean> LTP = new List<CTipoPeriodoBean>();
+                    List<CTipoPeriodoBean> LTP = new List<CTipoPeriodoBean>();
             FuncionesNomina Dao = new FuncionesNomina();
             LTP = Dao.sp_CTipoPeriod_Retrieve_TiposPeriodos(IdEmpresa);
             return Json(LTP);

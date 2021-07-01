@@ -717,9 +717,6 @@ namespace Payroll.Controllers
 
                 }
 
-
-
-
                 Paragraph TCurp = new Paragraph("Curp:", TTexNegCuerpo);
                 TCurp.IndentationLeft = 50;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
@@ -919,9 +916,6 @@ namespace Payroll.Controllers
                 Paragraph PeridoFec = new Paragraph(-1, Palabra, TexNegCuerpo);
                 PeridoFec.IndentationLeft = 223;
 
-
-
-
                 Paragraph TMoneda = new Paragraph("Moneda:", TTexNegCuerpo);
                 TMoneda.IndentationLeft = 200;
                 Palabra = "MXP";
@@ -956,12 +950,8 @@ namespace Payroll.Controllers
 
                     sbanco = sbanco + " " + ListEmisor[0].sDescripcion;
                 }
-
-
-
                 Paragraph Banco = new Paragraph(-1, sbanco, TexNegCuerpo);
                 Banco.IndentationLeft = 75;
-
                 Paragraph TPeriodo = new Paragraph(-22, "Periodo:", TTexNegCuerpo);
                 TPeriodo.IndentationLeft = 200;
                 nodo = xmlDoc.GetElementsByTagName("nomina12:Receptor").Item(0);
@@ -992,9 +982,6 @@ namespace Payroll.Controllers
                 {
                     Palabra = "06 Bimestral";
                 }
-
-
-
 
                 Paragraph Periodo = new Paragraph(-1, Palabra, TexNegCuerpo);
                 Periodo.IndentationLeft = 227;
@@ -3371,6 +3358,21 @@ namespace Payroll.Controllers
                                                 {
                                                     concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
                                                     lengRenglon = "001";
+                                                    if (ListDatEmisor[0].iPagopor == 364)
+                                                    {
+
+                                                        concepto = "Asimilados a salarios {" + sDiasEfectivos + " Dias}";
+                                                        if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078)
+                                                        {
+                                                            concepto = "Honorarios Asimilados";
+                                                        }
+
+                                                       
+                                                    }
+
+
+
+
                                                 }
                                                 lengRenglon = "010";
                                                 int idReglontama = IdRenglon.Length;
