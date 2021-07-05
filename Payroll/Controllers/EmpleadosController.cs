@@ -477,8 +477,14 @@ namespace Payroll.Controllers
             string path = Server.MapPath("Archivos\\XmlZip\\");
             path = path.Replace("\\Empleados", "");
             string DowPath = path;
-           
 
+            if (System.IO.Directory.Exists(PathPDF))
+            {
+
+                PathPDF = PathPDF + NomArchivo + "\\";
+                PathPDF = PathPDF.Replace(".zip", "");
+                Directory.CreateDirectory(PathPDF);
+            }
 
             if (System.IO.Directory.Exists(DowPath))
             {
@@ -488,7 +494,6 @@ namespace Payroll.Controllers
                 DowPath = DowPath  + time + "\\";
                 Directory.CreateDirectory(DowPath);
             }
-
 
            ZipFile.ExtractToDirectory(PathZip, DowPath);
 
@@ -548,11 +553,7 @@ namespace Payroll.Controllers
                 Paragraph RegPat = new Paragraph(-1, Palabra, TexNom);
                 RegPat.IndentationLeft = 100;
 
-           
-
-
-       
-
+          
 
                 /// direccion Empresa
 
@@ -3052,57 +3053,18 @@ namespace Payroll.Controllers
 
                                     // dias Efectivos 
                                     decimal iTdias = LFechaPerido[0].iDiasEfectivos;
-                     
-                                    int TDias = 0;
-                                    string Dias = LisTRecibo[0].sNombre_Renglon;
-                                    sDiasEfectivos = Convert.ToString(iTdias);
-                                    string Dtota = Convert.ToString(LFechaPerido[0].iDiasEfectivos);
-                                    if (Dias.Length > 7)
-                                    {
-
-                                        if (LisTRecibo[0].iIdRenglon == 1)
-                                        {
-                                            
-                                            string[] dias = Dias.Split(':');
-                                            Palabra = dias[0].ToString();
-                                            int numero = dias.Length;
-                                            if (dias.Length > 1)
-                                            {
-                                                Dias = dias[1].ToString();
-                                                Dias = Dias.Replace("}", "");
-                                            }
-                                            else {
-                                                Dias = "0";
-                                            }
-                                            
-                                           
-                                        }
-                                        else
-                                        {
-                                            Dias = "0";
-                                        }
-                                        decimal DiasNo = Convert.ToDecimal(Dias);
-                                        
-             
-                                        if (Palabra.Length > 22 && Palabra.Length < 26 )
-                                        {
-                                            iTdias = DiasNo;
-                                        }
-
-                                        if (Palabra.Length > 25)
-                                        {
-                                            iTdias = iTdias - DiasNo;
-                                        }
-
-                                        if (iTdias == 0) {
-                                            iTdias = LFechaPerido[0].iDiasEfectivos;
-                                        }
 
 
-                                        TDias = Convert.ToInt16(iTdias);
-                                        sDiasEfectivos = Convert.ToString(TDias);
+                                    string  Dias = "0";
+                                    if (LisTRecibo[0].iDiasTrab != "0") {
+                                        Dias=LisTRecibo[0].iDiasTrab;
 
                                     }
+                                    Convert.ToString(LisTRecibo[0].iDiasTrab);
+                                    sDiasEfectivos = Convert.ToString(iTdias);
+                                    string Dtota = Convert.ToString(LFechaPerido[0].iDiasEfectivos);
+                                   
+                                    
 
                                     Palabra = Convert.ToString(Dtota);
                                     Paragraph DiasT = new Paragraph(-1, Palabra, TexNom);
@@ -3126,7 +3088,6 @@ namespace Payroll.Controllers
                                     {
                                         Palabra = "Quincenal";
                                     }
-
                                     if (Tipodeperido == 4)
                                     {
                                         Palabra = "Mensual";
@@ -3314,15 +3275,15 @@ namespace Payroll.Controllers
                                                 string concepto = LisTRecibo[x].sNombre_Renglon;
                                                 if (IdRenglon == "1")
                                                 {
-                                                    concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
+                                                    concepto = LisTRecibo[x].sNombre_Renglon +" "+ LisTRecibo[x].iDiasTrab+ " Dias}";
                                                     lengRenglon = "001";
                                                     if (ListDatEmisor[0].iPagopor == 364)
                                                     {
 
-                                                        concepto = "Asimilados a salarios {" + sDiasEfectivos + " Dias}";
+                                                        concepto = LisTRecibo[x].sNombre_Renglon + " " + LisTRecibo[x].iDiasTrab + " Dias}";
                                                         if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078)
                                                         {
-                                                            concepto = "Honorarios Asimilados";
+                                                            concepto = LisTRecibo[x].sNombre_Renglon;
                                                         }
 
                                                        

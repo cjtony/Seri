@@ -1669,8 +1669,12 @@ namespace Payroll.Models.Daos
                             if (data["Cantidad"].ToString() != "") { 
                                 ls.dHoras = decimal.Parse(data["Cantidad"].ToString());
                             }
+                            if (data["Dias"].ToString() == "") { ls.iDiasTrab = "0"; }
+                            if (data["Dias"].ToString() != "")
+                            {
+                                ls.iDiasTrab = data["Dias"].ToString();
+                            }
 
-                            
                             ls.iConsecutivo = int.Parse(data["Consecutivo"].ToString());
                             //ls.iElementoNomina = int.Parse(data["Cg_Elemento_Nomina_id"].ToString());
                             ls.iIdRenglon = int.Parse(data["Renglon_id"].ToString());
