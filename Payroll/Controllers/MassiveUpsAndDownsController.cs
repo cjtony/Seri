@@ -867,13 +867,26 @@ namespace Payroll.Controllers
                                         // Validamos que el clasif no venga vacio
                                         if (dr[51].ToString().Trim() != "") {
                                             int clasif = 0;
-                                            bool convertirClasif = int.TryParse(dr[50].ToString().Trim(), out clasif);
+                                            bool convertirClasif = int.TryParse(dr[51].ToString().Trim(), out clasif);
                                             if (!convertirClasif) {
-                                                validationErMe.Append("[*] El valor ingresado " + dr[51].ToString().Trim() + " debe de ser un valor entero. ");
+                                                validationErMe.Append("[*] El valor de CLASIF ingresado " + dr[51].ToString().Trim() + " debe de ser un valor entero. ");
                                                 flagVE = true;
                                             }
                                         } else {
                                             validationErMe.Append("[*] El valor de CLASIF no puede ir vacío, si no conoce el dato puede poner 0. ");
+                                            flagVE = true;
+                                        }
+                                        // Validamos que las prestaciones no venga vacio
+                                        if (dr[52].ToString().Trim() != "") {
+                                            int prestaciones = 0;
+                                            bool convertirPrestaciones = int.TryParse(dr[52].ToString().Trim(), out prestaciones);
+                                            if (!convertirPrestaciones)
+                                            {
+                                                validationErMe.Append("[*] El valor de Prestaciones ingresado " + dr[52].ToString().Trim() + " debe de ser un valor entero. ");
+                                                flagVE = true;
+                                            }
+                                        } else {
+                                            validationErMe.Append("[*] El valor de Prestaciones no puede ir vacío, si no conoce el dato puede poner 0. ");
                                             flagVE = true;
                                         }
                                         // Validamos que el empleado no exista
@@ -911,6 +924,7 @@ namespace Payroll.Controllers
                                         } else {
                                             filtroClasif = 368;
                                         }
+                                        int prestacionesSend = Convert.ToInt32(dr[52].ToString());
                                         // Variables, TEmpleado
                                         //int empresa = Convert.ToInt32(dr[3].ToString());
                                         int numeroNomina = Convert.ToInt32(dr[50].ToString().Trim());
@@ -970,11 +984,15 @@ namespace Payroll.Controllers
                                         string cuentau = dr[43].ToString().Trim();
                                         //int posicionid = Convert.ToInt32(dr[44].ToString());
                                         //Insertamos el registro en TEmpleado
+                                        int nominaF = 0;
+                                        if (numeroNomina != 0) {
+                                            nominaF = numeroNomina;
+                                        }
                                         empleadosBean = empleadosDao.sp_Empleados_Insert_Empleado(nombre, paterno, materno, genero_id, estado_id, fechaNa, lugarNa, titulo_id, nacion_id.ToString(), estadod_id, codigop, ciudad, colonia, calle, numeroc, telefof, telefom, correoe, usuario_id, empresa, tiposan, fechama, numeroNomina);
                                         // Insertamos el registro en TEmpleado_imss
-                                        imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, 0);
+                                        imssBean = imssDao.sp_Imss_Insert_Imss(fechaei, regimss, rfcempl, curpemp, nivelestud, nivelsocio, keyFile, nombre, paterno, materno, fechaNa, empresa, nominaF);
                                         // Insertamos el registro en TEmpleado_nomina
-                                        datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0, tiposalario, politica, diferencia, transporte, retroactivo, 0, 0, 0, 0.00, filtroClasif, 0);
+                                        datosNominaBean = datosNominaDao.sp_DatosNomina_Insert_DatoNomina(fechaen, salamen, tipoemplea, nivelemple, tipojornad, tipocontra, feching, fechant, fechvco, usuario_id, nombre, paterno, materno, fechaNa, empresa, tipoperiod, tcontratac, tipopagoem, bancopagoe, cuentau, posicionid, 0, tiposalario, politica, diferencia, transporte, retroactivo, 0, 0, 0, 0.00, filtroClasif, prestacionesSend);
                                         // Insertamos el registro en TPosiciones_asig
                                         addPosicionBean = datoPosicionDao.sp_PosicionesAsig_Insert_PosicionesAsig(posicionid, fechaen, fechaen, nombre, paterno, materno, fechaNa, usuario_id, empresa);
                                         // Validamos que los registros se hayan hecho correctamente
@@ -1078,6 +1096,7 @@ namespace Payroll.Controllers
             BajasEmpleadosBean downEmployeeBean = new BajasEmpleadosBean();
             BajasEmpleadosDaoD downEmployeeDaoD = new BajasEmpleadosDaoD();
             PeriodoActualBean periodActBean = new PeriodoActualBean();
+            int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
             try
             {
                 if (nameFileSession == nameFile)
@@ -1211,7 +1230,7 @@ namespace Payroll.Controllers
                                             dateStartPayment = periodActBean.sFecha_Inicio;
                                             dateEndPayment = periodActBean.sFecha_Final;
                                         }
-                                        downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(empresa, empleado, fechabaja, tipobaja, motivobj, yearAct, keyPeriodAct);
+                                        downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(empresa, empleado, fechabaja, tipobaja, motivobj, yearAct, keyPeriodAct, keyUser);
                                         if (downEmployeeBean.sMensaje == "SUCCESS")
                                         {
                                             downEmployeeBean = downEmployeeDaoD.sp_BajaEmpleado_Update_EmpleadoNomina(empleado, empresa, tipobaja, fechabaja);

@@ -106,7 +106,7 @@ namespace Payroll.Controllers
                     if (flagTypeSettlement) {
                         downEmployeeBean = downEmployeeDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmployee, dateAntiquityEmp, idTypeDown, idReasonsDown, dateDownFormat, dateReceiptFormat, typeDate, typeCompensation, daysPending, yearAct, keyPeriodAct, dateStartPayment, dateEndPayment, typeOper, propSetSend, daysYearsAftr, keyUser);
                     } else {
-                        downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct);
+                        downEmployeeBean = downEmployeeDaoD.sp_Crea_Baja_Sin_Baja_Calculos(keyBusiness, keyEmployee, dateDownFormat, idTypeDown, idReasonsDown, yearAct, keyPeriodAct, keyUser);
                     }
                     if (downEmployeeBean.sMensaje == "SUCCESS") {
                         if (propSet == 0) {
@@ -1941,9 +1941,10 @@ namespace Payroll.Controllers
             List<DatosFiniquito> datosFiniquitos  = new List<DatosFiniquito>();
             try {
                 int keyBusiness    = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
                 datosFiniquito = empleadosDaoD.sp_Consulta_Info_Finiquito(keySettlement, keyBusiness, keyEmploye);
                 if (datosFiniquito.sMensaje == "SUCCESS") {
-                    bajasEmpleados = empleadosDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmploye, datosFiniquito.sFechaAntiguedad, datosFiniquito.iTipoFiniquitoId, datosFiniquito.iMotivoBajaId, datosFiniquito.sFechaBaja, datosFiniquito.sFechaRecibo, datosFiniquito.iBanFechaIngreso, datosFiniquito.iBanCompEspecial, datosFiniquito.iDiasPendientes, datosFiniquito.iAnio, datosFiniquito.iPeriodo, datosFiniquito.sFechaPagoInicio, datosFiniquito.sFechaPFin, 1, 0, 0);
+                    bajasEmpleados = empleadosDaoD.sp_CNomina_Finiquito(keyBusiness, keyEmploye, datosFiniquito.sFechaAntiguedad, datosFiniquito.iTipoFiniquitoId, datosFiniquito.iMotivoBajaId, datosFiniquito.sFechaBaja, datosFiniquito.sFechaRecibo, datosFiniquito.iBanFechaIngreso, datosFiniquito.iBanCompEspecial, datosFiniquito.iDiasPendientes, datosFiniquito.iAnio, datosFiniquito.iPeriodo, datosFiniquito.sFechaPagoInicio, datosFiniquito.sFechaPFin, 1, 0, 0, keyUser);
                     if (bajasEmpleados.sMensaje == "SUCCESS") {
                         flag = true;
                     }

@@ -448,7 +448,7 @@ namespace Payroll.Models.Daos
             return downEmployee;
         }
 
-        public BajasEmpleadosBean sp_Crea_Baja_Sin_Baja_Calculos(int keyBusiness, int keyEmployee, string dateDownEmp, int idTypeDown, int idReasonsDown, int yearAct, int keyPeriodAct)
+        public BajasEmpleadosBean sp_Crea_Baja_Sin_Baja_Calculos(int keyBusiness, int keyEmployee, string dateDownEmp, int idTypeDown, int idReasonsDown, int yearAct, int keyPeriodAct, int keyUser)
         {
             BajasEmpleadosBean bajasEmpleadosBean = new BajasEmpleadosBean();
             try {
@@ -462,6 +462,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@MotivoBaja", idReasonsDown));
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearAct));
                 cmd.Parameters.Add(new SqlParameter("@Periodo", keyPeriodAct));
+                cmd.Parameters.Add(new SqlParameter("@Usuario_id", keyUser));
                 if (cmd.ExecuteNonQuery() > 0) {
                     bajasEmpleadosBean.sMensaje = "SUCCESS";
                 } else {

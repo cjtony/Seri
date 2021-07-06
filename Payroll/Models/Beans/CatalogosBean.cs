@@ -365,6 +365,9 @@ namespace Payroll.Models.Beans
     }
     public class DatosMovimientosBean
     {
+        public int iPeriodo { get; set; }
+        public int iAnio { get; set; }
+        public int iIdHistorico { get; set; }
         public int iEmpleado_id { get; set; }
         public int iEmpresa_id  { get; set; }
         public string sTipoMovimiento   { get; set; }
@@ -374,6 +377,8 @@ namespace Payroll.Models.Beans
         public string sFechaMovimiento  { get; set; }
         public string sFecha            { get; set; }
         public int iUsuario_id          { get; set; }
+        public string sUsuario { get; set; }
+        public string sNombreUsuario { get; set; }
         public string sMensaje { get; set; }
     }
     public class TipoPeriodosBean

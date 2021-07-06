@@ -30,6 +30,40 @@ namespace Payroll.Models.Daos
             }
             return convertDate;
         }
+
+        public List<DatosMovimientosBean> sp_Carga_Historial_Movimientos_Salario(int keyBusiness, int keyEmployee)
+        {
+            List<DatosMovimientosBean> datos = new List<DatosMovimientosBean>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Carga_Historial_Movimientos_Salario", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                SqlDataReader data = cmd.ExecuteReader(); 
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        DatosMovimientosBean dato = new DatosMovimientosBean();
+                        dato.iIdHistorico = Convert.ToInt32(data["IdHistorico"]);
+                        dato.sValorAnterior = Convert.ToDecimal(data["ValorAnterior"]).ToString("#,##0.00");
+                        dato.sValorNuevo    = Convert.ToDecimal(data["ValorNuevo"]).ToString("#,##0.00");
+                        dato.iPeriodo = Convert.ToInt32(data["Periodo"]);
+                        dato.iAnio = Convert.ToInt32(data["Anio"]);
+                        dato.sFechaMovimiento = data["FechaMovimiento"].ToString();
+                        dato.sFecha = data["Fecha"].ToString();
+                        dato.sUsuario = data["Usuario"].ToString();
+                        dato.sNombreUsuario = data["Nombre"].ToString();
+                        datos.Add(dato);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return datos;
+        }
         public List<DatosNominaBean> sp_Carga_Historial_Nomina(int keyBusiness, int keyEmployee)
         {
             List<DatosNominaBean> listNomina = new List<DatosNominaBean>();

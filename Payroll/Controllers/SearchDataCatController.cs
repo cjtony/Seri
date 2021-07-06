@@ -468,6 +468,40 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult LoadMovementsSalary(string key, int keyEmployee)
+        {
+            String messageError = "none";
+            Boolean flag = false;
+            List<DatosMovimientosBean> datos = new List<DatosMovimientosBean>();
+            NominaDao nominaDao = new NominaDao();
+            try {
+                if (keyEmployee != 0) {
+                    int keyBusiness = Convert.ToInt32(Session["IdEmpresa"].ToString());
+                    datos = nominaDao.sp_Carga_Historial_Movimientos_Salario(keyBusiness, keyEmployee);
+                    if (datos.Count > 0) {
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Datos = datos });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveMovementSalary(int periodo, int anio, int historico)
+        {
+            String messageError = "none";
+            Boolean flag = false;
+            try {
+
+            } catch (Exception exc) {
+
+            }
+            return Json(new { });
+        }
+
+        [HttpPost]
         public JsonResult LoadHistoryNomina(string key, int keyEmployee)
         {
             Boolean flag         = false;

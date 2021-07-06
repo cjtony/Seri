@@ -1,0 +1,4 @@
+﻿* -- Datos insertados -- *
+[*] Fila = 2, [*] Empresa = 21, [*] Nombre = JUAN CARLOS GOMEZ VILLALOBOS, [*] Nomina = 908159
+[*] Fila = 3, [*] Empresa = 17, [*] Nombre = SANDIVEL BARON GUZMAN, [*] Nomina = 908194
+
