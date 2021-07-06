@@ -389,8 +389,6 @@
 
     });
 
-
-
     /// Genera los pdf 
     FGeneraPDF = () => {
         if (TextBAnioProce.value != "" && TextBAnioProce.value != " " ) {
@@ -411,9 +409,7 @@
                     fshowtypealert('Emisión de recibos', "seleccionar un periodo", 'warning');
 
                 }
-                
-            
-            
+                   
         }
         else {
             
@@ -526,8 +522,6 @@
   
     //  BtnSenCorreo.addEventListener('click', FSenEmail)
     btnEnviCorre.addEventListener('click', FSenEmail)
-
-  
 
    /// Muestra en pantalla la ultima ejecucion realizada 
 

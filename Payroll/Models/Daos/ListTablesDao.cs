@@ -1683,51 +1683,62 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteAttributeString("FechaFinalPago", sFechaFinalPago);
 
                                         sDiasEfectivos = "";
-                                        if (masivo != 3) {
-                                            // dias Efectivos 
-                                            decimal iTdias = LFechaPerido[0].iDiasEfectivos;
-                                            int TDias = 0;
-                                            string Dias = LisTRecibo[0].sNombre_Renglon;
-                                            sDiasEfectivos = Convert.ToString(iTdias);
+                                            //if (masivo != 3) {
+                                            //    // dias Efectivos 
+                                            //    decimal iTdias = LFechaPerido[0].iDiasEfectivos;
+                                            //    int TDias = 0;
+                                            //    string Dias = LisTRecibo[0].sNombre_Renglon;
+                                            //    sDiasEfectivos = Convert.ToString(iTdias);
 
 
-                                            if (Dias.Length > 7)
+                                            //    if (Dias.Length > 7)
+                                            //    {
+                                            //        if (LisTRecibo[0].iIdRenglon == 1)
+                                            //        {
+                                            //            if (LisTRecibo[0].sNombre_Renglon.Length > 25)
+                                            //            {
+                                            //                string[] dias = Dias.Split(':');
+                                            //                Dias = dias[1].ToString();
+                                            //                Dias = Dias.Replace("}", "");
+
+                                            //            }
+                                            //            else
+                                            //            {
+
+                                            //                Dias = "0";
+                                            //            }
+
+                                            //        }
+                                            //        else
+                                            //        {
+                                            //            Dias = "0";
+                                            //        }
+
+                                            //        decimal DiasNo = Convert.ToDecimal(Dias);
+                                            //        if (iTdias != DiasNo)
+                                            //        {
+                                            //            iTdias = iTdias - Convert.ToInt32(DiasNo);
+
+                                            //        }
+
+                                            //        TDias = Convert.ToInt16(iTdias);
+                                            //        sDiasEfectivos = Convert.ToString(TDias);
+                                            //    }
+
+
+
+                                            //}
+                                            if (LisTRecibo[0].iDiasTrab != null)
                                             {
-                                                if (LisTRecibo[0].iIdRenglon == 1)
-                                                {
-                                                    if (LisTRecibo[0].sNombre_Renglon.Length > 25)
-                                                    {
-                                                        string[] dias = Dias.Split(':');
-                                                        Dias = dias[1].ToString();
-                                                        Dias = Dias.Replace("}", "");
-
-                                                    }
-                                                    else
-                                                    {
-
-                                                        Dias = "0";
-                                                    }
-
-                                                }
-                                                else
-                                                {
-                                                    Dias = "0";
-                                                }
-
-                                                decimal DiasNo = Convert.ToDecimal(Dias);
-                                                if (iTdias != DiasNo)
-                                                {
-                                                    iTdias = iTdias - Convert.ToInt32(DiasNo);
-
-                                                }
-
-                                                TDias = Convert.ToInt16(iTdias);
-                                                sDiasEfectivos = Convert.ToString(TDias);
+                                                string dias = Convert.ToString(LisTRecibo[0].iDiasTrab);
+                                                string[] Dias2 = dias.Split('.'); 
+                                                sDiasEfectivos = Dias2[0];
+                                            }
+                                            if (LisTRecibo[0].iDiasTrab == null)
+                                            {
+                                                sDiasEfectivos = Convert.ToString(LFechaPerido[0].iDiasEfectivos);
                                             }
 
-
-
-                                        }
 
 
                                         string Otrospagos = "0.00";
@@ -1785,10 +1796,10 @@ namespace Payroll.Models.Daos
                                         //    xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
                                         //}
                                           
-
+                                        
                                         if (ListDatEmisor[0].iPagopor != 364)
                                         {
-                                                xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
+                                           xmlWriter.WriteAttributeString("TotalOtrosPagos", Otrospagos);
                                         }
                                          
                                         xmlWriter.WriteAttributeString("xmlns", Prefijo2, null, EspacioDeNombreNomina);
@@ -1815,11 +1826,11 @@ namespace Payroll.Models.Daos
                                         xmlWriter.WriteAttributeString("NumEmpleado", sNumEmpleado);
                                         xmlWriter.WriteAttributeString("Departamento", sDepartamento);
                                         xmlWriter.WriteAttributeString("Puesto", sPuesto);
-                                            if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078)
+                                        if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078)
                                             {
                                                 xmlWriter.WriteAttributeString("PeriodicidadPago", "99");
                                             }
-                                            else {
+                                        else {
                                                 if (Tipodeperido == 0)
                                                 {
                                                     xmlWriter.WriteAttributeString("PeriodicidadPago", "02");
@@ -1847,8 +1858,6 @@ namespace Payroll.Models.Daos
 
                                             }
 
-
-
                                         if (sCuentaBancaria.Length >= 7 && sCuentaBancaria.Length < 18)
                                         {
                                             if (sBanco.Length > 0)
@@ -1866,7 +1875,7 @@ namespace Payroll.Models.Daos
                                             }
 
                                         }
-                                        else
+                                        
                                         if ((sCuentaBancaria.Length == 18))
                                         {
 
@@ -2024,11 +2033,22 @@ namespace Payroll.Models.Daos
                                                      
 
                                                     }
-                                                    
+
+                                                        if (LisTRecibo[0].iDiasTrab != null)
+                                                        {
+                                                            string dias = Convert.ToString(LisTRecibo[0].iDiasTrab);
+                                                            string[] Dias2 = dias.Split('.');
+                                                            sDiasEfectivos = Dias2[0];
+
+                                                        }
+                                                        if (LisTRecibo[0].iDiasTrab == null)
+                                                        {
+                                                            sDiasEfectivos = Convert.ToString(LFechaPerido[0].iDiasEfectivos);
+                                                        }
 
 
 
-                                                    string lengRenglon = "";
+                                                        string lengRenglon = "";
                                                     string IporPagado = string.Format("{0:N2}", LisTRecibo[a].dSaldo);
                                                     string ImporGra = string.Format("{0:N2}", LisTRecibo[a].dGravado);
                                                     string ImporExt = string.Format("{0:N2}", LisTRecibo[a].dExcento);
@@ -2039,13 +2059,15 @@ namespace Payroll.Models.Daos
 
                                                     string IdRenglon = Convert.ToString(LisTRecibo[a].iIdRenglon);
                                                     string concepto = LisTRecibo[a].sNombre_Renglon;
+                                                   
+                                                        
                                                     if (Recibo2 != 1) {
                                                         if (IdRenglon == "1")
                                                         {
                                                             if (ListDatEmisor[0].iPagopor != 364)
                                                             {
                                                                 
-                                                                concepto = "Sueldo {" + sDiasEfectivos + " Dias}";
+                                                                concepto = "Sueldo " + "{" + sDiasEfectivos + " Dias}";
                                                                
 
                                                                 if (masivo == 3)
@@ -2062,10 +2084,11 @@ namespace Payroll.Models.Daos
                                                                 concepto = "Asimilados a salarios {" + sDiasEfectivos + " Dias}";
                                                                 if (IdEmpresa == 2075 || IdEmpresa == 2076 || IdEmpresa == 2077 || IdEmpresa == 2078)
                                                                 {
-                                                                 concepto = "Honorarios Asimilados";
+                                                                        concepto = LisTRecibo[a].sNombre_Renglon;
+
                                                                 }
 
-                                                               lengRenglon = "001";
+                                                              lengRenglon = "001";
                                                             }
 
                                                         }
@@ -2442,7 +2465,7 @@ namespace Payroll.Models.Daos
                                             xmlWriter.WriteStartElement(Prefijo2, "OtrosPagos", EspacioDeNombreNomina);
                                             xmlWriter.WriteStartElement(Prefijo2, "OtroPago", EspacioDeNombreNomina);
                                                 if (row198 > 0 && row198Exit == 1 ) {
-                                                    xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                    xmlWriter.WriteAttributeString("TipoOtroPago", "002");
                                                 }
                                                 if (row198 == 0 && row198Exit == 0)
                                                 {
@@ -2451,7 +2474,7 @@ namespace Payroll.Models.Daos
 
                                                 if (row198 == 0 && row198Exit == 1)
                                                 {
-                                                    xmlWriter.WriteAttributeString("TipoOtroPago", "999");
+                                                    xmlWriter.WriteAttributeString("TipoOtroPago", "002");
                                                 }
 
 
@@ -2466,7 +2489,7 @@ namespace Payroll.Models.Daos
                                                 xmlWriter.WriteEndElement();
                                             };
 
-                                                if (row198 == 0 && row198Exit == 1)
+                                            if (row198 == 0 && row198Exit == 1)
                                                 {
                                                     xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo));
                                                     xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
@@ -2475,8 +2498,7 @@ namespace Payroll.Models.Daos
                                                     xmlWriter.WriteEndElement();
                                                 };
                                                 
-
-                                             if (row198 > 0 && row198Exit == 1)
+                                            if (row198 > 0 && row198Exit == 1)
                                             {
                                                 xmlWriter.WriteAttributeString("Importe", string.Format("{0:0.00}", LisTRecibo[row198].dSaldo));
                                                 xmlWriter.WriteStartElement(Prefijo2, "SubsidioAlEmpleo", EspacioDeNombreNomina);
