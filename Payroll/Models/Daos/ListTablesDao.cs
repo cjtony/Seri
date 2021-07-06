@@ -3282,7 +3282,10 @@ namespace Payroll.Models.Daos
                             LP.sMensaje = "Succes";
                             if (data["Recibo_Simple"].ToString() == ""|| data["Recibo_Simple"].ToString() == " " || data["Recibo_Simple"].ToString() == null)   
                             {
-                                LP.sMensaje = "NoDat";
+                                if (CtrliRecibo == 1) {
+                                    LP.sMensaje = "NoDat";
+                                }
+                               
                             }
                             if (data["Recibo_Simple"].ToString() != "" || data["Recibo_Simple"].ToString() != " " || data["Recibo_Simple"].ToString() != null)
                             {
@@ -3290,7 +3293,11 @@ namespace Payroll.Models.Daos
                             }
                             if (data["Recibo_Fiscal"].ToString() == "" || data["Recibo_Fiscal"].ToString() == " " || data["Recibo_Fiscal"].ToString() == null)
                             {
-                                LP.sMensaje = "NoDat";
+
+                                if (CtrliRecibo == 1)
+                                {
+                                    LP.sMensaje = "NoDat";
+                                }
                             }
                             if (data["Recibo_Fiscal"].ToString() != "" || data["Recibo_Fiscal"].ToString() != " " || data["Recibo_Fiscal"].ToString() != null)
                             {

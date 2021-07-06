@@ -592,7 +592,7 @@
                     FDeleteArchivo(data[0].sURTemp);
                 }
                 else {
-                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                    fshowtypealert('Error', 'Crear recibo simple en la pantalla de Emision de Recibos', 'error');
                 }
 
             }
@@ -636,7 +636,7 @@
                     FDeleteArchivo(data[0].sURTemp);
                 }
                 else {
-                    fshowtypealert('Error', 'Contacte a sistemas', 'error');
+                    fshowtypealert('Error', 'Crear recibo fiscal en la pantalla de Emision de Recibos', 'error');
                 }
 
             }
