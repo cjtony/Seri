@@ -973,7 +973,7 @@ namespace Payroll.Models.Daos
             return dataTable;
         }
 
-        public DataTable sp_Datos_Movimientos_Empleados(string typeOption, int keyOptionSel, int year, int period, int typePeriod)
+        public DataTable sp_Datos_Movimientos_Empleados(string typeOption, int keyOptionSel, string paramDateS, string paramDateE)
         {
             DataTable dataTable = new DataTable();
             try {
@@ -981,9 +981,11 @@ namespace Payroll.Models.Daos
                 SqlCommand cmd = new SqlCommand("sp_Datos_Movimientos_Empleados", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@Empresa_id", keyOptionSel));
                 cmd.Parameters.Add(new SqlParameter("@Opcion", typeOption));
-                cmd.Parameters.Add(new SqlParameter("@Periodo_id", typePeriod));
-                cmd.Parameters.Add(new SqlParameter("@Periodo", period));
-                cmd.Parameters.Add(new SqlParameter("@Anio", year));
+                cmd.Parameters.Add(new SqlParameter("@FechaInicio", paramDateS));
+                cmd.Parameters.Add(new SqlParameter("@FechaFinal", paramDateE));
+                //cmd.Parameters.Add(new SqlParameter("@Periodo_id", typePeriod));
+                //cmd.Parameters.Add(new SqlParameter("@Periodo", period));
+                //cmd.Parameters.Add(new SqlParameter("@Anio", year));
                 cmd.Parameters.Add(new SqlParameter("@Tipo", "D"));
                 SqlDataAdapter dataAdapter = new SqlDataAdapter();
                 dataAdapter.SelectCommand  = cmd;

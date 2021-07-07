@@ -64,6 +64,35 @@ namespace Payroll.Models.Daos
             }
             return datos;
         }
+
+        public Boolean sp_Restaura_Movimiento_Salario(int periodo, int anio, int historico, int keyNom, int keyEmployee, int keyBusiness)
+        {
+            Boolean result = false;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Restaura_Movimiento_Salario", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdHistorico", historico));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", keyEmployee));
+                cmd.Parameters.Add(new SqlParameter("@IdNomina", keyNom));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", periodo));
+                cmd.Parameters.Add(new SqlParameter("@Anio", anio));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        result = true;
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close(); 
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return result;
+        }
+
         public List<DatosNominaBean> sp_Carga_Historial_Nomina(int keyBusiness, int keyEmployee)
         {
             List<DatosNominaBean> listNomina = new List<DatosNominaBean>();
