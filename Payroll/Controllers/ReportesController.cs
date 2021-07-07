@@ -1149,7 +1149,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ReportMovements(string typeOption, int keyOptionSel, int yearSelect, int periodSelect, int typePSelect)
+        public JsonResult ReportMovements(string typeOption, int keyOptionSel, string paramDateS, string paramDateE)
         {
             Boolean flag = false;
             String messageError  = "none";
@@ -1157,7 +1157,7 @@ namespace Payroll.Controllers
             string nameFolder    = "REPORTES";
             string nameFolderRe  = "MOVIMIENTOS";
             string nameFileValid = nameFolderRe;
-            string nameFileRepr  = nameFileValid + "_E" + keyOptionSel.ToString() + "_A" + yearSelect.ToString() + "_P" + periodSelect.ToString() + "_T" + typePSelect.ToString() + ".xlsx";
+            string nameFileRepr  = nameFileValid + "E" + keyOptionSel.ToString() + "A" + "" + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable = 1, columnsDataTable = 0;
@@ -1167,7 +1167,7 @@ namespace Payroll.Controllers
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                     DataTable dataTable         = new DataTable();
                     dataTable.Locale            = System.Threading.Thread.CurrentThread.CurrentCulture;
-                    dataTable = reportDao.sp_Datos_Movimientos_Empleados(typeOption, keyOptionSel, yearSelect, periodSelect, typePSelect);
+                    dataTable = reportDao.sp_Datos_Movimientos_Empleados(typeOption, keyOptionSel, paramDateS, paramDateE);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
                         columnsDataTable = dataTable.Columns.Count + 1;

@@ -332,7 +332,7 @@
             let btnDisabled = "";
             if (typeReportselect.value != 0) {
                 $("html, body").animate({ scrollTop: $(`#${contentParameters.id}`).offset().top - 50 }, 1000);
-                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS" || typeReportselect.value == "MOVIMIENTOS") {
+                if (typeReportselect.value == "ABONO" || typeReportselect.value == "ABOTOTAL" || typeReportselect.value == "TOTACUMS") {
                     contentParameters.innerHTML += `
                     <div class="row mt-3 animated fadeInDown">
                         <div class="col-md-4">
@@ -392,7 +392,7 @@
                     //        <label class="col-form-label font-labels">Tipo de empleados</label> ${parameterTEmpl}
                     //    </div>
                     //</div>
-                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP" || typeReportselect.value == "BAJACREDITOS" || typeReportselect.value == "AUMENFEC" || typeReportselect.value == "FALTASSIC" || typeReportselect.value == "INCAPACIDADESSIC") {
+                } else if (typeReportselect.value == "BAJA_FEC" || typeReportselect.value == "ALTAEMP" || typeReportselect.value == "BAJACREDITOS" || typeReportselect.value == "AUMENFEC" || typeReportselect.value == "FALTASSIC" || typeReportselect.value == "INCAPACIDADESSIC" || typeReportselect.value == "MOVIMIENTOS") {
                     contentParameters.innerHTML += `
                         <div class="row mt-3 animated fadeInDown"> 
                             <div class="col-md-4 offset-2">
@@ -2141,46 +2141,81 @@
     fGenerateReportMovements = (option, keyOption) => {
         try {
             if (option != "" && parseInt(keyOption) > 0) {
-                const paramYear = document.getElementById('paramYear');
-                const paramNper = document.getElementById('paramNper');
-                const paramTper = document.getElementById('paramTper');
-                if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length === 4) {
-                    if (paramNper.value != "" && paramNper.value > 0) {
-                        if (paramTper.value != "" && paramTper.value > 0) {
-                            $.ajax({
-                                url: "../Reportes/ReportMovements",
-                                type: "POST",
-                                data: {
-                                    typeOption: option, keyOptionSel: parseInt(keyOption),
-                                    yearSelect: paramYear.value, periodSelect: paramNper.value, typePSelect: paramTper.value
-                                },
-                                beforeSend: () => {
-                                    fDisabledButtonsRep();
-                                }, success: (data) => {
-                                    if (data.Bandera === true && data.MensajeError === "none") {
-                                        if (data.Rows > 0) {
-                                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
-                                        } else {
-                                            fShowContentNoDataReport(contentGenerateRep);
-                                        }
+                //const paramYear = document.getElementById('paramYear');
+                //const paramNper = document.getElementById('paramNper');
+                //const paramTper = document.getElementById('paramTper');
+                const paramDateS = document.getElementById('paramDateS');
+                const paramDateE = document.getElementById('paramDateE');
+                if (paramDateS.value != "") {
+                    if (paramDateE.value != "") {
+                        $.ajax({
+                            url: "../Reportes/ReportMovements",
+                            type: "POST",
+                            data: {
+                                typeOption: option, keyOptionSel: parseInt(keyOption),
+                                paramDateS: paramDateS.value, paramDateE: paramDateE.value
+                            },
+                            beforeSend: () => {
+                                fDisabledButtonsRep();
+                            }, success: (data) => {
+                                if (data.Bandera === true && data.MensajeError === "none") {
+                                    if (data.Rows > 0) {
+                                        fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
                                     } else {
-                                        alert('Algo fallo al realizar el reporte');
-                                        location.reload();
+                                        fShowContentNoDataReport(contentGenerateRep);
                                     }
-                                    fEnabledButtonsRep();
-                                }, error: (jqXHR, exception) => {
-                                    fcaptureaerrorsajax(jqXHR, exception);
+                                } else {
+                                    alert('Algo fallo al realizar el reporte');
+                                    location.reload();
                                 }
-                            });
-                        } else {
-                            fShowTypeAlert('Atención!', 'Complete el campo tipo periodo correctamente', 'warning', paramTper, 2);
-                        }
+                                fEnabledButtonsRep();
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
                     } else {
-                        fShowTypeAlert('Atención!', 'Complete el campo periodo correctamente', 'warning', paramNper, 2);
+                        fShowTypeAlert('Atención!', 'Ingrese una fecha de termino', 'warning', paramDateE, 2);
                     }
                 } else {
-                    fShowTypeAlert('Atención!', 'Complete el campo año correctamente', 'warning', paramYear, 2);
+                    fShowTypeAlert('Atención!', 'Ingrese una fecha de inicio', 'warning', paramDateS, 2);
                 }
+                //if (paramYear.value != "" && paramYear.value > 0 && paramYear.value.length === 4) {
+                //    if (paramNper.value != "" && paramNper.value > 0) {
+                //        if (paramTper.value != "" && paramTper.value > 0) {
+                //            $.ajax({
+                //                url: "../Reportes/ReportMovements",
+                //                type: "POST",
+                //                data: {
+                //                    typeOption: option, keyOptionSel: parseInt(keyOption),
+                //                    yearSelect: paramYear.value, periodSelect: paramNper.value, typePSelect: paramTper.value
+                //                },
+                //                beforeSend: () => {
+                //                    fDisabledButtonsRep();
+                //                }, success: (data) => {
+                //                    if (data.Bandera === true && data.MensajeError === "none") {
+                //                        if (data.Rows > 0) {
+                //                            fShowContentDownloadFile(contentGenerateRep, data.Folder, data.Archivo);
+                //                        } else {
+                //                            fShowContentNoDataReport(contentGenerateRep);
+                //                        }
+                //                    } else {
+                //                        alert('Algo fallo al realizar el reporte');
+                //                        location.reload();
+                //                    }
+                //                    fEnabledButtonsRep();
+                //                }, error: (jqXHR, exception) => {
+                //                    fcaptureaerrorsajax(jqXHR, exception);
+                //                }
+                //            });
+                //        } else {
+                //            fShowTypeAlert('Atención!', 'Complete el campo tipo periodo correctamente', 'warning', paramTper, 2);
+                //        }
+                //    } else {
+                //        fShowTypeAlert('Atención!', 'Complete el campo periodo correctamente', 'warning', paramNper, 2);
+                //    }
+                //} else {
+                //    fShowTypeAlert('Atención!', 'Complete el campo año correctamente', 'warning', paramYear, 2);
+                //}
             } else {
                 alert('Accion invalida');
                 location.reload();

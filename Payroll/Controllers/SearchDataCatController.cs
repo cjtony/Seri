@@ -489,16 +489,29 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult RemoveMovementSalary(int periodo, int anio, int historico)
+        public JsonResult RemoveMovementSalary(int periodo, int anio, int historico, int keyNom, int keyEmployee)
         {
             String messageError = "none";
             Boolean flag = false;
+            Boolean flagPeriodo = false; 
+            Boolean result = false;
+            NominaDao nominaDao = new NominaDao();
+            LoadTypePeriodPayrollBean periodBean = new LoadTypePeriodPayrollBean();
+            LoadTypePeriodPayrollDaoD periodDaoD = new LoadTypePeriodPayrollDaoD();
             try {
-
+                int keyBusiness = int.Parse(Session["IdEmpresa"].ToString());
+                periodBean = periodDaoD.sp_Load_Info_Periodo_Empr(keyBusiness, Convert.ToInt32(DateTime.Now.Year.ToString().Trim()));
+                if (periodBean.iPeriodo == periodo && periodBean.iAnio == anio) {
+                    flagPeriodo = true;
+                    result = nominaDao.sp_Restaura_Movimiento_Salario(periodo, anio, historico, keyNom, keyEmployee, keyBusiness);
+                    if (result) {
+                        flag = true;
+                    }
+                }
             } catch (Exception exc) {
-
+                messageError = exc.Message.ToString();
             }
-            return Json(new { });
+            return Json(new { Bandera = flag, MensajeError = messageError, BanderaPeriodo = flagPeriodo });
         }
 
         [HttpPost]
