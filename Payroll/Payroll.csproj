@@ -458,8 +458,6 @@
     <Content Include="DispersionTXT\2020\NOMINAS\DEPOSITOS_E4P19A20\CHQ_NOMINAS_E4A20P19_BE_72.PDF" />
     <Content Include="DispersionTXT\2020\NOMINAS\DEPOSITOS_E4P3A20\CHQ_NOMINAS_E4A20P03_B14.PDF" />
     <Content Include="DispersionTXT\2020\NOMINAS\DEPOSITOS_E4P3A20\CHQ_NOMINAS_E4A20P03_B2.PDF" />
-    <Content Include="DispersionZIP\2020\INTERBANCARIOS\DEPOSITOS_E4P19A20.zip" />
-    <Content Include="DispersionZIP\2020\INTERBANCARIOS\DEPOSITOS_E4P19A2020-12-04.zip" />
     <Content Include="DispersionZIP\2020\NOMINAS\DEPOSITOS_E4P19A20.zip" />
     <Content Include="DispersionZIP\2020\NOMINAS\DEPOSITOS_E4P3A20.zip" />
     <Content Include="Content\DISPERSION\ESPECIAL\DISPERSIONSP020201204T214315.xlsx" />
@@ -525,9 +523,9 @@
     <Content Include="Content\REPORTES\NOMINA\HCalculo_E8_A2020_NP19_TP3_A.xlsx" />
     <Content Include="Content\REPORTES\NOMINA\HCBajas_E18_A2020_NP15_TP3_A.xlsx" />
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
-    <Content Include="Content\bootstrap\js\bootstrap.min.js.map" /> 
-    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Masiva_Periodos.xlsx" /> 
-    <Content Include="Content\Download\EjemploLayoutSueldos.xlsx" /> 
+    <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Masiva_Periodos.xlsx" />
+    <Content Include="Content\Download\EjemploLayoutSueldos.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
@@ -1204,6 +1202,7 @@
     <Folder Include="Archivos\certificados\PDF\" />
     <Folder Include="Archivos\certificados\XmlZip\" />
     <Folder Include="Content\LogFilesUpload\" />
+    <Folder Include="DispersionZIP\2020\INTERBANCARIOS\" />
     <Folder Include="Scripts\Biom\" />
     <Folder Include="Views\BajasEmpleados\" />
     <Folder Include="Views\CatalogsTables\" />
