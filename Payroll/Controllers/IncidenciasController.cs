@@ -291,6 +291,16 @@ namespace Payroll.Controllers
             return Json(lista);
         }
         [HttpPost]
+        public JsonResult LoadHistorialIncapacidadesTab()
+        {
+            List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();
+            pruebaEmpleadosDao Dao = new pruebaEmpleadosDao();
+            int Empleado_id = int.Parse(Session["Empleado_id"].ToString());
+            int Empresa_id = int.Parse(Session["IdEmpresa"].ToString());
+            lista = Dao.sp_TAusentismos_Retrieve_HistorialAusentismos_Empleado(Empresa_id, Empleado_id);
+            return Json(lista);
+        }
+        [HttpPost]
         public JsonResult SearchIncapacidades(string FechaI, string FechaF)
         {
             List<AusentismosEmpleadosBean> lista = new List<AusentismosEmpleadosBean>();

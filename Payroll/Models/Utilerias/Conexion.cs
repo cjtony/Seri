@@ -8,8 +8,8 @@ namespace Payroll.Models.Utilerias
         // BD Server produccion
         //
         static readonly string Server = "201.149.34.185,15002";
-        static readonly string Db = "IPSNet_Copia";
-        //static readonly string Db = "IPSNet";
+        //static readonly string Db = "IPSNet_Copia";
+        static readonly string Db = "IPSNet";
         static readonly string User = "IPSNet";
         static readonly string Pass = "IPSNet2";
         protected SqlConnection conexion { get; set; }

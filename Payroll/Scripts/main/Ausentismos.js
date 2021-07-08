@@ -11,6 +11,9 @@
     var btnu = document.getElementById("btnUpdate");
     var btnSave = document.getElementById("btnRegistroAusentismo");
 
+
+    var HistorialTable;
+
     certif.disabled = true;
     coment.disabled = true;
     //btnc.classList.add("invisible");
@@ -112,7 +115,8 @@
                     }
                     form.reset();
                     tabAusentismo();
-
+                    HistorialTable = null;
+                    tabHistorial();
                 }
             });
 
@@ -228,6 +232,8 @@
                         });
                         tabAusentismo();
                         tabIncapacidades();
+                        HistorialTable = null;
+                        tabHistorial();
                         //$("#inRecuperacionAusentismo option[value='']").attr("selected", true);
                         //$("#inMotivoAusentismo option[value='']").attr("selected", true);
                         $("#btnRegistroAusentismo").removeClass("invisible");
@@ -273,6 +279,8 @@
                 document.getElementById("inputSearchEmpleados").value = "";
                 tabAusentismo();
                 tabIncapacidades();
+                HistorialTable = null;
+                tabHistorial();
                 //document.getElementById("nameuser").innerHTML = "<div class='text-uppercase'>" + data[0]["Nombre_Empleado"] + " " + data[0]["Apellido_Paterno_Empleado"] + ' ' + data[0]["Apellido_Materno_Empleado"] + "<small class='text-muted'>" + data[0]["DescripcionPuesto"] + "</small></div>";
             }
         });
@@ -338,6 +346,46 @@
             }
         });
     }
+    tabHistorial = () => {
+        $.ajax({
+            method: "POST",
+            url: "../Incidencias/LoadHistorialIncapacidadesTab",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (data) => {
+                var isActive = "";
+                document.getElementById("tabodyhistorial").innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i]["Saldo_Dias_Ausentismo"] > 0) {
+                        isActive = "<i class='fas fa-lock-open text-success'></i>"
+                    } else {
+                        isActive = "<i class='fas fa-lock text-warning'></i>"
+                    }
+                    document.getElementById("tabodyhistorial").innerHTML += "" +
+                        "<tr>" +
+                        "<td>" + isActive + "</td>" +
+                        "<td>" + data[i]["Nombre_Ausentismo"] + "</td>" +
+                        "<td>" + data[i]["Fecha_Ausentismo"].substring(0, 10) + "</td>" +
+                        "<td>" + data[i]["Dias_Ausentismo"] + "</td>" +
+                        "<td>" + data[i]["Saldo_Dias_Ausentismo"] + "</td>" +
+                        //"<td>" + data[i]["Causa_FaltaInjustificada"] + "</td>" +
+                        "<td>" + data[i]["Certificado_imss"] + "</td>" +
+                        "<td>" + data[i]["Referencia"] + "</td>" +
+                        "</tr>";
+                }
+                //HistorialTable = $("#tabhistorial").DataTable()
+                setTimeout(function () {
+                    HistorialTable = $("#tabhistorial").DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                        },
+                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]]
+                    });
+                    $("#tabhistorial").fadeIn();
+                }, 2000);
+            }
+        });
+    }
 
     //
     eliminarAusentismo = (Ausentismo_id) => {
@@ -365,6 +413,8 @@
                 document.getElementById("tabody").innerHTML = "";
                 tabAusentismo();
                 tabIncapacidades();
+                HistorialTable = null;
+                tabHistorial();
             }
         });
     }

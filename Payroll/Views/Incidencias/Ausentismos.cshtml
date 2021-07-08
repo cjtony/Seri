@@ -1,4 +1,4 @@
-﻿<div class="container bg-white pb-3 rounded font-labels shadow shadow-lg border-left-primary border-right-primary">
+﻿<div class="container bg-white pb-3 rounded font-labels shadow shadow-lg border-left-primary border-right-primary text-dark">
     <div class="border-bottom border-secondary pt-4 pb-2 font-weight-bold d-flex justify-content-between"><div>Registrar ausentismo a empleado : </div><strong class="font-button" id="EmpDes"></strong><div class="btn btn-info btn-sm font-labels" id="btn-cambiar-empleado" title="Cambia de usuario"><i class="fas fa-users"></i></div></div>
     <div class="row">
         <div class="col-md-4 rounded">
@@ -75,6 +75,9 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link h6 text-info" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">  <i class="fas fa-calendar-plus text-primary" style="color:#020F59;"></i>  Incapacidades </a>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link h6 text-info" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">  <i class="fas fa-history text-primary" style="color:#020F59;"></i>  Historial </a>
+                </li>
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -96,6 +99,7 @@
                     </table>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    
                     <table class="table table-sm font-labels text-center table-striped" id="tabIncapacidades">
                         <thead>
                             <tr>
@@ -109,6 +113,24 @@
                             </tr>
                         </thead>
                         <tbody id="tabodyIncapacidades">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane pt-2 fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                    <table class="table small table-sm font-labels text-center table-striped" id="tabhistorial">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Motivo</th>
+                                <th scope="col">Fecha Inicio</th>
+                                <th scope="col">Dias</th>
+                                <th scope="col">Saldo dias</th>
+                                @*<th scope="col">Causa</th>*@
+                                <th scope="col">Certificado IMSS</th>
+                                <th scope="col">Referencia</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabodyhistorial" class="text-black">
                         </tbody>
                     </table>
                 </div>
@@ -145,7 +167,7 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/main/Ausentismos.js?n=4.0"></script>
+<script src="~/Scripts/main/Ausentismos.js?n=4.4"></script>
 <script>
     $(function () {
         // carga select

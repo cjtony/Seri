@@ -312,7 +312,7 @@
             data: JSON.stringify({ Empleado_id: Empleado_id, Empresa_id: Empresa_id }),
             contentType: "application/json; charset=utf-8",
             success: (data) => {
-                console.log(data);
+                //console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     var j = i + 1;
                     $(".lbl-" + j).val(data[i]);
@@ -779,4 +779,6 @@
             }
         });
     }
+    
+
 });

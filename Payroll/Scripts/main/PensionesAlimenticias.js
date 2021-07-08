@@ -287,6 +287,37 @@
             contentType: "application/json; charset=utf-8",
             success: (data) => {
                 console.log(data);
+                //console.log(data[0]["AplicaEn"]);
+                if (data[0]["Porcentaje"].length == 0) { }
+                else { Porcentaje.value = data[0]["Porcentaje"]; }
+
+                if (data[0]["Cuota_Fija"].length == 0) { }
+                else { CFija.value = data[0]["Cuota_Fija"]; }
+                
+                $("#inAplicaEn option[value='" + data[0]["AplicaEn"] + "']").attr("selected", true);
+                $("#inTCalculo option[value='1'").attr("selected", true);
+                $("#inBanco option[value='" + data[0]["Banco"] + "']").attr("selected", true);
+
+                NOficio.value = data[0]["No_Oficio"];
+                FOficio.value = data[0]["Fecha_Oficio"].substring(6, data[0]["Fecha_Oficio"].length) + "-" + data[0]["Fecha_Oficio"].substring(3, data[0]["Fecha_Oficio"].length - 5) + "-" + data[0]["Fecha_Oficio"].substring(0, data[0]["Fecha_Oficio"].length - 8)
+
+                //if (data[0]["Fecha_baja"].length == 0 || data[0]["Fecha_baja"].length < 10 || data[0]["Fecha_baja"] == null) { }
+                //else { FBaja.value = data[0]["Fecha_baja"].substring(6, data[0]["Fecha_baja"].length) + "-" + data[0]["Fecha_baja"].substring(3, data[0]["Fecha_baja"].length - 5) + "-" + data[0]["Fecha_baja"].substring(0, data[0]["Fecha_baja"].length - 8) }
+
+                if (data[0]["Cuenta_cheques"].length == 0) { }
+                else { CCheques.value = data[0]["Cuota_Fija"]; }
+
+
+                if (data[0]["Beneficiaria"].length == 0) { }
+                else { Beneficiaria.value = data[0]["Beneficiaria"]; }
+
+                if (data[0]["Sucursal"].length == 0) { }
+                else { Sucursal.value = data[0]["Sucursal"]; }
+
+                if (data[0]["Tarjeta_vales"].length == 0) { }
+                else { TVales.value = data[0]["Tarjeta_vales"]; }
+
+
             }
         });
     }
