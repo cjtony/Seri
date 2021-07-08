@@ -1647,11 +1647,12 @@ namespace Payroll.Models.Daos
                                                 string[] Dias2 = dias.Split('.'); 
                                                 sDiasEfectivos = Dias2[0];
                                             }
-                                            if (LisTRecibo[0].iDiasTrab == null)
+                                            if (LisTRecibo[0].iDiasTrab == null|| sDiasEfectivos == "0")
                                             {
                                                 sDiasEfectivos = Convert.ToString(LFechaPerido[0].iDiasEfectivos);
                                             }
 
+                                        
 
 
                                         string Otrospagos = "0.00";
@@ -1948,7 +1949,7 @@ namespace Payroll.Models.Daos
                                                             sDiasEfectivos = Dias2[0];
 
                                                         }
-                                                        if (LisTRecibo[0].iDiasTrab == null)
+                                                        if (LisTRecibo[0].iDiasTrab == null || sDiasEfectivos == "0") 
                                                         {
                                                             sDiasEfectivos = Convert.ToString(LFechaPerido[0].iDiasEfectivos);
                                                         }
