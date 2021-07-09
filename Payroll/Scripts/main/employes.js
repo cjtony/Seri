@@ -265,7 +265,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <button title="Remover historico" class="btn btn-sm btn-outline-danger" onclick="fRemoveMovementSalary(${data.Datos[i].iPeriodo}, ${data.Datos[i].iAnio}, ${data.Datos[i].iIdHistorico});">
+                                                    <button title="Remover historico" class="btn btn-sm btn-outline-danger" onclick="fRemoveMovementSalary(${data.Datos[i].iPeriodo}, ${data.Datos[i].iAnio}, ${data.Datos[i].iIdHistorico}, '${data.Datos[i].sValorAnterior}');">
                                                         <i class="fas fa-times-circle fa-lg"></i>
                                                     </button>
                                                 </div>
@@ -308,64 +308,74 @@
     }
 
     // Funcion que remueve el movimiento de salario de un empleado
-    fRemoveMovementSalary = (paramperiodo, paramanio, paramhistorico) => {
+    fRemoveMovementSalary = (paramperiodo, paramanio, paramhistorico, paramsalary) => {
         console.group("Remueve movimientos salario");
         try {
             //alert('Estamos trabajando en la funcionalidad');
-            const keyNom = document.getElementById('clvnom');
-            const keyEmploye = document.getElementById('clvemp');
-            if (paramperiodo != "" && paramanio > 0 && paramhistorico > 0 && keyNom.value != "" && keyNom.value > 0
-                && keyEmploye.value != "" && keyEmploye.value > 0) {
-                const dataSend = {
-                    periodo: paramperiodo, anio: paramanio, historico: paramhistorico,
-                    keyNom: parseInt(keyNom.value), keyEmployee: parseInt(keyEmploye.value)
-                };
-                $.ajax({
-                    url: "../SearchDataCat/RemoveMovementSalary",
-                    type: "POST",
-                    data: dataSend,
-                    beforeSend: () => {
+            Swal.fire({
+                title: "¿Esta seguro?", text: "al remover el movimiento salarial el sueldo volvera al anterior que es: $" + String(paramsalary), icon: "warning",
+                confirmButtonText: "Aceptar", showCancelButton: true, cancelButtonText: "Cancelar",
+                allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+            }).then((result) => {
+                if (result.value) {
+                    const keyNom = document.getElementById('clvnom');
+                    const keyEmploye = document.getElementById('clvemp');
+                    if (paramperiodo != "" && paramanio > 0 && paramhistorico > 0 && keyNom.value != "" && keyNom.value > 0
+                        && keyEmploye.value != "" && keyEmploye.value > 0) {
+                        const dataSend = {
+                            periodo: paramperiodo, anio: paramanio, historico: paramhistorico,
+                            keyNom: parseInt(keyNom.value), keyEmployee: parseInt(keyEmploye.value)
+                        };
+                        $.ajax({
+                            url: "../SearchDataCat/RemoveMovementSalary",
+                            type: "POST",
+                            data: dataSend,
+                            beforeSend: () => {
 
-                    }, success: (request) => {
-                        console.log(request);
-                        if (request.BanderaPeriodo == true) {
-                            if (request.Bandera == true) {
-                                $("#modalMovementsSalary").modal("hide");
-                                Swal.fire({
-                                    title: "Movimiento eliminado!", text: "limpiaremos los campos para su posterior consulta", icon: "success",
-                                    confirmButtonText: "Aceptar",
-                                    allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
-                                }).then((result) => {
-                                    if (result.value) {
-                                        fGenRestore();
-                                        setTimeout(() => {
-                                            $("#searchemploye").modal("show");
-                                            setTimeout(() => {
-                                                document.getElementById('filtronumber').checked = true;
-                                                document.getElementById('filtroname').checked = false;
-                                                document.getElementById('searchemployekey').value = dataSend.keyEmployee;
-                                                document.getElementById('searchemployekey').focus();
+                            }, success: (request) => {
+                                console.log(request);
+                                if (request.BanderaPeriodo == true) {
+                                    if (request.Bandera == true) {
+                                        $("#modalMovementsSalary").modal("hide");
+                                        Swal.fire({
+                                            title: "Movimiento eliminado!", text: "limpiaremos los campos para su posterior consulta", icon: "success",
+                                            confirmButtonText: "Aceptar",
+                                            allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                        }).then((result) => {
+                                            if (result.value) {
+                                                fGenRestore();
                                                 setTimeout(() => {
-                                                    fsearchemployes();
-                                                }, 500);
-                                            }, 500);
-                                        }, 1000);
+                                                    $("#searchemploye").modal("show");
+                                                    setTimeout(() => {
+                                                        document.getElementById('filtronumber').checked = true;
+                                                        document.getElementById('filtroname').checked = false;
+                                                        document.getElementById('searchemployekey').value = dataSend.keyEmployee;
+                                                        document.getElementById('searchemployekey').focus();
+                                                        setTimeout(() => {
+                                                            fsearchemployes();
+                                                        }, 500);
+                                                    }, 500);
+                                                }, 1000);
+                                            }
+                                        });
+                                    } else {
+                                        fshowtypealert('Error', 'Ocurrio un error al restaurar el movimiento', 'error', null, 0);
                                     }
-                                });
-                            } else {
-                                fshowtypealert('Error', 'Ocurrio un error al restaurar el movimiento', 'error', null, 0);
+                                } else {
+                                    fshowtypealert('Atención', 'No se puede remover un movimiento aplicado en un periodo anterior al actual', 'warning', null, 0);
+                                }
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
                             }
-                        } else {
-                            fshowtypealert('Atención', 'No se puede remover un movimiento aplicado en un periodo anterior al actual', 'warning', null, 0);
-                        }
-                    }, error: (jqXHR, exception) => {
-                        fcaptureaerrorsajax(jqXHR, exception);
+                        });
+                    } else {
+                        alert('Ocurrion un error en la aplicacion');
+                        location.reload();
                     }
-                });
-            } else {
-                alert('Ocurrion un error en la aplicacion');
-                location.reload();
-            }
+                } else {
+                    Swal.fire({ title: "Bien", text: "Todo sigue igual", timer: 1000, showConfirmButton: false, allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false });
+                }
+            });
         } catch (error) {
             if (error instanceof EvalError) {
                 console.error('EvalError: ', error.message);

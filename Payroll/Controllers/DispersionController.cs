@@ -471,13 +471,15 @@ namespace Payroll.Controllers
                                         nombreEmpresaBanamex += " ";
                                     }
                                     string valorFijoBanamex1 = "NOMINA";
-                                    string fillerBanamexE1 = " ";
-                                    string fechaBanamexE1 = dateC.ToString("ddMMyyyy") + "     ";
+                                    string fillerBanamexE1   = " ";
+                                    string fechaBanamexE1    = dateC.ToString("ddMMyyyy") + "     ";
                                     string valorFijoBanamex2 = "05";
-                                    string fillerBanamexE2 = "                                        "; 
+                                    string fillerBanamexE2   = "                                        "; 
                                     string valorFijoBanamex3 = "C00";
                                     //HEADER
-                                    string headerLayoutBanamex = tipoRegistroBanamexE + numeroClienteBanamexE + fechaBanamexE + valorFijoBanamex0 + nombreEmpresaBanamex + valorFijoBanamex1 + fillerBanamexE1 + fechaBanamexE1 + valorFijoBanamex2 + fillerBanamexE2 + valorFijoBanamex3;
+                                    string headerLayoutBanamex = tipoRegistroBanamexE + numeroClienteBanamexE + fechaBanamexE 
+                                        + valorFijoBanamex0 + nombreEmpresaBanamex + valorFijoBanamex1 + fillerBanamexE1 
+                                        + fechaBanamexE1 + valorFijoBanamex2 + fillerBanamexE2 + valorFijoBanamex3;
                                     // FOREACH DATOS TOTALES
                                     string importeTotalBanamexG = "";
                                     // INICIO CODIGO NUEVO RESTA RENGLON 1481 
@@ -486,10 +488,11 @@ namespace Payroll.Controllers
                                     ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
                                     foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                        if (bankResult == payroll.iIdBanco) {
-                                            renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
-                                                    Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                            renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness, 
+                                                Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             if (renglon1481 > 0) {
-                                                importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                                    Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 sumaImporte += importe.decimalTotalDispersion;
                                             } else {
                                                 sumaImporte += payroll.dImporte;
@@ -508,9 +511,13 @@ namespace Payroll.Controllers
                                     string numeroCuentaBanamex  = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     string generaCImporteTBG    = "";
                                     int longImporteTotalBG      = 18;
-                                    int longITBG = longImporteTotalBG - importeTotalBanamexG.Length;
-                                    for (var u = 0; u < longITBG; u++) { generaCImporteTBG += "0"; }
-                                    string globalLayoutBanamex = tipoRegistroBanamexG + cargoBanamexG + monedaBanamexG + generaCImporteTBG + importeTotalBanamexG + tipoCuentaBanamexG + sucursalBanamexG + valorFijoBanamexG1 + numeroCuentaBanamex;
+                                    int longITBG                = longImporteTotalBG - importeTotalBanamexG.Length;
+                                    for (var u = 0; u < longITBG; u++) { 
+                                        generaCImporteTBG += "0"; 
+                                    }
+                                    string globalLayoutBanamex = tipoRegistroBanamexG + cargoBanamexG + monedaBanamexG 
+                                        + generaCImporteTBG + importeTotalBanamexG + tipoCuentaBanamexG + sucursalBanamexG 
+                                        + valorFijoBanamexG1 + numeroCuentaBanamex;
                                     // - DETALLE - \\
                                     string tipoRegistroBanamexD = "3";
                                     string abonoBanamexD        = "0";
@@ -529,16 +536,16 @@ namespace Payroll.Controllers
                                         string cerosNumCueBnxD    = "";
                                         string cerosNumNomBnxD    = "";
                                         string espaciosNomEmpBnxD = "";
-                                        int longImpTotBnxD = 18;
-                                        int longNumCueBnxD = 20;
-                                        int longNumNomBnxD = 10;
-                                        int cantidadMovBanamexT = 0;
-                                        int sumaImpTotBanamexT  = 0; 
-                                        int longNomEmpBnxD      = 55;
+                                        int longImpTotBnxD        = 18;
+                                        int longNumCueBnxD        = 20;
+                                        int longNumNomBnxD        = 10;
+                                        int cantidadMovBanamexT   = 0;
+                                        int sumaImpTotBanamexT    = 0; 
+                                        int longNomEmpBnxD        = 55;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             if (payroll.iIdBanco == bankResult) {
                                                 int longAcortAccount = payroll.sCuenta.Length;
-                                                string accountUser = payroll.sCuenta;
+                                                string accountUser   = payroll.sCuenta;
                                                 string formatAccount = "";
                                                 if (longAcortAccount == 18) {
                                                     string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
@@ -547,43 +554,48 @@ namespace Payroll.Controllers
                                                     formatAccount = payroll.sCuenta;
                                                 }
                                                 string nameEmployee = payroll.sNombre + " " + payroll.sPaterno + " " + payroll.sMaterno;
-                                                cantidadMovBanamexT += 1;
-
-                                                // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                                double restaImporte = 0;
+                                                cantidadMovBanamexT += 1; 
                                                 string importeFinal = "";
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 if (renglon1481 > 0) {
-                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                                        Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                     importeFinal = importe.decimalTotalDispersion.ToString();
                                                 } else {
                                                     importeFinal = payroll.dImporte.ToString();
                                                 }
-                                                // FIN CODIGO NUEVO
-
-                                                //sumaImpTotBanamexT += Convert.ToInt32(payroll.dImporte);
                                                 sumaImpTotBanamexT += Convert.ToInt32(importeFinal);
-                                                string nombreCEmp = "";
+                                                string nombreCEmp  = "";
                                                 if (nameEmployee.Length > 57 ) {
                                                     nombreCEmp = nameEmployee.Substring(0, 54);
                                                 } else {
                                                     nombreCEmp = nameEmployee;
-                                                }
-                                                //int longImpTotBnxDResult = longImpTotBnxD - payroll.dImporte.ToString().Length;
+                                                } 
                                                 int longImpTotBnxDResult = longImpTotBnxD - importeFinal.ToString().Length;
                                                 int longNumCueBnxDResult = longNumCueBnxD - payroll.sCuenta.Length;
                                                 int longNumNomBnxDResult = longNumNomBnxD - payroll.sNomina.Length;
                                                 int longNomEmpBnxDResult = longNomEmpBnxD - nombreCEmp.Length;
-                                                for (var f = 0; f < longImpTotBnxDResult; f++) { cerosImpTotBnxD += "0"; }
-                                                for (var r = 0; r < 9; r++) { cerosNumCueBnxD += "0"; }
-                                                for (var c = 0; c < longNumNomBnxDResult; c++) { cerosNumNomBnxD += "0"; }
-                                                for (var s = 0; s < longNomEmpBnxDResult; s++) { espaciosNomEmpBnxD += " "; }
-                                                // payroll.dImporte.ToString()
-                                                fileBanamex.Write(tipoRegistroBanamexD + abonoBanamexD + metodoPagoBanamexD + cerosImpTotBnxD + importeFinal + tipoCuentaBanamexD + cerosNumCueBnxD + formatAccount + fillerBanamexD1 + cerosNumNomBnxD + payroll.sNomina + nombreCEmp +          espaciosNomEmpBnxD + valorFijoBanamexD1 + fillerBanamexD2 + valorFijoBanamexD2 + fillerBanamexD3 + valorFijoBanamexD3 + "\n");
-                                                cerosImpTotBnxD = "";
-                                                cerosNumCueBnxD = "";
-                                                cerosNumNomBnxD = "";
+                                                for (var f = 0; f < longImpTotBnxDResult; f++) { 
+                                                    cerosImpTotBnxD += "0"; 
+                                                }
+                                                for (var r = 0; r < 9; r++) { 
+                                                    cerosNumCueBnxD += "0"; 
+                                                }
+                                                for (var c = 0; c < longNumNomBnxDResult; c++) { 
+                                                    cerosNumNomBnxD += "0"; 
+                                                }
+                                                for (var s = 0; s < longNomEmpBnxDResult; s++) { 
+                                                    espaciosNomEmpBnxD += " "; 
+                                                } 
+                                                fileBanamex.Write(tipoRegistroBanamexD + abonoBanamexD + metodoPagoBanamexD 
+                                                    + cerosImpTotBnxD + importeFinal + tipoCuentaBanamexD + cerosNumCueBnxD 
+                                                    + formatAccount + fillerBanamexD1 + cerosNumNomBnxD + payroll.sNomina 
+                                                    + nombreCEmp + espaciosNomEmpBnxD + valorFijoBanamexD1 + fillerBanamexD2 
+                                                    + valorFijoBanamexD2 + fillerBanamexD3 + valorFijoBanamexD3 + "\n");
+                                                cerosImpTotBnxD    = "";
+                                                cerosNumCueBnxD    = "";
+                                                cerosNumNomBnxD    = "";
                                                 espaciosNomEmpBnxD = "";
                                             }
                                         }
@@ -597,9 +609,15 @@ namespace Payroll.Controllers
                                         int longSumImpTotBnxT       = 18;
                                         int longSumMovBnxtResult    = longSumMovBnxT - cantidadMovBanamexT.ToString().Length;
                                         int longSumImpTotBnxTResult = longSumImpTotBnxT - sumaImpTotBanamexT.ToString().Length;
-                                        for (var s = 0; s < longSumMovBnxtResult; s++) { cerosCanMovBnxT += "0"; }
-                                        for (var w = 0; w < longSumImpTotBnxTResult; w++) { cerosSumImpTotBnxT += "0"; }
-                                        string totalesLayoutBanamex = tipoRegistroBanamexT + claveMonedaBanamexT + cerosCanMovBnxT + cantidadMovBanamexT.ToString() + cerosSumImpTotBnxT + sumaImpTotBanamexT.ToString() + valorFijoBanamexT1 + cerosSumImpTotBnxT + sumaImpTotBanamexT.ToString();
+                                        for (var s = 0; s < longSumMovBnxtResult; s++) { 
+                                            cerosCanMovBnxT += "0"; 
+                                        }
+                                        for (var w = 0; w < longSumImpTotBnxTResult; w++) { 
+                                            cerosSumImpTotBnxT += "0"; 
+                                        }
+                                        string totalesLayoutBanamex = tipoRegistroBanamexT + claveMonedaBanamexT + cerosCanMovBnxT 
+                                            + cantidadMovBanamexT.ToString() + cerosSumImpTotBnxT + sumaImpTotBanamexT.ToString() 
+                                            + valorFijoBanamexT1 + cerosSumImpTotBnxT + sumaImpTotBanamexT.ToString();
                                         fileBanamex.Write(totalesLayoutBanamex + "\n");
                                         cerosCanMovBnxT    = "";
                                         cerosSumImpTotBnxT = "";
@@ -609,26 +627,25 @@ namespace Payroll.Controllers
 
                                 // ARCHIVO CSV PARA HSBC -> NOMINA
                                 if (bankResult == 21) {
-
                                     // FOREACH DATOS TOTALES
                                     double totalAmountHSBC = 0;
                                     int hQuantityDeposits = 0;
                                     foreach (DatosProcesaChequesNominaBean deposits in listDatosProcesaChequesNominaBean) {
                                         if (deposits.iIdBanco == bankResult) {
-                                            totalAmountHSBC += deposits.doImporte;
+                                            totalAmountHSBC   += deposits.doImporte;
                                             hQuantityDeposits += 1;
                                         }
                                     }
                                     string nameBank   = "HSBC";
                                     string outCsvFile = string.Format(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".csv", nameBank + DateTime.Now.ToString("_yyyyMMdd HHmms"));
-                                    String header  = "";
-                                    var stream = System.IO.File.CreateText(outCsvFile);
+                                    String header     = "";
+                                    var stream        = System.IO.File.CreateText(outCsvFile);
                                     // HEADER
                                     string hValuePermanent1    = "MXPRLF";
                                     string hNivelAuthorization = "F";
-                                    string hReferenceNumber = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                                    string hReferenceNumber    = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     string hTotalAmount        = Truncate(totalAmountHSBC, 2).ToString();
-                                    string hDateActually = DateTime.Now.ToString("ddMMyyyy");
+                                    string hDateActually       = DateTime.Now.ToString("ddMMyyyy");
                                     if (dateDisC != "") {
                                         hDateActually = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
                                     }
@@ -680,15 +697,11 @@ namespace Payroll.Controllers
                                             } else if (longAcortAccount == 9) {
                                                 finallyAccount = "0" + payroll.sCuenta;
                                             } else {
-                                                dataErrors.Add(
-                                                        new DataErrorAccountBank {sBanco = "HSBC", sCuenta = payroll.sCuenta, sNomina = payroll.sNomina });
+                                                dataErrors.Add( new DataErrorAccountBank {sBanco = "HSBC", sCuenta = payroll.sCuenta, sNomina = payroll.sNomina });
                                             }
-                                            if (finallyAccount == "6373333668") {
-                                                int jd = 0;
-                                            }
-                                            var test = payroll.dImporte.ToString().Insert(payroll.dImporte.ToString().Length - 2, ".");
+                                            var test       = payroll.dImporte.ToString().Insert(payroll.dImporte.ToString().Length - 2, ".");
                                             string amountt = Truncate(Convert.ToDouble(payroll.sImporte), 2).ToString();
-                                            string amount = payroll.doImporte.ToString();
+                                            string amount  = payroll.doImporte.ToString();
                                             string nameEmployee = payroll.sNombre.TrimEnd() + " " + payroll.sPaterno.TrimEnd() + " " + payroll.sMaterno.TrimEnd();
                                             if (nameEmployee.Length > 35) {
                                                 nameEmployee = nameEmployee.Substring(0, 35);
@@ -708,108 +721,136 @@ namespace Payroll.Controllers
                                 // ARCHIVO TXT DISPERSION SANTANDER -> NOMINA -> OK -> LISTO
 
                                 if (bankResult == 14) {
-                                    decimal resultadoSuma = 0;
-                                    // - ENCABEZADO - \\ ARCHIVO OK
+                                    decimal resultadoSuma        = 0; 
                                     int initConsecutiveNbOneN    = 1;
                                     string  typeRegisterN        = "1";
                                     string consecutiveNumberOneN = "0000";
                                     string senseA                = "E";
                                     string numCtaBusiness        = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
                                     string fillerLayout          = "     ";
-                                    string headerLayout          = typeRegisterN + consecutiveNumberOneN + initConsecutiveNbOneN.ToString() + senseA + dateGenerationFormat + numCtaBusiness + fillerLayout + dateGenerationFormat;
-                                    // - DETALLE - \\                                                                          
-                                    string typeRegisterD = "2";
-                                    using (StreamWriter fileTxt = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt", false, new ASCIIEncoding()))
-                                    {
+                                    string typeRegisterD         = "2";
+                                    string headerLayout          = typeRegisterN + consecutiveNumberOneN + initConsecutiveNbOneN.ToString() 
+                                        + senseA + dateGenerationFormat + numCtaBusiness + fillerLayout + dateGenerationFormat;
+                                    using (StreamWriter fileTxt = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt", false, new ASCIIEncoding())) {
                                         fileTxt.Write(headerLayout + "\n");
-                                        string spaceGenerate1 = "", spaceGenerate2 = "", spaceGenerate3 = "", numberCeroGene = "", consec1Generat = "", numberNomGener = "", totGenerate = "";
-                                        int longc = 5, long0 = 7, long1 = 30, long2 = 20, long3 = 30, long4 = 18, consecutiveInit = initConsecutiveNbOneN, resultSumTot = 0, longTot = 18;
-                                        int totalRecords = 0;
-                                        double totalAmount = 0;
+                                        string spaceGenerate1 = "", 
+                                            spaceGenerate2    = "", 
+                                            spaceGenerate3    = "", 
+                                            numberCeroGene    = "", 
+                                            consec1Generat    = "", 
+                                            numberNomGener    = "", 
+                                            totGenerate       = "";
+                                        int longc           = 5, 
+                                            long0           = 7, 
+                                            long1           = 30, 
+                                            long2           = 20, 
+                                            long3           = 30, 
+                                            long4           = 18, 
+                                            consecutiveInit = initConsecutiveNbOneN, 
+                                            resultSumTot    = 0, 
+                                            longTot         = 18;
+                                        int totalRecords    = 0;
+                                        double totalAmount  = 0;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             if (payroll.iIdBanco == bankResult) {
-                                                totalRecords += 1;
-                                                int longAcortAccount = payroll.sCuenta.Length;
+                                                totalRecords          += 1;
+                                                int longAcortAccount  = payroll.sCuenta.Length;
                                                 string finallyAccount = payroll.sCuenta;
                                                 if (longAcortAccount == 18) {
-                                                    string accountUser = payroll.sCuenta;
+                                                    string cerosAccount           = "";
+                                                    string accountUser            = payroll.sCuenta;
                                                     string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
-                                                    string formatAccount = "";
+                                                    string formatAccount          = "";
                                                     if (longAcortAccount == 18) {
                                                         formatAccount = formatAccountSubstring.Substring(0, 6);
                                                     }
-                                                    string cerosAccount = "";
                                                     for (var t = 0; t < formatAccount.Length + 1; t++) {
                                                         cerosAccount += "0";
                                                     }
                                                     finallyAccount = formatAccountSubstring.Substring(6, 11);
                                                 } else if (longAcortAccount == 9) {
                                                     finallyAccount = "0" + payroll.sCuenta;
-                                                } else if (longAcortAccount == 10) { 
-
+                                                } else if (longAcortAccount == 16) {
+                                                    finallyAccount = "00" + payroll.sCuenta;
                                                 } else {
-                                                    dataErrors.Add(
-                                                            new DataErrorAccountBank{ sBanco = "Santander", sCuenta = payroll.sCuenta, sNomina = payroll.sNomina });
+                                                    dataErrors.Add( new DataErrorAccountBank{ sBanco = "Santander", sCuenta = payroll.sCuenta,
+                                                        sNomina = payroll.sNomina });
                                                 }
-                                                consecutiveInit += 1;
-
-
-                                                // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                                decimal restaImporte = 0;
+                                                consecutiveInit     += 1;  
                                                 decimal importeFinal = 0;
+                                                string importeG      = "";
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                                string importeG = "";
                                                 ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
-                                                ReportesDao reportDao = new ReportesDao();
+                                                ReportesDao reportDao             = new ReportesDao();
                                                 if (renglon1481 > 0) {
-                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                                        Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                     resultadoSuma += importe.decimalTotalDispersion;
                                                     importeFinal   = importe.decimalTotalDispersion;
                                                     importeG       = importeFinal.ToString();
                                                 } else {
                                                     resultadoSuma += payroll.dImporte;
-                                                    importeFinal  = payroll.dImporte;
-                                                    importeG      = importeFinal.ToString();
+                                                    importeFinal   = payroll.dImporte;
+                                                    importeG       = importeFinal.ToString();
                                                 }
-                                                decimal montotest = 782.40M;
-                                                // FIN CODIGO NUEVO
-                                                totalAmount += payroll.doImporte;
+                                                totalAmount   += payroll.doImporte;
                                                 int longConsec = longc - consecutiveInit.ToString().Length;
                                                 int longNumNom = long0 - payroll.sNomina.Length;
                                                 int longApepat = long1 - payroll.sPaterno.Length;
                                                 int longApemat = long2 - payroll.sMaterno.Length;
                                                 int longNomEmp = long3 - payroll.sNombre.Length;
-                                                //int longImport = long4 - payroll.dImporte.ToString().Length;
                                                 int longImport = long4 - importeFinal.ToString().Length;
-                                                for (var y = 0; y < longConsec; y++) { consec1Generat += "0"; }
-                                                for (var g = 0; g < longNumNom; g++) { numberNomGener += "0"; }
-                                                for (var i = 0; i < longApepat; i++) { spaceGenerate1 += " "; }
-                                                for (var t = 0; t < longApemat; t++) { spaceGenerate2 += " "; }
-                                                for (var z = 0; z < longNomEmp; z++) { spaceGenerate3 += " "; }
-                                                for (var x = 0; x < longImport; x++) { numberCeroGene += "0"; }
-                                                //resultSumTot += Convert.ToInt32(payroll.dImporte);
-                                                //resultSumTot += Convert.ToInt32(importeFinal);
-                                                fileTxt.WriteLine(typeRegisterD + consec1Generat + consecutiveInit.ToString() + numberNomGener + payroll.sNomina + payroll.sPaterno.Replace("Ñ", "N") + spaceGenerate1 + payroll.sMaterno.Replace("Ñ", "N") + spaceGenerate2 + payroll.sNombre.Replace("Ñ", "N") + spaceGenerate3 + finallyAccount + "     " + numberCeroGene + importeG.ToString());
-                                                //payroll.dImporte.ToString()
-                                                consec1Generat = ""; numberNomGener = "";
-                                                spaceGenerate1 = ""; spaceGenerate2 = "";
-                                                spaceGenerate3 = ""; numberCeroGene = "";
+                                                for (var y = 0; y < longConsec; y++) { 
+                                                    consec1Generat += "0"; 
+                                                }
+                                                for (var g = 0; g < longNumNom; g++) { 
+                                                    numberNomGener += "0"; 
+                                                }
+                                                for (var i = 0; i < longApepat; i++) { 
+                                                    spaceGenerate1 += " "; 
+                                                }
+                                                for (var t = 0; t < longApemat; t++) { 
+                                                    spaceGenerate2 += " "; 
+                                                }
+                                                for (var z = 0; z < longNomEmp; z++) { 
+                                                    spaceGenerate3 += " "; 
+                                                }
+                                                for (var x = 0; x < longImport; x++) { 
+                                                    numberCeroGene += "0"; 
+                                                }
+                                                fileTxt.WriteLine(typeRegisterD + consec1Generat + consecutiveInit.ToString() 
+                                                    + numberNomGener + payroll.sNomina + payroll.sPaterno.Replace("Ñ", "N") 
+                                                    + spaceGenerate1 + payroll.sMaterno.Replace("Ñ", "N") 
+                                                    + spaceGenerate2 + payroll.sNombre.Replace("Ñ", "N") 
+                                                    + spaceGenerate3 + finallyAccount + "     " 
+                                                    + numberCeroGene + importeG.ToString());
+                                                consec1Generat = ""; 
+                                                numberNomGener = "";
+                                                spaceGenerate1 = ""; 
+                                                spaceGenerate2 = "";
+                                                spaceGenerate3 = ""; 
+                                                numberCeroGene = "";
                                             }
                                         }
                                         if (bankResult == 14) {
                                             string importetotal = resultadoSuma.ToString().Replace(",","").Replace(".","");
                                             int longTotGenerate = longTot - importetotal.ToString().Length;
-                                            for (var j = 0; j < longTotGenerate; j++) { totGenerate += "0"; }
+                                            for (var j = 0; j < longTotGenerate; j++) { 
+                                                totGenerate += "0"; 
+                                            }
                                             int long1TotGenert = longc - (consecutiveInit + 1).ToString().Length;
-                                            for (var h = 0; h < long1TotGenert; h++) { consec1Generat += "0"; }
-                                            int longTotalR = 5;
-                                            int resultLTR = longTotalR - totalRecords.ToString().Length;
+                                            for (var h = 0; h < long1TotGenert; h++) { 
+                                                consec1Generat += "0"; 
+                                            }
+                                            int longTotalR           = 5;
+                                            int resultLTR            = longTotalR - totalRecords.ToString().Length;
                                             string cerosTotalRecords = "";
                                             for (var x = 0; x < resultLTR; x++) {
                                                 cerosTotalRecords += "0";
                                             }
-                                            string totLayout = "3" + consec1Generat + (consecutiveInit + 1).ToString() + cerosTotalRecords + totalRecords.ToString() + totGenerate + importetotal.ToString();
+                                            string totLayout = "3" + consec1Generat + (consecutiveInit + 1).ToString() 
+                                                + cerosTotalRecords + totalRecords.ToString() + totGenerate + importetotal.ToString();
                                             fileTxt.WriteLine(totLayout);
                                         }
                                         fileTxt.Close();
@@ -819,12 +860,8 @@ namespace Payroll.Controllers
                                 // ARCHIVO TXT DISPERSION BANORTE -> NOMINA -> OK -> LISTO
 
                                 if (bankResult == 72) {
-
-                                    // INICIO CODIGO NUEVO
-
                                     long[] TotIAbonos = new long[201];
-                                    for (k = 0; k <= 200; k++)
-                                    {
+                                    for (k = 0; k <= 200; k++) {
                                         TotIAbonos[k] = 0;
                                     }
                                     long TotalNumAbonos = 0;
@@ -845,26 +882,24 @@ namespace Payroll.Controllers
                                     sb1.Append("0".PadRight(49, '0'));
                                     sb1.Append(" ".PadLeft(77, ' '));
                                     string ts = sb1.ToString();
-
-                                    // FIN CODIGO NUEVO
-                                    string importeTotalBanorte = "";
-                                    // INICIO CODIGO NUEVO RESTA RENGLON 1481 
-                                    decimal sumaImporte = 0;
+                                    string importeTotalBanorte = ""; 
+                                    decimal sumaImporte        = 0;
                                     ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
-                                    ReportesDao reportDao = new ReportesDao();
+                                    ReportesDao reportDao             = new ReportesDao();
                                     foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                         if (bankResult == payroll.iIdBanco) {
                                             renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                     Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                             if (renglon1481 > 0) {
-                                                importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                                    Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 sumaImporte += importe.decimalTotalDispersion;
                                             } else { 
                                                 sumaImporte += payroll.dImporte;
                                             }
                                         }
                                     }
-                                    importeTotalBanorte = sumaImporte.ToString().Replace(",", "").Replace(".", ""); 
+                                    importeTotalBanorte           = sumaImporte.ToString().Replace(",", "").Replace(".", ""); 
                                     string cerosImporteTotal      = "";
                                     string tipoRegistroBanorteE   = "H";
                                     string claveServicioBanorte   = "NE";
@@ -874,32 +909,34 @@ namespace Payroll.Controllers
                                     string fillerBanorte          = "                                                                             ";
                                     string generaCNumEmpresa      = "";
                                     string generaCNumRegistros    = "";
-                                    int longNumEmpresa   = 5; 
-                                    int longNumRegistros = 6;
-                                    int longAmoutTotal   = 15;
-                                    int resultLongAmount = longAmoutTotal - importeTotalBanorte.Length;
-                                    string cerosImp2 = "";
-                                    string quantityRegistersLong = "";
-                                    int quantityRegisters = 0;
+                                    int longNumEmpresa            = 5; 
+                                    int longNumRegistros          = 6;
+                                    int longAmoutTotal            = 15;
+                                    int resultLongAmount          = longAmoutTotal - importeTotalBanorte.Length;
+                                    string cerosImp2              = "";
+                                    string quantityRegistersLong  = "";
+                                    int quantityRegisters         = 0;
                                     foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean) {
                                         if (bankResult == bank.iIdBanco) {
                                             quantityRegisters += 1;
                                         }
                                     }
-                                    int longQuantityRegisters = 6;
+                                    int longQuantityRegisters       = 6;
                                     int resultLongQuantityRegisters = longQuantityRegisters - quantityRegisters.ToString().Length;
-                                    for (var f = 0; f < resultLongQuantityRegisters; f++)
-                                    {
+                                    for (var f = 0; f < resultLongQuantityRegisters; f++) {
                                         quantityRegistersLong += "0";
                                     }
-                                    quantityRegistersLong += quantityRegisters.ToString();
+                                    quantityRegistersLong     += quantityRegisters.ToString();
                                     string dateGenerationDisp = dateGeneration.ToString("yyyyMMdd");
                                     if (dateDisC != "") {
                                         dateGenerationDisp = Convert.ToDateTime(dateDisC.ToString()).ToString("yyyyMMdd");
                                     }
-                                    for (var j = 0; j < resultLongAmount; j++) { cerosImporteTotal += "0"; }
-                                    string headerLayoutBanorte    = tipoRegistroBanorteE + claveServicioBanorte + promotorBanorte + dateGenerationDisp +  consecutivoBanorte + quantityRegistersLong + cerosImp2 + cerosImporteTotal + importeTotalBanorte + importeTotalAYBBanorte + fillerBanorte;
-                                    // - DETALLE - \\
+                                    for (var j = 0; j < resultLongAmount; j++) { 
+                                        cerosImporteTotal += "0"; 
+                                    }
+                                    string headerLayoutBanorte    = tipoRegistroBanorteE + claveServicioBanorte + promotorBanorte 
+                                        + dateGenerationDisp +  consecutivoBanorte + quantityRegistersLong + cerosImp2 
+                                        + cerosImporteTotal + importeTotalBanorte + importeTotalAYBBanorte + fillerBanorte;
                                     string tipoRegistroBanorteD     = "D";
                                     string fechaAplicacionBanorte   = dateGenerationDisp;
                                     string numBancoReceptorBanorteD = "072";
@@ -909,82 +946,80 @@ namespace Payroll.Controllers
                                     string importeIvaBanorteD       = "00000000";
                                     string fillerBanorteD           = "                                                                                ";
                                     string fillerBanorteD1          = "                  ";
-                                    double sumTest = 0;
-                                    decimal sumtests = 0;
+                                    double sumTest                  = 0;
+                                    decimal sumtests                = 0;
                                     using (StreamWriter fileBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt", false, Encoding.UTF8)) {
                                         fileBanorte.Write(headerLayoutBanorte + "\n");
-                                        string generaCNumEmpleadoB = "", generaCNumImporteB = "", generaCNumCuentaB = "";
-                                        int longNumEmpleado = 10, longNumImporte = 15, longNumCuenta = 18;
+                                        string generaCNumEmpleadoB = "", 
+                                            generaCNumImporteB     = "", 
+                                            generaCNumCuentaB      = "";
+                                        int longNumEmpleado        = 10, 
+                                            longNumImporte         = 15, 
+                                            longNumCuenta          = 18;
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
                                             if (payroll.iIdBanco == bankResult) {
-                                                int longAcortAccount = payroll.sCuenta.Length;
+                                                int longAcortAccount  = payroll.sCuenta.Length;
                                                 string finallyAccount = payroll.sCuenta;
-                                                if (longAcortAccount == 18)
-                                                {
-                                                    string accountUser = payroll.sCuenta;
+                                                if (longAcortAccount == 18) {
+                                                    string cerosAccount           = "";
+                                                    string accountUser            = payroll.sCuenta;
                                                     string formatAccountSubstring = accountUser.Substring(0, longAcortAccount - 1);
-                                                    string formatAccount = "";
-                                                    if (longAcortAccount == 18)
-                                                    {
+                                                    string formatAccount          = "";
+                                                    if (longAcortAccount == 18) {
                                                         formatAccount = formatAccountSubstring.Substring(0, 7);
                                                     }
-                                                    string cerosAccount = "";
-                                                    for (var t = 0; t < formatAccount.Length + 1; t++)
-                                                    {
+                                                    for (var t = 0; t < formatAccount.Length + 1; t++) {
                                                         cerosAccount += "0";
                                                     }
-                                                    finallyAccount = formatAccountSubstring.Substring(7, 10);
-                                                    // finallyAccount = cerosAccount + formatAccountSubstring.Substring(7, 10);
-                                                }
-                                                else if (longAcortAccount == 9)
-                                                {
+                                                    finallyAccount = formatAccountSubstring.Substring(7, 10); 
+                                                } else if (longAcortAccount == 9) {
                                                     finallyAccount = "0" + payroll.sCuenta;
-                                                }
-                                                else if (longAcortAccount == 10)
-                                                {
+                                                } else if (longAcortAccount == 10) {
                                                     finallyAccount = payroll.sCuenta;
                                                 } else if (longAcortAccount == 11) {
                                                     finallyAccount = payroll.sCuenta.Remove(0, 1);
                                                 } else {
                                                     dataErrors.Add(
-                                                            new DataErrorAccountBank
-                                                            {
-                                                                sBanco = "BANORTE",
-                                                                sCuenta = payroll.sCuenta,
-                                                                sNomina = payroll.sNomina
-                                                            });
+                                                            new DataErrorAccountBank { sBanco = "BANORTE", sCuenta = payroll.sCuenta,
+                                                                sNomina = payroll.sNomina });
                                                 }
-                                                sumTest += payroll.doImporte;
-                                                sumtests += payroll.dImporte;
-                                                // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                                double restaImporte = 0;
+                                                sumTest  += payroll.doImporte;
+                                                sumtests += payroll.dImporte;  
                                                 string importeFinal = "";
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 if (renglon1481 > 0) {
-                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                                        Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                     importeFinal = importe.decimalTotalDispersion.ToString();
                                                 } else {
                                                     importeFinal = payroll.dImporte.ToString();
-                                                }
-
-                                                // FIN CODIGO NUEVO
-                                                int longNumEmp = longNumEmpleado - payroll.sNomina.Length;
-                                                //int longNumImp = longNumImporte - payroll.dImporte.ToString().Length;
+                                                } 
+                                                int longNumEmp = longNumEmpleado - payroll.sNomina.Length; 
                                                 int longNumImp = longNumImporte - importeFinal.ToString().Length;
                                                 int longNumCta = 10 - finallyAccount.Length;
                                                 string cerosAccountDefault = "00000000";
-                                                for (var b = 0; b < longNumEmp; b++) { generaCNumEmpleadoB += "0"; }
-                                                for (var v = 0; v < longNumImp; v++) { generaCNumImporteB += "0"; }
-                                                for (var p = 0; p < longNumCta; p++) { generaCNumCuentaB += "0"; }
+                                                for (var b = 0; b < longNumEmp; b++) { 
+                                                    generaCNumEmpleadoB += "0"; 
+                                                }
+                                                for (var v = 0; v < longNumImp; v++) { 
+                                                    generaCNumImporteB += "0"; 
+                                                }
+                                                for (var p = 0; p < longNumCta; p++) { 
+                                                    generaCNumCuentaB += "0"; 
+                                                }
                                                 // payroll.dImporte.ToString()
-                                                fileBanorte.Write(tipoRegistroBanorteD + fechaAplicacionBanorte + generaCNumEmpleadoB + payroll.sNomina + fillerBanorteD + generaCNumImporteB + importeFinal + numBancoReceptorBanorteD + tipoCuentaBanorteD + generaCNumCuentaB + cerosAccountDefault + finallyAccount + tipoMovimientoBanorteD + fillerBanorteD0 + importeIvaBanorteD + fillerBanorteD1 + "\n");
+                                                fileBanorte.Write(tipoRegistroBanorteD + fechaAplicacionBanorte + generaCNumEmpleadoB 
+                                                    + payroll.sNomina + fillerBanorteD + generaCNumImporteB + importeFinal 
+                                                    + numBancoReceptorBanorteD + tipoCuentaBanorteD + generaCNumCuentaB 
+                                                    + cerosAccountDefault + finallyAccount + tipoMovimientoBanorteD 
+                                                    + fillerBanorteD0 + importeIvaBanorteD + fillerBanorteD1 + "\n");
                                                 generaCNumEmpleadoB = "";
-                                                generaCNumImporteB = "";
-                                                generaCNumCuentaB = "";
+                                                generaCNumImporteB  = "";
+                                                generaCNumCuentaB   = "";
                                             }
                                         }
-                                        string test = sumTest.ToString();
+                                        string test  = sumTest.ToString();
                                         string test2 = sumtests.ToString();
                                         //fileBanorte.WriteLine(sumtests.ToString() + " test  " + test2);
                                         fileBanorte.Close();
@@ -993,36 +1028,32 @@ namespace Payroll.Controllers
 
                                 // ARCHIVO TXT DISPERSION BANCOMER -> NOMINA OK -> LISTO
 
-                                if (bankResult == 12) {
-
+                                if (bankResult == 12) { 
                                     // Inicio Codigo Nuevo
-                                    string pathSaveFile = Server.MapPath("~/Content/");
+                                    string pathSaveFile     = Server.MapPath("~/Content/");
                                     string routeTXTBancomer = pathSaveFile + "DISPERSION" + @"\\" + "BANCOMER" + @"\\" + "BANCOMER.txt";
-                                    string pathCompleteTXT = directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt";
+                                    string pathCompleteTXT  = directoryTxt + @"\\" + nameFolder + @"\\" + vFileName + ".txt";
                                     StringBuilder sb1;
                                     //System.IO.File.Copy(routeTXTBancomer, pathCompleteTXT, true);
                                     int totalRegistros = 0;
-                                    string V = "";
+                                    string V           = "";
                                     ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
-                                    ReportesDao reportDao = new ReportesDao();
-                                    using (StreamWriter fileBancomer = new StreamWriter(pathCompleteTXT, false, new ASCIIEncoding())) {
+                                    ReportesDao reportDao             = new ReportesDao();
+                                    using (StreamWriter fileBancomer  = new StreamWriter(pathCompleteTXT, false, new ASCIIEncoding())) {
                                         foreach (DatosProcesaChequesNominaBean payroll in listDatosProcesaChequesNominaBean) {
-                                            if (payroll.iIdBanco == bankResult) {
-                                                // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                                decimal restaImporte = 0;
+                                            if (payroll.iIdBanco == bankResult) { 
                                                 decimal importeFinal = 0;
-                                                string importeG = "";
+                                                string importeG      = "";
                                                 renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                                         Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                 if (renglon1481 > 0) {
-                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                                    importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                                        Convert.ToInt32(payroll.sNomina), numberPeriod, typePeriod, yearPeriod);
                                                     importeFinal = importe.decimalTotalDispersion;
                                                 } else {
                                                     importeFinal = payroll.dImporte;
                                                     importeG = importeFinal.ToString();
-                                                }
-
-                                                // FIN CODIGO NUEVO
+                                                } 
                                                 totalRegistros += 1;
                                                 sb1 = new StringBuilder("");
                                                 sb1.Append(string.Format("{0:000000000}", totalRegistros));
@@ -2044,6 +2075,7 @@ namespace Payroll.Controllers
                         doc.Add(tblTotalEmpleados);
                         doc.Close();
                         pw.Close();
+
                         if (bankInterbank == 14) {
                             // SANTANDER - ARCHIVO OK (INTERBANCARIO)
                             // - DETALLE - \\
@@ -2053,54 +2085,60 @@ namespace Payroll.Controllers
                                 campoFijoIntSantanderD1 = "HON";
                                 fillerIntSantanderD3 = "                                                                                                                               ";
                             }
-                            string numCuentaEmpresaSantanderD = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, fillerIntSantanderD1 = "     ", fillerIntSantanderD2 = "  ", sucursalIntSantanderD1 = "1001", plazaIntSantanderD1 = "01001";
-                            int consecutivoIntSantanderD1 = 0;
-                            using (StreamWriter fileIntSantander = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM))
-                            {
-                                string espaciosNomEmpIntSantander = "", nombreEmpIntSantander = "", cerosImpIntSantander = "", cerosConIntSantander = "";
-                                int longNomEmpIntSan = 40, longImpIntSan = 15, longConIntSan = 7;
+                            string numCuentaEmpresaSantanderD = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta, 
+                                fillerIntSantanderD1          = "     ", 
+                                fillerIntSantanderD2          = "  ", 
+                                sucursalIntSantanderD1        = "1001", 
+                                plazaIntSantanderD1           = "01001";
+                            int consecutivoIntSantanderD1     = 0;
+                            using (StreamWriter fileIntSantander = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM)) {
+                                string espaciosNomEmpIntSantander = "", 
+                                    nombreEmpIntSantander = "", 
+                                    cerosImpIntSantander  = "", 
+                                    cerosConIntSantander  = "";
+                                int longNomEmpIntSan = 40, 
+                                    longImpIntSan    = 15, 
+                                    longConIntSan    = 7;
                                 foreach (DatosProcesaChequesNominaBean bank in listDatosProcesaChequesNominaBean) {
                                     consecutivoIntSantanderD1 += 1;
-                                    string nameEmployee = bank.sNombre.Replace("Ñ","N") + " " + bank.sPaterno.Replace("Ñ", "N") + " " + bank.sMaterno.Replace("Ñ","N");
+                                    string nameEmployee        = bank.sNombre.Replace("Ñ","N") + " " + bank.sPaterno.Replace("Ñ", "N") 
+                                        + " " + bank.sMaterno.Replace("Ñ","N");
                                     if (nameEmployee.Length > 40) {
                                         nombreEmpIntSantander = nameEmployee.Substring(0, 39);
                                     } else {
                                         nombreEmpIntSantander = nameEmployee;
                                     }
-
-                                    // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                    double importeT = 0;
+                                    string cuentaFinal = bank.sCuenta;
+                                    if (bank.sCuenta.Length == 16) {
+                                        cuentaFinal = "00" + bank.sCuenta;
+                                    } 
                                     ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
-                                    ReportesDao reportDao = new ReportesDao();
-                                    double restaImporte = 0;
+                                    ReportesDao reportDao = new ReportesDao(); 
                                     string importeFinal = "";
                                     renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                    if (renglon1481 > 0)
-                                    {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                    if (renglon1481 > 0) {
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                            Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         importeFinal = importe.decimalTotalDispersion.ToString();
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         importeFinal = bank.dImporte.ToString();
-                                    }
-                                    // FIN CODIGO NUEVO
-
-                                     
+                                    } 
                                     string clave = bank.sCodigo;
-                                    int longNomEmpIntSantanderResult = longNomEmpIntSan - nombreEmpIntSantander.Length;
-                                    //int longImpIntSantanderResult = longImpIntSan - bank.dImporte.ToString().Length;
+                                    int longNomEmpIntSantanderResult = longNomEmpIntSan - nombreEmpIntSantander.Length; 
                                     int longImpIntSantanderResult = longImpIntSan - importeFinal.ToString().Length;
                                     int longConIntSantanderResult = longConIntSan - consecutivoIntSantanderD1.ToString().Length;
                                     for (var b = 0; b < longNomEmpIntSantanderResult; b++) { espaciosNomEmpIntSantander += " "; }
                                     for (var t = 0; t < longImpIntSantanderResult; t++) { cerosImpIntSantander += "0"; }
-                                    for (var p = 0; p < longConIntSantanderResult; p++) { cerosConIntSantander += "0"; }
-                                    // bank.dImporte
-                                    fileIntSantander.Write(numCuentaEmpresaSantanderD + fillerIntSantanderD1 + bank.sCuenta + fillerIntSantanderD2 + clave + nombreEmpIntSantander + espaciosNomEmpIntSantander + sucursalIntSantanderD1 + cerosImpIntSantander + importeFinal + plazaIntSantanderD1 + campoFijoIntSantanderD1 + fillerIntSantanderD3 + cerosConIntSantander + consecutivoIntSantanderD1.ToString() + "\n");
+                                    for (var p = 0; p < longConIntSantanderResult; p++) { cerosConIntSantander += "0"; } 
+                                    fileIntSantander.Write(numCuentaEmpresaSantanderD + fillerIntSantanderD1 + cuentaFinal 
+                                        + fillerIntSantanderD2 + clave + nombreEmpIntSantander + espaciosNomEmpIntSantander 
+                                        + sucursalIntSantanderD1 + cerosImpIntSantander + importeFinal + plazaIntSantanderD1 
+                                        + campoFijoIntSantanderD1 + fillerIntSantanderD3 + cerosConIntSantander 
+                                        + consecutivoIntSantanderD1.ToString() + "\n");
                                     espaciosNomEmpIntSantander = "";
-                                    cerosImpIntSantander = "";
-                                    cerosConIntSantander = "";
+                                    cerosImpIntSantander       = "";
+                                    cerosConIntSantander       = "";
                                 }
                                 fileIntSantander.Close();
                             }
@@ -2115,8 +2153,8 @@ namespace Payroll.Controllers
                             string tipoArchivoIntScotiabank = "EE", 
                                 tipoRegistroIntScotiabank   = "HA", 
                                 numeroContratoIntScotiabank = "", 
-                                secuenciaIntScotiabank = "01",
-                                fillerIntScotiabankHA1 = "                                                                                                                                                                                                                                                                                                                                                                       ";
+                                secuenciaIntScotiabank      = "01",
+                                fillerIntScotiabankHA1      = "                                                                                                                                                                                                                                                                                                                                                                       ";
 
                             if (keyBusiness == 8) {
                                 numeroContratoIntScotiabank = "88178";
@@ -2132,7 +2170,8 @@ namespace Payroll.Controllers
 
                             numeroContratoIntScotiabank = datoCuentaClienteBancoEmpresaBean.sNumeroCliente;
 
-                            string headerLayoutAIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroIntScotiabank + numeroContratoIntScotiabank + secuenciaIntScotiabank + fillerIntScotiabankHA1;
+                            string headerLayoutAIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroIntScotiabank 
+                                + numeroContratoIntScotiabank + secuenciaIntScotiabank + fillerIntScotiabankHA1;
                             // - ENCABEZADO BLOQUE - \\
                             string tipoRegistroBIntScotiabank = "HB", 
                                 monedaCuentaBIntScotiabank = "00", 
@@ -2141,7 +2180,9 @@ namespace Payroll.Controllers
                                 referenciaEmpresaIntScotiabank = "0000000001", 
                                 codigoStatusIntScotiabank = "000", 
                                 fillerIntScotiabankHB1 = "                                                                                                                                                                                                                                                                                                                                                ";
-                            string headerLayoutBIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroBIntScotiabank + monedaCuentaBIntScotiabank + usoFuturoIntScotiabank + cuentaCargoIntScotiabank + referenciaEmpresaIntScotiabank + codigoStatusIntScotiabank + fillerIntScotiabankHB1;
+                            string headerLayoutBIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroBIntScotiabank 
+                                + monedaCuentaBIntScotiabank + usoFuturoIntScotiabank + cuentaCargoIntScotiabank 
+                                + referenciaEmpresaIntScotiabank + codigoStatusIntScotiabank + fillerIntScotiabankHB1;
                             // - DETALLE - \\
                             string fechaIntScotiabankD = dateGeneration.ToString("yyyyMMdd");
                             if (dateDisC != "") {
@@ -2152,22 +2193,22 @@ namespace Payroll.Controllers
                                 conceptoPagoIntScotiabankD = "HONORARIOS ";
                             }
                             string tipoRegistroCIntScotiabankD = "DA", 
-                                tipoPagoIntScotiabankD = "04", 
-                                claveMonedaIntScotiabank = "00",  
-                                servicioIntScotiabankD = "01", 
-                                fillerIntScotiabankD1 = "                            ", 
-                                plazaIntScotiabankD = "00000", 
-                                sucursalIntScotiabankD = "00000", 
-                                paisIntScotiabankD = "00000", 
-                                fillerIntScotiabankD2 = "                                        ", 
-                                tipoCuentaIntScotiabankD1 = "9", 
-                                digitoIntScotiabankD1 = " ", 
-                                bancoEmisorIntScotiabankD1 = "044", 
-                                diasVigenciaIntScotiabankD = "001",  
-                                fillerIntScotiabankD3 = "                                       ", 
-                                fillerIntScotiabankD4 = "                                                            ", 
-                                fillerIntScotiabankD5 = "                      ";
-                            int consecutivoIntScotiabankD1 = 0;
+                                tipoPagoIntScotiabankD         = "04", 
+                                claveMonedaIntScotiabank       = "00",  
+                                servicioIntScotiabankD         = "01", 
+                                fillerIntScotiabankD1          = "                            ", 
+                                plazaIntScotiabankD            = "00000", 
+                                sucursalIntScotiabankD         = "00000", 
+                                paisIntScotiabankD             = "00000", 
+                                fillerIntScotiabankD2          = "                                        ", 
+                                tipoCuentaIntScotiabankD1      = "9", 
+                                digitoIntScotiabankD1          = " ", 
+                                bancoEmisorIntScotiabankD1     = "044", 
+                                diasVigenciaIntScotiabankD     = "001",  
+                                fillerIntScotiabankD3          = "                                       ", 
+                                fillerIntScotiabankD4          = "                                                            ", 
+                                fillerIntScotiabankD5          = "                      ";
+                            int consecutivoIntScotiabankD1     = 0;
                             // - CREACION DE LISTA PARA LLENAR EL DETALLE - \\
                             using (StreamWriter fileIntScotiabank = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM)) {
                                 fileIntScotiabank.Write(headerLayoutAIntScotiabank + "\n");
@@ -2207,10 +2248,10 @@ namespace Payroll.Controllers
                                     } else {
                                         nombreEmpIntScotiabankD = nameEmployee;
                                     }
-                                    int filler28 = 28;
-                                    string filler28F = "";
-                                    int payrollEmp = bank.sNomina.ToString().Length;
-                                    int longPayroll = 5;
+                                    int filler28      = 28;
+                                    string filler28F  = "";
+                                    int payrollEmp    = bank.sNomina.ToString().Length;
+                                    int longPayroll   = 5;
                                     int accortPayroll = payrollEmp - 5;
                                     if (accortPayroll != 0) {
                                         int length28 = filler28 - accortPayroll;
@@ -2221,58 +2262,81 @@ namespace Payroll.Controllers
                                         filler28F = fillerIntScotiabankD1;
                                     }
                                     consecutivoIntScotiabankD1 += 1;
-                                    totalMoviIntScotiabank += 1;
-
-                                    // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                    double importeT = 0;
+                                    totalMoviIntScotiabank     += 1; 
                                     ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
-                                    ReportesDao reportDao = new ReportesDao();
-                                    double restaImporte = 0;
-                                    string importeFinal = "";
+                                    ReportesDao reportDao             = new ReportesDao(); 
+                                    string importeFinal               = "";
                                     renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0) {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
-                                        importeFinal = importe.decimalTotalDispersion.ToString();
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                             Convert.ToInt32(bank.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importeFinal   = importe.decimalTotalDispersion.ToString();
                                         resultadoSuma += importe.decimalTotalDispersion;
                                     } else {
-                                        importeFinal = bank.dImporte.ToString();
+                                        importeFinal   = bank.dImporte.ToString();
                                         resultadoSuma += bank.dImporte;
-                                    }
-                                    // FIN CODIGO NUEVO
-                                    //importeTotalIntScotiabank += Convert.ToInt32(bank.dImporte);
-                                    importeTotalIntScotiabank += Convert.ToInt32(importeFinal);
-                                    //int longImpIntScotiabankDResult = longImpIntScotiabankD - bank.dImporte.ToString().Length;
-                                    int longImpIntScotiabankDResult = longImpIntScotiabankD - importeFinal.ToString().Length;
+                                    } 
+                                    importeTotalIntScotiabank         += Convert.ToInt32(importeFinal); 
+                                    int longImpIntScotiabankDResult    = longImpIntScotiabankD - importeFinal.ToString().Length;
                                     int longNumNomIntScotiabankDResult = longNumNomIntScotiabankD - bank.sNomina.Length;
                                     int longNomEmpIntScotiabankDResult = longNomEmpIntScotiabankD - nombreEmpIntScotiabankD.Length;
                                     int longConsecIntScotiabankDResult = longConIntScotiabankD1 - consecutivoIntScotiabankD1.ToString().Length;
                                     int longCtaCheIntScotiabankDResult = longCtaCheIntScotiabankD - bank.sCuenta.Length;
                                     int longCodStaIntScotiabankDResult = longCodStaIntScotiabankD - bank.sCuenta.Length;
-                                    for (var q = 0; q < longImpIntScotiabankDResult; q++) { cerosImpIntScotiabankD += "0"; }
-                                    for (var a = 0; a < longNumNomIntScotiabankDResult; a++) { cerosNumNomIntScotiabankD += "0"; }
-                                    for (var u = 0; u < longNomEmpIntScotiabankDResult; u++) { espaciosNomEmpIntScotiabankD += " "; }
-                                    for (var v = 0; v < longConsecIntScotiabankDResult; v++) { cerosConsecIntScotiabankD1 += "0"; }
-                                    for (var r = 0; r < longCtaCheIntScotiabankDResult; r++) { cerosCtaCheIntScotiabankD1 += "0"; }
-                                    for (var e = 0; e < longCodStaIntScotiabankDResult; e++) { cerosCodStaIntScotiabankD1 += "0"; }
-                                    // bank.dImporte.ToString()
-                                    fileIntScotiabank.Write(tipoArchivoIntScotiabank + tipoRegistroCIntScotiabankD + tipoPagoIntScotiabankD + claveMonedaIntScotiabank + cerosImpIntScotiabankD + importeFinal + fechaIntScotiabankD + servicioIntScotiabankD + cerosNumNomIntScotiabankD + bank.sNomina + filler28F + nameEmployee + espaciosNomEmpIntScotiabankD + cerosConsecIntScotiabankD1 + consecutivoIntScotiabankD1.ToString() + plazaIntScotiabankD + sucursalIntScotiabankD + cerosCtaCheIntScotiabankD1 + bank.sCuenta + paisIntScotiabankD + fillerIntScotiabankD2 + tipoCuentaIntScotiabankD1 + digitoIntScotiabankD1 + plazaIntScotiabankD + bancoEmisorIntScotiabankD1 + sufBank + diasVigenciaIntScotiabankD + conceptoPagoIntScotiabankD + fillerIntScotiabankD3 + fillerIntScotiabankD4 + cerosCodStaIntScotiabankD1 + bank.sCuenta + fillerIntScotiabankD5 + "\n");
-                                    cerosImpIntScotiabankD = "";
-                                    cerosNumNomIntScotiabankD = "";
+                                    for (var q = 0; q < longImpIntScotiabankDResult; q++) { 
+                                        cerosImpIntScotiabankD += "0"; 
+                                    }
+                                    for (var a = 0; a < longNumNomIntScotiabankDResult; a++) { 
+                                        cerosNumNomIntScotiabankD += "0"; 
+                                    }
+                                    for (var u = 0; u < longNomEmpIntScotiabankDResult; u++) { 
+                                        espaciosNomEmpIntScotiabankD += " "; 
+                                    }
+                                    for (var v = 0; v < longConsecIntScotiabankDResult; v++) { 
+                                        cerosConsecIntScotiabankD1 += "0"; 
+                                    }
+                                    for (var r = 0; r < longCtaCheIntScotiabankDResult; r++) { 
+                                        cerosCtaCheIntScotiabankD1 += "0"; 
+                                    }
+                                    for (var e = 0; e < longCodStaIntScotiabankDResult; e++) { 
+                                        cerosCodStaIntScotiabankD1 += "0"; 
+                                    } 
+                                    fileIntScotiabank.Write(tipoArchivoIntScotiabank + tipoRegistroCIntScotiabankD 
+                                        + tipoPagoIntScotiabankD + claveMonedaIntScotiabank + cerosImpIntScotiabankD 
+                                        + importeFinal + fechaIntScotiabankD + servicioIntScotiabankD + cerosNumNomIntScotiabankD 
+                                        + bank.sNomina + filler28F + nameEmployee + espaciosNomEmpIntScotiabankD 
+                                        + cerosConsecIntScotiabankD1 + consecutivoIntScotiabankD1.ToString() 
+                                        + plazaIntScotiabankD + sucursalIntScotiabankD + cerosCtaCheIntScotiabankD1 
+                                        + bank.sCuenta + paisIntScotiabankD + fillerIntScotiabankD2 
+                                        + tipoCuentaIntScotiabankD1 + digitoIntScotiabankD1 + plazaIntScotiabankD 
+                                        + bancoEmisorIntScotiabankD1 + sufBank + diasVigenciaIntScotiabankD 
+                                        + conceptoPagoIntScotiabankD + fillerIntScotiabankD3 + fillerIntScotiabankD4 
+                                        + cerosCodStaIntScotiabankD1 + bank.sCuenta + fillerIntScotiabankD5 + "\n");
+                                    cerosImpIntScotiabankD       = "";
+                                    cerosNumNomIntScotiabankD    = "";
                                     espaciosNomEmpIntScotiabankD = "";
-                                    cerosConsecIntScotiabankD1 = "";
-                                    cerosCtaCheIntScotiabankD1 = "";
-                                    cerosCodStaIntScotiabankD1 = "";
+                                    cerosConsecIntScotiabankD1   = "";
+                                    cerosCtaCheIntScotiabankD1   = "";
+                                    cerosCodStaIntScotiabankD1   = "";
                                 }
                                 // - TRAILER BLOQUE - \\
                                 int longTotMovIntScotiabankResult = longTotMovIntScotiabank - totalMoviIntScotiabank.ToString().Length;
                                 int longImpTotIntScotiabankResult = longImpTotIntScotiabank - resultadoSuma.ToString().Length;
                                 string tipoRegistroDIntScotiabank = "TB", tipoRegistroEIntScotiabank = "TA", cantidadMovIntScotiabank = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", fillerIntScotiabankTB = "                                                                                                                           ";
-                                for (var d = 0; d < longTotMovIntScotiabankResult; d++) { cerosTotMovIntScotiabank += "0"; }
-                                for (var w = 0; w < longImpTotIntScotiabankResult; w++) { cerosImpTotIntScotiabank += "0"; }
-                                string trailerBloqueIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroDIntScotiabank + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank + resultadoSuma.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
+                                for (var d = 0; d < longTotMovIntScotiabankResult; d++) { 
+                                    cerosTotMovIntScotiabank += "0"; 
+                                }
+                                for (var w = 0; w < longImpTotIntScotiabankResult; w++) { 
+                                    cerosImpTotIntScotiabank += "0";
+                                }
+                                string trailerBloqueIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroDIntScotiabank 
+                                    + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank 
+                                    + resultadoSuma.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
                                 fileIntScotiabank.Write(trailerBloqueIntScotiabank + "\n");
-                                string trailerArchivoIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroEIntScotiabank + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank + resultadoSuma.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
+                                string trailerArchivoIntScotiabank = tipoArchivoIntScotiabank + tipoRegistroEIntScotiabank 
+                                    + cerosTotMovIntScotiabank + totalMoviIntScotiabank.ToString() + cerosImpTotIntScotiabank 
+                                    + resultadoSuma.ToString() + cantidadMovIntScotiabank + fillerIntScotiabankTB;
                                 fileIntScotiabank.Write(trailerArchivoIntScotiabank + "\n");
                                 // - TRAILER ARCHIVO - \\
                                 fileIntScotiabank.Close();
@@ -2281,23 +2345,22 @@ namespace Payroll.Controllers
 
 
                         // BANORTE -> INTERBANCARIO -> OK -> LISTO
-                        if (bankInterbank == 72)
-                        {
+                        if (bankInterbank == 72) {
                             // LONGITUDES \\
                             int longitudOperacion     = 2;
                             int longitudClaveId       = 12;
                             int longitudCuentaOrigen  = 20;
                             int longitudCuentaDestino = 20;
 
-                            string tipoOperacion = "04";
-                            string cuentaOrigen = "";
-                            string cuentaDestino = "";
-                            string apartCeros1 = "00000000000";
-                            string fillerCuentaOrigen = "";
+                            string tipoOperacion       = "04";
+                            string cuentaOrigen        = "";
+                            string cuentaDestino       = "";
+                            string apartCeros1         = "00000000000";
+                            string fillerCuentaOrigen  = "";
                             string fillerCuentaDestino = "";
-                            string apartCeros2 = "0";
-                            string apartCeros3 = "00";
-                            string referenceDate = DateTime.Now.ToString("ddMMyyyy");
+                            string apartCeros2         = "0";
+                            string apartCeros3         = "00";
+                            string referenceDate       = DateTime.Now.ToString("ddMMyyyy");
                             if (dateDisC != "") {
                                 referenceDate = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
                             }
@@ -2305,9 +2368,9 @@ namespace Payroll.Controllers
                             if (tipPago == 2) {
                                 descriptionPd = "HONORARIOS                    ";
                             }
-                            string coinOrigin = "1";
-                            string coingDestiny = "1";
-                            string ivaBanorte = "00000000000000";
+                            string coinOrigin    = "1";
+                            string coingDestiny  = "1";
+                            string ivaBanorte    = "00000000000000";
                             string emailBusiness = "";
                             if (keyBusiness == 2074) {
                                 emailBusiness = "asesoresimpasrh@gmail.com              ";
@@ -2315,41 +2378,37 @@ namespace Payroll.Controllers
                                 emailBusiness = "dgarcia@gruposeri.com                  ";
                             }
                             // Longitudes campos
-                            int longNumberPayroll = 13;
+                            int longNumberPayroll  = 13;
                             int longNumberADestiny = 10;
-                            int longNumberImport = 14;
-                            int longNumberBRfc = 13;
-                            int longNumberEmail = 70;
-                            int longDetailsTotal = 255;
-                            using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM, false, new ASCIIEncoding()))
-                            {
-                                foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean)
-                                {
-                                    fillerCuentaOrigen = "";
+                            int longNumberImport   = 14;
+                            int longNumberBRfc     = 13;
+                            int longNumberEmail    = 70;
+                            int longDetailsTotal   = 255;
+                            using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM, 
+                                false, new ASCIIEncoding())) {
+                                foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
+                                    fillerCuentaOrigen  = "";
                                     string nameEmployee = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
                                     if (nameEmployee.Length > 70) {
                                         nameEmployee.Substring(0, 69);
-                                    }
-                                    // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                                    double importeT = 0;
+                                    }  
                                     ListRenglonesGruposRestas importe = new ListRenglonesGruposRestas();
-                                    ReportesDao reportDao = new ReportesDao();
-                                    double restaImporte = 0;
-                                    string importeFinal = "";
+                                    ReportesDao reportDao             = new ReportesDao(); 
+                                    string importeFinal               = "";
                                     renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
                                             Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
                                     if (renglon1481 > 0) {
-                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
+                                        importe = reportDao.sp_Genera_Resta_Importes_Reporte_Dispersion(keyBusiness, 
+                                            Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
                                         importeFinal = importe.decimalTotalDispersion.ToString();
                                     } else {
                                         importeFinal = data.dImporte.ToString();
-                                    } 
-                                    // FIN CODIGO NUEVO
-                                    string payroll = data.sNomina;
-                                    int longPayroll = longNumberPayroll - payroll.Length;
-                                    string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
-                                    int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
-                                    string accountDestiny = data.sCuenta;
+                                    }  
+                                    string payroll                  = data.sNomina;
+                                    int longPayroll                 = longNumberPayroll - payroll.Length;
+                                    string accountOrigin            = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
+                                    int longAcountOrigin            = longNumberADestiny - accountOrigin.Length;
+                                    string accountDestiny           = data.sCuenta;
                                     int resultadoFillerCuentaOrigen = longitudCuentaOrigen - accountOrigin.Length;
                                     for (var y = 0; y < resultadoFillerCuentaOrigen; y++) {
                                         fillerCuentaOrigen += "0";
@@ -2357,17 +2416,14 @@ namespace Payroll.Controllers
                                     if (accountDestiny.Length == 16) {
                                         accountDestiny = "00" + accountDestiny;
                                     }
-                                    string importPaid = "";
-                                    int longImportPaid = longNumberImport - importeFinal.ToString().Length;
-                                    string rfcBusiness = datosEmpresaBeanDispersion.sRfc;
-                                    int longRfcBusiness = longNumberBRfc - rfcBusiness.Length;
+                                    string importPaid     = "";
+                                    int longImportPaid    = longNumberImport - importeFinal.ToString().Length;
+                                    string rfcBusiness    = datosEmpresaBeanDispersion.sRfc;
+                                    int longRfcBusiness   = longNumberBRfc - rfcBusiness.Length;
                                     int longEmailBusiness = longNumberEmail - emailBusiness.Length;
                                     for (var i = 0; i < longPayroll; i++) {
                                         payroll += " ";
-                                    }
-                                    //for (var j = 0; j < longAcountOrigin; j++) {
-                                    //    accountOrigin += "0";
-                                    //}
+                                    } 
                                     for (var k = 0; k < longImportPaid; k++) {
                                         importPaid += "0";
                                     }
@@ -2378,25 +2434,18 @@ namespace Payroll.Controllers
                                     string fillerFinal = "";
                                     string cadenaFinal = "";                                    
                                     // QUINCENALES CRISTINA 158 , 159
-                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159)
-                                    {
+                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
                                         cadenaFinal = tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         cadenaFinal = tipoOperacion + payroll + fillerCuentaOrigen + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
                                     }
                                     int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
-                                    for (var x = 0; x < longFinalFiller; x++)
-                                    {
+                                    for (var x = 0; x < longFinalFiller; x++) {
                                         fillerFinal += " ";
                                     }
-                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159)
-                                    {
+                                    if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
                                         fileIntBanorte.Write(tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         fileIntBanorte.Write(tipoOperacion + payroll + fillerCuentaOrigen + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
                                     }
                                 }
@@ -2404,108 +2453,6 @@ namespace Payroll.Controllers
                             }
                         }
 
-                        // BANORTE -> INTERBANCARIO -> OK
-                        //if (bankInterbank == 72) {
-
-                        //    string tipoOperacion = "04";
-                        //    string cuentaOrigen  = "";
-                        //    string cuentaDestino = "";
-                        //    string apartCeros1   = "00000000000";
-                        //    string apartCeros2   = "0";
-                        //    string apartCeros3   = "00";
-                        //    string referenceDate = DateTime.Now.ToString("ddMMyyyy");
-                        //    if (dateDisC != "") {
-                        //        referenceDate = Convert.ToDateTime(dateDisC.ToString()).ToString("ddMMyyyy");
-                        //    }
-                        //    string descriptionPd = "PAGO NOMINA                   ";
-                        //    if (tipPago == 2) {
-                        //        descriptionPd = "HONORARIOS                    ";
-                        //    }
-                        //    string coinOrigin    = "1";
-                        //    string coingDestiny  = "1";
-                        //    string ivaBanorte    = "00000000000000";
-                        //    string emailBusiness = "";
-                        //    if (keyBusiness == 2074) {
-                        //        emailBusiness = "asesoresimpasrh@gmail.com              ";
-                        //    } else {
-                        //        emailBusiness = "dgarcia@gruposeri.com                  ";
-                        //    }
-                        //    // Longitudes campos
-                        //    int longNumberPayroll  = 13;
-                        //    int longNumberADestiny = 10;
-                        //    int longNumberImport   = 14;
-                        //    int longNumberBRfc     = 13;
-                        //    int longNumberEmail    = 70;
-                        //    int longDetailsTotal   = 255;
-                        //    using (StreamWriter fileIntBanorte = new StreamWriter(directoryTxt + @"\\" + nameFolder + @"\\" + fileNameTxtPM, false, new ASCIIEncoding()))
-                        //    {
-                        //        foreach (DatosProcesaChequesNominaBean data in listDatosProcesaChequesNominaBean) {
-                        //            string nameEmployee = data.sNombre.TrimEnd() + " " + data.sPaterno.TrimEnd() + " " + data.sMaterno.TrimEnd();
-                        //            if (nameEmployee.Length > 70) {
-                        //                nameEmployee.Substring(0, 69);
-                        //            }
-                        //            string payroll = data.sNomina;
-                        //            int longPayroll = longNumberPayroll - payroll.Length;
-                        //            string accountOrigin = datoCuentaClienteBancoEmpresaBean.sNumeroCuenta;
-                        //            int longAcountOrigin = longNumberADestiny - accountOrigin.Length;
-                        //            string accountDestiny = data.sCuenta;
-                        //            if (accountDestiny.Length == 16) {
-                        //                accountDestiny = "00" + accountDestiny;
-                        //            }
-                        //            string importPaid = "";
-                        //            // INICIO CODIGO NUEVO (RESTA RENGLON 1481)
-                        //            double restaImporte = 0;
-                        //            string importeFinal = "";
-                        //            renglon1481 = dataDispersionBusiness.sp_Comprueba_Existencia_Renglon_Vales(keyBusiness,
-                        //                    Convert.ToInt32(data.sNomina), numberPeriod, typePeriod, yearPeriod);
-                        //            if (renglon1481 > 0) {
-                        //                restaImporte = data.doImporte - renglon1481;
-                        //                importeFinal = restaImporte.ToString().Replace(".", "");
-                        //            } else {
-                        //                importeFinal = data.dImporte.ToString();
-                        //            }
-                        //            // FIN CODIGO NUEVO
-                        //            //int longImportPaid = longNumberImport - data.dImporte.ToString().Length;
-                        //            int longImportPaid = longNumberImport - importeFinal.ToString().Length;
-                        //            string rfcBusiness = datosEmpresaBeanDispersion.sRfc;
-                        //            int longRfcBusiness = longNumberBRfc - rfcBusiness.Length;
-                        //            int longEmailBusiness = longNumberEmail - emailBusiness.Length;
-                        //            for (var i = 0; i < longPayroll; i++) {
-                        //                payroll += " ";
-                        //            }
-                        //            for (var j = 0; j < longAcountOrigin; j++) {
-                        //                accountOrigin += "0";
-                        //            }
-                        //            for (var k = 0; k < longImportPaid; k++) {
-                        //                importPaid += "0";
-                        //            }
-                        //            for (var p = 0; p < longRfcBusiness; p++) {
-                        //                rfcBusiness += " ";
-                        //            }
-                        //            //importPaid += data.dImporte.ToString();
-                        //            importPaid += importeFinal.ToString();
-                        //            string fillerFinal = "";
-                        //            string cadenaFinal = "";
-                        //            // QUINCENALES CRISTINA 158 , 159
-                        //            if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
-                        //                cadenaFinal = tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate;
-                        //            } else {
-                        //                cadenaFinal = tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee;
-                        //            }
-                        //            int longFinalFiller = longDetailsTotal - cadenaFinal.Length;
-                        //            for (var x = 0; x < longFinalFiller; x++)
-                        //            {
-                        //                fillerFinal += " ";
-                        //            }
-                        //            if (keyBusiness == 2074 || keyBusiness == 2073 || keyBusiness == 2067 || keyBusiness == 158 || keyBusiness == 159) {
-                        //                fileIntBanorte.Write(tipoOperacion + payroll + "0000000000" + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + fillerFinal + "\n");
-                        //            } else {
-                        //                fileIntBanorte.Write(tipoOperacion + payroll + apartCeros1 + accountOrigin + apartCeros3 + accountDestiny + importPaid + apartCeros3 + referenceDate + descriptionPd + coinOrigin + coingDestiny + rfcBusiness + ivaBanorte + emailBusiness + referenceDate + nameEmployee + fillerFinal + "\n");
-                        //            }
-                        //        }
-                        //        fileIntBanorte.Close();
-                        //    }
-                        //}
 
                         flag = true;
                     } 
