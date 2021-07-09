@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Net.Mail;
 using System.Text;
 
@@ -10,7 +7,7 @@ using System.Text;
 /// </summary>
 public class Correo
 {
-	 Boolean estado = true;
+	Boolean estado = true;
     string merror; 
 	public Correo(string destinatario,string asunto, string mensaje,string path,string EmailEmp,string PasswordEmpre)
 	{
@@ -50,6 +47,10 @@ public class Correo
         correo.IsBodyHtml = true;
         correo.Priority = MailPriority.Normal;
 
+ 
+        //smtp.Credentials = new NetworkCredential("capitalhumano@gruposeri.com", "cH*150519");
+        // Protocolo.Credentials = new System.Net.NetworkCredential("pp709672@gmail.com","S3r12020c#");
+ 
 
         Protocolo.Port = 587;
         Protocolo.Host = "smtp.office365.com";
@@ -69,20 +70,16 @@ public class Correo
         
         } 
 	}
+
     public bool Estado
     {
         get { return estado; }
-
     }
 
     public string Error
     {
         get { return merror; }
- 
-  
     }
-
- 
 }
 
 public class MandarCorreos
@@ -140,4 +137,5 @@ public class MandarCorreos
 
         return status;
     }
-}
+
+} 

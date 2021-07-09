@@ -167,6 +167,28 @@
         });
     }
 
+    ////////////////////////////////////////////
+    ///////////  MANDAR CORREO  ////////////////
+    ////////////////////////////////////////////
+    MandarCorreo = () => {
+        $.ajax({
+            url: "../Empleados/EnviarCorreoAutorizadores",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify({ Empleado_id: 907, Inicio: "2", Fin: "2", Dias: "2" }),
+            contentType: "application/json; charset=utf-8",
+            success: (data) => {
+                console.log("Termino de mandar el correo");
+            }
+        });
+    }
+    ///////////////////////////////////////
+    ////////////////////////
+    ////////////
+
+
+
+
     /*
      * Ejecucion funciones
      */

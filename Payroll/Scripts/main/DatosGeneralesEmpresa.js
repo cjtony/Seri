@@ -356,7 +356,7 @@ $("#form_inEmpresa").submit(function (evt) {
         //-------------------------------------------------------
 
         var datos = {
-            id: IdEmp
+            id: IdEmp.value
             , inNombre_empresa: nomEmp.value
             , inNomCorto_empresa: nomEmpc.value
             , inRfc_empresa: rfcemp.value

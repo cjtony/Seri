@@ -12,7 +12,6 @@ using MessagingToolkit.QRCode.Codec;
 using System.Drawing;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.Security.Policy;
 using System.Net.Mail;
 
 namespace Payroll.Controllers

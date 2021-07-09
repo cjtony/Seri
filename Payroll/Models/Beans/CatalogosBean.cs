@@ -581,6 +581,7 @@ namespace Payroll.Models.Beans
         public string FechaFin { get; set; }
         public int IncidenciaProgramada_id { get; set; }
         public string Tipo { get; set; }
+        public string Referencia { get; set; }
     }
     public class PensionesAlimentariasBean
     {
