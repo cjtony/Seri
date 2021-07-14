@@ -162,6 +162,7 @@
     const politica = document.getElementById('politica');
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
+    const comespecial = document.getElementById('comespecial');
     const retroactivo = document.getElementById('retroactivo');
     const conFondo = document.getElementById('con_fondo');
     const conPrestaciones = document.getElementById('con_prestaciones');
@@ -512,6 +513,7 @@
                     politica.value = getDataTabNom[i].data.politica;
                     diferencia.value = getDataTabNom[i].data.diferencia;
                     transporte.value = getDataTabNom[i].data.transporte;
+                    comespecial.value = getDataTabNom[i].data.comespecial;
                     retroactivo.checked = getDataTabNom[i].data.retroactivo;
                     conFondo.checked = getDataTabNom[i].data.confondo;
                     conPrestaciones.checked = getDataTabNom[i].data.conprestaciones;
@@ -620,6 +622,7 @@
         fvalidatebuttonsactionmain();
         fasignsdates();
         transporte.value = 0;
+        comespecial.value = 0;
     }
 
     fclearlocsto = (type) => {
@@ -999,7 +1002,7 @@
     });
 
     btnSaveDataNomina.addEventListener('click', () => {
-        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tippag, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple];
+        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tippag, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple, comespecial];
         let validate = 0;
         for (let t = 0; t < arrInput.length; t++) {
             if (arrInput[t].hasAttribute("tp-select")) {
@@ -1105,6 +1108,7 @@
                                 politica: politica.value,
                                 diferencia: diferencia.value,
                                 transporte: transporte.value,
+                                comespecial: comespecial.value,
                                 categoria: categoriaEmp.value,
                                 pagopor: pagoPorEmple.value,
                                 tippag: tippag.value,

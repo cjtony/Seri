@@ -590,6 +590,7 @@
     const politica   = document.getElementById('politica');
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
+    const comespecial = document.getElementById('comespecial');
     const retroactivo = document.getElementById('retroactivo');
     const conFondo = document.getElementById('con_fondo');
     const conPrestaciones = document.getElementById('con_prestaciones');
@@ -629,7 +630,8 @@
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
             tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value, politica: politica.value,
-            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend, ultSdi: parseFloat(sdiSend), clasif: clasif.value, prestaciones: conPrestacionesSend
+            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend, ultSdi: parseFloat(sdiSend), clasif: clasif.value, prestaciones: conPrestacionesSend,
+            complementoEspecial: comespecial.value
         };
         //console.log('Datos de nomina');
         //console.log(dataSend);
@@ -822,7 +824,7 @@
                     }
                 }
                 if (validatedataimss == 0) {
-                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag, categoriaEm, pagoPorEmpl];
+                    const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tiposueldo, politica, diferencia, transporte, tippag, categoriaEm, pagoPorEmpl, comespecial];
                     for (let t = 0; t < arrInput.length; t++) {
                         if (arrInput[t].hasAttribute("tp-select")) {
                             let textpag;

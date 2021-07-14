@@ -290,6 +290,7 @@ namespace Payroll.Models.Beans
     }
     public class DatosNominaBean
     {
+        public double dComplementoEspecial { get; set; }
         public string sPrestaciones { get; set; }
         public int iPrestaciones { get; set; }
         public int iIdNomina { get; set; }

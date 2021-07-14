@@ -751,6 +751,7 @@
     const politica   = document.getElementById('politica');
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
+    const comespecial = document.getElementById('comespecial');
     const retroactivo = document.getElementById('retroactivo');
     const conFondo = document.getElementById('con_fondo');
     const conPrestaciones = document.getElementById('con_prestaciones');
@@ -903,6 +904,7 @@
                 politica: politica.value,
                 diferencia: diferencia.value,
                 transporte: transporte.value,
+                comespecial: comespecial.value,
                 retroactivo: retroactivoSave,
                 confondo: conFondoSave,
                 conprestaciones: conPrestacionesSave,
@@ -1078,7 +1080,8 @@
                 type: "POST",
                 data: { keyemploye: paramid },
                 success: (data) => {
-                    //console.log(data);
+                    console.group("Datos Nomina");
+                    console.log(data);
                     let retroactivoShow = 0;
                     if (data.Bandera === true && data.MensajeError === "none") {
                         clvnom.value       = data.Datos.iIdNomina;
@@ -1112,6 +1115,7 @@
                         politica.value     = data.Datos.iPolitica;
                         diferencia.value   = data.Datos.dDiferencia;
                         transporte.value   = data.Datos.dTransporte;
+                        comespecial.value  = data.Datos.dComplementoEspecial;
                         if (data.Datos.iRetroactivo == 1) {
                             retroactivo.checked = 1;
                         } else {
@@ -1173,6 +1177,7 @@
                             </div>
                         `;
                     }
+                    console.groupEnd();
                 }, error: (jqXHR, exception) => { fcaptureaerrorsajax(jqXHR, exception); }
             });
         } catch (error) {
@@ -1752,7 +1757,7 @@
                 tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
                 empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
                 tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: clvemp.value, tiposueldo: tiposueldo.value, politica: politica.value,
-                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE, ultSdi: ultSdi.value, clasif: 0, prestaciones: conPrestacionesSendE
+                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE, ultSdi: ultSdi.value, clasif: 0, prestaciones: conPrestacionesSendE, complementoEspecial: comespecial.value
             };
         } else {
             url = "../EditDataGeneral/EditDataNominaORG";
@@ -1762,7 +1767,7 @@
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
                 transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "0", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value,
-                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE, clasif: clasif.value, conPrestaciones: conPrestacionesSendE
+                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE, clasif: clasif.value, conPrestaciones: conPrestacionesSendE, complementoEspecial: comespecial.value
             };
         }
         console.log(url);
