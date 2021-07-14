@@ -337,13 +337,40 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
+                        @*<div class="col-md-4">
+                            <div class="p-3">
+                                <div class="form-group">
+                                    <label class="col-form-label"> <i class="fas fa-calendar-alt mr-2 col-ico"></i> Periodo </label>
+                                    <select class="form-control form-control-sm" id="periodosRetenidos">
+                                        <option value="none">Selecciona</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <div class="form-group">
+                                    <label class="col-form-label"> <i class="fas fa-calendar mr-2 col-ico"></i> Anio </label>
+                                    <input type="number" class="form-control-sm form-control" id="anioRetenido" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <div class="form-group text-center">
+                                    <label class="col-form-label"> Buscar </label>
+                                    <button class="btn btn-sm btn-primary btn-block" id="btnBuscaInfoRetenidas"> <i class="fas fa-search"></i> </button>
+                                </div>
+                            </div>
+                        </div>*@
+                        <div class="col-12 mt-4">
                             <div class="table-responsive">
                                 <table class="table display" id="table-nom-retenidas" width="100%">
                                     <thead>
                                         <tr>
                                             <th>Empleado</th>
                                             <th>Observacion</th>
+                                            <th>Periodo</th>
                                             <th class="text-center">Accion</th>
                                         </tr>
                                     </thead>
@@ -454,7 +481,7 @@
                                 <label class="col-form-label font-labels">
                                     Periodo
                                 </label>
-                                <input id="perretnom" type="number" class="form-control form-control-sm" readonly />
+                                <input id="perretnom" type="number" class="form-control form-control-sm" />
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -529,7 +556,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="num-clabe-bank">Clabe</label>
-                                <input type="number" class="form-control form-control-sm" id="num-clabe-bank" placeholder="Clabe" />
+                                <input type="text" class="form-control form-control-sm" id="num-clabe-bank" placeholder="Clabe" />
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label font-labels" for="num-clabe-bank">Tipo</label>
@@ -910,11 +937,11 @@
     </div>
 </div>
 
-<script type="text/javascript" src="~/Scripts/ferros/errajax.js"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=3.2"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js?v=0.4"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/databankspecial.js?v=1.7"></script>
-<script type="text/javascript" src="~/Scripts/main/Dispersion/mainspecial.js?v=1.4"></script>
+<script type="text/javascript" src="~/Scripts/ferros/errajax.js" defer></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/main.js?v=3.7" defer></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/databank.js?v=0.7" defer></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/databankspecial.js?v=2.4" defer></script>
+<script type="text/javascript" src="~/Scripts/main/Dispersion/mainspecial.js?v=1.6" defer></script>
 <script type="text/javascript">
     function check(e) {
         tecla = (document.all) ? e.keyCode : e.which;

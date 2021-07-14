@@ -34,7 +34,9 @@ namespace Payroll.Models.Beans
 
     public class DatosGeneralesHC
     {
+        public int iGrupoEmpresaId { get; set; }
         public int iAnio { get; set; }
+        public string sPeriodo { get; set; }
         public int iPeriodo { get; set; }
         public int iEmpresa { get; set; }
         public string sEmpresa { get; set; }

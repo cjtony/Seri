@@ -1,7 +1,0 @@
-﻿Fecha: 2/25/2021 2:07:46 PM
-
-CUENTAS CON LONGITUD MENOR A 18 CARACTERES
-Nomina: 700088. Banco: Bancomer. Cuenta: 0171395661
-Nomina: 700496. Banco: Bancomer. Cuenta: 1501431072
-Nomina: 700664. Banco: Bancomer. Cuenta: 1529942971
-Nomina: 700692. Banco: Bancomer. Cuenta: 1536703550

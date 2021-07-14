@@ -592,6 +592,7 @@
     const transporte = document.getElementById('transporte');
     const retroactivo = document.getElementById('retroactivo');
     const conFondo = document.getElementById('con_fondo');
+    const conPrestaciones = document.getElementById('con_prestaciones');
     const categoriaEm = document.getElementById('categoria_emp');
     const pagoPorEmpl = document.getElementById('pago_por');
 
@@ -613,6 +614,10 @@
         if (conFondo.checked) {
             conFondoSend = 1;
         }
+        let conPrestacionesSend = 0;
+        if (conPrestaciones.checked) {
+            conPrestacionesSend = 1;
+        }
         let sdiSend = 0.00;
         if (ultSdi.value != "") {
             sdiSend = parseFloat(ultSdi.value);
@@ -624,7 +629,7 @@
             empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
             //motinc: motinc.value,
             tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: 0, tiposueldo: tiposueldo.value, politica: politica.value,
-            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend, ultSdi: parseFloat(sdiSend), clasif: clasif.value
+            diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSend, flagSal: false, motMoviSal: "none", fechMoviSal: "none", salmenact: 0.00, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSend, ultSdi: parseFloat(sdiSend), clasif: clasif.value, prestaciones: conPrestacionesSend
         };
         //console.log('Datos de nomina');
         //console.log(dataSend);

@@ -207,7 +207,7 @@ namespace Payroll.Controllers
         {
             Stopwatch stopwatch  = new Stopwatch();
             Stopwatch stopwatch1 = new Stopwatch();
-            string tiempo = "";
+            string tiempo       = "";
             Boolean flag        = false;
             Boolean ValidDataN  = false;
             Boolean checkDataN  = false;
@@ -314,38 +314,18 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 r += 1;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             RenglonesNom = new int[0];
                         }
 
                         a = ii;
-                        //ii += 1;
-                        //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                        //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES FISCAL";
 
                         listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 0, 1000, 2000, typeOption);
-                        if (listRenglones1.Count > 0)
-                        {
-                            //if (listRenglones1.Any(x => x.iIdRenglon == 1041)) {
-                            //    RenglonesNomDeduc = new int[listRenglones1.Count - 1];
-                            //} else {
-                            //    RenglonesNomDeduc = new int[listRenglones1.Count];
-                            //}
+                        if (listRenglones1.Count > 0) {
+                            
                             RenglonesNomDeduc = new int[listRenglones1.Count];
                             int j = 0;
-                            foreach (RenglonesHCBean renglon in listRenglones1)
-                            {
-                                // Omitimos el renglon 1041 y agregamos los que no coincidan
-                                //if (renglon.iIdRenglon != 1041) {
-                                //    ii += 1;
-                                //    Renglon              = Convert.ToInt32(renglon.iIdRenglon);
-                                //    RenglonesNomDeduc[j] = Renglon;
-                                //    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                                //    worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                                //    j += 1;
-                                //}
+                            foreach (RenglonesHCBean renglon in listRenglones1) {
                                 ii += 1;
                                 Renglon = Convert.ToInt32(renglon.iIdRenglon);
                                 RenglonesNomDeduc[j] = Renglon;
@@ -353,15 +333,10 @@ namespace Payroll.Controllers
                                 worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
                                 j += 1;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             RenglonesNomDeduc = new int[0];
                         }
 
-                        //ii += 1;
-                        //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                        //worksheet.Cells[1, ii + 1].Value = "TOTAL DEDUCCIONES FISCAL";
                         ii += 1;
                         worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
                         worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR FISCAL";
@@ -385,10 +360,6 @@ namespace Payroll.Controllers
                         {
                             RenglonesNomEspejo = new int[0];
                         }
-
-                        //ii += 1;
-                        //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                        //worksheet.Cells[1, ii + 1].Value = "TOTAL PERCEPCIONES GASTOS";
 
                         listRenglonesEsp1 = reportDao.sp_Renglones_Hoja_Calculo(keyOptionSel, typePeriod, numberPeriod, yearPeriod, 1, 1000, 2000, typeOption);
                         if (listRenglonesEsp1.Count > 0)
@@ -418,41 +389,6 @@ namespace Payroll.Controllers
                         worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
                         worksheet.Cells[1, ii + 1].Value = "TOTAL GENERAL";
 
-                        // * INICIO CODIGO NUEVO * \\
-
-                        //listRenglonesC1 = reportDao.sp_Renglones_HC_Consecutivo(keyOptionSel, numberPeriod, typePeriod, yearPeriod, 0);
-                        //if (listRenglonesC1.Count > 0) {
-                        //    renglonesC1 = new int[listRenglonesC1.Count];
-                        //    int r = 0;
-                        //    foreach (RenglonesHCBean renglon in listRenglonesC1) {
-                        //        ii += 1;
-                        //        Renglon = Convert.ToInt32(renglon.iIdRenglon);
-                        //        renglonesC1[r] = Renglon;
-                        //        worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
-                        //        worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                        //        r += 1;
-                        //    }
-                        //} else {
-                        //    renglonesC1 = new int[0];
-                        //}
-
-                        //listRenglonesC2 = reportDao.sp_Renglones_HC_Consecutivo(keyOptionSel, numberPeriod, typePeriod, yearPeriod, 1);
-                        //if (listRenglonesC2.Count > 0) {
-                        //    renglonesC2 = new int[listRenglonesC2.Count];
-                        //    int j = 0;
-                        //    foreach (RenglonesHCBean renglon in listRenglonesC2) {
-                        //        ii += 1;
-                        //        Renglon = Convert.ToInt32(renglon.iIdRenglon);
-                        //        renglonesC1[j] = Renglon;
-                        //        worksheet.Cells[1 , ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
-                        //        worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
-                        //        j += 1;
-                        //    }
-                        //} else {
-                        //    renglonesC2 = new int[0];
-                        //}
-
-                        // * FIN CODIGO NUEVO * \\
 
                     } else {
 
@@ -536,21 +472,13 @@ namespace Payroll.Controllers
 
                     }
 
-
-                    //ii += 1;
-                    //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
-                    //worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR GASTO";
-                    //ii += 1;
-                    //worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightCyan);
-                    //worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR TOTAL";
                     stopwatch1.Start();
                     string inicio = DateTime.Now.ToString("hh:mm:ss");
                     DateTime comienzo = Convert.ToDateTime(inicio);
                     if (typeSend == 1) {
                         datosGenerales = reportDao.sp_Datos_Generales_HC(keyOptionSel, typePeriod, numberPeriod, yearPeriod, typeSend, typeOption);
                         ValidDataN = (datosGenerales.Count > 0) ? true : false;
-                        if (datosGenerales.Count > 0)
-                        {
+                        if (datosGenerales.Count > 0) {
                             int business = 0, payroll = 0;
                             int p = 1;
                             foreach (DatosGeneralesHC dato in datosGenerales) {
@@ -600,19 +528,37 @@ namespace Payroll.Controllers
                                 worksheet.Cells[p + 1, 30].Value = dato.dUltSdi;
                                 worksheet.Cells[p + 1, 31].Value = dato.sRegistroPatronal;
                                 Total_Percepciones_Fiscal = 0;
+                                double renglon481 = 0;
+                                decimal importe = 0;
 
-                                for (m = 0; m < RenglonesNom.Count(); m++)
-                                {
-                                    detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
-                                    if (detallesRenglon.dSaldo <= 0)
-                                    {
-                                        worksheet.Cells[p + 1, m + 2 + 31].Value = "";
+                                if (dato.iGrupoEmpresaId == 9 || dato.iGrupoEmpresaId == 12 || dato.iGrupoEmpresaId == 15) {
+                                    for (m = 0; m < RenglonesNom.Count(); m++) {
+                                        detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
+                                        if (detallesRenglon.dSaldo <= 0) {
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = "";
+                                        } else {
+                                            if (RenglonesNom[m] == 481) {
+                                                renglon481 = Convert.ToDouble(detallesRenglon.dSaldo);
+                                            }
+                                            importe = detallesRenglon.dSaldo;
+                                            if (RenglonesNom[m] == 990) {
+                                                importe = detallesRenglon.dSaldo - Convert.ToDecimal(renglon481);
+                                            }
+                                            worksheet.Cells[p + 1, m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                            Total_Percepciones_Fiscal += Convert.ToDecimal(importe);
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = Convert.ToDecimal(importe);
+                                        }
                                     }
-                                    else
-                                    {
-                                        worksheet.Cells[p + 1, m + 2 + 31].Style.Numberformat.Format = "0.00";
-                                        Total_Percepciones_Fiscal += Convert.ToDecimal(detallesRenglon.dSaldo);
-                                        worksheet.Cells[p + 1, m + 2 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                } else {
+                                    for (m = 0; m < RenglonesNom.Count(); m++) {
+                                        detallesRenglon = reportDao.sp_Detalle_Renglones(business, payroll, numberPeriod, typePeriod, yearPeriod, RenglonesNom[m], 0);
+                                        if (detallesRenglon.dSaldo <= 0) {
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = "";
+                                        } else {
+                                            worksheet.Cells[p + 1, m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                            Total_Percepciones_Fiscal += Convert.ToDecimal(detallesRenglon.dSaldo);
+                                            worksheet.Cells[p + 1, m + 2 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                        }
                                     }
                                 }
 
@@ -640,9 +586,16 @@ namespace Payroll.Controllers
 
                                 ////// Monto neto a pagar (FISCAL)
                                 renglonNoEspejo = reportDao.sp_Liquidos_Espejo_No_Espejo(business, typePeriod, numberPeriod, yearPeriod, 0, payroll);
-                                worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
-                                worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
-                                worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = renglonNoEspejo.dSaldo;
+                                if (dato.iGrupoEmpresaId == 9 || dato.iGrupoEmpresaId == 12 || dato.iGrupoEmpresaId == 15) {
+                                    decimal total = renglonNoEspejo.dSaldo - Convert.ToDecimal(renglon481);
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = total;
+                                } else {
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = renglonNoEspejo.dSaldo;
+                                }
 
                                 Total_Percepciones_Espejo = 0;
                                 for (m = 0; m < RenglonesNomEspejo.Count(); m++)
@@ -684,7 +637,12 @@ namespace Payroll.Controllers
 
                                 worksheet.Cells[p + 1, cant3 + m + 4 + 31].Style.Numberformat.Format = "0.00";
                                 worksheet.Cells[p + 1, cant3 + m + 4 + 31].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
-                                worksheet.Cells[p + 1, cant3 + m + 4 + 31].Value = renglonNoEspejo.dSaldo + renglonSiEspejo.dSaldo;
+                                if (dato.iGrupoEmpresaId == 9 || dato.iGrupoEmpresaId == 12 || dato.iGrupoEmpresaId == 15) {
+                                    decimal resultadoF = renglonNoEspejo.dSaldo - Convert.ToDecimal(renglon481);
+                                    worksheet.Cells[p + 1, cant3 + m + 4 + 31].Value = resultadoF + renglonSiEspejo.dSaldo;
+                                } else {
+                                    worksheet.Cells[p + 1, cant3 + m + 4 + 31].Value = renglonNoEspejo.dSaldo + renglonSiEspejo.dSaldo;
+                                }
 
                                 p += 1;
                             }
@@ -1191,7 +1149,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public JsonResult ReportMovements(string typeOption, int keyOptionSel, int yearSelect, int periodSelect, int typePSelect)
+        public JsonResult ReportMovements(string typeOption, int keyOptionSel, string paramDateS, string paramDateE)
         {
             Boolean flag = false;
             String messageError  = "none";
@@ -1199,7 +1157,7 @@ namespace Payroll.Controllers
             string nameFolder    = "REPORTES";
             string nameFolderRe  = "MOVIMIENTOS";
             string nameFileValid = nameFolderRe;
-            string nameFileRepr  = nameFileValid + "_E" + keyOptionSel.ToString() + "_A" + yearSelect.ToString() + "_P" + periodSelect.ToString() + "_T" + typePSelect.ToString() + ".xlsx";
+            string nameFileRepr  = nameFileValid + "E" + keyOptionSel.ToString() + "A" + "" + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable = 1, columnsDataTable = 0;
@@ -1209,7 +1167,7 @@ namespace Payroll.Controllers
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                     DataTable dataTable         = new DataTable();
                     dataTable.Locale            = System.Threading.Thread.CurrentThread.CurrentCulture;
-                    dataTable = reportDao.sp_Datos_Movimientos_Empleados(typeOption, keyOptionSel, yearSelect, periodSelect, typePSelect);
+                    dataTable = reportDao.sp_Datos_Movimientos_Empleados(typeOption, keyOptionSel, paramDateS, paramDateE);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
                         columnsDataTable = dataTable.Columns.Count + 1;
@@ -1403,7 +1361,7 @@ namespace Payroll.Controllers
             string nameFolder = "REPORTES";
             string nameFolderRe = "ACUMULADOSPERIODOSNOMINA";
             string nameFileValid = nameFolderRe;
-            string nameFileRepr = "ACUMMATRIX_PI" + periodStart.ToString() + "_PF" + periodEnd.ToString() + "_ " + option + ".xlsx";
+            string nameFileRepr = "ACUMMATRIXPI" + periodStart.ToString() + "PF" + periodEnd.ToString() + option.ToString() + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable = 1, columnsDataTable = 0;
@@ -1451,7 +1409,7 @@ namespace Payroll.Controllers
             string nameFolder = "REPORTES";
             string nameFolderRe = "RECIBOSNOMINA";
             string nameFileValid = nameFolderRe;
-            string nameFileRepr = "RECINOMI_A" + year.ToString() + "_T" + periodStart.ToString() + "_P" + periodEnd.ToString() + "_ " + option + ".xlsx";
+            string nameFileRepr = "RECINOMIA" + year.ToString() + "T" + periodStart.ToString() + "P" + periodEnd.ToString() + ".xlsx";
             ReportesDao reportDao = new ReportesDao();
             string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable = 1, columnsDataTable = 0;
@@ -1638,6 +1596,54 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        public JsonResult GenerateReportAdeudos(string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "ADEUDOS";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "REPORTEADEUDOSE" + keyOption.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Adeudos(option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
         public JsonResult GenerateReportHolidaysEmployees(string option, int keyOption)
         {
             Boolean flag = false;
@@ -1657,6 +1663,150 @@ namespace Payroll.Controllers
                     DataTable dataTable = new DataTable();
                     dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
                     dataTable = reportDao.sp_Datos_Reporte_Vacaciones(option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportCreditsInfonavitHistory(string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "CREDITOS";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "CREDITOSINFONAVITHISTORICOE" + keyOption.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Creditos_Infonavit_Historico(option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportCreditsInfonavitAssets(string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "CREDITOS";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "CREDITOSINFONAVITACTIVOSE" + keyOption.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Creditos_Infonavit_Activos(option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportIncapacidadesTCR (string option, int keyOption)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "INCAPACIDADESTCR";
+            string nameFileValid = nameFolderRe;
+            string nameFileRepr = "INCAPACIDADES" + keyOption.ToString() + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Incapacidades_TCR(option, keyOption);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
                         columnsDataTable = dataTable.Columns.Count + 1;
@@ -1849,6 +1999,430 @@ namespace Payroll.Controllers
                     DataTable dataTable = new DataTable();
                     dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
                     dataTable = reportDao.sp_Datos_Reporte_Detalle_Renglones_Nomina(periodStart, periodEnd, lines, typePeriod, option, keyOption);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportAcum(int year, int periodStart, int periodEnd, int typePeriod, string option, int keyOption)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            Stopwatch stopwatch1 = new Stopwatch();
+            string tiempo = "";
+            Boolean flag = false;
+            Boolean ValidDataN = false;
+            Boolean checkDataN = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "ACUMULADOSSICOSS";
+            string initName = "";
+            string fileName = "ACUMULADOSE"+ keyOption.ToString() +"A" + year.ToString() + "PI" + periodStart.ToString() + "PF" + periodEnd.ToString() + ".xlsx";
+            Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, fileName);
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 0;
+            int columnsDataTable = 0;
+            int i, ii, Renglon, a, m, m1, m2, m3;
+            int cant1 = 0;
+            int cant2 = 0;
+            int cant3 = 0;
+            int cant4 = 0;
+            int[] RenglonesNom = new int[10];
+            int[] RenglonesNomDeduc = new int[10];
+            int[] RenglonesNomEspejo = new int[10];
+            int[] RenglonesNomDeducEspejo = new int[10];
+            decimal Total_Percepciones_Fiscal;
+            decimal Total_Deducciones_Fiscal;
+            decimal Total_Percepciones_Espejo;
+            decimal Total_Deducciones_Espejo;
+            List<RenglonesHCBean> listRenglones = new List<RenglonesHCBean>();
+            List<RenglonesHCBean> listRenglones1 = new List<RenglonesHCBean>();
+            List<RenglonesHCBean> listRenglonesEsp = new List<RenglonesHCBean>();
+            List<RenglonesHCBean> listRenglonesEsp1 = new List<RenglonesHCBean>();
+            List<DatosGeneralesHC> datosGenerales = new List<DatosGeneralesHC>();
+            DetallesRenglon renglonNoEspejo = new DetallesRenglon();
+            DetallesRenglon renglonSiEspejo = new DetallesRenglon();
+            DetallesRenglon detallesRenglon = new DetallesRenglon();
+            // * Inicio Codigo Nuevo * \\
+            List<RenglonesHCBean> listRenglonesC1 = new List<RenglonesHCBean>();
+            List<RenglonesHCBean> listRenglonesC2 = new List<RenglonesHCBean>();
+            int[] renglonesC1 = new int[10];
+            int[] renglonesC2 = new int[10];
+            // * Fin Codigo Nuevo * \\
+            try {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage excel = new ExcelPackage()) {
+                    excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(fileName));
+                    var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(fileName)];
+                    worksheet.Cells[1, 1].Value = "AÑO";
+                    worksheet.Cells[1, 2].Value = "PERIODO_INICIO_PERIODO_FINAL";
+                    worksheet.Cells[1, 3].Value = "EMPRESA";
+                    worksheet.Cells[1, 4].Value = "NOMBRE EMPRESA";
+                    worksheet.Cells[1, 5].Value = "NOMINA";
+                    worksheet.Cells[1, 6].Value = "APELLIDO PATERNO";
+                    worksheet.Cells[1, 7].Value = "APELLIDO MATERNO";
+                    worksheet.Cells[1, 8].Value = "NOMBRE";
+                    worksheet.Cells[1, 9].Value = "REG.IMSS";
+                    worksheet.Cells[1, 10].Value = "RFC";
+                    worksheet.Cells[1, 11].Value = "CURP";
+                    worksheet.Cells[1, 12].Value = "PUESTO";
+                    worksheet.Cells[1, 13].Value = "NOMBRE PUESTO";
+                    worksheet.Cells[1, 14].Value = "NIVEL JERARQUICO";
+                    worksheet.Cells[1, 15].Value = "DEPTO.";
+                    worksheet.Cells[1, 16].Value = "NOMBRE DEPTO.";
+                    worksheet.Cells[1, 17].Value = "CENTRO COSTO";
+                    worksheet.Cells[1, 18].Value = "DESCR.CENTRO COSTO";
+                    worksheet.Cells[1, 19].Value = "REGIONAL";
+                    worksheet.Cells[1, 20].Value = "CVE.REGIONAL";
+                    worksheet.Cells[1, 21].Value = "DESCR.REGIONAL";
+                    worksheet.Cells[1, 22].Value = "SUCURSAL";
+                    worksheet.Cells[1, 23].Value = "CVE.SUCURSAL";
+                    worksheet.Cells[1, 24].Value = "DESCR.SUCURSAL";
+                    worksheet.Cells[1, 25].Value = "FECHA ANTIGUEDAD";
+                    worksheet.Cells[1, 26].Value = "FECHA INGRESO";
+                    worksheet.Cells[1, 27].Value = "SUELDO";
+                    worksheet.Cells[1, 28].Value = "VACANTE CUBIERTA";
+                    worksheet.Cells[1, 29].Value = "ULTIMA POSICION";
+                    worksheet.Cells[1, 30].Value = "ULT. SDI";
+                    worksheet.Cells[1, 31].Value = "Registro Patronal";
+
+                    for (i = 1; i < 32; i++) {
+                        worksheet.Cells[1, i].Style.Fill.SetBackground(System.Drawing.Color.LightSkyBlue);
+                    }
+                    ii = 31;
+
+                    // Obtenemos los renglones calculados
+                    listRenglones = reportDao.sp_Renglones_Hoja_Calculo_Acumulados(keyOption, typePeriod, periodStart, periodEnd, year, 0, 0, 1000, option);
+                    if (listRenglones.Count > 0) {
+                        RenglonesNom = new int[listRenglones.Count];
+                        int r = 0;
+                        foreach (RenglonesHCBean renglon in listRenglones) {
+                            ii += 1;
+                            Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                            RenglonesNom[r] = Convert.ToInt32(renglon.iIdRenglon);
+                            worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
+                            worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                            r += 1;
+                        }
+                    } else {
+                        RenglonesNom = new int[0];
+                    }
+
+                    a = ii;
+
+                    listRenglones1 = reportDao.sp_Renglones_Hoja_Calculo_Acumulados(keyOption, typePeriod, periodStart, periodEnd, year, 0, 1000, 2000, option);
+                    if (listRenglones1.Count > 0) {
+                        RenglonesNomDeduc = new int[listRenglones1.Count];
+                        int j = 0;
+                        foreach (RenglonesHCBean renglon in listRenglones1) {
+                            ii += 1;
+                            Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                            RenglonesNomDeduc[j] = Renglon;
+                            worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                            worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                            j += 1;
+                        }
+                    } else {
+                        RenglonesNomDeduc = new int[0];
+                    }
+
+                    ii += 1;
+                    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
+                    worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR FISCAL";
+
+                    listRenglonesEsp = reportDao.sp_Renglones_Hoja_Calculo_Acumulados(keyOption, typePeriod, periodStart, periodEnd, year, 1, 0, 1000, option);
+                    if (listRenglonesEsp.Count > 0) {
+                        RenglonesNomEspejo = new int[listRenglonesEsp.Count];
+                        int g = 0;
+                        foreach (RenglonesHCBean renglon in listRenglonesEsp) {
+                            ii += 1;
+                            Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                            RenglonesNomEspejo[g] = Renglon;
+                            worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightGreen);
+                            worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                            g += 1;
+                        }
+                    } else {
+                        RenglonesNomEspejo = new int[0];
+                    }
+
+                    listRenglonesEsp1 = reportDao.sp_Renglones_Hoja_Calculo_Acumulados(keyOption, typePeriod, periodStart, periodEnd, year, 1, 1000, 2000, option);
+                    if (listRenglonesEsp1.Count > 0) {
+                        RenglonesNomDeducEspejo = new int[listRenglonesEsp1.Count];
+                        int y = 0;
+                        foreach (RenglonesHCBean renglon in listRenglonesEsp1) {
+                            ii += 1;
+                            Renglon = Convert.ToInt32(renglon.iIdRenglon);
+                            RenglonesNomDeducEspejo[y] = Renglon;
+                            worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                            worksheet.Cells[1, ii + 1].Value = "(" + Renglon.ToString() + ")" + renglon.sNombreRenglon;
+                            y += 1;
+                        }
+                    } else {
+                        RenglonesNomDeducEspejo = new int[0];
+                    }
+
+                    ii += 1;
+                    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                    worksheet.Cells[1, ii + 1].Value = "NETO A PAGAR GASTO";
+
+                    ii += 1;
+                    worksheet.Cells[1, ii + 1].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
+                    worksheet.Cells[1, ii + 1].Value = "TOTAL GENERAL";
+
+                    stopwatch1.Start();
+                    string inicio = DateTime.Now.ToString("hh:mm:ss");
+                    DateTime comienzo = Convert.ToDateTime(inicio);
+
+                    datosGenerales = reportDao.sp_Datos_Generales_HC_Acumulados(keyOption, typePeriod, periodStart, periodEnd, year, 1, option);
+                    ValidDataN = (datosGenerales.Count > 0) ? true : false;
+
+                    if (datosGenerales.Count > 0)
+                    {
+                        int business = 0, payroll = 0;
+                        int p = 1;
+                        foreach (DatosGeneralesHC dato in datosGenerales)
+                        {
+
+                            business = dato.iEmpresa;
+                            payroll = dato.iNomina;
+
+                            worksheet.Cells[p + 1, 1].Style.Numberformat.Format = "0";
+                            worksheet.Cells[p + 1, 1].Value = dato.iAnio;
+                            worksheet.Cells[p + 1, 2].Value = dato.sPeriodo;
+                            worksheet.Cells[p + 1, 3].Style.Numberformat.Format = "0";
+                            worksheet.Cells[p + 1, 3].Value = dato.iEmpresa;
+                            worksheet.Cells[p + 1, 4].Value = dato.sEmpresa;
+                            worksheet.Cells[p + 1, 5].Style.Numberformat.Format = "0";
+                            worksheet.Cells[p + 1, 5].Value = dato.iNomina;
+                            worksheet.Cells[p + 1, 6].Value = dato.sPaterno;
+                            worksheet.Cells[p + 1, 7].Value = dato.sMaterno;
+                            worksheet.Cells[p + 1, 8].Value = dato.sNombreE;
+                            worksheet.Cells[p + 1, 9].Value = dato.sRegImss;
+                            worksheet.Cells[p + 1, 10].Value = dato.sRfc;
+                            worksheet.Cells[p + 1, 11].Value = dato.sCurp;
+                            worksheet.Cells[p + 1, 12].Value = dato.sPuesto;
+                            worksheet.Cells[p + 1, 13].Value = dato.sNombrePuesto;
+                            worksheet.Cells[p + 1, 14].Value = dato.sNivelJerarquico;
+                            worksheet.Cells[p + 1, 15].Value = dato.sDepto;
+                            worksheet.Cells[p + 1, 16].Value = dato.sNombreDepto;
+                            worksheet.Cells[p + 1, 17].Value = dato.sCentrCosto;
+                            worksheet.Cells[p + 1, 18].Value = dato.sDescCentrCosto;
+                            worksheet.Cells[p + 1, 19].Style.Numberformat.Format = "0";
+                            worksheet.Cells[p + 1, 19].Value = dato.iRegional;
+                            worksheet.Cells[p + 1, 20].Value = dato.sClvRegional;
+                            worksheet.Cells[p + 1, 21].Value = dato.sDescRegional;
+                            worksheet.Cells[p + 1, 22].Style.Numberformat.Format = "0";
+                            worksheet.Cells[p + 1, 22].Value = dato.iSucursal;
+                            worksheet.Cells[p + 1, 23].Value = dato.sClvSucursal;
+                            worksheet.Cells[p + 1, 24].Value = dato.sDescSucursal;
+                            worksheet.Cells[p + 1, 25].Value = dato.sFechaAnt;
+                            worksheet.Cells[p + 1, 26].Value = dato.sFechaIng;
+                            worksheet.Cells[p + 1, 27].Style.Numberformat.Format = "0.00";
+                            worksheet.Cells[p + 1, 27].Value = dato.dSueldo;
+                            worksheet.Cells[p + 1, 28].Style.Numberformat.Format = "0";
+                            worksheet.Cells[p + 1, 28].Value = dato.iVacanteC;
+                            worksheet.Cells[p + 1, 29].Style.Numberformat.Format = "0";
+                            worksheet.Cells[p + 1, 29].Value = dato.iUltimaPos;
+                            worksheet.Cells[p + 1, 30].Style.Numberformat.Format = "0.00";
+                            worksheet.Cells[p + 1, 30].Value = dato.dUltSdi;
+                            worksheet.Cells[p + 1, 31].Value = dato.sRegistroPatronal;
+                            Total_Percepciones_Fiscal = 0;
+
+                            for (m = 0; m < RenglonesNom.Count(); m++)
+                            {
+                                detallesRenglon = reportDao.sp_Detalle_Renglones_Acumulados(business, payroll, periodStart, periodEnd, typePeriod, year, RenglonesNom[m], 0);
+                                if (detallesRenglon.dSaldo <= 0)
+                                {
+                                    worksheet.Cells[p + 1, m + 2 + 31].Value = "";
+                                }
+                                else
+                                {
+                                    worksheet.Cells[p + 1, m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                    Total_Percepciones_Fiscal += Convert.ToDecimal(detallesRenglon.dSaldo);
+                                    worksheet.Cells[p + 1, m + 2 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                }
+                            }
+
+                            cant1 = RenglonesNom.Length;
+                            cant2 = cant1 + RenglonesNomDeduc.Length;
+                            cant3 = cant2 + RenglonesNomEspejo.Length;
+
+                            Total_Deducciones_Fiscal = 0;
+
+                            for (m = 0; m < RenglonesNomDeduc.Count(); m++)
+                            {
+                                detallesRenglon = reportDao.sp_Detalle_Renglones_Acumulados(business, payroll, periodStart, periodEnd, typePeriod, year, RenglonesNomDeduc[m], 0);
+                                if (detallesRenglon.dSaldo <= 0)
+                                {
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = "";
+                                }
+                                else
+                                {
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
+                                    Total_Deducciones_Fiscal += Convert.ToDecimal(detallesRenglon.dSaldo);
+                                    worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                }
+                            }
+
+
+                            ////// Monto neto a pagar (FISCAL)
+                            renglonNoEspejo = reportDao.sp_Liquidos_Espejo_No_Espejo_Acumulados(business, typePeriod, periodStart, periodEnd, year, 0, payroll);
+                            worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Numberformat.Format = "0.00";
+                            worksheet.Cells[p + 1, cant1 + m + 2 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightSteelBlue);
+                            worksheet.Cells[p + 1, cant1 + m + 2 + 31].Value = renglonNoEspejo.dSaldo;
+
+                            Total_Percepciones_Espejo = 0;
+                            for (m = 0; m < RenglonesNomEspejo.Count(); m++)
+                            {
+                                detallesRenglon = reportDao.sp_Detalle_Renglones_Acumulados(business, payroll, periodStart, periodEnd, typePeriod, year, RenglonesNomEspejo[m], 1);
+                                if (detallesRenglon.dSaldo <= 0)
+                                {
+                                    worksheet.Cells[p + 1, cant2 + m + 3 + 31].Value = "";
+                                }
+                                else
+                                {
+                                    worksheet.Cells[p + 1, cant2 + m + 3 + 31].Style.Numberformat.Format = "0.00";
+                                    Total_Percepciones_Espejo += Convert.ToDecimal(detallesRenglon.dSaldo);
+                                    worksheet.Cells[p + 1, cant2 + m + 3 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                }
+                            }
+
+                            Total_Deducciones_Espejo = 0;
+
+                            for (m = 0; m < RenglonesNomDeducEspejo.Count(); m++)
+                            {
+                                detallesRenglon = reportDao.sp_Detalle_Renglones_Acumulados(business, payroll, periodStart, periodEnd, typePeriod, year, RenglonesNomDeducEspejo[m], 1);
+                                if (detallesRenglon.dSaldo <= 0)
+                                {
+                                    worksheet.Cells[p + 1, cant3 + m + 3 + 31].Value = "";
+                                }
+                                else
+                                {
+                                    worksheet.Cells[p + 1, cant3 + m + 3 + 31].Style.Numberformat.Format = "0.00";
+                                    Total_Deducciones_Espejo += Convert.ToDecimal(detallesRenglon.dSaldo);
+                                    worksheet.Cells[p + 1, cant3 + m + 3 + 31].Value = Convert.ToDecimal(detallesRenglon.dSaldo);
+                                }
+                            }
+
+                            renglonSiEspejo = reportDao.sp_Liquidos_Espejo_No_Espejo_Acumulados(business, typePeriod, periodStart, periodEnd, year, 1, payroll);
+                            worksheet.Cells[p + 1, cant3 + m + 3 + 31].Style.Numberformat.Format = "0.00";
+                            worksheet.Cells[p + 1, cant3 + m + 3 + 31].Style.Fill.SetBackground(System.Drawing.Color.LightPink);
+                            worksheet.Cells[p + 1, cant3 + m + 3 + 31].Value = renglonSiEspejo.dSaldo;
+
+                            worksheet.Cells[p + 1, cant3 + m + 4 + 31].Style.Numberformat.Format = "0.00";
+                            worksheet.Cells[p + 1, cant3 + m + 4 + 31].Style.Fill.SetBackground(System.Drawing.Color.Aquamarine);
+                            worksheet.Cells[p + 1, cant3 + m + 4 + 31].Value = renglonNoEspejo.dSaldo + renglonSiEspejo.dSaldo;
+
+                            p += 1;
+                        }
+                    }
+                    FileInfo excelFile = new FileInfo(pathComplete + fileName);
+                    excel.SaveAs(excelFile);
+                    stopwatch1.Stop();
+                    string final = DateTime.Now.ToString("hh:mm:ss");
+                    DateTime termino = Convert.ToDateTime(final);
+                    tiempo = stopwatch1.Elapsed.Hours + " h " + stopwatch1.Elapsed.Minutes + " m " + stopwatch1.Elapsed.Seconds + " s ";
+                    flag = true;
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = fileName, Folder = nameFolderRe, Rows = datosGenerales.Count, Validacion = ValidDataN, Tiempo = tiempo });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportFaltasSic(string typeOption, int keyOptionSel, string dateS, string dateE)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "BAJAS_EMPLEADOS";
+            string nameFileRepr = "FALTAS" + dateS.Replace("-", "") + dateE.Replace("-", "") + ".xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Faltas_SIC(typeOption, keyOptionSel, dateS, dateE);
+                    using (ExcelPackage excel = new ExcelPackage()) {
+                        excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
+                        columnsDataTable = dataTable.Columns.Count + 1;
+                        rowsDataTable = dataTable.Rows.Count;
+                        if (rowsDataTable > 0) {
+                            var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(nameFileRepr)];
+                            for (var i = 1; i < columnsDataTable; i++) {
+                                worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                                worksheet.Cells[1, i].Style.Font.Bold = true;
+                                worksheet.Cells[1, i].Style.WrapText = true;
+                                worksheet.Cells[1, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                worksheet.Cells[1, i].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                            }
+                            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                            FileInfo excelFile = new FileInfo(pathComplete + nameFileRepr);
+                            excel.SaveAs(excelFile);
+                        }
+                        excel.Dispose();
+                        flag = true;
+                    }
+                }
+            } catch (Exception exc) {
+                flag = false;
+                messageError = exc.Message.ToString();
+            }
+            return Json(new { Bandera = flag, MensajeError = messageError, Archivo = nameFileRepr, Folder = nameFolderRe, Rows = rowsDataTable, Columns = columnsDataTable });
+        }
+
+        [HttpPost]
+        public JsonResult GenerateReportIncapacidadesSic(string typeOption, int keyOptionSel, string dateS, string dateE)
+        {
+            Boolean flag = false;
+            String messageError = "none";
+            string pathSaveFile = Server.MapPath("~/Content/");
+            string nameFolder = "REPORTES";
+            string nameFolderRe = "BAJAS_EMPLEADOS";
+            string nameFileRepr = "INCAPACIDADESSIC.xlsx";
+            ReportesDao reportDao = new ReportesDao();
+            string pathComplete = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
+            int rowsDataTable = 1, columnsDataTable = 0;
+            try {
+                Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, nameFileRepr);
+                if (createFolders) {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    DataTable dataTable = new DataTable();
+                    dataTable.Locale = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    dataTable = reportDao.sp_Datos_Reporte_Incapacidades_SIC(typeOption, keyOptionSel, dateS, dateE);
                     using (ExcelPackage excel = new ExcelPackage()) {
                         excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(nameFileRepr));
                         columnsDataTable = dataTable.Columns.Count + 1;

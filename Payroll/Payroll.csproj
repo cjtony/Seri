@@ -217,6 +217,7 @@
     <Compile Include="Models\Beans\ConfigDataBankBean.cs" />
     <Compile Include="Models\Beans\DispersionBean.cs" />
     <Compile Include="Models\Beans\GruposEmpresasBean.cs" />
+    <Compile Include="Models\Beans\LayoutsBean.cs" />
     <Compile Include="Models\Beans\MainMenuBean.cs" />
     <Compile Include="Models\Beans\MenuBean.cs" />
     <Compile Include="Models\Beans\NominaBean.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Models\Daos\DispersionDao.cs" />
     <Compile Include="Models\Daos\DispersionSpecialDao.cs" />
     <Compile Include="Models\Daos\EditDataGeneralDao.cs" />
+    <Compile Include="Models\Daos\LayoutsDao.cs" />
     <Compile Include="Models\Daos\ListTablesDao.cs" />
     <Compile Include="Models\Daos\MainMenuDao.cs" />
     <Compile Include="Models\Daos\MenuDao.cs" />
@@ -522,6 +524,7 @@
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Incidencias.xlsx" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
     <Content Include="Content\FilesCargaMasivaIncidencias\FormatoDeIncidencias\Layout_Carga_Masiva_Periodos.xlsx" />
+    <Content Include="Content\Download\EjemploLayoutSueldos.xlsx" />
     <None Include="Properties\PublishProfiles\IPSNetProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Catalogos\Consulta.js" />
@@ -1029,6 +1032,7 @@
     <Content Include="Scripts\main\branchoffices.js" />
     <Content Include="Scripts\main\CargasMasivas\main.js" />
     <Content Include="Scripts\main\cargamasiva.js" />
+    <Content Include="Scripts\main\CargasMasivas\salarios.js" />
     <Content Include="Scripts\main\catalogos.js" />
     <Content Include="Scripts\main\centrcost.js" />
     <Content Include="Scripts\main\CompNomina.js" />
@@ -1082,6 +1086,7 @@
     <Content Include="Scripts\main\RecibosNomina.js" />
     <Content Include="Scripts\main\regionales.js" />
     <Content Include="Scripts\main\Reportes\catalogs.js" />
+    <Content Include="Scripts\main\Reportes\especiales.js" />
     <Content Include="Scripts\main\Reportes\main.js" />
     <Content Include="Scripts\main\savedatageneral.js" />
     <Content Include="Scripts\main\startMenu.js" />

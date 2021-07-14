@@ -134,7 +134,7 @@ namespace Payroll.Models.Daos
 
     public class EditEmpleadoDao : Conexion
     {
-        public EmpleadosBean sp_Empleados_Update_Empleado(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, int nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, string fecmat, string tipsan, int clvemp)
+        public EmpleadosBean sp_Empleados_Update_Empleado(string name, string apepat, string apemat, int sex, int estciv, string fnaci, string lnaci, int title, int nacion, int state, string codpost, string city, string colony, string street, string numberst, string telfij, string telmov, string email, string fecmat, string tipsan, int clvemp, int keyBusiness)
         {
             EmpleadosBean empleadoBean = new EmpleadosBean();
             try
@@ -165,6 +165,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaMatrimonio", fecmat));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoSangre", tipsan));
                 cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpleado", clvemp));
+                cmd.Parameters.Add(new SqlParameter("@ctrlIdEmpresa", keyBusiness));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     empleadoBean.sMensaje = "success";
@@ -217,7 +218,7 @@ namespace Payroll.Models.Daos
             return imssBean;
         }
 
-        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int empresa, int retroactivo, int categoria, int pagopor, int fondo, int clasif)
+        public DatosNominaBean sp_Nomina_Update_DatoNomina(string fecefecnom, double salmen, int tipper, int tipemp, int nivemp, int tipjor, int tipcon, int tipcontra, string fecing, string fecant, string vencon, int tippag, int banuse, string cunuse, int clvnom, int position, int tiposueldo, int politica, double diferencia, double transporte, int empresa, int retroactivo, int categoria, int pagopor, int fondo, int clasif, int conPrestaciones)
         {
             DatosNominaBean nominaBean = new DatosNominaBean();
             try
@@ -253,6 +254,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@ctrlPagoPor",          pagopor));
                 cmd.Parameters.Add(new SqlParameter("@ctrlFondo", fondo));
                 cmd.Parameters.Add(new SqlParameter("@ctrlClasif", clasif));
+                cmd.Parameters.Add(new SqlParameter("@ctrlPrestaciones", conPrestaciones));
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     nominaBean.sMensaje = "success";

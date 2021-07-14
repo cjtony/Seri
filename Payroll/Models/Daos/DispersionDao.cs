@@ -53,6 +53,30 @@ namespace Payroll.Models.Daos
 
     public class PayrollRetainedEmployeesDaoD : Conexion
     {
+        public List<int> sp_Periodos_Retenidos_A_Empleados(int IdEmpresa, int Anio)
+        {
+            List<int> periodos = new List<int>();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Periodos_Retenidos_A_Empleados", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
+                SqlDataReader data = cmd.ExecuteReader();
+                if (data.HasRows) {
+                    while (data.Read()) {
+                        int periodo = Convert.ToInt32(data["Periodo"]);
+                        periodos.Add(periodo);
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return periodos;
+        }
 
         public List<PayrollRetainedEmployeesBean> sp_Retrieve_NominasRetenidas(int keyBusiness)
         {
@@ -75,6 +99,7 @@ namespace Payroll.Models.Daos
                                                 data["Apellido_Paterno_Empleado"].ToString() + " " +
                                                 data["Apellido_Materno_Empleado"].ToString();
                         payRetained.sDescripcion = data["Descripcion"].ToString();
+                        payRetained.iPeriodo = Convert.ToInt32(data["Periodo"]);
                         listPayRetained.Add(payRetained);
                     }
                 }
@@ -250,6 +275,81 @@ namespace Payroll.Models.Daos
     public class DataDispersionBusiness : Conexion
     {
 
+        public decimal sp_Totales_Dispersion_Especial (int Anio, int Periodo, int TipoPeriodoId, int GrupoId, int ConfiguracionId)
+        {
+            decimal resultado = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Totales_Dispersion_Especial", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", Periodo));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", TipoPeriodoId));
+                cmd.Parameters.Add(new SqlParameter("@GrupoId", GrupoId));
+                cmd.Parameters.Add(new SqlParameter("@ConfiguracionId", ConfiguracionId));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    resultado = Convert.ToDecimal(dataReader["TOTAL"].ToString());
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return resultado;
+        }
+
+        public double sp_Datos_Totales_Resta_Importe_Bancos_Dispersion(int IdEmpresa, int Periodo, int TipoPeriodo, int BancoId)
+        {
+            double result = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Datos_Totales_Resta_Importe_Bancos_Dispersion", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", Periodo));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodo", TipoPeriodo));
+                cmd.Parameters.Add(new SqlParameter("@BancoId", BancoId));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) { 
+                    result = Convert.ToDouble(dataReader["TotalVales"].ToString()); 
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return result;
+        }
+
+        public double sp_Comprueba_Existencia_Renglon_Vales(int IdEmpresa, int IdEmpleado, int Periodo, int TipoPeriodoId, int Anio)
+        {
+            double result = 0;
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Comprueba_Existencia_Renglon_Vales", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdEmpresa", IdEmpresa));
+                cmd.Parameters.Add(new SqlParameter("@IdEmpleado", IdEmpleado));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", Periodo));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", TipoPeriodoId));
+                cmd.Parameters.Add(new SqlParameter("@Anio", Anio));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        result = Convert.ToDouble(dataReader["Total"].ToString());
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return result;
+        }
         public List<GroupBusinessDispersionBean> sp_Load_Group_Business_Dispersion ()
         {
             List<GroupBusinessDispersionBean> groupBusinesses = new List<GroupBusinessDispersionBean>();
@@ -605,6 +705,7 @@ namespace Payroll.Models.Daos
                         datosCuenta.sNumeroCuenta  = dataReader["NCuenta"].ToString();
                         datosCuenta.sClabe         = dataReader["NClabe"].ToString();
                         datosCuenta.iPlaza         = (dataReader["Plaza"].ToString() != "") ? Convert.ToInt32(dataReader["Plaza"]) : 0;
+                        datosCuenta.sRFC           = dataReader["RFC"].ToString();
                         datosCuenta.sMensaje       = "SUCCESS";
                     } else {
                         datosCuenta.sMensaje = "NOTFOUND";
@@ -621,7 +722,7 @@ namespace Payroll.Models.Daos
             }
             return datosCuenta;
         }
-        public DatosCuentaClienteBancoEmpresaBean sp_Save_Config_Data_Account_Bank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig)
+        public DatosCuentaClienteBancoEmpresaBean sp_Save_Config_Data_Account_Bank(string nClient, string nAccount, string nClabe, string nSquare, int keyConfig, string rfc)
         {
             DatosCuentaClienteBancoEmpresaBean datosCuenta = new DatosCuentaClienteBancoEmpresaBean();
             try {
@@ -632,6 +733,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Clabe", nClabe));
                 cmd.Parameters.Add(new SqlParameter("@Plaza", nSquare));
                 cmd.Parameters.Add(new SqlParameter("@IdConfiguracion", keyConfig));
+                cmd.Parameters.Add(new SqlParameter("@RFC", rfc));
                 if (cmd.ExecuteNonQuery() > 0) {
                     datosCuenta.sMensaje = "SUCCESS";
                 } else {
@@ -700,7 +802,8 @@ namespace Payroll.Models.Daos
                             iIdBanco = Convert.ToInt32(data["banco"].ToString()),
                             iIdRenglon = Convert.ToInt32(data["Renglon_id"].ToString()),
                             iDepositos = Convert.ToInt32(data["depositos"].ToString()),
-                            sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["importe"])))
+                            sImporte = string.Format(CultureInfo.InvariantCulture, "{0:#,###,##0.00}", Convert.ToDecimal((data["importe"]))),
+                            dImporteSF = Convert.ToDouble(data["importe"])
                         });
                     }
                 }
@@ -1088,6 +1191,7 @@ namespace Payroll.Models.Daos
                         datosProcesaCheques.sMaterno = data["Materno"].ToString();
                         datosProcesaCheques.sRfc = data["RFC"].ToString();
                         datosProcesaCheques.iTipoPago = Convert.ToInt32(data["TipoPago"].ToString());
+                        datosProcesaCheques.sImporte = data["Saldo"].ToString();
                         datosProcesaChequesNominaBeans.Add(datosProcesaCheques);
                     }
                 }
@@ -1104,8 +1208,7 @@ namespace Payroll.Models.Daos
         public List<DatosProcesaChequesNominaBean> sp_Procesa_Cheques_Interbancarios_Espejo(int keyBusiness, int typePeriod, int numberPeriod, int yearPeriod)
         {
             List<DatosProcesaChequesNominaBean> datosProcesaChequesNominaBeans = new List<DatosProcesaChequesNominaBean>();
-            try
-            {
+            try {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_Procesa_Cheques_Interbancarios_Espejo", this.conexion) { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@IdEmpresa", keyBusiness));
@@ -1113,10 +1216,8 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Periodo", numberPeriod));
                 cmd.Parameters.Add(new SqlParameter("@Anio", yearPeriod));
                 SqlDataReader data = cmd.ExecuteReader();
-                if (data.HasRows)
-                {
-                    while (data.Read())
-                    {
+                if (data.HasRows) {
+                    while (data.Read()) {
                         DatosProcesaChequesNominaBean datosProcesaCheques = new DatosProcesaChequesNominaBean();
                         datosProcesaCheques.iIdBanco = Convert.ToInt32(data["IdBanco"].ToString());
                         datosProcesaCheques.sBanco = data["Banco"].ToString();
@@ -1133,13 +1234,9 @@ namespace Payroll.Models.Daos
                     }
                 }
                 cmd.Parameters.Clear(); cmd.Dispose(); data.Close();
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 Console.WriteLine(exc.Message.ToString());
-            }
-            finally
-            {
+            } finally {
                 this.conexion.Close();
                 this.Conectar().Close();
             }

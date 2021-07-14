@@ -481,16 +481,14 @@ namespace Payroll.Models.Daos
             return infoPositionInsert;
         }
 
-        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, int categoria, int pagopor, int fondo, double sdi, int clasif)
+        public DatosNominaBean sp_DatosNomina_Insert_DatoNomina(string fecefecnom, double salmen, int tipemp, int nivemp, int tipjor, int tipcon, string fecing, string fecant, string vencon, int usuario, string empleado, string apepat, string apemat, string fechanaci, int keyemp, int tipper, int tipcontra, int tippag, int banuse, string cunuse, int position, int clvemp, int tiposueldo, int politica, double diferencia, double transporte, int retroactivo, int categoria, int pagopor, int fondo, double sdi, int clasif, int prestaciones)
         {
             DatosNominaBean datoNominaBean = new DatosNominaBean();
             try
             {
                 this.Conectar();
                 SqlCommand cmd = new SqlCommand("sp_DatosNomina_Insert_DatoNomina", this.conexion)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
+                    { CommandType = CommandType.StoredProcedure };
                 cmd.Parameters.Add(new SqlParameter("@ctrlFechaEfectiva", fecefecnom));
                 cmd.Parameters.Add(new SqlParameter("@ctrlSalarioMensual", salmen));
                 cmd.Parameters.Add(new SqlParameter("@ctrlTipoPeriodo", tipper));
@@ -523,6 +521,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@fondo", fondo));
                 cmd.Parameters.Add(new SqlParameter("@sdi", sdi));
                 cmd.Parameters.Add(new SqlParameter("@clasif", clasif));
+                cmd.Parameters.Add(new SqlParameter("@prestaciones", prestaciones));
                 if (cmd.ExecuteNonQuery() > 0) {
                     datoNominaBean.sMensaje = "success";
                 } else {

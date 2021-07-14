@@ -136,7 +136,7 @@
                         }, success: (data) => {
                             document.getElementById('ismirrorspecial').disabled             = false;
                             document.getElementById('btn-send-dispersion-special').disabled = false;
-                            //document.getElementById('option-group').value          = "none";
+                            document.getElementById('option-group').disabled = false;
                             document.getElementById('option-group').disabled       = false;
                             //document.getElementById('type-dispersion').value       = "none";
                             document.getElementById('type-dispersion').disabled    = false;

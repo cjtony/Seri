@@ -113,6 +113,7 @@
                 type: "POST",
                 data: {},
                 success: (data) => {
+                    console.log(data);
                     if (data.Bandera == true && data.MensajeError == "none") {
                         const dataLength = data.DatosBancos.length;
                         let lengthData = 0;
@@ -127,7 +128,7 @@
                                     <td>${data.DatosBancos[i].sNumeroPlaza}</td>
                                     <td class="text-center">${data.DatosBancos[i].sValor}</td>
                                     <td class="text-center">
-                                        <button type="button" onclick="fChangeTypeBank(${data.DatosBancos[i].iIdBancoEmpresa}, '${data.DatosBancos[i].sNombreBanco}',${data.DatosBancos[i].sNumeroCliente}, ${data.DatosBancos[i].sNumeroCuenta}, ${data.DatosBancos[i].sNumeroPlaza}, ${data.DatosBancos[i].sClabe}, ${data.DatosBancos[i].iCg_tipo_dispersion})" class="btn btn-warning btn-sm btn-icon-split shadow">
+                                        <button type="button" onclick="fChangeTypeBank(${data.DatosBancos[i].iIdBancoEmpresa}, '${data.DatosBancos[i].sNombreBanco}',${data.DatosBancos[i].sNumeroCliente}, ${data.DatosBancos[i].sNumeroCuenta}, ${data.DatosBancos[i].sNumeroPlaza}, '${data.DatosBancos[i].sClabe}', ${data.DatosBancos[i].iCg_tipo_dispersion})" class="btn btn-warning btn-sm btn-icon-split shadow">
                                             <span class="icon text-white-50" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </span>
@@ -279,6 +280,7 @@
 
     // Funcion que cambia el tipo de dispersion del banco 
     fChangeTypeBank = (paramid, paramnamebank, paramnclient, paramnbill, paramsquare, paramclab, paramtypedis) => {
+        console.log(paramclab);
         try {
             if (parseInt(paramid) > 0) {
                 $("#details-config-bank").modal('show');

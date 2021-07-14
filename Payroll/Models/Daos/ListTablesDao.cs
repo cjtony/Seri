@@ -424,6 +424,13 @@ namespace Payroll.Models.Daos
                     nominaBean.sCuentaCheques = (String.IsNullOrEmpty(data["Cta_Cheques"].ToString())) ? "" : data["Cta_Cheques"].ToString();
                     nominaBean.iUsuarioAlta_id = Convert.ToInt32(data["Usuario_Alta_id"].ToString());
                     nominaBean.sFechaAlta = data["Fecha_Alta"].ToString();
+                    if (data["Prestaciones"].ToString().Length != 0 && data["Prestaciones"].ToString() != "")
+                    {
+                        nominaBean.sPrestaciones = data["Prestaciones"].ToString();
+                        //nominaBean.iPrestaciones = Convert.ToInt32(data["Prestaciones"].ToString());
+                    } else {
+                        nominaBean.sPrestaciones = "False";
+                    }
                     nominaBean.sMensaje = "success";
                 }
                 else

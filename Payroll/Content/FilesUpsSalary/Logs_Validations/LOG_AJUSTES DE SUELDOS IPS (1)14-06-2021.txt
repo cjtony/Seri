@@ -1,0 +1,8 @@
+﻿* -- Datos a insertar -- *
+[*] Fila = 2, [*] Empresa = 4, [*] Nomina = 11102, [*] MensajeError = none, ValidacionInsercion = Actualizado sobre la fecha efectiva indicada
+[*] Fila = 4, [*] Empresa = 4, [*] Nomina = 11045, [*] MensajeError = none, ValidacionInsercion = Actualizado sobre la fecha efectiva indicada
+
+* -- Errores de validaciones -- *
+[*] Fila = 3, [*] Empresa = 4,  [*] Mensaje = Errores de validacion: [*] El valor ingresado 643 en la columna TIPO DE MOVIMIENTO no es valido.
+[*] Fila = 5, [*] Empresa = 5,  [*] Mensaje = Errores de validacion: [*] El valor ingresado 3323 en la columna TIPO DE MOVIMIENTO no es valido.
+

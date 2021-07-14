@@ -27,6 +27,9 @@
     const divContentTabsNomina = document.getElementById('div-content-tabs-nomina');
     const divContentInfoNomina = document.getElementById('div-content-info-nomina');
 
+    const divContentTabsSalary = document.getElementById('div-content-tabs-salary');
+    const divContentInfoSalary = document.getElementById('div-content-info-salary');
+
     const divHistoryPosicion     = document.getElementById('div-history-posicion');
     const divContentTabsPosicion = document.getElementById('div-content-tabs-posicion');
     const divContentInfoPosicion = document.getElementById('div-content-info-posicion');
@@ -40,6 +43,7 @@
         }
         if (param == "NOMINA") {
             divHistoryNomina.innerHTML = `<button onclick="fShowHistoryNomina();" class="btn btn-sm btn-primary shadow rounded"> <i class="fas fa-book mr-2"></i>  Ver Historial</button>`;
+            divHistoryNomina.innerHTML += `<button onclick="fShowMovementsSalary();" class="btn btn-sm btn-primary shadow rounded ml-2"> <i class="fas fa-money-check-alt"></i> Sueldos </button>`;
         }
         if (param == "POSICION") {
             divHistoryPosicion.innerHTML = `<button onclick="fShowHistoryPosicion();" class="btn btn-sm btn-primary shadow rounded"> <i class="fas fa-book mr-2"></i>  Ver Historial</button>`;
@@ -165,6 +169,226 @@
         }
     }
 
+    // Funcion que muestra el historial de los movimientos salariales
+    fShowMovementsSalary = () => {
+        document.getElementById('noDataMovementSalary').innerHTML = "";
+        divContentTabsSalary.innerHTML = "";
+        divContentInfoSalary.innerHTML = "";
+        try {
+            let keyEmp = 0;
+            if (JSON.parse(localStorage.getItem("objectTabDataGen")) != null) {
+                const getDataTabDataGen = JSON.parse(localStorage.getItem("objectTabDataGen"));
+                for (i in getDataTabDataGen) {
+                    if (getDataTabDataGen[i].key === "general") {
+                        keyEmp = getDataTabDataGen[i].data.clvemp;
+                    }
+                }
+            }
+            const key = "NOMINA";
+            if (keyEmp != 0) {
+                $.ajax({
+                    url: "../SearchDataCat/LoadMovementsSalary",
+                    type: "POST",
+                    data: { key: String(key), keyEmployee: parseInt(keyEmp) },
+                    beforeSend: () => {
+                        //console.log('Cargando historial....');
+                    }, success: (data) => {
+                        //console.log(data);
+                        if (data.Bandera === true && data.MensajeError == "none") {
+                            $("#modalMovementsSalary").modal("show");
+                            console.group("Movimientos de salario");
+                            console.log(data);
+
+                            setTimeout(() => {
+                                let active1 = "";
+                                let contac1 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac1 == 0) {
+                                        active1 = "active";
+                                    } else {
+                                        active1 = "";
+                                    }
+                                    divContentTabsSalary.innerHTML += `
+                                        <a title="Fechas de movimiento" class="nav-link ${active1} text-center" id="v-pills-home-tab" data-toggle="pill"
+                                            href="#tab-nomina${data.Datos[i].iIdHistorico}" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                            <i class="fas fa-calendar-alt mr-2"></i> ${data.Datos[i].sFechaMovimiento}
+                                        </a>
+                                    `;
+                                    contac1 += 1;
+                                }
+                                let active2 = "";
+                                let contac2 = 0;
+                                for (let i = 0; i < data.Datos.length; i++) {
+                                    if (contac2 == 0) {
+                                        active2 = "active";
+                                    } else {
+                                        active2 = "";
+                                    }
+                                    divContentInfoSalary.innerHTML += `
+                                        <div class="tab-pane fade ${active2} show border-left-primary p-1 shadow" id="tab-nomina${data.Datos[i].iIdHistorico}" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                            <div class="row p-2 animated fadeInLeft">
+                                                <div class="col-md-10">
+                                                    <div>
+                                                        <small class=""><b>Fecha:</b>
+                                                            <span class="text-primary">${data.Datos[i].sFecha}</span>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small class=""><b>Año:</b>
+                                                            <span class="text-primary">${data.Datos[i].iAnio}</span>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small class=""><b>Periodo:</b>
+                                                            <span class="text-primary">${data.Datos[i].iPeriodo}</span>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small class=""><b>Salario anterior:</b>
+                                                            <span class="text-primary">$ ${data.Datos[i].sValorAnterior}</span>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small class=""><b>Salario nuevo:</b>
+                                                           <span class="text-primary">$ ${data.Datos[i].sValorNuevo}</span>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small class=""><b>Usuario:</b>
+                                                           <span class="text-primary">${data.Datos[i].sUsuario}</span>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small class=""><b>Nombre usuario:</b>
+                                                           <span class="text-primary">${data.Datos[i].sNombreUsuario}</span>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button title="Remover historico" class="btn btn-sm btn-outline-danger" onclick="fRemoveMovementSalary(${data.Datos[i].iPeriodo}, ${data.Datos[i].iAnio}, ${data.Datos[i].iIdHistorico}, '${data.Datos[i].sValorAnterior}');">
+                                                        <i class="fas fa-times-circle fa-lg"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    contac2 += 1;
+                                }
+                            }, 500);
+                            console.groupEnd();
+                        } else {
+                            $("#modalMovementsSalary").modal("show");
+                            document.getElementById('noDataMovementSalary').innerHTML = `
+                                <div class="">
+                                    <div class="col-md-12 text-center">
+                                        <h4 class="text-info font-weight-bold">No se encontraron movimientos de salario para este empleado</h4>
+                                    </div>
+                                </div>
+                            `;
+                            //alert('Ocurrio un problema al cargar el historial');
+                        }
+                    }, error: (jqXHR, exception) => {
+                        fcaptureaerrorsajax(jqXHR, exception);
+                    }
+                });
+            } else {
+                alert('Ocurrio un error al cargar el Historial Nomina del empleado');
+            }
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+    }
+
+    // Funcion que remueve el movimiento de salario de un empleado
+    fRemoveMovementSalary = (paramperiodo, paramanio, paramhistorico, paramsalary) => {
+        console.group("Remueve movimientos salario");
+        try {
+            //alert('Estamos trabajando en la funcionalidad');
+            Swal.fire({
+                title: "¿Esta seguro?", text: "al remover el movimiento salarial el sueldo volvera al anterior que es: $" + String(paramsalary), icon: "warning",
+                confirmButtonText: "Aceptar", showCancelButton: true, cancelButtonText: "Cancelar",
+                allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+            }).then((result) => {
+                if (result.value) {
+                    const keyNom = document.getElementById('clvnom');
+                    const keyEmploye = document.getElementById('clvemp');
+                    if (paramperiodo != "" && paramanio > 0 && paramhistorico > 0 && keyNom.value != "" && keyNom.value > 0
+                        && keyEmploye.value != "" && keyEmploye.value > 0) {
+                        const dataSend = {
+                            periodo: paramperiodo, anio: paramanio, historico: paramhistorico,
+                            keyNom: parseInt(keyNom.value), keyEmployee: parseInt(keyEmploye.value)
+                        };
+                        $.ajax({
+                            url: "../SearchDataCat/RemoveMovementSalary",
+                            type: "POST",
+                            data: dataSend,
+                            beforeSend: () => {
+
+                            }, success: (request) => {
+                                console.log(request);
+                                if (request.BanderaPeriodo == true) {
+                                    if (request.Bandera == true) {
+                                        $("#modalMovementsSalary").modal("hide");
+                                        Swal.fire({
+                                            title: "Movimiento eliminado!", text: "limpiaremos los campos para su posterior consulta", icon: "success",
+                                            confirmButtonText: "Aceptar",
+                                            allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
+                                        }).then((result) => {
+                                            if (result.value) {
+                                                fGenRestore();
+                                                setTimeout(() => {
+                                                    $("#searchemploye").modal("show");
+                                                    setTimeout(() => {
+                                                        document.getElementById('filtronumber').checked = true;
+                                                        document.getElementById('filtroname').checked = false;
+                                                        document.getElementById('searchemployekey').value = dataSend.keyEmployee;
+                                                        document.getElementById('searchemployekey').focus();
+                                                        setTimeout(() => {
+                                                            fsearchemployes();
+                                                        }, 500);
+                                                    }, 500);
+                                                }, 1000);
+                                            }
+                                        });
+                                    } else {
+                                        fshowtypealert('Error', 'Ocurrio un error al restaurar el movimiento', 'error', null, 0);
+                                    }
+                                } else {
+                                    fshowtypealert('Atención', 'No se puede remover un movimiento aplicado en un periodo anterior al actual', 'warning', null, 0);
+                                }
+                            }, error: (jqXHR, exception) => {
+                                fcaptureaerrorsajax(jqXHR, exception);
+                            }
+                        });
+                    } else {
+                        alert('Ocurrion un error en la aplicacion');
+                        location.reload();
+                    }
+                } else {
+                    Swal.fire({ title: "Bien", text: "Todo sigue igual", timer: 1000, showConfirmButton: false, allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false });
+                }
+            });
+        } catch (error) {
+            if (error instanceof EvalError) {
+                console.error('EvalError: ', error.message);
+            } else if (error instanceof RangeError) {
+                console.error('RangeError: ', error.message);
+            } else if (error instanceof TypeError) {
+                console.error('TypeError: ', error.message);
+            } else {
+                console.error('Error: ', error);
+            }
+        }
+        console.groupEnd();
+    }
 
     // Funcion que muestra el historial de la nomina
     fShowHistoryNomina = () => {
@@ -528,7 +752,8 @@
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
     const retroactivo = document.getElementById('retroactivo');
-    const conFondo    = document.getElementById('con_fondo');
+    const conFondo = document.getElementById('con_fondo');
+    const conPrestaciones = document.getElementById('con_prestaciones');
     const categoriaEm = document.getElementById('categoria_emp');
     const pagoPorEmpl = document.getElementById('pago_por');
     const tippag = document.getElementById('tippag');
@@ -659,8 +884,12 @@
             retroactivoSave = 1;
         }
         let conFondoSave = 0;
+        let conPrestacionesSave = 0;
         if (conFondo.checked) {
             conFondoSave = 1;
+        }
+        if (conPrestaciones.checked) {
+            conPrestacionesSave = 1;
         }
         const dataLocSto = {
             key: 'nom', data: {
@@ -676,6 +905,7 @@
                 transporte: transporte.value,
                 retroactivo: retroactivoSave,
                 confondo: conFondoSave,
+                conprestaciones: conPrestacionesSave,
                 categoria: categoriaEm.value,
                 pagopor: pagoPorEmpl.value,
                 fecing: fecing.value,
@@ -856,8 +1086,19 @@
                         fecefecnom.value   = data.Datos.sFechaEfectiva;
                         salmen.value       = data.Datos.dSalarioMensual;
                         salmenact.value    = data.Datos.dSalarioMensual;
-                        tipper.value       = data.Datos.iTipoPeriodo;
-                        tipemp.value       = data.Datos.iTipoEmpleado_id;
+                        tipper.value = data.Datos.iTipoPeriodo;
+                        console.log('datos de prestaciones')
+                        //console.log(data.Datos.iPrestaciones);
+                        if (data.Datos.sPrestaciones == "True") {
+                            conPrestaciones.checked = 1;
+                        } else {
+                            conPrestaciones.checked = 0;
+                        }
+                        if (data.Datos.iTipoEmpleado_id == '' || data.Datos.iTipoEmpleado_id == '0') {
+                            tipemp.value = '0';
+                        } else {
+                            tipemp.value = data.Datos.iTipoEmpleado_id;
+                        }
                         nivemp.value       = data.Datos.iNivelEmpleado_id;
                         tipjor.value = data.Datos.iTipoJornada_id;
                         if (data.Datos.iClasif == '' || data.Datos.iClasif == '0') {
@@ -1108,13 +1349,16 @@
                 //fvalidatebuttonsaction();
                 Swal.fire({
                     title: 'Cargando información',
-                    html: 'Terminando en <b></b> milisegundos.',
+                    //html: 'Terminando en <b></b> milisegundos.',
+                    html: "",
                     timer: 5000, timerProgressBar: true,
                     allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                     onBeforeOpen: () => {
                         Swal.showLoading();
                         timerInterval = setInterval(() => {
-                            Swal.getContent().querySelector('b').textContent = Swal.getTimerLeft();
+                            //Swal.getContent().querySelector('b').textContent = Swal.getTimerLeft();
+                            //Swal.getContent().querySelector('b').textContent = "Cargando...";
+
                         }, 100)
                     },
                     onClose: () => { clearInterval(timerInterval); }
@@ -1492,6 +1736,7 @@
         const flagSal          = (salmen.value != salmenact.value) ? true : false;
         const retroactivoSendE = (retroactivo.checked) ? 1 : 0;
         const conFondoSendE = (conFondo.checked) ? 1 : 0;
+        const conPrestacionesSendE = (conPrestaciones.checked) ? 1 : 0;
         const motMoviSal       = document.getElementById('motmovisal');
         const fechMoviSal      = document.getElementById('fechmovisal');
         if (tippag.value == "218" || tippag.value == "220") {
@@ -1507,17 +1752,17 @@
                 tipjor: tipjor.value, tipcon: tipcon.value, fecing: fecing.value, fecant: fecant.value, vencon: vencon.value,
                 empleado: name.value, apepat: apepat.value, apemat: apemat.value, fechanaci: fnaci.value, tipper: tipper.value, tipcontra: tipcontra.value,
                 tippag: tippag.value, banuse: banco, cunuse: cunuse.value, position: clvstr.value, clvemp: clvemp.value, tiposueldo: tiposueldo.value, politica: politica.value,
-                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE, ultSdi: ultSdi.value, clasif: 0
+                diferencia: diferencia.value, transporte: transporte.value, retroactivo: retroactivoSendE, flagSal: flagSal, motMoviSal: "0", fechMoviSal: "none", salmenact: salmenact.value, categoria: categoriaEm.value, pagopor: pagoPorEmpl.value, fondo: conFondoSendE, ultSdi: ultSdi.value, clasif: 0, prestaciones: conPrestacionesSendE
             };
         } else {
-            url = "../EditDataGeneral/EditDataNomina";
+            url = "../EditDataGeneral/EditDataNominaORG";
             datasend = {
                 fechefectact: fechefectact.value , fecefecnom: fecefecnom.value, salmen: salmen.value, tipper: tipper.value, tipemp: tipemp.value,
                 nivemp: nivemp.value, tipjor: tipjor.value, tipcon: tipcon.value, tipcontra: tipcontra.value,
                 fecing: fecing.value, fecant: fecant.value, vencon: vencon.value, tippag: tippag.value, banuse: banco,
                 cunuse: cunuse.value, clvnom: clvnom.value, position: clvstr.value, tiposueldo: tiposueldo.value, politica: politica.value, diferencia: diferencia.value,
                 transporte: transporte.value, retroactivo: retroactivoSendE, motMoviSal: "0", fechMoviSal: "none", flagSal: flagSal, salmenact: salmenact.value, clvemp: clvemp.value,
-                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE, clasif: clasif.value
+                categoriaEm: categoriaEm.value, pagoPorEmpl: pagoPorEmpl.value, fondo: conFondoSendE, clasif: clasif.value, conPrestaciones: conPrestacionesSendE
             };
         }
         console.log(url);

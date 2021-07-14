@@ -4,6 +4,7 @@
     localStorage.removeItem("nameGroup");
     localStorage.removeItem("disabledBtnSCD");
     localStorage.removeItem("typeSend");
+    localStorage.removeItem("keyGroup");
 
     /*
      * CONSTANTES
@@ -78,6 +79,7 @@
 
     // Muestra todos los bancos disponibles
     fViewBanks = (paramint, paramstr) => {
+        localStorage.setItem("keyGroup", paramint)
         localStorage.setItem("nameGroup", paramstr);
         contentViewBanks.innerHTML = "";
         contentViewBanksInt.innerHTML = "";
@@ -334,7 +336,7 @@
                                 <div class="col-md-4">
                                     <div clasS="form-group mt-5">
                                         <div class="form-check text-center">
-                                            <button disabled title="Deshabilitado" class="btn btn-sm btn-block btn-primary shadow" ${disabledConfig} onclick="fConfigBanksSelected(${paramint}, 1, 'NOMINA')"> <i class="fas fa-cogs mr-2"></i> Configuración </button>
+                                            <button title="Deshabilitado" class="btn btn-sm btn-block btn-primary shadow" ${disabledConfig} onclick="fConfigBanksSelected(${paramint}, 1, 'NOMINA')"> <i class="fas fa-cogs mr-2"></i> Configuración </button>
                                         </div>
                                     </div>
                                 </div>
@@ -667,6 +669,12 @@
                                         <label class="col-form-label" for="plaza">Plaza:</label>
                                         <input class="form-control form-control-sm" type="number" id="nPlaza" value="${data.iPlaza}" />
                                     </div>
+                                 </div>
+                                 <div class="col-md-4 offset-2 animated fadeIn">
+                                    <div class="form-group rounded">
+                                        <label class="col-form-label" for="plaza">RFC:</label>
+                                        <input class="form-control form-control-sm" type="text" id="rfc" value="${data.sRFC}" />
+                                    </div>
                                 </div>
                                 <div class="col-md-6 offset-3 mt-3 animated fadeInDown">
                                     <div class="form-group rounded">
@@ -709,6 +717,7 @@
                 const nCuenta  = document.getElementById('nCuenta');
                 const nClabe   = document.getElementById('nClabe');
                 const nPlaza = document.getElementById('nPlaza');
+                const rfc = document.getElementById('rfc');
                 if (nCliente.value != "") {
                     if (nCuenta.value != "") {
                         if (nClabe.value != "") {
@@ -718,7 +727,8 @@
                                     nAccount:  String(nCuenta.value),
                                     nClabe:    String(nClabe.value),
                                     nSquare:   parseInt(nPlaza.value),
-                                    keyConfig: parseInt(paramconfig)
+                                    keyConfig: parseInt(paramconfig),
+                                    rfc: String(rfc.value)
                                 };
                                 $.ajax({
                                     url: "../Dispersion/SaveConfigDataBank",
@@ -846,8 +856,9 @@
         contentDCBank.innerHTML = "";
         try {
             if (paramint > 0) {
+                const keyGroup = localStorage.getItem("keyGroup");
                 const badges = ["primary", "secondary", "success", "info", "light", "dark", "warning", "danger"];
-                const dataSend = { keyGroup: parseInt(0), type: String(paramstr), option: String('ONE'), configuration: parseInt(paramint) };
+                const dataSend = { keyGroup: parseInt(keyGroup), type: String(paramstr), option: String('ONE'), configuration: parseInt(paramint) };
                 console.log(dataSend);
                 $.ajax({
                     url: "../Dispersion/ShowBanksConfigDetails",
@@ -866,9 +877,14 @@
                                 if (randomNumeric == 8) {
                                     randomNumeric = randomNumeric - 1;
                                 }
-                                htmlResult += `<span class="badge badge-${badges[randomNumeric]} mr-2 p-3 mt-2">${request.Datos[i].sNombreBanco} <i title="Remover" style="cursor:pointer;" class="fas fa-times-circle ml-2 fa-lg" onclick="fRemoveBankDetail(${paramint}, ${request.Datos[i].iConfiguracion}, ${request.Datos[i].iGrupoId})"></i> </span>`;
+                                htmlResult += `<span class="badge badge-${badges[randomNumeric]} mr-2 p-3 mt-2">${request.Datos[i].iIdBanco} -  ${request.Datos[i].sNombreBanco} <i title="Remover" style="cursor:pointer;" class="fas fa-times-circle ml-2 fa-lg" onclick="fRemoveBankDetail(${paramint}, ${request.Datos[i].iConfiguracion}, ${request.Datos[i].iGrupoId})"></i> </span>`;
                             }
                             htmlResult += "</div>";
+                            htmlResult += `
+                                <div class="col-md-8 offset-2">
+                                    <hr/>
+                                    <h5 class="text-center text-success font-weight-bold">Cantidad a pagar: ${request.Total}</h5>
+                                </div>`;
                             setTimeout(() => {
                                 document.getElementById("btn-save-cd").disabled = true;
                             }, 3000);
