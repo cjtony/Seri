@@ -1278,11 +1278,12 @@
         const labelPoli = document.getElementById('label-politica');
         const labelDife = document.getElementById('label-diferencia');
         const labelTran = document.getElementById('label-transporte');
+        const labelComp = document.getElementById('label-comespecial');
         const labelRetr = document.getElementById('label-retroactivo');
         const labelCFon = document.getElementById('label-confondo');
         const labelCemp = document.getElementById('label-categoriaemp');
         const labelPagp = document.getElementById('label-pagopor');
-        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran, labelRetr, labelCemp, labelPagp, labelCFon];
+        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran, labelRetr, labelCemp, labelPagp, labelCFon, labelComp];
         for (let i = 0; i < arrInput.length; i++) {
             arrInput[i].classList.add('col-ico', 'font-weight-bold');
         }
