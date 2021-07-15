@@ -441,6 +441,8 @@ namespace Payroll.Models.Daos
                     } else {
                         nominaBean.dComplementoEspecial = 0;
                     }
+                    nominaBean.sEstatus = data["Estatus"].ToString();
+                    nominaBean.sValor   = data["Valor"].ToString();
                     nominaBean.sMensaje = "success";
                 }
                 else

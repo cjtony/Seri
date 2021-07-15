@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿
+
+$(function () {
     // Comentar cuando el proyecto este en produccion \\
     //const idefectivo = 1115;
     //const idcuentach = 1116;
@@ -526,6 +528,19 @@
                     } else if (getDataTabNom[i].data.tippag == idcuentaah) {
                         cunuse.setAttribute("maxlength", 18);
                     }
+                    if (localStorage.getItem('typeEmp') != null) {
+                        if (localStorage.getItem('typeEmp') == 'BAJA') {
+                            const valueTypeEmp = localStorage.getItem('valueTypeEmp');
+                            const numberType   = localStorage.getItem('numberType');
+                            tipemp.innerHTML += `<option value="${numberType}" selected>${valueTypeEmp}</option>`;
+                            document.getElementById('div-show-alert-type-employee-nom').innerHTML = `
+                                <div class="alert alert-danger text-center mt-3 mb-3" role="alert">
+                                  <b>Este empleado esta dado de BAJA.</b>
+                                </div>
+                            `;
+                            nameuser.classList.add('text-danger');
+                        }
+                    }
                     const cuentaavalor = getDataTabNom[i].data.cunuse;
                     const categoriaDat = getDataTabNom[i].data.categoria;
                     const pagoporEmpld = getDataTabNom[i].data.pagopor;
@@ -623,6 +638,17 @@
         fasignsdates();
         transporte.value = 0;
         comespecial.value = 0;
+        document.getElementById('div-show-alert-type-employee-nom').innerHTML = '';
+        nameuser.classList.remove('text-danger', 'text-success');
+        const numberType = localStorage.getItem('numberType');
+        if (localStorage.getItem('typeEmp') != null) {
+            if (localStorage.getItem('typeEmp') == "BAJA") {
+                $("#tipemp option[value=" + numberType + "]").remove();
+            }
+            localStorage.removeItem("typeEmp");
+            localStorage.removeItem("numberType");
+            localStorage.removeItem("valueTypeEmp");
+        }
     }
 
     fclearlocsto = (type) => {
@@ -637,7 +663,7 @@
                     fGenRestore();
                     Swal.fire({
                         title: "Limpiando campos", html: "<b></b>",
-                        timer: 2000, timerProgressBar: true,
+                        timer: 1000, timerProgressBar: true,
                         allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                         onBeforeOpen: () => {
                             Swal.showLoading();
@@ -656,11 +682,11 @@
                 }
             });
         } else {
-            Swal.fire({ title: "Atención!", timer: 3500, text: "Detectamos informacion capturada que supera el tiempo de almacenamiento o no es valida para la empresa seleccionada. Los campos se limpiaran.", icon: "info", allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, showConfirmButton: false });
+            Swal.fire({ title: "Atención!", timer: 1000, text: "Detectamos informacion capturada que supera el tiempo de almacenamiento o no es valida para la empresa seleccionada. Los campos se limpiaran.", icon: "info", allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, showConfirmButton: false });
             fGenRestore();
         }
         fasignsdates();
-        fChangeNumberPayrollEmployee();
+        //fChangeNumberPayrollEmployee();
         document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
         localStorage.removeItem("BusinessEmploye");
     }
