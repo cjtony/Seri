@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿
+
+$(function () {
     // Comentar cuando el proyecto este en produccion \\
     //const idefectivo = 1115;
     //const idcuentach = 1116;
@@ -162,6 +164,7 @@
     const politica = document.getElementById('politica');
     const diferencia = document.getElementById('diferencia');
     const transporte = document.getElementById('transporte');
+    const comespecial = document.getElementById('comespecial');
     const retroactivo = document.getElementById('retroactivo');
     const conFondo = document.getElementById('con_fondo');
     const conPrestaciones = document.getElementById('con_prestaciones');
@@ -512,6 +515,7 @@
                     politica.value = getDataTabNom[i].data.politica;
                     diferencia.value = getDataTabNom[i].data.diferencia;
                     transporte.value = getDataTabNom[i].data.transporte;
+                    comespecial.value = getDataTabNom[i].data.comespecial;
                     retroactivo.checked = getDataTabNom[i].data.retroactivo;
                     conFondo.checked = getDataTabNom[i].data.confondo;
                     conPrestaciones.checked = getDataTabNom[i].data.conprestaciones;
@@ -523,6 +527,19 @@
                         cunuse.setAttribute("maxlength", 11);
                     } else if (getDataTabNom[i].data.tippag == idcuentaah) {
                         cunuse.setAttribute("maxlength", 18);
+                    }
+                    if (localStorage.getItem('typeEmp') != null) {
+                        if (localStorage.getItem('typeEmp') == 'BAJA') {
+                            const valueTypeEmp = localStorage.getItem('valueTypeEmp');
+                            const numberType   = localStorage.getItem('numberType');
+                            tipemp.innerHTML += `<option value="${numberType}" selected>${valueTypeEmp}</option>`;
+                            document.getElementById('div-show-alert-type-employee-nom').innerHTML = `
+                                <div class="alert alert-danger text-center mt-3 mb-3" role="alert">
+                                  <b>Este empleado esta dado de BAJA.</b>
+                                </div>
+                            `;
+                            nameuser.classList.add('text-danger');
+                        }
                     }
                     const cuentaavalor = getDataTabNom[i].data.cunuse;
                     const categoriaDat = getDataTabNom[i].data.categoria;
@@ -620,6 +637,18 @@
         fvalidatebuttonsactionmain();
         fasignsdates();
         transporte.value = 0;
+        comespecial.value = 0;
+        document.getElementById('div-show-alert-type-employee-nom').innerHTML = '';
+        nameuser.classList.remove('text-danger', 'text-success');
+        const numberType = localStorage.getItem('numberType');
+        if (localStorage.getItem('typeEmp') != null) {
+            if (localStorage.getItem('typeEmp') == "BAJA") {
+                $("#tipemp option[value=" + numberType + "]").remove();
+            }
+            localStorage.removeItem("typeEmp");
+            localStorage.removeItem("numberType");
+            localStorage.removeItem("valueTypeEmp");
+        }
     }
 
     fclearlocsto = (type) => {
@@ -634,7 +663,7 @@
                     fGenRestore();
                     Swal.fire({
                         title: "Limpiando campos", html: "<b></b>",
-                        timer: 2000, timerProgressBar: true,
+                        timer: 1000, timerProgressBar: true,
                         allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                         onBeforeOpen: () => {
                             Swal.showLoading();
@@ -653,11 +682,11 @@
                 }
             });
         } else {
-            Swal.fire({ title: "Atención!", timer: 3500, text: "Detectamos informacion capturada que supera el tiempo de almacenamiento o no es valida para la empresa seleccionada. Los campos se limpiaran.", icon: "info", allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, showConfirmButton: false });
+            Swal.fire({ title: "Atención!", timer: 1000, text: "Detectamos informacion capturada que supera el tiempo de almacenamiento o no es valida para la empresa seleccionada. Los campos se limpiaran.", icon: "info", allowEnterKey: false, allowEscapeKey: false, allowOutsideClick: false, showConfirmButton: false });
             fGenRestore();
         }
         fasignsdates();
-        fChangeNumberPayrollEmployee();
+        //fChangeNumberPayrollEmployee();
         document.getElementById('nav-numberpayroll-tab').classList.add("d-none");
         localStorage.removeItem("BusinessEmploye");
     }
@@ -999,7 +1028,7 @@
     });
 
     btnSaveDataNomina.addEventListener('click', () => {
-        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tippag, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple];
+        const arrInput = [fecefecnom, salmen, tipper, tipemp, nivemp, tipjor, tipcon, fecing, fecant, tipcontra, tippag, tiposueldo, politica, diferencia, transporte, categoriaEmp, pagoPorEmple, comespecial];
         let validate = 0;
         for (let t = 0; t < arrInput.length; t++) {
             if (arrInput[t].hasAttribute("tp-select")) {
@@ -1105,6 +1134,7 @@
                                 politica: politica.value,
                                 diferencia: diferencia.value,
                                 transporte: transporte.value,
+                                comespecial: comespecial.value,
                                 categoria: categoriaEmp.value,
                                 pagopor: pagoPorEmple.value,
                                 tippag: tippag.value,
@@ -1274,11 +1304,12 @@
         const labelPoli = document.getElementById('label-politica');
         const labelDife = document.getElementById('label-diferencia');
         const labelTran = document.getElementById('label-transporte');
+        const labelComp = document.getElementById('label-comespecial');
         const labelRetr = document.getElementById('label-retroactivo');
         const labelCFon = document.getElementById('label-confondo');
         const labelCemp = document.getElementById('label-categoriaemp');
         const labelPagp = document.getElementById('label-pagopor');
-        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran, labelRetr, labelCemp, labelPagp, labelCFon];
+        const arrInput = [labelEfno, labelSMen, labelTPer, labelTEmp, labelNEmp, labelTJor, labelTCon, labelTTra, labelFIng, labelFRec, labelTPag, labelPoli, labelDife, labelTran, labelRetr, labelCemp, labelPagp, labelCFon, labelComp];
         for (let i = 0; i < arrInput.length; i++) {
             arrInput[i].classList.add('col-ico', 'font-weight-bold');
         }
