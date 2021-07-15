@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿////const { localstorage } = require("modernizr");
+
+$(function () {
 
     fRandHours = (min, max) => {
         return Math.random() * (max - min) + min;
@@ -1084,24 +1086,49 @@
                     console.log(data);
                     let retroactivoShow = 0;
                     if (data.Bandera === true && data.MensajeError === "none") {
-                        clvnom.value       = data.Datos.iIdNomina;
+                        clvnom.value = data.Datos.iIdNomina;
                         fechefectact.value = data.Datos.sFechaEfectiva;
-                        fecefecnom.value   = data.Datos.sFechaEfectiva;
-                        salmen.value       = data.Datos.dSalarioMensual;
-                        salmenact.value    = data.Datos.dSalarioMensual;
+                        fecefecnom.value = data.Datos.sFechaEfectiva;
+                        salmen.value = data.Datos.dSalarioMensual;
+                        salmenact.value = data.Datos.dSalarioMensual;
                         tipper.value = data.Datos.iTipoPeriodo;
                         console.log('datos de prestaciones')
-                        //console.log(data.Datos.iPrestaciones);
                         if (data.Datos.sPrestaciones == "True") {
                             conPrestaciones.checked = 1;
                         } else {
                             conPrestaciones.checked = 0;
                         }
-                        if (data.Datos.iTipoEmpleado_id == '' || data.Datos.iTipoEmpleado_id == '0') {
+                        if (data.Datos.sEstatus == "BAJA") {
+                            document.getElementById('div-show-alert-type-employee-nom').innerHTML = `
+                                <div class="alert alert-danger text-center" role="alert">
+                                  <b>Este empleado esta dado de BAJA.</b>
+                                </div>
+                            `;
+                            nameuser.classList.add('text-danger');
+                            if ($("#tipemp option[value=" + data.Datos.iTipoEmpleado_id + "]").length == 0) {
+                                tipemp.innerHTML += `<option value="${data.Datos.iTipoEmpleado_id}">${data.Datos.sValor}</option>`;   
+                            }
+                            setTimeout(() => {
+                                tipemp.value = data.Datos.iTipoEmpleado_id;
+                            }, 1000);
+                        } else if (data.Datos.iTipoEmpleado_id == '' || data.Datos.iTipoEmpleado_id == '0') {
                             tipemp.value = '0';
+                            nameuser.classList.add('text-success');
+                            document.getElementById('div-show-alert-type-employee-nom').innerHTML = '';
                         } else {
+                            if (localStorage.getItem('typeEmp') != null) {
+                                if (localStorage.getItem('typeEmp') == "BAJA") {
+                                    const numberType = localStorage.getItem('numberType');
+                                    $("#tipemp option[value=" + numberType + "]").remove();
+                                }
+                            }
                             tipemp.value = data.Datos.iTipoEmpleado_id;
+                            nameuser.classList.add('text-success');
+                            document.getElementById('div-show-alert-type-employee-nom').innerHTML = '';
                         }
+                        localStorage.setItem("numberType", data.Datos.iTipoEmpleado_id);
+                        localStorage.setItem("typeEmp", data.Datos.sEstatus);
+                        localStorage.setItem("valueTypeEmp", data.Datos.sValor);
                         nivemp.value       = data.Datos.iNivelEmpleado_id;
                         tipjor.value = data.Datos.iTipoJornada_id;
                         if (data.Datos.iClasif == '' || data.Datos.iClasif == '0') {
@@ -1356,7 +1383,7 @@
                     title: 'Cargando información',
                     //html: 'Terminando en <b></b> milisegundos.',
                     html: "",
-                    timer: 5000, timerProgressBar: true,
+                    timer: 1000, timerProgressBar: true,
                     allowOutsideClick: false, allowEscapeKey: false, allowEnterKey: false,
                     onBeforeOpen: () => {
                         Swal.showLoading();
