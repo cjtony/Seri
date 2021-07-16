@@ -5,7 +5,14 @@ using System.Web;
 
 namespace Payroll.Models.Beans
 {
-
+    public class VersionesHC
+    {
+        public int iBandera { get; set; }
+        public int iVersion { get; set; }
+        public string sNombreArchioVersion { get; set; }
+        public int iIdControl { get; set; }
+        public string sMensaje { get; set; }
+    }
     public class RenglonesHCBean
     {
         public int iIdRenglon { get; set; }

@@ -14,14 +14,11 @@ namespace Payroll.Models.Utilerias
 
         protected SqlConnection Conectar()
         {
-            try
-            {
+            try {
                 conexion = new SqlConnection("Data Source=" + Server + ";Initial Catalog=" + Db + ";User ID=" + User + ";Password=" + Pass + ";Integrated Security=False"); 
                 conexion.Open();
                 return conexion;
-            }
-            catch (Exception exc)
-            {
+            } catch (Exception exc) {
                 Console.WriteLine(exc);
                 return null;
             }

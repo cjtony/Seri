@@ -221,9 +221,10 @@ namespace Payroll.Controllers
             } else {
                 initName = "HCBajas_E";
             }
-            string fileName = initName + keyOptionSel.ToString() + "_A" + yearPeriod.ToString() + "_NP" + numberPeriod.ToString() + "_TP" + typePeriod.ToString() + "_A.xlsx";
+            string fileName = initName + keyOptionSel.ToString() + "A" + yearPeriod.ToString() + "P" + numberPeriod.ToString() + "_.xlsx";
             Boolean createFolders = GenerateFoldersReports(nameFolder, nameFolderRe, fileName);
             ReportesDao reportDao = new ReportesDao();
+            VersionesHC hC = new VersionesHC();
             string pathComplete   = pathSaveFile + nameFolder + @"\\" + nameFolderRe + @"\\";
             int rowsDataTable     = 0;
             int columnsDataTable  = 0;
@@ -255,11 +256,14 @@ namespace Payroll.Controllers
             int[] renglonesC2 = new int[10];
             // * Fin Codigo Nuevo * \\
             try {
+                hC = reportDao.sp_Comprueba_Ultima_Version_Hoja_Calculo(numberPeriod, yearPeriod, keyOptionSel, typeOption, typePeriod, fileName);
+                if (hC.iBandera == 1) {
+                    fileName = hC.sNombreArchioVersion;
+                }
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage excel = new ExcelPackage()) {
                     excel.Workbook.Worksheets.Add(Path.GetFileNameWithoutExtension(fileName));
                     var worksheet = excel.Workbook.Worksheets[Path.GetFileNameWithoutExtension(fileName)];
-                    
                     worksheet.Cells[1, 1].Value  = "AÑO";
                     worksheet.Cells[1, 2].Value  = "PERIODO";
                     worksheet.Cells[1, 3].Value  = "EMPRESA";
@@ -481,11 +485,9 @@ namespace Payroll.Controllers
                         if (datosGenerales.Count > 0) {
                             int business = 0, payroll = 0;
                             int p = 1;
-                            foreach (DatosGeneralesHC dato in datosGenerales) {
-
+                            foreach (DatosGeneralesHC dato in datosGenerales) { 
                                 business = dato.iEmpresa;
-                                payroll = dato.iNomina;
-                                 
+                                payroll  = dato.iNomina; 
                                 worksheet.Cells[p + 1, 1].Style.Numberformat.Format = "0";
                                 worksheet.Cells[p + 1, 1].Value = dato.iAnio;
                                 worksheet.Cells[p + 1, 2].Style.Numberformat.Format = "0";
@@ -768,9 +770,32 @@ namespace Payroll.Controllers
                             }
                         }
                     }
-                    
+                    // Producion
+                    // string pathCoyFile = "D:/ArchivosIPSNet/HojasDeCalculo";
+                    // Desarrollo
                     FileInfo excelFile = new FileInfo(pathComplete + fileName);
                     excel.SaveAs(excelFile);
+                    string pathCoyFile = "c:/Users/Marco Carranza/desktop/ArchivosIPSNet/HojasDeCalculo";
+                    if (Directory.Exists(pathCoyFile)) {
+                        int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
+                        hC          = reportDao.sp_Inserta_Ultima_Version_Hoja_Calculo(typeOption, keyOptionSel, numberPeriod, yearPeriod, typePeriod, fileName, keyUser);
+                        if (hC.sMensaje == "success" && hC.iBandera == 1) { 
+                            try {
+                                string sourceFile = pathComplete + fileName;
+                                if (System.IO.File.Exists(pathCoyFile + "/" + fileName)) {
+                                    System.IO.File.Delete(pathCoyFile + "/" + fileName);
+                                }
+                                System.IO.File.Copy(sourceFile, pathCoyFile + "/" + fileName, true);
+                                if (!System.IO.File.Exists(pathCoyFile + "/" + fileName)) {
+                                    reportDao.sp_Elimina_Version_Hoja_Calculo(hC.iIdControl);
+                                }
+                            } catch (Exception exc) {
+                                if (!System.IO.File.Exists(pathCoyFile + "/" + fileName)) {
+                                    reportDao.sp_Elimina_Version_Hoja_Calculo(hC.iIdControl);
+                                }
+                            }
+                        }
+                    }
                     stopwatch1.Stop();
                     string final = DateTime.Now.ToString("hh:mm:ss");
                     DateTime termino = Convert.ToDateTime(final);
