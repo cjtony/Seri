@@ -770,15 +770,18 @@ namespace Payroll.Controllers
                             }
                         }
                     }
-                    // Producion
-                    // string pathCoyFile = "D:/ArchivosIPSNet/HojasDeCalculo";
-                    // Desarrollo
                     FileInfo excelFile = new FileInfo(pathComplete + fileName);
                     excel.SaveAs(excelFile);
+                    // Produccion
+                    // string pathCoyFile = "D:/ArchivosIPSNet/HojasDeCalculo/Produccion";
+                    // Desarrollo
+                    // string pathCoyFile = "D:/ArchivosIPSNet/HojasDeCalculo/Desarrollo";
+                    // Local
                     string pathCoyFile = "c:/Users/Marco Carranza/desktop/ArchivosIPSNet/HojasDeCalculo";
                     if (Directory.Exists(pathCoyFile)) {
                         int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
-                        hC          = reportDao.sp_Inserta_Ultima_Version_Hoja_Calculo(typeOption, keyOptionSel, numberPeriod, yearPeriod, typePeriod, fileName, keyUser);
+                        hC          = reportDao.sp_Inserta_Ultima_Version_Hoja_Calculo(typeOption, keyOptionSel, numberPeriod, yearPeriod, typePeriod, fileName, keyUser, 
+                                        pathCoyFile + "/" + fileName);
                         if (hC.sMensaje == "success" && hC.iBandera == 1) { 
                             try {
                                 string sourceFile = pathComplete + fileName;

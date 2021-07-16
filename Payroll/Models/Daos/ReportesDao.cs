@@ -278,7 +278,7 @@ namespace Payroll.Models.Daos
             return versiones;
         }
 
-        public VersionesHC sp_Inserta_Ultima_Version_Hoja_Calculo(string tipoHC, int empresaOGrupoId, int periodo, int anio, int tipoPeriodoId, string nombreArchivo, int usuarioId)
+        public VersionesHC sp_Inserta_Ultima_Version_Hoja_Calculo(string tipoHC, int empresaOGrupoId, int periodo, int anio, int tipoPeriodoId, string nombreArchivo, int usuarioId, string rutaArchivo)
         {
             VersionesHC versionesHC = new VersionesHC();
             versionesHC.iBandera    = 0;
@@ -292,6 +292,7 @@ namespace Payroll.Models.Daos
                 cmd.Parameters.Add(new SqlParameter("@Anio", anio));
                 cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", tipoPeriodoId));
                 cmd.Parameters.Add(new SqlParameter("@NombreArchivo", nombreArchivo));
+                cmd.Parameters.Add(new SqlParameter("@RutaArchivo", rutaArchivo));
                 cmd.Parameters.Add(new SqlParameter("@UsuarioId", usuarioId));
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader.Read()) {
