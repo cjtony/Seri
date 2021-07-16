@@ -229,7 +229,89 @@ namespace Payroll.Models.Daos
 
     public class ReportesDao : Conexion
     {
+        public Boolean sp_Elimina_Version_Hoja_Calculo (int idControl)
+        {
+            Boolean resultado = false;
+            try {
+                SqlCommand cmd = new SqlCommand("sp_Elimina_Version_Hoja_Calculo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@IdControl", idControl));
+                if (cmd.ExecuteNonQuery() > 0) {
+                    resultado = true;
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                Console.WriteLine(exc.Message.ToString());
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return resultado;
+        }
 
+        public VersionesHC sp_Comprueba_Ultima_Version_Hoja_Calculo (int periodo, int anio, int empresaOGrupoId, string tipoHC, int tipoPeriodoId, string nombreArchivo)
+        {
+            VersionesHC versiones = new VersionesHC();
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Comprueba_Ultima_Version_Hoja_Calculo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@Periodo", periodo));
+                cmd.Parameters.Add(new SqlParameter("@Anio", anio));
+                cmd.Parameters.Add(new SqlParameter("@EmpresaOGrupoId", empresaOGrupoId));
+                cmd.Parameters.Add(new SqlParameter("@TipoHojaCalculo", tipoHC));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", tipoPeriodoId));
+                cmd.Parameters.Add(new SqlParameter("@NombreArchivo", nombreArchivo));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Version"].ToString() != "0") {
+                        versiones.iBandera = 1;
+                        versiones.iVersion = Convert.ToInt32(dataReader["Version"].ToString());
+                        versiones.sNombreArchioVersion = dataReader["NombreArchivo"].ToString();
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose();
+            } catch (Exception exc) {
+                versiones.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return versiones;
+        }
+
+        public VersionesHC sp_Inserta_Ultima_Version_Hoja_Calculo(string tipoHC, int empresaOGrupoId, int periodo, int anio, int tipoPeriodoId, string nombreArchivo, int usuarioId)
+        {
+            VersionesHC versionesHC = new VersionesHC();
+            versionesHC.iBandera    = 0;
+            versionesHC.sMensaje    = "none";
+            try {
+                this.Conectar();
+                SqlCommand cmd = new SqlCommand("sp_Inserta_Ultima_Version_Hoja_Calculo", this.conexion) { CommandType = CommandType.StoredProcedure };
+                cmd.Parameters.Add(new SqlParameter("@TipoHojaCalculo", tipoHC));
+                cmd.Parameters.Add(new SqlParameter("@EmpresaOGrupoId", empresaOGrupoId));
+                cmd.Parameters.Add(new SqlParameter("@Periodo", periodo));
+                cmd.Parameters.Add(new SqlParameter("@Anio", anio));
+                cmd.Parameters.Add(new SqlParameter("@TipoPeriodoId", tipoPeriodoId));
+                cmd.Parameters.Add(new SqlParameter("@NombreArchivo", nombreArchivo));
+                cmd.Parameters.Add(new SqlParameter("@UsuarioId", usuarioId));
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read()) {
+                    if (dataReader["Bandera"].ToString() == "1") {
+                        versionesHC.iBandera = 1;
+                        versionesHC.iVersion = Convert.ToInt32(dataReader["Version"].ToString());
+                        versionesHC.sNombreArchioVersion = dataReader["NombreArchivo"].ToString();
+                        versionesHC.iIdControl = Convert.ToInt32(dataReader["IdControl"].ToString());
+                        versionesHC.sMensaje   = "success";
+                    }
+                }
+                cmd.Parameters.Clear(); cmd.Dispose(); dataReader.Close();
+            } catch (Exception exc) {
+                versionesHC.sMensaje = exc.Message.ToString();
+            } finally {
+                this.conexion.Close();
+                this.Conectar().Close();
+            }
+            return versionesHC;
+        }
         public ListRenglonesGruposRestas sp_Genera_Resta_Importes_Reporte_Dispersion(int IdEmpresa, int IdEmpleado, int Periodo, int TipoPeriodo, int Anio)
         {
             ListRenglonesGruposRestas r = new ListRenglonesGruposRestas();
