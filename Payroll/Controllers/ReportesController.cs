@@ -775,9 +775,9 @@ namespace Payroll.Controllers
                     // Produccion
                     // string pathCoyFile = "D:/ArchivosIPSNet/HojasDeCalculo/Produccion";
                     // Desarrollo
-                    // string pathCoyFile = "D:/ArchivosIPSNet/HojasDeCalculo/Desarrollo";
+                    string pathCoyFile = "D:/ArchivosIPSNet/HojasDeCalculo/Desarrollo";
                     // Local
-                    string pathCoyFile = "c:/Users/Marco Carranza/desktop/ArchivosIPSNet/HojasDeCalculo";
+                    // string pathCoyFile = "c:/Users/Marco Carranza/desktop/ArchivosIPSNet/HojasDeCalculo";
                     if (Directory.Exists(pathCoyFile)) {
                         int keyUser = Convert.ToInt32(Session["iIdUsuario"].ToString());
                         hC          = reportDao.sp_Inserta_Ultima_Version_Hoja_Calculo(typeOption, keyOptionSel, numberPeriod, yearPeriod, typePeriod, fileName, keyUser, 
